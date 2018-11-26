@@ -5,76 +5,94 @@ namespace Improbable.Gdk.Core
         public static (int FirstIndex, int Count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)
             where T : struct, IReceivedEntityMessage
         {
+            var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
+            if (range.Count != 0)
+            {
+                range = list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
+            }
+
+            return range;
+        }
+
+        // binary search for the first update for given entity ID
+        // invariant: lower < target <= upper
+        private static (int FirstIndex, int Count) LimitEntityRangeLower<T>(this ReceivedMessageList<T> list,
+            EntityId entityId, int index, int length)
+            where T : struct, IReceivedEntityMessage
+        {
             long targetId = entityId.Id;
-            int firstIndex = 0;
 
-            // binary search for the first update for given entity ID
-            // invariant: lower < target <= upper
-            int lower = -1;
-            int upper = list.Count - 1;
-            int lastIndexUpperBound = list.Count;
+            int lower = index - 1;
+            int upper = index + length - 1;
 
-            while (upper > lower)
-            {
-                var index = (lower + upper + 1) / 2;
-
-                long id = list[index].GetEntityId().Id;
-
-                if (id == targetId)
-                {
-                    if (index == 0 || list[index - 1].GetEntityId().Id != targetId)
-                    {
-                        firstIndex = index;
-                        break;
-                    }
-
-                    upper = index;
-                }
-                else if (id > targetId)
-                {
-                    lastIndexUpperBound = index;
-                    upper = index - 1;
-                }
-                else if (id < targetId)
-                {
-                    lower = index;
-                }
-            }
-
-
-            if (firstIndex == -1)
-            {
-                return (-1, 0);
-            }
-
-            // binary search for the last update for given entity ID with bounds
-            // invariant: lower <= target < upper
-            // starting bounds must obey the invariant
-            lower = firstIndex;
-            upper = lastIndexUpperBound;
+            // > last index with entity ID = targetId
+            int lastIndexUpperBound = upper + 1;
 
             while (upper > lower)
             {
-                var index = (lower + upper) / 2;
+                var current = (lower + upper + 1) / 2;
 
-                long id = list[index].GetEntityId().Id;
+                long id = list[current].GetEntityId().Id;
 
                 if (id == targetId)
                 {
-                    if (index == list.Count - 1 || list[index + 1].GetEntityId().Id != targetId)
+                    if (current == 0 || list[current - 1].GetEntityId().Id != targetId)
                     {
-                        return (firstIndex, index - firstIndex + 1);
+                        return (current, lastIndexUpperBound - current);
                     }
 
-                    lower = index + 1;
+                    upper = current;
                 }
                 else if (id > targetId)
                 {
-                    upper = index;
+                    lastIndexUpperBound = current;
+                    upper = current - 1;
                 }
                 else if (id < targetId)
                 {
-                    lower = index + 1;
+                    lower = current;
+                }
+            }
+
+            return (-1, 0);
+        }
+
+        // binary search for the last update for given entity ID with bounds
+        // invariant: lower <= target < upper
+        private static (int FirstIndex, int Count) LimitEntityRangeUpper<T>(this ReceivedMessageList<T> list,
+            EntityId entityId, int index, int length)
+            where T : struct, IReceivedEntityMessage
+        {
+            long targetId = entityId.Id;
+            int lower = index;
+            int upper = lower + length;
+
+            // < first index with entity ID = targetId
+            int firstIndexLowerBound = lower - 1;
+
+            while (upper > lower)
+            {
+                var current = (lower + upper) / 2;
+
+                long id = list[current].GetEntityId().Id;
+
+                if (id == targetId)
+                {
+                    if (current == list.Count - 1 || list[current + 1].GetEntityId().Id != targetId)
+                    {
+                        return (firstIndexLowerBound + 1, current - firstIndexLowerBound);
+                    }
+
+                    lower = current + 1;
+                }
+                else if (id > targetId)
+                {
+                    upper = current;
+                }
+                else if (id < targetId)
+                {
+                    firstIndexLowerBound = current;
+                    lower = current + 1;
                 }
             }
 
