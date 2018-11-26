@@ -14,7 +14,7 @@ The GDK is composed of three layers:
 
 ## Up next
 
-Looking for a little more inspiration before jumping in? Check out the <a href="https://improbable.io/games/blog/category/featured-games" data-track-link="Featured Games Clicked|product=Docs" target="_blank">Featured Games</a> currently in development on SpatialOS. You might also be interested in reading about the <a href="https://improbable.io/games/blog/category/game-design" data-track-link="Featured Games Clicked|product=Docs" target="_blank">Game Design</a> opportunities and challenges associated with working with SpatialOS. 
+Looking for a little more inspiration before jumping in? Check out the <a href="https://improbable.io/games/blog/category/featured-games" data-track-link="Featured Games Clicked|product=Docs" target="_blank">Featured Games</a> currently in development on SpatialOS. You might also be interested in reading about the <a href="https://improbable.io/games/blog/category/game-design" data-track-link="Game Design Clicked|product=Docs" target="_blank">Game Design</a> opportunities and challenges associated with working with SpatialOS. 
 
 We’d love to hear your game ideas and any questions you have about making games on SpatialOS:
 
