@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for the Steam authentication flow.
+- `CopySchema()` now scans for indirect package dependencies.
 
 ## `0.1.3` - 2018-11-26
 
