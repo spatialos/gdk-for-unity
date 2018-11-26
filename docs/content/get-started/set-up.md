@@ -44,9 +44,16 @@ Unity gives you Windows build support by default.
 
 **Step 4.** Install a **code editor** if you don't have one already
 
-- We recommend either [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).
+- We recommend either [Visual Studio 2017](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/). See _**Code editor set up**_, below.
 
-**Using Visual Studio?**
+**Step 5.** Restart your machine.
+
+> If you do not restart your machine, you may experience errors when opening a GDK project.
+
+
+#### Code editor set up
+
+ **Using Visual Studio?**
 
 As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
 
@@ -95,7 +102,13 @@ Unity gives you Mac build support by default.
 
 **Step 4.** Install a **code editor** if you don't have one already
 
-* We recommend either [Visual Studio](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/).
+* We recommend either [Visual Studio](https://www.visualstudio.com/downloads/) or [Rider](https://www.jetbrains.com/rider/). See _**Code editor set up**_, below.
+
+**Step 5.** Restart your machine.
+
+> If you do not restart your machine, you may experience errors when opening a GDK project.
+
+#### Code editor set up
 
 **Using Visual Studio?**
 
