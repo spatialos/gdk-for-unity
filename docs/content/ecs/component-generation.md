@@ -48,7 +48,7 @@ Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for
 | `bool`                         | `BlittableBool`         |
 | `string`                       | `string`                |
 | `bytes`                        | `byte[]`                |
-| `EntityId`                     | `Improbable.Worker.EntityId` |
+| `EntityId`                     | `Improbable.Gdk.Core.EntityId` |
 
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable. This allows you to represent any schema component as a `struct` inheriting from `IComponentData` so that it can be used by Unity’s ECS.
 
