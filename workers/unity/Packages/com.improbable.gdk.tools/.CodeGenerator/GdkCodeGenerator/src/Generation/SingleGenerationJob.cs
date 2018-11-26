@@ -59,7 +59,9 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
+                        Path.ChangeExtension($"{component.Name}CommandManager", FileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension)));
                 }
@@ -73,13 +75,9 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Translation", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-<<<<<<< HEAD
-                    Path.ChangeExtension($"{componentName}Providers", FileExtension)));
-=======
-                    Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
+                    Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
->>>>>>> more tinkering with how to store updates
+                    Path.ChangeExtension($"{component.Name}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ComponentReaderWriter", FileExtension)));
             }
@@ -97,6 +95,7 @@ namespace Improbable.Gdk.CodeGenerator
             var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
+            var commandManagerGenerator = new UnityCommandManagerGenerator();
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
@@ -136,6 +135,12 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandPayloadCode =
                         commandPayloadGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
+
+                    var commandManagerFileName =
+                        Path.ChangeExtension($"{component.Name}CommandManager", fileExtension);
+                    var commandManagerCode =
+                        commandManagerGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandManagerFileName), commandManagerCode);
 
                     var commandComponentsFileName =
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension);
