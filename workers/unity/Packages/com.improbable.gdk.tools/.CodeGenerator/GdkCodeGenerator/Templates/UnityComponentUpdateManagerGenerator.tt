@@ -224,7 +224,7 @@ namespace <#= qualifiedNamespace #>
                     <#= ev.CamelCaseEventName #>Sorted = true;
                 }
 
-                var range = updatesReceived.GetEntityRange(entityId);
+                var range = <#= ev.CamelCaseEventName #>EventsReceived.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(
                     <#= ev.CamelCaseEventName #>EventsReceived, range.FirstIndex, range.Count);
             }

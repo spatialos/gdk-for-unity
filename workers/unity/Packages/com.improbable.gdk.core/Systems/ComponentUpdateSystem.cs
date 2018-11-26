@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Type is not a valid event");
             }
 
-            return ((IEventManager<T>) managers).GetEventsReceived();
+            return ((IEventManager<T>) manager).GetEventsReceived();
         }
 
         public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>(EntityId entityId) where T : IEvent
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Type is not a valid event");
             }
 
-            return ((IEventManager<T>) managers).GetEventsReceived(entityId);
+            return ((IEventManager<T>) manager).GetEventsReceived(entityId);
         }
 
         public void SendComponentUpdate<T>(T updateToSend, EntityId entityId) where T : ISpatialComponentData
