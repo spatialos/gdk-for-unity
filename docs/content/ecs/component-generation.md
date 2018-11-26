@@ -46,7 +46,7 @@ Additionally, for each field defined in your [schema]({{urlRoot}}/content/glossa
 
 The struct also contains the following methods:
 ```csharp
-public static Improbable.Worker.Core.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
+public static Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
 ```
 
 Use this method to add this component to your [entity template]({{urlRoot}}/content/entity-templates).
@@ -70,7 +70,7 @@ Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for
 | `bool`                         | `BlittableBool`         |
 | `string`                       | `string`                |
 | `bytes`                        | `byte[]`                |
-| `EntityId`                     | `Improbable.Worker.EntityId` |
+| `EntityId`                     | `Improbable.Gdk.Core.EntityId` |
 
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable. This allows you to represent any schema component as a `struct` inheriting from `IComponentData` so that it can be used by Unity’s ECS.
 

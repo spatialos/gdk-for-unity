@@ -46,12 +46,12 @@ If you would like to see how you can use these world commands to create or delet
 You can use the `WorldCommandRequestSender.CreateEntity` method to request the creation of a new SpatialOS entity. It has the following signature:
 
 ```csharp
-long CreateEntity(Improbable.Worker.Core.Entity entityTemplate, EntityId? entityId = null, uint? timeoutMillis = null, object context = null)
+long CreateEntity(Improbable.Gdk.Core.EntityTemplate entityTemplate, EntityId? entityId = null, uint? timeoutMillis = null, object context = null)
 ```
 
 Parameters:
 
-  * `Improbable.Worker.Core.Entity entityTemplate`: The [template]({{urlRoot}}/content/entity-templates) of the entity that you want to create.
+  * `Improbable.Gdk.Core.EntityTemplate entityTemplate`: The [template]({{urlRoot}}/content/entity-templates) of the entity that you want to create.
   * `EntityId entityId`: Optional. The ID that the new entity should have, if you [reserved one](#reserveentityids).
   * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the lower-level [Worker SDK (SpatialOS documentation)](https://docs.improbable.io/reference/latest/cppsdk/introduction) is used.
   * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.
@@ -146,12 +146,12 @@ You can use entity queries to get information about entities in the SpatialOS ga
 You can use the `EntityQuery` method to request information about the entities.It has the following signature:
 
 ```csharp
-long EntityQuery(Improbable.Worker.Query.EntityQuery entityQuery, uint? timeoutMillis = null, object context = null)
+long EntityQuery(Improbable.Worker.CInterop.Query.EntityQuery entityQuery, uint? timeoutMillis = null, object context = null)
 ```
 
 Parameters:
 
-* `Improbable.Worker.Query.EntityQuery entityQuery`: The query that you want to send to the SpatialOS Runtime. See the documentation of the query object for more details.
+* `Improbable.Worker.CInterop.Query.EntityQuery entityQuery`: The query that you want to send to the SpatialOS Runtime. See the documentation of the query object for more details.
 * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the underlying Worker SDK is used.
 * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.to pass more information about the situation to the code handling the response.
 
