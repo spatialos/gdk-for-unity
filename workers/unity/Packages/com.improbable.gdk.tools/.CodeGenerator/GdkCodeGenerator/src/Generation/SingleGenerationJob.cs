@@ -49,6 +49,8 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandManager", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandSenderReceiver", fileExtension)));
@@ -87,6 +89,7 @@ namespace Improbable.Gdk.CodeGenerator
             var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
+            var commandManagerGenerator = new UnityCommandManagerGenerator();
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
@@ -122,6 +125,12 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandPayloadCode =
                         commandPayloadGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
+
+                    var commandManagerFileName =
+                        Path.ChangeExtension($"{component.Name}CommandManager", fileExtension);
+                    var commandManagerCode =
+                        commandManagerGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandManagerFileName), commandManagerCode);
 
                     var commandComponentsFileName =
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension);
