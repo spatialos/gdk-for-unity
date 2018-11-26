@@ -15,6 +15,9 @@ namespace Improbable.Gdk.Core
         Type GetUpdateType();
         Type GetComponentType();
         uint GetComponentId();
+
+        // todo this should really be somewhere else
+        ComponentType[] GetInitialComponents();
     }
 
     public interface IAuthorityManager

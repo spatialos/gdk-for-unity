@@ -68,8 +68,14 @@ namespace <#= qualifiedNamespace #>
                 <#= profilingStart #>
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
-                entityManager.AddComponentData(entity, data);
-                entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
+                if (entityManager.HasComponent<<#= componentNamespace #>.Component>(entity))
+                {
+                    entityManager.SetComponentData(entity, data);
+                }
+                else
+                {
+                    entityManager.AddComponentData(entity, data);
+                }
 
                 var update = new <#= componentNamespace #>.Update
                 {
