@@ -6,6 +6,6 @@
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Mobile Support Module. Made by Improbable.",
     "dependencies": {
-        "com.improbable.gdk.core":"0.1.2"
+        "com.improbable.gdk.core":"0.1.3"
     }
 }
