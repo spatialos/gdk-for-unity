@@ -107,6 +107,16 @@ namespace Improbable.Gdk.Core
             ((IAuthorityManager) manager).AcknowledgeAuthorityLoss(entityId);
         }
 
+        internal ComponentType[] GetInitialComponentsToAdd(uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return manager.GetInitialComponents();
+        }
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();

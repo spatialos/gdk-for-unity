@@ -77,6 +77,13 @@ namespace <#= qualifiedNamespace #>
 
             private bool updatesSorted;
 
+            private readonly ComponentType[] initialComponents = new ComponentType[]
+            {
+                ComponentType.Create<Component>(),
+                ComponentType.Create<ComponentAuthority>(),
+                ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>(),
+            };
+
             public uint GetComponentId()
             {
                 return ComponentId;
@@ -102,6 +109,11 @@ namespace <#= qualifiedNamespace #>
             public Type GetComponentType()
             {
                 return typeof(Component);
+            }
+
+            public ComponentType[] GetInitialComponents()
+            {
+                return initialComponents;
             }
 
             public void SendAll()
@@ -374,7 +386,7 @@ namespace <#= qualifiedNamespace #>
 
                 entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-                entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                //entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
             }
 
             private void OnRemoveComponent(RemoveComponentOp op)
