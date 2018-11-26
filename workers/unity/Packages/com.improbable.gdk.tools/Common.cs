@@ -83,15 +83,36 @@ namespace Improbable.Gdk.Tools
         {
             try
             {
-                var manifest =
-                    Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
-                return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
-                    kv => (string) kv.Value);
+                return ParseDependencies($"{PackagesDir}/manifest.json");
             }
             catch (Exception e)
             {
                 throw new ArgumentException($"Failed to parse manifest file: {e.Message}");
             }
+        }
+
+        internal static Dictionary<string, string> GetPackageDependencies(string packagePath)
+        {
+            try
+            {
+                return ParseDependencies($"{packagePath}/package.json");
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException($"Failed to parse package file: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        ///     Parses a json file and returns the dependencies found in it.
+        /// </summary>
+        /// <param name="filePath">Path to the json file to be parsed.</param>
+        /// <returns>The dependencies in the given json file.</returns>
+        private static Dictionary<string, string> ParseDependencies(string filePath)
+        {
+            var package = Json.Deserialize(File.ReadAllText(filePath, Encoding.UTF8));
+            return ((Dictionary<string, object>) package["dependencies"]).ToDictionary(kv => kv.Key,
+                kv => (string) kv.Value);
         }
 
         /// <summary>

@@ -176,9 +176,25 @@ namespace Improbable.Gdk.Tools
                 var schemaRoot = toolsConfig.SchemaSourceDirs[0];
                 CleanDestination(schemaRoot);
 
-                var packages = Common.GetManifestDependencies().Where(kv => kv.Value.StartsWith("file:"))
-                    .ToDictionary(kv => kv.Key, RemoveFilePrefix)
-                    .ToDictionary(kv => kv.Key, kv => Path.Combine("Packages", kv.Value));
+                // Get paths of directly dependant packages.
+                var packages = Common.GetManifestDependencies().GetPackagePaths();
+
+                // Find and include paths of all indirect dependencies.
+                Queue<string> dependencyQueue = new Queue<string>(packages.Values);
+                while (dependencyQueue.Count > 0)
+                {
+                    var dependencies = Common.GetPackageDependencies(dependencyQueue.Dequeue()).GetPackagePaths();
+
+                    foreach (var dependency in dependencies)
+                    {
+                        if (!packages.ContainsKey(dependency.Key))
+                        {
+                            packages.Add(dependency.Key, dependency.Value);
+                            dependencyQueue.Enqueue(dependency.Value);
+                        }
+                    }
+                }
+
                 var schemaSources = packages.Where(SchemaPathExists)
                     .ToDictionary(kv => kv.Key, GetSchemaPath);
 
@@ -213,6 +229,13 @@ namespace Improbable.Gdk.Tools
 
                 File.WriteAllText(to, SchemaWarningMessage + File.ReadAllText(file));
             }
+        }
+
+        private static Dictionary<string, string> GetPackagePaths(this Dictionary<string, string> packages)
+        {
+            return packages.Where(kv => kv.Value.StartsWith("file:"))
+                .ToDictionary(kv => kv.Key, RemoveFilePrefix)
+                .ToDictionary(kv => kv.Key, kv => Path.Combine("Packages", kv.Value));
         }
 
         private static bool SchemaPathExists(KeyValuePair<string, string> arg)
