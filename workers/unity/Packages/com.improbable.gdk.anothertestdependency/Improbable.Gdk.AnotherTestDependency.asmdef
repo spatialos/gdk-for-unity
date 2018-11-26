@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.TestDependency",
+    "name": "Improbable.Gdk.AnotherTestDependency",
     "references": [
         "Improbable.Gdk.Core"
     ],
