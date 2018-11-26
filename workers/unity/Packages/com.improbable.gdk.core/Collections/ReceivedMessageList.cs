@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
     /// <remarks>
     ///     Should only be used with readonly structs
     ///     Intended use is to use Add, Clear, Sort, ref [], and to iterate via a regular for loop
-    ///     Missing most safety checks used in List as it is for internal use only
+    ///     Missing most safety checks as it is for internal use only
     ///     T constrained to struct so that null checks aren't needed
     ///     Does not detect the array being edited during iteration
     ///     Items are not removed or set to default on clear
