@@ -58,9 +58,9 @@ The exact type depends on the component that the reader is generated for.
 
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
-| EntityId | `EntityId`                 | The EntityId of the underlying SpatialOS entity of this Reader. |
+| EntityId | `EntityId`                 | The entity ID of the underlying SpatialOS entity of this Reader. |
 | Data  	| `TSpatialComponentData`              	| The data stored inside the component that this Reader is associated with. |
-| Authority | [`Authority`]({{urlRoot}}/content/glossary#schema) | The authority state of the current worker of the component that this Reader is associated with. |
+| Authority | `Authority` | The [authority]({{urlRoot}}/content/glossary#authority) status of the current worker of the component that this Reader is associated with. |
 
 **Events:**
 ```csharp
@@ -107,9 +107,9 @@ The exact type of these generics depends on the component that the writer is gen
 
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
-| EntityId | `EntityId`                 | The EntityId of the underlying SpatialOS entity of this Writer. |
-| Data  	| `TSpatialComponentData`              	| The data stored inside the component that this Reader is associated with. |
-| Authority | [`Authority`]({{urlRoot}}/content/glossary#authority) | The [authority](https://docs.improbable.io/reference/latest/shared/concepts/interest-authority#authority) status of the current worker of the component that this Reader is associated with. |
+| EntityId | `EntityId`                 | The entity ID of the underlying SpatialOS entity of this Writer. |
+| Data  	| `TSpatialComponentData`              	| The data stored inside the component that this Writer is associated with. |
+| Authority | `Authority` | The [authority]({{urlRoot}}/content/glossary#authority) status of the current worker of the component that this Writer is associated with. |
 
 
 **Events:**
