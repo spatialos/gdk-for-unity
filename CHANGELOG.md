@@ -8,6 +8,7 @@
 
 ### Fixed
 
+- `Clean all workers` now cleans worker configs in addition to built-out workers.
 - Fixed a bug where nested package dependencies were not captured during Code Generation.
 
 ## `0.1.3` - 2018-11-26
