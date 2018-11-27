@@ -23,6 +23,8 @@ namespace Improbable.Gdk.Core
     public interface IAuthorityManager
     {
         Authority GetAuthority(EntityId entityId);
+        ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived();
+        ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId);
         void AcknowledgeAuthorityLoss(EntityId entityId);
     }
 

@@ -68,13 +68,18 @@ namespace <#= qualifiedNamespace #>
             private readonly ReceivedMessageList<ComponentUpdateReceived<Update>> updatesReceived =
                 new ReceivedMessageList<ComponentUpdateReceived<Update>>();
 
+            private readonly ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
+                new ReceivedMessageList<AuthorityChangeReceived>();
+
             private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
                 new Dictionary<EntityId, Authority>();
 
             private readonly List<EntityId> authLossToAck = new List<EntityId>();
 
+            private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
             private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
+            private bool authoritySorted;
             private bool updatesSorted;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
@@ -175,10 +180,12 @@ namespace <#= qualifiedNamespace #>
                     connection.SendComponentUpdate(entityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(componentUpdate));
                 }
 
+                authorityChanges.Clear();
                 entitiesWithEventsToSend.Clear();
                 authLossToAck.Clear();
                 updatesToSend.Clear();
                 updatesReceived.Clear();
+                authoritySorted = false;
                 updatesSorted = false;
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
@@ -285,6 +292,29 @@ namespace <#= qualifiedNamespace #>
                     range.Count);
             }
 
+            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived()
+            {
+                if (!authoritySorted)
+                {
+                    authoritySorted = true;
+                    authorityChanges.Sort(authorityComparer);
+                }
+
+                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
+            }
+
+            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId)
+            {
+                if (!authoritySorted)
+                {
+                    authoritySorted = true;
+                    authorityChanges.Sort(authorityComparer);
+                }
+
+                var range = authorityChanges.GetEntityRange(entityId);
+                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
+            }
+
             public Authority GetAuthority(EntityId entityId)
             {
                 if (!entityIdToAuthority.TryGetValue(entityId, out var authority))
@@ -357,6 +387,7 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 entityIdToAuthority[new EntityId(op.EntityId)] = op.Authority;
+                authorityChanges.Add(new AuthorityChangeReceived(op.Authority, new EntityId(op.EntityId)));
 
                 switch (op.Authority)
                 {
