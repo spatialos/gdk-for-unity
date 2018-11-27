@@ -1,5 +1,6 @@
 namespace Improbable.Gdk.Core
 {
+    // todo consider exposing the private methods - the upper limit one can be used to find the last event/auth change
     internal static class ReceivedMessageListExtensions
     {
         public static (int FirstIndex, int Count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)

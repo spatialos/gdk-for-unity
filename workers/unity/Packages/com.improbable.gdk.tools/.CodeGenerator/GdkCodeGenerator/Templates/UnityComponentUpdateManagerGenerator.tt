@@ -79,6 +79,9 @@ namespace <#= qualifiedNamespace #>
             private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
             private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
+            private readonly List<EntityId> componentsAdded = new List<EntityId>();
+            private readonly List<EntityId> componentsRemoved = new List<EntityId>();
+
             private bool authoritySorted;
             private bool updatesSorted;
 
@@ -180,6 +183,8 @@ namespace <#= qualifiedNamespace #>
                     connection.SendComponentUpdate(entityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(componentUpdate));
                 }
 
+                componentsAdded.Clear();
+                componentsRemoved.Clear();
                 authorityChanges.Clear();
                 entitiesWithEventsToSend.Clear();
                 authLossToAck.Clear();
@@ -214,6 +219,16 @@ namespace <#= qualifiedNamespace #>
                 dispatcher.OnAuthorityChange(OnAuthority);
                 dispatcher.OnAddComponent(OnAddComponent);
                 dispatcher.OnRemoveComponent(OnRemoveComponent);
+            }
+
+            public List<EntityId> GetComponentsAdded()
+            {
+                return componentsRemoved;
+            }
+
+            public List<EntityId> GetComponentsRemoved()
+            {
+                return componentsRemoved;
             }
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
@@ -415,6 +430,8 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                componentsAdded.Add(new EntityId(op.EntityId));
+
                 entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 //entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
@@ -426,6 +443,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     return;
                 }
+
+                componentsRemoved.Add(new EntityId(op.EntityId));
 
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);

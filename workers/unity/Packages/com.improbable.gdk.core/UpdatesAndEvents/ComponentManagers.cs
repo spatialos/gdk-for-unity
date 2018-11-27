@@ -18,6 +18,9 @@ namespace Improbable.Gdk.Core
 
         // todo this should really be somewhere else
         ComponentType[] GetInitialComponents();
+
+        List<EntityId> GetComponentsAdded();
+        List<EntityId> GetComponentsRemoved();
     }
 
     public interface IAuthorityManager

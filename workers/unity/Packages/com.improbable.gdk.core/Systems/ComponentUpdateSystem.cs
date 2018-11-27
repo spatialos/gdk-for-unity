@@ -138,6 +138,26 @@ namespace Improbable.Gdk.Core
             return manager.GetInitialComponents();
         }
 
+        public List<EntityId> GetComponentsAdded(uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return ((IComponentManager) manager).GetComponentsAdded();
+        }
+
+        public List<EntityId> GetComponentsRemoved(uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return ((IComponentManager) manager).GetComponentsRemoved();
+        }
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
@@ -172,6 +192,7 @@ namespace Improbable.Gdk.Core
         {
             foreach (var manager in managers)
             {
+                // todo there isn't currently a reason to couple the storage with the point at which sending happens
                 manager.SendAll();
             }
         }
