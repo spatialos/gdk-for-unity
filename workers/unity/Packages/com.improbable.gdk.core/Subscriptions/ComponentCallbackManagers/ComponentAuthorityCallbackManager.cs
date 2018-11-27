@@ -21,7 +21,14 @@ namespace Improbable.Gdk.Subscriptions
             var changes = updateSystem.GetAuthorityChangesReceived(componentId);
             for (int i = 0; i < changes.Count; ++i)
             {
-                callbacks.InvokeAll(changes[i].EntityId.Id, changes[i].Authority);
+                if (changes[i].Authority == Authority.Authoritative)
+                {
+                    callbacks.InvokeAll(changes[i].EntityId.Id, changes[i].Authority);
+                }
+                else
+                {
+                    callbacks.InvokeAllReverse(changes[i].EntityId.Id, changes[i].Authority);
+                }
             }
         }
 

@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Subscriptions
             var components = updateSystem.GetComponentsRemoved(componentId);
             for (int i = 0; i < components.Count; ++i)
             {
-                callbacks.InvokeAll(components[i].Id, (int) componentId);
+                callbacks.InvokeAllReverse(components[i].Id, (int) componentId);
             }
         }
 
