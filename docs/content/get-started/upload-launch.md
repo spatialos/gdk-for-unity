@@ -33,9 +33,9 @@ An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assemb
 
 To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. You can only do this in a terminal, via the [spatial CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). You must also give the worker assemblies a name so that you can reference them when launching a deployment.
 
-Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`, where `<assembly_name>` is a name of your choice (for example fps-assembly). A valid upload command would look like this:
+Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`. The `<assembly_name>` is a string of your choice made up of alphanumeric characters, `_`, `.`, and `-`. A valid upload command would look like this:
 ```
-spatial cloud upload myassembly
+spatial cloud upload my_assembly
 ```
 
 > **It’s finished uploading when:** You see an upload report printed in your terminal output, for example:
@@ -53,13 +53,13 @@ The next step is to [launch a cloud deployment](https://docs.improbable.io/refer
 
 When launching a cloud deployment you must provide three parameters:
 
-* **the assembly name**, which identifies the worker assemblies to use. The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.
-* **a launch configuration**, which declares the world and load balancing configuration.
-* **a name for your deployment**, which is used to label the deployment in the SpatialOS web Console. The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.
+* **the assembly name**, which identifies the worker assemblies to use. These are the assemblies you uploaded earlier so the name should match the one you passed to `spatial cloud upload`.
+* **a launch configuration**, which is a JSON file that declares the world and load balancing configuration.
+* **a name for your deployment**, which is used to label the deployment in the SpatialOS web Console. It consists of lower-case letters, digits, and `_` and can be up to 32 characters long.
 
 Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (for example, shootyshooty). A valid launch command would look like this:
 ```
-spatial cloud launch --snapshot=snapshots/default.snapshot myassembly cloud_launch_large.json shootyshooty
+spatial cloud launch --snapshot=snapshots/default.snapshot my_assembly cloud_launch_large.json shootyshooty
 ```
 
 This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
