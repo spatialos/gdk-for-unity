@@ -1,3 +1,5 @@
+using Improbable.Worker.CInterop;
+
 namespace Improbable.Gdk.Core
 {
     public struct ComponentUpdateToSend<T> where T : ISpatialComponentData
@@ -53,6 +55,23 @@ namespace Improbable.Gdk.Core
         {
             Event = @event;
             UpdateId = updateId;
+            EntityId = entityId;
+        }
+
+        EntityId IReceivedEntityMessage.GetEntityId()
+        {
+            return EntityId;
+        }
+    }
+
+    public readonly struct AuthorityChangeReceived : IReceivedEntityMessage
+    {
+        public readonly Authority Authority;
+        public readonly EntityId EntityId;
+
+        public AuthorityChangeReceived(Authority authority, EntityId entityId)
+        {
+            Authority = authority;
             EntityId = entityId;
         }
 
