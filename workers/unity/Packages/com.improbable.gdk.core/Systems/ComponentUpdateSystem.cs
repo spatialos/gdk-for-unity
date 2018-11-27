@@ -97,6 +97,27 @@ namespace Improbable.Gdk.Core
             return ((IAuthorityManager) manager).GetAuthority(entityId);
         }
 
+        public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return ((IAuthorityManager) manager).GetAuthorityChangesReceived();
+        }
+
+        public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId,
+            uint componentId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return ((IAuthorityManager) manager).GetAuthorityChangesReceived(entityId);
+        }
+
         public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
         {
             if (!componentIdToManager.TryGetValue(componentId, out var manager))
