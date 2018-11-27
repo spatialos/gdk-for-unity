@@ -20,6 +20,9 @@ namespace Improbable.Gdk.BuildSystem
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
                 "worker"));
 
+        private static readonly string AssetDatabaseDirectory =
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory));
+
         private const string BuildWorkerTypes = "buildWorkerTypes";
 
         /// <summary>
@@ -118,7 +121,7 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void Clean()
         {
-            Directory.Delete(PlayerBuildDirectory, true);
+            Directory.Delete(AssetDatabaseDirectory, true);
             Directory.Delete(EditorPaths.BuildScratchDirectory, true);
         }
 

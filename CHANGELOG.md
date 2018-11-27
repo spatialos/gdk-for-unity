@@ -6,6 +6,10 @@
 
 - Added support for the Steam authentication flow.
 
+### Fixed
+
+- `Clean all workers` now cleans worker configs in addition to built-out workers.
+
 ## `0.1.3` - 2018-11-26
 
 ### Added
