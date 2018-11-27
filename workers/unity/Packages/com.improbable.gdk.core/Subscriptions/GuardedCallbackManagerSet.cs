@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Subscriptions
                 callbackManagers.Add(indexToCallbackManager[indexToAdd]);
             }
 
+            indexesToAdd.Clear();
+
             return callbackManagers;
         }
     }
