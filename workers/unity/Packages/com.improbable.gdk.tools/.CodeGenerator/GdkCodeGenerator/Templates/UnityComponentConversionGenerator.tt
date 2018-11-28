@@ -44,12 +44,6 @@ namespace <#= qualifiedNamespace #>
 
             public override void Dispose()
             {
-<# foreach (var commandDetails in commandDetailsList) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.CleanDataInWorld(World);
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.CleanDataInWorld(World);
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponderProvider.CleanDataInWorld(World);
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponsesProvider.CleanDataInWorld(World);
-<# } #>
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -353,7 +347,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     {
                         var data = new <#= commandRequestBufferType #>
                         {
-                            CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
+                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
                         };
                         data.Requests = new List<<#= receivedRequestType #>>();
                         requests = data.Requests;
@@ -382,7 +376,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     {
                         var data = new <#= commandResponseBufferType #>
                         {
-                            CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
+                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
                         };
                         data.Responses = new List<<#= receivedResponseType #>>();
                         responses = data.Responses;
@@ -391,6 +385,14 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                     responses.Add(response);
                 }
+            }
+
+            public void Clean(World world)
+            {
+                ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.CleanDataInWorld(world);
+                ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.CleanDataInWorld(world);
+                ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.CleanDataInWorld(world);
+                ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.CleanDataInWorld(world);
             }
         }
 
