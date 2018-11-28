@@ -26,10 +26,12 @@ namespace <#= qualifiedNamespace #>
         private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
-
-        private readonly <#= componentDetails.ComponentName #>ReaderCallbackManager readerCallbackManager;
+        private readonly ComponentConstraintsCallbackSystem constraintCallbackSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>Reader>>> entityIdToReaderSubscriptions;
+
+        private Dictionary<EntityId, (ulong Added, ulong Removed)> entityIdToCallbackKey =
+            new Dictionary<EntityId, (ulong Added, ulong Removed)>();
 
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
@@ -42,8 +44,7 @@ namespace <#= qualifiedNamespace #>
             // Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
-
-            readerCallbackManager = new <#= componentDetails.ComponentName #>ReaderCallbackManager(dispatcher);
+            constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
 
             dispatcher.OnAddComponent(op =>
             {
@@ -62,7 +63,7 @@ namespace <#= qualifiedNamespace #>
 
                 foreach (var subscription in entityIdToReaderSubscriptions[new EntityId(op.EntityId)])
                 {
-                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, new EntityId(op.EntityId), readerCallbackManager));
+                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, new EntityId(op.EntityId)));
                 }
 
                 entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
@@ -114,7 +115,7 @@ namespace <#= qualifiedNamespace #>
                 && entityManager.HasComponent<<#= componentDetails.ComponentName #>.Component>(entity))
             {
                 entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, entityId, readerCallbackManager));
+                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, entityId));
             }
             else
             {
@@ -153,6 +154,14 @@ namespace <#= qualifiedNamespace #>
                 sub.Value.RemoveAllCallbacks();
             }
         }
+
+        private void OnComponentAdded(EntityId entityId)
+        {
+        }
+
+        private void OnComponentRemoved(EntityId entityId)
+        {
+        }
     }
 
     [AutoRegisterSubscriptionManager]
@@ -162,8 +171,6 @@ namespace <#= qualifiedNamespace #>
         private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
-
-        private readonly <#= componentDetails.ComponentName #>ReaderCallbackManager readerCallbackManager;
 
         private Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>Writer>>> entityIdToWriterSubscriptions;
 
@@ -178,8 +185,6 @@ namespace <#= qualifiedNamespace #>
             // Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
-
-            readerCallbackManager = new <#= componentDetails.ComponentName #>ReaderCallbackManager(dispatcher);
 
             dispatcher.OnAuthorityChange(op =>
             {
@@ -200,7 +205,7 @@ namespace <#= qualifiedNamespace #>
 
                     foreach (var subscription in entityIdToWriterSubscriptions[new EntityId(op.EntityId)])
                     {
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, new EntityId(op.EntityId), readerCallbackManager));
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, new EntityId(op.EntityId)));
                     }
 
                     entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
@@ -252,7 +257,7 @@ namespace <#= qualifiedNamespace #>
                 && entityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(entity))
             {
                 entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, entityId, readerCallbackManager));
+                subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, entityId));
             }
             else
             {
@@ -293,189 +298,15 @@ namespace <#= qualifiedNamespace #>
         }
     }
 
-    public class <#= componentDetails.ComponentName #>ReaderCallbackManager
-    {
-        private Dispatcher dispatcher;
-
-        private ulong callbacksRegistered = 1;
-
-        private IndexedCallbacks<Authority> authorityCallbacks;
-        private IndexedCallbacks<<#= componentDetails.ComponentName #>.Update> updateCallbacks;
-<# foreach(var fieldDetails in fieldDetailsList) { #>
-
-        private IndexedCallbacks<<#= fieldDetails.Type #>> <#= fieldDetails.CamelCaseName #>UpdateCallbacks;
-<# } #>
-<# foreach(var eventDetails in eventDetailsList) { #>
-
-        private IndexedCallbacks<<#= eventDetails.FqnPayloadType #>> <#= eventDetails.CamelCaseEventName #>EventCallbacks;
-<# } #>
-
-        public <#= componentDetails.ComponentName #>ReaderCallbackManager(Dispatcher dispatcher)
-        {
-            this.dispatcher = dispatcher;
-
-            dispatcher.OnComponentUpdate(op =>
-            {
-                // Should replace this with an other indexed dispatcher if it becomes a problem
-                // This one is most likely to as there are lots of updates.
-                // Although it's easy enough to just do this with all of them
-                if (op.Update.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
-                {
-                    return;
-                }
-
-                var update = <#= componentDetails.ComponentName #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
-                updateCallbacks?.InvokeAll(op.EntityId, update);
-<# foreach(var fieldDetails in fieldDetailsList) { #>
-
-                if (<#= fieldDetails.CamelCaseName #>UpdateCallbacks != null && update.<#= fieldDetails.PascalCaseName #>.HasValue)
-                {
-                    <#= fieldDetails.CamelCaseName #>UpdateCallbacks.InvokeAll(op.EntityId, update.<#= fieldDetails.PascalCaseName #>.Value);
-                }
-<# } #>
-
-<# if (eventDetailsList.Count > 0) { #>
-                var eventsObject = op.Update.SchemaData.Value.GetEvents();
-<# foreach (var eventDetails in eventDetailsList) { #>
-                if (<#= eventDetails.CamelCaseEventName #>EventCallbacks != null)
-                {
-                    var eventCount = eventsObject.GetObjectCount(<#= eventDetails.EventIndex #>);
-                    for (uint i = 0; i < eventCount; i++)
-                    {
-                        var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= eventDetails.EventIndex #>, i));
-                        <#= eventDetails.CamelCaseEventName #>EventCallbacks.InvokeAll(op.EntityId, e);
-                    }
-                }
-<# } #>
-<# } #>
-            });
-
-            dispatcher.OnAuthorityChange(op =>
-            {
-                if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
-                {
-                    return;
-                }
-
-                if (authorityCallbacks == null)
-                {
-                    return;
-                }
-
-                if (op.Authority == Authority.Authoritative)
-                {
-                    authorityCallbacks?.InvokeAll(op.EntityId, op.Authority);
-                }
-                else
-                {
-                    authorityCallbacks?.InvokeAllReverse(op.EntityId, op.Authority);
-                }
-            });
-        }
-
-        // Authority callbacks
-        internal ulong RegisterAuthorityCallback(EntityId entityId, Action<Authority> callback)
-        {
-            if (authorityCallbacks == null)
-            {
-                authorityCallbacks = new IndexedCallbacks<Authority>();
-            }
-
-            authorityCallbacks.Add(entityId.Id, callbacksRegistered, callback);
-            return callbacksRegistered++;
-        }
-
-        internal bool UnregisterAuthorityCallback(ulong callbackKey)
-        {
-            if (authorityCallbacks == null)
-            {
-                return false;
-            }
-
-            return authorityCallbacks.Remove(callbackKey);
-        }
-
-        // Component update callbacks
-        internal ulong RegisterUpdateCallback(EntityId entityId, Action<<#= componentDetails.ComponentName #>.Update> callback)
-        {
-            if (updateCallbacks == null)
-            {
-                updateCallbacks = new IndexedCallbacks<<#= componentDetails.ComponentName #>.Update>();
-            }
-
-            updateCallbacks.Add(entityId.Id, callbacksRegistered, callback);
-            return callbacksRegistered++;
-        }
-
-        internal bool UnregisterUpdateCallback(ulong callbackKey)
-        {
-            if (updateCallbacks == null)
-            {
-                return false;
-            }
-
-            return updateCallbacks.Remove(callbackKey);
-        }
-
-<# foreach(var fieldDetails in fieldDetailsList) { #>
-
-        // <#= fieldDetails.PascalCaseName #> callbacks
-        internal ulong Register<#= fieldDetails.PascalCaseName #>UpdateCallback(EntityId entityId, Action<<#= fieldDetails.Type #>> callback)
-        {
-            if (<#= fieldDetails.CamelCaseName #>UpdateCallbacks == null)
-            {
-                <#= fieldDetails.CamelCaseName #>UpdateCallbacks = new IndexedCallbacks<<#= fieldDetails.Type #>>();
-            }
-
-            <#= fieldDetails.CamelCaseName #>UpdateCallbacks.Add(entityId.Id, callbacksRegistered, callback);
-            return callbacksRegistered++;
-        }
-
-        internal bool Unregister<#= fieldDetails.PascalCaseName #>UpdateCallback(ulong callbackKey)
-        {
-            if (<#= fieldDetails.CamelCaseName #>UpdateCallbacks == null)
-            {
-                return false;
-            }
-
-            return <#= fieldDetails.CamelCaseName #>UpdateCallbacks.Remove(callbackKey);
-        }
-<# } #>
-<# foreach(var eventDetails in eventDetailsList) { #>
-
-        internal ulong Register<#= eventDetails.EventName #>EventCallback(EntityId entityId, Action<<#= eventDetails.FqnPayloadType #>> callback)
-        {
-            if (<#= eventDetails.CamelCaseEventName #>EventCallbacks == null)
-            {
-                <#= eventDetails.CamelCaseEventName #>EventCallbacks = new IndexedCallbacks<<#= eventDetails.FqnPayloadType #>>();
-            }
-
-            <#= eventDetails.CamelCaseEventName #>EventCallbacks.Add(entityId.Id, callbacksRegistered, callback);
-            return callbacksRegistered++;
-        }
-
-        internal bool Unregister<#= eventDetails.EventName #>EventCallback(ulong callbackKey)
-        {
-            if (<#= eventDetails.CamelCaseEventName #>EventCallbacks == null)
-            {
-                return false;
-            }
-
-            return <#= eventDetails.CamelCaseEventName #>EventCallbacks.Remove(callbackKey);
-        }
-<# } #>
-    }
-
     public class <#= componentDetails.ComponentName #>Reader
     {
         public bool IsValid;
 
         protected readonly ComponentUpdateSystem ComponentUpdateSystem;
+        protected readonly ComponentCallbackSystem CallbackSystem;
         protected readonly EntityManager EntityManager;
         protected readonly Entity Entity;
         protected readonly EntityId EntityId;
-
-        private readonly <#= componentDetails.ComponentName #>ReaderCallbackManager manager;
 
         public <#= componentDetails.ComponentName #>.Component Data
         {
@@ -513,7 +344,7 @@ namespace <#= qualifiedNamespace #>
                     authorityCallbackToCallbackKey = new Dictionary<Action<Authority>, ulong>();
                 }
 
-                var key = manager.RegisterAuthorityCallback(EntityId, value);
+                var key = CallbackSystem.RegisterAuthorityCallback(EntityId, <#= componentDetails.ComponentName #>.ComponentId, value);
                 authorityCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -523,7 +354,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                manager.UnregisterAuthorityCallback(key);
+                CallbackSystem.UnregisterCallback(key);
                 authorityCallbackToCallbackKey.Remove(value);
             }
         }
@@ -538,7 +369,7 @@ namespace <#= qualifiedNamespace #>
                     updateCallbackToCallbackKey = new Dictionary<Action<<#= componentDetails.ComponentName #>.Update>, ulong>();
                 }
 
-                var key = manager.RegisterUpdateCallback(EntityId, value);
+                var key = CallbackSystem.RegisterComponentUpdateCallback(EntityId, value);
                 updateCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -548,7 +379,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                manager.UnregisterUpdateCallback(key);
+                CallbackSystem.UnregisterCallback(key);
                 updateCallbackToCallbackKey.Remove(value);
             }
         }
@@ -564,7 +395,13 @@ namespace <#= qualifiedNamespace #>
                     <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey = new Dictionary<Action<<#= fieldDetails.Type #>>, ulong>();
                 }
 
-                var key = manager.Register<#= fieldDetails.PascalCaseName #>UpdateCallback(EntityId, value);
+                var key = CallbackSystem.RegisterComponentUpdateCallback<<#= componentDetails.ComponentName #>.Update>(EntityId, update =>
+                {
+                    if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
+                    {
+                        value(update.<#= fieldDetails.PascalCaseName #>.Value);
+                    }
+                });
                 <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -574,13 +411,15 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                manager.Unregister<#= fieldDetails.PascalCaseName #>UpdateCallback(key);
+                CallbackSystem.UnregisterCallback(key);
                 <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey.Remove(value);
             }
         }
 <# } #>
 
-<# foreach(var eventDetails in eventDetailsList) { #>
+<# foreach(var eventDetails in eventDetailsList) {
+        var eventType = componentDetails.ComponentName + "." + eventDetails.EventName + ".Event";
+#>
 
         private Dictionary<Action<<#= eventDetails.FqnPayloadType #>>, ulong> <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey;
         public event Action<<#= eventDetails.FqnPayloadType #>> On<#= eventDetails.EventName #>Event
@@ -592,7 +431,7 @@ namespace <#= qualifiedNamespace #>
                     <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey = new Dictionary<Action<<#= eventDetails.FqnPayloadType #>>, ulong>();
                 }
 
-                var key = manager.Register<#= eventDetails.EventName #>EventCallback(EntityId, value);
+                var key = CallbackSystem.RegisterComponentEventCallback<<#= eventType #>>(EntityId, ev => value(ev.Payload));
                 <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey.Add(value, key);
             }
             remove
@@ -602,22 +441,21 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                manager.Unregister<#= eventDetails.EventName #>EventCallback(key);
+                CallbackSystem.UnregisterCallback(key);
                 <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey.Remove(value);
             }
         }
 <# } #>
 
-        internal <#= componentDetails.ComponentName #>Reader(World world, Entity entity, EntityId entityId,
-            <#= componentDetails.ComponentName #>ReaderCallbackManager callbackManager)
+        internal <#= componentDetails.ComponentName #>Reader(World world, Entity entity, EntityId entityId)
         {
             Entity = entity;
             EntityId = entityId;
-            manager = callbackManager;
 
             IsValid = true;
 
             ComponentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
+            CallbackSystem = world.GetExistingManager<ComponentCallbackSystem>();
             EntityManager = world.GetExistingManager<EntityManager>();
         }
 
@@ -627,7 +465,7 @@ namespace <#= qualifiedNamespace #>
             {
                 foreach (var callbackToKey in authorityCallbackToCallbackKey)
                 {
-                    manager.UnregisterAuthorityCallback(callbackToKey.Value);
+                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
             }
 
@@ -635,7 +473,7 @@ namespace <#= qualifiedNamespace #>
             {
                 foreach (var callbackToKey in updateCallbackToCallbackKey)
                 {
-                    manager.UnregisterUpdateCallback(callbackToKey.Value);
+                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
             }
 <# foreach(var fieldDetails in fieldDetailsList) { #>
@@ -644,7 +482,7 @@ namespace <#= qualifiedNamespace #>
             {
                 foreach (var callbackToKey in <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey)
                 {
-                    manager.Unregister<#= fieldDetails.PascalCaseName #>UpdateCallback(callbackToKey.Value);
+                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
             }
 <# } #>
@@ -654,7 +492,7 @@ namespace <#= qualifiedNamespace #>
             {
                 foreach (var callbackToKey in <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey)
                 {
-                    manager.Unregister<#= eventDetails.EventName #>EventCallback(callbackToKey.Value);
+                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
             }
 <# } #>
@@ -663,8 +501,8 @@ namespace <#= qualifiedNamespace #>
 
     public class <#= componentDetails.ComponentName #>Writer : <#= componentDetails.ComponentName #>Reader
     {
-        internal <#= componentDetails.ComponentName #>Writer(World world, Entity entity, EntityId entityId,
-            <#= componentDetails.ComponentName #>ReaderCallbackManager callbackManager) : base(world, entity, entityId, callbackManager)
+        internal <#= componentDetails.ComponentName #>Writer(World world, Entity entity, EntityId entityId)
+            : base(world, entity, entityId)
         {
         }
 
