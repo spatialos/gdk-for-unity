@@ -251,25 +251,6 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                         break;
                 }
-
-                List<Authority> authorityChanges;
-                if (entityManager.HasComponent<AuthorityChanges<<#= componentNamespace #>.Component>>(entity))
-                {
-                    authorityChanges = entityManager.GetComponentData<AuthorityChanges<<#= componentNamespace #>.Component>>(entity).Changes;
-
-                }
-                else
-                {
-                    var changes = new AuthorityChanges<<#= componentNamespace #>.Component>
-                    {
-                        Handle = AuthorityChangesProvider.Allocate(World)
-                    };
-                    AuthorityChangesProvider.Set(changes.Handle, new List<Authority>());
-                    authorityChanges = changes.Changes;
-                    entityManager.AddComponentData(entity, changes);
-                }
-
-                authorityChanges.Add(authority);
             }
 
             private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Gdk.Core.EntityId entityId)
