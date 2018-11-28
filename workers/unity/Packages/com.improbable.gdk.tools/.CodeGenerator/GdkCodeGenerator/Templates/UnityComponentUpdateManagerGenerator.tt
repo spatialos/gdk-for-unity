@@ -223,7 +223,7 @@ namespace <#= qualifiedNamespace #>
 
             public List<EntityId> GetComponentsAdded()
             {
-                return componentsRemoved;
+                return componentsAdded;
             }
 
             public List<EntityId> GetComponentsRemoved()
