@@ -34,6 +34,16 @@ namespace Improbable.Gdk.Core
         [Inject] private ComponentUpdateSystem updateSystem;
         [Inject] private WorkerSystem workerSystem;
 
+        protected override void OnDestroyManager()
+        {
+            foreach (var manager in managers)
+            {
+                manager.Clean(World);
+            }
+
+            base.OnDestroyManager();
+        }
+
         protected override void OnUpdate()
         {
             foreach (var manager in managers)
