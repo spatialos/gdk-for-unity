@@ -67,6 +67,8 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}ReactiveComponents", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ComponentReaderWriter", fileExtension)));
@@ -97,6 +99,7 @@ namespace Improbable.Gdk.CodeGenerator
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
+            var reactiveComponentGenerator = new ReactiveComponentGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -159,6 +162,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension);
                 var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
+
+                var reactiveComponentsFileName = Path.ChangeExtension($"{component.Name}ReactiveComponents", fileExtension);
+                var reactiveComponentsCode = reactiveComponentGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, reactiveComponentsFileName), reactiveComponentsCode);
 
                 var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
                 var referenceProviderTranslationCode =
