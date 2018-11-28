@@ -444,6 +444,26 @@ namespace <#= qualifiedNamespace #>
                 entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 //entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+
+                var data = Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world);
+                data.MarkDataClean();
+                if (entityManager.HasComponent<Component>(entity))
+                {
+                    entityManager.SetComponentData(entity, data);
+                }
+                else
+                {
+                    entityManager.AddComponentData(entity, data);
+                }
+
+                var update = new Update
+                {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                    <#= fieldDetails.PascalCaseName #> = data.<#= fieldDetails.PascalCaseName #>,
+<# } #>
+                };
+
+                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, new EntityId(op.EntityId), currentUpdateId));
             }
 
             private void OnRemoveComponent(RemoveComponentOp op)
@@ -458,6 +478,17 @@ namespace <#= qualifiedNamespace #>
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
                 entityIdToAuthority.Remove(new EntityId(op.EntityId));
+<# if (!componentDetails.IsBlittable) { #>
+
+                var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
+<# } #>
+<# } #>
+<# } #>
+
+                entityManager.RemoveComponent<<#= componentNamespace #>.Component>(entity);
             }
         }
     }
