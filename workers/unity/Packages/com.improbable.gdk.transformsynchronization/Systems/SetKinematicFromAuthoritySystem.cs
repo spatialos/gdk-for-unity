@@ -1,4 +1,5 @@
-﻿using Improbable.Gdk.Core;
+﻿using System.Linq;
+using Improbable.Gdk.Core;
 using Improbable.Transform;
 using Improbable.Worker.CInterop;
 using Unity.Collections;
