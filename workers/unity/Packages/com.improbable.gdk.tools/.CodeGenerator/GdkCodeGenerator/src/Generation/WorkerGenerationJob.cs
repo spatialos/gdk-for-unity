@@ -20,10 +20,9 @@ namespace Improbable.Gdk.CodeGenerator
         public WorkerGenerationJob(string outputDir, CodeGeneratorOptions options, IFileSystem fileSystem) : base(
             outputDir, fileSystem)
         {
-           
             InputFiles = new List<string>();
             OutputFiles = new List<string>();
-            
+
             workerTypesToGenerate = ExtractWorkerTypes(options.WorkerJsonDirectory);
 
             OutputFiles.Add(Path.Combine(relativeEditorPath, "Editor", workerFileName));
