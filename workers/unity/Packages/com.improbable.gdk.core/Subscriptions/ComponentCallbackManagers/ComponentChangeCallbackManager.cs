@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -8,6 +9,7 @@ namespace Improbable.Gdk.Subscriptions
         // todo int is a placeholder until I make a callbacks copy that takes no param
         private readonly IndexedCallbacks<int> callbacks = new IndexedCallbacks<int>();
         private readonly uint componentId;
+        private readonly EntityManager entityManager;
 
         private ulong nextCallbackId = 1;
 

@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
+    // todo ideally registering a callback here would be called immediately if conditions are met
+    // todo consider if these callbacks should be entity specific or not
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    [UpdateAfter(typeof(SpatialOSReceiveSystem))]
-    [UpdateBefore(typeof(CommandCallbackSystem))]
     public class ComponentConstraintsCallbackSystem : ComponentSystem
     {
         private readonly GuardedComponentCallbackManagerSet<uint, ComponentAddedCallbackManager> componentAdded =
@@ -27,7 +25,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private ulong callbacksRegistered = 1;
 
-        public ulong RegisterComponentRemovedCallback(EntityId entityId, uint componentId, Action<int> callback)
+        internal ulong RegisterComponentRemovedCallback(EntityId entityId, uint componentId, Action<int> callback)
         {
             if (!componentRemoved.TryGetManager(componentId, out var manager))
             {
@@ -40,7 +38,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        public ulong RegisterComponentAddedCallback(EntityId entityId, uint componentId, Action<int> callback)
+        internal ulong RegisterComponentAddedCallback(EntityId entityId, uint componentId, Action<int> callback)
         {
             if (!componentAdded.TryGetManager(componentId, out var manager))
             {
@@ -53,7 +51,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        public ulong RegisterAuthorityCallback(EntityId entityId, uint componentId, Action<Authority> callback)
+        internal ulong RegisterAuthorityCallback(EntityId entityId, uint componentId, Action<Authority> callback)
         {
             if (!authority.TryGetManager(componentId, out var manager))
             {
@@ -66,7 +64,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        public bool UnregisterCallback(ulong callbackKey)
+        internal bool UnregisterCallback(ulong callbackKey)
         {
             if (!keyToInternalKeyAndManager.TryGetValue(callbackKey, out var keyAndManager))
             {
@@ -76,13 +74,22 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(callbackKey);
         }
 
-        [Inject] private ComponentUpdateSystem componentSystem;
-
-        protected override void OnUpdate()
+        internal void Invoke(ComponentUpdateSystem componentSystem)
         {
             componentRemoved.InvokeCallbacks(componentSystem);
             componentAdded.InvokeCallbacks(componentSystem);
             authority.InvokeCallbacks(componentSystem);
+        }
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            Enabled = false;
+        }
+
+        protected override void OnUpdate()
+        {
         }
     }
 }

@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -12,89 +10,68 @@ namespace Improbable.Gdk.Subscriptions
     // for example a more efficient callback thing might have functors that can be reused to remove allocation
     // could also use this to create tasks out of commands rather than callbacks
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    [UpdateAfter(typeof(SpatialOSReceiveSystem))]
     public class CommandCallbackSystem : ComponentSystem
     {
-        private readonly Dictionary<Type, ICommandRequestCallbackManager> typeToRequestCallbackManager =
-            new Dictionary<Type, ICommandRequestCallbackManager>();
+        private readonly GuardedRequestCallbackManagerSet<Type, ICommandCallbackManager> callbackManagers =
+            new GuardedRequestCallbackManagerSet<Type, ICommandCallbackManager>();
 
-        private readonly List<ICommandRequestCallbackManager> requestCallbackManagers =
-            new List<ICommandRequestCallbackManager>();
+        private readonly Dictionary<ulong, (ulong, ICommandCallbackManager)> keyToInternalKeyAndManager =
+            new Dictionary<ulong, (ulong, ICommandCallbackManager)>();
 
-        private readonly Dictionary<Type, ICommandResponseCallbackManager> typeToResponseCallbackManager =
-            new Dictionary<Type, ICommandResponseCallbackManager>();
-
-        private readonly List<ICommandResponseCallbackManager> responseCallbackManagers =
-            new List<ICommandResponseCallbackManager>();
-
-        private List<Type> responseCallbackManagerTypesToAdd = new List<Type>();
-        private List<Type> requestCallbackManagerTypesToAdd = new List<Type>();
+        private ulong callbacksRegistered = 1;
 
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
             where T : IReceivedCommandRequest
         {
-            if (!typeToRequestCallbackManager.TryGetValue(typeof(T), out var manager))
+            if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandRequestCallbackManager<T>();
-                typeToRequestCallbackManager.Add(typeof(T), manager);
-                requestCallbackManagerTypesToAdd.Add(typeof(T));
+                manager = new CommandCallbackManager<T>();
+                callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            return ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
+            var key = ((CommandCallbackManager<T>) manager).RegisterCallback(entityId, callback);
+            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
+            return callbacksRegistered++;
         }
 
         public ulong RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
             where T : IReceivedCommandResponse
         {
-            if (!typeToResponseCallbackManager.TryGetValue(typeof(T), out var manager))
+            if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandResponseCallbackManager<T>();
-                typeToResponseCallbackManager.Add(typeof(T), manager);
-                responseCallbackManagerTypesToAdd.Add(typeof(T));
+                manager = new ResponseCallbackManager<T>();
+                callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            return ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
+            var key = ((ResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
+            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
+            return callbacksRegistered++;
         }
 
-        // todo caller shouldn't have to know the type
-        public bool UnregisterCommandRequestCallback<T>(ulong callbackKey) where T : IReceivedCommandRequest
+        public bool UnregisterCommandRequestCallback(ulong callbackKey)
         {
-            if (!typeToRequestCallbackManager.TryGetValue(typeof(T), out var manager))
+            if (!keyToInternalKeyAndManager.TryGetValue(callbackKey, out var keyAndManager))
             {
                 return false;
             }
 
-            return ((CommandRequestCallbackManager<T>) manager).UnregisterCallback(callbackKey);
+            return keyAndManager.Item2.UnregisterCallback(callbackKey);
         }
 
-        [Inject] private CommandSystem commandSystem;
+        internal void InvokeCallbacks(CommandSystem commandSystem)
+        {
+            // todo could split these out to ensure requests are done before responses
+            callbackManagers.InvokeCallbacks(commandSystem);
+        }
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+            Enabled = false;
+        }
 
         protected override void OnUpdate()
         {
-            foreach (var type in requestCallbackManagerTypesToAdd)
-            {
-                requestCallbackManagers.Add(typeToRequestCallbackManager[type]);
-            }
-
-            requestCallbackManagerTypesToAdd.Clear();
-
-            foreach (var callbackManager in requestCallbackManagers)
-            {
-                callbackManager.InvokeCallbacks(commandSystem);
-            }
-
-            foreach (var type in responseCallbackManagerTypesToAdd)
-            {
-                responseCallbackManagers.Add(typeToResponseCallbackManager[type]);
-            }
-
-            responseCallbackManagerTypesToAdd.Clear();
-
-            foreach (var callbackManager in responseCallbackManagers)
-            {
-                callbackManager.InvokeCallbacks(commandSystem);
-            }
         }
     }
 }

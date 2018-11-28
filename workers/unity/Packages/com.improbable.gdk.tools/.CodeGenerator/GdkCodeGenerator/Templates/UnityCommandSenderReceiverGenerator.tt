@@ -326,7 +326,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                callbackSystem.UnregisterCommandRequestCallback<<#= receivedCommandRequestType #>>(key);
+                callbackSystem.UnregisterCommandRequestCallback(key);
                 <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey.Remove(value);
             }
         }
@@ -361,7 +361,7 @@ namespace <#= qualifiedNamespace #>
             {
                 foreach (var callbackToKey in <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey)
                 {
-                    callbackSystem.UnregisterCommandRequestCallback<<#= receivedCommandRequestType #>>(callbackToKey.Value);
+                    callbackSystem.UnregisterCommandRequestCallback(callbackToKey.Value);
                 }
             }
 

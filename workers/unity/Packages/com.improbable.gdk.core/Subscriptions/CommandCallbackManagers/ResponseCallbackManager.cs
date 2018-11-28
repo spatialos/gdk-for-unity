@@ -5,7 +5,7 @@ using Improbable.Gdk.Core.Commands;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class CommandResponseCallbackManager<T> : ICommandResponseCallbackManager where T : IReceivedCommandResponse
+    public class ResponseCallbackManager<T> : ICommandCallbackManager where T : IReceivedCommandResponse
     {
         private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
 
