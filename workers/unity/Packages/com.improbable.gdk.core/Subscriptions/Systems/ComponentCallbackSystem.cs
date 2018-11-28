@@ -15,8 +15,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly GuardedComponentCallbackManagerSet<Type, IComponentCallbackManager> componentCallbackManagers =
             new GuardedComponentCallbackManagerSet<Type, IComponentCallbackManager>();
 
-        private readonly GuardedComponentCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
-            new GuardedComponentCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
+        private readonly GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
+            new GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
 
         private readonly Dictionary<ulong, (ulong, IComponentCallbackManager)> keyToInternalKeyAndManager =
             new Dictionary<ulong, (ulong, IComponentCallbackManager)>();
@@ -74,14 +74,26 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(callbackKey);
         }
 
-        [Inject] private ComponentUpdateSystem componentSystem;
-        [Inject] private ComponentConstraintsCallbackSystem yoyoyo;
+        internal void InvokeNoLossImminent(ComponentUpdateSystem componentSystem)
+        {
+            // todo might want to split updates and events out to ensure updates are called first
+            componentCallbackManagers.InvokeCallbacks(componentSystem);
+            authorityCallbackManagers.InvokeCallbacks(componentSystem);
+        }
+
+        internal void InvokeLossImminent(ComponentUpdateSystem componentSystem)
+        {
+            authorityCallbackManagers.InvokeLossImminentCallbacks(componentSystem);
+        }
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+            Enabled = false;
+        }
 
         protected override void OnUpdate()
         {
-            // might want to split updates and events out to ensure updates are called first
-            componentCallbackManagers.InvokeCallbacks(componentSystem);
-            authorityCallbackManagers.InvokeCallbacks(componentSystem);
         }
     }
 }
