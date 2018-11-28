@@ -33,7 +33,7 @@ An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assemb
 
 To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. You can only do this in a terminal, via the [spatial CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). You must also give the worker assemblies a name so that you can reference them when launching a deployment.
 
-Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`. The `<assembly_name>` is a string of your choice made up of alphanumeric characters, `_`, `.`, and `-`. A valid upload command would look like this:
+Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`. The `<assembly_name>` is a string of your choice made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`. A valid upload command would look like this:
 ```
 spatial cloud upload my_assembly
 ```
