@@ -1,11 +1,10 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class CommandRequestCallbackManager<T> : ICommandRequestCallbackManager where T : IReceivedCommandRequest
+    public class CommandCallbackManager<T> : ICommandCallbackManager where T : IReceivedCommandRequest
     {
         private readonly IndexedCallbacks<T> callbacks = new IndexedCallbacks<T>();
 
