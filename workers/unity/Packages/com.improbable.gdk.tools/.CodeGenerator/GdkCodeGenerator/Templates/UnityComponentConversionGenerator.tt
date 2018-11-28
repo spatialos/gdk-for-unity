@@ -159,43 +159,6 @@ namespace <#= qualifiedNamespace #>
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
                 <#= profilingStart #>
-
-<# if (eventDetailsList.Count > 0) { #>
-                var eventsObject = op.Update.SchemaData.Value.GetEvents();
-<# foreach (var eventDetails in eventDetailsList) { #>
-                {
-                    var eventCount = eventsObject.GetObjectCount(<#= eventDetails.EventIndex #>);
-                    if (eventCount > 0)
-                    {
-                        // Create component to hold received events
-                        ReceivedEvents.<#= eventDetails.EventName #> eventsReceived;
-                        List<<#= eventDetails.FqnPayloadType #>> eventList;
-                        if (!entityManager.HasComponent<ReceivedEvents.<#= eventDetails.EventName #>>(entity))
-                        {
-                            eventsReceived = new ReceivedEvents.<#= eventDetails.EventName #>() {
-                                handle = ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Allocate(World)
-                            };
-                            eventList = new List<<#= eventDetails.FqnPayloadType #>>((int) eventCount);
-                            ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(eventsReceived.handle, eventList);
-                            entityManager.AddComponentData(entity, eventsReceived);
-                        }
-                        else
-                        {
-                            eventsReceived = entityManager.GetComponentData<ReceivedEvents.<#= eventDetails.EventName #>>(entity);
-                            eventList = eventsReceived.Events;
-                        }
-
-                        // Deserialize events onto component
-                        for (uint i = 0; i < eventCount; i++)
-                        {
-                            var e = <#= eventDetails.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= eventDetails.EventIndex #>, i));
-                            eventList.Add(e);
-                        }
-                    }
-                }
-
-<# } #>
-<# } #>
                 <#= profilingEnd #>
             }
 
