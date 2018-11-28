@@ -12,14 +12,10 @@
 #>
 <#= generatedHeader #>
 
-using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Profiling;
 using Unity.Entities;
-using Unity.Collections;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Commands;
+using Improbable.Worker.CInterop;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -56,6 +52,41 @@ namespace <#= qualifiedNamespace #>
                     }
 
                     updates.Add(update.Update);
+                }
+            }
+        }
+
+        public class AuthorityReactiveComponentManager : IReactiveComponentManager
+        {
+            public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
+            {
+                var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
+
+                for (int i = 0; i < authorityChanges.Count; ++i)
+                {
+                    ref readonly var auth = ref authorityChanges[i];
+                    if (!workerSystem.TryGetEntity(auth.EntityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    List<Authority> changes;
+                    if (entityManager.HasComponent<AuthorityChanges<Component>>(entity))
+                    {
+                        changes = entityManager.GetComponentData<AuthorityChanges<Component>>(entity).Changes;
+                    }
+                    else
+                    {
+                        changes = new List<Authority>();
+                        var authComponent = new AuthorityChanges<Component>
+                        {
+                            Handle = AuthorityChangesProvider.Allocate(world)
+                        };
+                        AuthorityChangesProvider.Set(authComponent.Handle, changes);
+                        entityManager.AddComponentData(entity, authComponent);
+                    }
+
+                    changes.Add(auth.Authority);
                 }
             }
         }
