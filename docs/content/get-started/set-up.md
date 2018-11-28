@@ -22,6 +22,8 @@ If you have not signed up before, you can do this [here](https://improbable.io/g
 
 **Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.14</strong></a>**
 
+Ensure you install this exact version as other Unity versions may not work with the GDK.
+
 - Make sure you download the **Installer** version, and select the following components during installation:
   - **Linux Build Support**
   - **Mac Build Support**
@@ -79,6 +81,8 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 <%(#Expandable title="Setup for Mac")%>
 
 **Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.14</strong></a>**
+
+Ensure you install this exact version as other Unity versions may not work with the GDK.
 
 - Make sure to download the **Installer** version, and select the following components during installation:
   - **Linux Build Support**
@@ -144,6 +148,7 @@ You need to clone two repositories; the FPS Starter Project and the GDK for Unit
 
 Clone the FPS starter project using one of the following commands:
 
+
 |     |     |
 | --- | --- |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity-fps-starter-project.git` |
@@ -171,7 +176,9 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 | --- | --- |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
+
   > The two repositories should share a common parent, like the example below:
+
   ```text
   <common_parent_directory>
       ├── gdk-for-unity-fps-starter-project
@@ -182,6 +189,7 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
   * `git checkout <pinned_version>`
 
 <%(/Expandable)%>
-<br/>
-#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md)
 
+<br/>
+
+#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md)
