@@ -14,7 +14,7 @@ In order to run the SpatialOS GDK for Unity, sign up for a [SpatialOS account](h
 
 **Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.2.14</strong></a>**
 
-<%(Callout type="alert" message="Ensure you install this exact version as other Unity versions may not work.")%>
+Ensure you install this exact version as other Unity versions may not work with the GDK.
 
 - Make sure you download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
@@ -67,7 +67,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 **Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.2.14</strong></a>**
 
-<%(Callout type="alert" message="Ensure you install this exact version as other Unity versions may not work.")%>
+Ensure you install this exact version as other Unity versions may not work with the GDK.
 
 - Make sure to download the **Installer** version, and select the following components during installation:
     - **Linux Build Support**
