@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Core
     {
         void SendAll();
         void Init(World world);
+        void Clean(World world);
 
         Type[] GetEventTypes();
         Type GetUpdateType();
