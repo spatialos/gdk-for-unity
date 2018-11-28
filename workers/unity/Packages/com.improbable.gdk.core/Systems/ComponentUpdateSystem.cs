@@ -188,6 +188,16 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        protected override void OnDestroyManager()
+        {
+            foreach (var manager in managers)
+            {
+                manager.Clean(World);
+            }
+
+            base.OnDestroyManager();
+        }
+
         protected override void OnUpdate()
         {
             foreach (var manager in managers)

@@ -54,6 +54,11 @@ namespace <#= qualifiedNamespace #>
                     updates.Add(update.Update);
                 }
             }
+
+            public void Clean(World world)
+            {
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
+            }
         }
 
         public class AddComponentReactiveComponentManager : IReactiveComponentManager
@@ -77,6 +82,10 @@ namespace <#= qualifiedNamespace #>
                     entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Component>>());
                 }
             }
+
+            public void Clean(World world)
+            {
+            }
         }
 
         public class RemoveComponentReactiveComponentManager : IReactiveComponentManager
@@ -99,6 +108,10 @@ namespace <#= qualifiedNamespace #>
 
                     entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Component>>());
                 }
+            }
+
+            public void Clean(World world)
+            {
             }
         }
 
@@ -134,6 +147,11 @@ namespace <#= qualifiedNamespace #>
 
                     changes.Add(auth.Authority);
                 }
+            }
+
+            public void Clean(World world)
+            {
+                AuthorityChangesProvider.CleanDataInWorld(world);
             }
         }
 <# foreach (var ev in eventDetailsList) {
@@ -173,6 +191,11 @@ namespace <#= qualifiedNamespace #>
 
                     events.Add(ev.Event.Payload);
                 }
+            }
+
+            public void Clean(World world)
+            {
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= ev.EventName #>Provider.CleanDataInWorld(world);
             }
         }
 <# } #>

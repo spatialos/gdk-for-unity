@@ -44,15 +44,6 @@ namespace <#= qualifiedNamespace #>
 
             public override void Dispose()
             {
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(World);
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-<# if (!fieldDetails.IsBlittable) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(World);
-<# } #>
-<# } #>
-<# foreach (var eventDetails in eventDetailsList) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.CleanDataInWorld(World);
-<# } #>
 <# foreach (var commandDetails in commandDetailsList) { #>
                 <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.CleanDataInWorld(World);
                 <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>RequestsProvider.CleanDataInWorld(World);

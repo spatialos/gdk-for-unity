@@ -221,6 +221,15 @@ namespace <#= qualifiedNamespace #>
                 dispatcher.OnRemoveComponent(OnRemoveComponent);
             }
 
+            public void Clean(World world)
+            {
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+<# if (!fieldDetails.IsBlittable) { #>
+                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(world);
+<# } #>
+<# } #>
+            }
+
             public List<EntityId> GetComponentsAdded()
             {
                 return componentsAdded;

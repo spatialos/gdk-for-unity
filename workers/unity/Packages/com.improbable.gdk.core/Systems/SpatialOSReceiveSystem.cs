@@ -55,9 +55,6 @@ namespace Improbable.Gdk.Core
             {
                 pair.Value.Dispose();
             }
-
-            // Remove data for AuthorityChanges
-            AuthorityChangesProvider.CleanDataInWorld(World);
         }
 
         protected override void OnUpdate()
