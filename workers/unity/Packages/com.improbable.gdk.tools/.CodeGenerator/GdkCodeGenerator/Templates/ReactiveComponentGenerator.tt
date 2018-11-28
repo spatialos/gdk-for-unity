@@ -56,6 +56,52 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
+        public class AddComponentReactiveComponentManager : IReactiveComponentManager
+        {
+            public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
+            {
+                var added = updateSystem.GetComponentsAdded(ComponentId);
+
+                foreach (var entityId in added)
+                {
+                    if (!workerSystem.TryGetEntity(entityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    if (entityManager.HasComponent<ComponentRemoved<Component>>(entity))
+                    {
+                        entityManager.RemoveComponent<ComponentRemoved<Component>>(entity);
+                    }
+
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Component>>());
+                }
+            }
+        }
+
+        public class RemoveComponentReactiveComponentManager : IReactiveComponentManager
+        {
+            public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
+            {
+                var removed = updateSystem.GetComponentsRemoved(ComponentId);
+
+                foreach (var entityId in removed)
+                {
+                    if (!workerSystem.TryGetEntity(entityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    if (entityManager.HasComponent<ComponentAdded<Component>>(entity))
+                    {
+                        entityManager.RemoveComponent<ComponentAdded<Component>>(entity);
+                    }
+
+                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Component>>());
+                }
+            }
+        }
+
         public class AuthorityReactiveComponentManager : IReactiveComponentManager
         {
             public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
