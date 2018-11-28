@@ -77,6 +77,8 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}ReactiveComponents", FileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ComponentReaderWriter", FileExtension)));
@@ -103,6 +105,7 @@ namespace Improbable.Gdk.CodeGenerator
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
+            var reactiveComponentGenerator = new ReactiveComponentGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -169,6 +172,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension);
                 var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
+
+                var reactiveComponentsFileName = Path.ChangeExtension($"{component.Name}ReactiveComponents", FileExtension);
+                var reactiveComponentsCode = reactiveComponentGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, reactiveComponentsFileName), reactiveComponentsCode);
 
                 var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", FileExtension);
                 var referenceProviderTranslationCode =
