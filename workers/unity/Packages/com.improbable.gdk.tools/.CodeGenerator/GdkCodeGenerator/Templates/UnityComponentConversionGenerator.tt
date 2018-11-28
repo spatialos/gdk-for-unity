@@ -97,23 +97,6 @@ namespace <#= qualifiedNamespace #>
                 ReferenceTypeProviders.UpdatesProvider.Set(updatesComponent.handle, updates);
                 entityManager.AddComponentData(entity, updatesComponent);
 
-                if (entityManager.HasComponent<ComponentRemoved<<#= componentNamespace #>.Component>>(entity))
-                {
-                    entityManager.RemoveComponent<ComponentRemoved<<#= componentNamespace #>.Component>>(entity);
-                }
-                else if (!entityManager.HasComponent<ComponentAdded<<#= componentNamespace #>.Component>>(entity))
-                {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<<#= componentNamespace #>.Component>>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentAdded)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId)
-                        .WithField("Component", "<#= componentNamespace #>")
-                    );
-                }
-
                 <#= profilingEnd #>
             }
 
@@ -133,23 +116,6 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 
                 entityManager.RemoveComponent<<#= componentNamespace #>.Component>(entity);
-
-                if (entityManager.HasComponent<ComponentAdded<<#= componentNamespace #>.Component>>(entity))
-                {
-                    entityManager.RemoveComponent<ComponentAdded<<#= componentNamespace #>.Component>>(entity);
-                }
-                else if (!entityManager.HasComponent<ComponentRemoved<<#= componentNamespace #>.Component>>(entity))
-                {
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<<#= componentNamespace #>.Component>>());
-                }
-                else
-                {
-                    LogDispatcher.HandleLog(LogType.Error, new LogEvent(ReceivedDuplicateComponentRemoved)
-                        .WithField(LoggingUtils.LoggerName, LoggerName)
-                        .WithField(LoggingUtils.EntityId, op.EntityId)
-                        .WithField("Component", "<#= componentNamespace #>")
-                    );
-                }
 
                 <#= profilingEnd #>
             }
