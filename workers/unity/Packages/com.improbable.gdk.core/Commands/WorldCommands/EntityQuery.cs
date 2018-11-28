@@ -318,6 +318,12 @@ namespace Improbable.Gdk.Core.Commands
                         responses.Add(response);
                     }
                 }
+
+                public void Clean(World world)
+                {
+                    RequestsProvider.CleanDataInWorld(world);
+                    ResponsesProvider.CleanDataInWorld(world);
+                }
             }
 
 
