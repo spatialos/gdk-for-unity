@@ -76,10 +76,10 @@ namespace <#= qualifiedNamespace #>
                 var entity = TryGetEntityFromEntityId(entityId);
 
                 <#= profilingStart #>
-                ApplyAuthorityChange(entity, op.Authority, entityId);
                 <#= profilingEnd #>
             }
 
+            // todo can move this into the reactive component manager
             public override void AddCommandComponents(Unity.Entities.Entity entity)
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -97,79 +97,6 @@ namespace <#= qualifiedNamespace #>
                     entityManager.AddComponentData(entity, commandResponder);
                 }
 <# } #>
-            }
-
-            private void ApplyAuthorityChange(Unity.Entities.Entity entity, Authority authority, global::Improbable.Gdk.Core.EntityId entityId)
-            {
-                switch (authority)
-                {
-                    case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
-                        {
-                            LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
-                            return;
-                        }
-
-                        entityManager.RemoveComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<<#= componentNamespace #>.Component>>());
-
-                        // Add event senders
-<# foreach (var eventDetail in eventDetailsList) { #>
-                        {
-                            var eventSender = new EventSender.<#= eventDetail.EventName #>()
-                            {
-                                handle = ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Allocate(World)
-                            };
-                            ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Set(eventSender.handle, new List<<#= eventDetail.FqnPayloadType #>>());
-                            entityManager.AddComponentData(entity, eventSender);
-                        }
-<# } #>
-                        break;
-                    case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<<#= componentNamespace #>.Component>>(entity))
-                        {
-                            LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
-                            return;
-                        }
-
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<<#= componentNamespace #>.Component>>());
-                        break;
-                    case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<<#= componentNamespace #>.Component>>(entity))
-                        {
-                            LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
-                            return;
-                        }
-
-                        if (entityManager.HasComponent<AuthorityLossImminent<<#= componentNamespace #>.Component>>(entity))
-                        {
-                            entityManager.RemoveComponent<AuthorityLossImminent<<#= componentNamespace #>.Component>>(entity);
-                        }
-
-                        entityManager.RemoveComponent<Authoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
-
-                        // Remove event senders
-<# foreach (var eventDetail in eventDetailsList) { #>
-                        {
-                            var eventSender = entityManager.GetComponentData<EventSender.<#= eventDetail.EventName #>>(entity);
-                            ReferenceTypeProviders.<#= eventDetail.EventName #>Provider.Free(eventSender.handle);
-                            entityManager.RemoveComponent<EventSender.<#= eventDetail.EventName #>>(entity);
-                        }
-<# } #>
-                        break;
-                }
-            }
-
-            private void LogInvalidAuthorityTransition(Authority newAuthority, Authority expectedOldAuthority, global::Improbable.Gdk.Core.EntityId entityId)
-            {
-                LogDispatcher.HandleLog(LogType.Error, new LogEvent(InvalidAuthorityChange)
-                    .WithField(LoggingUtils.LoggerName, LoggerName)
-                    .WithField(LoggingUtils.EntityId, entityId.Id)
-                    .WithField("New Authority", newAuthority)
-                    .WithField("Expected Old Authority", expectedOldAuthority)
-                    .WithField("Component", "<#= componentNamespace #>")
-                );
             }
         }
 
