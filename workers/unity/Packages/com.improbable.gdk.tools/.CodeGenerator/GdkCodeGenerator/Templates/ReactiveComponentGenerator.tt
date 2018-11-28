@@ -25,7 +25,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class ReactiveUpdateComponentManager : IReactiveComponentManager
+        public class UpdateReactiveComponentManager : IReactiveComponentManager
         {
             public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
             {
@@ -61,7 +61,43 @@ namespace <#= qualifiedNamespace #>
         }
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
+        var reactiveType = "ReceivedEvents." + ev.EventName;
 #>
+
+        public class <#= ev.EventName#>EventReactiveComponentManager : IReactiveComponentManager
+        {
+            public void PopulateReactiveComponents(ComponentUpdateSystem updateSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
+            {
+                var eventsReceived = updateSystem.GetEventsReceived<<#= eventType #>>();
+
+                for (int i = 0; i < eventsReceived.Count; ++i)
+                {
+                    ref readonly var ev = ref eventsReceived[i];
+                    if (!workerSystem.TryGetEntity(ev.EntityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    List<<#= ev.FqnPayloadType #>> events;
+                    if (entityManager.HasComponent<<#= reactiveType #>>(entity))
+                    {
+                        events = entityManager.GetComponentData<<#= reactiveType #>>(entity).Events;
+                    }
+                    else
+                    {
+                        events = new List<<#= ev.FqnPayloadType #>>();
+                        var eventsComponent = new <#= reactiveType #>
+                        {
+                            handle = ReferenceTypeProviders.<#= ev.EventName #>Provider.Allocate(world)
+                        };
+                        ReferenceTypeProviders.<#= ev.EventName #>Provider.Set(eventsComponent.handle, events);
+                        entityManager.AddComponentData(entity, eventsComponent);
+                    }
+
+                    events.Add(ev.Event.Payload);
+                }
+            }
+        }
 <# } #>
     }
 }
