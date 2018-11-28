@@ -28,6 +28,7 @@
     <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <T4Files Include="Templates\ReactiveComponentGenerator.tt" />
     <T4Files Include="Templates\UnityCommandManagerGenerator.tt" />
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
     <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
