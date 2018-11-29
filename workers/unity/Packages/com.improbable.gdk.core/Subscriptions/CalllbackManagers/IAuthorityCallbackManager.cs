@@ -1,9 +1,7 @@
-using Improbable.Gdk.Core;
-
 namespace Improbable.Gdk.Subscriptions
 {
-    internal interface IAuthorityCallbackManager : IComponentCallbackManager
+    internal interface IAuthorityCallbackManager : ICallbackManager
     {
-        void InvokeLossImminentCallbacks(ComponentUpdateSystem componentUpdateSystem);
+        void InvokeLossImminentCallbacks();
     }
 }

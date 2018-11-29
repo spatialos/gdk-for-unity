@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
@@ -20,8 +19,11 @@ namespace Improbable.Gdk.Subscriptions
         private readonly GuardedComponentCallbackManagerSet<uint, AuthorityConstraintCallbackManager> authority =
             new GuardedComponentCallbackManagerSet<uint, AuthorityConstraintCallbackManager>();
 
-        private readonly Dictionary<ulong, (ulong, IComponentCallbackManager)> keyToInternalKeyAndManager =
-            new Dictionary<ulong, (ulong, IComponentCallbackManager)>();
+        private EntityAddedCallbackManager entityAdded;
+        private EntityRemovedCallbackManager entityRemoved;
+
+        private readonly Dictionary<ulong, (ulong, ICallbackManager)> keyToInternalKeyAndManager =
+            new Dictionary<ulong, (ulong, ICallbackManager)>();
 
         private ulong callbacksRegistered = 1;
 
@@ -42,7 +44,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!componentAdded.TryGetManager(componentId, out var manager))
             {
-                manager = new ComponentAddedCallbackManager(componentId);
+                manager = new ComponentAddedCallbackManager(componentId, World);
                 componentAdded.AddCallbackManager(componentId, manager);
             }
 
@@ -51,16 +53,41 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
+        // todo should possibly be separate auth an non-auth ones
         internal ulong RegisterAuthorityCallback(uint componentId, Action<AuthorityChangeReceived> callback)
         {
             if (!authority.TryGetManager(componentId, out var manager))
             {
-                manager = new AuthorityConstraintCallbackManager(componentId);
+                manager = new AuthorityConstraintCallbackManager(componentId, World);
                 authority.AddCallbackManager(componentId, manager);
             }
 
             var key = manager.RegisterCallback(callback);
             keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
+            return callbacksRegistered++;
+        }
+
+        internal ulong RegisterEntityAddedCallback(uint componentId, Action<EntityId> callback)
+        {
+            if (entityAdded == null)
+            {
+                entityAdded = new EntityAddedCallbackManager(World);
+            }
+
+            var key = entityAdded.RegisterCallback(callback);
+            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, entityAdded));
+            return callbacksRegistered++;
+        }
+
+        internal ulong RegisterEntityRemovedCallback(uint componentId, Action<EntityId> callback)
+        {
+            if (entityRemoved == null)
+            {
+                entityRemoved = new EntityRemovedCallbackManager(World);
+            }
+
+            var key = entityRemoved.RegisterCallback(callback);
+            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, entityRemoved));
             return callbacksRegistered++;
         }
 
@@ -74,17 +101,20 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(callbackKey);
         }
 
-        internal void Invoke(ComponentUpdateSystem componentSystem)
+        internal void Invoke()
         {
-            componentRemoved.InvokeCallbacks(componentSystem);
-            componentAdded.InvokeCallbacks(componentSystem);
-            authority.InvokeCallbacks(componentSystem);
+            componentRemoved.InvokeCallbacks();
+            entityRemoved?.InvokeCallbacks();
+            entityAdded?.InvokeCallbacks();
+            componentAdded.InvokeCallbacks();
+            authority.InvokeCallbacks();
         }
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
+            entityAdded = new EntityAddedCallbackManager(World);
             Enabled = false;
         }
 
