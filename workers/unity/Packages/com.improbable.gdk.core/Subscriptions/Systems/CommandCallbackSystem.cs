@@ -12,11 +12,11 @@ namespace Improbable.Gdk.Subscriptions
     [DisableAutoCreation]
     public class CommandCallbackSystem : ComponentSystem
     {
-        private readonly GuardedRequestCallbackManagerSet<Type, ICommandCallbackManager> callbackManagers =
-            new GuardedRequestCallbackManagerSet<Type, ICommandCallbackManager>();
+        private readonly GuardedCallbackManagerSet<Type, ICallbackManager> callbackManagers =
+            new GuardedCallbackManagerSet<Type, ICallbackManager>();
 
-        private readonly Dictionary<ulong, (ulong, ICommandCallbackManager)> keyToInternalKeyAndManager =
-            new Dictionary<ulong, (ulong, ICommandCallbackManager)>();
+        private readonly Dictionary<ulong, (ulong, ICallbackManager)> keyToInternalKeyAndManager =
+            new Dictionary<ulong, (ulong, ICallbackManager)>();
 
         private ulong callbacksRegistered = 1;
 
@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandCallbackManager<T>();
+                manager = new CommandCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new ResponseCallbackManager<T>();
+                manager = new ResponseCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
@@ -58,10 +58,10 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(keyAndManager.Item1);
         }
 
-        internal void InvokeCallbacks(CommandSystem commandSystem)
+        internal void InvokeCallbacks()
         {
             // todo could split these out to ensure requests are done before responses
-            callbackManagers.InvokeCallbacks(commandSystem);
+            callbackManagers.InvokeCallbacks();
         }
 
         protected override void OnCreateManager()
