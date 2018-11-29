@@ -153,10 +153,9 @@ namespace <#= qualifiedNamespace #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>WriterSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>Writer>
     {
-        private readonly Dispatcher dispatcher;
-        private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
+        private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>Writer>>> entityIdToWriterSubscriptions;
 
@@ -166,11 +165,10 @@ namespace <#= qualifiedNamespace #>
         public <#= componentDetails.ComponentName #>WriterSubscriptionManager(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
 
             // todo Check that these are there
-            dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
+            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
 
             var constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
 
@@ -230,7 +228,7 @@ namespace <#= qualifiedNamespace #>
             }
 
             if (workerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(entity))
+                && componentUpdateSystem.GetAuthority(entityId, <#= componentDetails.ComponentName #>.ComponentId) != Authority.NotAuthoritative)
             {
                 entitiesMatchingRequirements.Add(entityId);
                 subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, entityId));
