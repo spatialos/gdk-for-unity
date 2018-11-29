@@ -10,14 +10,14 @@ namespace Improbable.Gdk.Subscriptions
     [DisableAutoCreation]
     public class ComponentConstraintsCallbackSystem : ComponentSystem
     {
-        private readonly GuardedComponentCallbackManagerSet<uint, ComponentAddedCallbackManager> componentAdded =
-            new GuardedComponentCallbackManagerSet<uint, ComponentAddedCallbackManager>();
+        private readonly GuardedCallbackManagerSet<uint, ComponentAddedCallbackManager> componentAdded =
+            new GuardedCallbackManagerSet<uint, ComponentAddedCallbackManager>();
 
-        private readonly GuardedComponentCallbackManagerSet<uint, ComponentRemovedCallbackManager> componentRemoved =
-            new GuardedComponentCallbackManagerSet<uint, ComponentRemovedCallbackManager>();
+        private readonly GuardedCallbackManagerSet<uint, ComponentRemovedCallbackManager> componentRemoved =
+            new GuardedCallbackManagerSet<uint, ComponentRemovedCallbackManager>();
 
-        private readonly GuardedComponentCallbackManagerSet<uint, AuthorityConstraintCallbackManager> authority =
-            new GuardedComponentCallbackManagerSet<uint, AuthorityConstraintCallbackManager>();
+        private readonly GuardedCallbackManagerSet<uint, AuthorityConstraintCallbackManager> authority =
+            new GuardedCallbackManagerSet<uint, AuthorityConstraintCallbackManager>();
 
         private EntityAddedCallbackManager entityAdded;
         private EntityRemovedCallbackManager entityRemoved;

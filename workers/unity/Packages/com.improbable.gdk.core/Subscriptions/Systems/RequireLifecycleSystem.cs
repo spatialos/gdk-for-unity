@@ -32,8 +32,6 @@ namespace Improbable.Gdk.Subscriptions
         [Inject] private ComponentCallbackSystem componentCallbackSystem;
         [Inject] private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
 
-        [Inject] private CommandSystem commandSystem;
-
         protected override void OnUpdate()
         {
             componentConstraintsCallbackSystem.Invoke();
@@ -65,7 +63,7 @@ namespace Improbable.Gdk.Subscriptions
 
             componentCallbackSystem.InvokeLossImminent();
 
-            commandCallbackSystem.InvokeCallbacks(commandSystem);
+            commandCallbackSystem.InvokeCallbacks();
         }
     }
 }

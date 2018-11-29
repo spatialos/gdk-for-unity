@@ -12,8 +12,8 @@ namespace Improbable.Gdk.Subscriptions
     [UpdateBefore(typeof(CommandCallbackSystem))]
     public class ComponentCallbackSystem : ComponentSystem
     {
-        private readonly GuardedComponentCallbackManagerSet<Type, ICallbackManager> componentCallbackManagers =
-            new GuardedComponentCallbackManagerSet<Type, ICallbackManager>();
+        private readonly GuardedCallbackManagerSet<Type, ICallbackManager> componentCallbackManagers =
+            new GuardedCallbackManagerSet<Type, ICallbackManager>();
 
         private readonly GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
             new GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
