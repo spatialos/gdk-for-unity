@@ -12,14 +12,14 @@ namespace Improbable.Gdk.Subscriptions
     [UpdateBefore(typeof(CommandCallbackSystem))]
     public class ComponentCallbackSystem : ComponentSystem
     {
-        private readonly GuardedComponentCallbackManagerSet<Type, IComponentCallbackManager> componentCallbackManagers =
-            new GuardedComponentCallbackManagerSet<Type, IComponentCallbackManager>();
+        private readonly GuardedComponentCallbackManagerSet<Type, ICallbackManager> componentCallbackManagers =
+            new GuardedComponentCallbackManagerSet<Type, ICallbackManager>();
 
         private readonly GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
             new GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
 
-        private readonly Dictionary<ulong, (ulong, IComponentCallbackManager)> keyToInternalKeyAndManager =
-            new Dictionary<ulong, (ulong, IComponentCallbackManager)>();
+        private readonly Dictionary<ulong, (ulong, ICallbackManager)> keyToInternalKeyAndManager =
+            new Dictionary<ulong, (ulong, ICallbackManager)>();
 
         private ulong callbacksRegistered = 1;
 
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!componentCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new ComponentUpdateCallbackManager<T>();
+                manager = new ComponentUpdateCallbackManager<T>(World);
                 componentCallbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!componentCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new ComponentEventCallbackManager<T>();
+                manager = new ComponentEventCallbackManager<T>(World);
                 componentCallbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!authorityCallbackManagers.TryGetManager(componentId, out var manager))
             {
-                manager = new ComponentAuthorityCallbackManager(componentId);
+                manager = new ComponentAuthorityCallbackManager(componentId, World);
                 authorityCallbackManagers.AddCallbackManager(componentId, manager);
             }
 
@@ -74,16 +74,16 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(keyAndManager.Item1);
         }
 
-        internal void InvokeNoLossImminent(ComponentUpdateSystem componentSystem)
+        internal void InvokeNoLossImminent()
         {
             // todo might want to split updates and events out to ensure updates are called first
-            componentCallbackManagers.InvokeCallbacks(componentSystem);
-            authorityCallbackManagers.InvokeCallbacks(componentSystem);
+            componentCallbackManagers.InvokeCallbacks();
+            authorityCallbackManagers.InvokeCallbacks();
         }
 
-        internal void InvokeLossImminent(ComponentUpdateSystem componentSystem)
+        internal void InvokeLossImminent()
         {
-            authorityCallbackManagers.InvokeLossImminentCallbacks(componentSystem);
+            authorityCallbackManagers.InvokeLossImminentCallbacks();
         }
 
         protected override void OnCreateManager()

@@ -33,11 +33,10 @@ namespace Improbable.Gdk.Subscriptions
         [Inject] private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
 
         [Inject] private CommandSystem commandSystem;
-        [Inject] private ComponentUpdateSystem componentUpdateSystem;
 
         protected override void OnUpdate()
         {
-            componentConstraintsCallbackSystem.Invoke(componentUpdateSystem);
+            componentConstraintsCallbackSystem.Invoke();
             foreach (var behaviour in behavioursToDisable)
             {
                 if (behaviour == null)
@@ -50,7 +49,7 @@ namespace Improbable.Gdk.Subscriptions
 
             behavioursToDisable.Clear();
 
-            componentCallbackSystem.InvokeNoLossImminent(componentUpdateSystem);
+            componentCallbackSystem.InvokeNoLossImminent();
 
             foreach (var behaviour in behavioursToEnable)
             {
@@ -64,7 +63,7 @@ namespace Improbable.Gdk.Subscriptions
 
             behavioursToEnable.Clear();
 
-            componentCallbackSystem.InvokeLossImminent(componentUpdateSystem);
+            componentCallbackSystem.InvokeLossImminent();
 
             commandCallbackSystem.InvokeCallbacks(commandSystem);
         }
