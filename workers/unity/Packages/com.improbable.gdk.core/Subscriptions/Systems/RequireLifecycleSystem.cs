@@ -25,6 +25,7 @@ namespace Improbable.Gdk.Subscriptions
         internal void DisableMonoBehaviour(MonoBehaviour behaviour)
         {
             behavioursToDisable.Add(behaviour);
+            behavioursToEnable.Remove(behaviour);
         }
 
         [Inject] private CommandCallbackSystem commandCallbackSystem;
