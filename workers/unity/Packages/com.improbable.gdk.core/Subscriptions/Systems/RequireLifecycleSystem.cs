@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Subscriptions
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateAfter(typeof(SpatialOSReceiveSystem))]
-    public class ReaderLifecycleSystem : ComponentSystem
+    public class RequireLifecycleSystem : ComponentSystem
     {
         private readonly List<MonoBehaviour> behavioursToEnable = new List<MonoBehaviour>();
         private readonly List<MonoBehaviour> behavioursToDisable = new List<MonoBehaviour>();
@@ -39,15 +39,29 @@ namespace Improbable.Gdk.Subscriptions
             componentConstraintsCallbackSystem.Invoke(componentUpdateSystem);
             foreach (var behaviour in behavioursToDisable)
             {
+                if (behaviour == null)
+                {
+                    continue;
+                }
+
                 behaviour.enabled = false;
             }
+
+            behavioursToDisable.Clear();
 
             componentCallbackSystem.InvokeNoLossImminent(componentUpdateSystem);
 
             foreach (var behaviour in behavioursToEnable)
             {
+                if (behaviour == null)
+                {
+                    continue;
+                }
+
                 behaviour.enabled = true;
             }
+
+            behavioursToEnable.Clear();
 
             componentCallbackSystem.InvokeLossImminent(componentUpdateSystem);
 
