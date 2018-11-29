@@ -10,7 +10,6 @@ namespace Improbable.Gdk.Core
     [AutoRegisterSubscriptionManager]
     public class WorldCommandSenderSubscriptionManager : SubscriptionManager<WorldCommandSender>
     {
-        private readonly Dispatcher dispatcher;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
 
@@ -23,26 +22,26 @@ namespace Improbable.Gdk.Core
             this.world = world;
 
             // Check that these are there
-            dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
+            var constaintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
 
-            dispatcher.OnAddEntity(op =>
+            constaintsSystem.RegisterEntityAddedCallback(entityId =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                workerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new WorldCommandSender(entity, world));
                 }
             });
 
-            dispatcher.OnRemoveEntity(op =>
+            constaintsSystem.RegisterEntityAddedCallback(entityId =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
