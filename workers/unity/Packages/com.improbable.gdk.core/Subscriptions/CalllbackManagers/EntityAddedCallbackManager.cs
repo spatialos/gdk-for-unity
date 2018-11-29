@@ -4,28 +4,24 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentRemovedCallbackManager : ICallbackManager
+    internal class EntityAddedCallbackManager : ICallbackManager
     {
         private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
-        private readonly uint componentId;
-        private readonly EntityManager entityManager;
-        private readonly ComponentUpdateSystem componentUpdateSystem;
+        private readonly EntitySystem entitySystem;
 
         private ulong nextCallbackId = 1;
 
-        public ComponentRemovedCallbackManager(uint componentId, World world)
+        public EntityAddedCallbackManager(World world)
         {
-            this.componentId = componentId;
-            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
+            entitySystem = world.GetExistingManager<EntitySystem>();
         }
 
         public void InvokeCallbacks()
         {
-            // todo like entity stuff this should also be temporarily removed components
-            var entities = componentUpdateSystem.GetComponentsRemoved(componentId);
+            var entities = entitySystem.GetEntitiesAdded();
             for (int i = 0; i < entities.Count; ++i)
             {
-                callbacks.InvokeAllReverse(entities[i]);
+                callbacks.InvokeAll(entities[i]);
             }
         }
 

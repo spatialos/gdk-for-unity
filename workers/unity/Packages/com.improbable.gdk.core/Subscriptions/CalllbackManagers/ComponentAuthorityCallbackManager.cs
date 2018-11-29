@@ -1,6 +1,7 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -8,15 +9,17 @@ namespace Improbable.Gdk.Subscriptions
     {
         private readonly IndexedCallbacks<Authority> callbacks = new IndexedCallbacks<Authority>();
         private readonly uint componentId;
+        private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private ulong nextCallbackId = 1;
 
-        public ComponentAuthorityCallbackManager(uint componentId)
+        public ComponentAuthorityCallbackManager(uint componentId, World world)
         {
             this.componentId = componentId;
+            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
         }
 
-        public void InvokeCallbacks(ComponentUpdateSystem componentUpdateSystem)
+        public void InvokeCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
             for (int i = 0; i < changes.Count; ++i)
@@ -32,7 +35,7 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void InvokeLossImminentCallbacks(ComponentUpdateSystem componentUpdateSystem)
+        public void InvokeLossImminentCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
             for (int i = 0; i < changes.Count; ++i)
