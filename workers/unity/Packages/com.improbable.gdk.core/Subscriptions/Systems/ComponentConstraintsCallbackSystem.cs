@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        internal ulong RegisterEntityAddedCallback(uint componentId, Action<EntityId> callback)
+        internal ulong RegisterEntityAddedCallback(Action<EntityId> callback)
         {
             if (entityAdded == null)
             {
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        internal ulong RegisterEntityRemovedCallback(uint componentId, Action<EntityId> callback)
+        internal ulong RegisterEntityRemovedCallback(Action<EntityId> callback)
         {
             if (entityRemoved == null)
             {

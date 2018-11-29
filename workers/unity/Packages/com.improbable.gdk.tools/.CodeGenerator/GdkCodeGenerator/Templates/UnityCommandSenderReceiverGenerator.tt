@@ -26,8 +26,6 @@ namespace <#= qualifiedNamespace #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandSenderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandSender>
     {
-        private readonly Dispatcher dispatcher;
-        private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
 
@@ -44,23 +42,25 @@ namespace <#= qualifiedNamespace #>
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
 
-            dispatcher.OnAddEntity(op =>
+            var constraintSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+
+            constraintSystem.RegisterEntityAddedCallback(entityId =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                workerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(entity, world));
                 }
             });
 
-            dispatcher.OnRemoveEntity(op =>
+            constraintSystem.RegisterEntityRemovedCallback(entityId =>
             {
-                if (!entityIdToSenderSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
