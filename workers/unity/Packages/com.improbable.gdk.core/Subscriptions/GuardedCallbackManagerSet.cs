@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class GuardedCallbackManagerSet<TIndex, TManager>
+    internal class GuardedCallbackManagerSet<TIndex, TManager> where TManager : ICallbackManager
     {
         private readonly Dictionary<TIndex, TManager> indexToCallbackManager =
             new Dictionary<TIndex, TManager>();
@@ -32,6 +32,14 @@ namespace Improbable.Gdk.Subscriptions
             indexesToAdd.Clear();
 
             return callbackManagers;
+        }
+
+        public void InvokeCallbacks()
+        {
+            foreach (var manager in GetManagers())
+            {
+                manager.InvokeCallbacks();
+            }
         }
     }
 }

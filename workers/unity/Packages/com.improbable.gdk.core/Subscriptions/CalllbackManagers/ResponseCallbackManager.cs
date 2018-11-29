@@ -1,17 +1,23 @@
 using System;
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class ResponseCallbackManager<T> : ICommandCallbackManager where T : IReceivedCommandResponse
+    public class ResponseCallbackManager<T> : ICallbackManager where T : IReceivedCommandResponse
     {
         private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
+        private readonly CommandSystem commandSystem;
 
         private ulong nextCallbackId = 1;
 
-        public void InvokeCallbacks(CommandSystem commandSystem)
+        public ResponseCallbackManager(World world)
+        {
+            commandSystem = world.GetExistingManager<CommandSystem>();
+        }
+
+        public void InvokeCallbacks()
         {
             var responses = commandSystem.GetResponses<T>();
             foreach (var response in responses)
