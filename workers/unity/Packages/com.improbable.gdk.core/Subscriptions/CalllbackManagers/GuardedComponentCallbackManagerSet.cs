@@ -1,15 +1,13 @@
-using Improbable.Gdk.Core;
-
 namespace Improbable.Gdk.Subscriptions
 {
     internal class GuardedComponentCallbackManagerSet<TIndex, TManager> : GuardedCallbackManagerSet<TIndex, TManager>
-        where TManager : IComponentCallbackManager
+        where TManager : ICallbackManager
     {
-        public void InvokeCallbacks(ComponentUpdateSystem componentUpdateSystem)
+        public void InvokeCallbacks()
         {
             foreach (var manager in GetManagers())
             {
-                manager.InvokeCallbacks(componentUpdateSystem);
+                manager.InvokeCallbacks();
             }
         }
     }

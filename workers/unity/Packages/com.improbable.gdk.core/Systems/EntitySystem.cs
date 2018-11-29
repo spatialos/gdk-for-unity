@@ -21,12 +21,12 @@ namespace Improbable.Gdk.Core
         // don't think it can be done without new types
         // could make these spans too + some special type for a set of entities
         // might also want to keep things sorted although it's not faster unless there are a lot of entities added and removed in one tick
-        public List<EntityId> EntitiesAdded()
+        public List<EntityId> GetEntitiesAdded()
         {
             return entitiesAdded;
         }
 
-        public List<EntityId> EntitiesRemoved()
+        public List<EntityId> GetEntitiesRemoved()
         {
             return entitiesRemoved;
         }
