@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Subscriptions
     {
         private readonly WorkerSystem workerSystem;
         private readonly SubscriptionSystem subscriptionSystem;
+        private readonly RequireLifecycleSystem lifecycleSystem;
         private readonly EntityManager entityManager;
 
         private readonly Dictionary<EntityId, HashSet<GameObject>> entityIdToGameObjects =
@@ -29,6 +30,7 @@ namespace Improbable.Gdk.Subscriptions
             entityManager = world.GetOrCreateManager<EntityManager>();
 
             workerSystem = world.GetExistingManager<WorkerSystem>();
+            lifecycleSystem = world.GetExistingManager<RequireLifecycleSystem>();
 
             viewCommandBuffer = new ViewCommandBuffer(entityManager, workerSystem.LogDispatcher);
 
@@ -99,7 +101,8 @@ namespace Improbable.Gdk.Subscriptions
                 {
                     // todo this should possibly happen when the command buffer is flushed too
                     injectors.Add(new RequiredSubscriptionsInjector(component, entityId, subscriptionSystem,
-                        () => component.enabled = true, () => component.enabled = false));
+                        () => lifecycleSystem.EnableMonoBehaviour(component),
+                        () => lifecycleSystem.DisableMonoBehaviour(component)));
                 }
             }
 
