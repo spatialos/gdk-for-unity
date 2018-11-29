@@ -82,6 +82,8 @@ namespace <#= qualifiedNamespace #>
             private readonly List<EntityId> componentsAdded = new List<EntityId>();
             private readonly List<EntityId> componentsRemoved = new List<EntityId>();
 
+            private readonly HashSet<EntityId> entitiesWithComponent = new HashSet<EntityId>();
+
             private bool authoritySorted;
             private bool updatesSorted;
 
@@ -238,6 +240,11 @@ namespace <#= qualifiedNamespace #>
             public List<EntityId> GetComponentsRemoved()
             {
                 return componentsRemoved;
+            }
+
+            public bool HasComponent(EntityId entityId)
+            {
+                return entitiesWithComponent.Contains(entityId);
             }
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
@@ -439,6 +446,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                entitiesWithComponent.Add(new EntityId(op.EntityId));
                 componentsAdded.Add(new EntityId(op.EntityId));
 
                 entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
@@ -473,6 +481,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
+                entitiesWithComponent.Remove(new EntityId(op.EntityId));
                 componentsRemoved.Add(new EntityId(op.EntityId));
 
                 workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);

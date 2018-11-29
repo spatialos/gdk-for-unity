@@ -1,33 +1,36 @@
 using System;
 using Improbable.Gdk.Core;
+using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
     internal class ComponentRemovedCallbackManager : IComponentCallbackManager
     {
-        // todo int is a placeholder until I make a callbacks copy that takes no param
-        private readonly IndexedCallbacks<int> callbacks = new IndexedCallbacks<int>();
+        private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
         private readonly uint componentId;
+        private readonly World world;
+        private readonly EntityManager entityManager;
 
         private ulong nextCallbackId = 1;
 
-        public ComponentRemovedCallbackManager(uint componentId)
+        public ComponentRemovedCallbackManager(uint componentId, World world)
         {
+            this.world = world;
             this.componentId = componentId;
         }
 
         public void InvokeCallbacks(ComponentUpdateSystem updateSystem)
         {
-            var components = updateSystem.GetComponentsRemoved(componentId);
-            for (int i = 0; i < components.Count; ++i)
+            var entities = updateSystem.GetComponentsRemoved(componentId);
+            for (int i = 0; i < entities.Count; ++i)
             {
-                callbacks.InvokeAllReverse(components[i].Id, (int) componentId);
+                callbacks.InvokeAllReverse(entities[i]);
             }
         }
 
-        public ulong RegisterCallback(EntityId entityId, Action<int> callback)
+        public ulong RegisterCallback(Action<EntityId> callback)
         {
-            callbacks.Add(entityId.Id, nextCallbackId, callback);
+            callbacks.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 

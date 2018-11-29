@@ -145,7 +145,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Component ID not recognized");
             }
 
-            return ((IComponentManager) manager).GetComponentsAdded();
+            return manager.GetComponentsAdded();
         }
 
         public List<EntityId> GetComponentsRemoved(uint componentId)
@@ -155,7 +155,17 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException("Component ID not recognized");
             }
 
-            return ((IComponentManager) manager).GetComponentsRemoved();
+            return manager.GetComponentsRemoved();
+        }
+
+        public bool HasComponent(uint componentId, EntityId entityId)
+        {
+            if (!componentIdToManager.TryGetValue(componentId, out var manager))
+            {
+                throw new ArgumentException("Component ID not recognized");
+            }
+
+            return manager.HasComponent(entityId);
         }
 
         protected override void OnCreateManager()
