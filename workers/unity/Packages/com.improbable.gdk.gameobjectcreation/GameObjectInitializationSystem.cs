@@ -48,15 +48,20 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private List<EntityId> entitiesRemoved = new List<EntityId>();
 
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
+        {
+            this.gameObjectCreator = gameObjectCreator;
+        }
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             linker = new EntityGameObjectLinker(World);
         }
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
+        protected override void OnDestroyManager()
         {
-            this.gameObjectCreator = gameObjectCreator;
+            base.OnDestroyManager();
         }
 
         protected override unsafe void OnUpdate()
@@ -90,10 +95,6 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 gameObjectCreator.OnEntityRemoved(entitiesToRemove[i]);
             }
-        }
-
-        protected override void OnDestroyManager()
-        {
         }
     }
 }
