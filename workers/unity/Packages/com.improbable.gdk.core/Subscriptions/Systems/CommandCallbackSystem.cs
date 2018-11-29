@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Subscriptions
                 return false;
             }
 
-            return keyAndManager.Item2.UnregisterCallback(callbackKey);
+            return keyAndManager.Item2.UnregisterCallback(keyAndManager.Item1);
         }
 
         internal void InvokeCallbacks(CommandSystem commandSystem)
