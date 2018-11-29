@@ -6,8 +6,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal class ComponentAddedCallbackManager : IComponentCallbackManager
     {
-        // todo int is a placeholder until I make a callbacks copy that takes no param
-        private readonly IndexedCallbacks<int> callbacks = new IndexedCallbacks<int>();
+        private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
         private readonly uint componentId;
         private readonly EntityManager entityManager;
 
@@ -20,16 +19,16 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeCallbacks(ComponentUpdateSystem updateSystem)
         {
-            var components = updateSystem.GetComponentsAdded(componentId);
-            for (int i = 0; i < components.Count; ++i)
+            var entities = updateSystem.GetComponentsAdded(componentId);
+            for (int i = 0; i < entities.Count; ++i)
             {
-                callbacks.InvokeAll(components[i].Id, (int) componentId);
+                callbacks.InvokeAll(entities[i]);
             }
         }
 
-        public ulong RegisterCallback(EntityId entityId, Action<int> callback)
+        public ulong RegisterCallback(Action<EntityId> callback)
         {
-            callbacks.Add(entityId.Id, nextCallbackId, callback);
+            callbacks.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 
