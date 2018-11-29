@@ -28,7 +28,9 @@ namespace Improbable.Gdk.Tools
 
         public const string ProductName = "SpatialOS for Unity";
 
-        private const string PackagesDir = "Packages";
+        public const string PackagesDir = "Packages";
+        public static readonly string ManifestPath = Path.Combine(PackagesDir, "manifest.json");
+
         private const string UsrLocalBinDir = "/usr/local/bin";
         private const string UsrLocalShareDir = "/usr/local/share";
 
@@ -54,7 +56,7 @@ namespace Improbable.Gdk.Tools
         internal static string GetThisPackagePath()
         {
             const string gdkTools = "com.improbable.gdk.tools";
-            var manifest = GetManifestDependencies();
+            var manifest = ParseDependencies(ManifestPath);
 
             if (!manifest.TryGetValue(gdkTools, out var path))
             {
@@ -79,18 +81,24 @@ namespace Improbable.Gdk.Tools
             return path;
         }
 
-        internal static Dictionary<string, string> GetManifestDependencies()
+        /// <summary>
+        ///     Parses a json file and returns the dependencies found in it.
+        /// </summary>
+        /// <param name="filePath">Path to the json file to be parsed.</param>
+        /// <returns>The dependencies in the given json file.</returns>
+        internal static Dictionary<string, string> ParseDependencies(string filePath)
         {
             try
             {
-                var manifest =
-                    Json.Deserialize(File.ReadAllText($"{PackagesDir}/manifest.json", Encoding.UTF8));
-                return ((Dictionary<string, object>) manifest["dependencies"]).ToDictionary(kv => kv.Key,
+                var package = Json.Deserialize(File.ReadAllText(filePath, Encoding.UTF8));
+                return ((Dictionary<string, object>) package["dependencies"]).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
             catch (Exception e)
             {
-                throw new ArgumentException($"Failed to parse manifest file: {e.Message}");
+                var errorMessage = $"Failed to parse dependencies: {e.Message}";
+                Debug.LogError(errorMessage);
+                throw new ArgumentException(errorMessage);
             }
         }
 
