@@ -23,9 +23,9 @@ namespace Improbable.Gdk.Core
 
             // Check that these are there
             workerSystem = world.GetExistingManager<WorkerSystem>();
-            var constaintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
 
-            constaintsSystem.RegisterEntityAddedCallback(entityId =>
+            constraintsSystem.RegisterEntityAddedCallback(entityId =>
             {
                 if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core
                 }
             });
 
-            constaintsSystem.RegisterEntityAddedCallback(entityId =>
+            constraintsSystem.RegisterEntityAddedCallback(entityId =>
             {
                 if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {

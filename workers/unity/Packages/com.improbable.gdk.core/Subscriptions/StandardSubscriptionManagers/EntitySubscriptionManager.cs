@@ -27,23 +27,30 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("No worker");
             }
 
-            receiveSystem.Dispatcher.OnAddEntity(op =>
+            var constraintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            if (constraintsSystem == null)
             {
-                if (!entityIdToSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                // todo real error messages
+                throw new ArgumentException("Subscriptions systems missing");
+            }
+
+            constraintsSystem.RegisterEntityAddedCallback(entityId =>
+            {
+                if (!entityIdToSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                workerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(entity);
                 }
             });
 
-            receiveSystem.Dispatcher.OnRemoveEntity(op =>
+            constraintsSystem.RegisterEntityRemovedCallback(entityId =>
             {
-                if (!entityIdToSubscriptions.TryGetValue(new EntityId(op.EntityId), out var subscriptions))
+                if (!entityIdToSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {
                     return;
                 }
