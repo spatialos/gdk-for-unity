@@ -273,7 +273,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CommandCallbackSystem>();
             World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
             World.GetOrCreateManager<ComponentCallbackSystem>();
-            World.GetOrCreateManager<ReaderLifecycleSystem>();
+            World.GetOrCreateManager<RequireLifecycleSystem>();
             World.GetOrCreateManager<ReactiveComponentSystem>();
             World.GetOrCreateManager<SubscriptionSystem>();
         }
