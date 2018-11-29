@@ -22,11 +22,9 @@ namespace <#= qualifiedNamespace #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>ReaderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>Reader>
     {
-        private readonly Dispatcher dispatcher;
         private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
-        private readonly ComponentConstraintsCallbackSystem constraintCallbackSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>Reader>>> entityIdToReaderSubscriptions;
 
@@ -41,58 +39,46 @@ namespace <#= qualifiedNamespace #>
             this.world = world;
             entityManager = world.GetOrCreateManager<EntityManager>();
 
-            // Check that these are there
-            dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
+            // todo Check that these are there
             workerSystem = world.GetExistingManager<WorkerSystem>();
-            constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
 
-            dispatcher.OnAddComponent(op =>
+            var constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+
+            constraintCallbackSystem.RegisterComponentAddedCallback(<#= componentDetails.ComponentName #>.ComponentId, entityId =>
             {
-                // Should replace this with an other indexed dispatcher if it becomes a problem
-                if (op.Data.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
+                if (!entitiesNotMatchingRequirements.Contains(entityId))
                 {
                     return;
                 }
 
-                if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
+                workerSystem.TryGetEntity(entityId, out var entity);
+
+                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
-                    return;
+                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, entityId));
                 }
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[new EntityId(op.EntityId)])
-                {
-                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>Reader(world, entity, new EntityId(op.EntityId)));
-                }
-
-                entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
-                entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
+                entitiesMatchingRequirements.Add(entityId);
+                entitiesNotMatchingRequirements.Remove(entityId);
             });
 
-            dispatcher.OnRemoveComponent(op =>
+            constraintCallbackSystem.RegisterComponentRemovedCallback(<#= componentDetails.ComponentName #>.ComponentId, entityId =>
             {
-                // Should replace this with an other indexed dispatcher if it becomes a problem
-                if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
+                if (!entitiesMatchingRequirements.Contains(entityId))
                 {
                     return;
                 }
 
-                if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
-                {
-                    return;
-                }
+                workerSystem.TryGetEntity(entityId, out var entity);
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[new EntityId(op.EntityId)])
+                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
                     ResetValue(subscription);
                     subscription.SetUnavailable();
                 }
 
-                entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
-                entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
+                entitiesNotMatchingRequirements.Add(entityId);
+                entitiesMatchingRequirements.Remove(entityId);
             });
         }
 
@@ -182,58 +168,48 @@ namespace <#= qualifiedNamespace #>
             this.world = world;
             entityManager = world.GetOrCreateManager<EntityManager>();
 
-            // Check that these are there
+            // todo Check that these are there
             dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
 
-            dispatcher.OnAuthorityChange(op =>
+            var constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+
+            constraintCallbackSystem.RegisterAuthorityCallback(<#= componentDetails.ComponentName #>.ComponentId, authorityChange =>
             {
-                // Should replace this with an other indexed dispatcher if it becomes a problem
-                if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
+                if (authorityChange.Authority == Authority.Authoritative)
                 {
-                    return;
+                    if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
+                    {
+                        return;
+                    }
+
+                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+
+                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
+                    {
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, authorityChange.EntityId));
+                    }
+
+                    entitiesMatchingRequirements.Add(authorityChange.EntityId);
+                    entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
                 }
-
-                if (op.Authority == Authority.Authoritative)
+                else if (authorityChange.Authority == Authority.NotAuthoritative)
                 {
-                    if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
+                    if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
-                    foreach (var subscription in entityIdToWriterSubscriptions[new EntityId(op.EntityId)])
-                    {
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>Writer(world, entity, new EntityId(op.EntityId)));
-                    }
-
-                    entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
-                    entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
-                }
-                else if (op.Authority == Authority.NotAuthoritative)
-                {
-                    // Should replace this with an other indexed dispatcher if it becomes a problem
-                    if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
-                    {
-                        return;
-                    }
-
-                    if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-
-                    foreach (var subscription in entityIdToWriterSubscriptions[new EntityId(op.EntityId)])
+                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
                         ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
 
-                    entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
-                    entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
+                    entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
+                    entitiesMatchingRequirements.Remove(authorityChange.EntityId);
                 }
             });
         }
