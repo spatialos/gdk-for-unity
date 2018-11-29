@@ -36,10 +36,8 @@ namespace <#= qualifiedNamespace #>
         public <#= componentDetails.ComponentName #>CommandSenderSubscriptionManager(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
 
             // Check that these are there
-            dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
 
             var constraintSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
@@ -122,10 +120,9 @@ namespace <#= qualifiedNamespace #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandReceiverSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandReceiver>
     {
-        private readonly Dispatcher dispatcher;
-        private readonly EntityManager entityManager;
         private readonly World world;
         private readonly WorkerSystem workerSystem;
+        private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>CommandReceiver>>> entityIdToReceiveSubscriptions;
 
@@ -135,60 +132,49 @@ namespace <#= qualifiedNamespace #>
         public <#= componentDetails.ComponentName #>CommandReceiverSubscriptionManager(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
 
             // Check that these are there
-            dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
             workerSystem = world.GetExistingManager<WorkerSystem>();
+            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
 
-            dispatcher.OnAuthorityChange(op =>
+            var constraintSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+
+            constraintSystem.RegisterAuthorityCallback(<#= componentDetails.ComponentName #>.ComponentId, authorityChange =>
             {
-                // Should replace this with an other indexed dispatcher if it becomes a problem
-                if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
+                if (authorityChange.Authority == Authority.Authoritative)
                 {
-                    return;
+                    if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
+                    {
+                        return;
+                    }
+
+                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+
+                    foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
+                    {
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandReceiver(world, entity, authorityChange.EntityId));
+                    }
+
+                    entitiesMatchingRequirements.Add(authorityChange.EntityId);
+                    entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
                 }
-
-                if (op.Authority == Authority.Authoritative)
+                else if (authorityChange.Authority == Authority.NotAuthoritative)
                 {
-                    if (!entitiesNotMatchingRequirements.Contains(new EntityId(op.EntityId)))
+                    if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
                     {
                         return;
                     }
 
-                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
-                    foreach (var subscription in entityIdToReceiveSubscriptions[new EntityId(op.EntityId)])
-                    {
-                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandReceiver(world, entity, new EntityId(op.EntityId)));
-                    }
-
-                    entitiesMatchingRequirements.Add(new EntityId(op.EntityId));
-                    entitiesNotMatchingRequirements.Remove(new EntityId(op.EntityId));
-                }
-                else if (op.Authority == Authority.NotAuthoritative)
-                {
-                    // Should replace this with an other indexed dispatcher if it becomes a problem
-                    if (op.ComponentId != <#= componentDetails.ComponentName #>.ComponentId)
-                    {
-                        return;
-                    }
-
-                    if (!entitiesMatchingRequirements.Contains(new EntityId(op.EntityId)))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-
-                    foreach (var subscription in entityIdToReceiveSubscriptions[new EntityId(op.EntityId)])
+                    foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
                     {
                         ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
 
-                    entitiesNotMatchingRequirements.Add(new EntityId(op.EntityId));
-                    entitiesMatchingRequirements.Remove(new EntityId(op.EntityId));
+                    entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
+                    entitiesMatchingRequirements.Remove(authorityChange.EntityId);
                 }
             });
         }
@@ -209,7 +195,7 @@ namespace <#= qualifiedNamespace #>
             }
 
             if (workerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent<Authoritative<<#= componentDetails.ComponentName #>.Component>>(entity))
+                && componentUpdateSystem.GetAuthority(entityId, <#= componentDetails.ComponentName #>.ComponentId) != Authority.NotAuthoritative)
             {
                 entitiesMatchingRequirements.Add(entityId);
                 subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandReceiver(world, entity, entityId));
