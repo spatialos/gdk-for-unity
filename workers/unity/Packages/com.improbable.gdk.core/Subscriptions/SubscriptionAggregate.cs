@@ -6,31 +6,10 @@ namespace Improbable.Gdk.Subscriptions
 {
     public class SubscriptionAggregate
     {
-        private List<Action> onSubscriptionsSatisfied;
-
-        public event Action OnSubscriptionsSatisfied
-        {
-            add
-            {
-                if (subscriptionsSatisfied == subscriptions.Length)
-                {
-                    value();
-                }
-
-                if (onSubscriptionsSatisfied == null)
-                {
-                    onSubscriptionsSatisfied = new List<Action>();
-                }
-
-                onSubscriptionsSatisfied.Add(value);
-            }
-            remove => onSubscriptionsSatisfied.Remove(value);
-        }
-
-        public event Action OnSubscriptionsNoLongerSatisfied;
-
         private readonly ISubscription[] subscriptions;
         private readonly Dictionary<Type, int> typesToSubscriptionIndexes = new Dictionary<Type, int>();
+
+        private ISubscriptionAvailabilityHandler availabilityHandler;
 
         private int subscriptionsSatisfied;
 
@@ -47,6 +26,20 @@ namespace Improbable.Gdk.Subscriptions
 
                 subscription.SetAvailabilityHandler(Handler.Pool.Rent(this));
             }
+        }
+
+        public void SetAvailabilityHandler(ISubscriptionAvailabilityHandler handler)
+        {
+            availabilityHandler = handler;
+            if (subscriptionsSatisfied == subscriptions.Length)
+            {
+                availabilityHandler?.OnAvailable();
+            }
+        }
+
+        public ISubscriptionAvailabilityHandler GetAvailabilityHandler()
+        {
+            return availabilityHandler;
         }
 
         public T GetValue<T>()
@@ -85,6 +78,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var sub in subscriptions)
             {
+                Handler.Pool.Return((Handler) sub.GetAvailabilityHandler());
                 sub.Cancel();
             }
         }
@@ -98,7 +92,7 @@ namespace Improbable.Gdk.Subscriptions
                     sub.ResetValue();
                 }
 
-                OnSubscriptionsNoLongerSatisfied?.Invoke();
+                availabilityHandler?.OnUnavailable();
             }
 
             --subscriptionsSatisfied;
@@ -107,12 +101,9 @@ namespace Improbable.Gdk.Subscriptions
         private void HandleSubscriptionAvailable()
         {
             ++subscriptionsSatisfied;
-            if (subscriptionsSatisfied == subscriptions.Length && onSubscriptionsSatisfied != null)
+            if (subscriptionsSatisfied == subscriptions.Length)
             {
-                foreach (var callback in onSubscriptionsSatisfied)
-                {
-                    callback();
-                }
+                availabilityHandler?.OnAvailable();
             }
         }
 
@@ -132,23 +123,24 @@ namespace Improbable.Gdk.Subscriptions
 
             public class Pool
             {
-                private static readonly Stack<Handler> handlerPool = new Stack<Handler>();
+                private static readonly Stack<Handler> HandlerPool = new Stack<Handler>();
 
                 public static Handler Rent(SubscriptionAggregate aggregate)
                 {
-                    Handler handler = handlerPool.Count == 0
+                    Handler handler = HandlerPool.Count == 0
                         ? new Handler()
-                        : handlerPool.Pop();
+                        : HandlerPool.Pop();
 
                     handler.aggregate = aggregate;
                     return handler;
                 }
 
+                // todo the disposal pattern for this is currently awful and needs to be improved
                 public static void Return(Handler handler)
                 {
                     // todo this should be bounded
                     handler.aggregate = null;
-                    handlerPool.Push(handler);
+                    HandlerPool.Push(handler);
                 }
             }
         }

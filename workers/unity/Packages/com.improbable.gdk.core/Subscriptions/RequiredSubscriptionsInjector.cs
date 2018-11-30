@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Subscriptions
 {
     // todo this should probably be an interface to be able to remove reflection via baking
+    // or to reduce allocation on monobehaviours
     public class RequiredSubscriptionsInjector
     {
         private readonly SubscriptionAggregate subscriptions;
@@ -29,12 +31,13 @@ namespace Improbable.Gdk.Subscriptions
             this.onDisable = onDisable;
 
             subscriptions = new SubscriptionAggregate(subscriptionSystem, entityId, info.RequiredTypes);
-            subscriptions.OnSubscriptionsSatisfied += HandleSubscriptionsSatisfied;
-            subscriptions.OnSubscriptionsNoLongerSatisfied += HandleSubscriptionsNoLongerSatisfied;
+            subscriptions.SetAvailabilityHandler(Handler.Pool.Rent(this));
         }
 
+        // todo the disposal pattern for this is currently awful and needs to be improved
         public void CancelSubscriptions()
         {
+            Handler.Pool.Return((Handler) subscriptions.GetAvailabilityHandler());
             subscriptions.Cancel();
 
             if (target == null)
@@ -65,6 +68,53 @@ namespace Improbable.Gdk.Subscriptions
         private void HandleSubscriptionsNoLongerSatisfied()
         {
             onDisable?.Invoke();
+        }
+
+        private class Handler : ISubscriptionAvailabilityHandler
+        {
+            private RequiredSubscriptionsInjector injector;
+
+            public void OnAvailable()
+            {
+                if (injector == null)
+                {
+                    throw new InvalidOperationException("Not a valid subscription");
+                }
+
+                injector.HandleSubscriptionsSatisfied();
+            }
+
+            public void OnUnavailable()
+            {
+                if (injector == null)
+                {
+                    throw new InvalidOperationException("Not a valid subscription");
+                }
+
+                injector.HandleSubscriptionsNoLongerSatisfied();
+            }
+
+            public class Pool
+            {
+                private static readonly Stack<Handler> HandlerPool = new Stack<Handler>();
+
+                public static Handler Rent(RequiredSubscriptionsInjector injector)
+                {
+                    Handler handler = HandlerPool.Count == 0
+                        ? new Handler()
+                        : HandlerPool.Pop();
+
+                    handler.injector = injector;
+                    return handler;
+                }
+
+                public static void Return(Handler handler)
+                {
+                    // todo this should be bounded
+                    handler.injector = null;
+                    HandlerPool.Push(handler);
+                }
+            }
         }
     }
 }
