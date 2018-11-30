@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
@@ -19,7 +20,28 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private readonly BuildTarget buildTarget;
 
-        private static readonly Dictionary<BuildTarget, string> BuildTargetNames =
+        public static readonly IReadOnlyList<BuildTarget> SupportedBuildTargets = new List<BuildTarget>
+        {
+            BuildTarget.StandaloneWindows,
+            BuildTarget.StandaloneWindows64,
+            BuildTarget.StandaloneLinux64,
+            BuildTarget.StandaloneOSX,
+            BuildTarget.Android,
+            BuildTarget.iOS,
+        };
+
+        public static readonly IReadOnlyDictionary<BuildTarget, BuildOptions> BuildTargetDefaultOptions =
+            new Dictionary<BuildTarget, BuildOptions>
+            {
+                { BuildTarget.StandaloneWindows, BuildOptions.None },
+                { BuildTarget.StandaloneWindows64, BuildOptions.None },
+                { BuildTarget.StandaloneLinux64, BuildOptions.EnableHeadlessMode },
+                { BuildTarget.StandaloneOSX, BuildOptions.None },
+                { BuildTarget.Android, BuildOptions.None },
+                { BuildTarget.iOS, BuildOptions.None }
+            };
+
+        private static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetNames =
             new Dictionary<BuildTarget, string>
             {
                 { BuildTarget.StandaloneWindows, "Windows" },
@@ -30,7 +52,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.iOS, "iOS" }
             };
 
-        private static readonly Dictionary<BuildTarget, string> BuildPlatformExtensions =
+        private static readonly IReadOnlyDictionary<BuildTarget, string> BuildPlatformExtensions =
             new Dictionary<BuildTarget, string>
             {
                 { BuildTarget.StandaloneWindows, ".exe" },
@@ -41,7 +63,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.iOS, string.Empty }
             };
 
-        public static readonly Dictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
+        public static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
             new Dictionary<BuildTarget, string>
             {
                 { BuildTarget.StandaloneWindows, "WindowsStandaloneSupport" },
@@ -51,6 +73,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.Android, "AndroidPlayer" },
                 { BuildTarget.iOS, "iOSSupport" }
             };
+
+        public static IReadOnlyDictionary<BuildTarget, bool> GetBuildTargetsThatCanBeBuilt()
+        {
+            return SupportedBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget);
+        }
 
         public WorkerBuildData(string workerType, BuildTarget buildTarget)
         {

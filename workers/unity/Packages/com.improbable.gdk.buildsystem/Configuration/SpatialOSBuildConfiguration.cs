@@ -49,18 +49,35 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 new WorkerBuildConfiguration
                 {
                     WorkerType = "UnityClient",
-                    LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                    LocalBuildConfig =
+                        new BuildEnvironmentConfig(
+                            target => BuildEnvironmentConfig.IsCurrentBuildTarget(target)
+                                ? BuildOptions.Development
+                                : BuildOptions.None,
+                            BuildEnvironmentConfig.IsCurrentBuildTarget),
+                    CloudBuildConfig = new BuildEnvironmentConfig(target =>
+                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneOSX) ||
+                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneWindows64)
+                            ? BuildOptions.Development
+                            : BuildOptions.None, target =>
+                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneOSX) ||
+                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneWindows64))
                 },
                 new WorkerBuildConfiguration
                 {
                     WorkerType = "UnityGameLogic",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
-                    CloudBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.Linux,
-                        BuildOptions = BuildOptions.EnableHeadlessMode
-                    }
+                        new BuildEnvironmentConfig(
+                            target => BuildEnvironmentConfig.IsCurrentBuildTarget(target)
+                                ? BuildOptions.None
+                                : BuildOptions.Development,
+                            BuildEnvironmentConfig.IsCurrentBuildTarget),
+                    CloudBuildConfig =
+                        new BuildEnvironmentConfig(
+                            target => BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneLinux64)
+                                ? BuildOptions.EnableHeadlessMode
+                                : BuildOptions.Development,
+                            target => BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneLinux64))
                 },
             };
             isInitialised = true;

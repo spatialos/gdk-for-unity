@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Improbable.Gdk.Tools;
 using UnityEditor;
@@ -8,6 +7,12 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
+    // Still TODO
+    // The build options don't extend fully horizontally
+    // Windows/Windows64 need to be made mutually exclusive in the UI
+    // Lots of optimization (caching GUIStyles, lots of LINQ)
+    // Lots of API cleanup (constructing the BuildEnvironmentConfigs, etc. is bad)
+    // Test building from the menu
     [CustomEditor(typeof(SpatialOSBuildConfiguration))]
     public class SpatialOSBuildConfigurationEditor : Editor
     {
@@ -18,8 +23,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static readonly GUIContent AddSceneButtonContents = new GUIContent("+", "Add scene");
         private static readonly GUIContent RemoveSceneButtonContents = new GUIContent("-", "Remove scene");
 
-        public int CurrentObjectPickerWindowId = -1;
-
         private class DragAndDropInfo
         {
             public int SourceItemIndex = -1;
@@ -29,7 +32,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static readonly HashSet<string> ExpandedWorkers = new HashSet<string>();
         private static readonly HashSet<string> ExpandedBuildOptions = new HashSet<string>();
-        private static readonly HashSet<string> ExpandedBuildPlatforms = new HashSet<string>();
+        private static readonly HashSet<string> ExpandedBuildTargets = new HashSet<string>();
 
         public override void OnInspectorGUI()
         {
@@ -55,13 +58,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         var config = new WorkerBuildConfiguration
                         {
                             WorkerType = workerTypeName,
-                            LocalBuildConfig = new BuildEnvironmentConfig
-                            {
-                                BuildOptions = BuildOptions.Development,
-                            },
-                            CloudBuildConfig = new BuildEnvironmentConfig
-                            {
-                            }
+                            LocalBuildConfig = new BuildEnvironmentConfig(t => BuildOptions.None, t => false),
+                            CloudBuildConfig = new BuildEnvironmentConfig(t => BuildOptions.None, t => false)
                         };
                         workerConfiguration.WorkerBuildConfigurations.Add(config);
                     }
@@ -102,17 +100,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var expanded = ExpandedWorkers.Contains(configurationForWorker.WorkerType);
             bool currentExpanded;
 
-            var localProblems = WorkerBuildConfiguration
-                .GetConfigurationProblems(BuildEnvironment.Local, configurationForWorker);
-
-            var cloudProblems = WorkerBuildConfiguration
-                .GetConfigurationProblems(BuildEnvironment.Cloud, configurationForWorker);
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUIContent content;
-                if (localProblems.Count > 0 || cloudProblems.Count > 0)
+                if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(t =>
+                        !t.BuildSupportInstalled && t.Enabled) ||
+                    configurationForWorker.LocalBuildConfig.BuildTargets.Any(t => !t.BuildSupportInstalled && t.Enabled)
+                )
                 {
-                    content = EditorGUIUtility.IconContent("console.erroricon.sml", "|Problems found");
+                    content = EditorGUIUtility.IconContent("console.erroricon.sml");
                     content.text = workerType;
                 }
                 else
@@ -121,7 +117,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
 
                 currentExpanded =
-                    EditorGUILayout.Foldout(expanded, content);
+                    EditorGUILayout.Foldout(expanded, content, true);
 
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button(RemoveWorkerTypeButtonContents, EditorStyles.miniButton))
@@ -146,7 +142,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     DrawScenesInspectorForWorker(configurationForWorker);
                     EditorGUILayout.Space();
-                    DrawEnvironmentInspectorForWorker(configurationForWorker, localProblems, cloudProblems);
+                    DrawEnvironmentInspectorForWorker(configurationForWorker);
                 }
             }
 
@@ -170,15 +166,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var maxX = Mathf.Max(a.xMax, b.xMax);
             var maxY = Mathf.Max(a.yMax, b.yMax);
 
-
             var newRect = new Rect(minX, minY, maxX - minX, maxY - minY);
 
             return newRect;
-        }
-
-        private static Rect RectExpand(Rect a, Vector2 amount)
-        {
-            return new Rect(a.xMin - amount.x, a.yMin - amount.y, a.width + amount.x * 2, a.height + amount.y * 2);
         }
 
         private void DrawScenesInspectorForWorker(WorkerBuildConfiguration configurationForWorker)
@@ -195,12 +185,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button(AddSceneButtonContents, EditorStyles.miniButton))
                 {
-                    CurrentObjectPickerWindowId = GUIUtility.GetControlID(FocusType.Passive);
                     EditorGUIUtility.ShowObjectPicker<SceneAsset>(null, false, "t:Scene",
-                        CurrentObjectPickerWindowId);
+                        workerControlId);
                 }
 
-                HandleObjectSelectorUpdated(configurationForWorker);
+                HandleObjectSelectorUpdated(configurationForWorker, workerControlId);
             }
 
             using (var check = new EditorGUI.ChangeCheckScope())
@@ -499,12 +488,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        private void HandleObjectSelectorUpdated(WorkerBuildConfiguration configurationForWorker)
+        private void HandleObjectSelectorUpdated(WorkerBuildConfiguration configurationForWorker, int pickerId)
         {
             if (Event.current.commandName == "ObjectSelectorClosed" &&
-                EditorGUIUtility.GetObjectPickerControlID() == CurrentObjectPickerWindowId)
+                EditorGUIUtility.GetObjectPickerControlID() == pickerId)
             {
-                CurrentObjectPickerWindowId = -1;
                 var scene = (SceneAsset) EditorGUIUtility.GetObjectPickerObject();
 
                 if (scene == null)
@@ -521,68 +509,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        private void DrawEnvironmentInspectorForWorker(WorkerBuildConfiguration configurationForWorker,
-            List<WorkerBuildConfiguration.Problem> localProblems, List<WorkerBuildConfiguration.Problem> cloudProblems)
+        private void DrawEnvironmentInspectorForWorker(WorkerBuildConfiguration configurationForWorker)
         {
-            DrawEnvironmentInspector(BuildEnvironment.Local, configurationForWorker, localProblems);
+            DrawEnvironmentInspector(BuildEnvironment.Local, configurationForWorker);
 
             EditorGUILayout.Space();
 
-            DrawEnvironmentInspector(BuildEnvironment.Cloud, configurationForWorker, cloudProblems);
+            DrawEnvironmentInspector(BuildEnvironment.Cloud, configurationForWorker);
         }
 
-        private void DrawConfigurationProblems(List<WorkerBuildConfiguration.Problem> problems)
-        {
-            foreach (var problem in problems)
-            {
-                EditorGUILayout.HelpBox(problem.Message, problem.Type);
-            }
-        }
-
-        private static TEnum EnumFlagsToggleField<TEnum>(TEnum source, Func<TEnum, bool> disableFunc,
-            Action<TEnum> drawFunc)
-            where TEnum : struct, IConvertible
-        {
-            if (!typeof(TEnum).IsEnum)
-            {
-                throw new ArgumentException("TEnum must be an enum type");
-            }
-
-            var enumNonZeroValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>()
-                .Where(options => options.ToInt32(NumberFormatInfo.CurrentInfo) != 0)
-                .ToArray();
-
-            using (new EditorGUILayout.VerticalScope())
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    var sourceBitValue = source.ToInt32(NumberFormatInfo.CurrentInfo);
-                    foreach (var enumValue in enumNonZeroValues)
-                    {
-                        var targetBitValue = enumValue.ToInt32(NumberFormatInfo.CurrentInfo);
-                        var hasFlag = (sourceBitValue & targetBitValue) != 0;
-                        var label = new GUIContent(enumValue.ToString(CultureInfo.InvariantCulture));
-
-                        using (new EditorGUI.DisabledGroupScope(disableFunc(enumValue)))
-                        {
-                            var newFlag =
-                                EditorGUILayout.ToggleLeft(label, hasFlag);
-                            if (hasFlag != newFlag)
-                            {
-                                source = (TEnum) (object) (sourceBitValue ^ targetBitValue);
-                            }
-
-                            drawFunc(enumValue);
-                        }
-                    }
-                }
-            }
-
-            return source;
-        }
 
         private void DrawEnvironmentInspector(BuildEnvironment environment,
-            WorkerBuildConfiguration configurationForWorker, List<WorkerBuildConfiguration.Problem> problems)
+            WorkerBuildConfiguration configurationForWorker)
         {
             var environmentName = environment.ToString();
             var foldoutName = $"{configurationForWorker.WorkerType} {environmentName}";
@@ -590,139 +528,225 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var environmentConfiguration =
                 configurationForWorker.GetEnvironmentConfig(environment);
 
-            var buildPlatformsString = SelectedPlatformsToString(environmentConfiguration.BuildPlatforms);
-
             GUIContent content;
-            if (problems.Count > 0)
+            if (environmentConfiguration.BuildTargets.Any(t => !t.BuildSupportInstalled && t.Enabled)
+            )
             {
-                content = EditorGUIUtility.IconContent("console.erroricon.sml", "|Problems found");
-                content.text = $"{environmentName} Build Options (Problems found)";
+                content = EditorGUIUtility.IconContent("console.erroricon.sml");
+                content.text = $"{environmentName} Build Options";
             }
             else
             {
                 content = new GUIContent($"{environmentName} Build Options");
             }
 
-            if (EditorGUILayout.Foldout(ExpandedBuildOptions.Contains(foldoutName), content))
+            if (EditorGUILayout.Foldout(ExpandedBuildOptions.Contains(foldoutName), content, true))
             {
+                ConfigureBuildPlatforms(environmentConfiguration, foldoutName);
                 ExpandedBuildOptions.Add(foldoutName);
             }
             else
             {
                 ExpandedBuildOptions.Remove(foldoutName);
             }
+        }
 
-            if (EditorGUILayout.Foldout(ExpandedBuildPlatforms.Contains(foldoutName),
-                $"{environmentName} Build Platforms: <b>{buildPlatformsString}</b>",
-                new GUIStyle(EditorStyles.foldout) { richText = true }))
+        private void ConfigureBuildPlatforms(BuildEnvironmentConfig environmentConfiguration, string identifier)
+        {
+            foreach (var buildTarget in environmentConfiguration.BuildTargets)
             {
-                ConfigureBuildPlatforms(environmentConfiguration);
-                ExpandedBuildPlatforms.Add($"{foldoutName}");
+                var foldoutIdentifier = identifier + buildTarget.Label;
+                GUIContent content;
+
+                if(!buildTarget.BuildSupportInstalled && buildTarget.Enabled)
+                {
+                    content = EditorGUIUtility.IconContent("console.erroricon.sml");
+                    content.text = buildTarget.Label;
+                }
+                else
+                {
+                    content = new GUIContent(buildTarget.Label);
+                }
+
+                using (var check = new EditorGUI.ChangeCheckScope())
+                using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
+                {
+                    // Toggle field force the inclusion of an aligned Label which takes up lots of horizontal space.
+                    // Copy the visual aspects of the Toggle and apply them to a Button that uses minimal space.
+                    var tstyle = new GUIStyle(EditorStyles.toggle);
+                
+                    if (buildTarget.Enabled)
+                    {
+                        tstyle.normal = tstyle.onNormal;
+                        tstyle.active = tstyle.onActive;
+                        tstyle.focused = tstyle.onFocused;
+                        tstyle.hover = tstyle.onHover;
+                    }
+
+                    var options = buildTarget.Options;
+                    var enabled = buildTarget.Enabled;
+
+                    if (GUILayout.Button(string.Empty, tstyle, GUILayout.ExpandWidth(false)))
+                    {
+                        enabled = !enabled;
+
+                        if (enabled)
+                        {
+                            // Open up the settings for the newly-enabled platform.
+                            ExpandedBuildTargets.Add(foldoutIdentifier);
+                        }
+                        else
+                        {
+                            ExpandedBuildTargets.Remove(foldoutIdentifier);
+                        }
+                    }                                       
+
+                    var toggleOnLabelClick = new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Bold };
+
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        if (EditorGUILayout.Foldout(ExpandedBuildTargets.Contains(foldoutIdentifier), content,
+                            true, buildTarget.Enabled ? toggleOnLabelClick : EditorStyles.foldout))
+                        {
+                            ExpandedBuildTargets.Add(foldoutIdentifier);
+
+                            using (new EditorGUI.IndentLevelScope())
+                            using (new EditorGUI.DisabledScope(buildTarget.Enabled == false))
+                            {
+                                if (buildTarget.BuildSupportInstalled)
+                                {
+                                    switch (buildTarget.Target)
+                                    {
+                                        case BuildTarget.StandaloneOSX:
+                                            options = ConfigureOSX(buildTarget);
+                                            break;
+                                        case BuildTarget.StandaloneWindows:
+                                            options = ConfigureWindows(buildTarget);
+                                            break;
+                                        case BuildTarget.iOS:
+                                            options = ConfigureIOS(buildTarget);
+                                            break;
+                                        case BuildTarget.Android:
+                                            options = ConfigureAndroid(buildTarget);
+                                            break;
+                                        case BuildTarget.StandaloneWindows64:
+                                            options = ConfigureWindows(buildTarget);
+                                            break;
+                                        case BuildTarget.StandaloneLinux64:
+                                            options = ConfigureLinux(buildTarget);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    EditorGUILayout.HelpBox(
+                                        $"Your Unity Editor is missing build support for {buildTarget.Target.ToString()}.\n" +
+                                        "Please add the missing build support options to your Unity Editor",
+                                        MessageType.Error);
+                                }
+
+                                options = ConfigureCompression(options);
+
+                                DrawHorizontalLine();
+                            }
+                        }
+                        else
+                        {
+                            ExpandedBuildTargets.Remove(foldoutIdentifier);
+                        }
+
+                        if (check.changed)
+                        {
+                            Undo.RecordObject(target, "Worker build options");
+                            buildTarget.Options = options;
+                            buildTarget.Enabled = enabled;
+                        }
+                    }
+
+                    GUILayout.FlexibleSpace();
+                }
+            }
+        }
+
+        private BuildOptions ConfigureCompression(BuildOptions options)
+        {
+            EditorGUILayout.Popup("Compression", 0, new[] { "TODO: Default", "TODO: LZ4", "TODO: LZ4HC" });
+            return options;
+        }
+
+        private BuildOptions ConfigureLinux(BuildTargetConfig buildTarget)
+        {
+            var options = buildTarget.Options;
+            if (EditorGUILayout.Toggle("Headless", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            {
+                options |= BuildOptions.EnableHeadlessMode;
             }
             else
             {
-                ExpandedBuildPlatforms.Remove($"{foldoutName}");
+                options &= ~BuildOptions.EnableHeadlessMode;
             }
 
-            DrawConfigurationProblems(problems);
+            return options;
         }
 
-        private static string BuildPlatformToString(SpatialBuildPlatforms value)
+        private BuildOptions ConfigureAndroid(BuildTargetConfig buildTarget)
         {
-            if (value == SpatialBuildPlatforms.Current)
+            var options = buildTarget.Options;
+            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
-                return $"Current ({WorkerBuilder.GetCurrentBuildPlatform()})";
+                options |= BuildOptions.Development;
+            }
+            else
+            {
+                options &= ~BuildOptions.Development;
             }
 
-            return value.ToString();
+            return options;
         }
 
-        private static string SelectedPlatformsToString(SpatialBuildPlatforms value)
+        private BuildOptions ConfigureIOS(BuildTargetConfig buildTarget)
         {
-            var enumValues = Enum.GetValues(typeof(SpatialBuildPlatforms)).Cast<SpatialBuildPlatforms>().ToArray();
-            if (value == 0)
+            var options = buildTarget.Options;
+            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
-                return "None";
+                options |= BuildOptions.Development;
+            }
+            else
+            {
+                options &= ~BuildOptions.Development;
             }
 
-            return string.Join(", ", enumValues
-                .Where(enumValue => value.HasFlag(enumValue))
-                .Select(BuildPlatformToString).ToArray());
+            return options;
         }
 
-        private void ConfigureBuildPlatforms(BuildEnvironmentConfig environmentConfiguration)
+        private BuildOptions ConfigureOSX(BuildTargetConfig buildTarget)
         {
-            using (var check = new EditorGUI.ChangeCheckScope())
+            var options = buildTarget.Options;
+            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
-                var newBuildOptions = environmentConfiguration.BuildOptions;
-                var prevDevelopmentFlagValue = newBuildOptions.HasFlag(BuildOptions.Development);
-                var newDevelopmentFlagValue = EditorGUILayout.ToggleLeft("Development Build", prevDevelopmentFlagValue);
-                if (prevDevelopmentFlagValue != newDevelopmentFlagValue)
-                {
-                    newBuildOptions ^= BuildOptions.Development;
-                }
-
-                DrawHorizontalLine();
-
-                var newBuildPlatforms = EnumFlagsToggleField(environmentConfiguration.BuildPlatforms, platform =>
-                    {
-                        // Manage mutually-exclusive platforms.
-                        var current = WorkerBuilder.GetCurrentBuildPlatform();
-
-                        var platforms = environmentConfiguration.BuildPlatforms;
-                        if (platforms.HasFlag(SpatialBuildPlatforms.Current))
-                        {
-                            platforms |= current;
-                        }
-
-                        if (platform == SpatialBuildPlatforms.Current &&
-                            current == SpatialBuildPlatforms.Windows64 &&
-                            platforms.HasFlag(SpatialBuildPlatforms.Windows32))
-                        {
-                            return true;
-                        }
-
-                        return platforms.HasFlag(SpatialBuildPlatforms.Windows32) &&
-                            platform == SpatialBuildPlatforms.Windows64 ||
-                            platforms.HasFlag(SpatialBuildPlatforms.Windows64) &&
-                            platform == SpatialBuildPlatforms.Windows32;
-                    },
-                    platform =>
-                    {
-                        if (platform == SpatialBuildPlatforms.Linux)
-                        {
-                            using (new EditorGUI.DisabledScope(
-                                !environmentConfiguration.BuildPlatforms.HasFlag(SpatialBuildPlatforms.Linux)))
-                            using (new EditorGUI.IndentLevelScope())
-                            {
-                                var prevValue = environmentConfiguration.BuildOptions.HasFlag(BuildOptions.EnableHeadlessMode);
-                                var newValue = EditorGUILayout.ToggleLeft("Headless Mode", prevValue);
-                                if (prevValue != newValue)
-                                {
-                                    newBuildOptions ^= BuildOptions.EnableHeadlessMode;
-                                    if (newValue)
-                                    {
-                                        newBuildOptions &= ~BuildOptions.Development;
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                // Headless mode only has meaning for Linux players.
-                if (!newBuildPlatforms.HasFlag(SpatialBuildPlatforms.Linux) &&
-                    newBuildOptions.HasFlag(BuildOptions.EnableHeadlessMode))
-                {
-                    newBuildOptions &= ~BuildOptions.EnableHeadlessMode;
-                }
-
-                if (check.changed)
-                {
-                    Undo.RecordObject(target, "Configure build for worker");
-                    environmentConfiguration.BuildOptions = newBuildOptions;
-                    environmentConfiguration.BuildPlatforms = newBuildPlatforms;
-                }
+                options |= BuildOptions.Development;
             }
+            else
+            {
+                options &= ~BuildOptions.Development;
+            }
+
+            return options;
+        }
+
+        private BuildOptions ConfigureWindows(BuildTargetConfig buildTarget)
+        {
+            var options = buildTarget.Options;
+            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
+            {
+                options |= BuildOptions.Development;
+            }
+            else
+            {
+                options &= ~BuildOptions.Development;
+            }
+
+            return options;
         }
     }
 }

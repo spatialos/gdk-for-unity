@@ -80,21 +80,16 @@ namespace Improbable.Gdk.BuildSystem
                 var workerConfiguration =
                     spatialOSBuildConfiguration.WorkerBuildConfigurations.FirstOrDefault(x =>
                         x.WorkerType == wantedWorkerType);
-                var problems = WorkerBuildConfiguration.GetConfigurationProblems(buildEnvironment, workerConfiguration);
-                foreach (var problem in problems)
+
+                var missingBuildSupport = workerConfiguration.GetEnvironmentConfig(buildEnvironment).BuildTargets
+                    .Where(t => !t.BuildSupportInstalled).ToList();
+
+                foreach (var t in missingBuildSupport)
                 {
-                    switch (problem.Type)
-                    {
-                        case MessageType.Error:
-                            Debug.LogError($"{wantedWorkerType}: {problem.Message}");
-                            break;
-                        default:
-                            Debug.LogWarning($"{wantedWorkerType}: {problem.Message}");
-                            break;
-                    }
+                    Debug.LogError($"{wantedWorkerType}: Missing build support for {t.Target.ToString()}");
                 }
 
-                if (problems.Any(p => p.Type == MessageType.Error))
+                if (missingBuildSupport.Any())
                 {
                     problemWorkers.Add(wantedWorkerType);
                 }
@@ -104,17 +99,6 @@ namespace Improbable.Gdk.BuildSystem
             {
                 throw new BuildFailedException($"Build configuration has errors for {string.Join(",", problemWorkers)}");
             }
-        }
-
-        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
-        {
-            var environmentConfig = SpatialOSBuildConfiguration.GetInstance().GetEnvironmentConfigForWorker(workerType, targetEnvironment);
-            if (environmentConfig == null)
-            {
-                return new BuildTarget[0];
-            }
-
-            return GetUnityBuildTargets(environmentConfig.BuildPlatforms);
         }
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
@@ -127,17 +111,14 @@ namespace Improbable.Gdk.BuildSystem
                 return;
             }
 
-            var buildPlatforms = environmentConfig.BuildPlatforms;
-            var buildOptions = environmentConfig.BuildOptions;
-
             if (!Directory.Exists(PlayerBuildDirectory))
             {
                 Directory.CreateDirectory(PlayerBuildDirectory);
             }
 
-            foreach (var unityBuildTarget in GetUnityBuildTargets(buildPlatforms))
+            foreach (var config in environmentConfig.BuildTargets)
             {
-                BuildWorkerForTarget(workerType, unityBuildTarget, buildOptions, targetEnvironment);
+                BuildWorkerForTarget(workerType, config.Target, config.Options, targetEnvironment);
             }
         }
 
@@ -147,62 +128,7 @@ namespace Improbable.Gdk.BuildSystem
             Directory.Delete(EditorPaths.BuildScratchDirectory, true);
         }
 
-        public static BuildTarget[] GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
-        {
-            var result = new List<BuildTarget>();
-            if ((actualPlatforms & SpatialBuildPlatforms.Current) != 0)
-            {
-                actualPlatforms |= GetCurrentBuildPlatform();
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Linux) != 0)
-            {
-                result.Add(BuildTarget.StandaloneLinux64);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.OSX) != 0)
-            {
-                result.Add(BuildTarget.StandaloneOSX);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Windows32) != 0)
-            {
-                result.Add(BuildTarget.StandaloneWindows);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
-            {
-                result.Add(BuildTarget.StandaloneWindows64);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Android) != 0)
-            {
-                result.Add(BuildTarget.Android);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.iOS) != 0)
-            {
-                result.Add(BuildTarget.iOS);
-            }
-
-            return result.ToArray();
-        }
-
-        internal static SpatialBuildPlatforms GetCurrentBuildPlatform()
-        {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsEditor:
-                    return SpatialBuildPlatforms.Windows64;
-                case RuntimePlatform.OSXEditor:
-                    return SpatialBuildPlatforms.OSX;
-                case RuntimePlatform.LinuxEditor:
-                    return SpatialBuildPlatforms.Linux;
-                default:
-                    throw new Exception($"Unsupported platform detected: {Application.platform}");
-            }
-        }
-
+        
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
