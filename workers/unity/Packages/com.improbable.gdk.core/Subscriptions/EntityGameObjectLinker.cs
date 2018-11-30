@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker;
 using Unity.Entities;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
@@ -47,7 +46,8 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void LinkGameObjectToSpatialOSEntity(EntityId entityId, GameObject gameObject)
+        public void LinkGameObjectToSpatialOSEntity(EntityId entityId, GameObject gameObject,
+            params Type[] componentTypesToAdd)
         {
             if (!workerSystem.TryGetEntity(entityId, out var entity))
             {
@@ -62,26 +62,17 @@ namespace Improbable.Gdk.Subscriptions
 
             linkedGameObjects.Add(gameObject);
 
-            if (!entityManager.HasComponent<Transform>(entity))
+            foreach (var type in componentTypesToAdd)
             {
-                viewCommandBuffer.AddComponent(entity, gameObject.GetComponent<Transform>());
-            }
-
-            if (!entityManager.HasComponent<Rigidbody>(entity))
-            {
-                var rigidobdy = gameObject.GetComponent<Rigidbody>();
-                if (rigidobdy != null)
+                if (!type.IsSubclassOf(typeof(Component)))
                 {
-                    viewCommandBuffer.AddComponent(entity, rigidobdy);
+                    throw new InvalidOperationException("Types must be derived from Component or MonoBehaviour");
                 }
-            }
 
-            if (!entityManager.HasComponent<MeshRenderer>(entity))
-            {
-                var renderer = gameObject.GetComponent<MeshRenderer>();
-                if (renderer != null)
+                var c = gameObject.GetComponent(type);
+                if (c != null)
                 {
-                    viewCommandBuffer.AddComponent(entity, renderer);
+                    viewCommandBuffer.AddComponent(entity, new ComponentType(type), c);
                 }
             }
 
@@ -91,7 +82,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (component == null)
                 {
-                    // could also tell the user that they have a bad ref here
+                    // todo could also tell the user that they have a bad ref here
                     continue;
                 }
 
