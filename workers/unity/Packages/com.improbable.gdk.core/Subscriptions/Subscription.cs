@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Subscriptions
 
         // todo put these in their own interface
         void SetAvailabilityHandler(ISubscriptionAvailabilityHandler handler);
+        ISubscriptionAvailabilityHandler GetAvailabilityHandler();
         object GetErasedValue();
 
         void Cancel();
@@ -119,6 +120,11 @@ namespace Improbable.Gdk.Subscriptions
             {
                 handler.OnAvailable();
             }
+        }
+
+        ISubscriptionAvailabilityHandler ISubscription.GetAvailabilityHandler()
+        {
+            return availabilityHandler;
         }
 
         object ISubscription.GetErasedValue()
