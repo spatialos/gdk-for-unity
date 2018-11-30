@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly SubscriptionSystem subscriptionSystem;
         private readonly RequireLifecycleSystem lifecycleSystem;
         private readonly EntityManager entityManager;
+        private readonly World world;
 
         private readonly Dictionary<EntityId, HashSet<GameObject>> entityIdToGameObjects =
             new Dictionary<EntityId, HashSet<GameObject>>();
@@ -20,12 +21,14 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<GameObject, List<RequiredSubscriptionsInjector>> gameObjectToInjectors =
             new Dictionary<GameObject, List<RequiredSubscriptionsInjector>>();
 
-        private readonly Action<Entity, ComponentType, object> setComponentObjectAction;
+        private readonly Dictionary<GameObject, List<ComponentType>> gameObjectToComponentsAdded =
+            new Dictionary<GameObject, List<ComponentType>>();
 
         private readonly ViewCommandBuffer viewCommandBuffer;
 
         public EntityGameObjectLinker(World world)
         {
+            this.world = world;
             entityManager = world.GetOrCreateManager<EntityManager>();
 
             workerSystem = world.GetExistingManager<WorkerSystem>();
@@ -60,6 +63,14 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToGameObjects.Add(entityId, linkedGameObjects);
             }
 
+            if (gameObjectToComponentsAdded.TryGetValue(gameObject, out var added))
+            {
+                throw new InvalidOperationException("GameObject already linked to an entity");
+            }
+
+            var componentTypes = new List<ComponentType>(componentTypesToAdd.Length);
+            gameObjectToComponentsAdded.Add(gameObject, componentTypes);
+
             linkedGameObjects.Add(gameObject);
 
             foreach (var type in componentTypesToAdd)
@@ -72,9 +83,27 @@ namespace Improbable.Gdk.Subscriptions
                 var c = gameObject.GetComponent(type);
                 if (c != null)
                 {
-                    viewCommandBuffer.AddComponent(entity, new ComponentType(type), c);
+                    var componentType = new ComponentType(type);
+                    componentTypes.Add(componentType);
+                    viewCommandBuffer.AddComponent(entity, componentType, c);
                 }
             }
+
+            var linkedComponent = gameObject.GetComponent<LinkedEntityComponent>();
+            if (linkedComponent == null)
+            {
+                linkedComponent = gameObject.AddComponent<LinkedEntityComponent>();
+            }
+            else if (linkedComponent.IsValid)
+            {
+                throw new InvalidOperationException("GameObject is already linked to an entity");
+            }
+
+            linkedComponent.IsValid = true;
+            linkedComponent.EntityId = entityId;
+            linkedComponent.World = world;
+            linkedComponent.Entity = entity;
+            linkedComponent.Linker = this;
 
             var injectors = new List<RequiredSubscriptionsInjector>();
 
@@ -112,6 +141,29 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("Nothing is here anymore. Maybe there never was");
             }
 
+            if (workerSystem.TryGetEntity(entityId, out var entity) && gameObject != null)
+            {
+                foreach (var componentType in gameObjectToComponentsAdded[gameObject])
+                {
+                    if (entityManager.HasComponent(entity, componentType))
+                    {
+                        entityManager.RemoveComponent(entity, componentType);
+                    }
+                    else
+                    {
+                        Debug.Log("hi there");
+                    }
+                }
+
+                gameObjectToComponentsAdded.Remove(gameObject);
+            }
+
+            var linkComponent = gameObject.GetComponent<LinkedEntityComponent>();
+            if (linkComponent != null)
+            {
+                linkComponent.Invalidate();
+            }
+
             foreach (var injector in injectors)
             {
                 injector.CancelSubscriptions();
@@ -126,12 +178,14 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void UnlinkAllGameObjectsFromEntity(EntityId entityId)
+        public void UnlinkAllGameObjectsFromEntityId(EntityId entityId)
         {
             if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
             {
                 return;
             }
+
+            workerSystem.TryGetEntity(entityId, out var entity);
 
             foreach (var gameObject in gameObjectSet)
             {
@@ -140,15 +194,38 @@ namespace Improbable.Gdk.Subscriptions
                     continue;
                 }
 
+                if (entity != Entity.Null)
+                {
+                    foreach (var componentType in gameObjectToComponentsAdded[gameObject])
+                    {
+                        entityManager.RemoveComponent(entity, componentType);
+                    }
+
+                    gameObjectToComponentsAdded.Remove(gameObject);
+                }
+
                 foreach (var injector in injectors)
                 {
                     injector.CancelSubscriptions();
                 }
 
+                gameObject.GetComponent<LinkedEntityComponent>().Invalidate();
                 gameObjectToInjectors.Remove(gameObject);
             }
 
             entityIdToGameObjects.Remove(entityId);
+        }
+
+        // todo this is slow and crap - work out if it needs to not be
+        public List<EntityId> GetLinkedEntityIds()
+        {
+            List<EntityId> entitiesToRemove = new List<EntityId>(entityIdToGameObjects.Count);
+            foreach (var entityIdAndGameObjects in entityIdToGameObjects)
+            {
+                entitiesToRemove.Add(entityIdAndGameObjects.Key);
+            }
+
+            return entitiesToRemove;
         }
 
         public void FlushCommandBuffer()
