@@ -40,6 +40,8 @@ namespace Improbable.Gdk.Subscriptions
             Handler.Pool.Return((Handler) subscriptions.GetAvailabilityHandler());
             subscriptions.Cancel();
 
+            onDisable?.Invoke();
+
             if (target == null)
             {
                 return;
