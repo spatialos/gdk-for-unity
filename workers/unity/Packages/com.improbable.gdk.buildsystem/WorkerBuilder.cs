@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -13,9 +14,6 @@ namespace Improbable.Gdk.BuildSystem
 {
     public static class WorkerBuilder
     {
-        internal static readonly string IncompatibleWindowsPlatformsErrorMessage =
-            $"Please choose only one of {SpatialBuildPlatforms.Windows32} or {SpatialBuildPlatforms.Windows64} as a build platform.";
-
         private static readonly string PlayerBuildDirectory =
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
                 "worker"));
@@ -49,23 +47,14 @@ namespace Improbable.Gdk.BuildSystem
                 var workerTypesArg =
                     CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
                         "UnityClient,UnityGameLogic");
-
                 var wantedWorkerTypes = workerTypesArg.Split(',');
-                foreach (var wantedWorkerType in wantedWorkerTypes)
-                {
-                    var buildTargetsForWorker = GetBuildTargetsForWorkerForEnvironment(wantedWorkerType, buildEnvironment);
-                    var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
 
-                    if (buildTargetsMissingBuildSupport.Length > 0)
-                    {
-                        throw new BuildFailedException(BuildSupportChecker.ConstructMissingSupportMessage(wantedWorkerType, buildEnvironment, buildTargetsMissingBuildSupport));
-                    }
-                }
+                ValidateWorkerConfiguration(wantedWorkerTypes, buildEnvironment);
 
                 LocalLaunch.BuildConfig();
 
                 foreach (var wantedWorkerType in wantedWorkerTypes)
-                {
+                {                    
                     BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment);
                 }
             }
@@ -78,6 +67,42 @@ namespace Improbable.Gdk.BuildSystem
                 }
 
                 throw new BuildFailedException(e);
+            }
+        }
+
+        private static void ValidateWorkerConfiguration(string[] wantedWorkerTypes, BuildEnvironment buildEnvironment)
+        {
+            var problemWorkers = new List<string>();            
+            foreach (var wantedWorkerType in wantedWorkerTypes)
+            {
+                var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+
+                var workerConfiguration =
+                    spatialOSBuildConfiguration.WorkerBuildConfigurations.FirstOrDefault(x =>
+                        x.WorkerType == wantedWorkerType);
+                var problems = WorkerBuildConfiguration.GetConfigurationProblems(buildEnvironment, workerConfiguration);
+                foreach (var problem in problems)
+                {
+                    switch (problem.Type)
+                    {
+                        case MessageType.Error:
+                            Debug.LogError($"{wantedWorkerType}: {problem.Message}");
+                            break;
+                        default:
+                            Debug.LogWarning($"{wantedWorkerType}: {problem.Message}");
+                            break;
+                    }
+                }
+
+                if (problems.Any(p => p.Type == MessageType.Error))
+                {
+                    problemWorkers.Add(wantedWorkerType);
+                }
+            }
+
+            if (problemWorkers.Any())
+            {
+                throw new BuildFailedException($"Build configuration has errors for {string.Join(",", problemWorkers)}");
             }
         }
 

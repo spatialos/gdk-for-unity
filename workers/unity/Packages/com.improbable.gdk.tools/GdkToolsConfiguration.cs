@@ -44,11 +44,6 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
             }
 
-            if (SchemaSourceDirs.Count == 0)
-            {
-                errors.Add($"You must have at least one item in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
-            }
-
             return errors;
         }
 

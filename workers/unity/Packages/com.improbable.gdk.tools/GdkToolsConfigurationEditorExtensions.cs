@@ -18,8 +18,8 @@ namespace Improbable.Gdk.Tools
         private static readonly GUIContent AddSchemaDirButtonText = new GUIContent("+", "Add new schema directory");
         private static readonly GUIContent RemoveSchemaDirButtonText = new GUIContent("-", "Remove schema directory");
 
-        private string ResetConfigurationButtonText = "Reset to default";
-        private string SaveConfigurationButtonText = "Save";
+        private const string ResetConfigurationButtonText = "Reset to default";
+        private const string SaveConfigurationButtonText = "Save";
 
         private GdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
@@ -108,13 +108,10 @@ namespace Improbable.Gdk.Tools
                         toolsConfig.SchemaSourceDirs[i] =
                             EditorGUILayout.TextField($"Schema dir [{i}]", toolsConfig.SchemaSourceDirs[i]);
 
-                        using (new EditorGUI.DisabledScope(toolsConfig.SchemaSourceDirs.Count == 1))
+                        if (GUILayout.Button(RemoveSchemaDirButtonText, EditorStyles.toolbarButton,
+                            GUILayout.ExpandWidth(false), GUILayout.Width(18)))
                         {
-                            if (GUILayout.Button(RemoveSchemaDirButtonText, EditorStyles.toolbarButton,
-                                GUILayout.ExpandWidth(false), GUILayout.Width(18)))
-                            {
-                                toolsConfig.SchemaSourceDirs.RemoveAt(i);
-                            }
+                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
                         }
                     }
                 }
