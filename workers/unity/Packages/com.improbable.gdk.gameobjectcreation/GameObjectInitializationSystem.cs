@@ -42,6 +42,7 @@ namespace Improbable.Gdk.GameObjectCreation
         [Inject] private RemovedEntitiesData removedEntitiesData;
 
         [Inject] private WorkerSystem worker;
+        [Inject] private EntitySystem entitySystem;
 
         private readonly IEntityGameObjectCreator gameObjectCreator;
         private EntityGameObjectLinker linker;
@@ -61,6 +62,13 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnDestroyManager()
         {
+            var ids = linker.GetLinkedEntityIds();
+            foreach (var id in ids)
+            {
+                linker.UnlinkAllGameObjectsFromEntityId(id);
+                gameObjectCreator.OnEntityRemoved(id);
+            }
+
             base.OnDestroyManager();
         }
 
@@ -84,7 +92,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 var entity = removedEntitiesData.Entities[i];
                 var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
                 entitiesToRemove[i] = spatialEntityId;
-                linker.UnlinkAllGameObjectsFromEntity(spatialEntityId);
+                linker.UnlinkAllGameObjectsFromEntityId(spatialEntityId);
 
                 PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
             }
