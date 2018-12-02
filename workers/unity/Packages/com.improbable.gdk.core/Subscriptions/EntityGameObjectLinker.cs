@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -15,8 +14,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly EntityManager entityManager;
         private readonly World world;
 
-        private readonly Dictionary<EntityId, HashSet<GameObject>> entityIdToGameObjects =
-            new Dictionary<EntityId, HashSet<GameObject>>();
+        private readonly Dictionary<EntityId, List<GameObject>> entityIdToGameObjects =
+            new Dictionary<EntityId, List<GameObject>>();
 
         private readonly Dictionary<GameObject, List<RequiredSubscriptionsInjector>> gameObjectToInjectors =
             new Dictionary<GameObject, List<RequiredSubscriptionsInjector>>();
@@ -57,12 +56,6 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("Entity not in view");
             }
 
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var linkedGameObjects))
-            {
-                linkedGameObjects = new HashSet<GameObject>();
-                entityIdToGameObjects.Add(entityId, linkedGameObjects);
-            }
-
             if (gameObjectToComponentsAdded.TryGetValue(gameObject, out var added))
             {
                 throw new InvalidOperationException("GameObject already linked to an entity");
@@ -70,6 +63,12 @@ namespace Improbable.Gdk.Subscriptions
 
             var componentTypes = new List<ComponentType>(componentTypesToAdd.Length);
             gameObjectToComponentsAdded.Add(gameObject, componentTypes);
+
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var linkedGameObjects))
+            {
+                linkedGameObjects = new List<GameObject>();
+                entityIdToGameObjects.Add(entityId, linkedGameObjects);
+            }
 
             linkedGameObjects.Add(gameObject);
 
@@ -96,14 +95,15 @@ namespace Improbable.Gdk.Subscriptions
             }
             else if (linkedComponent.IsValid)
             {
+                // todo already being linked is checked above so this shouldn't happen - reorg to make contracts more clear
                 throw new InvalidOperationException("GameObject is already linked to an entity");
             }
 
             linkedComponent.IsValid = true;
+            linkedComponent.Linker = this;
             linkedComponent.EntityId = entityId;
             linkedComponent.World = world;
             linkedComponent.Entity = entity;
-            linkedComponent.Linker = this;
 
             var injectors = new List<RequiredSubscriptionsInjector>();
 
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (component == null)
                 {
-                    // todo could also tell the user that they have a bad ref here
+                    // todo consider - could also tell the user that they have a bad ref here
                     continue;
                 }
 
@@ -145,20 +145,14 @@ namespace Improbable.Gdk.Subscriptions
             {
                 foreach (var componentType in gameObjectToComponentsAdded[gameObject])
                 {
-                    if (entityManager.HasComponent(entity, componentType))
-                    {
-                        entityManager.RemoveComponent(entity, componentType);
-                    }
-                    else
-                    {
-                        Debug.Log("hi there");
-                    }
+                    entityManager.RemoveComponent(entity, componentType);
                 }
 
                 gameObjectToComponentsAdded.Remove(gameObject);
             }
 
             var linkComponent = gameObject.GetComponent<LinkedEntityComponent>();
+            // todo check if this can happen - right now I think it can on application quit
             if (linkComponent != null)
             {
                 linkComponent.Invalidate();
@@ -187,33 +181,10 @@ namespace Improbable.Gdk.Subscriptions
 
             workerSystem.TryGetEntity(entityId, out var entity);
 
-            foreach (var gameObject in gameObjectSet)
+            while (gameObjectSet.Count > 0)
             {
-                if (!gameObjectToInjectors.TryGetValue(gameObject, out var injectors))
-                {
-                    continue;
-                }
-
-                if (entity != Entity.Null)
-                {
-                    foreach (var componentType in gameObjectToComponentsAdded[gameObject])
-                    {
-                        entityManager.RemoveComponent(entity, componentType);
-                    }
-
-                    gameObjectToComponentsAdded.Remove(gameObject);
-                }
-
-                foreach (var injector in injectors)
-                {
-                    injector.CancelSubscriptions();
-                }
-
-                gameObject.GetComponent<LinkedEntityComponent>().Invalidate();
-                gameObjectToInjectors.Remove(gameObject);
+                UnlinkGameObjectFromEntity(entityId, gameObjectSet[gameObjectSet.Count - 1]);
             }
-
-            entityIdToGameObjects.Remove(entityId);
         }
 
         // todo this is slow and crap - work out if it needs to not be

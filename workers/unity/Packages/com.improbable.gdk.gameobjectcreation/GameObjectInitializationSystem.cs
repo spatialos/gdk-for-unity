@@ -47,8 +47,6 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly IEntityGameObjectCreator gameObjectCreator;
         private EntityGameObjectLinker linker;
 
-        private List<EntityId> entitiesRemoved = new List<EntityId>();
-
         public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
         {
             this.gameObjectCreator = gameObjectCreator;
@@ -72,6 +70,7 @@ namespace Improbable.Gdk.GameObjectCreation
             base.OnDestroyManager();
         }
 
+        // todo replace this with something that polls for entities added and removed
         protected override unsafe void OnUpdate()
         {
             for (var i = 0; i < addedEntitiesData.Length; i++)
