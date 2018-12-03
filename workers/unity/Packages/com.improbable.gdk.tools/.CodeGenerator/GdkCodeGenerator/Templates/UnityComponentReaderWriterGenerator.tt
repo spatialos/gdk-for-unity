@@ -494,11 +494,13 @@ namespace <#= qualifiedNamespace #>
             EntityManager.SetComponentData(Entity, component);
         }
 
-<# foreach (var eventDetails in eventDetailsList) { #>
+<# foreach (var eventDetails in eventDetailsList) {
+        var eventType = componentDetails.ComponentName + "." + eventDetails.EventName + ".Event";
+#>
         public void Send<#= eventDetails.EventName #>Event(<#= eventDetails.FqnPayloadType #> <#= eventDetails.CamelCaseEventName #>)
         {
-            var eventSender = EntityManager.GetComponentData<<#= componentDetails.ComponentName #>.EventSender.<#= eventDetails.EventName #>>(Entity);
-            eventSender.Events.Add(<#= eventDetails.CamelCaseEventName #>);
+            var eventToSend = new <#= eventType #>(<#= eventDetails.CamelCaseEventName #>);
+            ComponentUpdateSystem.SendEvent(eventToSend, EntityId);
         }
 <# } #>
 
