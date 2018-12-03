@@ -63,7 +63,9 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension)));
+                        Path.ChangeExtension($"{component.Name}CommandSenderReceiver", FileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}ReactiveCommandComponents", FileExtension)));
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
@@ -106,6 +108,7 @@ namespace Improbable.Gdk.CodeGenerator
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
             var reactiveComponentGenerator = new ReactiveComponentGenerator();
+            var reactiveCommandComponentGenerator = new ReactiveCommandComponentGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -156,6 +159,13 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandSenderReceiverCode =
                         commandSenderReceiverGenerator.Generate(component, package, enumSet);
                     Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
+
+                    var reactiveCommandComponentsFileName =
+                        Path.ChangeExtension($"{component.Name}ReactiveCommandComponents", fileExtension);
+                    var reactiveCommandComponentsCode =
+                        reactiveCommandComponentGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, reactiveCommandComponentsFileName),
+                        reactiveCommandComponentsCode);
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
