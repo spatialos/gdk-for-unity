@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Improbable.Gdk.GameObjectRepresentation.Editor
+namespace Improbable.Gdk.Subscriptions.Editor
 {
     /// <summary>
     ///     A prefab processor which disables any Monobehaviours on top-level GameObjects in the Resources folder
