@@ -54,6 +54,8 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}CommandSenderReceiver", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}ReactiveCommandComponents", fileExtension)));
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -100,6 +102,7 @@ namespace Improbable.Gdk.CodeGenerator
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
             var reactiveComponentGenerator = new ReactiveComponentGenerator();
+            var reactiveCommandComponentGenerator = new ReactiveCommandComponentGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -146,6 +149,13 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandSenderReceiverCode =
                         commandSenderReceiverGenerator.Generate(component, package, enumSet);
                     Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
+
+                    var reactiveCommandComponentsFileName =
+                        Path.ChangeExtension($"{component.Name}ReactiveCommandComponents", fileExtension);
+                    var reactiveCommandComponentsCode =
+                        reactiveCommandComponentGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, reactiveCommandComponentsFileName),
+                        reactiveCommandComponentsCode);
                 }
 
                 if (component.EventDefinitions.Count > 0)
