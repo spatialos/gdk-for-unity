@@ -26,6 +26,11 @@ namespace Improbable.Gdk.Core
             return ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
         }
 
+        public long SendCommand<T>(T request) where T : ICommandRequest
+        {
+            return SendCommand(request, Entity.Null);
+        }
+
         public void SendResponse<T>(T response) where T : ICommandResponse
         {
             if (!responseTypeToIndex.TryGetValue(typeof(T), out var index))
