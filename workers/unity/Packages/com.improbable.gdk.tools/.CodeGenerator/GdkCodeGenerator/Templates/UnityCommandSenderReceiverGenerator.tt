@@ -78,6 +78,11 @@ namespace <#= qualifiedNamespace #>
                 entityIdToSenderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<<#= componentDetails.ComponentName #>CommandSender>>>();
             }
 
+            if (entityId.Id < 0)
+            {
+                throw new ArgumentException("EntityId can not be < 0");
+            }
+
             var subscription = new Subscription<<#= componentDetails.ComponentName #>CommandSender>(this, entityId);
 
             if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
@@ -89,6 +94,10 @@ namespace <#= qualifiedNamespace #>
             if (workerSystem.TryGetEntity(entityId, out var entity))
             {
                 subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(entity, world));
+            }
+            else if (entityId.Id == 0)
+            {
+                subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(Entity.Null, world));
             }
 
             subscriptions.Add(subscription);
