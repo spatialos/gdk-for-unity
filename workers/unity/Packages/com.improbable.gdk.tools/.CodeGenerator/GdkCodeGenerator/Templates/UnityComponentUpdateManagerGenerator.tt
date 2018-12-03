@@ -446,11 +446,21 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                entitiesWithComponent.Add(new EntityId(op.EntityId));
-                componentsAdded.Add(new EntityId(op.EntityId));
+                var entityId = new EntityId(op.EntityId);
 
-                entityIdToAuthority[new EntityId(op.EntityId)] = Authority.NotAuthoritative;
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                entitiesWithComponent.Add(entityId);
+
+                if (componentsRemoved.Contains(entityId))
+                {
+                    componentsRemoved.Remove(entityId);
+                }
+                else
+                {
+                    componentsAdded.Add(entityId);
+                }
+
+                entityIdToAuthority[entityId] = Authority.NotAuthoritative;
+                workerSystem.TryGetEntity(entityId, out var entity);
                 //entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
 
                 var data = Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world);
@@ -471,7 +481,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                 };
 
-                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, new EntityId(op.EntityId), currentUpdateId));
+                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, entityId, currentUpdateId));
             }
 
             private void OnRemoveComponent(RemoveComponentOp op)
@@ -481,12 +491,22 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                entitiesWithComponent.Remove(new EntityId(op.EntityId));
-                componentsRemoved.Add(new EntityId(op.EntityId));
+                var entityId = new EntityId(op.EntityId);
 
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
+                entitiesWithComponent.Remove(entityId);
+
+                if (componentsAdded.Contains(entityId))
+                {
+                    componentsAdded.Remove(entityId);
+                }
+                else
+                {
+                    componentsRemoved.Add(entityId);
+                }
+
+                workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
-                entityIdToAuthority.Remove(new EntityId(op.EntityId));
+                entityIdToAuthority.Remove(entityId);
 <# if (!componentDetails.IsBlittable) { #>
 
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
