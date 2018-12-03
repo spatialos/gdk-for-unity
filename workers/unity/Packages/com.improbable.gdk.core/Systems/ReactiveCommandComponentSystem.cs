@@ -9,9 +9,9 @@ namespace Improbable.Gdk.Core
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateAfter(typeof(SpatialOSReceiveSystem))]
-    public class CommandComponentSystem : ComponentSystem
+    public class ReactiveCommandComponentSystem : ComponentSystem
     {
-        private readonly List<ICommandComponentManager> managers = new List<ICommandComponentManager>();
+        private readonly List<IReactiveCommandComponentManager> managers = new List<IReactiveCommandComponentManager>();
 
         protected override void OnCreateManager()
         {
@@ -20,15 +20,25 @@ namespace Improbable.Gdk.Core
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (!typeof(ICommandComponentManager).IsAssignableFrom(type) || type.IsAbstract)
+                    if (!typeof(IReactiveCommandComponentManager).IsAssignableFrom(type) || type.IsAbstract)
                     {
                         continue;
                     }
 
-                    var instance = (ICommandComponentManager) Activator.CreateInstance(type);
+                    var instance = (IReactiveCommandComponentManager) Activator.CreateInstance(type);
                     managers.Add(instance);
                 }
             }
+        }
+
+        protected override void OnDestroyManager()
+        {
+            foreach (var manager in managers)
+            {
+                manager.Clean(World);
+            }
+
+            base.OnDestroyManager();
         }
 
         [Inject] private EntityManager entityManager;
@@ -39,7 +49,7 @@ namespace Improbable.Gdk.Core
         {
             foreach (var manager in managers)
             {
-                manager.PopulateCommandComponents(commandSystem, entityManager, workerSystem, World);
+                manager.PopulateReactiveCommandComponents(commandSystem, entityManager, workerSystem, World);
             }
         }
     }

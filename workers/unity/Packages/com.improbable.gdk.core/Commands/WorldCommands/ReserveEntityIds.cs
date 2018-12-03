@@ -272,9 +272,9 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
-            public class CommandComponentManager : ICommandComponentManager
+            public class CommandComponentManager : IReactiveCommandComponentManager
             {
-                public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager,
+                public void PopulateReactiveCommandComponents(CommandSystem commandSystem, EntityManager entityManager,
                     WorkerSystem workerSystem, World world)
                 {
                     var receivedResponses = commandSystem.GetResponses<ReceivedResponse>();
