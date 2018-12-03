@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("No subscription system");
             }
 
-            return (Subscription<T>) subscriptionSystem.Subscribe(entityId, typeof(T));
+            return (Subscription<T>) subscriptionSystem.Subscribe<T>(entityId);
         }
 
         // public static Subscription<T> Subscribe<T>(Entity entity, World world)
