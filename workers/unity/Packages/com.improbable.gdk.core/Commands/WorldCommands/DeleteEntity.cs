@@ -261,9 +261,9 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
-            public class DeleteEntityComponentManager : ICommandComponentManager
+            public class DeleteEntityComponentManager : IReactiveCommandComponentManager
             {
-                public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager,
+                public void PopulateReactiveCommandComponents(CommandSystem commandSystem, EntityManager entityManager,
                     WorkerSystem workerSystem, World world)
                 {
                     var receivedResponses = commandSystem.GetResponses<ReceivedResponse>();

@@ -113,12 +113,12 @@ namespace Improbable.Gdk.Subscriptions
 
             public void OnAvailable()
             {
-                aggregate.HandleSubscriptionAvailable();
+                aggregate?.HandleSubscriptionAvailable();
             }
 
             public void OnUnavailable()
             {
-                aggregate.HandleSubscriptionUnavailable();
+                aggregate?.HandleSubscriptionUnavailable();
             }
 
             public class Pool

@@ -82,21 +82,6 @@ namespace <#= qualifiedNamespace #>
             // todo can move this into the reactive component manager
             public override void AddCommandComponents(Unity.Entities.Entity entity)
             {
-<# foreach (var commandDetails in commandDetailsList) { #>
-                {
-                    var commandSender = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>();
-                    commandSender.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>SenderProvider.Allocate(World);
-                    commandSender.RequestsToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Request>();
-
-                    entityManager.AddComponentData(entity, commandSender);
-
-                    var commandResponder = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>();
-                    commandResponder.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= commandDetails.CommandName #>ResponderProvider.Allocate(World);
-                    commandResponder.ResponsesToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= commandDetails.CommandName #>.Response>();
-
-                    entityManager.AddComponentData(entity, commandResponder);
-                }
-<# } #>
             }
         }
 
@@ -243,87 +228,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
             }
         }
 
-<# foreach (var command in commandDetailsList) {
-        var requestType = command.CommandName + ".Request";
-        var receivedRequestType = command.CommandName + ".ReceivedRequest";
-        var responseType = command.CommandName + ".Response";
-        var receivedResponseType = command.CommandName + ".ReceivedResponse";
-
-        var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{command.CommandName}";
-        var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{command.CommandName}";
-#>
-        public class <#= command.CommandName #>CommandComponentManager : ICommandComponentManager
-        {
-            public void PopulateCommandComponents(CommandSystem commandSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
-            {
-                var receivedRequests = commandSystem.GetRequests<<#= receivedRequestType #>>();
-                // todo Not efficient if it keeps jumping all over entities but don't care right now
-                foreach (var request in receivedRequests)
-                {
-                    if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
-                    {
-                        continue;
-                    }
-
-                    List<<#= receivedRequestType #>> requests;
-                    if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
-                    {
-                        requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
-                    }
-                    else
-                    {
-                        var data = new <#= commandRequestBufferType #>
-                        {
-                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
-                        };
-                        data.Requests = new List<<#= receivedRequestType #>>();
-                        requests = data.Requests;
-                        entityManager.AddComponentData(entity, data);
-                    }
-
-                    requests.Add(request);
-                }
-
-
-                var receivedResponses = commandSystem.GetResponses<<#= receivedResponseType #>>();
-                // todo Not efficient if it keeps jumping all over entities but don't care right now
-                foreach (var response in receivedResponses)
-                {
-                    if (response.SendingEntity == Unity.Entities.Entity.Null || !entityManager.Exists(response.SendingEntity))
-                    {
-                        continue;
-                    }
-
-                    List<<#= receivedResponseType #>> responses;
-                    if (entityManager.HasComponent<<#= commandResponseBufferType #>>(response.SendingEntity))
-                    {
-                        responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(response.SendingEntity).Responses;
-                    }
-                    else
-                    {
-                        var data = new <#= commandResponseBufferType #>
-                        {
-                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
-                        };
-                        data.Responses = new List<<#= receivedResponseType #>>();
-                        responses = data.Responses;
-                        entityManager.AddComponentData(response.SendingEntity, data);
-                    }
-
-                    responses.Add(response);
-                }
-            }
-
-            public void Clean(World world)
-            {
-                ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.CleanDataInWorld(world);
-                ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.CleanDataInWorld(world);
-                ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.CleanDataInWorld(world);
-                ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.CleanDataInWorld(world);
-            }
-        }
-
-<# } #>
         internal class ComponentCleanup : ComponentCleanupHandler
         {
             public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
