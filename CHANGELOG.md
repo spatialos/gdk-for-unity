@@ -9,6 +9,7 @@
 ### Fixed
 
 - `Clean all workers` now cleans worker configs in addition to built-out workers.
+- Fixed a bug where you could only start each  built-out worker once on OSX.
 
 ## `0.1.3` - 2018-11-26
 
