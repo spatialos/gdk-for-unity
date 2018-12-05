@@ -10,18 +10,19 @@ namespace Improbable.Gdk.Core
 #if UNITY_ANDROID
             try
             {
-                var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer");
-                var currentActivity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity");
-
-                var intent = currentActivity.Call<UnityEngine.AndroidJavaObject>("getIntent");
-                var hasExtra = intent.Call<bool>("hasExtra", "arguments");
-
-                if (hasExtra)
+                using (var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                using (var currentActivity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity"))
+                using (var intent = currentActivity.Call<UnityEngine.AndroidJavaObject>("getIntent"))
                 {
-                    var extras = intent.Call<UnityEngine.AndroidJavaObject>("getExtras");
-                    var arguments = extras.Call<string>("getString", "arguments");
-                    UnityEngine.Debug.Log(arguments);
-                    return ParseCommandLineArgs(arguments.Split(' '));
+                    var hasExtra = intent.Call<bool>("hasExtra", "arguments");
+                    if (hasExtra)
+                    {
+                        using (var extras = intent.Call<UnityEngine.AndroidJavaObject>("getExtras"))
+                        {
+                            var arguments = extras.Call<string>("getString", "arguments").Split(' ');
+                            return ParseCommandLineArgs(arguments);
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -89,7 +90,8 @@ namespace Improbable.Gdk.Core
                 {
                     if (i + 1 >= args.Count)
                     {
-                        throw new ArgumentException($"Flag \"{flag}\" requires an argument");
+                        throw new ArgumentException(
+                            $"Flag \"{flag}\" requires an argument\nArguments: \"{string.Join(", ", args)}\"");
                     }
 
                     var flagArg = args[i + 1];

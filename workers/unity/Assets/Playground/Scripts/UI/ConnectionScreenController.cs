@@ -23,7 +23,7 @@ namespace Playground
 
         public void Awake()
         {
-            var hostIp = GetIPFromExtras();
+            var hostIp = GetReceptionistHostFromArguments();
             if (!string.IsNullOrEmpty(hostIp))
             {
                 ipAddressInput.text = hostIp;
@@ -73,7 +73,7 @@ namespace Playground
             workerConnector.TryConnect();
         }
 
-        private string GetIPFromExtras()
+        private string GetReceptionistHostFromArguments()
         {
             var arguments = CommandLineUtility.GetArguments();
             var hostIp = CommandLineUtility.GetCommandLineValue(arguments, RuntimeConfigNames.ReceptionistHost, string.Empty);
