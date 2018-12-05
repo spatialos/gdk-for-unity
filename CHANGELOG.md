@@ -9,6 +9,7 @@
 ### Fixed
 
 - `Clean all workers` now cleans worker configs in addition to built-out workers.
+- Fixed a bug where you could start each built-out worker only once on OSX.
 - Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
 
 ## `0.1.3` - 2018-11-26

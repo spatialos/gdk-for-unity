@@ -50,6 +50,7 @@
       "macos": {
         "command": "open",
         "arguments": [
+          "-n",
           "./build/worker/UnityClient@Mac/UnityClient@Mac.app",
           "--args",
           "+assemblyName",
