@@ -1,0 +1,6 @@
+package improbable.tests;
+
+component DependencyTestGrandchild {
+    id = 11113;
+    uint32 grandchild = 1;
+}
