@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Tools
         internal const string SchemaStdLibDirLabel = "Schema standard library directory";
         internal const string CodegenOutputDirLabel = "Code generator output directory";
         internal const string SchemaSourceDirsLabel = "Schema source directories";
+        internal const string RuntimeIpLabel = "Runtime IP for local deployment";
 
         private const string CodeGeneratorLabel = "Code generator options";
         private const string DownloadCoreSdkLabel = "CoreSDK options";
@@ -97,6 +98,8 @@ namespace Improbable.Gdk.Tools
             GUILayout.Space(5);
             GUILayout.Label(SchemaStdLibDirLabel);
             toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
+            GUILayout.Label(RuntimeIpLabel);
+            toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);
         }
 
         private void DrawCodeGenerationOptions()

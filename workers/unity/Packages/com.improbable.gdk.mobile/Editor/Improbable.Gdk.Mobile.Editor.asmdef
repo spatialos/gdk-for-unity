@@ -1,0 +1,13 @@
+{
+    "name": "Improbable.Gdk.Mobile.Editor",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Tools"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

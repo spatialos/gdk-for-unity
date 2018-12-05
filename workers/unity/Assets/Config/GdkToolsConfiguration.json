@@ -3,5 +3,6 @@
     "SchemaSourceDirs": [
         "../../schema"
     ],
-    "CodegenOutputDir": "Assets/Generated/Source"
+    "CodegenOutputDir": "Assets/Generated/Source",
+    "RuntimeIp": ""
 }

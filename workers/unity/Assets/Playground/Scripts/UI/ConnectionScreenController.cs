@@ -23,6 +23,14 @@ namespace Playground
 
         public void Awake()
         {
+            var hostIp = GetIPFromExtras();
+            if (!string.IsNullOrEmpty(hostIp))
+            {
+                ipAddressInput.text = hostIp;
+                TryConnect();
+                return;
+            }
+
             ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             connectButton.onClick.AddListener(TryConnect);
         }
@@ -63,6 +71,13 @@ namespace Playground
             workerConnector.IpAddress = IpAddress;
             workerConnector.ConnectionScreenController = this;
             workerConnector.TryConnect();
+        }
+
+        private string GetIPFromExtras()
+        {
+            var arguments = CommandLineUtility.GetArguments();
+            var hostIp = CommandLineUtility.GetCommandLineValue(arguments, RuntimeConfigNames.ReceptionistHost, string.Empty);
+            return hostIp;
         }
     }
 }
