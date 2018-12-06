@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Core
                     UseExternalIp = UseExternalIp,
                 },
                 EnableProtocolLoggingAtStartup = EnableProtocolLoggingAtStartup,
-                DefaultComponentVtable = new PassthroughComponentVtable()
+                DefaultComponentVtable = new ComponentVtable()
             };
             return connectionParameters;
         }

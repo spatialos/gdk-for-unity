@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.CInterop;
-
 using Unity.Entities;
 using UnityEngine;
-using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -170,12 +167,18 @@ namespace Improbable.Gdk.Core
             using (var deploymentsFuture = locator.GetDeploymentListAsync())
             {
                 var deploymentList = await Task.Run(() => deploymentsFuture.Get()).ConfigureAwait(false);
-                if (!string.IsNullOrEmpty(deploymentList.Error))
+                // Guard against null refs. This shouldn't be triggered.
+                if (!deploymentList.HasValue)
                 {
-                    throw new ConnectionFailedException(deploymentList.Error, ConnectionErrorReason.DeploymentNotFound);
+                    throw new ConnectionFailedException("Deployment list future returned null.", ConnectionErrorReason.DeploymentNotFound);
                 }
 
-                return deploymentList;
+                if (deploymentList.Value.Error != null)
+                {
+                    throw new ConnectionFailedException(deploymentList.Value.Error, ConnectionErrorReason.DeploymentNotFound);
+                }
+
+                return deploymentList.Value;
             }
         }
 
