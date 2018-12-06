@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ComponentWithNoFields");
+                Profiler.BeginSample("ComponentWithNoFields.OnAddComponent");
                 var data = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
@@ -90,7 +90,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ComponentWithNoFields");
+                Profiler.BeginSample("ComponentWithNoFields.OnRemoveComponent");
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>(entity);
 
@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ComponentWithNoFields");
+                Profiler.BeginSample("ComponentWithNoFields.OnComponentUpdate");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component>(entity);
@@ -155,7 +155,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var entityId = new EntityId(op.EntityId);
                 var entity = TryGetEntityFromEntityId(entityId);
 
-                Profiler.BeginSample("ComponentWithNoFields");
+                Profiler.BeginSample("ComponentWithNoFields.OnAuthorityChange");
                 ApplyAuthorityChange(entity, op.Authority, entityId);
                 Profiler.EndSample();
             }
@@ -280,7 +280,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                Profiler.BeginSample("ComponentWithNoFields");
+                Profiler.BeginSample("ComponentWithNoFields.ExecuteReplication");
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);

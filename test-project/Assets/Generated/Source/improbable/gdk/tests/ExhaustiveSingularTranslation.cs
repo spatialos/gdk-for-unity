@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Tests
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ExhaustiveSingular");
+                Profiler.BeginSample("ExhaustiveSingular.OnAddComponent");
                 var data = Improbable.Gdk.Tests.ExhaustiveSingular.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
@@ -110,7 +110,7 @@ namespace Improbable.Gdk.Tests
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ExhaustiveSingular");
+                Profiler.BeginSample("ExhaustiveSingular.OnRemoveComponent");
 
                 var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
                 ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
@@ -142,7 +142,7 @@ namespace Improbable.Gdk.Tests
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("ExhaustiveSingular");
+                Profiler.BeginSample("ExhaustiveSingular.OnComponentUpdate");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
@@ -179,7 +179,7 @@ namespace Improbable.Gdk.Tests
                 var entityId = new EntityId(op.EntityId);
                 var entity = TryGetEntityFromEntityId(entityId);
 
-                Profiler.BeginSample("ExhaustiveSingular");
+                Profiler.BeginSample("ExhaustiveSingular.OnAuthorityChange");
                 ApplyAuthorityChange(entity, op.Authority, entityId);
                 Profiler.EndSample();
             }
@@ -304,7 +304,7 @@ namespace Improbable.Gdk.Tests
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                Profiler.BeginSample("ExhaustiveSingular");
+                Profiler.BeginSample("ExhaustiveSingular.ExecuteReplication");
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);

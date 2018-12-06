@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnAddComponent");
                 var data = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnRemoveComponent");
 
                 var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
                 NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnComponentUpdate");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
@@ -251,7 +251,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 var entityId = new EntityId(op.EntityId);
                 var entity = TryGetEntityFromEntityId(entityId);
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnAuthorityChange");
                 ApplyAuthorityChange(entity, op.Authority, entityId);
                 Profiler.EndSample();
             }
@@ -260,7 +260,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnCommandRequest");
                 switch (commandIndex)
                 {
                     case 1:
@@ -280,7 +280,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var commandIndex = op.Response.CommandIndex;
 
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.OnCommandResponse");
                 switch (commandIndex)
                 {
                     case 1:
@@ -634,7 +634,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.ExecuteReplication");
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
@@ -700,7 +700,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                Profiler.BeginSample("NonBlittableComponent");
+                Profiler.BeginSample("NonBlittableComponent.SendCommands");
                 var entityType = system.GetArchetypeChunkEntityType();
                 {
                     var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);

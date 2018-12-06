@@ -7,7 +7,7 @@
     var commandDetailsList = GetCommandDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
-    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
+    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}";
     var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
@@ -73,7 +73,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnAddComponent");
                 var data = <#= componentNamespace #>.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
@@ -123,7 +123,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnRemoveComponent");
 <# if (!componentDetails.IsBlittable) { #>
 
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -160,7 +160,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnComponentUpdate");
                 if (entityManager.HasComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -233,7 +233,7 @@ namespace <#= qualifiedNamespace #>
                 var entityId = new EntityId(op.EntityId);
                 var entity = TryGetEntityFromEntityId(entityId);
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnAuthorityChange");
                 ApplyAuthorityChange(entity, op.Authority, entityId);
                 <#= profilingEnd #>
             }
@@ -243,7 +243,7 @@ namespace <#= qualifiedNamespace #>
                 var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
 <# if (commandDetailsList.Count > 0) { #>
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnCommandRequest");
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -266,7 +266,7 @@ namespace <#= qualifiedNamespace #>
                 var commandIndex = op.Response.CommandIndex;
 <# if (commandDetailsList.Count > 0) { #>
 
-                <#= profilingStart #>
+                <#= profilingStart #>.OnCommandResponse");
                 switch (commandIndex)
                 {
 <# foreach(var commandDetails in commandDetailsList) { #>
@@ -531,7 +531,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                <#= profilingStart #>
+                <#= profilingStart #>.ExecuteReplication");
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
@@ -593,7 +593,7 @@ namespace <#= qualifiedNamespace #>
             public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
 <# if (commandDetailsList.Count > 0) { #>
-                <#= profilingStart #>
+                <#= profilingStart #>.SendCommands");
                 var entityType = system.GetArchetypeChunkEntityType();
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {

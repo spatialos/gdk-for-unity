@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("Connection");
+                Profiler.BeginSample("Connection.OnAddComponent");
                 var data = Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), World);
                 data.MarkDataClean();
                 entityManager.AddComponentData(entity, data);
@@ -92,7 +92,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("Connection");
+                Profiler.BeginSample("Connection.OnRemoveComponent");
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
 
@@ -120,7 +120,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
 
-                Profiler.BeginSample("Connection");
+                Profiler.BeginSample("Connection.OnComponentUpdate");
                 if (entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                 {
                     var data = entityManager.GetComponentData<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(entity);
@@ -189,7 +189,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 var entityId = new EntityId(op.EntityId);
                 var entity = TryGetEntityFromEntityId(entityId);
 
-                Profiler.BeginSample("Connection");
+                Profiler.BeginSample("Connection.OnAuthorityChange");
                 ApplyAuthorityChange(entity, op.Authority, entityId);
                 Profiler.EndSample();
             }
@@ -328,7 +328,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, global::Improbable.Worker.CInterop.Connection connection)
             {
-                Profiler.BeginSample("Connection");
+                Profiler.BeginSample("Connection.ExecuteReplication");
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
