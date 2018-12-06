@@ -6,6 +6,10 @@
 
 - Added support for the Steam authentication flow.
 
+### Changed
+
+- Upgraded the Worker SDK snapshot version.
+
 ### Fixed
 
 - `Clean all workers` now cleans worker configs in addition to built-out workers.
