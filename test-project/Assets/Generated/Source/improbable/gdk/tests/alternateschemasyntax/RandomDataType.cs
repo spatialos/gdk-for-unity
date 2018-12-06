@@ -4,9 +4,10 @@
 
 using System.Linq;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
-{ 
+{
     
     public struct RandomDataType
     {
@@ -16,7 +17,6 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             Value = value;
         }
-    
         public static class Serialization
         {
             public static void Serialize(RandomDataType instance, global::Improbable.Worker.CInterop.SchemaObject obj)

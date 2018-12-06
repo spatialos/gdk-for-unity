@@ -184,7 +184,7 @@ namespace Improbable.Gdk.Tests
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
                 throw new UnknownCommandIndexException(commandIndex, "ExhaustiveBlittableSingular");
             }
 
@@ -316,7 +316,7 @@ namespace Improbable.Gdk.Tests
                             Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.SerializeUpdate(data, update);
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;
