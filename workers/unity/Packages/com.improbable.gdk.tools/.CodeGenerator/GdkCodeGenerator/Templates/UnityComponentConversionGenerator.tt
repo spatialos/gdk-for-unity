@@ -578,7 +578,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } #>
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;
