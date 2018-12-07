@@ -86,18 +86,28 @@ namespace Improbable.Gdk.Core
 
                 var origin = transform.position;
                 ConnectionDelegate connectionDelegate;
-                if (ShouldUseLocator())
+                var chosenService = GetChosenService();
+                var connectionParameters = GetConnectionParameters(workerType, chosenService);
+                switch (chosenService)
                 {
-                    connectionDelegate = async () =>
-                        await Worker
-                            .CreateWorkerAsync(GetLocatorConfig(workerType), SelectDeploymentName, logger, origin)
-                            .ConfigureAwait(false);
-                }
-                else
-                {
-                    connectionDelegate = async () =>
-                        await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), logger, origin)
-                            .ConfigureAwait(false);
+                    case ConnectionService.Receptionist:
+                        connectionDelegate = async () =>
+                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin)
+                                .ConfigureAwait(false);
+                        break;
+                    case ConnectionService.Locator:
+                        connectionDelegate = async () =>
+                            await Worker
+                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin)
+                                .ConfigureAwait(false);
+                        break;
+                    case ConnectionService.AlphaLocator:
+                        connectionDelegate = async () =>
+                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(), connectionParameters, logger, origin)
+                                .ConfigureAwait(false);
+                        break;
+                    default:
+                        throw new Exception("No valid connection flow type selected");
                 }
 
                 Worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
@@ -140,34 +150,13 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        /// <summary>
-        ///     Determines whether to connect via the locator.
-        /// </summary>
-        /// <returns>True, if should connect via the Locator, false otherwise.</returns>
-        protected abstract bool ShouldUseLocator();
+        protected abstract ConnectionService GetChosenService();
 
-        /// <summary>
-        ///     Creates a Receptionist configuration.
-        /// </summary>
-        /// <remarks>
-        ///     If in a standalone build, will use the command line arguments.
-        /// </remarks>
-        /// <remarks>
-        ///    A worker ID is auto-generated if in the Unity Editor or if one is not provided over the command line.
-        /// </remarks>
-        /// <param name="workerType">The type of the worker to create.</param>
-        /// <returns>The Receptionist connection configuration</returns>
+        protected abstract ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service);
+
+        protected abstract LocatorConfig GetLocatorConfig();
+        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig();
         protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
-
-        /// <summary>
-        ///     Creates the Locator configuration.
-        /// </summary>
-        /// <remarks>
-        ///     If in a standalone build, will use the command line arguments.
-        /// </remarks>
-        /// <param name="workerType">The type of the worker to create.</param>
-        /// <returns>The Locator connection configuration</returns>
-        protected abstract LocatorConfig GetLocatorConfig(string workerType);
 
         /// <summary>
         ///     Selects which deployment to connect to.
