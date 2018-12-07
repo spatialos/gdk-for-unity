@@ -7,34 +7,9 @@ namespace Improbable.Gdk.Core
     {
         public static Dictionary<string, string> GetArguments()
         {
-#if UNITY_ANDROID
-            try
-            {
-                using (var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-                using (var currentActivity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity"))
-                using (var intent = currentActivity.Call<UnityEngine.AndroidJavaObject>("getIntent"))
-                {
-                    var hasExtra = intent.Call<bool>("hasExtra", "arguments");
-                    if (hasExtra)
-                    {
-                        using (var extras = intent.Call<UnityEngine.AndroidJavaObject>("getExtras"))
-                        {
-                            var arguments = extras.Call<string>("getString", "arguments").Split(' ');
-                            return ParseCommandLineArgs(arguments);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogException(e);
-            }
-
-            return new Dictionary<string, string>();
-#else
             return ParseCommandLineArgs(Environment.GetCommandLineArgs());
-#endif
         }
+
 
         public static T GetCommandLineValue<T>(Dictionary<string, string> commandLineDictionary, string configKey,
             T defaultValue)
