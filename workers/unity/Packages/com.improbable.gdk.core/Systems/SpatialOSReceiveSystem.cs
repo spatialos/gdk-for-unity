@@ -74,13 +74,16 @@ namespace Improbable.Gdk.Core
                         switch (opList.GetOpType(i))
                         {
                             case OpType.AddEntity:
+                            {
                                 var addEntityOp = opList.GetAddEntityOp(i);
                                 var componentList = initialComponentsListPool.Rent();
                                 entityIdToInitialComponents.Add(addEntityOp.EntityId, componentList);
                                 componentList.Add(ComponentType.Create<NewlyAddedSpatialOSEntity>());
                                 componentList.Add(ComponentType.Create<SpatialEntityId>());
                                 break;
+                            }
                             case OpType.AddComponent:
+                            {
                                 var addComponentOp = opList.GetAddComponentOp(i);
                                 if (entityIdToInitialComponents.TryGetValue(addComponentOp.EntityId,
                                     out var components))
@@ -90,6 +93,20 @@ namespace Improbable.Gdk.Core
                                 }
 
                                 break;
+                            }
+                            case OpType.RemoveEntity:
+                            {
+                                var removeEntityOp = opList.GetRemoveEntityOp(i);
+                                entityIdToInitialComponents.Remove(removeEntityOp.EntityId);
+                                if (entityIdToInitialComponents.TryGetValue(removeEntityOp.EntityId,
+                                    out var components))
+                                {
+                                    initialComponentsListPool.Return(components);
+                                    entityIdToInitialComponents.Remove(removeEntityOp.EntityId);
+                                }
+
+                                break;
+                            }
                         }
                     }
 
