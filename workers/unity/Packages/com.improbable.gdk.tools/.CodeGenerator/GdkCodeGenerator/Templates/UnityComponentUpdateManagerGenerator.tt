@@ -461,7 +461,6 @@ namespace <#= qualifiedNamespace #>
 
                 entityIdToAuthority[entityId] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(entityId, out var entity);
-                //entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
 
                 var data = Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world);
                 data.MarkDataClean();
@@ -471,6 +470,7 @@ namespace <#= qualifiedNamespace #>
                 }
                 else
                 {
+                    entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                     entityManager.AddComponentData(entity, data);
                 }
 
