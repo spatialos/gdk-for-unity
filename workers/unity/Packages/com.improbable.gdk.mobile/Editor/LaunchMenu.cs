@@ -19,6 +19,16 @@ namespace Improbable.Gdk.Mobile
         {
             try
             {
+                // Find ADB tool
+                var sdkRootPath = EditorPrefs.GetString("AndroidSdkRoot");
+                if (string.IsNullOrEmpty(sdkRootPath))
+                {
+                    Debug.LogError($"Could not find Android SDK. Please set the SDK location in your editor preferences.");
+                    return;
+                }
+
+                var adbPath = Path.Combine(sdkRootPath, "platform-tools", "adb");
+
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing APK", 0.3f);
 
                 // Find apk to install
@@ -29,7 +39,7 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Install apk on connected phone / emulator
-                RedirectedProcess.Run("adb", "install", "-r", apkPath);
+                RedirectedProcess.Run(adbPath, "install", "-r", apkPath);
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
@@ -44,7 +54,7 @@ namespace Improbable.Gdk.Mobile
 
                 // Get chosen android package id and launch
                 var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
-                RedirectedProcess.Run("adb", "shell", "am", "start", "-S",
+                RedirectedProcess.Run(adbPath, "shell", "am", "start", "-S",
                     "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",
                     "-e", "\"arguments\"", $"\\\"{arguments.ToString()}\\\"");
 
