@@ -10,6 +10,8 @@ namespace Improbable.Gdk.Mobile
     public static class LaunchMenu
     {
         private const string rootApkPath = "build";
+        private static string AbsoluteApkPath => Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath));
+
         private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Device";
 
         [MenuItem(MenuLaunchAndroid, false, 73)]
@@ -20,10 +22,9 @@ namespace Improbable.Gdk.Mobile
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing APK", 0.3f);
 
                 // Find apk to install
-                var rootPath = Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath));
-                if (!TryGetApkPath(rootPath, out var apkPath))
+                if (!TryGetApkPath(AbsoluteApkPath, out var apkPath))
                 {
-                    Debug.LogError($"Could not find a built out Android binary in \"{rootPath}\" to launch.");
+                    Debug.LogError($"Could not find a built out Android binary in \"{AbsoluteApkPath}\" to launch.");
                     return;
                 }
 
@@ -58,8 +59,7 @@ namespace Improbable.Gdk.Mobile
         [MenuItem(MenuLaunchAndroid, true)]
         private static bool LaunchMobileClientValidate()
         {
-            var rootPath = Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath));
-            return TryGetApkPath(rootPath, out _);
+            return TryGetApkPath(AbsoluteApkPath, out _);
         }
 
         private static bool TryGetApkPath(string rootPath, out string apkPath)
