@@ -35,7 +35,6 @@ namespace <#= qualifiedNamespace #>
         var responseType = command.CommandName + ".Response";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
-
         public class <#= command.CommandName #>CommandManager : IComponentCommandManager<
             <#= requestType #>, <#= responseType #>, <#= receivedRequestType #>, <#= receivedResponseType #>>
         {
@@ -142,6 +141,12 @@ namespace <#= qualifiedNamespace #>
 
             public void SendResponse(<#= responseType #> response)
             {
+                // todo consider if empty strings should be treated as errors
+                if (!response.Payload.HasValue && response.FailureMessage == null)
+                {
+                    throw new ArgumentException("Command responses must have either a non-null payload or a non-null error message");
+                }
+
                 responsesToSend.Add(response);
             }
 
@@ -248,6 +253,7 @@ namespace <#= qualifiedNamespace #>
                 responsesReceived.Add(response);
             }
         }
+
 <# } #>
     }
 }
