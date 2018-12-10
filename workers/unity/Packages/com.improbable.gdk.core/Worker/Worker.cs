@@ -75,6 +75,14 @@ namespace Improbable.Gdk.Core
             disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
         }
 
+        /// <summary>
+        ///     Tries to connect to the SpatialOS Runtime and creates the worker responsible for the connection upon successfully connecting.
+        /// </summary>
+        /// <param name="connectionFuture">The <see cref="Future{T}"/> of the <see cref="Connection"/> object that we use to connect to the SpatialOS Runtime.</param>
+        /// <param name="workerType">The type of the worker.</param>
+        /// <param name="logger">The logger used by the worker.</param>
+        /// <param name="origin">The position of the worker.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asyncally and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         private static async Task<Worker> TryToConnect(Future<Connection> connectionFuture,
             string workerType,
             ILogDispatcher logger,
@@ -101,6 +109,14 @@ namespace Improbable.Gdk.Core
             return worker;
         }
 
+        /// <summary>
+        /// Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="config">The <see cref="ReceptionistConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by the worker.</param>
+        /// <param name="origin">The position of the worker.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             ReceptionistConfig config, 
             ConnectionParameters connectionParameters,
@@ -113,6 +129,14 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        /// <summary>
+        /// Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="config">The <see cref="LocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by the worker.</param>
+        /// <param name="origin">The position of the worker.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             LocatorConfig parameters,
             ConnectionParameters connectionParameters,
@@ -131,30 +155,19 @@ namespace Improbable.Gdk.Core
 
                     using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
                     {
-                        var connection = await Task.Run(() => connectionFuture.Get());
-                        if (!connection.IsConnected)
-                        {
-                            throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                                ConnectionErrorReason.CannotEstablishConnection);
-                        }
-
-                        // A check is needed for the case that play mode is exited before the connection can complete.
-                        if (!Application.isPlaying)
-                        {
-                            connection.Dispose();
-                            throw new ConnectionFailedException("Editor application stopped",
-                                ConnectionErrorReason.EditorApplicationStopped);
-                        }
-
-                        var worker = new Worker(connectionParameters.WorkerType, connection, logger, origin);
-                        logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                            .WithField("WorkerId", worker.WorkerId));
-                        return worker;
-                    }
+                        return await TryToConnect(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
+            }
         }
 
-
+        /// <summary>
+        /// Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="config">The <see cref="AlphaLocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by the worker.</param>
+        /// <param name="origin">The position of the worker.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,

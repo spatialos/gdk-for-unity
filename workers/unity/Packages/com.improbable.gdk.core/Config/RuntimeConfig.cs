@@ -37,8 +37,20 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public struct LocatorConfig
     {
+        /// <summary>
+        ///     The host to connect to the Locator.
+        /// </summary>
         public string LocatorHost;
+
+        /// <summary>
+        ///     The parameters needed to connect to the Locator.
+        /// </summary>
         public LocatorParameters LocatorParameters;
+
+        /// <summary>
+        /// A function that takes as input a list of available deployments and
+        /// returns the name of the deployment that we want to connect to via the Locator.
+        /// </summary>
         public Func<DeploymentList, string> DeploymentListCallback;
     }
 
@@ -47,7 +59,14 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public struct AlphaLocatorConfig
     {
+        /// <summary>
+        ///     The host used to connect to the Locator.
+        /// </summary>
         public string LocatorHost;
+
+        /// <summary>
+        ///     The parameters needed to connect to the Alpha Locator.
+        /// </summary>
         public Improbable.Worker.CInterop.Alpha.LocatorParameters LocatorParameters;
     }
 
@@ -56,11 +75,25 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public struct ReceptionistConfig
     {
+        /// <summary>
+        ///     The host used to connect to the Receptionist.
+        /// </summary>
         public string ReceptionistHost;
+
+        /// <summary>
+        ///     The port used to connect to the Receptionist.
+        /// </summary>
         public ushort ReceptionistPort;
+
+        /// <summary>
+        ///     The Id of the worker that we want to connect via the Receptionist.
+        /// </summary>
         public string WorkerId;
     }
 
+    /// <summary>
+    ///     An enum listing the available connection services.
+    /// </summary>
     public enum ConnectionService
     {
         Receptionist,

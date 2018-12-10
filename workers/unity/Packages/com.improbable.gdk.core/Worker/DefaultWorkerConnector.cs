@@ -12,11 +12,7 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public bool UseExternalIp;
 
-        /// <summary>
-        ///     Determines whether to connect via the locator.
-        /// </summary>
-        /// <returns>True, if should connect via the Locator, false otherwise.</returns>
-        protected override ConnectionService GetChosenService()
+        protected override ConnectionService GetConnectionService()
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);

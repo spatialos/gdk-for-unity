@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Mobile
             throw new System.NotImplementedException("The alpha locator flow is currently not available for mobile workers.");
         }
 
-        protected override ConnectionService GetChosenService()
+        protected override ConnectionService GetConnectionService()
         {
             return ConnectionService.Receptionist;
         }

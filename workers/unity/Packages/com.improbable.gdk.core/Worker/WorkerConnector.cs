@@ -86,7 +86,7 @@ namespace Improbable.Gdk.Core
 
                 var origin = transform.position;
                 ConnectionDelegate connectionDelegate;
-                var chosenService = GetChosenService();
+                var chosenService = GetConnectionService();
                 var connectionParameters = GetConnectionParameters(workerType, chosenService);
                 switch (chosenService)
                 {
@@ -150,12 +150,40 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        protected abstract ConnectionService GetChosenService();
+        /// <summary>
+        ///     Determines which <see cref="ConnectionService"/> to use to connect to the SpatialOS Runtime.
+        /// </summary>
+        /// <returns>A <see cref="ConnectionService"/> object describing which connection servce to use.</returns>
+        protected abstract ConnectionService GetConnectionService();
 
+        /// <summary>
+        ///     Retrieves the <see cref="ConnectionParameters"/> needed to be able to connect to any connection service.
+        /// </summary>
+        /// <param name="workerType">The type of worker you want to connect.</param>
+        /// <param name="service">The connection service used to connect.</param>
+        /// <returns>A <see cref="ConnectionParameters"/> object.</returns>
         protected abstract ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service);
 
+        /// <summary>
+        /// Retrieves the configuration needed to connect via the Locator service.
+        /// </summary>
+        /// <returns>A <see cref="LocatorConfig"/> object.</returns>
         protected abstract LocatorConfig GetLocatorConfig();
+
+        /// <summary>
+        /// Retrieves the configuration needed to connect via the Alpha Locator service.
+        /// </summary>
+        /// <remarks>
+        ///     This connection service is still in Alpha and does not provide an integration with Steam.
+        /// </remarks>
+        /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
         protected abstract AlphaLocatorConfig GetAlphaLocatorConfig();
+
+        /// <summary>
+        /// Retrieves the configuration needed to connect via the Receptionist service.
+        /// </summary>
+        /// <param name="workerType">The type of worker you want to connect.</param>
+        /// <returns>A <see cref="ReceptionistConfig"/> object.</returns>
         protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 
         /// <summary>
