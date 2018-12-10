@@ -4,9 +4,10 @@
 
 using System.Linq;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
-{ 
+{
     
     public struct SecondCommandRequest
     {
@@ -16,7 +17,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             Field = field;
         }
-    
         public static class Serialization
         {
             public static void Serialize(SecondCommandRequest instance, global::Improbable.Worker.CInterop.SchemaObject obj)

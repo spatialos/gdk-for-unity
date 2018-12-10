@@ -202,7 +202,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
                 throw new UnknownCommandIndexException(commandIndex, "Connection");
             }
 
@@ -365,7 +365,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                             }
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;

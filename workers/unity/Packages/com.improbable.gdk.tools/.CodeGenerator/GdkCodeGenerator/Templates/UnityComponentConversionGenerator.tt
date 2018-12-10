@@ -263,7 +263,7 @@ namespace <#= qualifiedNamespace #>
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
 <# if (commandDetailsList.Count > 0) { #>
 
                 <#= profilingStart #>
@@ -578,7 +578,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 <# } #>
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;
@@ -624,6 +624,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
                                         new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
+                                        <#= commandDetails.CommandIndex #>,
                                         request.TimeoutMillis,
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 

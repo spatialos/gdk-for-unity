@@ -4,9 +4,10 @@
 
 using System.Linq;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
-{ 
+{
     
     public struct FirstEventPayload
     {
@@ -18,7 +19,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             Field1 = field1;
             Field2 = field2;
         }
-    
         public static class Serialization
         {
             public static void Serialize(FirstEventPayload instance, global::Improbable.Worker.CInterop.SchemaObject obj)

@@ -76,7 +76,15 @@ namespace Improbable.Gdk.Core
             {
                 using (var opList = worker.Connection.GetOpList(0))
                 {
-                    Dispatcher.Process(opList);
+                    try
+                    {
+                        Dispatcher.Process(opList);
+                    }
+                    catch (Exception e)
+                    {
+                        worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+                            .WithException(e));
+                    }
                 }
             }
             while (inCriticalSection);
@@ -382,12 +390,6 @@ namespace Improbable.Gdk.Core
             componentDispatcher.AddCommandComponents(worker.WorkerEntity);
         }
 
-        private void HandleException(Exception e)
-        {
-            worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
-                .WithException(e));
-        }
-
         private void SetupDispatcherHandlers()
         {
             // Find all component specific dispatchers and create an instance.
@@ -421,8 +423,6 @@ namespace Improbable.Gdk.Core
             Dispatcher.OnDeleteEntityResponse(OnDeleteEntityResponse);
             Dispatcher.OnReserveEntityIdsResponse(OnReserveEntityIdsResponse);
             Dispatcher.OnEntityQueryResponse(OnEntityQueryResponse);
-
-            ClientError.ExceptionCallback = HandleException;
         }
 
         private static class Errors

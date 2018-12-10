@@ -278,7 +278,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
 
                 Profiler.BeginSample("NonBlittableComponent");
                 switch (commandIndex)
@@ -686,7 +686,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                             }
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;
@@ -725,6 +725,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
                                         new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
+                                        1,
                                         request.TimeoutMillis,
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 
@@ -784,6 +785,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
                                         new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
+                                        2,
                                         request.TimeoutMillis,
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 

@@ -4,9 +4,10 @@
 
 using System.Linq;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Tests
-{ 
+{
     
     public struct TypeName
     {
@@ -16,7 +17,6 @@ namespace Improbable.Gdk.Tests
         {
             OtherType = otherType;
         }
-    
         public static class Serialization
         {
             public static void Serialize(TypeName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -45,7 +45,6 @@ namespace Improbable.Gdk.Tests
             {
                 SameName = sameName;
             }
-        
             public static class Serialization
             {
                 public static void Serialize(Other instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -76,7 +75,6 @@ namespace Improbable.Gdk.Tests
                     OtherZero = otherZero;
                     EnumField = enumField;
                 }
-            
                 public static class Serialization
                 {
                     public static void Serialize(NestedTypeName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -111,7 +109,6 @@ namespace Improbable.Gdk.Tests
                     {
                         Foo = foo;
                     }
-                
                     public static class Serialization
                     {
                         public static void Serialize(Other0 instance, global::Improbable.Worker.CInterop.SchemaObject obj)
