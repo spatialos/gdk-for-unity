@@ -97,7 +97,6 @@ namespace Improbable.Gdk.Core
                             case OpType.RemoveEntity:
                             {
                                 var removeEntityOp = opList.GetRemoveEntityOp(i);
-                                entityIdToInitialComponents.Remove(removeEntityOp.EntityId);
                                 if (entityIdToInitialComponents.TryGetValue(removeEntityOp.EntityId,
                                     out var components))
                                 {
