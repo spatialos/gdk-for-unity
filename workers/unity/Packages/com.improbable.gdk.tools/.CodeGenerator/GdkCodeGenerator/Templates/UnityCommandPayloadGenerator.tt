@@ -79,7 +79,8 @@ namespace <#= qualifiedNamespace #>
             /// <summary>
             ///     A Response will be considered a failure if FailureMessage is not null;
             /// </summary>
-            // Should consider making this a union of a failure and a response
+            // todo Should consider making this a union of a failure and a response
+            // todo consider making this readonly
             public struct Response : ICommandResponse
             {
                 public long RequestId;
