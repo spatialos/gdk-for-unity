@@ -38,6 +38,13 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
+                // Ensure an android device/emulator is present
+                if (RedirectedProcess.Run(adbPath, "get-state") != 0)
+                {
+                    Debug.LogError("No Android device/emulator detected.");
+                    return;
+                }
+
                 // Install apk on connected phone / emulator
                 RedirectedProcess.Run(adbPath, "install", "-r", apkPath);
 
