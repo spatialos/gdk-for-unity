@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Mobile
     public static class LaunchMenu
     {
         private const string rootApkPath = "build";
-        private static string AbsoluteApkPath => Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath));
+        private static string AbsoluteApkPath => Path.GetFullPath(Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath)));
 
         private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Device";
 
@@ -64,12 +64,6 @@ namespace Improbable.Gdk.Mobile
             {
                 EditorUtility.ClearProgressBar();
             }
-        }
-
-        [MenuItem(MenuLaunchAndroid, true)]
-        private static bool LaunchMobileClientValidate()
-        {
-            return TryGetApkPath(AbsoluteApkPath, out _);
         }
 
         private static bool TryGetApkPath(string rootPath, out string apkPath)
