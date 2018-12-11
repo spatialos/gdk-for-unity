@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Mobile
                     UseExternalIp = true,
                 },
                 EnableProtocolLoggingAtStartup = false,
-                DefaultComponentVtable = new PassthroughComponentVtable()
+                DefaultComponentVtable = new ComponentVtable(),
             };
         }
 

@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core
                         UseExternalIp = useExternalIp,
                     },
                     EnableProtocolLoggingAtStartup = false,
-                    DefaultComponentVtable = new PassthroughComponentVtable()
+                    DefaultComponentVtable = new ComponentVtable(),
                 };
             }
 
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Core
                     UseExternalIp = UseExternalIp,
                 },
                 EnableProtocolLoggingAtStartup = false,
-                DefaultComponentVtable = new PassthroughComponentVtable()
+                DefaultComponentVtable = new ComponentVtable()
             };
         }
 
