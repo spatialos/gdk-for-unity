@@ -36,7 +36,9 @@ namespace Improbable.Gdk.Core
         protected override ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service)
         {
             // UseExternalIp needs to be true when using the locator
-            var useExternalIp = service != ConnectionService.Receptionist || UseExternalIp;
+            var useExternalIp = service == ConnectionService.Locator
+                || service == ConnectionService.AlphaLocator
+                || UseExternalIp;
 
             if (Application.isEditor)
             {
@@ -102,6 +104,14 @@ namespace Improbable.Gdk.Core
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
 
+            var projectName = CommandLineUtility.GetCommandLineValue(
+                commandLineArgs, RuntimeConfigNames.ProjectName, string.Empty);
+
+            if (string.IsNullOrEmpty(projectName))
+            {
+                throw new ConnectionFailedException("Project name is not set. Can't connect via the Locator.", ConnectionErrorReason.InvalidConfig);
+            }
+
             var loginToken = CommandLineUtility.GetCommandLineValue(
                 commandLineArgs, RuntimeConfigNames.LoginToken, string.Empty);
             var steamDeploymentTag = CommandLineUtility.GetCommandLineValue(
@@ -109,10 +119,19 @@ namespace Improbable.Gdk.Core
             var steamTicket = CommandLineUtility.GetCommandLineValue(
                 commandLineArgs, RuntimeConfigNames.SteamTicket, string.Empty);
 
-            var credentialType = LocatorCredentialsType.Steam;
+
+            LocatorCredentialsType credentialType;
             if (!string.IsNullOrEmpty(loginToken))
             {
                 credentialType = LocatorCredentialsType.LoginToken;
+            }
+            else if (!string.IsNullOrEmpty(steamDeploymentTag) && !string.IsNullOrEmpty(steamTicket))
+            {
+                credentialType = LocatorCredentialsType.Steam;
+            }
+            else
+            {
+                throw new ConnectionFailedException("Neither steam credentials nor login token is set. Can't connect via the Locator.", ConnectionErrorReason.InvalidConfig);
             }
 
             return new LocatorConfig
@@ -132,8 +151,7 @@ namespace Improbable.Gdk.Core
                         DeploymentTag = steamDeploymentTag,
                         Ticket = steamTicket,
                     },
-                    ProjectName = CommandLineUtility.GetCommandLineValue(
-                        commandLineArgs, RuntimeConfigNames.ProjectName, string.Empty),
+                    ProjectName = projectName,
                 }
             };
         }

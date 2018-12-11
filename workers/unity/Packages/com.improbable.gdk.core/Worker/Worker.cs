@@ -80,8 +80,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="connectionFuture">The <see cref="Future{T}"/> of the <see cref="Connection"/> object that we use to connect to the SpatialOS Runtime.</param>
         /// <param name="workerType">The type of the worker.</param>
-        /// <param name="logger">The logger used by the worker.</param>
-        /// <param name="origin">The position of the worker.</param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
         /// <returns>A <see cref="Task{TResult}"/> to run this method asyncally and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         private static async Task<Worker> TryToConnect(Future<Connection> connectionFuture,
             string workerType,
@@ -114,8 +114,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="config">The <see cref="ReceptionistConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
         /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
-        /// <param name="logger">The logger used by the worker.</param>
-        /// <param name="origin">The position of the worker.</param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
         /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             ReceptionistConfig config, 
@@ -134,8 +134,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="config">The <see cref="LocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
         /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
-        /// <param name="logger">The logger used by the worker.</param>
-        /// <param name="origin">The position of the worker.</param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
         /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             LocatorConfig parameters,
@@ -165,8 +165,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="config">The <see cref="AlphaLocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
         /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
-        /// <param name="logger">The logger used by the worker.</param>
-        /// <param name="origin">The position of the worker.</param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
         /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
         public static async Task<Worker> CreateWorkerAsync(
             AlphaLocatorConfig parameters,
