@@ -1,5 +1,4 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Mobile.Android;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -76,10 +75,14 @@ namespace Playground
 
         private string GetReceptionistHostFromArguments()
         {
-            var arguments = LaunchArguments.GetArguments();
+#if UNITY_ANDROID
+            var arguments = Improbable.Gdk.Mobile.Android.LaunchArguments.GetArguments();
             var hostIp =
                 CommandLineUtility.GetCommandLineValue(arguments, RuntimeConfigNames.ReceptionistHost, string.Empty);
             return hostIp;
+#else
+            return string.Empty;
+#endif
         }
     }
 }
