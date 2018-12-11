@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Core
                 Network =
                 {
                     ConnectionType = linkProtocol,
-                    UseExternalIp = UseExternalIp,
+                    UseExternalIp = useExternalIp,
                 },
                 EnableProtocolLoggingAtStartup = false,
                 DefaultComponentVtable = new ComponentVtable()
