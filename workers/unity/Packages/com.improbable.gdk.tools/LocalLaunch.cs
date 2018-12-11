@@ -206,6 +206,12 @@ namespace Improbable.Gdk.Tools
             var command = Common.SpatialBinary;
             var commandArgs = "local launch";
 
+            var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
+            if (!string.IsNullOrEmpty(runtimeIp))
+            {
+                commandArgs = $"{commandArgs} --runtime_ip={runtimeIp}";
+            }
+
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";

@@ -23,6 +23,14 @@ namespace Playground
 
         public void Awake()
         {
+            var hostIp = GetReceptionistHostFromArguments();
+            if (!string.IsNullOrEmpty(hostIp))
+            {
+                ipAddressInput.text = hostIp;
+                TryConnect();
+                return;
+            }
+
             ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             connectButton.onClick.AddListener(TryConnect);
         }
@@ -63,6 +71,18 @@ namespace Playground
             workerConnector.IpAddress = IpAddress;
             workerConnector.ConnectionScreenController = this;
             workerConnector.TryConnect();
+        }
+
+        private string GetReceptionistHostFromArguments()
+        {
+#if UNITY_ANDROID
+            var arguments = Improbable.Gdk.Mobile.Android.LaunchArguments.GetArguments();
+            var hostIp =
+                CommandLineUtility.GetCommandLineValue(arguments, RuntimeConfigNames.ReceptionistHost, string.Empty);
+            return hostIp;
+#else
+            return string.Empty;
+#endif
         }
     }
 }

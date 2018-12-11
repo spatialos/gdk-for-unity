@@ -5,6 +5,12 @@ namespace Improbable.Gdk.Core
 {
     public static class CommandLineUtility
     {
+        public static Dictionary<string, string> GetArguments()
+        {
+            return ParseCommandLineArgs(Environment.GetCommandLineArgs());
+        }
+
+
         public static T GetCommandLineValue<T>(Dictionary<string, string> commandLineDictionary, string configKey,
             T defaultValue)
         {
@@ -57,6 +63,12 @@ namespace Improbable.Gdk.Core
                 var flag = args[i];
                 if (flag.StartsWith("+"))
                 {
+                    if (i + 1 >= args.Count)
+                    {
+                        throw new ArgumentException(
+                            $"Flag \"{flag}\" requires an argument\nArguments: \"{string.Join(", ", args)}\"");
+                    }
+
                     var flagArg = args[i + 1];
                     var strippedOfPlus = flag.Substring(1, flag.Length - 1);
                     config[strippedOfPlus] = flagArg;
