@@ -9,8 +9,7 @@ namespace Improbable.Gdk.Subscriptions
     // or the order of events should be decided by system order rather than in this system
     // would enable users changing readers more easily maybe
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    [UpdateAfter(typeof(SpatialOSReceiveSystem))]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.GameObjectInitializationGroup))]
     public class RequireLifecycleSystem : ComponentSystem
     {
         private readonly List<MonoBehaviour> behavioursToEnable = new List<MonoBehaviour>();
@@ -35,6 +34,7 @@ namespace Improbable.Gdk.Subscriptions
         protected override void OnUpdate()
         {
             componentConstraintsCallbackSystem.Invoke();
+
             foreach (var behaviour in behavioursToDisable)
             {
                 if (behaviour == null)
