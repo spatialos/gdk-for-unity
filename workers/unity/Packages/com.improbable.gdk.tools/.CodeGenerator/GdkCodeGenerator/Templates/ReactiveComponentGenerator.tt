@@ -237,6 +237,13 @@ namespace <#= qualifiedNamespace #>
             {
                 var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
 
+                foreach (var entityId in world.GetExistingManager<EntitySystem>().GetEntitiesAdded())
+                {
+                    workerSystem.TryGetEntity(entityId, out var entity);
+                    entityManager.AddComponent(entity,
+                        ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
+                }
+
                 for (int i = 0; i < authorityChanges.Count; ++i)
                 {
                     ref readonly var auth = ref authorityChanges[i];

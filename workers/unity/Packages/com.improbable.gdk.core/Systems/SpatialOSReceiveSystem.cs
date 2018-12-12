@@ -26,11 +26,6 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
             new Dictionary<uint, ComponentDispatcherHandler>();
 
-        private readonly ListPool<ComponentType> initialComponentsListPool = new ListPool<ComponentType>(40, 4, 50);
-
-        private readonly Dictionary<long, List<ComponentType>> entityIdToInitialComponents =
-            new Dictionary<long, List<ComponentType>>();
-
         public List<Action<Unity.Entities.Entity>> AddAllCommandComponents = new List<Action<Unity.Entities.Entity>>();
 
         private bool inCriticalSection;
@@ -69,46 +64,6 @@ namespace Improbable.Gdk.Core
             {
                 using (var opList = worker.Connection.GetOpList(0))
                 {
-                    for (int i = 0; i < opList.GetOpCount(); ++i)
-                    {
-                        switch (opList.GetOpType(i))
-                        {
-                            case OpType.AddEntity:
-                            {
-                                var addEntityOp = opList.GetAddEntityOp(i);
-                                var componentList = initialComponentsListPool.Rent();
-                                entityIdToInitialComponents.Add(addEntityOp.EntityId, componentList);
-                                componentList.Add(ComponentType.Create<NewlyAddedSpatialOSEntity>());
-                                componentList.Add(ComponentType.Create<SpatialEntityId>());
-                                break;
-                            }
-                            case OpType.AddComponent:
-                            {
-                                var addComponentOp = opList.GetAddComponentOp(i);
-                                if (entityIdToInitialComponents.TryGetValue(addComponentOp.EntityId,
-                                    out var components))
-                                {
-                                    components.AddRange(
-                                        updateSystem.GetInitialComponentsToAdd(addComponentOp.Data.ComponentId));
-                                }
-
-                                break;
-                            }
-                            case OpType.RemoveEntity:
-                            {
-                                var removeEntityOp = opList.GetRemoveEntityOp(i);
-                                if (entityIdToInitialComponents.TryGetValue(removeEntityOp.EntityId,
-                                    out var components))
-                                {
-                                    initialComponentsListPool.Return(components);
-                                    entityIdToInitialComponents.Remove(removeEntityOp.EntityId);
-                                }
-
-                                break;
-                            }
-                        }
-                    }
-
                     try
                     {
                         Dispatcher.Process(opList);
@@ -134,17 +89,14 @@ namespace Improbable.Gdk.Core
 
             Profiler.BeginSample("OnAddEntity");
 
-            var archetype = EntityManager.CreateArchetype(entityIdToInitialComponents[op.EntityId].ToArray());
+            var entity = EntityManager.CreateEntity();
 
-            var entity = EntityManager.CreateEntity(archetype);
-
-            initialComponentsListPool.Return(entityIdToInitialComponents[op.EntityId]);
-            entityIdToInitialComponents.Remove(op.EntityId);
-
-            EntityManager.SetComponentData(entity, new SpatialEntityId
+            EntityManager.AddComponentData(entity, new SpatialEntityId
             {
                 EntityId = entityId
             });
+
+            EntityManager.AddComponent(entity, ComponentType.Create<NewlyAddedSpatialOSEntity>());
 
             foreach (var AddCommandCompoent in AddAllCommandComponents)
             {
