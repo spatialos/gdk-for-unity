@@ -6,8 +6,8 @@ namespace Improbable.Gdk.Subscriptions
     [AutoRegisterSubscriptionManager]
     public class LogDispatcherSubscriptionManager : SubscriptionManager<ILogDispatcher>
     {
+		private readonly ILogDispatcher logger;
         private Subscription<ILogDispatcher> subscription;
-        private readonly ILogDispatcher logger;
 
         public LogDispatcherSubscriptionManager(World world)
         {
