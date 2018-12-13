@@ -21,11 +21,10 @@ namespace Playground.MonoBehaviours
         [Require] private CubeSpawnerCommandReceiver cubeSpawnerReceiver;
         [Require] private WorldCommandSender worldCommandSender;
 
-        private ILogDispatcher logDispatcher;
+        [Require] private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
-            //logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerReceiver.OnDeleteSpawnedCubeRequestReceived += OnDeleteSpawnedCubeRequest;
         }
 
@@ -57,10 +56,10 @@ namespace Playground.MonoBehaviours
 
             if (response.StatusCode != StatusCode.Success)
             {
-                // logDispatcher.HandleLog(LogType.Error,
-                //     new LogEvent("Could not delete entity.")
-                //         .WithField(LoggingUtils.EntityId, entityId)
-                //         .WithField("Reason", response.Message));
+                logDispatcher.HandleLog(LogType.Error,
+                    new LogEvent("Could not delete entity.")
+                        .WithField(LoggingUtils.EntityId, entityId)
+                        .WithField("Reason", response.Message));
                 return;
             }
 
@@ -69,9 +68,9 @@ namespace Playground.MonoBehaviours
 
             if (!spawnedCubesCopy.Remove(entityId))
             {
-                // logDispatcher.HandleLog(LogType.Error,
-                //     new LogEvent("The entity has been unexpectedly removed from the list.")
-                //         .WithField(LoggingUtils.EntityId, entityId));
+                logDispatcher.HandleLog(LogType.Error,
+                    new LogEvent("The entity has been unexpectedly removed from the list.")
+                        .WithField(LoggingUtils.EntityId, entityId));
                 return;
             }
 
