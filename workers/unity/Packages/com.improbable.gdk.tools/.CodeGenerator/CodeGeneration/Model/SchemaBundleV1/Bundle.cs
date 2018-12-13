@@ -7,12 +7,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
     public class SchemaBundle
     {
         [JsonProperty("v1")] public Bundle BundleContents;
+        [JsonProperty("sourceMapV1")] public SourceMap SourceMap;
 
-        public static Bundle FromJson(string json)
+        public static SchemaBundle FromJson(string json)
         {
-            var schemaBundle = JsonConvert.DeserializeObject<SchemaBundle>(json);
-
-            return schemaBundle.BundleContents;
+            return JsonConvert.DeserializeObject<SchemaBundle>(json);
         }
 
         public class Bundle

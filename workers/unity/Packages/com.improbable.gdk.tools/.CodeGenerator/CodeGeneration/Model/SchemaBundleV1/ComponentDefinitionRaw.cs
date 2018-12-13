@@ -7,7 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
     {
         [JsonProperty("identifier")] public Identifier Identifier;
         [JsonProperty("componentId")] public uint ComponentId;
-        [JsonProperty("dataDefinition")] public WrappedType Data;
+        [JsonProperty("fieldDefinitions")] public List<Field> Fields;
 
         [JsonProperty("eventDefinitions")] public List<EventDefinitionRaw> Events;
         [JsonProperty("commandDefinitions")] public List<CommandDefinitionRaw> Commands;
