@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
+using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 using Unity.Entities;
 using UnityEngine;
 
@@ -74,90 +76,108 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Asynchronously connects and creates a worker via the Receptionist.
+        ///     Tries to connect to the SpatialOS Runtime and creates the worker responsible for the connection upon successfully connecting.
         /// </summary>
-        /// <param name="config">The Receptionist connection configuration.</param>
-        /// <param name="logger">The logger for this worker.</param>
-        /// <param name="origin">The origin of this worker in local Unity space.</param>
-        /// <returns>A task that returns a Worker when finished.</returns>
-        /// <exception cref="ConnectionFailedException">
-        ///     Thrown if the worker fails to connect.
-        /// </exception>
-        public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig config, ILogDispatcher logger,
+        /// <param name="connectionFuture">The <see cref="Future{T}"/> of the <see cref="Connection"/> object that we use to connect to the SpatialOS Runtime.</param>
+        /// <param name="workerType">The type of the worker.</param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asyncally and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
+            string workerType,
+            ILogDispatcher logger,
             Vector3 origin)
         {
-            var connectionParams = config.CreateConnectionParameters();
-            using (var connectionFuture = Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort,
-                config.WorkerId, connectionParams))
+            var connection = await Task.Run(() => connectionFuture.Get());
+            if (!connection.IsConnected)
             {
-                var connection = await Task.Run(() => connectionFuture.Get());
-                if (!connection.IsConnected)
-                {
-                    throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                        ConnectionErrorReason.CannotEstablishConnection);
-                }
+                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
+                    ConnectionErrorReason.CannotEstablishConnection);
+            }
 
-                // A check is needed for the case that play mode is exited before the connection can complete.
-                if (!Application.isPlaying)
-                {
-                    connection.Dispose();
-                    throw new ConnectionFailedException("Editor application stopped",
-                        ConnectionErrorReason.EditorApplicationStopped);
-                }
+            // A check is needed for the case that play mode is exited before the connection can complete.
+            if (!Application.isPlaying)
+            {
+                connection.Dispose();
+                throw new ConnectionFailedException("Editor application stopped",
+                    ConnectionErrorReason.EditorApplicationStopped);
+            }
 
-                var worker = new Worker(config.WorkerType, connection, logger, origin);
-                logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                    .WithField("WorkerId", worker.WorkerId));
-                return worker;
+            var worker = new Worker(workerType, connection, logger, origin);
+            logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
+                .WithField("WorkerId", worker.WorkerId));
+            return worker;
+        }
+
+        /// <summary>
+        /// Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="config">The <see cref="ReceptionistConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        public static async Task<Worker> CreateWorkerAsync(
+            ReceptionistConfig config, 
+            ConnectionParameters connectionParameters,
+            ILogDispatcher logger, Vector3 origin)
+        {
+            using (var connectionFuture =
+                Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId, connectionParameters))
+            {
+                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
             }
         }
 
         /// <summary>
-        ///     Asynchronously connects and creates a worker via the Locator.
+        /// Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker"/> object asynchronously.
         /// </summary>
-        /// <param name="config">The Locator connection configuration.</param>
-        /// <param name="logger">The logger for this worker.</param>
-        /// <param name="origin">The origin of this worker in local Unity space.</param>
-        /// <returns>A task that returns a Worker when finished.</returns>
-        /// <exception cref="ConnectionFailedException">
-        ///     Thrown if the worker fails to connect.
-        /// </exception>
-        public static async Task<Worker> CreateWorkerAsync(LocatorConfig config,
-            Func<DeploymentList, string> deploymentListCallback, ILogDispatcher logger, Vector3 origin)
+        /// <param name="config">The <see cref="LocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        public static async Task<Worker> CreateWorkerAsync(
+            LocatorConfig parameters,
+            ConnectionParameters connectionParameters,
+            ILogDispatcher logger, Vector3 origin)
         {
-            using (var locator = new Locator(config.LocatorHost, config.LocatorParameters))
-            {
-                var deploymentList = await GetDeploymentList(locator);
-
-                var deploymentName = deploymentListCallback(deploymentList);
-                if (String.IsNullOrEmpty(deploymentName))
+                using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
                 {
-                    throw new ConnectionFailedException("No deployment name chosen",
-                        ConnectionErrorReason.DeploymentNotFound);
+                    var deploymentList = await GetDeploymentList(locator);
+
+                    var deploymentName = parameters.DeploymentListCallback(deploymentList);
+                    if (string.IsNullOrEmpty(deploymentName))
+                    {
+                        throw new ConnectionFailedException("No deployment name chosen",
+                            ConnectionErrorReason.DeploymentNotFound);
+                    }
+
+                    using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
+                    {
+                        return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
+            }
+        }
 
-                var connectionParams = config.CreateConnectionParameters();
-                using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParams, (_) => true))
+        /// <summary>
+        /// Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="config">The <see cref="AlphaLocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="logger">The logger used by this worker.</param>
+        /// <param name="origin">The origin of this worker in the local Unity space.</param>
+        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        public static async Task<Worker> CreateWorkerAsync(
+            AlphaLocatorConfig parameters,
+            ConnectionParameters connectionParameters,
+            ILogDispatcher logger, Vector3 origin)
+        {
+            using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
+            {
+                using (var connectionFuture = locator.ConnectAsync(connectionParameters))
                 {
-                    var connection = await Task.Run(() => connectionFuture.Get());
-                    if (!connection.IsConnected)
-                    {
-                        throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                            ConnectionErrorReason.CannotEstablishConnection);
-                    }
-
-                    // A check is needed for the case that play mode is exited before the connection can complete.
-                    if (!Application.isPlaying)
-                    {
-                        connection.Dispose();
-                        throw new ConnectionFailedException("Editor application stopped",
-                            ConnectionErrorReason.EditorApplicationStopped);
-                    }
-
-                    var worker = new Worker(config.WorkerType, connection, logger, origin);
-                    logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                        .WithField("WorkerId", worker.WorkerId));
-                    return worker;
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }

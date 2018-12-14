@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for the Steam authentication flow.
+- Added support for the Alpha Locator flow.
 
 ### Changed
 
