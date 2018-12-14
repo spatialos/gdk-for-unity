@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Core
         /// <param name="logger">The logger used by this worker.</param>
         /// <param name="origin">The origin of this worker in the local Unity space.</param>
         /// <returns>A <see cref="Task{TResult}"/> to run this method asyncally and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
-        private static async Task<Worker> TryToConnect(Future<Connection> connectionFuture,
+        private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
             string workerType,
             ILogDispatcher logger,
             Vector3 origin)
@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Core
             using (var connectionFuture =
                 Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId, connectionParameters))
             {
-                return await TryToConnect(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
             }
         }
 
@@ -155,7 +155,7 @@ namespace Improbable.Gdk.Core
 
                     using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
                     {
-                        return await TryToConnect(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                        return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace Improbable.Gdk.Core
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
                 {
-                    return await TryToConnect(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }
