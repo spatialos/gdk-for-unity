@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Gdk.QueryBasedInterestHelper",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Mathematics"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

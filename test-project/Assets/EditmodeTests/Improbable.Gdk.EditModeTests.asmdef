@@ -1,6 +1,7 @@
 {
     "name": "Improbable.Gdk.EditModeTests",
     "references": [
+        "Improbable.Gdk.QueryBasedInterestHelper",
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
         "Unity.Entities",
