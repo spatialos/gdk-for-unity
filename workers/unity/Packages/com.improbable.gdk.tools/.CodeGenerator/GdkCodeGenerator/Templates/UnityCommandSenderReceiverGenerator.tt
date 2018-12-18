@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Entities;
 using Unity.Collections;
 using Improbable.Gdk.Core;
@@ -285,6 +286,14 @@ namespace <#= qualifiedNamespace #>
                 };
                 callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
             }
+        }
+
+        public async Task<<#= receivedCommandResponseType #>> Send<#= commandDetails.CommandName #>Command(<#= commandRequest #> request)
+        {
+            var requestId = commandSender.SendCommand(request, entity);
+            var taskSource = new TaskCompletionSource<<#= receivedCommandResponseType #>>();
+            commandSender.RegisterResponseRequest(requestId, taskSource);
+            return await taskSource.Task;
         }
 <# } #>
     }

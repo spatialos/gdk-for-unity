@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
@@ -42,26 +43,26 @@ namespace Playground.MonoBehaviours
             }
         }
 
-        private void Update()
+        private async void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SendSpawnCubeCommand();
+                await SendSpawnCubeCommand();
             }
 
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                SendDeleteCubeCommand();
+                await SendDeleteCubeCommand();
             }
         }
 
-        private void SendSpawnCubeCommand()
+        private async Task SendSpawnCubeCommand()
         {
             var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
-            cubeSpawnerCommandSender.SendSpawnCubeCommand(request, OnSpawnCubeResponse);
+            await cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
         }
 
-        private void SendDeleteCubeCommand()
+        private async Task SendDeleteCubeCommand()
         {
             var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
 
@@ -75,7 +76,7 @@ namespace Playground.MonoBehaviours
             {
                 CubeEntityId = spawnedCubes[0]
             });
-            cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request, OnDeleteSpawnedCubeResponse);
+            await cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request);
         }
     }
 }

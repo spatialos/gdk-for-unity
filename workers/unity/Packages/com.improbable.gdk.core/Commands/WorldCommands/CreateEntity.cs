@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
@@ -336,6 +337,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private Dictionary<long, long> sentWorkerRequestIdToInternalRequestId = new Dictionary<long, long>();
 
+                private Dictionary<long, TaskCompletionSource<ReceivedResponse>> internalRequestIdToReceivedResponseTask = new Dictionary<long, TaskCompletionSource<ReceivedResponse>>();
+
                 public Type GetRequestType()
                 {
                     return typeof(Request);
@@ -441,6 +444,17 @@ namespace Improbable.Gdk.Core.Commands
                     return false;
                 }
 
+                public void RegisterResponseTask(long requestId, TaskCompletionSource<ReceivedResponse> task)
+                {
+                    if (internalRequestIdToReceivedResponseTask.ContainsKey(requestId))
+                    {
+                        task.SetException(new ArgumentException("Request Id is already registered."));
+                        return;
+                    }
+
+                    internalRequestIdToReceivedResponseTask[requestId] = task;
+                }
+
                 private void AddResponse(CreateEntityResponseOp op)
                 {
                     var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
@@ -459,6 +473,11 @@ namespace Improbable.Gdk.Core.Commands
                         internalRequestId);
 
                     responsesReceived.Add(response);
+                    if (internalRequestIdToReceivedResponseTask.ContainsKey(internalRequestId))
+                    {
+                        internalRequestIdToReceivedResponseTask[internalRequestId].SetResult(response);
+                        internalRequestIdToReceivedResponseTask.Remove(internalRequestId);
+                    }
                 }
             }
         }
