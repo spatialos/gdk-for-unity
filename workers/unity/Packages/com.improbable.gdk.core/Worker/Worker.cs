@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
@@ -273,12 +274,17 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
             World.GetOrCreateManager<ReactiveCommandComponentSystem>();
             World.GetOrCreateManager<CommandSenderComponentSystem>();
+            World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
+
+            // Subscriptions systems
             World.GetOrCreateManager<CommandCallbackSystem>();
             World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
             World.GetOrCreateManager<ComponentCallbackSystem>();
             World.GetOrCreateManager<RequireLifecycleSystem>();
-            World.GetOrCreateManager<ReactiveComponentSystem>();
             World.GetOrCreateManager<SubscriptionSystem>();
+
+            // Reactive components
+            ReactiveComponentsHelper.AddCommonSystems(World);
         }
 
         public void Dispose()

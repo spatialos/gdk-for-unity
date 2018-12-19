@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;

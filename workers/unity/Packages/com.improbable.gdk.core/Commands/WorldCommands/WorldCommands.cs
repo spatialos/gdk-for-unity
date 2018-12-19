@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.ReactiveComponents;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core.Commands

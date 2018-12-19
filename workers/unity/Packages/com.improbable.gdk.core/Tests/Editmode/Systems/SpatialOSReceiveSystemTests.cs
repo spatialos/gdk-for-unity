@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Improbable.Gdk.Core.CodegenAdapters;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
-
 using NUnit.Framework;
 using Unity.Entities;
 using UnityEngine;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
