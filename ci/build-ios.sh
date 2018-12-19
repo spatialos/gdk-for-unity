@@ -12,7 +12,7 @@ source ".shared-ci/scripts/pinned-tools.sh"
 
 if ! isMacOS; then
     echo "iOS can only be built on macOS"
-    exit 0
+    exit 1
 fi
 
 .shared-ci/scripts/build.sh "workers/unity" iOSClient local "$(pwd)/logs/iOSClientBuild.log"
