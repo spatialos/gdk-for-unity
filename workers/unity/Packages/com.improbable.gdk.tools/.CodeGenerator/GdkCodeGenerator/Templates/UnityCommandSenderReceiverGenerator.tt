@@ -52,7 +52,10 @@ namespace <#= qualifiedNamespace #>
                 workerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(entity, world));
+                    if (!subscription.HasValue)
+                    {
+                        subscription.SetAvailable(new <#= componentDetails.ComponentName #>CommandSender(entity, world));
+                    }
                 }
             });
 
@@ -65,8 +68,11 @@ namespace <#= qualifiedNamespace #>
 
                 foreach (var subscription in subscriptions)
                 {
-                    ResetValue(subscription);
-                    subscription.SetUnavailable();
+                    if (subscription.HasValue)
+                    {
+                        ResetValue(subscription);
+                        subscription.SetUnavailable();
+                    }
                 }
             });
         }
