@@ -15,7 +15,8 @@ namespace Improbable.Gdk.Core
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
-    public class SpatialOSSendSystem : ComponentSystem
+    [UpdateBefore(typeof(ComponentUpdateSystem))]
+    public class ComponentSendSystem : ComponentSystem
     {
         // Can't access the generated component ID in Core code.
         private const uint PositionComponentId = 54;
@@ -48,6 +49,8 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
+            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
             if (connection == null)
             {
                 return;
@@ -56,59 +59,49 @@ namespace Improbable.Gdk.Core
             foreach (var replicator in componentReplicators)
             {
                 Profiler.BeginSample("ExecuteReplication");
-                replicator.Handler.ExecuteReplication(replicator.UpdateGroup, this, World, connection);
-                Profiler.EndSample();
-
-                Profiler.BeginSample("SendCommands");
-                replicator.Handler.SendCommands(replicator.CommandGroup, this, World, connection);
+                replicator.Handler.SendUpdates(replicator.Group, this, EntityManager, componentUpdateSystem);
                 Profiler.EndSample();
             }
         }
 
-        internal void AddComponentReplicator(ComponentReplicationHandler componentReplicationHandler)
+        internal void AddComponentReplicator(IComponentReplicationHandler reactiveComponentReplicationHandler)
         {
             componentReplicators.Add(new ComponentReplicator
             {
-                ComponentId = componentReplicationHandler.ComponentId,
-                Handler = componentReplicationHandler,
-                UpdateGroup = GetComponentGroup(componentReplicationHandler.ComponentUpdateQuery),
-                CommandGroup = GetComponentGroup(componentReplicationHandler.CommandQueries),
+                ComponentId = reactiveComponentReplicationHandler.ComponentId,
+                Handler = reactiveComponentReplicationHandler,
+                Group = GetComponentGroup(reactiveComponentReplicationHandler.ComponentUpdateQuery)
             });
         }
 
         private void PopulateDefaultComponentReplicators()
         {
             // Find all component specific replicators and create an instance.
-            var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract
-                    && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) == null);
-
-            foreach (var componentReplicationType in componentReplicationTypes)
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var componentReplicationHandler =
-                    (ComponentReplicationHandler) Activator.CreateInstance(componentReplicationType,
-                        EntityManager, World);
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (typeof(IComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        if (type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) != null)
+                        {
+                            continue;
+                        }
 
-                AddComponentReplicator(componentReplicationHandler);
+                        var handler =
+                            (IComponentReplicationHandler) Activator.CreateInstance(type);
+
+                        AddComponentReplicator(handler);
+                    }
+                }
             }
-
-            // Force the position component to be replicated last. A position update can trigger an authority
-            // change, which could cause subsequent updates to be dropped.
-            var positionReplicatorIndex =
-                componentReplicators.FindIndex(replicator => replicator.ComponentId == PositionComponentId);
-            var positionReplicator = componentReplicators[positionReplicatorIndex];
-
-            componentReplicators.RemoveAt(positionReplicatorIndex);
-            componentReplicators.Add(positionReplicator);
         }
 
         private struct ComponentReplicator
         {
             public uint ComponentId;
-            public ComponentReplicationHandler Handler;
-            public ComponentGroup UpdateGroup;
-            public ComponentGroup CommandGroup;
+            public IComponentReplicationHandler Handler;
+            public ComponentGroup Group;
         }
     }
 }
