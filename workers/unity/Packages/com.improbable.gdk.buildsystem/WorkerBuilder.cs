@@ -138,13 +138,16 @@ namespace Improbable.Gdk.BuildSystem
                         Debug.Log($"Setting scripting backend to {scriptingBackend.Value}");
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
-                    
+
                     BuildWorkerForTarget(workerType, unityBuildTarget, buildOptions, targetEnvironment);
                 }
                 catch (Exception e)
                 {
-                    PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                     throw new BuildFailedException(e);
+                }
+                finally
+                {
+                    PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                 }
 
             }
