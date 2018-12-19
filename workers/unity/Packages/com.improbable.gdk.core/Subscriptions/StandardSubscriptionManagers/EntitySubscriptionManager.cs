@@ -44,7 +44,10 @@ namespace Improbable.Gdk.Subscriptions
                 workerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.SetAvailable(entity);
+                    if (!subscription.HasValue)
+                    {
+                        subscription.SetAvailable(entity);
+                    }
                 }
             });
 
@@ -57,7 +60,10 @@ namespace Improbable.Gdk.Subscriptions
 
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.SetUnavailable();
+                    if (subscription.HasValue)
+                    {
+                        subscription.SetUnavailable();
+                    }
                 }
             });
         }
