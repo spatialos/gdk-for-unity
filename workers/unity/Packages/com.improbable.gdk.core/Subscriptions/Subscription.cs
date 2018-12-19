@@ -87,7 +87,7 @@ namespace Improbable.Gdk.Subscriptions
             value = subscribedObject;
             HasValue = true;
 
-            availabilityHandler?.OnUnavailable();
+            availabilityHandler?.OnAvailable();
 
             if (onAvailable != null)
             {
