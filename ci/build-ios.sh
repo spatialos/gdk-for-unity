@@ -15,7 +15,7 @@ if ! isMacOS; then
     exit 1
 fi
 
-.shared-ci/scripts/build.sh "workers/unity" iOSClient local "$(pwd)/logs/iOSClientBuild.log"
+.shared-ci/scripts/build.sh "workers/unity" iOSClient local il2cpp "$(pwd)/logs/iOSClientBuild.log"
 
 cp -R .shared-ci/fastlane workers/unity/build/worker/iOSClient@iOS/iOSClient@iOS
 pushd workers/unity/build/worker/iOSClient@iOS/iOSClient@iOS
