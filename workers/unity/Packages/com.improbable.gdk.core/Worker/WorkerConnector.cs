@@ -87,6 +87,7 @@ namespace Improbable.Gdk.Core
                 var origin = transform.position;
                 ConnectionDelegate connectionDelegate;
                 var chosenService = GetConnectionService();
+                Debug.Log(chosenService);
                 var connectionParameters = GetConnectionParameters(workerType, chosenService);
                 switch (chosenService)
                 {
@@ -103,7 +104,7 @@ namespace Improbable.Gdk.Core
                         break;
                     case ConnectionService.AlphaLocator:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(), connectionParameters, logger, origin)
+                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
                                 .ConfigureAwait(false);
                         break;
                     default:
@@ -177,7 +178,7 @@ namespace Improbable.Gdk.Core
         ///     This connection service is still in Alpha and does not provide an integration with Steam.
         /// </remarks>
         /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
-        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig();
+        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig(string workerType);
 
         /// <summary>
         /// Retrieves the configuration needed to connect via the Receptionist service.

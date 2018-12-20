@@ -89,7 +89,8 @@ namespace Improbable.Gdk.Core
             Vector3 origin)
         {
             var connection = await Task.Run(() => connectionFuture.Get());
-            if (!connection.IsConnected)
+            Debug.Log(connection.GetConnectionStatusCodeDetailString());
+            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
             {
                 throw new ConnectionFailedException(GetConnectionFailureReason(connection),
                     ConnectionErrorReason.CannotEstablishConnection);
@@ -173,6 +174,7 @@ namespace Improbable.Gdk.Core
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
+            
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
