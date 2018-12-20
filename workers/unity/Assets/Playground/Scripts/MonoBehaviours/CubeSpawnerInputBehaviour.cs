@@ -47,22 +47,23 @@ namespace Playground.MonoBehaviours
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                await SendSpawnCubeCommand();
+                SendSpawnCubeCommand();
             }
 
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                await SendDeleteCubeCommand();
+                SendDeleteCubeCommand();
             }
         }
 
-        private async Task SendSpawnCubeCommand()
+        private async void SendSpawnCubeCommand()
         {
             var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
-            await cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
+            var response = await cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
+            Debug.Log($"Message: {response.Message}, Request Id: {response.RequestId}");
         }
 
-        private async Task SendDeleteCubeCommand()
+        private async void SendDeleteCubeCommand()
         {
             var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
 

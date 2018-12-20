@@ -256,11 +256,13 @@ namespace <#= qualifiedNamespace #>
         private readonly Entity entity;
         private readonly CommandSystem commandSender;
         private readonly CommandCallbackSystem callbackSystem;
+        private readonly CommandTaskSystem taskSystem;
 
         public <#= componentDetails.ComponentName #>CommandSender(Entity entity, World world)
         {
             this.entity = entity;
             callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            taskSystem = world.GetOrCreateManager<CommandTaskSystem>();
             // todo check that this exists
             commandSender = world.GetExistingManager<CommandSystem>();
 
@@ -292,7 +294,7 @@ namespace <#= qualifiedNamespace #>
         {
             var requestId = commandSender.SendCommand(request, entity);
             var taskSource = new TaskCompletionSource<<#= receivedCommandResponseType #>>();
-            commandSender.RegisterResponseRequest(requestId, taskSource);
+            taskSystem.RegisterTask(requestId, taskSource);
             return await taskSource.Task;
         }
 <# } #>

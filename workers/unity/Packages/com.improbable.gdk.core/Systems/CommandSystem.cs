@@ -62,17 +62,6 @@ namespace Improbable.Gdk.Core
             return ((ICommandResponseReceiver<T>) managers[index]).GetResponsesReceived();
         }
 
-        public void RegisterResponseRequest<T>(long requestId, TaskCompletionSource<T> task)
-            where T : IReceivedCommandResponse
-        {
-            if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
-            {
-                throw new ArgumentException("Type is not a valid received response");
-            }
-
-            ((ICommandResponseReceiver<T>)managers[index]).RegisterResponseTask(requestId, task);
-        }
-
         protected override void OnCreateManager()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
 using Unity.Mathematics;
@@ -57,9 +56,6 @@ namespace <#= qualifiedNamespace #>
             private Dictionary<long, Unity.Entities.Entity> sentInternalRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();
 
             private Dictionary<long, long> sentWorkerRequestIdToInternalRequestId = new Dictionary<long, long>();
-
-            private Dictionary<long, TaskCompletionSource<<#= receivedResponseType #>>> internalRequestIdToReceivedResponseTask = new Dictionary<long, TaskCompletionSource<<#= receivedResponseType #>>>();
-
 
             public Type GetRequestType()
             {
@@ -189,17 +185,6 @@ namespace <#= qualifiedNamespace #>
                 return false;
             }
 
-            public void RegisterResponseTask(long requestId, TaskCompletionSource<<#= receivedResponseType #>> task)
-            {
-                if (internalRequestIdToReceivedResponseTask.ContainsKey(requestId))
-                {
-                    task.SetException(new ArgumentException("Request Id is already registered."));
-                    return;
-                }
-
-                internalRequestIdToReceivedResponseTask[requestId] = task;
-            }
-
             private void AddRequest(CommandRequestOp op)
             {
                 var componentId = op.Request.ComponentId;
@@ -266,11 +251,6 @@ namespace <#= qualifiedNamespace #>
                     internalRequestId);
 
                 responsesReceived.Add(response);
-                if (internalRequestIdToReceivedResponseTask.ContainsKey(internalRequestId))
-                {
-                    internalRequestIdToReceivedResponseTask[internalRequestId].SetResult(response);
-                    internalRequestIdToReceivedResponseTask.Remove(internalRequestId);
-                }
             }
         }
 

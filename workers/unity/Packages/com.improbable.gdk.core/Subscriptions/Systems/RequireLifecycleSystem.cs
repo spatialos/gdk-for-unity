@@ -29,6 +29,7 @@ namespace Improbable.Gdk.Subscriptions
         }
 
         [Inject] private CommandCallbackSystem commandCallbackSystem;
+        [Inject] private CommandTaskSystem commandTaskSystem;
         [Inject] private ComponentCallbackSystem componentCallbackSystem;
         [Inject] private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
 
@@ -64,6 +65,8 @@ namespace Improbable.Gdk.Subscriptions
             componentCallbackSystem.InvokeLossImminent();
 
             commandCallbackSystem.InvokeCallbacks();
+
+            commandTaskSystem.CompleteTasks();
         }
     }
 }

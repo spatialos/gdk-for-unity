@@ -47,7 +47,6 @@ namespace Improbable.Gdk.Core.Commands
     {
         List<TReceivedResponse> GetResponsesReceived();
         bool TryGetResponseReceivedForRequestId(long requestId, out TReceivedResponse response);
-        void RegisterResponseTask(long requestId, TaskCompletionSource<TReceivedResponse> task);
     }
 
     // All interfaces needed by component command managers
