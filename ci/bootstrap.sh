@@ -13,6 +13,3 @@ if [ -d "${SHARED_CI_DIR}" ]; then
 fi
 
 git clone "${CLONE_URL}" "${SHARED_CI_DIR}"
-pushd "${SHARED_CI_DIR}"
-	git checkout feature/scripting-backend
-popd
