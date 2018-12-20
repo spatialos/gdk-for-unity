@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
@@ -27,23 +26,7 @@ namespace Playground.MonoBehaviours
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
 
-        private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
-        {
-            if (response.StatusCode != StatusCode.Success)
-            {
-                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
-            }
-        }
-
-        private void OnDeleteSpawnedCubeResponse(CubeSpawner.DeleteSpawnedCube.ReceivedResponse response)
-        {
-            if (response.StatusCode != StatusCode.Success)
-            {
-                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
-            }
-        }
-
-        private async void Update()
+        private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {

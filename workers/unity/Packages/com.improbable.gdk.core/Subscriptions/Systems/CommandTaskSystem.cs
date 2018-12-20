@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
 
