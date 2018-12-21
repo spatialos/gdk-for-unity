@@ -31,7 +31,7 @@ You can verify that the NavMesh has been baked correctly by navigating to **Asse
 <img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
 
 <%(Callout type="warning" message="
-You may have a number of _warnings_ in the Unity console, which you can ignore at this stage. We recommend only showing Errors in the Console." )%>
+You may have a number of _warnings_ in the Unity editor console, which you can ignore at this stage. We recommend only showing info and error messages in the Console." )%>
 
 <br/>
 #### Next: [Build your workers]({{urlRoot}}/content/get-started/build-workers.md)
