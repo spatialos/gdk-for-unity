@@ -2,6 +2,10 @@
 
 Launch the Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
+<%(Callout type="warning" message="
+It will take about 10 minutes for Unity to load the Starter Project for the first time. In the meantime, 
+why not take a stroll on our [Games Blog](https://improbable.io/games/blog)?" )%>
+
 **Before you start, apply these two quick Unity bug fixes:**
 
 #### Shaders
