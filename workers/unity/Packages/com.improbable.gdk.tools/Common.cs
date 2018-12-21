@@ -36,7 +36,6 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string[] MacPaths = { UsrLocalBinDir, UsrLocalShareDir };
 
-
         static Common()
         {
             try
@@ -50,22 +49,26 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        internal static string GetThisPackagePath()
+        {
+            return GetPackagePath("com.improbable.gdk.tools");
+        }
+
         /// <summary>
         ///     Finds the "file:" reference path from the package manifest.
         /// </summary>
-        internal static string GetThisPackagePath()
+        public static string GetPackagePath(string packageName)
         {
-            const string gdkTools = "com.improbable.gdk.tools";
             var manifest = ParseDependencies(ManifestPath);
 
-            if (!manifest.TryGetValue(gdkTools, out var path))
+            if (!manifest.TryGetValue(packageName, out var path))
             {
-                throw new Exception($"The project manifest must reference '{gdkTools}'.");
+                throw new Exception($"The project manifest must reference '{packageName}'.");
             }
 
             if (!path.StartsWith("file:"))
             {
-                throw new Exception($"The '{gdkTools}' package must exist on disk.");
+                throw new Exception($"The '{packageName}' package must exist on disk.");
             }
 
             path = path.Replace("file:", string.Empty);
