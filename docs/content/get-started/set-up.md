@@ -144,16 +144,16 @@ If you need help using the GDK, come and talk to us about the software and the d
 
 ### Zip Download
 
-If you are unfamiliar with Git, you can download a Zip file of the GDK and its Starter Project [here](https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases/tag/0.1.3). 
-
-Once you have done that, you can skip the rest of this page and move on to [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md).
-
 <%(Callout type="alert" message="
 If you can, please use Git to get the GDK and its starter project, as version control will make it easier for you to get updates in the future.")%>
 
+If you are unfamiliar with Git, you can download a Zip file of the GDK and its Starter Project [here](https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases/tag/0.1.3). 
+
+**If you have downloaded it and unzipped it, skip the rest of this page and move on to [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md).**
+
 ### Cloning the Repos using Git
 
-You need to clone two repositories; the FPS Starter Project and the GDK for Unity.
+If you haven't downloaded the zip, you need to clone two repositories; the FPS Starter Project and the GDK for Unity.
 
 #### Clone the FPS Starter Project repository
 
@@ -165,7 +165,7 @@ Clone the FPS starter project using one of the following commands:
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity-fps-starter-project.git` |
 
 <%(Callout type="warning" message="
-We recommend using SSH - if you're not using SSH to connect to Github, follow [this handy guide](https://help.github.com/articles/connecting-to-github-with-ssh/) to set it up.")%>
+You can only clone via SSH if you have already [set up SSH keys](https://help.github.com/articles/connecting-to-github-with-ssh/) with your GitHub account.")%>
 
 Then navigate to the root folder of the FPS starter project and run the following command: `git checkout 0.1.3`
 
