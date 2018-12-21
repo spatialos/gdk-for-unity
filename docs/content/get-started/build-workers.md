@@ -4,11 +4,11 @@ As you will be launching a cloud deployment, you need to build out the code exec
 
 In the Unity Editor, you first need to make sure Burst compilation is **disabled** from **Jobs** > **Enable Burst Compilation**. Then you can build your workers from the SpatialOS menu by clicking **Build for cloud** > **All workers**.
 
-<%(Callout type="info" message="Building workers for the first time may take while. Why not make yourself a cup of tea while you wait?")%>
+<%(Callout type="info" message="Building workers for the first time may take while (about 10 minutes). Why not make yourself a cup of tea while you wait? Or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos)? Or both!")%>
 
 ![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.png)
 
-> **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`
+> **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`. (You may want to only display Info and Error messages in the Console.)
 
 <%(Callout type="alert" message="If you encounter build errors, you might not have selected the build supports your game needs during your Unity setup. <br/><br/>
 * You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.<br/> <br/>

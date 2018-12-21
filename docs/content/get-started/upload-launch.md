@@ -56,13 +56,12 @@ When launching a cloud deployment you must provide three parameters:
 * **the assembly name**, which identifies the worker assemblies to use. These are the assemblies you uploaded earlier so the name should match the one you passed to `spatial cloud upload`.
 * **a launch configuration**, which is a JSON file that declares the world and load balancing configuration.
 * **a name for your deployment**, which is used to label the deployment in the SpatialOS web Console. It consists of lower-case letters, digits, and `_` and can be up to 32 characters long.
+* **(optional) a region to deploy to**, which default to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
 Using a terminal of your choice, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (for example, shootyshooty). A valid launch command would look like this:
 ```
 spatial cloud launch --snapshot=snapshots/default.snapshot my_assembly cloud_launch_large.json shootyshooty
 ```
-
-This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
 
 > **It's finished when:** You see `Deployment launched successfully` printed in your terminal output.
 

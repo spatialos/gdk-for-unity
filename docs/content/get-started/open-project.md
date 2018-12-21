@@ -27,9 +27,11 @@ There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding
 1. Open the **Navigation** window (Unity Editor menu: **Windows** > **AI** > **Navigation**).
 1. Select the **Bake** tab, and then the **Bake** button.
 
-You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
+You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity shows a Navmesh object (in most cases the logo will update to the below).
 <img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
 
+<%(Callout type="warning" message="
+You may have a number of _warnings_ in the Unity console, which you can ignore at this stage. We recommend only showing Errors in the Console." )%>
 
 <br/>
 #### Next: [Build your workers]({{urlRoot}}/content/get-started/build-workers.md)
