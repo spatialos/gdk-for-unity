@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<Type, ITaskManager> taskManagers =
             new Dictionary<Type, ITaskManager>();
 
-        public void RegisterTask<T>(long requestId, TaskCompletionSource<T> task)
+        public Task<T> RegisterTask<T>(long requestId)
             where T : IReceivedCommandResponse
         {
             if (!taskManagers.TryGetValue(typeof(T), out var manager))
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Subscriptions
                 taskManagers.Add(typeof(T), manager);
             }
 
-            ((CommandTaskManager<T>) manager).RegisterTask(requestId, task);
+            return ((CommandTaskManager<T>) manager).RegisterTask(requestId);
         }
 
         internal void CompleteTasks()

@@ -1,6 +1,7 @@
+using System;
+using System.Threading.Tasks;
 using Improbable.Common;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
@@ -26,27 +27,34 @@ namespace Playground.MonoBehaviours
         private ILogDispatcher logDispatcher;
         private EntityId ownEntityId;
 
-        private void Update()
+        private async void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SendSpawnCubeCommand();
+                await SendSpawnCubeCommand();
             }
 
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                SendDeleteCubeCommand();
+                await SendDeleteCubeCommand();
             }
         }
 
-        private async void SendSpawnCubeCommand()
+        private async Task SendSpawnCubeCommand()
         {
             var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
-            var response = await cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
-            Debug.Log($"Message: {response.Message}, Request Id: {response.RequestId}");
+            try
+            {
+                var response = await cubeSpawnerCommandSender.SendSpawnCubeCommandAsync(request);
+                Debug.Log($"Message: {response.Message}, Request Id: {response.RequestId}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
         }
 
-        private async void SendDeleteCubeCommand()
+        private async Task SendDeleteCubeCommand()
         {
             var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
 
@@ -60,7 +68,15 @@ namespace Playground.MonoBehaviours
             {
                 CubeEntityId = spawnedCubes[0]
             });
-            await cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request);
+
+            try
+            {
+                await cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommandAsync(request);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Improbable.Gdk.Subscriptions
 {
-    public interface ITaskManager
+    internal interface ITaskManager
     {
         void CompleteTasks();
     }

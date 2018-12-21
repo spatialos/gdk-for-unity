@@ -290,12 +290,10 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
-        public async Task<<#= receivedCommandResponseType #>> Send<#= commandDetails.CommandName #>Command(<#= commandRequest #> request)
+        public async Task<<#= receivedCommandResponseType #>> Send<#= commandDetails.CommandName #>CommandAsync(<#= commandRequest #> request)
         {
             var requestId = commandSender.SendCommand(request, entity);
-            var taskSource = new TaskCompletionSource<<#= receivedCommandResponseType #>>();
-            taskSystem.RegisterTask(requestId, taskSource);
-            return await taskSource.Task;
+            return await taskSystem.RegisterTask<<#= receivedCommandResponseType #>>(requestId);
         }
 <# } #>
     }

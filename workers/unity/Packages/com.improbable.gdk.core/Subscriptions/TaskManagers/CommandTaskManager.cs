@@ -19,14 +19,19 @@ namespace Improbable.Gdk.Subscriptions
             commandSystem = world.GetExistingManager<CommandSystem>();
         }
 
-        public void RegisterTask(long requestId, TaskCompletionSource<T> task)
+        public Task<T> RegisterTask(long requestId)
         {
+            TaskCompletionSource<T> taskSource = new TaskCompletionSource<T>();
             if (registeredTasks.ContainsKey(requestId))
             {
-                task.SetException(new ArgumentException("Request Id is already registered."));
-                return;
+                taskSource.SetException(new ArgumentException("Request Id is already registered."));
             }
-            registeredTasks.Add(requestId, task);
+            else
+            {
+                registeredTasks.Add(requestId, taskSource);
+            }
+
+            return taskSource.Task;
         }
 
         public void CompleteTasks()
