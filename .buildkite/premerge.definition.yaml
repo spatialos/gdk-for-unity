@@ -1,0 +1,14 @@
+---
+agent_queue_id: trigger-pipelines
+description: Unity GDK pre-merge CI pipeline.
+github:
+  branch_configuration: []
+  default_branch: master
+  pull_request_branch_filter_configuration: []
+teams:
+- name: Everyone
+  permission: READ_ONLY
+- name: improbable
+  permission: BUILD_AND_READ
+- name: improbable/gbu/develop/unity
+  permission: MANAGE_BUILD_AND_READ
