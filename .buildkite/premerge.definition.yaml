@@ -6,9 +6,8 @@ github:
   default_branch: master
   pull_request_branch_filter_configuration: []
 teams:
+# TODO: normalise team names between orgs otherwise pipelines cannot coexist
 - name: Everyone
-  permission: READ_ONLY
-- name: improbable
   permission: BUILD_AND_READ
-- name: improbable/gbu/develop/unity
+- name: gbu/develop/unity
   permission: MANAGE_BUILD_AND_READ
