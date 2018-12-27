@@ -9,7 +9,7 @@
 #
 common: &common
   agents:
-    - "capable_of_building=unitygdk"
+    - "capable_of_building=gdk-for-unity"
     - "environment=production"
     - "permission_set=builder"
     - "queue=v2-1545686255-b1a35740c4324ac9-------z"
@@ -25,5 +25,7 @@ common: &common
 
 steps:
   - label: "build :bash:"
-    command: "ci/build.sh"
+    command:
+      - "ci/bootstrap.sh"
+      - "ci/test.sh"
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
