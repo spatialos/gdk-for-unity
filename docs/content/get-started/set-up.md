@@ -147,7 +147,7 @@ If you need help using the GDK, come and talk to us about the software and the d
 <%(Callout type="alert" message="
 If you can, please use Git to get the GDK and its starter project, as version control will make it easier for you to get updates in the future.")%>
 
-If you are unfamiliar with Git, you can download a Zip file of the GDK and its Starter Project [here](https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases/tag/0.1.3). 
+If you are unfamiliar with Git, you can download a Zip file of the GDK and its Starter Project <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases/tag/0.1.3" data-track-link="Starter Project Zip Clicked|product=Docs|platform=Mac|label=Mac" target="_blank">here</a>. 
 
 **If you have downloaded it and unzipped it, skip the rest of this page and move on to [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md).**
 
