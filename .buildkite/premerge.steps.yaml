@@ -25,7 +25,7 @@ common: &common
 
 steps:
   - label: "build :bash:"
-    command:
-      - "ci/bootstrap.sh"
-      - "ci/test.sh"
+    command: >
+      ci/bootstrap.sh
+      ci/test.sh
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
