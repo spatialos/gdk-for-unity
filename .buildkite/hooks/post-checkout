@@ -4,5 +4,4 @@ if [[ -n "${DEBUG-}" ]]; then
   set -x
 fi
 
-echo pwd
 ci/bootstrap.sh
