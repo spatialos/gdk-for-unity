@@ -12,7 +12,7 @@ common: &common
     - "capable_of_building=gdk-for-unity"
     - "environment=production"
     - "permission_set=builder"
-    - "queue=v2-1546003082-bf3dfa505521126d---m---z"
+    - "queue=v2-1546019778-414bd9072a197c4d---m---z"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
