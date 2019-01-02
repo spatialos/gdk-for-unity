@@ -1,9 +1,9 @@
 # Get started: 1 - Set up
 There are three parts to this step: 
 
-* Sign up for a SpatialOS account
+* Sign up for a SpatialOS account (or make sure you are logged in)
 * Set up your machine
-* Clone the repos 
+* Get the GDK and the FPS Starter Project source code
 
 (This step is the longest of the 6 steps - the others are much quicker.)
 <br/>
@@ -143,7 +143,7 @@ If you need help using the GDK, come and talk to us about the software and the d
 
 
 ## Get the GDK and the FPS Starter Project source code
-To run the GDK and the FPS Starter project, you need to download the source code. There are two ways you can do this: _either_ get both sets of source code as one zip file download _or_ clone the two repositories separately using Git (see [Git (github.io)](https://try.github.io/ for further informatio on Git)).
+To run the GDK and the FPS Starter project, you need to download the source code. There are two ways you can do this: _either_ get both sets of source code as one zip file download _or_ clone the two repositories separately using Git. (To find out more about Git, see [github.io](https://try.github.io)).
 
 **NOTE:** We recommend using Git, as Git's version control makes it easier for you to get updates in the future.
 
