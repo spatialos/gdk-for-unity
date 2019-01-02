@@ -1,11 +1,10 @@
 # Get started: Introduction
 
-Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter project. This will introduce you to the workflows and tooling you’ll use with SpatialOS and Unity, allowing you to run your game at scale with up to 200 simulated player-clients running in the cloud.
+Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter Project. This introduces you to the workflows and tooling you use with SpatialOS and Unity, allowing you to run your game at scale, with up to 200 simulated player-clients running in the cloud.
 
-Once you’ve done this, you’ll then be ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality will introduce you to this development experience.
+Once you’ve done this, you are then ready to learn how to build your own features. Our tutorial for adding Health Pickups functionality introduces you to this development experience.
 
-<%(Callout type="alert" message="
-Please note that basic proficiency of [programming in Unity](https://unity3d.com/programming-in-unity), version control systems (such as [Git](https://try.github.io/)), and [command line interfaces](https://tutorial.djangogirls.org/en/intro_to_command_line/) is required to use the SpatialOS GDK for Unity.")%>
+> Note that you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and [command line interfaces (djangogirls.org)](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.
 
 #### Next: [Set up]({{urlRoot}}/content/get-started/set-up.md)
 <br/>
