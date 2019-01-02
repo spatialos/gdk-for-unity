@@ -12,7 +12,9 @@
 
 ***
 - <h3> Starter projects</h3>
-- <h3> [ - FPS Starter Project]({{urlRoot}}/projects/fps/overview)</h3>
+- <h3> + FPS Starter Project</h3>
+    - [Overview]({{urlRoot}}/projects/fps/overview)</h3>
+    - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
 - <h3> [ - Blank Starter Project]({{urlRoot}}/projects/blank/overview)</h3>
 
 ***
@@ -114,3 +116,6 @@
         - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 - <h3> + Development roadmap</h3>
     - [Trello board](https://trello.com/b/29tMKyQC)
+
+***
+- <h3>[- License]({{urlRoot}}/license)</h3>
