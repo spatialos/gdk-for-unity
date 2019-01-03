@@ -87,7 +87,7 @@ These warnings are benign so you can ignore them.
 **Cause**<br/>
 These warnings occur when a [GameObject]({{urlRoot}}/content/glossary#gameobject) or [ECS entity]({{urlRoot}}/content/glossary#unity-ecs-entity) that represents a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) is deleted before its corresponding SpatialOS entity leaves the [worker's view]({{urlRoot}}/content/glossary#worker-s-view). 
 
-The GDK expects a GameObject and ECS entity that represent a SpatialOS entity are only deleted after the SpatialOS entity they represent has left that worker's view: 
+The GDK expects that a GameObject and ECS entity that represent a SpatialOS entity are only deleted after the SpatialOS entity they represent has left that worker's view: 
 
 * The GDK automatically deletes an ECS entity when its corresponding SpatialOS entity leaves that worker's view. 
 * For GameObjects, you need to delete the GameObject via your code. The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) sends a message to the server-worker when a SpatialOS entity leaves that worker's view, and the GDK passes this message on to you; it's your responsibility to act upon these commands at the right time in your code.
