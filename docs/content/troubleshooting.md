@@ -122,7 +122,7 @@ This can be caused by multiple problems. Follow the checklist below to discover 
 This can be caused by multiple problems. Follow the checklist below to discover the cause and fix:
 
   * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker]({{urlRoot}}/content/glossary#worker).
-  * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this be examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject at [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
+   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this be examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject when you run your game.
   * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector]({{urlRoot}}/content/glossary#inspector). In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
 
 <br/>
