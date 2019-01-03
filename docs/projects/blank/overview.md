@@ -1,6 +1,6 @@
 # Blank Starter Project
 
-We recommend you get going by following the [Get started]({{urlRoot}}/content/get-started/get-started) guide. It's a step-by-step set up guide which uses the FPS Starter Project and leads on to a tutorial on how to add your first feature. However, the Blank Starter Project is a great starting point to working on the SpatialOS GDK for Unity if you want to start with an empty project.
+We recommend you get going by following the [Get started]({{urlRoot}}/content/get-started/get-started) guide. It's a step-by-step setup guide which uses the FPS Starter Project and leads on to a tutorial on how to add your first feature. However, the Blank Starter Project is a great starting point for working on the SpatialOS GDK for Unity if you want to start with an empty project.
 
 You can find the [Blank Starter Project on Github](https://github.com/spatialos/gdk-for-unity-blank-project).
 
