@@ -5,8 +5,8 @@
 To allow a mobile phone to connect to your local deployment, you will need to make the following configuration steps.
 
 1. Have your project opened in the Unity Editor.
-1. Open the config window through **SpatialOS** > **GDK Tools configuration**.
-1. Fill your IP into the **Runtime IP for local deployment** field.
+1. Open the configuration window through **SpatialOS** > **GDK Tools configuration**.
+1. Fill your local machine's IP into the **Runtime IP for local deployment** field.
 1. Click **Save**, and close the window.
 
 From this point on, all local deployments launched through the editor will allow your mobile phone to connect to it.
@@ -43,7 +43,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. [Start your Android Emulator in Android Studio.](https://developer.android.com/studio/run/managing-avds)
 
     > Ensure to choose the same CPU architecture for your virtual machine as your development computer. If you don’t, you will get warning messages as mis-matched CPU architecture affects performance.
-1. [Setup your local deployment](#setup-local-deployment-for-mobile-phone-connections)
+1. [Setup your local deployment.](#setup-local-deployment-for-mobile-phone-connections)
 1. [Build your server-workers.]({{urlRoot}}/content/build)
 1. Start the local deployment from the Unity Editor though **SpatialOS** > **Local launch**.
 
@@ -66,4 +66,4 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
 1. In the Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your android worker, and wait for the build to complete.
 1. Click **SpatialOS** > **Launch mobile client** > **Android Device**.
-1. Play the game on the the device.
+1. Play the game on the device.
