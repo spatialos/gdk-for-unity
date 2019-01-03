@@ -73,7 +73,7 @@ If you are worried your generated code is in a bad state (such as having helper 
 
 Health pickups are a new type of entity, and we must next define which components should be instantiated each time a new 'health pickup' entity is created.
 
-Typical for SpatialOS GDK projects, the FPS Starter Project contains a C# file that declares a function for each type of entity. This function defines what components are used to construct an entity. The object it returns is an [Entity Template]({{urlRoot}}/content/entity-templates). Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
+As is typical for SpatialOS GDK projects, the FPS Starter Project contains a C# file that declares a function for each type of entity. This function defines what components are used to construct an entity. The object it returns is an [Entity Template]({{urlRoot}}/content/entity-templates). Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
 
 You can find this file in your Unity project: `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs`.
 
