@@ -23,7 +23,7 @@ In the Unity Editor:
   * You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users.
   * You need **Android** and/or **iOS** build support if you are developing for those platforms.
   * Unity gives you build support for your development machine (Windows or Mac) by default.
-  * _**In addition**_, make sure you have **Linux** build support enabled. You need Linux build support because all server-workers in a cloud deployment runin a Linux environment.
+  * _**In addition**_, make sure you have **Linux** build support enabled. You need Linux build support because all server-workers in a cloud deployment run in a Linux environment.
 
 Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine) for more information.
 
@@ -110,7 +110,7 @@ This can be caused by multiple problems. Follow the checklist below to discover 
   * Ensure that your field is declared in a [MonoBehaviour]({{urlRoot}}/content/glossary#monobehaviour). They are not supported in ECS systems.
   * Ensure that the field is decorated with a `[Require]` attribute (see [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)).
   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this by examining whether a [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) MonoBehaviour is added to your GameObject at [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
-   [comment]: <> (TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:.)
+   [comment]: <> (TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169.)
   * Ensure that you only access Requirables in a MonoBehaviour while the MonoBehaviour is enabled. Requirables are supposed to be null while the MonoBehaviour is disabled. Note that certain Unity event methods like `OnTriggerEnter` or `OnCollisionEnter` may be invoked, even if a MonoBehaviour is disabled.
   [comment]: <> (TODO: make this fix clearer - what is meant by "Requireables" - we haven't defined this. JIRA: https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169.)
 
