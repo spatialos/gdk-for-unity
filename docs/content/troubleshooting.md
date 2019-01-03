@@ -90,7 +90,7 @@ These warnings occur when a [GameObject]({{urlRoot}}/content/glossary#gameobject
 The GDK expects a GameObject and ECS entity that represent a SpatialOS entity are only deleted after the SpatialOS entity they represent has left that worker's view: 
 
 * The GDK automatically deletes an ECS entity when its corresponding SpatialOS entity leaves that worker's view. 
-* For GameObjects, you need to delete the GameObject via your code. The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) sends a message to the server-worker when a SpatialOS entity leaves that worker's view, the GDK passes this message on to you; it's your responsibility to act upon these commands at the right time in your code.
+* For GameObjects, you need to delete the GameObject via your code. The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) sends a message to the server-worker when a SpatialOS entity leaves that worker's view, and the GDK passes this message on to you; it's your responsibility to act upon these commands at the right time in your code.
 
 **Fix**<br/>
 When you want to delete a GameObject that represents a SpatialOS entity, send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
