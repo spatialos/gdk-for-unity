@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Added support for launching an iOS client from an iOS device from the Unity Editor. Navigate to **SpatialOS** > **Launch mobile client** > **iOS device** to try it out
+
 ### Changed
 
 - Changed `RedirectedProcess` to have Builder-like API.

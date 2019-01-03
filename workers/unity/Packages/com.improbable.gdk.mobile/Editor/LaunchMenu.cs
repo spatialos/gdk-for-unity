@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Text;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -9,13 +10,15 @@ namespace Improbable.Gdk.Mobile
 {
     public static class LaunchMenu
     {
-        private const string rootApkPath = "build";
-        private static string AbsoluteApkPath => Path.GetFullPath(Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath)));
+        private static string AbsoluteAppBuildPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build"));
+        private static string LibIDeviceInstallerBinary => Common.DiscoverLocation("ideviceinstaller");
+        private static string LibIDeviceDebugBinary => Common.DiscoverLocation("idevicedebug");
 
         private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Device";
+        private const string MenuLaunchiOSDevice = "SpatialOS/Launch mobile client/iOS Device";
 
         [MenuItem(MenuLaunchAndroid, false, 73)]
-        private static void LaunchMobileClient()
+        private static void LaunchAndroidClient()
         {
             try
             {
@@ -29,12 +32,13 @@ namespace Improbable.Gdk.Mobile
 
                 var adbPath = Path.Combine(sdkRootPath, "platform-tools", "adb");
 
-                EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing APK", 0.3f);
+                EditorUtility.DisplayProgressBar("Launching Android Client", "Installing APK", 0.3f);
 
                 // Find apk to install
-                if (!TryGetApkPath(AbsoluteApkPath, out var apkPath))
+                var apkPath = Directory.GetFiles(AbsoluteAppBuildPath, "*.apk", SearchOption.AllDirectories).FirstOrDefault();
+                if (apkPath == string.Empty)
                 {
-                    Debug.LogError($"Could not find a built out Android binary in \"{AbsoluteApkPath}\" to launch.");
+                    Debug.LogError($"Could not find a built out Android binary in \"{AbsoluteAppBuildPath}\" to launch.");
                     return;
                 }
 
@@ -53,7 +57,7 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
+                EditorUtility.DisplayProgressBar("Launching Android Client", "Launching Client", 0.9f);
 
                 // Optional arguments to be passed, same as standalone
                 // Use this to pass through the local ip to connect to
@@ -70,8 +74,6 @@ namespace Improbable.Gdk.Mobile
                     .WithArgs("shell", "am", "start", "-S", "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",
                         "-e", "\"arguments\"", $"\\\"{arguments.ToString()}\\\"")
                     .Run();
-
-                EditorUtility.DisplayProgressBar("Launching Mobile Client", "Done", 1.0f);
             }
             finally
             {
@@ -79,16 +81,65 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
-        private static bool TryGetApkPath(string rootPath, out string apkPath)
+        [MenuItem(MenuLaunchiOSDevice, false, 74)]
+        private static void LaunchiOSDeviceClient()
         {
-            foreach (var file in Directory.GetFiles(rootPath, "*.apk", SearchOption.AllDirectories))
+            try
             {
-                apkPath = file;
-                return true;
-            }
+                // Ensure needed tools are installed
+                if (string.IsNullOrEmpty(LibIDeviceInstallerBinary))
+                {
+                    Debug.LogError("Could not find ideviceinstaller tool. Please ensure it is installed. " +
+                        "See https://github.com/libimobiledevice/ideviceinstaller fore more details.");
+                    return;
+                }
 
-            apkPath = string.Empty;
-            return false;
+                if (string.IsNullOrEmpty(LibIDeviceDebugBinary))
+                {
+                    Debug.LogError("Could not find idevicedebug tool. Please ensure libimobiledevice is installed. " +
+                        "See https://helpmanual.io/help/idevicedebug/ for more details.");
+                    return;
+                }
+
+                EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Installing archive", 0.3f);
+
+                // Find archive to install
+                var ipaPath = Directory.GetFiles(AbsoluteAppBuildPath, "*.ipa", SearchOption.AllDirectories).FirstOrDefault();
+                if (string.IsNullOrEmpty(ipaPath))
+                {
+                    Debug.LogError($"Could not find a built out iOS .ipa archive in \"{AbsoluteAppBuildPath}\" to launch.");
+                    return;
+                }
+
+                if (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-i", ipaPath).Run() != 0)
+                {
+                    Debug.LogError("Error while installing .ipa archive to the device. Please check the log for details about the error.");
+                    return;
+                }
+
+                EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Launching Client", 0.9f);
+
+                // Get chosen ios package id and launch
+                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+
+                // Optional arguments to be passed, same as standalone
+                // Use this to pass through the local ip to connect to
+                var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
+                var arguments = new StringBuilder();
+                if (!string.IsNullOrEmpty(runtimeIp))
+                {
+                    arguments.Append($"-e SPATIALOS_ARGUMENTS=\"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp}\"");
+                }
+
+                RedirectedProcess.Command(LibIDeviceDebugBinary).WithArgs(arguments.ToString(), "run", bundleId)
+                    .RedirectOutputOptions(OutputRedirectBehaviour.RedirectStdOut | OutputRedirectBehaviour.RedirectStdErr)
+                    .ReturnImmediately()
+                    .Run();
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
         }
     }
 }
