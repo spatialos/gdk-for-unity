@@ -4,7 +4,7 @@ Get started with SpatialOS for Unity by launching a cloud deployment of our FPS 
 
 Once you’ve done this, you are then ready to learn how to build your own features. The tutorial for adding Health Pickups functionality introduces you to this development experience.
 
-We recommend starting with the FPS Starter Project by going to the next step: [Set up]({{urlRoot}}/content/get-started/set-up.md), but  you can get going with the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) if you prefer this route.
+We recommend starting with the FPS Starter Project by going to the next step: [Set up]({{urlRoot}}/content/get-started/set-up.md), but you can get going with the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) if you prefer this route.
 
 > **Note:** Whichever route to getting started you chose, you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and [command line interfaces (djangogirls.org)](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.
 
