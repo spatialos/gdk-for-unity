@@ -126,7 +126,7 @@ This can be caused by multiple problems. Follow the checklist below to discover 
   * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector]({{urlRoot}}/content/glossary#inspector). In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
 
 <br/>
-#### <li> <b> When opening a Unity GDK solution in Visial Studio 2017, the file has no matching compilation unit </b>
+#### <li> <b> When opening a Unity GDK solution in Visual Studio 2017, the file has no matching compilation unit </b>
 
 **Cause**<br/>
 You don't have the correct compilation units installed.
