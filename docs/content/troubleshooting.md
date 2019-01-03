@@ -27,7 +27,7 @@ In the Unity Editor:
 
 Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine) for more information.
 
- **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can causefurther build errors.
+ **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can cause further build errors.
 
 <br/>
 #### <li> <b>Could not discover location for `dotnet.exe`</b>
