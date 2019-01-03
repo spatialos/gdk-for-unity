@@ -4,7 +4,7 @@
 
 The FPS (First-person Shooter) Starter Project is a great starting point for working with the SpatialOS GDK for Unity. Many projects, whatever their genre, share some core elements and this starter project can get you off to a good start.
 
-The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS Starter Project is already configured to scale-up, so you can test SpatialOS out right now. 
+The SpatialOS GDK can help you run your games at scale, making it easy for even a small team to make a massive multiplayer hit game. The FPS Starter Project is already configured to scale up, so you can test SpatialOS out right now. 
 
 To dive right in, follow the [Get started]({{urlRoot}}/content/get-started/get-started) guide which uses the FPS Starter Project. Once you have completed this, you can follow the _Add your first feature_ guide which is a Health Pick-up tutorial, following on from the _Get started_ guide.
 
