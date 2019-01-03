@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Tools
         internal const int BuildWorkerConfigs = 70;
         internal const int LocalLaunch = 71;
         internal const int LaunchStandaloneClient = 72;
-        internal const int OpenInspector = 74;
+        internal const int OpenInspector = 75;
 
         internal const int GdkToolsConfiguration = 201;
     }

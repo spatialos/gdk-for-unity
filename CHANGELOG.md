@@ -11,6 +11,7 @@
 - Added option to build workers out via IL2CPP in the cmd.
 - Added an example of handling disconnect for mobile workers.
 - Added support for launching an Android client from the Editor over ADB.
+- Added `Launch Mobile client` menu to `SpatialOS` menu in Unity Editor. `Android device` and `iOS device` menu items allow launching corresponding mobile clients to connect to local deployment.
 
 ### Changed
 

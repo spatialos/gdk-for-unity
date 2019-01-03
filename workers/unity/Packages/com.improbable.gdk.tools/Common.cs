@@ -113,7 +113,7 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         /// <param name="binarybaseName">The base name of the binary to find (without an extension).</param>
         /// <returns></returns>
-        private static string DiscoverLocation(string binarybaseName)
+        public static string DiscoverLocation(string binarybaseName)
         {
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)

@@ -61,6 +61,8 @@ namespace Improbable.Gdk.Tools
             ProcessOutputOptions.ProcessSpatialOutput |
             ProcessOutputOptions.RedirectAccumulatedOutput;
 
+        private bool returnImmediately = false;
+
         /// <summary>
         ///     Creates the redirected process for the command.
         /// </summary>
@@ -122,6 +124,15 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
+        ///     Informs the class to return without waiting for redirected process to finish
+        /// </summary>
+        public RedirectedProcess ReturnImmediately()
+        {
+            returnImmediately = true;
+            return this;
+        }
+
+        /// <summary>
         ///     Runs the redirected process and waits for it to return.
         /// </summary>
         public int Run()
@@ -135,113 +146,121 @@ namespace Improbable.Gdk.Tools
                 WorkingDirectory = workingDirectory
             };
 
-            using (var process = Process.Start(info))
+            var process = Process.Start(info);
+            if (process == null)
             {
-                if (process == null)
-                {
-                    throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
-                }
-
-                StringBuilder outputLog = null;
-                if ((outputOptions & ProcessOutputOptions.RedirectAccumulatedOutput) != ProcessOutputOptions.None)
-                {
-                    outputLog = new StringBuilder();
-                }
-
-                process.OutputDataReceived += (sender, args) =>
-                {
-                    var outputString = args.Data;
-                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
-                    {
-                        outputString = ProcessSpatialOutput(outputString);
-                    }
-
-                    if (string.IsNullOrEmpty(outputString))
-                    {
-                        return;
-                    }
-
-                    if ((outputOptions & ProcessOutputOptions.RedirectStdOut) != ProcessOutputOptions.None)
-                    {
-                        Debug.Log(outputString);
-                    }
-
-                    if (outputLog != null)
-                    {
-                        lock (outputLog)
-                        {
-                            outputLog.AppendLine(ProcessSpatialOutput(outputString));
-                        }
-                    }
-
-                    foreach (var outputProcessor in outputProcessors)
-                    {
-                        outputProcessor(outputString);
-                    }
-                };
-                process.ErrorDataReceived += (sender, args) =>
-                {
-                    var errorString = args.Data;
-                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
-                    {
-                        errorString = ProcessSpatialOutput(errorString);
-                    }
-
-                    if (string.IsNullOrEmpty(errorString))
-                    {
-                        return;
-                    }
-
-                    if ((outputOptions & ProcessOutputOptions.RedirectStdErr) != ProcessOutputOptions.None)
-                    {
-                        Debug.LogError(errorString);
-                    }
-
-                    if (outputLog != null)
-                    {
-                        lock (outputLog)
-                        {
-                            outputLog.AppendLine(ProcessSpatialOutput(errorString));
-                        }
-                    }
-
-                    foreach (var errorProcessor in errorProcessors)
-                    {
-                        errorProcessor(errorString);
-                    }
-                };
-
-                process.EnableRaisingEvents = true;
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                process.WaitForExit();
-
-                if (outputLog == null)
-                {
-                    return process.ExitCode;
-                }
-
-                // Ensure that the first line of the log is something useful in the Unity editor console.
-                var trimmedOutput = outputLog.ToString().TrimStart();
-
-                if (string.IsNullOrEmpty(trimmedOutput))
-                {
-                    return process.ExitCode;
-                }
-
-                if (process.ExitCode == 0)
-                {
-                    Debug.Log(trimmedOutput);
-                }
-                else
-                {
-                    Debug.LogError(trimmedOutput);
-                }
-
-                return process.ExitCode;
+                throw new Exception(
+                    $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
             }
+
+            StringBuilder outputLog = null;
+            if ((outputOptions & ProcessOutputOptions.RedirectAccumulatedOutput) != ProcessOutputOptions.None)
+            {
+                outputLog = new StringBuilder();
+            }
+
+            process.OutputDataReceived += (sender, args) =>
+            {
+                var outputString = args.Data;
+                if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
+                {
+                    outputString = ProcessSpatialOutput(outputString);
+                }
+
+                if (string.IsNullOrEmpty(outputString))
+                {
+                    return;
+                }
+
+                if ((outputOptions & ProcessOutputOptions.RedirectStdOut) != ProcessOutputOptions.None)
+                {
+                    Debug.Log(outputString);
+                }
+
+                if (outputLog != null)
+                {
+                    lock (outputLog)
+                    {
+                        outputLog.AppendLine(ProcessSpatialOutput(outputString));
+                    }
+                }
+
+                foreach (var outputProcessor in outputProcessors)
+                {
+                    outputProcessor(outputString);
+                }
+            };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                var errorString = args.Data;
+                if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
+                {
+                    errorString = ProcessSpatialOutput(errorString);
+                }
+
+                if (string.IsNullOrEmpty(errorString))
+                {
+                    return;
+                }
+
+                if ((outputOptions & ProcessOutputOptions.RedirectStdErr) != ProcessOutputOptions.None)
+                {
+                    Debug.LogError(errorString);
+                }
+
+                if (outputLog != null)
+                {
+                    lock (outputLog)
+                    {
+                        outputLog.AppendLine(ProcessSpatialOutput(errorString));
+                    }
+                }
+
+                foreach (var errorProcessor in errorProcessors)
+                {
+                    errorProcessor(errorString);
+                }
+            };
+
+            process.EnableRaisingEvents = true;
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            if (returnImmediately)
+            {
+                process.Exited += (sender, args) =>
+                {
+                    process.Dispose();
+                };
+                return 0;
+            }
+
+            process.WaitForExit();
+            var exitCode = process.ExitCode;
+            process.Dispose();
+
+            if (outputLog == null)
+            {
+                return exitCode;
+            }
+
+            // Ensure that the first line of the log is something useful in the Unity editor console.
+            var trimmedOutput = outputLog.ToString().TrimStart();
+
+            if (string.IsNullOrEmpty(trimmedOutput))
+            {
+                return exitCode;
+            }
+
+            if (exitCode == 0)
+            {
+                Debug.Log(trimmedOutput);
+            }
+            else
+            {
+                Debug.LogError(trimmedOutput);
+            }
+
+            return exitCode;
         }
 
         /// <summary>
