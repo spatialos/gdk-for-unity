@@ -1,3 +1,4 @@
+using System;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
@@ -23,14 +24,14 @@ namespace Playground.MonoBehaviours
         [Require] private EntityId entityId;
         [Require] private World world;
 
-        private ILogDispatcher logDispatcher;
-        private EntityId ownEntityId;
+        [Require] private ILogDispatcher logDispatcher;
 
         private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
+                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
+                throw new Exception("Test Exception");
             }
         }
 
@@ -38,7 +39,7 @@ namespace Playground.MonoBehaviours
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                //logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
             }
         }
 
@@ -67,7 +68,7 @@ namespace Playground.MonoBehaviours
 
             if (spawnedCubes.Count == 0)
             {
-                //logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
+                logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
                 return;
             }
 
