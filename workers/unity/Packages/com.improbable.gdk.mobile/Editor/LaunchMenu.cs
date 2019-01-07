@@ -1,4 +1,5 @@
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,13 @@ namespace Improbable.Gdk.Mobile
 {
     public static class LaunchMenu
     {
-        private const string rootBuildPath = "build";
-        private static string AbsoluteAppBuildPath => Path.GetFullPath(Path.Combine(Application.dataPath, Path.Combine("..", rootBuildPath)));
+        private const string RootBuildPath = "build";
+        private static string AbsoluteAppBuildPath => Path.GetFullPath(Path.Combine(Application.dataPath, Path.Combine("..", RootBuildPath)));
         private static string LibIDeviceInstallerBinary => Common.DiscoverLocation("ideviceinstaller");
         private static string LibIDeviceDebugBinary => Common.DiscoverLocation("idevicedebug");
 
-        private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Device";
-        private const string MenuLaunchiOSDevice = "SpatialOS/Launch mobile client/iOS Device";
+        private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Client";
+        private const string MenuLaunchiOSClient = "SpatialOS/Launch mobile client/iOS Client";
 
         [MenuItem(MenuLaunchAndroid, false, 73)]
         private static void LaunchAndroidClient()
@@ -84,7 +85,19 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
-        [MenuItem(MenuLaunchiOSDevice, false, 74)]
+        [MenuItem(MenuLaunchiOSClient, false, 74)]
+        private static void LaunchiOSClient()
+        {
+            if (PlayerSettings.iOS.sdkVersion == iOSSdkVersion.DeviceSDK)
+            {
+                LaunchiOSDeviceClient();
+            }
+            else
+            {
+                LaunchiOSSimulatorClient();
+            }
+        }
+
         private static void LaunchiOSDeviceClient()
         {
             try
@@ -106,24 +119,34 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Installing archive", 0.3f);
 
+                // Get chosen ios package id
+                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+
+                RedirectedProcess.RunExtractOutput(LibIDeviceInstallerBinary, out var appList, "-l");
+                var existsOnDevice = appList.Contains(bundleId);
+
                 // Find archive to install
                 var ipaPath = Directory.GetFiles(AbsoluteAppBuildPath, "*.ipa", SearchOption.AllDirectories).FirstOrDefault();
-                if (string.IsNullOrEmpty(ipaPath))
+                var existsLocally = !string.IsNullOrEmpty(ipaPath);
+                if (!existsLocally && !existsOnDevice)
                 {
-                    Debug.LogError($"Could not find a built out iOS archive in \"{AbsoluteAppBuildPath}\" to launch.");
+                    // We didn't find the app anywhere
+                    Debug.LogError($"Could not find an app on device or built out iOS archive in \"{AbsoluteAppBuildPath}\" to launch.");
                     return;
                 }
 
-                if (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-i", ipaPath).Run() != 0)
+                if (existsLocally)
                 {
-                    Debug.LogError("Error while installing archive to the device. Please check the log for details about the error.");
-                    return;
+                    if (RedirectedProcess.Run(LibIDeviceInstallerBinary, (existsOnDevice ? "-g" : "-i"), $"\"{ipaPath}\"") != 0)
+                    {
+                        Debug.LogError(
+                            "Error while installing archive to the device. Please check the log for details about the error.");
+                        return;
+                    }
                 }
+
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Launching Client", 0.9f);
-
-                // Get chosen ios package id and launch
-                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
 
                 // Optional arguments to be passed, same as standalone
                 // Use this to pass through the local ip to connect to
@@ -144,10 +167,71 @@ namespace Improbable.Gdk.Mobile
                     Debug.Log(output.Trim());
                 }
 
-                RedirectedProcess.Command(LibIDeviceDebugBinary).WithArgs($"{arguments.ToString()} run {bundleId}")
+                RedirectedProcess.Command(LibIDeviceDebugBinary).WithArgs(arguments.ToString(), "run",bundleId)
                     .ProcessOutput(OnReceived).ProcessErrors(OnReceived)
                     .ReturnImmediately()
                     .Run();
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        private static void LaunchiOSSimulatorClient()
+        {
+            try
+            {
+                EditorUtility.DisplayProgressBar("Launching iOS Simulator Client", "Launching iOS simulator", 0.2f);
+
+                // Open iOS simulator if it is not yet open
+                RedirectedProcess.RunExtractOutput("xcode-select", out var xcodePath, "-p");
+                if (string.IsNullOrEmpty(xcodePath))
+                {
+                    Debug.LogError("Couldn't run xcode-select. Please make sure XCode is installed");
+                    return;
+                }
+
+                RedirectedProcess.Run("open", $"{xcodePath}/Applications/Simulator.app/");
+
+                EditorUtility.DisplayProgressBar("Launching iOS Simulator Client", "Looking for client app", 0.5f);
+
+                // Find a built app to install
+                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+
+                // iOS simulator might not have finished starting at this point, so we want to give it some time
+                DateTime timeout = DateTime.Now.AddSeconds(30);
+                while (RedirectedProcess.RunExtractOutput("xcrun", out _,
+                    "simctl", "get_app_container", "booted", bundleId) != 0)
+                {
+                    if (DateTime.Now > timeout)
+                    {
+                        Debug.LogError($"Could not find a built out iOS app on running simulator to launch. Please ensure the app is built and installed");
+                        return;
+                    }
+
+                    System.Threading.Thread.Sleep(1000);
+                }
+
+                EditorUtility.DisplayProgressBar("Launching iOS Simulator Client", "Launching Client app", 0.8f);
+
+                // Optional arguments to be passed, same as standalone
+                // Use this to pass through the local ip to connect to
+                var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
+                var arguments = new StringBuilder();
+                if (!string.IsNullOrEmpty(runtimeIp))
+                {
+                    arguments.Append($"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp}");
+                }
+
+                var envVars = new Dictionary<string, string>
+                {
+                    { $"SIMCTL_CHILD_SPATIALOS_ARGUMENTS", arguments.ToString() }
+                };
+                if (RedirectedProcess.RunWithEnvVars("xcrun", envVars, "simctl", "launch", "booted", bundleId) != 0)
+                {
+                    Debug.LogError("Error while launching app on the simulator. Please check the log for details about the error.");
+                }
             }
             finally
             {
