@@ -4,6 +4,8 @@ using Improbable.Gdk.Mobile;
 using Improbable.Gdk.Mobile.iOS;
 #endif
 using System;
+using System.Collections.Generic;
+using Improbable.Worker.CInterop.Alpha;
 using UnityEngine;
 
 namespace Playground
@@ -16,9 +18,11 @@ namespace Playground
         [SerializeField] private GameObject level;
 
         private GameObject levelInstance;
+        private ConnectionService connectionService;
 
-        public async void TryConnect()
+        public async void TryConnect(ConnectionService connectionService)
         {
+            this.connectionService = connectionService;
             await Connect(WorkerUtils.iOSClient, new ForwardingDispatcher()).ConfigureAwait(false);
         }
 
@@ -53,6 +57,26 @@ namespace Playground
             throw new PlatformNotSupportedException(
                 $"{nameof(iOSClientWorkerConnector)} can only be used for the iOS platform. Please check your build settings.");
 #endif
+        }
+
+        protected override string GetPlayerId()
+        {
+            return $"Player-{Guid.NewGuid()}";
+        }
+
+        protected override string GetDisplayName()
+        {
+            return string.Empty;
+        }
+
+        protected override ConnectionService GetConnectionService()
+        {
+            return connectionService;
+        }
+
+        protected override string SelectLoginToken(List<LoginTokenDetails> loginTokens)
+        {
+            return loginTokens[0].LoginToken;
         }
 
         public override void Dispose()

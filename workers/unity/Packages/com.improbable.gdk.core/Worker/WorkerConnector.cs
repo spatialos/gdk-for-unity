@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
 
@@ -87,7 +88,6 @@ namespace Improbable.Gdk.Core
                 var origin = transform.position;
                 ConnectionDelegate connectionDelegate;
                 var chosenService = GetConnectionService();
-                Debug.Log(chosenService);
                 var connectionParameters = GetConnectionParameters(workerType, chosenService);
                 switch (chosenService)
                 {
@@ -187,6 +187,16 @@ namespace Improbable.Gdk.Core
         /// <returns>A <see cref="ReceptionistConfig"/> object.</returns>
         protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 
+        protected virtual string GetPlayerId()
+        {
+            return null;
+        }
+
+        protected virtual string GetDisplayName()
+        {
+            return null;
+        }
+
         /// <summary>
         ///     Selects which deployment to connect to.
         /// </summary>
@@ -195,6 +205,67 @@ namespace Improbable.Gdk.Core
         protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
             return null;
+        }
+
+        protected virtual string SelectLoginToken(List<LoginTokenDetails> loginTokens)
+        {
+            return null;
+        }
+
+        protected virtual string RetrievePlayerIdentityToken(string authToken, string playerId, string displayName)
+        {
+            var result = DevelopmentAuthentication.CreateDevelopmentPlayerIdentityTokenAsync(
+                RuntimeConfigDefaults.LocatorHost,
+                RuntimeConfigDefaults.DevelopmentPlayerIdentityTokenPort,
+                new PlayerIdentityTokenRequest
+                {
+                    DevelopmentAuthenticationTokenId = authToken,
+                    PlayerId = playerId,
+                    DisplayName = displayName,
+                }
+            ).Get();
+
+            if (!result.HasValue)
+            {
+                throw new ConnectionFailedException("Did not receive a player identity token.",
+                    ConnectionErrorReason.FailedAuthentication);
+            }
+
+            if (!string.IsNullOrEmpty(result.Value.Error))
+            {
+                throw new ConnectionFailedException(result.Value.Error, ConnectionErrorReason.FailedAuthentication);
+            }
+
+            return result.Value.PlayerIdentityToken;
+        }
+
+        protected virtual List<LoginTokenDetails> RetrieveLoginToken(string workerType, string playerIdentityToken)
+        {
+            var loginTokenRequestResult = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
+                RuntimeConfigDefaults.LocatorHost,
+                444,
+                new LoginTokensRequest
+                {
+                    WorkerType = workerType,
+                    PlayerIdentityToken = playerIdentityToken,
+                    UseInsecureConnection = false,
+                    DurationSeconds = 120,
+                }
+            ).Get();
+
+            if (!loginTokenRequestResult.HasValue)
+            {
+                throw new ConnectionFailedException("Did not receive any login tokens back.",
+                    ConnectionErrorReason.InvalidConfig);
+            }
+
+            if (loginTokenRequestResult.Value.Status != ConnectionStatusCode.Success)
+            {
+                throw new ConnectionFailedException($"Failed to retrieve login token, " +
+                    $"error code: {loginTokenRequestResult.Value.Status}", ConnectionErrorReason.InvalidConfig);
+            }
+
+            return loginTokenRequestResult.Value.LoginTokens;
         }
 
         protected virtual void HandleWorkerConnectionEstablished()

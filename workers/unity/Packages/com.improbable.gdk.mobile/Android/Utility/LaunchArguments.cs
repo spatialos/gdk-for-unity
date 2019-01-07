@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Mobile.Android
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException(e);
+                UnityEngine.Debug.LogWarning($"Failed to retrieve launch arguments: {e}");
             }
 
             return new Dictionary<string, string>();
