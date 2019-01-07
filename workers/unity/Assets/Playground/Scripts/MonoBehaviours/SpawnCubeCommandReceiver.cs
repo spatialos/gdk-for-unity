@@ -27,11 +27,10 @@ namespace Playground.MonoBehaviours
         [Require] private CubeSpawnerWriter cubeSpawnerWriter;
         [Require] private WorldCommandSender worldCommandRequestSender;
 
-        private ILogDispatcher logDispatcher;
+        [Require] private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
-            //logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
             cubeSpawnerCommandRequestHandler.OnSpawnCubeRequestReceived += OnSpawnCubeRequest;
         }
 
@@ -52,9 +51,8 @@ namespace Playground.MonoBehaviours
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                // logDispatcher.HandleLog(LogType.Error,
-                //     new LogEvent("ReserveEntityIds failed.")
-                //         .WithField("Reason", response.Message));
+                logDispatcher.HandleLog(LogType.Error,
+                    new LogEvent("ReserveEntityIds failed.").WithField("Reason", response.Message));
 
                 return;
             }
@@ -80,10 +78,10 @@ namespace Playground.MonoBehaviours
         {
             if (response.StatusCode != StatusCode.Success)
             {
-                // logDispatcher.HandleLog(LogType.Error,
-                //     new LogEvent("CreateEntity failed.")
-                //         .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
-                //         .WithField("Reason", response.Message));
+                logDispatcher.HandleLog(LogType.Error,
+                    new LogEvent("CreateEntity failed.")
+                        .WithField(LoggingUtils.EntityId, response.RequestPayload.EntityId)
+                        .WithField("Reason", response.Message));
 
                 return;
             }
