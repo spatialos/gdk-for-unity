@@ -20,6 +20,15 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
+        public void AddComponent_should_ignore_EntityAcl()
+        {
+            var template = GetBasicTemplate();
+            template.AddComponent(new EntityAcl.Snapshot(), "test");
+
+            Assert.IsFalse(template.HasComponent<EntityAcl.Snapshot>());
+        }
+
+        [Test]
         public void GetComponent_should_return_the_component_if_present()
         {
             var template = GetBasicTemplate();
@@ -66,19 +75,6 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ReplaceComponent_should_throw_if_no_component_to_replace()
-        {
-            var exhaustiveSingular = new ExhaustiveSingular.Snapshot
-            {
-                Field7 = "",
-                Field3 = new byte[] { }
-            };
-
-            var template = GetBasicTemplate();
-            Assert.Throws<InvalidOperationException>(() => { template.ReplaceComponent(exhaustiveSingular); });
-        }
-
-        [Test]
         public void ReplaceComponent_should_replace_the_underlying_component()
         {
             var originalSnapshot = new ExhaustiveSingular.Snapshot
@@ -95,7 +91,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 Field2 = 100 // Field to test equality for.
             };
 
-            template.ReplaceComponent(snapshotToReplace);
+            template.SetComponent(snapshotToReplace);
 
             var component = template.GetComponent<ExhaustiveSingular.Snapshot>().Value;
             Assert.AreEqual(snapshotToReplace.Field2, component.Field2);
@@ -154,7 +150,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             {
                 entity = template.GetEntity();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return true;
             }

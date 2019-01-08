@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Core
         public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            if (snapshot.ComponentId == 50)
+            if (snapshot.ComponentId == EntityAclComponentId)
             {
                 // ACL handled automatically.
                 return;
