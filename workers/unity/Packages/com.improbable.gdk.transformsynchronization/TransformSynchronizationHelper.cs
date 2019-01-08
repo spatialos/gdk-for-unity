@@ -8,31 +8,32 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationHelper
     {
-        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder,
+        public static void AddTransformSynchronizationComponents(EntityTemplate template,
             string writeAccess,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
-            return entityBuilder.AddTransformSynchronizationComponents(writeAccess,
+            AddTransformSynchronizationComponents(template, writeAccess,
                 Quaternion.identity,
                 location,
                 velocity);
         }
 
-        public static EntityBuilder AddTransformSynchronizationComponents(this EntityBuilder entityBuilder,
+        public static void AddTransformSynchronizationComponents(EntityTemplate template,
             string writeAccess,
             Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
-            var transform = TransformInternal.Component.CreateSchemaComponentData(
-                location.ToImprobableLocation(),
-                rotation.ToImprobableQuaternion(),
-                velocity.ToImprobableVelocity(),
-                0,
-                1f / Time.fixedDeltaTime
-            );
-            return entityBuilder.AddComponent(transform, writeAccess);
+            var transform = new TransformInternal.Snapshot
+            {
+                Location = location.ToImprobableLocation(),
+                Rotation = rotation.ToImprobableQuaternion(),
+                Velocity = velocity.ToImprobableVelocity(),
+                TicksPerSecond = 1f / Time.fixedDeltaTime
+            };
+
+            template.AddComponent(transform, writeAccess);
         }
 
         public static void AddClientSystems(World world)

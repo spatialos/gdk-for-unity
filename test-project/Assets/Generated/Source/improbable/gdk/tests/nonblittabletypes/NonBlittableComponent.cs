@@ -214,64 +214,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(mapFieldHandle, value);
                 }
             }
-
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                BlittableBool boolField,
-                int intField,
-                long longField,
-                float floatField,
-                double doubleField,
-                string stringField,
-                int? optionalField,
-                global::System.Collections.Generic.List<int> listField,
-                global::System.Collections.Generic.Dictionary<int,string> mapField
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(1002);
-                var obj = schemaComponentData.GetFields();
-                {
-                    obj.AddBool(1, boolField);
-                }
-                {
-                    obj.AddInt32(2, intField);
-                }
-                {
-                    obj.AddInt64(3, longField);
-                }
-                {
-                    obj.AddFloat(4, floatField);
-                }
-                {
-                    obj.AddDouble(5, doubleField);
-                }
-                {
-                    obj.AddString(6, stringField);
-                }
-                {
-                    if (optionalField.HasValue)
-                    {
-                        obj.AddInt32(7, optionalField.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in listField)
-                    {
-                        obj.AddInt32(8, value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in mapField)
-                    {
-                        var mapObj = obj.AddObject(9);
-                        mapObj.AddInt32(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
@@ -436,6 +378,51 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                             updateObj.AddClearedField(9);
                         }
                         
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    obj.AddBool(1, snapshot.BoolField);
+                }
+                {
+                    obj.AddInt32(2, snapshot.IntField);
+                }
+                {
+                    obj.AddInt64(3, snapshot.LongField);
+                }
+                {
+                    obj.AddFloat(4, snapshot.FloatField);
+                }
+                {
+                    obj.AddDouble(5, snapshot.DoubleField);
+                }
+                {
+                    obj.AddString(6, snapshot.StringField);
+                }
+                {
+                    if (snapshot.OptionalField.HasValue)
+                {
+                    obj.AddInt32(7, snapshot.OptionalField.Value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.ListField)
+                {
+                    obj.AddInt32(8, value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.MapField)
+                {
+                    var mapObj = obj.AddObject(9);
+                    mapObj.AddInt32(1, keyValuePair.Key);
+                    mapObj.AddString(2, keyValuePair.Value);
+                }
+                
                 }
             }
 
@@ -872,6 +859,17 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(NonBlittableComponent.ComponentId, DeserializeData, DeserializeUpdate);
@@ -879,7 +877,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(NonBlittableComponent.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(NonBlittableComponent.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }
