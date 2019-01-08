@@ -28,11 +28,12 @@ namespace Playground
             if (!string.IsNullOrEmpty(hostIp))
             {
                 ipAddressInput.text = hostIp;
-                TryLocalConnect();
-                return;
+            }
+            else
+            {
+                ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             }
 
-            ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             localConnectButton.onClick.AddListener(TryLocalConnect);
             cloudConnectButton.onClick.AddListener(TryCloudConnect);
         }
