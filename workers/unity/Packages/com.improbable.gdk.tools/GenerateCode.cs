@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Tools
                     case RuntimePlatform.LinuxEditor:
                     case RuntimePlatform.OSXEditor:
                         // Ensure the schema compiler is executable.
-                        var _ = RedirectedProcess.Run("chmod", "+x", schemaCompilerPath);
+                        var _ = RedirectedProcess.Run("chmod", "+x", $"\"{schemaCompilerPath}\"");
                         break;
                     default:
                         throw new PlatformNotSupportedException(

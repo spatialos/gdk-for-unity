@@ -158,34 +158,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     this.doubleField = value;
                 }
             }
-
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                BlittableBool boolField,
-                int intField,
-                long longField,
-                float floatField,
-                double doubleField
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(1001);
-                var obj = schemaComponentData.GetFields();
-                {
-                    obj.AddBool(1, boolField);
-                }
-                {
-                    obj.AddInt32(2, intField);
-                }
-                {
-                    obj.AddInt64(3, longField);
-                }
-                {
-                    obj.AddFloat(4, floatField);
-                }
-                {
-                    obj.AddDouble(5, doubleField);
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
@@ -257,6 +229,25 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         obj.AddDouble(5, component.DoubleField);
                     }
 
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    obj.AddBool(1, snapshot.BoolField);
+                }
+                {
+                    obj.AddInt32(2, snapshot.IntField);
+                }
+                {
+                    obj.AddInt64(3, snapshot.LongField);
+                }
+                {
+                    obj.AddFloat(4, snapshot.FloatField);
+                }
+                {
+                    obj.AddDouble(5, snapshot.DoubleField);
                 }
             }
 
@@ -461,6 +452,17 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(BlittableComponent.ComponentId, DeserializeData, DeserializeUpdate);
@@ -468,7 +470,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(BlittableComponent.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(BlittableComponent.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

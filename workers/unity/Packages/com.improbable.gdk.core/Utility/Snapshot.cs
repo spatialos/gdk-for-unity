@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Improbable.Worker.CInterop;
-
 using UnityEngine;
 
 namespace Improbable.Gdk.Core

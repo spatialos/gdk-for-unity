@@ -330,86 +330,6 @@ namespace Improbable.Gdk.Tests
                     this.field18 = value;
                 }
             }
-
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                BlittableBool field1,
-                float field2,
-                byte[] field3,
-                int field4,
-                long field5,
-                double field6,
-                string field7,
-                uint field8,
-                ulong field9,
-                int field10,
-                long field11,
-                uint field12,
-                ulong field13,
-                int field14,
-                long field15,
-                global::Improbable.Gdk.Core.EntityId field16,
-                global::Improbable.Gdk.Tests.SomeType field17,
-                global::Improbable.Gdk.Tests.SomeEnum field18
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197715);
-                var obj = schemaComponentData.GetFields();
-                {
-                    obj.AddBool(1, field1);
-                }
-                {
-                    obj.AddFloat(2, field2);
-                }
-                {
-                    obj.AddBytes(3, field3);
-                }
-                {
-                    obj.AddInt32(4, field4);
-                }
-                {
-                    obj.AddInt64(5, field5);
-                }
-                {
-                    obj.AddDouble(6, field6);
-                }
-                {
-                    obj.AddString(7, field7);
-                }
-                {
-                    obj.AddUint32(8, field8);
-                }
-                {
-                    obj.AddUint64(9, field9);
-                }
-                {
-                    obj.AddSint32(10, field10);
-                }
-                {
-                    obj.AddSint64(11, field11);
-                }
-                {
-                    obj.AddFixed32(12, field12);
-                }
-                {
-                    obj.AddFixed64(13, field13);
-                }
-                {
-                    obj.AddSfixed32(14, field14);
-                }
-                {
-                    obj.AddSfixed64(15, field15);
-                }
-                {
-                    obj.AddEntityId(16, field16);
-                }
-                {
-                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17, obj.AddObject(17));
-                }
-                {
-                    obj.AddEnum(18, (uint) field18);
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
@@ -624,6 +544,64 @@ namespace Improbable.Gdk.Tests
                         obj.AddEnum(18, (uint) component.Field18);
                     }
 
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.ExhaustiveSingular.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    obj.AddBool(1, snapshot.Field1);
+                }
+                {
+                    obj.AddFloat(2, snapshot.Field2);
+                }
+                {
+                    obj.AddBytes(3, snapshot.Field3);
+                }
+                {
+                    obj.AddInt32(4, snapshot.Field4);
+                }
+                {
+                    obj.AddInt64(5, snapshot.Field5);
+                }
+                {
+                    obj.AddDouble(6, snapshot.Field6);
+                }
+                {
+                    obj.AddString(7, snapshot.Field7);
+                }
+                {
+                    obj.AddUint32(8, snapshot.Field8);
+                }
+                {
+                    obj.AddUint64(9, snapshot.Field9);
+                }
+                {
+                    obj.AddSint32(10, snapshot.Field10);
+                }
+                {
+                    obj.AddSint64(11, snapshot.Field11);
+                }
+                {
+                    obj.AddFixed32(12, snapshot.Field12);
+                }
+                {
+                    obj.AddFixed64(13, snapshot.Field13);
+                }
+                {
+                    obj.AddSfixed32(14, snapshot.Field14);
+                }
+                {
+                    obj.AddSfixed64(15, snapshot.Field15);
+                }
+                {
+                    obj.AddEntityId(16, snapshot.Field16);
+                }
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(snapshot.Field17, obj.AddObject(17));
+                }
+                {
+                    obj.AddEnum(18, (uint) snapshot.Field18);
                 }
             }
 
@@ -1142,6 +1120,17 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveSingular.ComponentId, DeserializeData, DeserializeUpdate);
@@ -1149,7 +1138,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveSingular.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(ExhaustiveSingular.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

@@ -69,14 +69,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 return snapshot;
             }
-
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(1003);
-                var obj = schemaComponentData.GetFields();
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
@@ -94,6 +86,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             public static void SerializeUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
             }
 
             public static Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -177,6 +173,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ComponentWithNoFields.ComponentId, DeserializeData, DeserializeUpdate);
@@ -184,7 +191,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ComponentWithNoFields.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(ComponentWithNoFields.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }
