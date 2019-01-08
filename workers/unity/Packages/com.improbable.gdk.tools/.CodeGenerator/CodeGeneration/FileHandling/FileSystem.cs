@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,26 +26,12 @@ namespace Improbable.Gdk.CodeGeneration.FileHandling
 
         public void WriteToFile(string path, string content)
         {
-            using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
-            {
-                // Do not generate BOM at the start of the file
-                var encoding = new UTF8Encoding(false);
-                using (var streamWriter = new StreamWriter(fileStream, encoding))
-                {
-                    streamWriter.Write(content);
-                }
-            }
+            File.WriteAllText(path, content);
         }
 
         public string ReadFromFile(string path)
         {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
-                {
-                    return streamReader.ReadToEnd();
-                }
-            }
+            return File.ReadAllText(path);
         }
 
         public IFile GetFileInfo(string path)
@@ -71,13 +58,15 @@ namespace Improbable.Gdk.CodeGeneration.FileHandling
 
         public void DeleteDirectory(string path)
         {
-            if (!string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
-                var directoryInfo = new DirectoryInfo(path);
-                if (directoryInfo.Exists)
-                {
-                    directoryInfo.Delete(true);
-                }
+                throw new ArgumentException("Argument 'path' cannot be null or empty.");
+            }
+
+            var directoryInfo = new DirectoryInfo(path);
+            if (directoryInfo.Exists)
+            {
+                directoryInfo.Delete(true);
             }
         }
     }
