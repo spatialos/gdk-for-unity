@@ -46,7 +46,12 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Install apk on connected phone / emulator
-                RedirectedProcess.Run(adbPath, "install", "-r", apkPath);
+                if (RedirectedProcess.Run(adbPath, "install", "-r", apkPath) != 0)
+                {
+                    Debug.LogError("Failed to install the apk on the device/emulator. If the application is already installed on your device/emulator, " +
+                        "try uninstalling it before launching the mobile client.");
+                    return;
+                }
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 

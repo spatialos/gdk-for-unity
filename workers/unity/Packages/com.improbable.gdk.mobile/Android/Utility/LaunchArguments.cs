@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Mobile.Android
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException($"Failed to retrieve launch arguments: {e}");
+                UnityEngine.Debug.LogException(e);
             }
 #endif
 
