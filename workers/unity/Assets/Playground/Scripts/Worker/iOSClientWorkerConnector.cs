@@ -4,8 +4,6 @@ using Improbable.Gdk.Mobile;
 using Improbable.Gdk.Mobile.iOS;
 #endif
 using System;
-using System.Collections.Generic;
-using Improbable.Worker.CInterop.Alpha;
 using UnityEngine;
 
 namespace Playground
@@ -59,24 +57,9 @@ namespace Playground
 #endif
         }
 
-        protected override string GetPlayerId()
-        {
-            return $"Player-{Guid.NewGuid()}";
-        }
-
-        protected override string GetDisplayName()
-        {
-            return string.Empty;
-        }
-
         protected override ConnectionService GetConnectionService()
         {
             return connectionService;
-        }
-
-        protected override string SelectLoginToken(List<LoginTokenDetails> loginTokens)
-        {
-            return loginTokens[0].LoginToken;
         }
 
         public override void Dispose()
