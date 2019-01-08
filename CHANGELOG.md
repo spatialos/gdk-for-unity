@@ -7,16 +7,26 @@
 - Added support for the Steam authentication flow.
 - Added support for the Alpha Locator flow.
 - Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
+- Added option to build workers out via IL2CPP in the cmd.
 
 ### Changed
 
 - Upgraded the Worker SDK snapshot version.
+- `Improbable.Gdk.EntityTemplate` is now mutable and exposes a set of APIs to add, remove, and replace component snapshots
+    - This replaces the `Improbable.Gdk.Core.EntityBuilder` class.
+    - These changes also allow you to reuse an `EntityTemplate` more than once.
 
 ### Fixed
 
 - `Clean all workers` now cleans worker configs in addition to built-out workers.
 - Fixed a bug where you could start each built-out worker only once on OSX.
 - Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
+- Fixed a bug where spaces in the path would cause code generation to fail on OSX.
+
+### Removed
+
+- Removed the `Improbable.Gdk.Core.EntityBuilder` class as it was superceded by the updated functionality in `Improbable.Gdk.Core.EntityTemplate`.
+    - Removed `CreateSchemaComponentData` from each generated component as it is no longer required by the `EntityBuilder`.
 
 ## `0.1.3` - 2018-11-26
 
