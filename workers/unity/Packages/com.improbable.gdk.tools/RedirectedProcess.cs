@@ -158,7 +158,7 @@ namespace Improbable.Gdk.Tools
                     {
                         if (!string.IsNullOrEmpty(args.Data))
                         {
-                            if (redirectStdout)
+                            if (redirectStderr)
                             {
                                 Debug.LogError(args.Data);
                             }
