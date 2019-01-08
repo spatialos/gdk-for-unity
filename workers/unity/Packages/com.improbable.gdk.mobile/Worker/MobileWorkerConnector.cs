@@ -44,8 +44,8 @@ namespace Improbable.Gdk.Mobile
 
         protected override AlphaLocatorConfig GetAlphaLocatorConfig(string workerType)
         {
-            var pit = RetrievePlayerIdentityToken(DevelopmentAuthToken, GetPlayerId(), GetDisplayName());
-            var loginTokenDetails = RetrieveLoginToken(workerType, pit);
+            var pit = GetDevelopmentPlayerIdentityToken(DevelopmentAuthToken, GetPlayerId(), GetDisplayName());
+            var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
             var loginToken = SelectLoginToken(loginTokenDetails);
 
             return new AlphaLocatorConfig

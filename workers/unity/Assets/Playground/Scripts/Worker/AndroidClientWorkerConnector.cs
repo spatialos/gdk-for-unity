@@ -21,7 +21,7 @@ namespace Playground
         private GameObject levelInstance;
         private ConnectionService connectionService;
 
-        public async void TryConnect(ConnectionService connectionService)
+        public async void TryConnectAsync(ConnectionService connectionService)
         {
             this.connectionService = connectionService;
             await Connect(WorkerUtils.AndroidClient, new ForwardingDispatcher()).ConfigureAwait(false);

@@ -8,6 +8,7 @@ namespace Improbable.Gdk.Mobile.Android
     {
         public static Dictionary<string, string> GetArguments()
         {
+#if !UNITY_EDITOR
             try
             {
                 using (var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -27,8 +28,9 @@ namespace Improbable.Gdk.Mobile.Android
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogWarning($"Failed to retrieve launch arguments: {e}");
+                UnityEngine.Debug.LogException($"Failed to retrieve launch arguments: {e}");
             }
+#endif
 
             return new Dictionary<string, string>();
         }

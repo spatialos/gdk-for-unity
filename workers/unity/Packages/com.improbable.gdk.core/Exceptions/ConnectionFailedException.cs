@@ -11,8 +11,7 @@ namespace Improbable.Gdk.Core
         DeploymentNotFound,
         InvalidConfig,
         ExceededMaximumRetries,
-        EditorApplicationStopped,
-        FailedAuthentication,
+        EditorApplicationStopped
     }
 
     /// <summary>

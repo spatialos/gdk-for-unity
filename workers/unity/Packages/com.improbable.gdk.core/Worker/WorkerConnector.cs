@@ -187,14 +187,22 @@ namespace Improbable.Gdk.Core
         /// <returns>A <see cref="ReceptionistConfig"/> object.</returns>
         protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 
+        /// <summary>
+        /// Retrieves the player id for the player trying to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <returns>A string containing the player id.</returns>
         protected virtual string GetPlayerId()
         {
-            return null;
+            return $"Player-{Guid.NewGuid()}";
         }
 
+        /// <summary>
+        /// Retrieves the display name for the player trying to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <returns>A string containing the display name.</returns>
         protected virtual string GetDisplayName()
         {
-            return null;
+            return string.Empty;
         }
 
         /// <summary>
@@ -207,16 +215,34 @@ namespace Improbable.Gdk.Core
             return null;
         }
 
+        /// <summary>
+        ///     Selects which login token to use to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <param name="loginTokens">A list of available login tokens.</param>
+        /// <returns>The selected login token.</returns>
         protected virtual string SelectLoginToken(List<LoginTokenDetails> loginTokens)
         {
-            return null;
+            if (loginTokens.Count == 0)
+            {
+                throw new AuthenticationFailedException("Did not receive any login tokens. Do you have a valid deployment running?");
+            }
+
+            return loginTokens[0].LoginToken;
         }
 
-        protected virtual string RetrievePlayerIdentityToken(string authToken, string playerId, string displayName)
+        /// <summary>
+        ///     Retrieves the player identity token needed to generate a login token when using
+        ///     the anonymous authentication flow.
+        /// </summary>
+        /// <param name="authToken">The authentication token that you generated.</param>
+        /// <param name="playerId">The id of the player that wants to connect.</param>
+        /// <param name="displayName">The display name of the player that wants to connect.</param>
+        /// <returns>The player identity token.</returns>
+        protected virtual string GetDevelopmentPlayerIdentityToken(string authToken, string playerId, string displayName)
         {
             var result = DevelopmentAuthentication.CreateDevelopmentPlayerIdentityTokenAsync(
                 RuntimeConfigDefaults.LocatorHost,
-                RuntimeConfigDefaults.DevelopmentPlayerIdentityTokenPort,
+                RuntimeConfigDefaults.AnonymousAuthenticationPort,
                 new PlayerIdentityTokenRequest
                 {
                     DevelopmentAuthenticationTokenId = authToken,
@@ -227,23 +253,29 @@ namespace Improbable.Gdk.Core
 
             if (!result.HasValue)
             {
-                throw new ConnectionFailedException("Did not receive a player identity token.",
-                    ConnectionErrorReason.FailedAuthentication);
+                throw new AuthenticationFailedException("Did not receive a player identity token.");
             }
 
             if (!string.IsNullOrEmpty(result.Value.Error))
             {
-                throw new ConnectionFailedException(result.Value.Error, ConnectionErrorReason.FailedAuthentication);
+                throw new AuthenticationFailedException(result.Value.Error);
             }
 
             return result.Value.PlayerIdentityToken;
         }
 
-        protected virtual List<LoginTokenDetails> RetrieveLoginToken(string workerType, string playerIdentityToken)
+        /// <summary>
+        ///     Retrieves the login tokens of all active deployments that the player 
+        ///     can connect to via the anonymous authentication flow.
+        /// </summary>
+        /// <param name="workerType">The type of the worker that wants to connect.</param>
+        /// <param name="playerIdentityToken">The player identity token of the player that wants to connect.</param>
+        /// <returns>A list of all available login tokens and their deployments.</returns>
+        protected virtual List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)
         {
             var loginTokenRequestResult = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
                 RuntimeConfigDefaults.LocatorHost,
-                444,
+                RuntimeConfigDefaults.AnonymousAuthenticationPort,
                 new LoginTokensRequest
                 {
                     WorkerType = workerType,
@@ -255,14 +287,12 @@ namespace Improbable.Gdk.Core
 
             if (!loginTokenRequestResult.HasValue)
             {
-                throw new ConnectionFailedException("Did not receive any login tokens back.",
-                    ConnectionErrorReason.InvalidConfig);
+                throw new AuthenticationFailedException("Did not receive any login tokens back.");
             }
 
             if (loginTokenRequestResult.Value.Status != ConnectionStatusCode.Success)
             {
-                throw new ConnectionFailedException($"Failed to retrieve login token, " +
-                    $"error code: {loginTokenRequestResult.Value.Status}", ConnectionErrorReason.InvalidConfig);
+                throw new AuthenticationFailedException($"Failed to retrieve any login tokens, error code: {loginTokenRequestResult.Value.Status}");
             }
 
             return loginTokenRequestResult.Value.LoginTokens;

@@ -79,13 +79,13 @@ namespace Playground
         private void TryLocalConnect()
         {
             var workerConnector = PrepareConnect();
-            workerConnector.TryConnect(ConnectionService.Receptionist);
+            workerConnector.TryConnectAsync(ConnectionService.Receptionist);
         }
 
         private void TryCloudConnect()
         {
             var workerConnector = PrepareConnect();
-            workerConnector.TryConnect(ConnectionService.AlphaLocator);
+            workerConnector.TryConnectAsync(ConnectionService.AlphaLocator);
         }
 
         private string GetReceptionistHostFromArguments()

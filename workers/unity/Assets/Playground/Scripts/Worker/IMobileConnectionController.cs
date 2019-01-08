@@ -8,6 +8,6 @@ namespace Playground
 
         ConnectionScreenController ConnectionScreenController { get; set; }
 
-        void TryConnect(ConnectionService connectionService);
+        void TryConnectAsync(ConnectionService connectionService);
     }
 }
