@@ -5,7 +5,7 @@ using Improbable.Worker.CInterop;
 namespace Improbable.Gdk.Core
 {
     /// <summary>
-    ///     Utility class to help build SpatialOS entities. An <see cref="EntityTemplate"/> can be mutated be used
+    ///     Utility class to help build SpatialOS entities. An <see cref="EntityTemplate" /> can be mutated be used
     ///     multiple times.
     /// </summary>
     public class EntityTemplate
@@ -13,7 +13,9 @@ namespace Improbable.Gdk.Core
         private const uint EntityAclComponentId = 50;
         private const uint PositionComponentId = 54;
 
-        private readonly Dictionary<uint, ISpatialComponentSnapshot> entityData = new Dictionary<uint, ISpatialComponentSnapshot>();
+        private readonly Dictionary<uint, ISpatialComponentSnapshot> entityData =
+            new Dictionary<uint, ISpatialComponentSnapshot>();
+
         private readonly Acl acl = new Acl();
 
         /// <summary>
@@ -21,16 +23,17 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="snapshot">The component snapshot to add.</param>
         /// <param name="writeAccess">
-        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot"/> component.
+        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot" /> component.
         /// </param>
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot"/>.
+        ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot" />.
         /// </exception>
         /// <remarks>
         ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
         /// </remarks>
-        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess) where TSnapshot : struct, ISpatialComponentSnapshot
+        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
+            where TSnapshot : struct, ISpatialComponentSnapshot
         {
             if (snapshot.ComponentId == 50)
             {
@@ -85,20 +88,15 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Attempts to overwrite a component snapshot in the EntityTemplate with another one of the same type.
+        ///     Sets a component snapshot in the EntityTemplate.
         /// </summary>
         /// <param name="snapshot">The component snapshot that will be inserted into the EntityTemplate.</param>
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
-        /// <exception cref="InvalidOperationException">
-        ///     Thrown if there is no component snapshot of type <see cref="TSnapshot"/> to replace.
-        /// </exception>
-        public void ReplaceComponent<TSnapshot>(TSnapshot snapshot) where TSnapshot : struct, ISpatialComponentSnapshot
+        /// <remarks>
+        ///     This will override a snapshot of type <see cref="TSnapshot" /> in the EntityTemplate if one already exists.
+        /// </remarks>
+        public void SetComponent<TSnapshot>(TSnapshot snapshot) where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            if (!entityData.ContainsKey(snapshot.ComponentId))
-            {
-                throw new InvalidOperationException("Can only replace a component if one already exists in an EntityTemplate.");
-            }
-
             entityData[snapshot.ComponentId] = snapshot;
         }
 
@@ -167,10 +165,10 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Creates an <see cref="Entity"/> instance from this template.
+        ///     Creates an <see cref="Entity" /> instance from this template.
         /// </summary>
         /// <remarks>
-        ///     This function allocates native memory. The <see cref="Entity"/> returned from this function should
+        ///     This function allocates native memory. The <see cref="Entity" /> returned from this function should
         ///     be handed to a GDK API, which will take ownership, or otherwise must be disposed of manually.
         /// </remarks>
         /// <returns>The Entity object.</returns>
@@ -257,7 +255,8 @@ namespace Improbable.Gdk.Core
                 Entity = new Entity();
             }
 
-            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
+            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot,
+                DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
             {
                 if (!data.ContainsKey(componentId))
                 {

@@ -64,11 +64,11 @@ namespace Playground.MonoBehaviours
 
             var location = transformReader.Data.Location;
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
-            cubeEntityTemplate.ReplaceComponent(new Position.Snapshot
+            cubeEntityTemplate.SetComponent(new Position.Snapshot
             {
                 Coords = new Coordinates(location.X, location.Y + 2, location.Z)
             });
-            cubeEntityTemplate.ReplaceComponent(new TransformInternal.Snapshot
+            cubeEntityTemplate.SetComponent(new TransformInternal.Snapshot
             {
                 Location = new Location(location.X, location.Y + 2, location.Z),
                 Rotation = new Quaternion(1, 0, 0, 0)

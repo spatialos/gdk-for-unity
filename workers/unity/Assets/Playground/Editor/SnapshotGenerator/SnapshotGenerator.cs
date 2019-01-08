@@ -91,8 +91,8 @@ namespace Playground.Editor.SnapshotGenerator
                         TicksPerSecond = 1f / Time.fixedDeltaTime
                     };
 
-                    cubeTemplate.ReplaceComponent(positionSnapshot);
-                    cubeTemplate.ReplaceComponent(transformSnapshot);
+                    cubeTemplate.SetComponent(positionSnapshot);
+                    cubeTemplate.SetComponent(transformSnapshot);
                     snapshot.AddEntity(cubeTemplate);
                 }
             }
