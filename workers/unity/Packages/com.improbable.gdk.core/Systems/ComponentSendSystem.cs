@@ -18,13 +18,9 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(ComponentUpdateSystem))]
     public class ComponentSendSystem : ComponentSystem
     {
-        // Can't access the generated component ID in Core code.
-        private const uint PositionComponentId = 54;
+        private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
 
         private Connection connection;
-
-        private readonly List<ComponentReplicator> componentReplicators =
-            new List<ComponentReplicator>();
 
         protected override void OnCreateManager()
         {
@@ -49,12 +45,12 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-
             if (connection == null)
             {
                 return;
             }
+
+            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             foreach (var replicator in componentReplicators)
             {
@@ -64,13 +60,13 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        internal void AddComponentReplicator(IComponentReplicationHandler reactiveComponentReplicationHandler)
+        internal void AddComponentReplicator(IComponentReplicationHandler componentReplicationHandler)
         {
             componentReplicators.Add(new ComponentReplicator
             {
-                ComponentId = reactiveComponentReplicationHandler.ComponentId,
-                Handler = reactiveComponentReplicationHandler,
-                Group = GetComponentGroup(reactiveComponentReplicationHandler.ComponentUpdateQuery)
+                ComponentId = componentReplicationHandler.ComponentId,
+                Handler = componentReplicationHandler,
+                Group = GetComponentGroup(componentReplicationHandler.ComponentUpdateQuery)
             });
         }
 
@@ -88,8 +84,7 @@ namespace Improbable.Gdk.Core
                             continue;
                         }
 
-                        var handler =
-                            (IComponentReplicationHandler) Activator.CreateInstance(type);
+                        var handler = (IComponentReplicationHandler) Activator.CreateInstance(type);
 
                         AddComponentReplicator(handler);
                     }

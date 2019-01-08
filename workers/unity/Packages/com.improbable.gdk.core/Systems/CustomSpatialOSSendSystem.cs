@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
 
         protected WorkerSystem WorkerSystem;
 
-        private ReactiveComponentSendSystem reactiveComponentSendSystem;
+        private ComponentSendSystem componentSendSystem;
 
         protected override void OnCreateManager()
         {
@@ -29,11 +29,11 @@ namespace Improbable.Gdk.Core
 
             WorkerSystem = World.GetExistingManager<WorkerSystem>();
 
-            reactiveComponentSendSystem = World.GetOrCreateManager<ReactiveComponentSendSystem>();
+            componentSendSystem = World.GetOrCreateManager<ComponentSendSystem>();
 
             var component = new T();
 
-            if (!reactiveComponentSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
+            if (!componentSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
             {
                 WorkerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)

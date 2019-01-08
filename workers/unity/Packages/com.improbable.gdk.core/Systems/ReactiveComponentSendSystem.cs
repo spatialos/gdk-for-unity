@@ -18,13 +18,9 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(ComponentUpdateSystem))]
     public class ReactiveComponentSendSystem : ComponentSystem
     {
-        // Can't access the generated component ID in Core code.
-        private const uint PositionComponentId = 54;
+        private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
 
         private Connection connection;
-
-        private readonly List<ComponentReplicator> componentReplicators =
-            new List<ComponentReplicator>();
 
         protected override void OnCreateManager()
         {
@@ -35,27 +31,15 @@ namespace Improbable.Gdk.Core
             PopulateDefaultComponentReplicators();
         }
 
-        public bool TryRegisterCustomReplicationSystem(uint componentId)
-        {
-            if (componentReplicators.All(componentReplicator => componentReplicator.ComponentId != componentId))
-            {
-                return false;
-            }
-
-            // The default replication system is removed, instead the custom one is responsible for replication.
-            return componentReplicators.Remove(componentReplicators.First(
-                componentReplicator => componentReplicator.ComponentId == componentId));
-        }
-
         protected override void OnUpdate()
         {
-            var commandSystem = World.GetExistingManager<CommandSystem>();
-            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-
             if (connection == null)
             {
                 return;
             }
+
+            var commandSystem = World.GetExistingManager<CommandSystem>();
+            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             foreach (var replicator in componentReplicators)
             {
@@ -85,8 +69,12 @@ namespace Improbable.Gdk.Core
             // Find all component specific replicators and create an instance.
             var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(IReactiveComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract
-                    && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) == null);
+                .Where(type =>
+                {
+                    return typeof(IReactiveComponentReplicationHandler).IsAssignableFrom(type)
+                        && !type.IsAbstract
+                        && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) == null;
+                });
 
             foreach (var componentReplicationType in componentReplicationTypes)
             {
@@ -95,15 +83,6 @@ namespace Improbable.Gdk.Core
 
                 AddComponentReplicator(componentReplicationHandler);
             }
-
-            // Force the position component to be replicated last. A position update can trigger an authority
-            // change, which could cause subsequent updates to be dropped.
-            var positionReplicatorIndex =
-                componentReplicators.FindIndex(replicator => replicator.ComponentId == PositionComponentId);
-            var positionReplicator = componentReplicators[positionReplicatorIndex];
-
-            componentReplicators.RemoveAt(positionReplicatorIndex);
-            componentReplicators.Add(positionReplicator);
         }
 
         private struct ComponentReplicator
