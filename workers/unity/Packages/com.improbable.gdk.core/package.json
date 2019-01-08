@@ -8,6 +8,6 @@
     "dependencies": {
         "com.improbable.gdk.tools": "0.1.3",
         "com.unity.entities": "0.0.12-preview.18",
-        "com.unity.incrementalcompiler": "0.0.42-preview.21"
+        "com.unity.incrementalcompiler": "0.0.42-preview.28"
     }
 }
