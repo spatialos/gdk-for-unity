@@ -172,7 +172,7 @@ namespace Improbable.Gdk.Core
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
-        {  
+        {
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
