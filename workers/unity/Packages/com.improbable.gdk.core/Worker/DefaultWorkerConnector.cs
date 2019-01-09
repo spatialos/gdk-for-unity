@@ -156,7 +156,7 @@ namespace Improbable.Gdk.Core
             };
         }
 
-        protected override AlphaLocatorConfig GetAlphaLocatorConfig()
+        protected override AlphaLocatorConfig GetAlphaLocatorConfig(string workerType)
         {
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);

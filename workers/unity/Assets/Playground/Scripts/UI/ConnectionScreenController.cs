@@ -13,7 +13,8 @@ namespace Playground
 
         [SerializeField] private GameObject connectionPanel;
         [SerializeField] private InputField ipAddressInput;
-        [SerializeField] private Button connectButton;
+        [SerializeField] private Button localConnectButton;
+        [SerializeField] private Button cloudConnectButton;
         [SerializeField] private Text errorMessage;
         [SerializeField] private GameObject clientWorkerPrefab;
 
@@ -27,17 +28,20 @@ namespace Playground
             if (!string.IsNullOrEmpty(hostIp))
             {
                 ipAddressInput.text = hostIp;
-                TryConnect();
-                return;
+            }
+            else
+            {
+                ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
             }
 
-            ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
-            connectButton.onClick.AddListener(TryConnect);
+            localConnectButton.onClick.AddListener(TryLocalConnect);
+            cloudConnectButton.onClick.AddListener(TryCloudConnect);
         }
 
         public void OnDestroy()
         {
-            connectButton.onClick.RemoveListener(TryConnect);
+            localConnectButton.onClick.RemoveListener(TryLocalConnect);
+            cloudConnectButton.onClick.RemoveListener(TryCloudConnect);
         }
 
         public void OnConnectionSucceeded()
@@ -55,7 +59,7 @@ namespace Playground
                 $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
         }
 
-        private void TryConnect()
+        private IMobileConnectionController PrepareConnect()
         {
             errorMessage.text = string.Empty;
             worker = Instantiate(clientWorkerPrefab);
@@ -70,7 +74,19 @@ namespace Playground
 
             workerConnector.IpAddress = IpAddress;
             workerConnector.ConnectionScreenController = this;
-            workerConnector.TryConnect();
+            return workerConnector;
+        }
+
+        private void TryLocalConnect()
+        {
+            var workerConnector = PrepareConnect();
+            workerConnector.TryConnectAsync(ConnectionService.Receptionist);
+        }
+
+        private void TryCloudConnect()
+        {
+            var workerConnector = PrepareConnect();
+            workerConnector.TryConnectAsync(ConnectionService.AlphaLocator);
         }
 
         private string GetReceptionistHostFromArguments()

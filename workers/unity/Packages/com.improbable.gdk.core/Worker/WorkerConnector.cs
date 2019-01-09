@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
 
@@ -103,7 +104,7 @@ namespace Improbable.Gdk.Core
                         break;
                     case ConnectionService.AlphaLocator:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(), connectionParameters, logger, origin)
+                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
                                 .ConfigureAwait(false);
                         break;
                     default:
@@ -177,7 +178,7 @@ namespace Improbable.Gdk.Core
         ///     This connection service is still in Alpha and does not provide an integration with Steam.
         /// </remarks>
         /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
-        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig();
+        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig(string workerType);
 
         /// <summary>
         /// Retrieves the configuration needed to connect via the Receptionist service.
@@ -187,6 +188,24 @@ namespace Improbable.Gdk.Core
         protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
 
         /// <summary>
+        /// Retrieves the player id for the player trying to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <returns>A string containing the player id.</returns>
+        protected virtual string GetPlayerId()
+        {
+            return $"Player-{Guid.NewGuid()}";
+        }
+
+        /// <summary>
+        /// Retrieves the display name for the player trying to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <returns>A string containing the display name.</returns>
+        protected virtual string GetDisplayName()
+        {
+            return string.Empty;
+        }
+
+        /// <summary>
         ///     Selects which deployment to connect to.
         /// </summary>
         /// <param name="deployments">The list of deployments.</param>
@@ -194,6 +213,91 @@ namespace Improbable.Gdk.Core
         protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
             return null;
+        }
+
+        /// <summary>
+        ///     Selects which login token to use to connect via the anonymous authentication flow.
+        /// </summary>
+        /// <param name="loginTokens">A list of available login tokens.</param>
+        /// <returns>The selected login token.</returns>
+        protected virtual string SelectLoginToken(List<LoginTokenDetails> loginTokens)
+        {
+            if (loginTokens.Count == 0)
+            {
+                throw new AuthenticationFailedException("Did not receive any login tokens. Do you have a valid deployment running?");
+            }
+
+            return loginTokens[0].LoginToken;
+        }
+
+        /// <summary>
+        ///     Retrieves the player identity token needed to generate a login token when using
+        ///     the anonymous authentication flow.
+        /// </summary>
+        /// <param name="authToken">The authentication token that you generated.</param>
+        /// <param name="playerId">The id of the player that wants to connect.</param>
+        /// <param name="displayName">The display name of the player that wants to connect.</param>
+        /// <returns>The player identity token.</returns>
+        protected virtual string GetDevelopmentPlayerIdentityToken(string authToken, string playerId, string displayName)
+        {
+            var result = DevelopmentAuthentication.CreateDevelopmentPlayerIdentityTokenAsync(
+                RuntimeConfigDefaults.LocatorHost,
+                RuntimeConfigDefaults.AnonymousAuthenticationPort,
+                new PlayerIdentityTokenRequest
+                {
+                    DevelopmentAuthenticationTokenId = authToken,
+                    PlayerId = playerId,
+                    DisplayName = displayName,
+                }
+            ).Get();
+
+            if (!result.HasValue)
+            {
+                throw new AuthenticationFailedException("Did not receive a player identity token.");
+            }
+
+            if (result.Value.Status != ConnectionStatusCode.Success)
+            {
+                throw new AuthenticationFailedException("Failed to retrieve a player identity token.\n" +
+                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
+            }
+
+            return result.Value.PlayerIdentityToken;
+        }
+
+        /// <summary>
+        ///     Retrieves the login tokens for all active deployments that the player
+        ///     can connect to via the anonymous authentication flow.
+        /// </summary>
+        /// <param name="workerType">The type of the worker that wants to connect.</param>
+        /// <param name="playerIdentityToken">The player identity token of the player that wants to connect.</param>
+        /// <returns>A list of all available login tokens and their deployments.</returns>
+        protected virtual List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)
+        {
+            var result = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
+                RuntimeConfigDefaults.LocatorHost,
+                RuntimeConfigDefaults.AnonymousAuthenticationPort,
+                new LoginTokensRequest
+                {
+                    WorkerType = workerType,
+                    PlayerIdentityToken = playerIdentityToken,
+                    UseInsecureConnection = false,
+                    DurationSeconds = 120,
+                }
+            ).Get();
+
+            if (!result.HasValue)
+            {
+                throw new AuthenticationFailedException("Did not receive any login tokens back.");
+            }
+
+            if (result.Value.Status != ConnectionStatusCode.Success)
+            {
+                throw new AuthenticationFailedException("Failed to retrieve any login tokens.\n" +
+                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
+            }
+
+            return result.Value.LoginTokens;
         }
 
         protected virtual void HandleWorkerConnectionEstablished()

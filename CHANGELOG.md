@@ -6,6 +6,7 @@
 
 - Added support for the Steam authentication flow.
 - Added support for the Alpha Locator flow.
+- Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
 - Added option to build workers out via IL2CPP in the cmd.
 
 ### Changed

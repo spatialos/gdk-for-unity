@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Core
             Vector3 origin)
         {
             var connection = await Task.Run(() => connectionFuture.Get());
-            if (!connection.IsConnected)
+            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
             {
                 throw new ConnectionFailedException(GetConnectionFailureReason(connection),
                     ConnectionErrorReason.CannotEstablishConnection);

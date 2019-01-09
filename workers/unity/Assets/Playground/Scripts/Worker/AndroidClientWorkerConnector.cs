@@ -17,9 +17,11 @@ namespace Playground
         [SerializeField] private GameObject level;
 
         private GameObject levelInstance;
+        private ConnectionService connectionService;
 
-        public async void TryConnect()
+        public async void TryConnectAsync(ConnectionService connectionService)
         {
+            this.connectionService = connectionService;
             await Connect(WorkerUtils.AndroidClient, new ForwardingDispatcher()).ConfigureAwait(false);
         }
 
@@ -59,6 +61,11 @@ namespace Playground
             throw new PlatformNotSupportedException(
                 $"{nameof(AndroidClientWorkerConnector)} can only be used for the Android platform. Please check your build settings.");
 #endif
+        }
+
+        protected override ConnectionService GetConnectionService()
+        {
+            return connectionService;
         }
 
         public override void Dispose()

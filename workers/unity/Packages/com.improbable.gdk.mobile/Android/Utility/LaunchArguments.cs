@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Mobile.Android
 {
@@ -8,6 +9,11 @@ namespace Improbable.Gdk.Mobile.Android
     {
         public static Dictionary<string, string> GetArguments()
         {
+            if (Application.isEditor)
+            {
+                return new Dictionary<string, string>();
+            }
+
             try
             {
                 using (var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -27,7 +33,7 @@ namespace Improbable.Gdk.Mobile.Android
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.LogException(e);
+                Debug.LogException(e);
             }
 
             return new Dictionary<string, string>();
