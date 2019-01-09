@@ -39,7 +39,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 >**TIP: Fast worker build with quick-run** 
 <br/> When you are developing with the GDK, you don't need to build out workers all the time, you can use quick-run to run two workers in your Unity Editor using Ctrl+L (Windows) or Cmd+L (Mac).
 <br/>
-<br/>When you are developing with the GDK, you use a local deployment rather than a cloud deployment. In a local deployment, you can either build your workers to run locally or use quick-run. With quick-run, you can run multiple workers in your Unity Editor, so you don't have to keep building out workers during development iteration. 
+<br/>When you are developing with the GDK, you use a local deployment rather than a cloud deployment. In a local deployment, you can either build your workers to run locally or use quick-run. With quick-run you can run two workers in your Unity Editor, so you don't have to keep building out workers during development iteration. 
 <br/>
 <br/>
  To use quick-run with the FPS Starter Project:<br/>
