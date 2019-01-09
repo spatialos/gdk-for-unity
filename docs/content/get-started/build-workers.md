@@ -9,7 +9,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 <br/>![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.png)
 <br/>_The SpatialOS menu in the Unity Editor_
 <br/>
-<br/>**NOTE:** Building workers for the first time may take while (about 10 minutes). Why not make yourself a cup of tea or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos) while you wait?
+<br/>**NOTE:** Building workers for the first time may take a while (about 10 minutes). Why not make yourself a cup of tea or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos) while you wait?
 <br/>
 <br/>
 3. **It has finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`. 
