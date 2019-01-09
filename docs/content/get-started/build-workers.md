@@ -45,7 +45,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
  To use quick-run with the FPS Starter Project:<br/>
  <br/>
 1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
-2. Wait until you see a message in the Editor’s console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector (xx.xs).<br/>
+2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector (xx.xs).<br/>
 3. In your Unity Editor, play the FPS-Development Scene.<br/>
 
 <br/>
