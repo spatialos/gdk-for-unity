@@ -67,5 +67,5 @@ You can now find the built-out workers in `build/assembly/worker` in the root of
  To use quick-run with the FPS Starter Project:
 
 1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
-2. Wait until you see a message in the Editor’s console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector (xx.xs)
+2. Wait until you see a message in the Editor’s console window that SpatialOS is ready. The message is: `SpatialOS ready`. Access the inspector at http://localhost:21000/inspector (xx.xs).
 3. In your Unity Editor, play the FPS-Development Scene.
