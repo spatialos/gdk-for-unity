@@ -7,6 +7,17 @@ Before reading this document, make sure you are familiar with:
   * [Setting up iOS Support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
+## Prepare your project to connect to a local deployment
+
+To connect your iOS device or simulator to a local deployment, follow these steps:
+
+1. Open your project in the Unity Editor.
+1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
+1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
+1. Select **Save**, and close the window.
+
+This ensures that any local deployment that is launched via the Unity Editor is set up correctly to connect to your iOS device or simulator.
+
 ## Connecting your iOS device to a local deployment using Unity Remote
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
@@ -63,5 +74,16 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     >
     > For subsequent runs you will be prompted to pick XCode project directory again (with the one used previously preselected). You can generate a new project or append/replace existing one. In subsequent runs, if you've set up provisioning and use Append, you can use **Build and Run** to trigger project run automatically after XCode project was generated.
 
-  1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and click **Connect**.
+  1. Once the game is running on your device, you need to connect using the local IP address.<br/>Either: 
+  
+      * On your device, note the empty text field and a **Connect** button: enter the local IP address of your computer in the text field and click **Connect**.
+      
+      Or:
+  
+      * In your Unity Editor, navigate to: **SpatialOS** > **Launch Mobile Client** > **iOS Client** to launch the iOS client with the IP address field prefilled. (It's prefilled with the value you entered in the GDK Tools Configuration Window. You can access this by navigating to **SpatialOS** > **GDK Tools Configuration** > **Runtime IP for local deployment** in the Unity Editor.)
+  
+      > To use this workflow you need to have [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) and [idevicedebug](https://helpmanual.io/help/idevicedebug/) tools installed.
+      >
+      > To start the iOS client from the Unity Editor, you need to build the application as a `.ipa` archive to the `workers\unity\build` directory.
+
   1. Play the game on your mobile device.
