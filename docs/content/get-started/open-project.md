@@ -20,7 +20,7 @@ There is a quick fix however:
 _Unity Editor menu to reimport shaders_
 
 #### Bake Navmesh
-There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding importing NavMesh. The Unity Editor does not import the NavMesh for the `FPS-SimulatedPlayerCoordinator` correctly when you open the project for the first time. To fix this, you need to rebake the NavMesh for this Scene. To do this:
+There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding importing NavMeshes. The Unity Editor does not import the NavMesh for the `FPS-SimulatedPlayerCoordinator` correctly when you open the project for the first time. To fix this, you need to rebake the NavMesh for this Scene. To do this:
 
 1. In the [Project window (Unity documentation)](https://docs.unity3d.com/Manual/ProjectView.html), open the `FPS-SimulatedPlayerCoordinator` Scene located at `Assets/Fps/Scenes`.
 1. In the [Hierarchy window (Unity documentation)](https://docs.unity3d.com/Manual/Hierarchy.html), click on the `FPS-Start_Large` object to see it in the [Inspector window (Unity documentation)](https://docs.unity3d.com/Manual/UsingTheInspector.html), and enable the object by clicking the checkbox next to its name.
