@@ -64,4 +64,10 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     > For subsequent runs you will be prompted to pick XCode project directory again (with the one used previously preselected). You can generate a new project or append/replace existing one. In subsequent runs, if you've set up provisioning and use Append, you can use **Build and Run** to trigger project run automatically after XCode project was generated.
 
   1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and click **Connect**.
+  1. Alternatively you can use **SpatialOS** > **Launch Mobile Client** > **iOS Client** to launch mobile client with IP address field prefilled with a value from **SpatialOS** > **GDK Tools Configuration** > **Runtime IP for local deployment**.
+  
+    > To use this flow you need to have [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) and [idevicedebug](https://helpmanual.io/help/idevicedebug/) tools installed.
+    >
+    > Make sure .ipa archive is built to `workers\unity\build\` directory.
+
   1. Play the game on your mobile device.
