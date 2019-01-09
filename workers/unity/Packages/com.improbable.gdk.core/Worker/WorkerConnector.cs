@@ -256,16 +256,17 @@ namespace Improbable.Gdk.Core
                 throw new AuthenticationFailedException("Did not receive a player identity token.");
             }
 
-            if (!string.IsNullOrEmpty(result.Value.Error))
+            if (result.Value.Status != ConnectionStatusCode.Success)
             {
-                throw new AuthenticationFailedException(result.Value.Error);
+                throw new AuthenticationFailedException("Failed to retrieve a player identity token.\n" +
+                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
             }
 
             return result.Value.PlayerIdentityToken;
         }
 
         /// <summary>
-        ///     Retrieves the login tokens of all active deployments that the player 
+        ///     Retrieves the login tokens for all active deployments that the player
         ///     can connect to via the anonymous authentication flow.
         /// </summary>
         /// <param name="workerType">The type of the worker that wants to connect.</param>
@@ -273,7 +274,7 @@ namespace Improbable.Gdk.Core
         /// <returns>A list of all available login tokens and their deployments.</returns>
         protected virtual List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)
         {
-            var loginTokenRequestResult = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
+            var result = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
                 RuntimeConfigDefaults.LocatorHost,
                 RuntimeConfigDefaults.AnonymousAuthenticationPort,
                 new LoginTokensRequest
@@ -285,17 +286,18 @@ namespace Improbable.Gdk.Core
                 }
             ).Get();
 
-            if (!loginTokenRequestResult.HasValue)
+            if (!result.HasValue)
             {
                 throw new AuthenticationFailedException("Did not receive any login tokens back.");
             }
 
-            if (loginTokenRequestResult.Value.Status != ConnectionStatusCode.Success)
+            if (result.Value.Status != ConnectionStatusCode.Success)
             {
-                throw new AuthenticationFailedException($"Failed to retrieve any login tokens, error code: {loginTokenRequestResult.Value.Status}");
+                throw new AuthenticationFailedException("Failed to retrieve any login tokens.\n" +
+                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
             }
 
-            return loginTokenRequestResult.Value.LoginTokens;
+            return result.Value.LoginTokens;
         }
 
         protected virtual void HandleWorkerConnectionEstablished()
