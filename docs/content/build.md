@@ -58,3 +58,14 @@ This starts the build process for the worker and deployment type (cloud or local
 > **It’s finished building when:** there is a message stating `Completed build for Local/Cloud target`.
 
 You can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity project.
+
+#### TIP: Fast worker build with quick-run
+ When you are developing with the GDK, you can use a quick-run to build workers using Ctrl+L (Windows) or Cmd+L (Mac).
+
+ This tutorial takes you through a cloud deployment. When you are developing with the GDK, you don’t need to always use a cloud deployment; you can use a local deployment instead. In a local deployment, you can either build your workers to run locally or use a quick-run option. With quick-run you can run multiple workers in your Unity Editor, so you don't have to keep building out workers during development iteration. 
+ 
+ To use quick-run with the FPS Starter Project:
+
+1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
+2. Wait until you see a message in the Editor’s console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector (xx.xs)
+3. In your Unity Editor, play the FPS-Development Scene.
