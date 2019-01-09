@@ -2,6 +2,8 @@
 
 Launch the Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
+>The first time you open the Starter Project in your Unity Editor, It takes about 10 minutes; it's much quicker to open after this. (While you are waiting, you could look at our [Games Blog](https://improbable.io/games/blog).)
+
 **Before you start, apply these two quick Unity bug fixes:**
 
 #### Shaders
@@ -23,8 +25,10 @@ There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding
 1. Open the **Navigation** window (Unity Editor menu: **Windows** > **AI** > **Navigation**).
 1. Select the **Bake** tab, and then the **Bake** button.
 
-You can verify that the NavMesh has been baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator**, and checking that Unity displays the correct icon.
+You can verify that the NavMesh is baked correctly by navigating to **Assets** > **Fps** > **Scenes** > **FPS-SimulatedPlayerCoordinator** and checking that there's a NavMesh object in the **Hierarchy** window. (The NavMesh object is usually represented by the icon below.)
 <img src="{{assetRoot}}assets/navmesh-fixed.png" style="margin: 0 auto; display: block;" />
+
+>You may get a number of warnings displayed in the Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages.
 
 
 <br/>
