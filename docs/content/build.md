@@ -62,7 +62,7 @@ You can now find the built-out workers in `build/assembly/worker` in the root of
 #### TIP: Fast worker build with quick-run
  When you are developing with the GDK, you don't need to build out workers all the time, you can use quick-run to run both workers in your Unity Editor using Ctrl+L (Windows) or Cmd+L (Mac).
 
- This tutorial takes you through the steps to start up a cloud deployment. When you are developing with the GDK, you don’t need to always use a cloud deployment; you can use a local deployment instead. In a local deployment, you can either build your workers to run locally or use quick-run. With quick-run you can run multiple workers in your Unity Editor, so you don't have to keep building out workers during development iteration. 
+ This tutorial takes you through the steps to start up a cloud deployment. When you are developing with the GDK, you don’t need to always use a cloud deployment; you can use a local deployment instead. In a local deployment, you can either build your workers to run locally or use quick-run. With quick-run you can run multiple workers in your Unity Editor, to speed up development iteration. 
  
  To use quick-run with the FPS Starter Project:
 
