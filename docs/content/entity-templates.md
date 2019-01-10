@@ -13,13 +13,13 @@ For information on how to create SpatialOS entities once you have set up entity 
 
 You have to create an `EntityTemplate` to specify which components a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) has and the initial values of those [components]({{urlRoot}}/content/glossary#spatialos-component). You have to also specify which workers have write access (also known as ”[authority]({{urlRoot}}/content/glossary#authority)” on a per-component basis.
 
-You use the [`EntityBuilder` class]({{urlRoot}}/content/api-entity-builder) to do this.
+You use the `EntityTemplate` class.
 
 There are examples of how to use this class below.
 
 
-### Create `ComponentData`
-For each [schema component]({{urlRoot}}/content/glossary#schema) you define, the class created by the [code generator]({{urlRoot}}/content/code-generator) has a method to create a `ComponentData` object for that component. For example, for the following schema:
+### Create component snapshots
+For each [schema component]({{urlRoot}}/content/glossary#schema) you define, the [code generator]({{urlRoot}}/content/code-generator) generates a struct which inherits from `ISpatialComponentSnapshot`. For example, for the following schema:
 
 ```
 component Health {
@@ -28,12 +28,20 @@ component Health {
 }
 ```
 
-The code generator creates a static method `Health.Component.CreateSchemaComponentData(int currentHealth)` which instantiates and populates a `ComponentData` object.
+The code generator creates:
 
-The following code snippet shows an example of how to define an `EntityTemplate` using the `EntityBuilder` class. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
+```csharp
+public partial class Health
+{
+    public struct Snapshot
+    {
+        int CurrentHealth;
+    }
+}
 
+```
 
-> You need to create a new EntityTemplate for each call to `CreateEntity`.
+The following code snippet shows an example of how to define an `EntityTemplate`. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).
 
 **Example**<br/>
 Example defining a template for a SpatialOS entity `creature`.
@@ -41,24 +49,16 @@ Example defining a template for a SpatialOS entity `creature`.
 ```csharp
 public static class CreatureTemplate
 {
-    public static readonly List<string> AllWorkerAttributes =
-        new List<string>
-        {
-            "UnityClient",
-            "UnityGameLogic"
-        };
 
     public static EntityTemplate CreateCreatureEntityTemplate(Coordinates coords)
     {
-        var healthComponent = Health.Component.CreateSchemaComponentData(currentHealth: 100);
+        var entityTemplate = new EntityTemplate();
 
-        var entity = EntityBuilder.Begin()
-            .AddPosition(coords.X, coords.Y, coords.Z, "UnityGameLogic")
-            .AddMetadata("Creature", "UnityGameLogic")
-            .SetPersistence(true)
-            .SetReadAcl(AllWorkerAttributes)
-            .AddComponent(healthComponent, "UnityGameLogic")
-            .Build();
+        entityTemplate.AddComponent(new Position.Snapshot { Coords = coords }, "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "Creature"}, "UnityGameLogic");
+        entityTemplate.AddComponent(new Persistence.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new Health.Snapshot { CurrentHealth = 100 }, "UnityGameLogic");
+        entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
 
         return entityTemplate;
     }
