@@ -135,7 +135,3 @@ The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
   * a Unity project at `gdk-for-unity/workers/unity`, which you need to open in the Unity editor in order to use the GDK
   * SpatialOS features, such as the schema and snapshot files
-
-### Licensing
-
-*Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine. For more about licensing for the SpatialOS GDK see the [licensing]({{urlRoot}}/license) section.*

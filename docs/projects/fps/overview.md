@@ -9,7 +9,3 @@ The SpatialOS GDK can help you run your games at scale, making it easy for even 
 To dive right in, follow the [Get started]({{urlRoot}}/content/get-started/get-started) guide which uses the FPS Starter Project. Once you have completed this, you can follow the _Add your first feature_ guide which is a Health Pick-up tutorial, following on from the _Get started_ guide.
 
 > **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and [command line interfaces (djangogirls.org)](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.
-
-### Licensing
-
-The FPS Starter Project is a streamlined example of best practice that we _**want**_ you to build on top of. The FPS Starter Project is shared under the Improbable license, which you can read more about in our [licensing]({{urlRoot}}/license) section.

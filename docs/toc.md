@@ -116,6 +116,3 @@
         - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 - <h3> + Development roadmap</h3>
     - [Trello board](https://trello.com/b/29tMKyQC)
-
-***
-- <h3>[- License]({{urlRoot}}/license)</h3>
