@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
@@ -15,12 +16,14 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly Vector3 workerOrigin;
 
         private readonly ILogDispatcher logger;
+        private readonly Func<GameObject, GameObject> prefabFilter;
 
-        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
+        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger, Func<GameObject, GameObject> prefabFilter = null)
         {
             this.workerType = workerType;
             this.workerOrigin = workerOrigin;
             this.logger = logger;
+            this.prefabFilter = prefabFilter ?? (x => x);
         }
 
         public GameObject OnEntityCreated(SpatialOSEntity entity)
@@ -58,8 +61,8 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 return null;
             }
-
-            var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
+            prefab = prefabFilter(prefab);
+            var gameObject = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
             return gameObject;
         }
