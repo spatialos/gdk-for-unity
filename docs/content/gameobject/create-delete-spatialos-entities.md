@@ -45,18 +45,16 @@ public class EntityCreationBehaviour : MonoBehaviour
 
     public void CreateExampleEntity()
     {
-        var myEntityTemplate = EntityBuilder.Begin()
-            .AddPosition(0, 0, 0, "UnityGameLogic")
-            .AddMetadata("MyPrefab", "UnityGameLogic")
-            .SetPersistence(false)
-            .SetReadAcl("UnityGameLogic", "UnityClient")
-            .AddComponent(ExampleComponent.Component.CreateSchemaComponentData(), "UnityGameLogic")
-            .Build();
+        var entityTemplate = new EntityTemplate();
 
+        entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
+        entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
 
         // send create entity command request without reserving an entity id
         // The SpatialOS Runtime will automatically assign a SpatialOS entity id to the newly created entity
-        commandSender.CreateEntity(myEntityTemplate);
+        commandSender.CreateEntity(entityTemplate);
     }
 
     void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
@@ -129,21 +127,16 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
 
     public void CreateReservedEntities(EntityId firstEntityId, int numberOfReservedEntityIds)
     {
+        var entityTemplate = new EntityTemplate();
+
+        entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
+        entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
+
         for (var i = 0; i < numberOfReservedEntityIds; ++i)
         {
-            var entityIdToCreate = new EntityId(firstEntityId.Id + i);
-
-            // Send create entity command request using the reserved entity id.
-            // The SpatialOS Runtime will automatically assign a SpatialOS entity id to the newly created entity.
-            var myEntityTemplate = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, "UnityGameLogic")
-                .AddMetadata("MyPrefab", "UnityGameLogic")
-                .SetPersistence(false)
-                .SetReadAcl("UnityGameLogic", "UnityClient")
-                .AddComponent(ExampleComponent.Component.CreateSchemaComponentData(), "UnityGameLogic")
-                .Build();
-
-            commandSender.CreateEntity(myEntityTemplate, entityIdToCreate);
+            commandSender.CreateEntity(entityTemplate, entityIdToCreate);
         }
     }
 

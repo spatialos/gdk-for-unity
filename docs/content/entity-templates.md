@@ -38,7 +38,6 @@ public partial class Health
         int CurrentHealth;
     }
 }
-
 ```
 
 The following code snippet shows an example of how to define an `EntityTemplate`. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands) or [ECS world commands]({{urlRoot}}/content/ecs/world-commands), depending on your [workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).

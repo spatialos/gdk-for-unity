@@ -47,21 +47,19 @@ The following code snippet shows an example on how to implement such a method:
 ```csharp
 public static class PlayerTemplate
 {
-    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Coords coords)
     {
         // Obtain unique client attribute of the client-worker that requested the player entity
         var clientAttribute = $"workerId:{workerId}";
         // Obtain the attribute of your server-worker
         var serverAttribute = "UnityGameLogic";
 
-        var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(position.X, position.Y, position.Z, serverAttribute)
-            // add all components that you want the player entity to have
-            // ...
-            // add player lifecycle components:
-            .AddPlayerLifecycleComponents(workerId, clientAttribute, serverAttribute);
+        var entityTemplate = new EntityTemplate();
+        entityTemplate.AddPosition(new Position.Snapshot { Coords = coords}, serverAttribute);
+        // add all components that you want the player entity to have
+        AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
-        return entityBuilder.Build();
+        return entityTemplate
     }
 }
 ```

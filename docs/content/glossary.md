@@ -15,11 +15,10 @@ In order to read or modify a [SpatalOS component](#spatialos-component), a [work
 * At an entity level, which workers have read access
 * At a component level, which workers may have write access
 
-In the SpatialOS GDK, the [EntityBuilder implementation]({{urlRoot}}/content/api-entity-builder) allows you to add ACL components to entities.
+In the SpatialOS GDK, the [EntityTemplate implementation]({{urlRoot}}/content/entity-templates) allows you to add ACL components to entities.
 
 > Related:
 >
-> * [Understanding read and write access (SpatialOS documentation)]({{urlRoot}}/content/api-entity-builder)
 > * [Creating entity templates]({{urlRoot}}/content/entity-templates)
 
 ### Authority

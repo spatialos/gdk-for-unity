@@ -84,19 +84,20 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 {
     var gameLogic = WorkerUtils.UnityGameLogic;
 
-    var healthPickupComponent = Pickups.HealthPickup.Component.CreateSchemaComponentData(true, healthValue);
+    var healthPickupComponent = new Pickups.HealthPickup.Snapshot { IsActive = true, HealthValue = healthValue };
 
-    return EntityBuilder.Begin()
-        .AddPosition(position.X, position.Y, position.Z, gameLogic)
-        .AddMetadata("HealthPickup", gameLogic)
-        .SetPersistence(true)
-        .SetReadAcl(AllWorkerAttributes)
-        .AddComponent(healthPickupComponent, gameLogic)
-        .Build();
+    var entityTemplate = new EntityTemplate();
+    entityTemplate.AddComponent(new Position.Snapshot { Coords = new Coordinates(position.X, position.Y, position.Z) }, gameLogic);
+    entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "HealthPickup"}, gameLogic);
+    entityTemplate.AddComponent(new Persistence.Snapshot(), gameLogic);
+    entityTemplate.AddComponent(healthPickupComponent, gameLogic);
+    entityTemplate.SetReadAccess(gameLogic, WorkerUtils.UnityClient);
+
+    return entityTemplate;
 }
 ```
 
-The `EntityBuilder` syntax provides a compact way to declare the relevant components. You may notice that `.AddPosition`, `.AddMetadata`, and `.SetPersistence` appear in the entity template function of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects.
+You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects. `Persistence` is another "well-known component" that is optional. 
 
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
@@ -108,15 +109,15 @@ The `EntityBuilder` syntax provides a compact way to declare the relevant compon
 
 #### Add components
 
-From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Component.CreateSchemaComponentData()` function. The property numbers in your schema file (i.e. `= 1` and `= 2`) determine the order of properties expected as the function's parameters.
+From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Snapshot` struct.
 
-This component can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`. The three "well-known components" (`Position`, `Metadata` and `Persistence`) must appear in that order, but after that you are free to add your remaining components in any order you like. Just remember that to complete the pattern the **final call** must be to `.Build();`.
+An instance of this struct can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`.
 
 #### Set permissions (ACLs)
 
 [Access Control Lists]({{urlRoot}}/content/glossary#access-control-list-acl) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
 
-In the EntityBuilder syntax, the `.SetReadAcl(AllWorkerAttributes)` function call stated that all worker types should be able to read the data for this entity.
+In the EntityTemplate syntax, the `.SetReadAccess(gameLogic, WorkerUtils.UnityClient)` function call stated that all worker types should be able to read the data for this entity.
 
 For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which worker type should be granted the relevant permission.
 
@@ -137,7 +138,7 @@ To find out about how to do this, read up about [worker attribute sets](https://
 
 Once an entity template function exists you have a way of constructing the _template_ of an entity. You now have a couple of ways of adding a health pack entity to the world:
 
-* At runtime, by passing an `Entity` object to an entity creation function.
+* At runtime, by passing an `EntityTemplate` object to an entity creation function.
 * At start-time, by adding an entity instance to the [Snapshot]({{urlRoot}}/content/glossary#snapshot) so it is already in the world when the game begins.
 
 For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
