@@ -1,6 +1,11 @@
-[//]: # (TODO - get rid of mobile_launch.json mention and explain it differently)
+# Connecting to a local deployment
 
-# Prepare your project to connect to a local deployment
+Before reading this document, make sure you are familiar with:
+
+* [Setting up Android Support for the GDK]({{urlRoot}}/content/mobile/android/setup)
+* [Ways to test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
+
+## Prepare your project to connect to a local deployment
 
 To connect your Android device to a local deployment, follow these steps:
 
@@ -10,13 +15,6 @@ To connect your Android device to a local deployment, follow these steps:
 1. Select **Save**, and close the window.
 
 This ensures that any local deployment that is launched via the Unity Editor is set up correctly to connect to your Android device.
-
-# Connecting to a local deployment
-
-Before reading this document, make sure you are familiar with:
-
-* [Setting up Android Support for the GDK]({{urlRoot}}/content/mobile/android/setup)
-* [Ways to test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
 
 ## Connecting your Android device to a local deployment using Unity Remote
 
