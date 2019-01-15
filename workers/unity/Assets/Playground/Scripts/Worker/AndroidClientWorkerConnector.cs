@@ -77,5 +77,12 @@ namespace Playground
 
             base.Dispose();
         }
+
+        protected override void OnDisconnected(string reason)
+        {
+            base.OnDisconnected(reason);
+
+            ConnectionScreenController.OnDisconnected();
+        }
     }
 }

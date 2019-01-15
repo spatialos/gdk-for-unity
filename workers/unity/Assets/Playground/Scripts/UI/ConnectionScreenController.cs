@@ -59,6 +59,13 @@ namespace Playground
                 $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
         }
 
+        public void OnDisconnected()
+        {
+            Destroy(worker);
+            ipAddressInput.text = PlayerPrefs.GetString(HostIpPlayerPrefsKey);
+            connectionPanel.SetActive(true);
+        }
+        
         private IMobileConnectionController PrepareConnect()
         {
             errorMessage.text = string.Empty;

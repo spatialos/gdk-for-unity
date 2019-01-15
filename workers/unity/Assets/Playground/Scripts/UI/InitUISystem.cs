@@ -45,5 +45,10 @@ namespace Playground
             // Disable system after first run.
             Enabled = false;
         }
+
+        protected override void OnDestroyManager()
+        {
+            UnityEngine.Object.Destroy(UIComponent.Main.gameObject);
+        }
     }
 }
