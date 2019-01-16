@@ -58,17 +58,17 @@ namespace Improbable.Gdk.CodeGenerator
             }
 
             GenerateNativeTypesAndAst();
-            return 0;
+
             var schemaFilesRaw = SchemaFiles.GetSchemaFilesRaw(options.JsonDirectory, fileSystem).ToList();
             var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
             var globalEnumSet = ExtractEnums(schemaProcessor.ProcessedSchemaFiles);
-
+            
             var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
             var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
-
+            
             var runner = new JobRunner(fileSystem);
-
-            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob },
+            
+            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob }, 
                 new[] { options.NativeOutputDirectory });
             return 0;
         }
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var arguments = new[]
             {
-                $@"--bundle_json_out={options.JsonDirectory}/bundle.json"
+                $@"--ast_json_out={options.JsonDirectory}"
             }.Union(inputPaths).Union(files).ToList();
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
