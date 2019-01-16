@@ -3,7 +3,7 @@ using System.Reflection;
 using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 using NUnit.Framework;
 
-namespace CodeGeneration.Tests.Model.SchemaBundleV1
+namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1
 {
     [TestFixture]
     public class JsonParsingTests
