@@ -62,8 +62,7 @@ namespace Improbable.Gdk.Core
 
             return new ConnectionParameters
             {
-                WorkerType = CommandLineUtility.GetCommandLineValue(
-                    commandLineArgs, RuntimeConfigNames.WorkerType, workerType),
+                WorkerType = workerType,
                 Network =
                 {
                     ConnectionType = linkProtocol,
