@@ -18,7 +18,7 @@ namespace Playground
             template.AddComponent(new Launchable.Snapshot(), WorkerUtils.UnityGameLogic);
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic);
 
-            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);
+            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.iOSClient, WorkerUtils.AndroidClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
