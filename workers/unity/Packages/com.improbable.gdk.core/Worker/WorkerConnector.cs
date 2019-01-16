@@ -339,7 +339,7 @@ namespace Improbable.Gdk.Core
         }
 
 
-        protected virtual void OnDisconnected(string reason)
+        private void OnDisconnected(string reason)
         {
             Worker.LogDispatcher.HandleLog(LogType.Log, new LogEvent($"Worker disconnected")
                 .WithField("WorkerId", Worker.WorkerId)

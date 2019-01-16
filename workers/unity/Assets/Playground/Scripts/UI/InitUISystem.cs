@@ -48,7 +48,7 @@ namespace Playground
 
         protected override void OnDestroyManager()
         {
-            UnityEngine.Object.Destroy(UIComponent.Main.gameObject);
+            UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
         }
     }
 }
