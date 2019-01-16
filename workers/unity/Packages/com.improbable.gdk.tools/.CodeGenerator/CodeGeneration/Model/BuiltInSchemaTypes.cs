@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CodeGeneration.Model
+namespace Improbable.Gdk.CodeGeneration.Model
 {
     public class BuiltInSchemaTypes
     {
