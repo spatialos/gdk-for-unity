@@ -30,7 +30,6 @@ namespace Improbable.Gdk.Core
         public const string SteamDeploymentTag = "steamDeploymentTag";
         public const string SteamTicket = "steamTicket";
         public const string WorkerId = "workerId";
-        public const string WorkerType = "workerType";
     }
 
     /// <summary>
