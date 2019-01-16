@@ -48,9 +48,10 @@ public class EntityCreationBehaviour : MonoBehaviour
         var entityTemplate = new EntityTemplate();
 
         entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
-        entityTemplate.AddComponent(new Metadata.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "MyPrefab" }, "UnityGameLogic");
         entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
         entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
+        entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
 
         // send create entity command request without reserving an entity id
         // The SpatialOS Runtime will automatically assign a SpatialOS entity id to the newly created entity
@@ -130,9 +131,11 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
         var entityTemplate = new EntityTemplate();
 
         entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
-        entityTemplate.AddComponent(new Metadata.Snapshot(), "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "MyPrefab" }, "UnityGameLogic");
         entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
         entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
+        entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
+
 
         for (var i = 0; i < numberOfReservedEntityIds; ++i)
         {

@@ -92,12 +92,13 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
     entityTemplate.AddComponent(new Persistence.Snapshot(), gameLogic);
     entityTemplate.AddComponent(healthPickupComponent, gameLogic);
     entityTemplate.SetReadAccess(gameLogic, WorkerUtils.UnityClient);
+    entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, gameLogic);
 
     return entityTemplate;
 }
 ```
 
-You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects. `Persistence` is another "well-known component" that is optional. 
+You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are mandatory "well-known components" that SpatialOS expects. `Persistence` is another "well-known component" that is optional.
 
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
@@ -120,6 +121,8 @@ An instance of this struct can then be added to the `HealthPickup` entity using 
 In the EntityTemplate syntax, the `.SetReadAccess(gameLogic, WorkerUtils.UnityClient)` function call stated that all worker types should be able to read the data for this entity.
 
 For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which worker type should be granted the relevant permission.
+
+The `EntityTemplate` also provides methods for manipulating the `ACL` of an entity without adding a snapshot. For example, `.SetComponentWriteAccess(EntityAcl.Id, gameLogic)` will set the write access for the `EntityAcl` component.
 
 For this project, `UnityGameLogic` indicates that the `UnityGameLogic` worker is the one that handles server-side game logic. The identifier `WorkerUtils.UnityClient` would indicate that all clients are granted the relevant permission, but in this case we don't want clients to be able to alter how much health is granted to players by a health pack, so we pass `WorkerUtils.UnityGameLogic` as the second parameter when adding the `healthPickupComponent`.
 

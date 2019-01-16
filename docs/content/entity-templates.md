@@ -58,6 +58,7 @@ public static class CreatureTemplate
         entityTemplate.AddComponent(new Persistence.Snapshot(), "UnityGameLogic");
         entityTemplate.AddComponent(new Health.Snapshot { CurrentHealth = 100 }, "UnityGameLogic");
         entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
+        entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
 
         return entityTemplate;
     }
