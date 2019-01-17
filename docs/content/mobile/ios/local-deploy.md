@@ -42,7 +42,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
     > You don’t need to enter anything in the text field.
 
   1. Play the game on the Simulator.
-  1. Once you've installed or ran app on the Simulator you can run **SpatialOS** > **Launch Mobile Client** > **iOS Client** to launch mobile client with IP address field prefilled with a value from **SpatialOS** > **GDK Tools Configuration** > **Runtime IP for local deployment**.
+  1. Once you've installed or run an app on the Simulator, back in your Unity Editor, you can run **SpatialOS** > **Launch Mobile Client** > **iOS Client** to launch a mobile client with the IP address field prefilled with a value from **SpatialOS** > **GDK Tools Configuration** > **Runtime IP for local deployment**.
   
 
 ## Connecting your iOS device to a local deployment
