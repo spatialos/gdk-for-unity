@@ -11,7 +11,7 @@
 
 ### Changed
 
-- Upgraded the Worker SDK snapshot version.
+- Upgraded the Worker SDK version to `13.5.1`. This is a stable Worker SDK release! :tada:
 - `Improbable.Gdk.EntityTemplate` is now mutable and exposes a set of APIs to add, remove, and replace component snapshots
     - This replaces the `Improbable.Gdk.Core.EntityBuilder` class.
     - These changes also allow you to reuse an `EntityTemplate` more than once.
