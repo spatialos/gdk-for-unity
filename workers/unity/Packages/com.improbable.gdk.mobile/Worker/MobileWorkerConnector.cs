@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Mobile
     public abstract class MobileWorkerConnector : WorkerConnector
     {
         [SerializeField] private string DevelopmentAuthToken;
-        
+
         protected abstract string GetHostIp();
 
         protected override ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service)
@@ -19,8 +19,9 @@ namespace Improbable.Gdk.Mobile
                 WorkerType = workerType,
                 Network =
                 {
-                    ConnectionType = NetworkConnectionType.Tcp,
+                    ConnectionType = NetworkConnectionType.Kcp,
                     UseExternalIp = true,
+                    ConnectionTimeoutMillis = 1000,
                 },
                 EnableProtocolLoggingAtStartup = false,
                 DefaultComponentVtable = new ComponentVtable(),
@@ -55,7 +56,7 @@ namespace Improbable.Gdk.Mobile
                 {
                     PlayerIdentity = new PlayerIdentityCredentials
                     {
-                        PlayerIdentityToken  = pit,
+                        PlayerIdentityToken = pit,
                         LoginToken = loginToken,
                     },
                     UseInsecureConnection = false,
