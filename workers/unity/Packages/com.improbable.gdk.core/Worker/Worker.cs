@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
-using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 using Unity.Entities;
 using UnityEngine;
+using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 
 namespace Improbable.Gdk.Core
 {
@@ -27,7 +26,7 @@ namespace Improbable.Gdk.Core
         ///     The worker ID.
         /// </summary>
         /// <remarks>
-        ///    Unique for a given SpatialOS deployment.
+        ///     Unique for a given SpatialOS deployment.
         /// </remarks>
         public readonly string WorkerId;
 
@@ -76,13 +75,20 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Tries to connect to the SpatialOS Runtime and creates the worker responsible for the connection upon successfully connecting.
+        ///     Tries to connect to the SpatialOS Runtime and creates the worker responsible for the connection upon successfully
+        ///     connecting.
         /// </summary>
-        /// <param name="connectionFuture">The <see cref="Future{T}"/> of the <see cref="Connection"/> object that we use to connect to the SpatialOS Runtime.</param>
+        /// <param name="connectionFuture">
+        ///     The <see cref="Future{T}" /> of the <see cref="Connection" /> object that we use to
+        ///     connect to the SpatialOS Runtime.
+        /// </param>
         /// <param name="workerType">The type of the worker.</param>
         /// <param name="logger">The logger used by this worker.</param>
         /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>A <see cref="Task{TResult}"/> to run this method asyncally and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        /// <returns>
+        ///     A <see cref="Task{TResult}" /> to run this method asyncally and retrieve the created <see cref="Worker" />
+        ///     object upon connecting successfully.
+        /// </returns>
         private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
             string workerType,
             ILogDispatcher logger,
@@ -110,69 +116,106 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        /// Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker"/> object asynchronously.
+        ///     Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker" /> object
+        ///     asynchronously.
         /// </summary>
-        /// <param name="config">The <see cref="ReceptionistConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="config">
+        ///     The <see cref="ReceptionistConfig" /> object stores the configuration needed to connect via the
+        ///     Receptionist Service.
+        /// </param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
         /// <param name="logger">The logger used by this worker.</param>
         /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        /// <returns>
+        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
+        ///     <see cref="Worker" /> object upon connecting successfully.
+        /// </returns>
         public static async Task<Worker> CreateWorkerAsync(
-            ReceptionistConfig config, 
+            ReceptionistConfig config,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
+            // TODO: Remove when UTY-1578 is fixed.
+#if UNITY_STANDALONE_LINUX
+            connectionParameters.EnableProtocolLoggingAtStartup = false;
+            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
+#endif
             using (var connectionFuture =
-                Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId, connectionParameters))
+                Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId,
+                    connectionParameters))
             {
                 return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
             }
         }
 
         /// <summary>
-        /// Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker"/> object asynchronously.
+        ///     Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker" /> object
+        ///     asynchronously.
         /// </summary>
-        /// <param name="config">The <see cref="LocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="config">
+        ///     The <see cref="LocatorConfig" /> object stores the configuration needed to connect via the
+        ///     Receptionist Service.
+        /// </param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
         /// <param name="logger">The logger used by this worker.</param>
         /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        /// <returns>
+        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
+        ///     <see cref="Worker" /> object upon connecting successfully.
+        /// </returns>
         public static async Task<Worker> CreateWorkerAsync(
             LocatorConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
-                using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
+            // TODO: Remove when UTY-1578 is fixed.
+#if UNITY_STANDALONE_LINUX
+            connectionParameters.EnableProtocolLoggingAtStartup = false;
+            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
+#endif
+            using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
+            {
+                var deploymentList = await GetDeploymentList(locator);
+
+                var deploymentName = parameters.DeploymentListCallback(deploymentList);
+                if (string.IsNullOrEmpty(deploymentName))
                 {
-                    var deploymentList = await GetDeploymentList(locator);
+                    throw new ConnectionFailedException("No deployment name chosen",
+                        ConnectionErrorReason.DeploymentNotFound);
+                }
 
-                    var deploymentName = parameters.DeploymentListCallback(deploymentList);
-                    if (string.IsNullOrEmpty(deploymentName))
-                    {
-                        throw new ConnectionFailedException("No deployment name chosen",
-                            ConnectionErrorReason.DeploymentNotFound);
-                    }
-
-                    using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
-                    {
-                        return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
+                {
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }
 
         /// <summary>
-        /// Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker"/> object asynchronously.
+        ///     Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker" /> object
+        ///     asynchronously.
         /// </summary>
-        /// <param name="config">The <see cref="AlphaLocatorConfig"/> object stores the configuration needed to connect via the Receptionist Service.</param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters"/> storing </param>
+        /// <param name="config">
+        ///     The <see cref="AlphaLocatorConfig" /> object stores the configuration needed to connect via the
+        ///     Receptionist Service.
+        /// </param>
+        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
         /// <param name="logger">The logger used by this worker.</param>
         /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>A <see cref="Task{TResult}"/> to run this method asynchronously and retrieve the created <see cref="Worker"/> object upon connecting successfully.</returns>
+        /// <returns>
+        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
+        ///     <see cref="Worker" /> object upon connecting successfully.
+        /// </returns>
         public static async Task<Worker> CreateWorkerAsync(
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
+            // TODO: Remove when UTY-1578 is fixed.
+#if UNITY_STANDALONE_LINUX
+            connectionParameters.EnableProtocolLoggingAtStartup = false;
+            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
+#endif
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
@@ -190,12 +233,14 @@ namespace Improbable.Gdk.Core
                 // Guard against null refs. This shouldn't be triggered.
                 if (!deploymentList.HasValue)
                 {
-                    throw new ConnectionFailedException("Deployment list future returned null.", ConnectionErrorReason.DeploymentNotFound);
+                    throw new ConnectionFailedException("Deployment list future returned null.",
+                        ConnectionErrorReason.DeploymentNotFound);
                 }
 
                 if (deploymentList.Value.Error != null)
                 {
-                    throw new ConnectionFailedException(deploymentList.Value.Error, ConnectionErrorReason.DeploymentNotFound);
+                    throw new ConnectionFailedException(deploymentList.Value.Error,
+                        ConnectionErrorReason.DeploymentNotFound);
                 }
 
                 return deploymentList.Value;
