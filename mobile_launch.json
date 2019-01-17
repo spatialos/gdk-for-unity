@@ -1,5 +1,5 @@
 {
-  "template": "small",
+  "template": "small_entity_db_v2",
   "world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
