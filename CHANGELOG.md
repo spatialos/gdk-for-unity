@@ -15,7 +15,7 @@
 - `Improbable.Gdk.EntityTemplate` is now mutable and exposes a set of APIs to add, remove, and replace component snapshots
     - This replaces the `Improbable.Gdk.Core.EntityBuilder` class.
     - These changes also allow you to reuse an `EntityTemplate` more than once.
-- Upgraded the project to be compatible `2018.3.2f1`.
+- Upgraded the project to be compatible with `2018.3.2f1`.
 - Upgraded the entities package to `0.0.12-preview.21`
 - Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
 
