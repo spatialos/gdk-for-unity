@@ -21,7 +21,20 @@ namespace Improbable.Gdk.Mobile
                 {
                     ConnectionType = NetworkConnectionType.Kcp,
                     UseExternalIp = true,
-                    ConnectionTimeoutMillis = 10000,
+                    Kcp = new KcpNetworkParameters
+                    {
+                        EarlyRetransmission = true,
+                        NonConcessionalFlowControl = true,
+                        FastRetransmission = true,
+                        UpdateIntervalMillis = 10,
+                        WindowSize = 1000,
+                        MinRtoMillis = 10,
+                        Heartbeat = new HeartbeatParameters()
+                        {
+                            IntervalMillis = 5000,
+                            TimeoutMillis = 10000,
+                        }
+                    }
                 },
                 EnableProtocolLoggingAtStartup = false,
                 DefaultComponentVtable = new ComponentVtable(),
