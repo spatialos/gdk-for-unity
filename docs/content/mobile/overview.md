@@ -1,5 +1,5 @@
 <%(Callout type="alert" message="
-Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbable.io/reference/13.3/shared/release-policy#maturity-stages). Currently, you can only connect your mobile client-workers to a local deployment: you **cannot** connect mobile client-workers to a cloud deployment. Please follow our [Roadmap](https://trello.com/b/29tMKyQC) to learn more about updates to this in future releases.")%>
+Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbable.io/reference/13.3/shared/release-policy#maturity-stages). Currently, you can only connect your mobile client-workers to a local deployment: you **cannot** connect mobile client-workers to a cloud deployment. Please follow our [Roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) to learn more about updates to this in future releases.")%>
 
 # Mobile Support Overview
 
@@ -13,7 +13,7 @@ Before starting with mobile development, make sure you are familiar with
 
 We provide a feature module for the SpatialOS GDK for Unity to allow you to develop games for Android and iOS. This allows you to build [client-workers]({{urlRoot}}/content/glossary#client-worker) for different platforms that can all connect to the same deployment and enables you to create cross-platform games.  All current feature modules are supported and work with mobile devices.
 
-Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages). Currently, you can only connect your mobile client-workers to a local deployment: you **cannot** connect mobile client-workers to a cloud deployment. Please follow our [Roadmap](https://trello.com/b/29tMKyQC) to learn more about updates to this in future releases.
+Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/release-policy#maturity-stages). Currently, you can only connect your mobile client-workers to a local deployment: you **cannot** connect mobile client-workers to a cloud deployment. Please follow our [Roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) to learn more about updates to this in future releases.
 
 ## Getting started with your Android client-worker
 
