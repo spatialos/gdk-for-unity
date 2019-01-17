@@ -115,4 +115,4 @@
         - [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
         - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 - <h3> + Development roadmap</h3>
-    - [View Roadmap on Github](https://github.com/spatialos/gdk-for-unity/projects/1)
+    - [View roadmap on GitHub](https://github.com/spatialos/gdk-for-unity/projects/1)
