@@ -5,7 +5,7 @@
 Before reading this document, make sure you are familiar with:
 
   * [Setting up Android Support for the GDK]({{urlRoot}}/content/mobile/android/setup)
-  * [Ways to test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
+  * [Ways to test your Android client]({{urlRoot}}/content/mobile/android/ways-to-run)
 
 ## Connecting your Android device to a local deployment using Unity Remote
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.

@@ -1,4 +1,4 @@
-# Ways to test your Android client
+# Ways to run your Android client
 
 Before reading this document, make sure you are familiar with:
 
@@ -6,10 +6,10 @@ Before reading this document, make sure you are familiar with:
   * [Mobile support overview]({{urlRoot}}/content/mobile/overview)
   * [Setting up iOS support for the GDK]({{urlRoot}}/content/mobile/android/setup)
 
-Unity provides multiple ways to test your Android [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
+Unity provides multiple ways to run your Android [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for Android, it executes code that is in preprocessor `#if UNITY_ANDROID` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
+For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for Android, it executes code that is in preprocessor `#if UNITY_ANDROID` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still running code that would otherwise only run on a mobile device.
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ For more information, see the following documentation:
 
 ## Android Emulator
 
-The Android Emulator from Android Studio emulates Android devices on your development computer so that you can test your game on a variety of devices and Android APIs without needing a physical device. You need to build and deploy your game to use the Emulator.
+The Android Emulator from Android Studio emulates Android devices on your development computer so that you can run your game on a variety of devices and Android APIs without needing a physical device. You need to build and deploy your game to use the Emulator.
 
 For more information, see the following documentation:
 

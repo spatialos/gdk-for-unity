@@ -5,7 +5,7 @@
 Before reading this document, make sure you are familiar with:
 
   * [Setting up iOS Support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
-  * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
+  * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-run)
 
 ## Connecting your iOS device to a local deployment using Unity Remote
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.

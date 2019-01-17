@@ -1,4 +1,4 @@
-# Ways to test your iOS client
+# Ways to run your iOS client
 
 Before reading this document, make sure you are familiar with:
 
@@ -6,10 +6,10 @@ Before reading this document, make sure you are familiar with:
   * [Mobile support overview]({{urlRoot}}/content/mobile/overview)
   * [Setting up iOS support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
 
-Unity provides multiple ways to test your iOS [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
+Unity provides multiple ways to run your iOS [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for iOS, it executes code that is in preprocessor `#if UNITY_IOS` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
+For standard workflows and for minor changes, run your game in the Editor. Now that your build platform is set to iOS, Unity will compile and execute sections of code marked with the [platform #define directive](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of the Unity Editor, while still executing code that would otherwise only run on a mobile device.
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ For more information, see the following documentation:
 
 ## iOS Simulator
 
-The iOS Simulator simulates iOS devices on your development computer so that you can test your game on a variety of devices and iOS versions without needing a physical device. You need to build and deploy your game to use the Simulator.
+The iOS Simulator simulates iOS devices on your development computer so that you can run your game on a variety of devices and iOS versions without needing a physical device. You need to build and deploy your game to use the Simulator.
 
 For more information, see the following documentation:
 
