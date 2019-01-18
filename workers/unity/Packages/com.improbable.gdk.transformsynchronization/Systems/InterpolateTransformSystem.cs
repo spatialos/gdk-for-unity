@@ -86,7 +86,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 foreach (var update in data.Updates[i].Updates)
                 {
-                    UpdateLastTransfrom(ref lastTransformApplied, update);
+                    UpdateLastTransform(ref lastTransformApplied, update);
                     data.LastTransformValue[i] = new DeferredUpdateTransform
                     {
                         Transform = lastTransformApplied
@@ -123,7 +123,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
         }
 
-        private void UpdateLastTransfrom(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        private void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {
