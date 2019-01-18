@@ -18,7 +18,6 @@
 - Upgraded the project to be compatible with `2018.3.2f1`.
 - Upgraded the entities package to `0.0.12-preview.21`
 - Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
-- Fixed an issue in the TransformSynchronization module where an integer underflow would cause a memory crash.
 
 ### Fixed
 
@@ -26,6 +25,7 @@
 - Fixed a bug where you could start each built-out worker only once on OSX.
 - Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
 - Fixed a bug where spaces in the path would cause code generation to fail on OSX.
+- Fixed an issue in the TransformSynchronization module where an integer underflow would cause a memory crash.
 
 ### Removed
 
