@@ -19,9 +19,9 @@ Using a text editor of your choice, open `gdk-for-unity-fps-starter-project/spat
 {
   "name": "beta_yankee_hawaii_621",
   "project_version": "0.0.1",
-  "sdk_version": "14.0-b6143-48ac8-WORKER-SNAPSHOT",
+  "sdk_version": "13.5.1-gdk-for-unity",
   "dependencies": [
-      {"name": "standard_library", "version": "14.0-b6143-48ac8-WORKER-SNAPSHOT"}
+      {"name": "standard_library", "version": "13.5.1-gdk-for-unity"}
   ]
 }
 ```
