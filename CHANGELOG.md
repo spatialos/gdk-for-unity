@@ -18,6 +18,8 @@
 - Upgraded the project to be compatible with `2018.3.2f1`.
 - Upgraded the entities package to `0.0.12-preview.21`
 - Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
+- Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
+- Changed the `mobile_launch.json` config to use the new Runtime.
 
 ### Fixed
 
