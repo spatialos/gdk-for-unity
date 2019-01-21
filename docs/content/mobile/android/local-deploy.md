@@ -41,7 +41,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. [Start your Android Emulator in Android Studio.](https://developer.android.com/studio/run/managing-avds)
 
     > Ensure you choose the same CPU architecture for your virtual machine as your development computer. If you don’t, you will get warning messages as mismatched CPU architecture affects performance.
-1. [Set up your local deployment.](#setup-local-deployment-for-mobile-phone-connections)
+1. [Set up your local deployment.](#prepare-your-project-to-connect-to-a-local-deployment)
 1. [Build your server-workers.]({{urlRoot}}/content/build)
 1. Start your local deployment from the Unity Editor's menu: **SpatialOS** > **Local launch**.
 
@@ -56,7 +56,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same wireless network.
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
-1. [Set up your local deployment](#setup-local-deployment-for-mobile-phone-connections)
+1. [Set up your local deployment](#prepare-your-project-to-connect-to-a-local-deployment)
 1. [Build your server-workers.]({{urlRoot}}/content/build)
 1. Start your local deployment from the Unity Editor's menu: **SpatialOS** > **Local launch**.
 
