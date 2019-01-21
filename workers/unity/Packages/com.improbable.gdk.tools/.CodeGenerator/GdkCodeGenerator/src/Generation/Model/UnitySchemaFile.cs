@@ -152,12 +152,6 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 Name = rawEventDefinition.name;
                 RawType = rawEventDefinition.type;
-
-                if (RawType.IsBuiltInType)
-                {
-                    Type = new UnityTypeReference(RawType.TypeName, null, null);
-                }
-
                 EventIndex = rawEventDefinition.eventIndex;
             }
         }
@@ -179,17 +173,6 @@ namespace Improbable.Gdk.CodeGenerator
                 Name = rawCommandDefinition.name;
                 RawRequestType = rawCommandDefinition.requestType;
                 RawResponseType = rawCommandDefinition.responseType;
-
-                if (RawRequestType != null && RawRequestType.IsBuiltInType)
-                {
-                    RequestType = new UnityTypeReference(RawRequestType.TypeName, null, null);
-                }
-
-                if (RawResponseType != null && RawResponseType.IsBuiltInType)
-                {
-                    ResponseType = new UnityTypeReference(RawResponseType.TypeName, null, null);
-                }
-
                 CommandIndex = rawCommandDefinition.commandIndex;
             }
         }

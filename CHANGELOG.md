@@ -28,6 +28,7 @@
 - Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
 - Fixed a bug where spaces in the path would cause code generation to fail on OSX.
 - Fixed an issue in the TransformSynchronization module where an integer underflow would cause a memory crash.
+- Fixed a bug where using `Coordinates`, `Vector3f`, or `Vector3d` in a command definition would cause the Code Generator to crash.
 
 ### Removed
 
