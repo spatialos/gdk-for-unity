@@ -2,7 +2,7 @@
     "name": "com.improbable.gdk.mobile",
     "displayName": "SpatialOS GDK Mobile Support",
     "version": "0.0.1",
-    "unity": "2018.2",
+    "unity": "2018.3",
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Mobile Support Module. Made by Improbable.",
     "dependencies": {
