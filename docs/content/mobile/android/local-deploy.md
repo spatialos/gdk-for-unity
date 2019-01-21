@@ -47,7 +47,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-1. In the Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your android worker, and wait for the build to complete.
+1. In the Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.
 1. Now select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Play the game on the Emulator.
 
@@ -62,6 +62,6 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-1. In the Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your android worker, and wait for the build to complete.
+1. In the Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.
 1. Now select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Play the game on your device.
