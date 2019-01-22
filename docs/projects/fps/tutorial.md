@@ -112,7 +112,7 @@ You may notice that `Position` and `Metadata` appear in the entity template of _
 
 From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Snapshot` struct.
 
-An instance of this struct can then be added to the `HealthPickup` entity using the line: `.AddComponent(healthPickupComponent, gameLogic)`.
+To add an instance of this struct to the `HealthPickup` entity use the line: `.AddComponent(healthPickupComponent, gameLogic)`.
 
 #### Set permissions (ACLs)
 

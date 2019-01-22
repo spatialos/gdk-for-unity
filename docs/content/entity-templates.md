@@ -11,7 +11,7 @@ For information on how to create SpatialOS entities once you have set up entity 
 
 ## How to create a SpatialOS entity template
 
-You have to create an `EntityTemplate` to specify which components a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) has and the initial values of those [components]({{urlRoot}}/content/glossary#spatialos-component). You have to also specify which workers have write access (also known as ”[authority]({{urlRoot}}/content/glossary#authority)” on a per-component basis.
+You have to create an `EntityTemplate` to specify which components a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) has and the initial values of those [components]({{urlRoot}}/content/glossary#spatialos-component). You have to also specify which type of workers can have write access (also known as ”[authority]({{urlRoot}}/content/glossary#authority)”) on a per-component basis.
 
 You use the `EntityTemplate` class.
 
@@ -19,7 +19,7 @@ There are examples of how to use this class below.
 
 
 ### Create component snapshots
-For each [schema component]({{urlRoot}}/content/glossary#schema) you define, the [code generator]({{urlRoot}}/content/code-generator) generates a struct which inherits from `ISpatialComponentSnapshot`. For example, for the following schema:
+For each [schema component]({{urlRoot}}/content/glossary#schema) you define, the [code generator]({{urlRoot}}/content/code-generator) creates a struct which inherits from `ISpatialComponentSnapshot`, the generated [snapshot struct]({{urlRoot}}/content/ecs/component-generation#overview). For example, for the following schema:
 
 ```
 component Health {
