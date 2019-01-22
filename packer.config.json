@@ -7,8 +7,8 @@
             "clone_dir" : "gdk-for-unity",
             "exclude_paths": [
                 ".git",
-                "ci",
                 ".github",
+                "ci",
                 "scripts",
                 "test-project"
             ]
