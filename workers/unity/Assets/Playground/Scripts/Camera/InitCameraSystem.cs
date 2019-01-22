@@ -36,7 +36,15 @@ namespace Playground
                 PostUpdateCommands.AddComponent(entity, CameraComponentDefaults.Transform);
 
                 Cursor.lockState = CursorLockMode.Locked;
+
+                // Disable system after first run.
+                Enabled = false;
             }
+        }
+
+        protected override void OnDestroyManager()
+        {
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }
