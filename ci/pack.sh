@@ -7,4 +7,4 @@ cd "$(dirname "$0")/../"
 # Get shared CI and prepare Unity
 ci/bootstrap.sh
 
-dotnet run -p ./.shared-ci/tools/Packer/Packer.csproj 
+dotnet run -p ./.shared-ci/tools/Packer/Packer.csproj
