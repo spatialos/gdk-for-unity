@@ -4,10 +4,9 @@ set -e -u -o -x pipefail
 
 cd "$(dirname "$0")/../"
 
-source .shared-ci/scripts/pinned-tools.sh
-source .shared-ci/scripts/profiling.sh
-
 PREFIX="playground"
+
+ci/build-test.sh
 
 .shared-ci/scripts/upload-assemblies.sh ${PREFIX}
 
