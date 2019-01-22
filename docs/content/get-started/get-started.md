@@ -1,8 +1,10 @@
 # Get started: Introduction
 
+<iframe width="100%" height="512" src="https://www.youtube.com/embed/6PNDBYtIimw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter Project. This introduces you to the workflows and tooling you use with SpatialOS and Unity, allowing you to run your game at scale, with up to 200 simulated player-clients running in the cloud.
 
-Once you’ve done this, you are then ready to learn how to build your own features. The tutorial for adding Health Pickups functionality introduces you to this development experience.
+Once you have completed this introduction, you are then ready to learn how to build your own features. The [tutorial for adding Health Pickups](https://docs.improbable.io/unity/alpha/projects/fps/tutorial) introduces you to this development experience.
 
 We recommend starting with the FPS Starter Project by going to the next step: [Set up]({{urlRoot}}/content/get-started/set-up.md), but you can get going with the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) if you prefer this route.
 

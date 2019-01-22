@@ -29,5 +29,9 @@ Looking for a little more inspiration before jumping in?
 <br/>
 * If you’re ready to get started, the _Get started_  guide takes you through setting up the GDK and launching the  FPS Starter Project. (Note that the GDK is aimed at users comfortable with programming in Unity.) <br/>
 **[Get started]({{urlRoot}}/content/get-started/get-started) with the SpatialOS GDK for Unity.**
+<br/>
+<br/>
+* To see just how easy it is to set up the SpatialOS GDK for Unity, follow our **[video tutorial](https://www.youtube.com/watch?v=6PNDBYtIimw) on getting started with SpatialOS for Unity.**
+
 
 >This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback.
