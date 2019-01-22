@@ -59,7 +59,7 @@ public static class PlayerTemplate
         // add all components that you want the player entity to have
         AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
-        return entityTemplate
+        return entityTemplate;
     }
 }
 ```
