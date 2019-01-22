@@ -41,7 +41,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public BuildOptions Options;
         public bool Enabled;
 
-        public bool BuildSupportInstalled => WorkerBuildData.GetBuildTargetsThatCanBeBuilt()[Target];
+        public bool BuildSupportInstalled => WorkerBuildData.BuildTargetsThatCanBeBuilt[Target];
 
         public string Label => !target.HasValue ? $"Current ({GetCurrentBuildPlatform()})" : target.ToString();
 

@@ -135,7 +135,7 @@ namespace Improbable.Gdk.BuildSystem
 
             foreach (var config in environmentConfig.BuildTargets)
             {
-                var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(unityBuildTarget);
+                var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(config.Target);
                 var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
                 try
                 {
@@ -145,7 +145,7 @@ namespace Improbable.Gdk.BuildSystem
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
 
-                    BuildWorkerForTarget(workerType, unityBuildTarget, buildOptions, targetEnvironment);
+                    BuildWorkerForTarget(workerType, config.Target, config.Options, targetEnvironment);
                 }
                 catch (Exception e)
                 {
@@ -155,7 +155,6 @@ namespace Improbable.Gdk.BuildSystem
                 {
                     PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                 }
-
             }
         }
 

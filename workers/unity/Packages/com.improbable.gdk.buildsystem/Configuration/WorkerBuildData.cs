@@ -74,9 +74,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.iOS, "iOSSupport" }
             };
 
-        public static IReadOnlyDictionary<BuildTarget, bool> GetBuildTargetsThatCanBeBuilt()
+        private static IReadOnlyDictionary<BuildTarget, bool> buildTargetsThatCanBeBuilt;
+
+        public static IReadOnlyDictionary<BuildTarget, bool> BuildTargetsThatCanBeBuilt
         {
-            return SupportedBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget);
+            get
+            {
+                return buildTargetsThatCanBeBuilt ?? (buildTargetsThatCanBeBuilt =
+                    SupportedBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget));
+            }
         }
 
         public WorkerBuildData(string workerType, BuildTarget buildTarget)
