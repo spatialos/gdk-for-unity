@@ -8,6 +8,8 @@ PREFIX="playground"
 
 ci/build-test.sh
 
+source ".shared-ci/scripts/profiling.sh"
+
 .shared-ci/scripts/upload-assemblies.sh ${PREFIX}
 
 markStartOfBlock "Launching deployment"
