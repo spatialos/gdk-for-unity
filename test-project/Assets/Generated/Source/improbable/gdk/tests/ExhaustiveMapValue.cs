@@ -47,9 +47,9 @@ namespace Improbable.Gdk.Tests
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -73,9 +73,9 @@ namespace Improbable.Gdk.Tests
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -319,182 +319,16 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                global::System.Collections.Generic.Dictionary<string,BlittableBool> field1,
-                global::System.Collections.Generic.Dictionary<string,float> field2,
-                global::System.Collections.Generic.Dictionary<string,byte[]> field3,
-                global::System.Collections.Generic.Dictionary<string,int> field4,
-                global::System.Collections.Generic.Dictionary<string,long> field5,
-                global::System.Collections.Generic.Dictionary<string,double> field6,
-                global::System.Collections.Generic.Dictionary<string,string> field7,
-                global::System.Collections.Generic.Dictionary<string,uint> field8,
-                global::System.Collections.Generic.Dictionary<string,ulong> field9,
-                global::System.Collections.Generic.Dictionary<string,int> field10,
-                global::System.Collections.Generic.Dictionary<string,long> field11,
-                global::System.Collections.Generic.Dictionary<string,uint> field12,
-                global::System.Collections.Generic.Dictionary<string,ulong> field13,
-                global::System.Collections.Generic.Dictionary<string,int> field14,
-                global::System.Collections.Generic.Dictionary<string,long> field15,
-                global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> field16,
-                global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> field17
-            )
+            internal uint field18Handle;
+
+            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum> Field18
             {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197718);
-                var obj = schemaComponentData.GetFields();
+                get => Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                set
                 {
-                    foreach (var keyValuePair in field1)
-                    {
-                        var mapObj = obj.AddObject(1);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddBool(2, keyValuePair.Value);
-                    }
-                    
+                    MarkDataDirty(17);
+                    Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
                 }
-                {
-                    foreach (var keyValuePair in field2)
-                    {
-                        var mapObj = obj.AddObject(2);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddFloat(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field3)
-                    {
-                        var mapObj = obj.AddObject(3);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddBytes(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field4)
-                    {
-                        var mapObj = obj.AddObject(4);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddInt32(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field5)
-                    {
-                        var mapObj = obj.AddObject(5);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddInt64(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field6)
-                    {
-                        var mapObj = obj.AddObject(6);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddDouble(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field7)
-                    {
-                        var mapObj = obj.AddObject(7);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddString(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field8)
-                    {
-                        var mapObj = obj.AddObject(8);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddUint32(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field9)
-                    {
-                        var mapObj = obj.AddObject(9);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddUint64(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field10)
-                    {
-                        var mapObj = obj.AddObject(10);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddSint32(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field11)
-                    {
-                        var mapObj = obj.AddObject(11);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddSint64(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field12)
-                    {
-                        var mapObj = obj.AddObject(12);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddFixed32(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field13)
-                    {
-                        var mapObj = obj.AddObject(13);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddFixed64(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field14)
-                    {
-                        var mapObj = obj.AddObject(14);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddSfixed32(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field15)
-                    {
-                        var mapObj = obj.AddObject(15);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddSfixed64(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field16)
-                    {
-                        var mapObj = obj.AddObject(16);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        mapObj.AddEntityId(2, keyValuePair.Value);
-                    }
-                    
-                }
-                {
-                    foreach (var keyValuePair in field17)
-                    {
-                        var mapObj = obj.AddObject(17);
-                        mapObj.AddString(1, keyValuePair.Key);
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
-                    }
-                    
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -519,6 +353,7 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.Dictionary<string,long> Field15;
             public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> Field16;
             public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> Field17;
+            public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum> Field18;
         }
 
         public static class Serialization
@@ -675,6 +510,15 @@ namespace Improbable.Gdk.Tests
                         var mapObj = obj.AddObject(17);
                         mapObj.AddString(1, keyValuePair.Key);
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
+                    }
+                    
+                }
+                {
+                    foreach (var keyValuePair in component.Field18)
+                    {
+                        var mapObj = obj.AddObject(18);
+                        mapObj.AddString(1, keyValuePair.Key);
+                        mapObj.AddEnum(2, (uint) keyValuePair.Value);
                     }
                     
                 }
@@ -989,6 +833,190 @@ namespace Improbable.Gdk.Tests
                         }
                         
                 }
+                {
+                    if (component.IsDataDirty(17))
+                    {
+                        foreach (var keyValuePair in component.Field18)
+                        {
+                            var mapObj = obj.AddObject(18);
+                            mapObj.AddString(1, keyValuePair.Key);
+                            mapObj.AddEnum(2, (uint) keyValuePair.Value);
+                        }
+                        
+                    }
+
+                    if (component.Field18.Count == 0)
+                        {
+                            updateObj.AddClearedField(18);
+                        }
+                        
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.ExhaustiveMapValue.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    foreach (var keyValuePair in snapshot.Field1)
+                {
+                    var mapObj = obj.AddObject(1);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddBool(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field2)
+                {
+                    var mapObj = obj.AddObject(2);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFloat(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field3)
+                {
+                    var mapObj = obj.AddObject(3);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddBytes(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field4)
+                {
+                    var mapObj = obj.AddObject(4);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddInt32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field5)
+                {
+                    var mapObj = obj.AddObject(5);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddInt64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field6)
+                {
+                    var mapObj = obj.AddObject(6);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddDouble(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field7)
+                {
+                    var mapObj = obj.AddObject(7);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddString(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field8)
+                {
+                    var mapObj = obj.AddObject(8);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddUint32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field9)
+                {
+                    var mapObj = obj.AddObject(9);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddUint64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field10)
+                {
+                    var mapObj = obj.AddObject(10);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSint32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field11)
+                {
+                    var mapObj = obj.AddObject(11);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSint64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field12)
+                {
+                    var mapObj = obj.AddObject(12);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFixed32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field13)
+                {
+                    var mapObj = obj.AddObject(13);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddFixed64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field14)
+                {
+                    var mapObj = obj.AddObject(14);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSfixed32(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field15)
+                {
+                    var mapObj = obj.AddObject(15);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddSfixed64(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field16)
+                {
+                    var mapObj = obj.AddObject(16);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddEntityId(2, keyValuePair.Value);
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field17)
+                {
+                    var mapObj = obj.AddObject(17);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
+                }
+                
+                }
+                {
+                    foreach (var keyValuePair in snapshot.Field18)
+                {
+                    var mapObj = obj.AddObject(18);
+                    mapObj.AddString(1, keyValuePair.Key);
+                    mapObj.AddEnum(2, (uint) keyValuePair.Value);
+                }
+                
+                }
             }
 
             public static Improbable.Gdk.Tests.ExhaustiveMapValue.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -1229,6 +1257,20 @@ namespace Improbable.Gdk.Tests
                         var mapObj = obj.IndexObject(17, (uint) i);
                         var key = mapObj.GetString(1);
                         var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
+                        map.Add(key, value);
+                    }
+                    
+                }
+                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                {
+                    component.Field18 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>();
+                    var map = component.Field18;
+                    var mapSize = obj.GetObjectCount(18);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(2);
                         map.Add(key, value);
                     }
                     
@@ -1651,6 +1693,30 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var mapSize = obj.GetObjectCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (mapSize > 0 || isCleared)
+                    {
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>>(new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>());
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(2);
+                        update.Field18.Value.Add(key, value);
+                    }
+                    
+                }
                 return update;
             }
 
@@ -1891,6 +1957,20 @@ namespace Improbable.Gdk.Tests
                         var mapObj = obj.IndexObject(17, (uint) i);
                         var key = mapObj.GetString(1);
                         var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
+                        map.Add(key, value);
+                    }
+                    
+                }
+
+                {
+                    component.Field18 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>();
+                    var map = component.Field18;
+                    var mapSize = obj.GetObjectCount(18);
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(2);
                         map.Add(key, value);
                     }
                     
@@ -2313,6 +2393,30 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var mapSize = obj.GetObjectCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (mapSize > 0 || isCleared)
+                    {
+                        component.Field18.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(18, (uint) i);
+                        var key = mapObj.GetString(1);
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) mapObj.GetEnum(2);
+                        component.Field18.Add(key, value);
+                    }
+                    
+                }
             }
         }
 
@@ -2337,6 +2441,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.Dictionary<string,long>> Field15;
             public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>> Field16;
             public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType>> Field17;
+            public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum>> Field18;
         }
 
         public struct ReceivedUpdates : IComponentData
@@ -2385,6 +2490,17 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveMapValue.ComponentId, DeserializeData, DeserializeUpdate);
@@ -2392,7 +2508,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveMapValue.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(ExhaustiveMapValue.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

@@ -341,9 +341,6 @@ namespace Improbable.Gdk.Core
                     case OpType.RemoveEntity:
                         HandleRemoveEntity(opList.GetRemoveEntityOp(opIndex));
                         break;
-                    case OpType.ReserveEntityIdResponse:
-                        HandleReserveEntityIdResponse(opList.GetReserveEntityIdResponseOp(opIndex));
-                        break;
                     case OpType.ReserveEntityIdsResponse:
                         HandleReserveEntityIdsResponse(opList.GetReserveEntityIdsResponseOp(opIndex));
                         break;

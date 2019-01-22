@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<int> ValueUpdated;
                 event Action<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> OnMyEvent;
             }
@@ -43,6 +45,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component, Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
@@ -111,7 +115,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public void OnMyEventEvent(global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, MyEventDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, MyEventDelegates, LogDispatcher);
                 }
 
                 public void SendMyEvent(global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType payload)

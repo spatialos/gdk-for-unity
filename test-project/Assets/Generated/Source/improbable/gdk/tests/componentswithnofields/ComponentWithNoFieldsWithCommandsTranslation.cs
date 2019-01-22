@@ -185,7 +185,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
 
                 Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 switch (commandIndex)
@@ -429,7 +429,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                             Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.SerializeUpdate(data, update);
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;
@@ -468,6 +468,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                                     var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
                                         new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
+                                        1,
                                         request.TimeoutMillis,
                                         request.AllowShortCircuiting ? ShortCircuitParameters : null);
 

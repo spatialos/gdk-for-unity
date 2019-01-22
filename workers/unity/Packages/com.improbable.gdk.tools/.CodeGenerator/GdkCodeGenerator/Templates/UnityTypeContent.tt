@@ -3,6 +3,7 @@
 <#
     var typeDetails = GetTypeDetails();
     var fieldDetailsList = GetFieldDetailsList();
+    var hasPartial = PartialDatabase.TryGetPartial(typeDetails.GetPartialResourceTypeName(), out var partial);
 #>
 
 public struct <#= typeDetails.CapitalisedName #>
@@ -23,7 +24,11 @@ if (fieldDetailsList.Count > 0)
 <# } #>
     }
 <# } #>
+<# if (hasPartial) { #>
 
+    <#= CommonGeneratorUtils.IndentEveryNewline(partial) #>
+
+<# } #>
     public static class Serialization
     {
         public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.CInterop.SchemaObject obj)

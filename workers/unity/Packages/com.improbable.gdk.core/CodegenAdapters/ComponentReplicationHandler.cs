@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 
@@ -19,10 +18,17 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         protected EntityManager EntityManager;
         protected readonly CommandParameters ShortCircuitParameters;
 
+        // Can remove when WRK-796 is fixed!
+        protected readonly UpdateParameters UpdateParameters;
+
         protected ComponentReplicationHandler(EntityManager entityManager)
         {
             EntityManager = entityManager;
             ShortCircuitParameters = new CommandParameters { AllowShortCircuiting = true };
+            UpdateParameters = new UpdateParameters
+            {
+                Loopback = ComponentUpdateLoopback.ShortCircuited
+            };
         }
     }
 }

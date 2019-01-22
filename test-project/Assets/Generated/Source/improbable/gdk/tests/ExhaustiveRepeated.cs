@@ -47,9 +47,9 @@ namespace Improbable.Gdk.Tests
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -73,9 +73,9 @@ namespace Improbable.Gdk.Tests
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -319,148 +319,16 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                global::System.Collections.Generic.List<BlittableBool> field1,
-                global::System.Collections.Generic.List<float> field2,
-                global::System.Collections.Generic.List<byte[]> field3,
-                global::System.Collections.Generic.List<int> field4,
-                global::System.Collections.Generic.List<long> field5,
-                global::System.Collections.Generic.List<double> field6,
-                global::System.Collections.Generic.List<string> field7,
-                global::System.Collections.Generic.List<uint> field8,
-                global::System.Collections.Generic.List<ulong> field9,
-                global::System.Collections.Generic.List<int> field10,
-                global::System.Collections.Generic.List<long> field11,
-                global::System.Collections.Generic.List<uint> field12,
-                global::System.Collections.Generic.List<ulong> field13,
-                global::System.Collections.Generic.List<int> field14,
-                global::System.Collections.Generic.List<long> field15,
-                global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16,
-                global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17
-            )
+            internal uint field18Handle;
+
+            public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> Field18
             {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197717);
-                var obj = schemaComponentData.GetFields();
+                get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                set
                 {
-                    foreach (var value in field1)
-                    {
-                        obj.AddBool(1, value);
-                    }
-                    
+                    MarkDataDirty(17);
+                    Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
                 }
-                {
-                    foreach (var value in field2)
-                    {
-                        obj.AddFloat(2, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field3)
-                    {
-                        obj.AddBytes(3, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field4)
-                    {
-                        obj.AddInt32(4, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field5)
-                    {
-                        obj.AddInt64(5, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field6)
-                    {
-                        obj.AddDouble(6, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field7)
-                    {
-                        obj.AddString(7, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field8)
-                    {
-                        obj.AddUint32(8, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field9)
-                    {
-                        obj.AddUint64(9, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field10)
-                    {
-                        obj.AddSint32(10, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field11)
-                    {
-                        obj.AddSint64(11, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field12)
-                    {
-                        obj.AddFixed32(12, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field13)
-                    {
-                        obj.AddFixed64(13, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field14)
-                    {
-                        obj.AddSfixed32(14, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field15)
-                    {
-                        obj.AddSfixed64(15, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field16)
-                    {
-                        obj.AddEntityId(16, value);
-                    }
-                    
-                }
-                {
-                    foreach (var value in field17)
-                    {
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
-                    }
-                    
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -485,6 +353,7 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.List<long> Field15;
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> Field16;
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> Field17;
+            public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> Field18;
         }
 
         public static class Serialization
@@ -607,6 +476,13 @@ namespace Improbable.Gdk.Tests
                     foreach (var value in component.Field17)
                     {
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                    }
+                    
+                }
+                {
+                    foreach (var value in component.Field18)
+                    {
+                        obj.AddEnum(18, (uint) value);
                     }
                     
                 }
@@ -887,6 +763,152 @@ namespace Improbable.Gdk.Tests
                         }
                         
                 }
+                {
+                    if (component.IsDataDirty(17))
+                    {
+                        foreach (var value in component.Field18)
+                        {
+                            obj.AddEnum(18, (uint) value);
+                        }
+                        
+                    }
+
+                    if (component.Field18.Count == 0)
+                        {
+                            updateObj.AddClearedField(18);
+                        }
+                        
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    foreach (var value in snapshot.Field1)
+                {
+                    obj.AddBool(1, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field2)
+                {
+                    obj.AddFloat(2, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field3)
+                {
+                    obj.AddBytes(3, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field4)
+                {
+                    obj.AddInt32(4, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field5)
+                {
+                    obj.AddInt64(5, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field6)
+                {
+                    obj.AddDouble(6, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field7)
+                {
+                    obj.AddString(7, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field8)
+                {
+                    obj.AddUint32(8, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field9)
+                {
+                    obj.AddUint64(9, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field10)
+                {
+                    obj.AddSint32(10, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field11)
+                {
+                    obj.AddSint64(11, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field12)
+                {
+                    obj.AddFixed32(12, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field13)
+                {
+                    obj.AddFixed64(13, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field14)
+                {
+                    obj.AddSfixed32(14, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field15)
+                {
+                    obj.AddSfixed64(15, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field16)
+                {
+                    obj.AddEntityId(16, value);
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field17)
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                }
+                
+                }
+                {
+                    foreach (var value in snapshot.Field18)
+                {
+                    obj.AddEnum(18, (uint) value);
+                }
+                
+                }
             }
 
             public static Improbable.Gdk.Tests.ExhaustiveRepeated.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -1077,6 +1099,17 @@ namespace Improbable.Gdk.Tests
                     for (var i = 0; i < listLength; i++)
                     {
                         list.Add(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i)));
+                    }
+                    
+                }
+                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                {
+                    component.Field18 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>();
+                    var list = component.Field18;
+                    var listLength = obj.GetEnumCount(18);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add((global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i));
                     }
                     
                 }
@@ -1464,6 +1497,28 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var listSize = obj.GetEnumCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>());
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i);
+                        update.Field18.Value.Add(value);
+                    }
+                    
+                }
                 return update;
             }
 
@@ -1654,6 +1709,17 @@ namespace Improbable.Gdk.Tests
                     for (var i = 0; i < listLength; i++)
                     {
                         list.Add(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i)));
+                    }
+                    
+                }
+
+                {
+                    component.Field18 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>();
+                    var list = component.Field18;
+                    var listLength = obj.GetEnumCount(18);
+                    for (var i = 0; i < listLength; i++)
+                    {
+                        list.Add((global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i));
                     }
                     
                 }
@@ -2041,6 +2107,28 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    var listSize = obj.GetEnumCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        component.Field18.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i);
+                        component.Field18.Add(value);
+                    }
+                    
+                }
             }
         }
 
@@ -2065,6 +2153,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.List<long>> Field15;
             public Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId>> Field16;
             public Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>> Field17;
+            public Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>> Field18;
         }
 
         public struct ReceivedUpdates : IComponentData
@@ -2113,6 +2202,17 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveRepeated.ComponentId, DeserializeData, DeserializeUpdate);
@@ -2120,7 +2220,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveRepeated.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(ExhaustiveRepeated.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

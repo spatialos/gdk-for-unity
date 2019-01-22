@@ -54,6 +54,7 @@ namespace Improbable.Gdk.Tests
                 ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(World);
                 ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(World);
                 ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(World);
+                ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(World);
             }
 
             public override void OnAddComponent(AddComponentOp op)
@@ -85,6 +86,7 @@ namespace Improbable.Gdk.Tests
                     Field15 = data.Field15,
                     Field16 = data.Field16,
                     Field17 = data.Field17,
+                    Field18 = data.Field18,
                 };
 
                 var updates = new List<Improbable.Gdk.Tests.ExhaustiveRepeated.Update>
@@ -144,6 +146,7 @@ namespace Improbable.Gdk.Tests
                 ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
                 ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
                 ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+                ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
 
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveRepeated.Component>(entity);
 
@@ -221,7 +224,7 @@ namespace Improbable.Gdk.Tests
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
                 throw new UnknownCommandIndexException(commandIndex, "ExhaustiveRepeated");
             }
 
@@ -353,7 +356,7 @@ namespace Improbable.Gdk.Tests
                             Improbable.Gdk.Tests.ExhaustiveRepeated.Serialization.SerializeUpdate(data, update);
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;

@@ -110,18 +110,6 @@ namespace Improbable.Gdk.Tests
                     this.nestedType = value;
                 }
             }
-
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                global::Improbable.Gdk.Tests.TypeName nestedType
-            )
-            {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(20152);
-                var obj = schemaComponentData.GetFields();
-                {
-                    global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(nestedType, obj.AddObject(1));
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
-            }
         }
 
         public struct Snapshot : ISpatialComponentSnapshot
@@ -149,6 +137,13 @@ namespace Improbable.Gdk.Tests
                         global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(component.NestedType, obj.AddObject(1));
                     }
 
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.NestedComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    global::Improbable.Gdk.Tests.TypeName.Serialization.Serialize(snapshot.NestedType, obj.AddObject(1));
                 }
             }
 
@@ -257,6 +252,17 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(NestedComponent.ComponentId, DeserializeData, DeserializeUpdate);
@@ -264,7 +270,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(NestedComponent.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(NestedComponent.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

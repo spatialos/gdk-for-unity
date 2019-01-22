@@ -1,3 +1,5 @@
+using Improbable.Gdk.Core;
+
 namespace Playground
 {
     public interface IMobileConnectionController
@@ -6,6 +8,6 @@ namespace Playground
 
         ConnectionScreenController ConnectionScreenController { get; set; }
 
-        void TryConnect();
+        void TryConnectAsync(ConnectionService connectionService);
     }
 }

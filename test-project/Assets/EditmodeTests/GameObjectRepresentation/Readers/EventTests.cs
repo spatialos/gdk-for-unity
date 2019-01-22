@@ -27,6 +27,7 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
             world = new World("test-world");
             entityManager = world.GetOrCreateManager<EntityManager>();
             entity = entityManager.CreateEntity(ComponentType.Create<BlittableComponent.Component>());
+            entityManager.AddComponentData(entity, new SpatialEntityId());
             readerWriterInternal =
                 new ComponentWithEvents.Requirable.ReaderWriterImpl(entity, entityManager, new LoggingDispatcher());
             readerPublic = readerWriterInternal;

@@ -1,0 +1,6 @@
+package improbable.tests;
+
+component DependencyTestChild {
+    id = 11112;
+    uint32 child = 1;
+}

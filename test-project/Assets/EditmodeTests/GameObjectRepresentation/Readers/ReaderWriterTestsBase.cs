@@ -7,6 +7,8 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
 {
     internal abstract class ReaderWriterTestsBase
     {
+        protected EntityId EntityId = new EntityId(10);
+
         protected BlittableComponent.Requirable.Reader ReaderPublic;
         protected BlittableComponent.Requirable.Writer WriterPublic;
         protected BlittableComponent.Requirable.ReaderWriterImpl ReaderWriterInternal;
@@ -20,6 +22,10 @@ namespace Improbable.Gdk.EditmodeTests.GameObjectRepresentation.Readers
             world = new World("test-world");
             EntityManager = world.GetOrCreateManager<EntityManager>();
             Entity = EntityManager.CreateEntity(typeof(BlittableComponent.Component));
+            EntityManager.AddComponentData(Entity, new SpatialEntityId
+            {
+                EntityId = EntityId
+            });
             ReaderWriterInternal =
                 new BlittableComponent.Requirable.ReaderWriterImpl(Entity, EntityManager, new LoggingDispatcher());
             ReaderPublic = ReaderWriterInternal;

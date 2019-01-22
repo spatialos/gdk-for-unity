@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Improbable.Worker.CInterop;
-
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -37,7 +36,7 @@ namespace Improbable.Gdk.Core
         {
             var parameters = new SnapshotParameters
             {
-                DefaultComponentVtable = new PassthroughComponentVtable()
+                DefaultComponentVtable = new ComponentVtable()
             };
 
             using (var outputStream = new SnapshotOutputStream(path, parameters))

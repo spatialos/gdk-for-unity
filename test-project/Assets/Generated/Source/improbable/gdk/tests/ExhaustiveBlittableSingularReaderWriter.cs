@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component, Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<BlittableBool> Field1Updated;
                 event Action<float> Field2Updated;
                 event Action<int> Field4Updated;
@@ -44,6 +46,7 @@ namespace Improbable.Gdk.Tests
                 event Action<long> Field15Updated;
                 event Action<global::Improbable.Gdk.Core.EntityId> Field16Updated;
                 event Action<global::Improbable.Gdk.Tests.SomeType> Field17Updated;
+                event Action<global::Improbable.Gdk.Tests.SomeEnum> Field18Updated;
             }
 
             [InjectableId(InjectableType.ReaderWriter, 197720)]
@@ -55,6 +58,8 @@ namespace Improbable.Gdk.Tests
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component, Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
@@ -420,6 +425,30 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
+                private readonly List<Action<global::Improbable.Gdk.Tests.SomeEnum>> field18Delegates = new List<Action<global::Improbable.Gdk.Tests.SomeEnum>>();
+
+                public event Action<global::Improbable.Gdk.Tests.SomeEnum> Field18Updated
+                {
+                    add
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        field18Delegates.Add(value);
+                    }
+                    remove
+                    {
+                        if (!IsValid())
+                        {
+                            return;
+                        }
+
+                        field18Delegates.Remove(value);
+                    }
+                }
+
                 protected override void TriggerFieldCallbacks(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update update)
                 {
                     DispatchWithErrorHandling(update.Field1, field1Delegates);
@@ -437,6 +466,7 @@ namespace Improbable.Gdk.Tests
                     DispatchWithErrorHandling(update.Field15, field15Delegates);
                     DispatchWithErrorHandling(update.Field16, field16Delegates);
                     DispatchWithErrorHandling(update.Field17, field17Delegates);
+                    DispatchWithErrorHandling(update.Field18, field18Delegates);
                 }
 
                 protected override void ApplyUpdate(Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update update, ref Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Component data)
@@ -500,6 +530,10 @@ namespace Improbable.Gdk.Tests
                     if (update.Field17.HasValue)
                     {
                         data.Field17 = update.Field17.Value;
+                    }
+                    if (update.Field18.HasValue)
+                    {
+                        data.Field18 = update.Field18.Value;
                     }
                 }
             }

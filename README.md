@@ -12,11 +12,11 @@ The GDK is composed of three layers:
 * A [**First Person Shooter (FPS) Starter Project**](https://github.com/spatialos/gdk-for-unity-fps-starter-project/) that enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games.
 * A [**Blank Starter Project**](https://github.com/spatialos/gdk-for-unity-blank-project) containing the minimum GDK feature set you need to start developing games for SpatialOS.
 
-[Get started](https://docs.improbable.io/unity/alpha/get-started) with the SpatialOS GDK for Unity, by setting up the FPS Starter Project.
+[Get started](https://docs.improbable.io/unity/alpha/content/get-started/get-started) with the SpatialOS GDK for Unity, by setting up the FPS Starter Project.
 
 ---
 
-* [Get started](https://docs.improbable.io/unity/alpha/get-started)
+* [Get started](https://docs.improbable.io/unity/alpha/content/get-started/get-started)
 * [Documentation](https://docs.improbable.io/unity/alpha/)
 
 * [Development roadmap](https://trello.com/b/29tMKyQC)
@@ -51,7 +51,6 @@ Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issue
 ---
 * Version: [alpha](https://docs.improbable.io/reference/latest/shared/release-policy)
 * The SpatialOS GDK for Unity repository: [github.com/spatialos/gdk-for-unity](https://github.com/spatialos/gdk-for-unity)
-* Use of the contents of this repository is subject to the [Improbable license](LICENSE.md)
 * Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
 &copy; 2018 Improbable

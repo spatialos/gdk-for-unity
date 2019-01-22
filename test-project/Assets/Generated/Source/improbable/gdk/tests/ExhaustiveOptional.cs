@@ -47,9 +47,9 @@ namespace Improbable.Gdk.Tests
             */
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -73,9 +73,9 @@ namespace Improbable.Gdk.Tests
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 17)
+                if (propertyIndex < 0 || propertyIndex >= 18)
                 {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 16]. " +
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
@@ -319,148 +319,16 @@ namespace Improbable.Gdk.Tests
                 }
             }
 
-            public static global::Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData(
-                BlittableBool? field1,
-                float? field2,
-                global::Improbable.Gdk.Core.Option<byte[]> field3,
-                int? field4,
-                long? field5,
-                double? field6,
-                global::Improbable.Gdk.Core.Option<string> field7,
-                uint? field8,
-                ulong? field9,
-                int? field10,
-                long? field11,
-                uint? field12,
-                ulong? field13,
-                int? field14,
-                long? field15,
-                global::Improbable.Gdk.Core.EntityId? field16,
-                global::Improbable.Gdk.Tests.SomeType? field17
-            )
+            internal uint field18Handle;
+
+            public global::Improbable.Gdk.Tests.SomeEnum? Field18
             {
-                var schemaComponentData = new global::Improbable.Worker.CInterop.SchemaComponentData(197716);
-                var obj = schemaComponentData.GetFields();
+                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                set
                 {
-                    if (field1.HasValue)
-                    {
-                        obj.AddBool(1, field1.Value);
-                    }
-                    
+                    MarkDataDirty(17);
+                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
                 }
-                {
-                    if (field2.HasValue)
-                    {
-                        obj.AddFloat(2, field2.Value);
-                    }
-                    
-                }
-                {
-                    if (field3.HasValue)
-                    {
-                        obj.AddBytes(3, field3.Value);
-                    }
-                    
-                }
-                {
-                    if (field4.HasValue)
-                    {
-                        obj.AddInt32(4, field4.Value);
-                    }
-                    
-                }
-                {
-                    if (field5.HasValue)
-                    {
-                        obj.AddInt64(5, field5.Value);
-                    }
-                    
-                }
-                {
-                    if (field6.HasValue)
-                    {
-                        obj.AddDouble(6, field6.Value);
-                    }
-                    
-                }
-                {
-                    if (field7.HasValue)
-                    {
-                        obj.AddString(7, field7.Value);
-                    }
-                    
-                }
-                {
-                    if (field8.HasValue)
-                    {
-                        obj.AddUint32(8, field8.Value);
-                    }
-                    
-                }
-                {
-                    if (field9.HasValue)
-                    {
-                        obj.AddUint64(9, field9.Value);
-                    }
-                    
-                }
-                {
-                    if (field10.HasValue)
-                    {
-                        obj.AddSint32(10, field10.Value);
-                    }
-                    
-                }
-                {
-                    if (field11.HasValue)
-                    {
-                        obj.AddSint64(11, field11.Value);
-                    }
-                    
-                }
-                {
-                    if (field12.HasValue)
-                    {
-                        obj.AddFixed32(12, field12.Value);
-                    }
-                    
-                }
-                {
-                    if (field13.HasValue)
-                    {
-                        obj.AddFixed64(13, field13.Value);
-                    }
-                    
-                }
-                {
-                    if (field14.HasValue)
-                    {
-                        obj.AddSfixed32(14, field14.Value);
-                    }
-                    
-                }
-                {
-                    if (field15.HasValue)
-                    {
-                        obj.AddSfixed64(15, field15.Value);
-                    }
-                    
-                }
-                {
-                    if (field16.HasValue)
-                    {
-                        obj.AddEntityId(16, field16.Value);
-                    }
-                    
-                }
-                {
-                    if (field17.HasValue)
-                    {
-                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field17.Value, obj.AddObject(17));
-                    }
-                    
-                }
-                return new global::Improbable.Worker.CInterop.ComponentData(schemaComponentData);
             }
         }
 
@@ -485,6 +353,7 @@ namespace Improbable.Gdk.Tests
             public long? Field15;
             public global::Improbable.Gdk.Core.EntityId? Field16;
             public global::Improbable.Gdk.Tests.SomeType? Field17;
+            public global::Improbable.Gdk.Tests.SomeEnum? Field18;
         }
 
         public static class Serialization
@@ -607,6 +476,13 @@ namespace Improbable.Gdk.Tests
                     if (component.Field17.HasValue)
                     {
                         global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(component.Field17.Value, obj.AddObject(17));
+                    }
+                    
+                }
+                {
+                    if (component.Field18.HasValue)
+                    {
+                        obj.AddEnum(18, (uint) component.Field18.Value);
                     }
                     
                 }
@@ -887,6 +763,152 @@ namespace Improbable.Gdk.Tests
                         }
                         
                 }
+                {
+                    if (component.IsDataDirty(17))
+                    {
+                        if (component.Field18.HasValue)
+                        {
+                            obj.AddEnum(18, (uint) component.Field18.Value);
+                        }
+                        
+                    }
+
+                    if (!component.Field18.HasValue)
+                        {
+                            updateObj.AddClearedField(18);
+                        }
+                        
+                }
+            }
+
+            public static void SerializeSnapshot(Improbable.Gdk.Tests.ExhaustiveOptional.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            {
+                {
+                    if (snapshot.Field1.HasValue)
+                {
+                    obj.AddBool(1, snapshot.Field1.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field2.HasValue)
+                {
+                    obj.AddFloat(2, snapshot.Field2.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field3.HasValue)
+                {
+                    obj.AddBytes(3, snapshot.Field3.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field4.HasValue)
+                {
+                    obj.AddInt32(4, snapshot.Field4.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field5.HasValue)
+                {
+                    obj.AddInt64(5, snapshot.Field5.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field6.HasValue)
+                {
+                    obj.AddDouble(6, snapshot.Field6.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field7.HasValue)
+                {
+                    obj.AddString(7, snapshot.Field7.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field8.HasValue)
+                {
+                    obj.AddUint32(8, snapshot.Field8.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field9.HasValue)
+                {
+                    obj.AddUint64(9, snapshot.Field9.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field10.HasValue)
+                {
+                    obj.AddSint32(10, snapshot.Field10.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field11.HasValue)
+                {
+                    obj.AddSint64(11, snapshot.Field11.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field12.HasValue)
+                {
+                    obj.AddFixed32(12, snapshot.Field12.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field13.HasValue)
+                {
+                    obj.AddFixed64(13, snapshot.Field13.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field14.HasValue)
+                {
+                    obj.AddSfixed32(14, snapshot.Field14.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field15.HasValue)
+                {
+                    obj.AddSfixed64(15, snapshot.Field15.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field16.HasValue)
+                {
+                    obj.AddEntityId(16, snapshot.Field16.Value);
+                }
+                
+                }
+                {
+                    if (snapshot.Field17.HasValue)
+                {
+                    global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(snapshot.Field17.Value, obj.AddObject(17));
+                }
+                
+                }
+                {
+                    if (snapshot.Field18.HasValue)
+                {
+                    obj.AddEnum(18, (uint) snapshot.Field18.Value);
+                }
+                
+                }
             }
 
             public static Improbable.Gdk.Tests.ExhaustiveOptional.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -1026,6 +1048,14 @@ namespace Improbable.Gdk.Tests
                     if (obj.GetObjectCount(17) == 1)
                     {
                         component.Field17 = new global::Improbable.Gdk.Tests.SomeType?(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17)));
+                    }
+                    
+                }
+                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                {
+                    if (obj.GetEnumCount(18) == 1)
+                    {
+                        component.Field18 = new global::Improbable.Gdk.Tests.SomeEnum?((global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18));
                     }
                     
                 }
@@ -1396,6 +1426,27 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (isCleared)
+                    {
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Tests.SomeEnum?>(new global::Improbable.Gdk.Tests.SomeEnum?());
+                    }
+                    else if (obj.GetEnumCount(18) == 1)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                        update.Field18 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Tests.SomeEnum?>(new global::Improbable.Gdk.Tests.SomeEnum?(value));
+                    }
+                    
+                }
                 return update;
             }
 
@@ -1535,6 +1586,14 @@ namespace Improbable.Gdk.Tests
                     if (obj.GetObjectCount(17) == 1)
                     {
                         component.Field17 = new global::Improbable.Gdk.Tests.SomeType?(global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17)));
+                    }
+                    
+                }
+
+                {
+                    if (obj.GetEnumCount(18) == 1)
+                    {
+                        component.Field18 = new global::Improbable.Gdk.Tests.SomeEnum?((global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18));
                     }
                     
                 }
@@ -1905,6 +1964,27 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
+                {
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (isCleared)
+                    {
+                        component.Field18 = new global::Improbable.Gdk.Tests.SomeEnum?();
+                    }
+                    else if (obj.GetEnumCount(18) == 1)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                        component.Field18 = new global::Improbable.Gdk.Tests.SomeEnum?(value);
+                    }
+                    
+                }
             }
         }
 
@@ -1929,6 +2009,7 @@ namespace Improbable.Gdk.Tests
             public Option<long?> Field15;
             public Option<global::Improbable.Gdk.Core.EntityId?> Field16;
             public Option<global::Improbable.Gdk.Tests.SomeType?> Field17;
+            public Option<global::Improbable.Gdk.Tests.SomeEnum?> Field18;
         }
 
         public struct ReceivedUpdates : IComponentData
@@ -1977,6 +2058,17 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
             }
 
+            private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
+            {
+                var schemaDataOpt = data.SchemaData;
+                if (!schemaDataOpt.HasValue)
+                {
+                    throw new ArgumentException($"Can not serialise an empty {nameof(ComponentData)}");
+                }
+
+                Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
                 handler.Accept<Component, Update>(ExhaustiveOptional.ComponentId, DeserializeData, DeserializeUpdate);
@@ -1984,7 +2076,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveOptional.ComponentId, DeserializeSnapshot);
+                handler.Accept<Snapshot>(ExhaustiveOptional.ComponentId, DeserializeSnapshot, SerializeSnapshot);
             }
         }
     }

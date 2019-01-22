@@ -65,19 +65,24 @@ MonoBehaviour:
       - Options: 1
         Enabled: 0
     CloudBuildConfig:
-      BuildTargets:
-      - Options: 1
-        Enabled: 0
-      - Options: 1
-        Enabled: 0
-      - Options: 1
-        Enabled: 0
-      - Options: 16384
-        Enabled: 1
-      - Options: 1
-        Enabled: 0
-      - Options: 1
-        Enabled: 0
-      - Options: 1
-        Enabled: 0
+      BuildPlatforms: 8
+      BuildOptions: 16384
+  - WorkerType: AndroidClient
+    ScenesForWorker:
+    - {fileID: 102900000, guid: 82ccd0fd96a2ba24f88d0c7d01592f2e, type: 3}
+    LocalBuildConfig:
+      BuildPlatforms: 32
+      BuildOptions: 1
+    CloudBuildConfig:
+      BuildPlatforms: 0
+      BuildOptions: 0
+  - WorkerType: iOSClient
+    ScenesForWorker:
+    - {fileID: 102900000, guid: 424c4b2c090874512badc5e7ee757d5f, type: 3}
+    LocalBuildConfig:
+      BuildPlatforms: 64
+      BuildOptions: 1
+    CloudBuildConfig:
+      BuildPlatforms: 0
+      BuildOptions: 16384
   isInitialised: 1

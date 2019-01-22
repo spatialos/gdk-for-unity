@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> OnEvt;
             }
 
@@ -42,6 +44,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component, Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
@@ -81,7 +85,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public void OnEvtEvent(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, EvtDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, EvtDelegates, LogDispatcher);
                 }
 
                 public void SendEvt(global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty payload)

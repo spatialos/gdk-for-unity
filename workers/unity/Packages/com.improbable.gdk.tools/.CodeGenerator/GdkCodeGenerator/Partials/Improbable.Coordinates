@@ -1,0 +1,84 @@
+public static readonly Coordinates Zero = new Coordinates(0, 0, 0);
+
+public static Coordinates operator -(Coordinates v1, Coordinates v2)
+{
+    return new Coordinates(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+}
+
+public static Coordinates operator +(Coordinates a, Coordinates b)
+{
+    return new Coordinates(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+}
+
+public static Coordinates operator *(Coordinates coords, float f)
+{
+    return new Coordinates(coords.X * f, coords.Y * f, coords.Z * f);
+}
+
+public static Coordinates operator *(Coordinates coords, double d)
+{
+    return new Coordinates(coords.X * d, coords.Y * d, coords.Z * d);
+}
+
+public static Coordinates operator /(Coordinates coords, float f)
+{
+    return new Coordinates(coords.X / f, coords.Y / f, coords.Z / f);
+}
+
+public static Coordinates operator /(Coordinates coords, double d)
+{
+    return new Coordinates(coords.X / d, coords.Y / d, coords.Z / d);
+}
+
+public static bool operator ==(Coordinates a, Coordinates b) => a.Equals(b);
+public static bool operator !=(Coordinates a, Coordinates b) => !a.Equals(b);
+
+public override bool Equals(object obj)
+{
+    if (ReferenceEquals(null, obj))
+    {
+        return false;
+    }
+
+    return obj is Coordinates other && Equals(other);
+}
+
+public bool Equals(Coordinates other)
+{
+    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+}
+
+public override int GetHashCode()
+{
+    unchecked
+    {
+        var hashCode = X.GetHashCode();
+        hashCode = (hashCode * 397) ^ Y.GetHashCode();
+        hashCode = (hashCode * 397) ^ Z.GetHashCode();
+        return hashCode;
+    }
+}
+
+/// <summary>
+///     Returns the string representation of the Coordinates.
+/// </summary>
+public override string ToString()
+{
+    return "Coordinates(" + X + ", " + Y + ", " + Z + ")";
+}
+
+/// <summary>
+///     Converts to a Unity Vector3.
+/// </summary>
+public Vector3 ToUnityVector()
+{
+    return new Vector3((float) X, (float) Y, (float) Z);
+}
+
+/// <summary>
+///     Converts to a Spatial Vector3d.
+/// </summary>
+public Vector3d ToSpatialVector3d()
+{
+    return new Vector3d(X, Y, Z);
+}

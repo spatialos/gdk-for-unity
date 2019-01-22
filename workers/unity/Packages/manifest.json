@@ -8,7 +8,7 @@
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:com.improbable.gdk.tools",
     "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",
-    "com.unity.package-manager-ui": "1.9.11",
+    "com.unity.package-manager-ui": "2.0.3",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0"

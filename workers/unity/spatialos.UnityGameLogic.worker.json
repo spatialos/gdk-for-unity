@@ -52,6 +52,7 @@
       "macos": {
         "command": "open",
         "arguments": [
+          "-n",
           "./build/worker/UnityGameLogic@Mac/UnityGameLogic@Mac.app",
           "--args",
           "+assemblyName",
@@ -95,10 +96,8 @@
     },
     "macos": {
       "artifact_name": "UnityGameLogic@Mac.zip",
-      "command": "open",
+      "command": "UnityGameLogic@Mac.app/Contents/MacOS/UnityGameLogic@Mac",
       "arguments": [
-        "UnityGameLogic@Mac.app",
-        "--args",
         "+workerType",
         "UnityGameLogic",
         "+workerId",

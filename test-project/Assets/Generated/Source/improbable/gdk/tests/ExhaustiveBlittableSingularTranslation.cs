@@ -66,6 +66,7 @@ namespace Improbable.Gdk.Tests
                     Field15 = data.Field15,
                     Field16 = data.Field16,
                     Field17 = data.Field17,
+                    Field18 = data.Field18,
                 };
 
                 var updates = new List<Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Update>
@@ -183,7 +184,7 @@ namespace Improbable.Gdk.Tests
 
             public override void OnCommandResponse(CommandResponseOp op)
             {
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
                 throw new UnknownCommandIndexException(commandIndex, "ExhaustiveBlittableSingular");
             }
 
@@ -315,7 +316,7 @@ namespace Improbable.Gdk.Tests
                             Improbable.Gdk.Tests.ExhaustiveBlittableSingular.Serialization.SerializeUpdate(data, update);
 
                             // Send serialized update over the wire
-                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update));
+                            connection.SendComponentUpdate(entityIdArray[i].EntityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(update), UpdateParameters);
 
                             data.MarkDataClean();
                             componentArray[i] = data;

@@ -5,10 +5,45 @@
 ### Added
 
 - Added support for the Steam authentication flow.
-- Added a reference to Blank Starter Project in the README.
+- Added support for the Alpha Locator flow.
+- Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
+- Added option to build workers out via IL2CPP in the cmd.
+
+### Changed
+
+- Upgraded the Worker SDK version to `13.5.1`. This is a stable Worker SDK release! :tada:
+- `Improbable.Gdk.EntityTemplate` is now mutable and exposes a set of APIs to add, remove, and replace component snapshots
+    - This replaces the `Improbable.Gdk.Core.EntityBuilder` class.
+    - These changes also allow you to reuse an `EntityTemplate` more than once.
+- Upgraded the project to be compatible with `2018.3.2f1`.
+- Upgraded the entities package to `0.0.12-preview.21`
+- Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
+
+### Fixed
+
+- `Clean all workers` now cleans worker configs in addition to built-out workers.
+- Fixed a bug where you could start each built-out worker only once on OSX.
+- Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
+- Fixed a bug where spaces in the path would cause code generation to fail on OSX.
+- Fixed an issue in the TransformSynchronization module where an integer underflow would cause a memory crash.
+
+### Removed
+
+- Removed the `Improbable.Gdk.Core.EntityBuilder` class as it was superceded by the updated functionality in `Improbable.Gdk.Core.EntityTemplate`.
+    - Removed `CreateSchemaComponentData` from each generated component as it is no longer required by the `EntityBuilder`.
+- Removed `com.unity.incrementalcompiler` package as a dependency of the `Core` package.
+
+## `0.1.3` - 2018-11-26
+
+### Added
+
 - Added Frames Per Second (FPS) and Unity heap usage as metrics sent by `MetricSendSystem.cs`.
 - Added a warning message to the top of schema files copied into the `from_gdk_packages` directory.
 - Added an `ISnapshottable<T>` interface to all generated components. This allows you to convert a component to a snapshot.
+- Added an `EntityId` property on the Readers/Writers to access the `EntityId` of the underlying SpatialOS entity.
+- Added a `HasEntity` method to the `WorkerSystem`. This allows you to check if an entity is checked out on your worker.
+- Added operators and conversion methods to `Coordinates`, `Vector3d`, and `Vector3f` in code generation.
+    - This supercedes the `StandardLibraryUtils` feature module which was removed as a consequence.
 
 ### Changed
 
@@ -22,6 +57,10 @@
 ### Fixed
 
 - Fixed a bug where schema components with a field named `value` would generate invalid code.
+
+### Removed
+
+- Removed the `StandardLibraryUtils` feature module as it was superceded by inserting the methods during code generation.
 
 ## `0.1.2` - 2018-11-01
 

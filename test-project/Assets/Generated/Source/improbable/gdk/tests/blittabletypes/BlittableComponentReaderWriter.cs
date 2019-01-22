@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>
             {
+                EntityId EntityId { get; }
+
                 event Action<BlittableBool> BoolFieldUpdated;
                 event Action<int> IntFieldUpdated;
                 event Action<long> LongFieldUpdated;
@@ -49,6 +51,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             internal class ReaderWriterImpl :
                 ReaderWriterBase<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component, Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>, Reader, Writer
             {
+                public new EntityId EntityId => base.EntityId;
+
                 public ReaderWriterImpl(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                     : base(entity, entityManager, logDispatcher)
                 {
@@ -233,7 +237,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public void OnFirstEventEvent(global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, FirstEventDelegates, LogDispatcher);
                 }
 
                 public void SendFirstEvent(global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload payload)
@@ -273,7 +277,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public void OnSecondEventEvent(global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
                 {
-                    GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, logDispatcher);
+                    GameObjectDelegates.DispatchWithErrorHandling(payload, SecondEventDelegates, LogDispatcher);
                 }
 
                 public void SendSecondEvent(global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload payload)
