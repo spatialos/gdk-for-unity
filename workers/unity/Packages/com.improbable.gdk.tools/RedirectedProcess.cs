@@ -23,15 +23,46 @@ namespace Improbable.Gdk.Tools
     /// </summary>
     public class RedirectedProcess
     {
+        private string RunningCommand = string.Empty;
+        private string[] Arguments;
+        private string WorkingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+        private Action<string> OutputProcessor;
+        private Action<string> ErrorProcessor;
+
         /// <summary>
         ///     Runs the redirected process and waits for it to return.
         /// </summary>
         /// <param name="command">The filename to run.</param>
         /// <param name="arguments">Parameters that will be passed to the command.</param>
         /// <returns>The exit code.</returns>
-        public static int Run(string command, params string[] arguments)
+        // public static int Run(string command, params string[] arguments)
+        // {
+        //     return RunIn(Path.GetFullPath(Path.Combine(Application.dataPath, "..")), command, arguments);
+        // }
+        public static RedirectedProcess CommandWithArgs(string command, params string[] arguments)
         {
-            return RunIn(Path.GetFullPath(Path.Combine(Application.dataPath, "..")), command, arguments);
+            var redirectedProcess = new RedirectedProcess();
+            redirectedProcess.RunningCommand = command;
+            redirectedProcess.Arguments = arguments;
+            return redirectedProcess;
+        }
+
+        public RedirectedProcess InDirectory(string directory)
+        {
+            WorkingDirectory = directory;
+            return this;
+        }
+
+        public RedirectedProcess ProcessOutput(Action<string> outputProcessor)
+        {
+            OutputProcessor = outputProcessor;
+            return this;
+        }
+
+        public RedirectedProcess ProcessErrors(Action<string> errorProcessor)
+        {
+            ErrorProcessor = errorProcessor;
+            return this;
         }
 
         /// <summary>
@@ -41,15 +72,16 @@ namespace Improbable.Gdk.Tools
         /// <param name="command">The filename to run.</param>
         /// <param name="arguments">Parameters that will be passed to the command.</param>
         /// <returns>The exit code.</returns>
-        public static int RunIn(string workingDirectory, string command, params string[] arguments)
+        // public static int RunIn(string workingDirectory, string command, params string[] arguments)
+        public int Run()
         {
-            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
+            var info = new ProcessStartInfo(RunningCommand, string.Join(" ", Arguments))
             {
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                WorkingDirectory = workingDirectory
+                WorkingDirectory = WorkingDirectory
             };
 
             using (var process = Process.Start(info))
@@ -64,21 +96,35 @@ namespace Improbable.Gdk.Tools
 
                 var processOutput = new StringBuilder();
 
-                void OnReceived(object sender, DataReceivedEventArgs args)
+                void OnReceived(string output)
                 {
-                    if (string.IsNullOrEmpty(args.Data))
-                    {
-                        return;
-                    }
-
                     lock (processOutput)
                     {
-                        processOutput.AppendLine(ProcessSpatialOutput(args.Data));
+                        processOutput.AppendLine(ProcessSpatialOutput(output));
                     }
                 }
 
-                process.OutputDataReceived += OnReceived;
-                process.ErrorDataReceived += OnReceived;
+                OutputProcessor = OutputProcessor ?? OnReceived;
+                ErrorProcessor = ErrorProcessor ?? OnReceived;
+
+                void OnStandardOutput(object sender, DataReceivedEventArgs args)
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                    {
+                        OutputProcessor(args.Data);
+                    }
+                }
+
+                void OnStandardError(object sender, DataReceivedEventArgs args)
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                    {
+                        ErrorProcessor(args.Data);
+                    }
+                }
+
+                process.OutputDataReceived += OnStandardOutput;
+                process.ErrorDataReceived += OnStandardError;
 
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
@@ -113,77 +159,50 @@ namespace Improbable.Gdk.Tools
         /// <param name="redirectStdout">Redirect standard output to Debug.Log</param>
         /// <param name="redirectStderr">Redirect standard error to Debug.LogError</param>
         /// <returns>A task which would return the exit code and output.</returns>
-        public static async Task<RedirectedProcessResult> RunInAsync(string workingDirectory, string command, string[] arguments, bool redirectStdout = false, bool redirectStderr = false)
+        public async Task<RedirectedProcessResult> RunInAsync(bool redirectStdout = false, bool redirectStderr = false)
         {
-            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
-            {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = workingDirectory
-            };
-
             return await Task.Run(() =>
             {
-                using (var process = Process.Start(info))
+                var processStandardOutput = new List<string>();
+                var processStandardError = new List<string>();
+
+                void OnStandardOutput(string output)
                 {
-                    if (process == null)
+                    if (redirectStdout)
                     {
-                        throw new Exception(
-                            $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
+                        Debug.Log(output);
                     }
 
-                    process.EnableRaisingEvents = true;
-
-                    var processStandardOutput = new List<string>();
-                    var processStandardError = new List<string>();
-
-                    void OnStandardOutput(object sender, DataReceivedEventArgs args)
+                    lock (processStandardOutput)
                     {
-                        if (!string.IsNullOrEmpty(args.Data))
-                        {
-                            if (redirectStdout)
-                            {
-                                Debug.Log(args.Data);
-                            }
-                            lock (processStandardOutput)
-                            {
-                                processStandardOutput.Add(args.Data);
-                            }
-                        }
+                        processStandardOutput.Add(output);
                     }
-
-                    void OnStandardError(object sender, DataReceivedEventArgs args)
-                    {
-                        if (!string.IsNullOrEmpty(args.Data))
-                        {
-                            if (redirectStderr)
-                            {
-                                Debug.LogError(args.Data);
-                            }
-                            lock (processStandardOutput)
-                            {
-                                processStandardError.Add(args.Data);
-                            }
-                        }
-                    }
-
-                    process.OutputDataReceived += OnStandardOutput;
-                    process.ErrorDataReceived += OnStandardError;
-
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-
-                    process.WaitForExit();
-
-                    return new RedirectedProcessResult
-                    {
-                        ExitCode = process.ExitCode,
-                        Stdout = processStandardOutput,
-                        Stderr = processStandardError
-                    };
                 }
+
+                void OnStandardError(string error)
+                {
+                    if (redirectStderr)
+                    {
+                        Debug.LogError(error);
+                    }
+
+                    lock (processStandardOutput)
+                    {
+                        processStandardError.Add(error);
+                    }
+                }
+
+                OutputProcessor = OnStandardOutput;
+                ErrorProcessor = OnStandardError;
+
+                var exitCode = Run();
+
+                return new RedirectedProcessResult
+                {
+                    ExitCode = exitCode,
+                    Stdout = processStandardOutput,
+                    Stderr = processStandardError
+                };
             });
         }
 
