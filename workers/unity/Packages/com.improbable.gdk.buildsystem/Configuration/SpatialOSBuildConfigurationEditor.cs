@@ -33,6 +33,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static readonly HashSet<string> ExpandedWorkers = new HashSet<string>();
         private static readonly HashSet<string> ExpandedBuildOptions = new HashSet<string>();
         private static readonly HashSet<string> ExpandedBuildTargets = new HashSet<string>();
+        private static readonly Dictionary<string, GUIContent> WorkerContent = new Dictionary<string, GUIContent>();
 
         public override void OnInspectorGUI()
         {
@@ -73,6 +74,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 if (!DrawWorkerConfiguration(workerConfig))
                 {
+                    EditorUtility.SetDirty(target);
                     Undo.RecordObject(target, $"Remove '{workerConfig.WorkerType}'");
 
                     configs.Remove(workerConfig);
@@ -92,7 +94,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
 
             GUILayout.Space(rect.height);
-        }
+        }        
 
         private bool DrawWorkerConfiguration(WorkerBuildConfiguration configurationForWorker)
         {
@@ -113,7 +115,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
                 else
                 {
-                    content = new GUIContent(workerType);
+                    if (!WorkerContent.TryGetValue(workerType, out content))
+                    {
+                        WorkerContent[workerType] = content = new GUIContent(workerType);
+                    }
                 }
 
                 currentExpanded =
@@ -318,6 +323,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                     if (check.changed || list != null)
                     {
+                        EditorUtility.SetDirty(target);
                         Undo.RecordObject(target, "Configure scenes for worker");
 
                         configurationForWorker.ScenesForWorker = list.ToArray();
@@ -433,6 +439,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 switch (currentEventType)
                 {
                     case EventType.DragPerform:
+                        EditorUtility.SetDirty(target);
                         Undo.RecordObject(target, "Configure scenes for worker");
 
                         configurationForWorker.ScenesForWorker = DragAndDrop.objectReferences
@@ -558,7 +565,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 var foldoutIdentifier = identifier + buildTarget.Label;
                 GUIContent content;
 
-                if(!buildTarget.BuildSupportInstalled && buildTarget.Enabled)
+                if (!buildTarget.BuildSupportInstalled && buildTarget.Enabled)
                 {
                     content = EditorGUIUtility.IconContent("console.erroricon.sml");
                     content.text = buildTarget.Label;
@@ -657,6 +664,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                         if (check.changed)
                         {
+                            EditorUtility.SetDirty(target);
                             Undo.RecordObject(target, "Worker build options");
                             buildTarget.Options = options;
                             buildTarget.Enabled = enabled;
@@ -670,7 +678,31 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private BuildOptions ConfigureCompression(BuildOptions options)
         {
-            EditorGUILayout.Popup("Compression", 0, new[] { "TODO: Default", "TODO: LZ4", "TODO: LZ4HC" });
+            var choice = 0;
+            if (options.HasFlag(BuildOptions.CompressWithLz4))
+            {
+                choice = 1;
+            }
+            else if (options.HasFlag(BuildOptions.CompressWithLz4HC))
+            {
+                choice = 2;
+            }
+
+            choice = EditorGUILayout.Popup("Compression method", choice, new[] { "Default", "LZ4", "LZ4HC" });
+
+            switch (choice)
+            {
+                case 0:
+                    options &= ~(BuildOptions.CompressWithLz4 | BuildOptions.CompressWithLz4HC);
+                    break;
+                case 1:
+                    options |= BuildOptions.CompressWithLz4;
+                    break;
+                case 2:
+                    options |= BuildOptions.CompressWithLz4HC;
+                    break;
+            }
+
             return options;
         }
 
@@ -731,19 +763,37 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 options &= ~BuildOptions.Development;
             }
 
+            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            {
+                options |= BuildOptions.EnableHeadlessMode;
+            }
+            else
+            {
+                options &= ~BuildOptions.EnableHeadlessMode;
+            }
+
             return options;
         }
 
         private BuildOptions ConfigureWindows(BuildTargetConfig buildTarget)
         {
             var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
+            if (EditorGUILayout.Toggle("Development Build", options.HasFlag(BuildOptions.Development)))
             {
                 options |= BuildOptions.Development;
             }
             else
             {
                 options &= ~BuildOptions.Development;
+            }
+
+            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            {
+                options |= BuildOptions.EnableHeadlessMode;
+            }
+            else
+            {
+                options &= ~BuildOptions.EnableHeadlessMode;
             }
 
             return options;
