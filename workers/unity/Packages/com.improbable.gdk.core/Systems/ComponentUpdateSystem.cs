@@ -8,7 +8,6 @@ namespace Improbable.Gdk.Core
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
-    [UpdateAfter(typeof(SpatialOSSendSystem))]
     public class ComponentUpdateSystem : ComponentSystem
     {
         private readonly List<IComponentManager> managers = new List<IComponentManager>();

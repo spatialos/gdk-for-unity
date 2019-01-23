@@ -1,6 +1,5 @@
 using System;
 using Improbable.Worker.CInterop;
-
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
