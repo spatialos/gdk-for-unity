@@ -1,5 +1,5 @@
 {
-  "template": "small_bridge_v2",
+  "template": "small_entity_db_v2",
   "world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
@@ -16,6 +16,25 @@
       }
     ]
   },
+  "load_balancing": {
+    "layer_configurations": [
+      {
+        "layer": "UnityGameLogic",
+        "points_of_interest": {
+          "num_workers": 1,
+          "points": [
+            {
+              "x": 0,
+              "z": 0
+            }
+          ]
+        },
+        "options": {
+          "manual_worker_connection_only": true
+        }
+      }
+    ]
+  },
   "workers": [
     {
       "worker_type": "UnityGameLogic",
@@ -23,19 +42,15 @@
         {
           "all": {}
         }
-      ],
-      "load_balancing": {
-        "singleton_worker": {}
-      }
+      ]
     },
     {
       "worker_type": "UnityClient",
-      "permissions": [{
+      "permissions": [
+        {
           "all": {}
-      }],
-      "load_balancing": {
-        "singleton_worker": {}
-      }
+        }
+      ]
     }
   ]
 }

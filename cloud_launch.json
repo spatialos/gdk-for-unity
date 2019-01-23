@@ -1,5 +1,5 @@
 {
-  "template": "small_bridge_v2",
+  "template": "small_entity_db_v2",
   "world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
@@ -10,6 +10,16 @@
       "zMeters": 5000
     }
   },
+  "load_balancing": {
+    "layer_configurations": [
+      {
+        "layer": "UnityGameLogic",
+        "hex_grid": {
+          "num_workers": 2
+        }
+      }
+    ]
+  },
   "workers": [
     {
       "worker_type": "UnityGameLogic",
@@ -17,21 +27,15 @@
         {
           "all": {}
         }
-      ],
-      "load_balancing": {
-        "auto_hex_grid": {
-          "num_workers": 2
-        }
-      }
+      ]
     },
     {
       "worker_type": "UnityClient",
-      "permissions": [{
+      "permissions": [
+        {
           "all": {}
-      }],
-      "load_balancing": {
-        "singleton_worker": {}
-      }
+        }
+      ]
     }
   ]
 }
