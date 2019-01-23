@@ -43,7 +43,7 @@ Then navigate to the root folder of the FPS starter project and run the followin
 
 This ensures that you are on the alpha release version of the FPS starter project.
 
-#### 1. Clone the GDK for Unity repository and checkout the latest release
+#### 2. Clone the GDK for Unity repository and checkout the latest release
 
 You can use scripts to automatically do this or follow manual instructions.
 
@@ -55,22 +55,20 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 
 <%(#Expandable title="Manually clone the GDK for Unity")%>
 
-2. Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
-
+1\.  Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
 |     |     |
-| --- | --- |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 
   > The two repositories should share a common parent, like the example below:
 
-```text
+```
   <common_parent_directory>
       ├── gdk-for-unity-fps-starter-project
       ├── gdk-for-unity
 ```
 
-2. Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
+2\.  Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
   * `git checkout <pinned_version>`
 
 <%(/Expandable)%>

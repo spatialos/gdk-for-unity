@@ -8,18 +8,26 @@ To get set you'll need to create a SpatialOS account, install some dependencies 
 
 ### Clone the SpatialOS GDK for Unity repository
 
-Clone the SpacialOS GDK for Unity repository using one of the following commands:
+To run the GDK for Unity, you need to download the source code. To do this, you need to clone the GDK repository.
+
+#### Using a terminal:
+
+Clone the SpacialOS GDK for Unity repository using one of the following terminal commands:
 
 |     |     |
 | --- | --- |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
 
-Once you have cloned the repository, you need to checkout the latest release by using the following command: 
+#### Using GitHub Desktop
 
-```
-git checkout <version>
-```
+To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, click the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then click Clone. 
+
+#### Checking out the latest release
+
+Once you have cloned the repository, you need to checkout the latest release by using the following terminal command: 
+
+`git checkout 0.1.3`
 
 The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
