@@ -8,7 +8,7 @@ using UnityEngine.Profiling;
 namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
-    ///     Removes GDK reactive components all entities
+    ///     Removes GDK reactive components from all entities
     /// </summary>
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
