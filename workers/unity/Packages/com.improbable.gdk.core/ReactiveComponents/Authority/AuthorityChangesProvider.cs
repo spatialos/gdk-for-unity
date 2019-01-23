@@ -4,7 +4,7 @@ using System.Linq;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     public static class AuthorityChangesProvider
     {

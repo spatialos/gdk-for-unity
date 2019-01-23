@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Gdk.ReactiveComponents;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]

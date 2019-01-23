@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.ReactiveComponents;
 using NUnit.Framework;
 using Unity.Entities;
 

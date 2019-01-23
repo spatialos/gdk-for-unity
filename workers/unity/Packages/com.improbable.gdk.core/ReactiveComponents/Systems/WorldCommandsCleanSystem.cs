@@ -1,9 +1,10 @@
 ﻿using System;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
     ///     Removes reactive World Command components

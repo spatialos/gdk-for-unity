@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
     ///     ECS Component stores an ordered list of authority changes.

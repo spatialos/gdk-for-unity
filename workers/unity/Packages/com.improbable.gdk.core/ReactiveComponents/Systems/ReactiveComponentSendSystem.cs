@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.ReactiveComponents;
+using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
     ///     Executes the default replication logic for each SpatialOS component.

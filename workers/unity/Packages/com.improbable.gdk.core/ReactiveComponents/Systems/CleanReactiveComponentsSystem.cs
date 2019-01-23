@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Improbable.Gdk.ReactiveComponents;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
     ///     Removes GDK reactive components all entities

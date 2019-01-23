@@ -1,6 +1,7 @@
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.ReactiveComponents
 {
     /// <summary>
     ///     ECS component denotes that this worker is authoritative over <see cref="T"/>.
