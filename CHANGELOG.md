@@ -21,6 +21,7 @@
 - Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
 - Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
 - Changed the `mobile_launch.json` config to use the new Runtime.
+- Updated all the launch configs to use the new Runtime.
 
 ### Fixed
 
