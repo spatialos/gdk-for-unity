@@ -1,4 +1,4 @@
-[//]: # (TODO - tech writer pass)
+[//]: # "TODO - tech writer pass"
 
 # Troubleshooting
 
@@ -25,7 +25,7 @@ In the Unity Editor:
   * Unity gives you build support for your development machine (Windows or Mac) by default.
   * _**In addition**_, make sure you have **Linux** build support enabled. You need Linux build support because all server-workers in a cloud deployment run in a Linux environment.
 
-Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing#set-up-your-machine) for more information.
+Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing) for more information.
 
  **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can cause further build errors.
 
@@ -37,7 +37,7 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 
 **Fix**<br/>
 
-1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine)).
+1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing)).
 2. Ensure that the dotnet executable is added to your PATH environment variable.
 3. Restart your computer after making the above changes.
 
@@ -94,7 +94,7 @@ These warnings occur when a [GameObject]({{urlRoot}}/content/glossary#gameobject
 
 **Fix**<br/>
 When you want to delete a GameObject that represents a SpatialOS entity, send a [DeleteEntity world command]({{urlRoot}}/content/gameobject/world-commands.md) to delete the entity on the SpatialOS side instead.
-[comment]: <> (TODO: make this fix clearer and what it means by "passing the message on to you" JIRA: https://improbableio.atlassian.net/browse/UTY-1573 and https://improbableio.atlassian.net/browse/TC-168.)
+[comment]: <> "TODO: make this fix clearer and what it means by "passing the message on to you" JIRA: https://improbableio.atlassian.net/browse/UTY-1573 and https://improbableio.atlassian.net/browse/TC-168."
 
 <br/>
 
@@ -110,9 +110,9 @@ This can be caused by multiple problems. Follow the checklist below to discover 
   * Ensure that your field is declared in a [MonoBehaviour]({{urlRoot}}/content/glossary#monobehaviour). They are not supported in ECS systems.
   * Ensure that the field is decorated with a `[Require]` attribute (see [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)).
    * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this by examining whether a [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) MonoBehaviour is added to your GameObject when you run your game.
-   [comment]: <> (TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169.)
+[comment]: <> "TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
   * Ensure that you only access Requirables in a MonoBehaviour while the MonoBehaviour is enabled. Requirables are supposed to be null while the MonoBehaviour is disabled. Note that certain Unity event methods like `OnTriggerEnter` or `OnCollisionEnter` may be invoked, even if a MonoBehaviour is disabled.
-  [comment]: <> (TODO: make this fix clearer - what is meant by "Requireables" - we haven't defined this. JIRA: https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169.)
+[comment]: <> "TODO: make this fix clearer - what is meant by "Requireables" - we haven't defined this. JIRA: https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
 
 <br/>
 #### <li> <b> A MonoBehaviour containing fields using the `Require` attribute remains disabled when I expect it to be enabled </b>
@@ -135,5 +135,5 @@ You don't have the correct compilation units installed.
 
 Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
 
-1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing#set-up-your-machine).
+1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing).
 2. Restart your computer.
