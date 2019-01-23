@@ -9,14 +9,14 @@ PREFIX="playground"
 ci/build-test.sh
 
 source ".shared-ci/scripts/profiling.sh"
+source ".shared-ci/scripts/pinned-tools.sh"
 
-.shared-ci/scripts/upload-assemblies.sh ${PREFIX}
+setAssemblyName "${PREFIX}"
+
+.shared-ci/scripts/upload-assemblies.sh "${ASSEMBLY_NAME}"
 
 markStartOfBlock "Launching deployment"
 
-# Get first 8 characters of current git hash.
-GIT_HASH="$(git rev-parse HEAD | cut -c1-8)"
-
-spatial cloud launch "${PREFIX}_${GIT_HASH}" cloud_launch.json "${PREFIX}_${GIT_HASH}" --snapshot=snapshots/default.snapshot
+spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}"--snapshot=snapshots/default.snapshot
 
 markEndOfBlock "Launching deployment"
