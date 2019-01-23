@@ -1,0 +1,17 @@
+{
+    "package_name": "gdk-for-unity",
+    "version": "0.1.3",
+    "git_packages": [
+        {
+            "clone_url": "git@github.com:spatialos/gdk-for-unity.git",
+            "clone_dir" : "gdk-for-unity",
+            "exclude_paths": [
+                ".git",
+                ".github",
+                "ci",
+                "scripts",
+                "test-project"
+            ]
+        }
+    ]
+}
