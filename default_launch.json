@@ -16,14 +16,6 @@
       }
     ]
   },
-  "load_balancing": {
-    "layer_configurations": [
-      {
-        "layer": "UnityGameLogic",
-        "singleton_worker": {}
-      }
-    ]
-  },
   "workers": [
     {
       "worker_type": "UnityGameLogic",
