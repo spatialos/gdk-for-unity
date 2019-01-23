@@ -2,7 +2,7 @@
 
 
 
-To get set you'll need to create a SpatialOS account, install some dependencies and clone the GDK repository.
+To start using the SpatialOS GDK for Unity you'll need to create a SpatialOS account, install some dependencies and clone the GDK repository.
 
 <%(Include file="content/initial-set-up.md")%>
 
