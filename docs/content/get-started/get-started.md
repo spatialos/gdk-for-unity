@@ -4,6 +4,8 @@
 
 Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter Project. This introduces you to the workflows and tooling you use with SpatialOS and Unity, allowing you to run your game at scale, with up to 200 simulated player-clients running in the cloud.
 
+The video at the top of this page runs you through setting up and deploying the FPS Starter Project - following the Get Started section of this manual - and can be used as an alternative to the written Get Started tutorial. 
+
 Once you have completed this introduction, you are then ready to learn how to build your own features. The [tutorial for adding Health Pickups]({{urlRoot}}/projects/fps/tutorial) introduces you to this development experience.
 
 We recommend starting with the FPS Starter Project by going to the next step: [Set up]({{urlRoot}}/content/get-started/set-up.md), but you can get going with the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) if you prefer this route.
