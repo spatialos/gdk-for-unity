@@ -65,6 +65,8 @@ namespace Improbable.Gdk.CodeGenerator
                 }
 
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}UpdateSender", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
@@ -97,6 +99,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var componentSenderGenerator = new UnityComponentSenderGenerator();
             var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
@@ -164,6 +167,10 @@ namespace Improbable.Gdk.CodeGenerator
                     var eventsCode = eventGenerator.Generate(component, package);
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
+
+                var updateSenderFileName = Path.ChangeExtension($"{component.Name}UpdateSender", fileExtension);
+                var updateSenderCode = componentSenderGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
                 var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
                 var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);

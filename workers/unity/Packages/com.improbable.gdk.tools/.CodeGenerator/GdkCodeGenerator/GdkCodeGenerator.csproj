@@ -39,6 +39,7 @@
     <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
     <T4Files Include="Templates\UnityComponentReaderWriterGenerator.tt" />
+    <T4Files Include="Templates\UnityComponentSenderGenerator.tt" />
     <T4Files Include="Templates\UnityComponentUpdateManagerGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
     <T4Files Include="Templates\UnityEnumContent.tt" />

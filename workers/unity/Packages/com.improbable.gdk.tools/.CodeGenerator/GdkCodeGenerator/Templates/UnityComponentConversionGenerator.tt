@@ -85,26 +85,24 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
-        internal class ComponentReplicator : ComponentReplicationHandler
+        internal class ReactiveComponentReplicator : IReactiveComponentReplicationHandler
         {
-            public override uint ComponentId => <#= componentDetails.ComponentId #>;
+            public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public override EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityArchetypeQuery EventQuery => new EntityArchetypeQuery
             {
                 All = new[]
                 {
 <# foreach (var eventDetail in eventDetailsList) { #>
                     ComponentType.Create<EventSender.<#= eventDetail.EventName #>>(),
 <# } #>
-                    ComponentType.Create<<#= componentNamespace #>.Component>(),
-                    ComponentType.ReadOnly<Authoritative<<#= componentNamespace #>.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
+            public EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
                 new EntityArchetypeQuery()
@@ -120,45 +118,30 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-            public ComponentReplicator(EntityManager entityManager, Unity.Entities.World world) : base(entityManager)
+            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
-            }
-
-            public override void ExecuteReplication(ComponentGroup replicationGroup, ComponentSystemBase system, World world, global::Improbable.Worker.CInterop.Connection connection)
-            {
+<# if (eventDetailsList.Count > 0) { #>
                 <#= profilingStart #>
-
-                var updateSystem = world.GetExistingManager<ComponentUpdateSystem>();
 
                 var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
-                var componentType = system.GetArchetypeChunkComponentType<<#= componentNamespace #>.Component>();
 <# foreach (var eventDetail in eventDetailsList) { #>
                 var event<#= eventDetail.EventName #>Type = system.GetArchetypeChunkComponentType<EventSender.<#= eventDetail.EventName #>>(true);
 <# } #>
                 foreach (var chunk in chunkArray)
                 {
                     var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
-                    var componentArray = chunk.GetNativeArray(componentType);
 <# foreach (var eventDetail in eventDetailsList) { #>
                     var event<#= eventDetail.EventName #>Array = chunk.GetNativeArray(event<#= eventDetail.EventName #>Type);
 <# } #>
-                    for (var i = 0; i < componentArray.Length; i++)
+                    for (var i = 0; i < entityIdArray.Length; i++)
                     {
-                        var data = componentArray[i];
-                        if (data.IsDataDirty())
-                        {
-                            updateSystem.SendComponentUpdate(data, entityIdArray[i].EntityId);
-                            data.MarkDataClean();
-                            componentArray[i] = data;
-                        }
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
-
                         foreach (var e in event<#= ev.EventName #>Array[i].Events)
                         {
-                            updateSystem.SendEvent(new <#= eventType #>(e), entityIdArray[i].EntityId);
+                            componentUpdateSystem.SendEvent(new <#= eventType #>(e), entityIdArray[i].EntityId);
                         }
 
                         event<#= ev.EventName #>Array[i].Events.Clear();
@@ -168,9 +151,10 @@ namespace <#= qualifiedNamespace #>
 
                 chunkArray.Dispose();
                 <#= profilingEnd #>
+<# } #>
             }
 
-            public override void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, World world, global::Improbable.Worker.CInterop.Connection connection)
+            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
             {
 <# if (commandDetailsList.Count > 0) { #>
                 <#= profilingStart #>
@@ -182,8 +166,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
 #>
                 {
-                    var commandSystem = world.GetExistingManager<CommandSystem>();
-
                     var senderType = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
                     var responderType = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
 
