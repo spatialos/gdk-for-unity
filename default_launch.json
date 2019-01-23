@@ -20,8 +20,14 @@
     "layer_configurations": [
       {
         "layer": "UnityGameLogic",
-        "hex_grid": {
-          "num_workers": 2
+        "points_of_interest": {
+          "num_workers": 1,
+          "points": [
+            {
+              "x": 0,
+              "z": 0
+            }
+          ]
         },
         "options": {
           "manual_worker_connection_only": true
