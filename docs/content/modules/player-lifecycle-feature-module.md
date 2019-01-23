@@ -54,14 +54,12 @@ public static class PlayerTemplate
         // Obtain the attribute of your server-worker
         var serverAttribute = "UnityGameLogic";
 
-        var entityBuilder = EntityBuilder.Begin()
-            .AddPosition(position.X, position.Y, position.Z, serverAttribute)
-            // add all components that you want the player entity to have
-            // ...
-            // add player lifecycle components:
-            .AddPlayerLifecycleComponents(workerId, clientAttribute, serverAttribute);
+        var entityTemplate = new EntityTemplate();
+        entityTemplate.AddPosition(new Position.Snapshot { Coords = new Coordinates(position.x, position.y, position.z) }, serverAttribute);
+        // add all components that you want the player entity to have
+        AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
-        return entityBuilder.Build();
+        return entityTemplate;
     }
 }
 ```

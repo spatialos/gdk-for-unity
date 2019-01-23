@@ -29,14 +29,15 @@ This feature module manages both types of location automatically; primarily upda
 When [creating a SpatialOS entity]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
 
 ```csharp
+var serverAttribute = "UnityGameLogic";
+var clientAttribute = "UnityClient";
 
-var entityBuilder = EntityBuilder.Begin()
-    .SetReadAcl("ServerAttribute", "ClientAttribute")
-    .SetEntityAclComponentWriteAccess("ServerAttribute")
-    .SetPersistence(false)
-    .AddPosition(0, 0, 0, "ServerAttribute")
-    .AddMetadata("EntityThatCanMove", "ServerAttribute")
-    .AddTransformSynchronizationComponents("ServerAttribute");
+var entityTemplate = new EntityTemplate();
+entityTemplate.AddComponent(new Position.Snapshot(), serverAttribute);
+entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "EntityThatCanMove"}, serverAttribute);
+AddTransformSynchronizationComponents(entityTemplate, serverAttribute);
+entityTemplate.SetReadAcl(serverAttribute, clientAttribute);
+entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, serverAttribute);
 ```
 [//]: # (TODO - Add link to TransformSynchronization)
 Add the `TransformSynchronization` MonoBehaviour to the prefab that will be linked to the entity.

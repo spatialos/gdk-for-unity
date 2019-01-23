@@ -43,7 +43,7 @@ Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-t
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
 Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
 
-* `EntityBuilder.AddPlayerLifecycleComponents(clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+* `AddPlayerLifecycleComponents(entityBuilder, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
 
@@ -60,7 +60,7 @@ This module consists of:
 * `TransformSynchronizationHelper.AddSystems(world)` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization).<br/>
 Call this to implement the transform synchronization module, adding all the necessary systems to all workers.
 
-* `EntityBuilder.AddTransformSynchronizationComponents(writeAccess, location = default(Vector3), velocity = default(Vector3))` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs).<br/>
+* `AddTransformSynchronizationComponents(entityTemplate, writeAccess, location = default(Vector3), velocity = default(Vector3))` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs).<br/>
 Call this to add the SpatialOS components used by the transform synchronization module to your SpatialOS entity template. <br/>
 You can optionally pass in a `rotation`, `location` or `velocity`.
 

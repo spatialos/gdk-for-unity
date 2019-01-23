@@ -43,7 +43,6 @@
     - SpatialOS entities
         - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
         - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
-        - [API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
     - Commands
         - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 - <h3> + Tools </h3>
