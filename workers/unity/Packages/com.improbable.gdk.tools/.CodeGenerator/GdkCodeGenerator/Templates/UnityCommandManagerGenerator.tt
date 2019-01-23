@@ -88,6 +88,7 @@ namespace <#= qualifiedNamespace #>
 
                     var requestId = connection.SendCommandRequest(request.TargetEntityId.Id,
                         new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest),
+                        <#= command.CommandIndex #>,
                         request.TimeoutMillis,
                         request.AllowShortCircuiting ? shortCircuitingParameters : null);
 
@@ -193,7 +194,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var commandIndex = op.Request.CommandIndex;
+                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
                 if (commandIndex != <#= command.CommandIndex #>)
                 {
                     return;
@@ -219,7 +220,7 @@ namespace <#= qualifiedNamespace #>
                     return;
                 }
 
-                var commandIndex = op.Response.CommandIndex;
+                var commandIndex = op.CommandIndex;
                 if (commandIndex != <#= command.CommandIndex #>)
                 {
                     return;
