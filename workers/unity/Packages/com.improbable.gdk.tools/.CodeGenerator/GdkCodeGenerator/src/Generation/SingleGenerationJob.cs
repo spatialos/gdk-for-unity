@@ -75,7 +75,9 @@ namespace Improbable.Gdk.CodeGenerator
                 }
 
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}Translation", FileExtension)));
+                    Path.ChangeExtension($"{component.Name}UpdateSender", FileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}Translation", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
@@ -103,6 +105,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var componentSenderGenerator = new UnityComponentSenderGenerator();
             var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
@@ -175,8 +178,12 @@ namespace Improbable.Gdk.CodeGenerator
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
 
-                var conversionFileName = Path.ChangeExtension($"{componentName}Translation", FileExtension);
-                var componentTranslationCode = componentConversionGenerator.Generate(componentTarget.Content, package);
+                var updateSenderFileName = Path.ChangeExtension($"{component.Name}UpdateSender", FileExtension);
+                var updateSenderCode = componentSenderGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
+
+                var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", FileExtension);
+                var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
                 var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", FileExtension);
