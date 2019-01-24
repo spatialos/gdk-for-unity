@@ -12,8 +12,8 @@ We recommend starting with the FPS Starter Project by going to the next step: [S
 
 > **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and [command line interfaces (djangogirls.org)](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.
 
-#### Next: [Set up]({{urlRoot}}/content/get-started/set-up.md)
-<br/>
-<br/>
 ![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/headline.png)
+
+#### Next: [Set up]({{urlRoot}}/content/get-started/set-up.md)
+
 
