@@ -6,6 +6,7 @@
 #>
 <#= generatedHeader #>
 
+using System.Linq;
 using Improbable.Gdk.BuildSystem;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Tools;
@@ -90,23 +91,30 @@ var workerType = workerTypeList[i];
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
-                if (!CheckWorkersCanBuildForEnvironment(environment, workerTypes))
-                {
-                    DisplayBuildFailureDialog();
-
-                    return;
-                }
+                var filteredWorkerTypes = BuildSupportChecker.FilterWorkerTypes(environment, workerTypes);
 
                 try
                 {
                     LocalLaunch.BuildConfig();
 
-                    foreach (var workerType in workerTypes)
+                    foreach (var workerType in filteredWorkerTypes)
                     {
                         WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
                     }
 
-                    Debug.LogFormat("Completed build for {0} target", environment);
+                    if (workerTypes.Length == filteredWorkerTypes.Length)
+                    {
+                        Debug.Log($"Completed build for {environment} target.");
+                    }
+                    else
+                    {
+                        var missingWorkerTypes = string.Join(" ", workerTypes.Except(filteredWorkerTypes));
+                        var completedWorkerTypes = string.Join(" ", workerTypes.Intersect(filteredWorkerTypes));
+                        Debug.LogWarning(
+                            $"Completed build for {environment} target.\n"
+                            + $"Completed builds for: {completedWorkerTypes}\n"
+                            + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
+                    }
                 }
                 catch (System.Exception)
                 {
