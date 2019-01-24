@@ -22,6 +22,7 @@
 - Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
 - Changed the `mobile_launch.json` config to use the new Runtime.
 - Updated all the launch configs to use the new Runtime.
+- Changed the way builds are processed in the Unity Editor. If you don't have build support for a particular target, that specific build target will be skipped rather than the whole build process cancelled.
 
 ### Fixed
 

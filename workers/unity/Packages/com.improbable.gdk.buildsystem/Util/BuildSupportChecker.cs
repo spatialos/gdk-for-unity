@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Improbable.Gdk.BuildSystem;
 using Improbable.Gdk.BuildSystem.Configuration;
 using UnityEditor;
 using UnityEngine;
@@ -50,6 +51,25 @@ public static class BuildSupportChecker
                 return false;
             })
             .ToArray();
+    }
+
+    public static string[] FilterWorkerTypes(BuildEnvironment environment, string[] desiredWorkerTypes)
+    {
+        return desiredWorkerTypes.Where(wantedWorkerType =>
+        {
+            var buildTargetsForWorker =
+                WorkerBuilder.GetBuildTargetsForWorkerForEnvironment(wantedWorkerType, environment);
+            var buildTargetsMissingBuildSupport = GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+
+            if (buildTargetsMissingBuildSupport.Length > 0)
+            {
+                Debug.LogError(ConstructMissingSupportMessage(wantedWorkerType,
+                    environment, buildTargetsMissingBuildSupport));
+                return false;
+            }
+
+            return true;
+        }).ToArray();
     }
 
     public static string ConstructMissingSupportMessage(string workerType, BuildEnvironment environment,

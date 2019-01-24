@@ -53,20 +53,18 @@ namespace Improbable.Gdk.BuildSystem
                     CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
                         "UnityClient,UnityGameLogic");
 
-                var wantedWorkerTypes = workerTypesArg.Split(',');
-                foreach (var wantedWorkerType in wantedWorkerTypes)
-                {
-                    var buildTargetsForWorker = GetBuildTargetsForWorkerForEnvironment(wantedWorkerType, buildEnvironment);
-                    var buildTargetsMissingBuildSupport = BuildSupportChecker.GetBuildTargetsMissingBuildSupport(buildTargetsForWorker);
+                var desiredWorkerTypes = workerTypesArg.Split(',');
+                var filteredWorkerTypes = BuildSupportChecker.FilterWorkerTypes(buildEnvironment, desiredWorkerTypes);
 
-                    if (buildTargetsMissingBuildSupport.Length > 0)
-                    {
-                        throw new BuildFailedException(BuildSupportChecker.ConstructMissingSupportMessage(wantedWorkerType, buildEnvironment, buildTargetsMissingBuildSupport));
-                    }
+                if (desiredWorkerTypes.Length != filteredWorkerTypes.Length)
+                {
+                    throw new BuildFailedException(
+                        "Unable to complete build. Missing build support. Check logs for specific errors.");
                 }
 
                 ScriptingImplementation scriptingBackend;
-                var wantedScriptingBackend = CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
+                var wantedScriptingBackend =
+                    CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
                 switch (wantedScriptingBackend)
                 {
                     case "mono":
@@ -81,7 +79,7 @@ namespace Improbable.Gdk.BuildSystem
 
                 LocalLaunch.BuildConfig();
 
-                foreach (var wantedWorkerType in wantedWorkerTypes)
+                foreach (var wantedWorkerType in filteredWorkerTypes)
                 {
                     BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
                 }
@@ -98,9 +96,11 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment)
+        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType,
+            BuildEnvironment targetEnvironment)
         {
-            var environmentConfig = SpatialOSBuildConfiguration.GetInstance().GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            var environmentConfig = SpatialOSBuildConfiguration.GetInstance()
+                .GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             if (environmentConfig == null)
             {
                 return new BuildTarget[0];
@@ -109,10 +109,12 @@ namespace Improbable.Gdk.BuildSystem
             return GetUnityBuildTargets(environmentConfig.BuildPlatforms);
         }
 
-        public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
+        public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment,
+            ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
-            var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+            var environmentConfig =
+                spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             if (environmentConfig == null)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
@@ -149,7 +151,6 @@ namespace Improbable.Gdk.BuildSystem
                 {
                     PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                 }
-
             }
         }
 
@@ -222,7 +223,8 @@ namespace Improbable.Gdk.BuildSystem
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
-            Debug.Log($"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
+            Debug.Log(
+                $"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
             var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
