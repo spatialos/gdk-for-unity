@@ -10,6 +10,7 @@
 - Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
 - Added option to build workers out via IL2CPP in the cmd.
 - Added an example of handling disconnect for mobile workers.
+- Added support for launching an Android client from the Editor over ADB.
 
 ### Changed
 
