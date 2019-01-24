@@ -17,6 +17,6 @@ setAssemblyName "${PREFIX}"
 
 markStartOfBlock "Launching deployment"
 
-spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}"--snapshot=snapshots/default.snapshot
+spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}" --snapshot=snapshots/default.snapshot
 
 markEndOfBlock "Launching deployment"
