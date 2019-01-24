@@ -7,7 +7,7 @@ Before reading this document, make sure you are familiar with:
 
 ## Prepare your project to connect to a local deployment
 
-To connect your Android device to a local deployment, follow the steps below to ensure any local deployment you launch via the Unity Editor is set up correctly to connect to your Android device.
+To connect your Android device to a local deployment, you need to prepare; follow the steps below to ensure any local deployment you launch via the Unity Editor is correctly set up.
 
 1. Open your project in the Unity Editor.
 1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
@@ -36,11 +36,11 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
 ## Use your Android emulator
 
-1. [Start your Android Emulator in Android Studio.](https://developer.android.com/studio/run/managing-avds)
+1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds).
 
     > Ensure you choose the same CPU architecture for your virtual machine as your development computer. If you don’t, you will get warning messages as mismatched CPU architecture affects performance.
-1. [Set up your local deployment.](#prepare-your-project-to-connect-to-a-local-deployment)
-1. [Build your server-workers.]({{urlRoot}}/content/build)
+1. [Set up your local deployment](#prepare-your-project-to-connect-to-a-local-deployment).
+1. [Build your server-workers]({{urlRoot}}/content/build).
 1. In the Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
@@ -54,8 +54,8 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same wireless network.
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
-1. [Build your server-workers.]({{urlRoot}}/content/build)
-1. [Set up your local deployment.](#prepare-your-project-to-connect-to-a-local-deployment)
+1. [Build your server-workers]({{urlRoot}}/content/build).
+1. [Set up your local deployment](#prepare-your-project-to-connect-to-a-local-deployment).
 1. In the Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
