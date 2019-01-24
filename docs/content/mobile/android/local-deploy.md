@@ -49,7 +49,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Play the game on the Emulator.
 
-## Connecting your Android device to a local deployment
+## Use your Android device
 
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same wireless network.
