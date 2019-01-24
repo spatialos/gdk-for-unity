@@ -2,13 +2,15 @@
 
 ## Unreleased
 
+## `0.1.4` - 2019-01-28
+
 ### Added
 
-- Added support for the Steam authentication flow.
 - Added support for the Alpha Locator flow.
 - Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
 - Added option to build workers out via IL2CPP in the cmd.
 - Added an example of handling disconnect for mobile workers.
+- Added support for launching an Android client from the Editor over ADB.
 
 ### Changed
 
@@ -22,7 +24,8 @@
 - Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
 - Changed the `mobile_launch.json` config to use the new Runtime.
 - Updated all the launch configs to use the new Runtime.
-- Changed the way builds are processed in the Unity Editor. If you don't have build support for a particular target, that specific build target will be skipped rather than the whole build process cancelled.
+- Changed the build process in the Editor such that it skips builds that don't have build support rather than canceling the entire build process.
+    - Note that building via the `Improbable.Gdk.BuildSystem.WorkerBuilder.Build` static method is unchanged.
 
 ### Fixed
 
