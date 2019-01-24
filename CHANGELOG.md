@@ -24,7 +24,8 @@
 - Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
 - Changed the `mobile_launch.json` config to use the new Runtime.
 - Updated all the launch configs to use the new Runtime.
-- Changed the way builds are processed in the Unity Editor. If you don't have build support for a particular target, that specific build target will be skipped rather than the whole build process cancelled.
+- Changed the build process in the Editor such that it skips builds that don't have build support rather than canceling the entire build process.
+    - Note that building via the `Improbable.Gdk.BuildSystem.WorkerBuilder.Build` static method is unchanged.
 
 ### Fixed
 
