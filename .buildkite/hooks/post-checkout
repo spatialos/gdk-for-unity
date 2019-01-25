@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-if [[ -n "${DEBUG-}" ]]; then
-  set -x
-fi
+[[ -n "${DEBUG:-}" ]] && set -x
 
 ci/bootstrap.sh
