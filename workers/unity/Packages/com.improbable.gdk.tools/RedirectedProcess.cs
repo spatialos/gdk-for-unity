@@ -17,6 +17,35 @@ namespace Improbable.Gdk.Tools
         public List<string> Stderr;
     }
 
+    [Flags]
+    public enum ProcessOutputOptions
+    {
+        /// <summary>
+        ///   <para>No redirected output, only custom outputProcessors are used</para>
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        ///   <para>Standard output is immediately redirected to Debug.Log</para>
+        /// </summary>
+        RedirectStdOut = 1,
+
+        /// <summary>
+        ///   <para>Error output is immediately redirected to Debug.LogError</para>
+        /// </summary>
+        RedirectStdErr = 2,
+
+        /// <summary>
+        ///   <para>All output is accumulated and then redirected to Debug.Log after the process has finished</para>
+        /// </summary>
+        RedirectAccumulatedOutput = 4,
+
+        /// <summary>
+        ///   <para>If set will process contained `spatial` output and extract it's messages from JSON</para>
+        /// </summary>
+        ProcessSpatialOutput = 8,
+    }
+
     /// <summary>
     ///     Runs a windowless process.
     /// </summary>
@@ -25,8 +54,12 @@ namespace Improbable.Gdk.Tools
         private string command = string.Empty;
         private string[] arguments;
         private string workingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-        private Action<string> outputProcessor;
-        private Action<string> errorProcessor;
+        private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
+        private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
+
+        private ProcessOutputOptions outputOptions =
+            ProcessOutputOptions.ProcessSpatialOutput |
+            ProcessOutputOptions.RedirectAccumulatedOutput;
 
         /// <summary>
         ///     Creates the redirected process for the command.
@@ -59,22 +92,32 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        ///     Sets custom processing for regular output of process.
+        ///     Adds custom processing for regular output of process.
         /// </summary>
         /// <param name="outputProcessor">Processing action for regular output.</param>
-        public RedirectedProcess ProcessOutput(Action<string> outputProcessor)
+        public RedirectedProcess AddOutputProcessing(Action<string> outputProcessor)
         {
-            this.outputProcessor = outputProcessor;
+            outputProcessors.Add(outputProcessor);
             return this;
         }
 
         /// <summary>
-        ///     Sets custom processing for error output of process.
+        ///     Adds custom processing for error output of process.
         /// </summary>
         /// <param name="errorProcessor">Processing action for error output.</param>
-        public RedirectedProcess ProcessErrors(Action<string> errorProcessor)
+        public RedirectedProcess AddErrorProcessing(Action<string> errorProcessor)
         {
-            this.errorProcessor = errorProcessor;
+            errorProcessors.Add(errorProcessor);
+            return this;
+        }
+
+        /// <summary>
+        ///     Adds custom processing for error output of process.
+        /// </summary>
+        /// <param name="options">Options for redirecting process output to Debug.Log().</param>
+        public RedirectedProcess RedirectOutputOptions(ProcessOutputOptions options)
+        {
+            outputOptions = options;
             return this;
         }
 
@@ -100,40 +143,76 @@ namespace Improbable.Gdk.Tools
                         $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
                 }
 
-                process.EnableRaisingEvents = true;
-
                 StringBuilder outputLog = null;
-                if (outputProcessor == null || errorProcessor == null)
+                if ((outputOptions & ProcessOutputOptions.RedirectAccumulatedOutput) != ProcessOutputOptions.None)
                 {
                     outputLog = new StringBuilder();
                 }
 
-                void OnReceived(string output)
+                process.OutputDataReceived += (sender, args) =>
                 {
-                    lock (outputLog)
+                    var outputString = args.Data;
+                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
                     {
-                        outputLog.AppendLine(ProcessSpatialOutput(output));
+                        outputString = ProcessSpatialOutput(outputString);
                     }
-                }
 
-                outputProcessor = outputProcessor ?? OnReceived;
-                errorProcessor = errorProcessor ?? OnReceived;
-
-                process.OutputDataReceived += delegate(object sender, DataReceivedEventArgs args)
-                {
-                    if (!string.IsNullOrEmpty(args.Data))
+                    if (string.IsNullOrEmpty(outputString))
                     {
-                        outputProcessor(args.Data);
+                        return;
+                    }
+
+                    if ((outputOptions & ProcessOutputOptions.RedirectStdOut) != ProcessOutputOptions.None)
+                    {
+                        Debug.Log(outputString);
+                    }
+
+                    if (outputLog != null)
+                    {
+                        lock (outputLog)
+                        {
+                            outputLog.AppendLine(ProcessSpatialOutput(outputString));
+                        }
+                    }
+
+                    foreach (var outputProcessor in outputProcessors)
+                    {
+                        outputProcessor(outputString);
                     }
                 };
-                process.ErrorDataReceived += delegate(object sender, DataReceivedEventArgs args)
+                process.ErrorDataReceived += (sender, args) =>
                 {
-                    if (!string.IsNullOrEmpty(args.Data))
+                    var errorString = args.Data;
+                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
                     {
-                        errorProcessor(args.Data);
+                        errorString = ProcessSpatialOutput(errorString);
+                    }
+
+                    if (string.IsNullOrEmpty(errorString))
+                    {
+                        return;
+                    }
+
+                    if ((outputOptions & ProcessOutputOptions.RedirectStdErr) != ProcessOutputOptions.None)
+                    {
+                        Debug.LogError(errorString);
+                    }
+
+                    if (outputLog != null)
+                    {
+                        lock (outputLog)
+                        {
+                            outputLog.AppendLine(ProcessSpatialOutput(errorString));
+                        }
+                    }
+
+                    foreach (var errorProcessor in errorProcessors)
+                    {
+                        errorProcessor(errorString);
                     }
                 };
 
+                process.EnableRaisingEvents = true;
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
@@ -145,7 +224,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 // Ensure that the first line of the log is something useful in the Unity editor console.
-                var trimmedOutput = outputLog.ToString().Trim();
+                var trimmedOutput = outputLog.ToString().TrimStart();
 
                 if (string.IsNullOrEmpty(trimmedOutput))
                 {
@@ -168,40 +247,28 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Runs the redirected process and returns a task which can be waited on.
         /// </summary>
-        /// <param name="redirectStdout">Redirect standard output to Debug.Log</param>
-        /// <param name="redirectStderr">Redirect standard error to Debug.LogError</param>
         /// <returns>A task which would return the exit code and output.</returns>
-        public async Task<RedirectedProcessResult> RunAsync(bool redirectStdout = false, bool redirectStderr = false)
+        public async Task<RedirectedProcessResult> RunAsync()
         {
             return await Task.Run(() =>
             {
                 var processStandardOutput = new List<string>();
                 var processStandardError = new List<string>();
 
-                outputProcessor = delegate(string output)
+                AddOutputProcessing(output =>
                 {
-                    if (redirectStdout)
-                    {
-                        Debug.Log(output);
-                    }
-
                     lock (processStandardOutput)
                     {
                         processStandardOutput.Add(output);
                     }
-                };
-                errorProcessor = delegate(string error)
+                });
+                AddErrorProcessing(error =>
                 {
-                    if (redirectStderr)
-                    {
-                        Debug.LogError(error);
-                    }
-
                     lock (processStandardOutput)
                     {
                         processStandardError.Add(error);
                     }
-                };
+                });
 
                 var exitCode = Run();
 
