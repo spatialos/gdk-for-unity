@@ -51,7 +51,9 @@ Ensure you install this exact version as other Unity versions may not work with 
 
 **Step 5.** Install Git
 
-The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+
+> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository. 
 
 **Step 6.** Restart your machine.
 
@@ -115,6 +117,8 @@ Ensure you install this exact version as other Unity versions may not work with 
 
 The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
 
+> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository. 
+
 **Step 6.** Restart your machine.
 
 > If you do not restart your machine, you may experience errors when opening a GDK project.
@@ -149,7 +153,6 @@ If you need help using the GDK, come and talk to us about the software and the d
 - **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
 - **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
 - **Github issues** - Create an [issue](https://github.com/spatialos/gdk-for-unity/issues) in this repository.
-  <br/>
   <br/>
 
 ## Get the GDK and the FPS Starter Project source code
