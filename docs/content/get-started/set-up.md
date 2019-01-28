@@ -195,7 +195,7 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 
 <%(#Expandable title="Manually clone the GDK for Unity")%>
 
-1\.  Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
+Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
 |     |     |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
@@ -207,9 +207,6 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
       ├── gdk-for-unity-fps-starter-project
       ├── gdk-for-unity
 ```
-
-2\.  Navigate to the `gdk-for-unity` directory and checkout the pinned version which you can find in the `gdk.pinned` file, in the root of the `gdk-for-unity-fps-starter-project` directory.
-  * `git checkout <pinned_version>`
 
 <%(/Expandable)%>
 
