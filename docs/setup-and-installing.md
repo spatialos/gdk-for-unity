@@ -147,7 +147,7 @@ To run the GDK for Unity, you need to download the source code. To do this, you 
 
 #### Using a terminal:
 
-Clone the SpacialOS GDK for Unity repository using one of the following terminal commands:
+Clone the SpatialOS GDK for Unity repository using one of the following terminal commands:
 
 |     |     |
 | --- | --- |
