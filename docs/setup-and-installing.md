@@ -151,18 +151,12 @@ Clone the SpatialOS GDK for Unity repository using one of the following terminal
 
 |     |     |
 | --- | --- |
-| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
+| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 
 #### Using GitHub Desktop
 
 To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, click the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then click Clone. 
-
-#### Check out the latest release
-
-Once you have cloned the repository, you need to checkout the latest release by using the following terminal command: 
-
-`git checkout 0.1.3`
 
 The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
