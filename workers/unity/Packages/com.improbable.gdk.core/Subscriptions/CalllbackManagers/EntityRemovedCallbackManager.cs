@@ -23,12 +23,6 @@ namespace Improbable.Gdk.Subscriptions
             {
                 callbacks.InvokeAllReverse(entities[i]);
             }
-
-            var tempRemoved = entitySystem.GetEntitiesTemporarilyRemoved();
-            for (int i = 0; i < tempRemoved.Count; ++i)
-            {
-                callbacks.InvokeAllReverse(tempRemoved[i]);
-            }
         }
 
         public ulong RegisterCallback(Action<EntityId> callback)
