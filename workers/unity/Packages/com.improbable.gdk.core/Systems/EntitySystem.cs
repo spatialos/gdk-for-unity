@@ -15,10 +15,8 @@ namespace Improbable.Gdk.Core
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
         private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
 
-        private readonly List<EntityId> entitiesTemporarilyRemoved = new List<EntityId>();
-
         // todo would like to make these all readonly
-        // don't think it can be done without new types
+        // don't think it can be done without allocation without new types
         // could make these spans too + some special type for a set of entities
         // might also want to keep things sorted although it's not faster unless there are a lot of entities added and removed in one tick
         public List<EntityId> GetEntitiesAdded()
@@ -36,17 +34,11 @@ namespace Improbable.Gdk.Core
             return localEntities;
         }
 
-        public List<EntityId> GetEntitiesTemporarilyRemoved()
-        {
-            return entitiesTemporarilyRemoved;
-        }
-
         internal void AddEntity(EntityId entityId)
         {
-            entitiesAdded.Add(entityId);
-            if (entitiesRemoved.Remove(entityId))
+            if (!entitiesRemoved.Remove(entityId))
             {
-                entitiesTemporarilyRemoved.Add(entityId);
+                entitiesAdded.Add(entityId);
             }
 
             localEntities.Add(entityId);
@@ -54,8 +46,10 @@ namespace Improbable.Gdk.Core
 
         internal void RemoveEntity(EntityId entityId)
         {
-            entitiesRemoved.Add(entityId);
-            entitiesAdded.Remove(entityId);
+            if (!entitiesAdded.Remove(entityId))
+            {
+                entitiesRemoved.Add(entityId);
+            }
 
             localEntities.Remove(entityId);
         }
@@ -73,7 +67,6 @@ namespace Improbable.Gdk.Core
         {
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
-            entitiesTemporarilyRemoved.Clear();
         }
     }
 }
