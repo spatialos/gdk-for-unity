@@ -215,9 +215,21 @@ The Launcher downloads the client executable from the [SpatialOS assembly](#spat
 > 
 > * [The Launcher (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/operate/launcher)
 
-### Locator connection flow
+### Locator connection flow 
+From SpatialOS v13.5, there are two versions of the Locator connection. The new v13.5+ Locator, in alpha, has additional functionality to the existing v10.4+ Locator which is the stable version. 
 
-This is the standard flow used to connect a [client-worker](#client-worker) to a cloud deployment. As such it is used for connecting [game clients](#game-client) to the [SpatialOS runtime](#spatialos-runtime) in production. An authenticated locator service is used to enumerate cloud deployments and connect to a chosen one.
+
+#### v10.4+ Locator connection flow (stable version)
+Use this Locator service connection flow for:
+ * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+
+
+#### New v13.5+ Locator connection flow (alpha version)
+Use this Locator service connection flow for:
+
+* Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+* Connecting a client-worker instance to a cloud deployment from the Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
+
 
 Note that there are [other ways (SpatialOS documentation)](https://docs.improbable.io/reference/13.3/shared/deploy/connect-external) to connect a client-worker to a cloud deployment without using the Locator flow.
 
@@ -225,6 +237,9 @@ Note that there are [other ways (SpatialOS documentation)](https://docs.improbab
 > 
 > * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos)
 > * [Connection](#connection)
+> * [Creating your own game authentication server](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk)
+> * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
+
 
 ### Message
 
@@ -445,9 +460,27 @@ A SpatialOS project includes (but isn't limited to):
 ### SpatialOS Runtime
 
 > Not to be confused with the [SpatialOS world](#spatialos-world)
-> Also sometimes just called “SpatialOS”.
+> Also sometimes just called "SpatialOS".
 
 A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of each [deployment](#deploying) by storing all [SpatialOS entities](#spatialos-entity) and the current state of their [SpatialOS components](#spatialos-component). [Workers](#worker) interact with the SpatialOS Runtime to read and modify the components of an entity as well as send messages between workers.
+
+#### New SpatialOS Runtime (available from SpatialOS version 13.4)
+From SpatialOS version 13.4 there is a new SpatialOS Runtime.
+It consists of three elements: 
+
+* The new [bridge (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#bridge-configuration).
+* The new [load balancer (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
+* The new entity database.
+
+
+It also contains a new feature: [Query-based interest (SpatialOS documentation)]https://docs.improbable.io/reference/13.5/shared/reference/query-based-interest).
+
+The GDK for Unity version Alpha 0.1.4, uses the new SpatialOS Runtime (available from SpatialOS version 13.4); wherever the documentation refers to the “Runtime”, it means the new v13.4+ SpatialOS Runtime.
+
+> Related:
+> 
+> * [The new Runtime (blog post)](https://improbable.io/games/blog/the-new-runtime-is-here-with-a-new-feature-for-managing-areas-of-interest)
+> * [Upgrade to the new Runtime](https://docs.improbable.io/reference/latest/releases/upgrade-guides/upgrade-runtime)
 
 ### SpatialOS world
 
