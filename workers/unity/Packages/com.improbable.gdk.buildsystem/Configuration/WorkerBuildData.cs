@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
@@ -20,12 +21,19 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private readonly BuildTarget buildTarget;
 
-        public static readonly IReadOnlyList<BuildTarget> SupportedBuildTargets = new List<BuildTarget>
+        public static readonly IReadOnlyList<BuildTarget> AllBuildTargets = new List<BuildTarget>
         {
             BuildTarget.StandaloneWindows,
             BuildTarget.StandaloneWindows64,
             BuildTarget.StandaloneLinux64,
             BuildTarget.StandaloneOSX,
+            BuildTarget.Android,
+            BuildTarget.iOS,
+        };
+
+        public static readonly IReadOnlyList<BuildTarget> LocalBuildTargets = new List<BuildTarget>
+        {
+            CurrentBuildPlatform,
             BuildTarget.Android,
             BuildTarget.iOS,
         };
@@ -81,7 +89,25 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             get
             {
                 return buildTargetsThatCanBeBuilt ?? (buildTargetsThatCanBeBuilt =
-                    SupportedBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget));
+                    AllBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget));
+            }
+        }
+
+        public static BuildTarget CurrentBuildPlatform 
+        {
+            get
+            {
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.WindowsEditor:
+                        return BuildTarget.StandaloneWindows64;
+                    case RuntimePlatform.OSXEditor:
+                        return BuildTarget.StandaloneOSX;
+                    case RuntimePlatform.LinuxEditor:
+                        return BuildTarget.StandaloneLinux;
+                    default:
+                        return BuildTarget.NoTarget;
+                }
             }
         }
 
@@ -94,6 +120,16 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             WorkerType = workerType;
             this.buildTarget = buildTarget;
+        }
+
+        public static BuildTargetConfig GetCurrentBuildTargetConfig()
+        {
+            return new BuildTargetConfig(CurrentBuildPlatform, BuildTargetDefaultOptions[CurrentBuildPlatform], true);
+        }
+
+        public static BuildTargetConfig GetLinuxBuildTargetConfig()
+        {
+            return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], true);
         }
     }
 }

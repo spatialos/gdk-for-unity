@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
@@ -7,10 +8,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     public class WorkerBuildConfiguration
     {
         public string WorkerType;
-        public SceneAsset[] ScenesForWorker = { };
+        public List<SceneAsset> ScenesForWorker = new List<SceneAsset>();
 
-        public BuildEnvironmentConfig LocalBuildConfig = new BuildEnvironmentConfig(t => BuildOptions.None, t => false);
-        public BuildEnvironmentConfig CloudBuildConfig = new BuildEnvironmentConfig(t => BuildOptions.None, t => false);
+        public BuildEnvironmentConfig LocalBuildConfig = new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig());
+        public BuildEnvironmentConfig CloudBuildConfig = new BuildEnvironmentConfig(WorkerBuildData.AllBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig());
 
         public BuildEnvironmentConfig GetEnvironmentConfig(BuildEnvironment targetEnvironment)
         {

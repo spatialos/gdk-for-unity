@@ -92,14 +92,14 @@ namespace Improbable.Gdk.BuildSystem
             var problemWorkers = new List<string>();            
             foreach (var wantedWorkerType in wantedWorkerTypes)
             {
-                var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+                var spatialOSBuildConfiguration = BuildConfig.GetInstance();
 
                 var workerConfiguration =
                     spatialOSBuildConfiguration.WorkerBuildConfigurations.FirstOrDefault(x =>
                         x.WorkerType == wantedWorkerType);
 
                 var missingBuildSupport = workerConfiguration.GetEnvironmentConfig(buildEnvironment).BuildTargets
-                    .Where(t => !t.BuildSupportInstalled).ToList();
+                    .Where(t => !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target]).ToList();
 
                 foreach (var t in missingBuildSupport)
                 {
@@ -120,9 +120,9 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
-            if (environmentConfig == null)
+            if (environmentConfig == null || environmentConfig.BuildTargets.Count == 0)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
                 return;
@@ -170,7 +170,7 @@ namespace Improbable.Gdk.BuildSystem
         {
             Debug.Log($"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
             var scenes = spatialOSBuildConfiguration.GetScenePathsForWorker(workerType);
 

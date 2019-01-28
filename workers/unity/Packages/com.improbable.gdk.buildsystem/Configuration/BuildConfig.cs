@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
-    public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>
+    public class BuildConfig : SingletonScriptableObject<BuildConfig>
     {
         [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
@@ -50,44 +50,30 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     WorkerType = "UnityClient",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig(
-                            target => BuildEnvironmentConfig.IsCurrentBuildTarget(target)
-                                ? BuildOptions.Development
-                                : BuildOptions.None,
-                            BuildEnvironmentConfig.IsCurrentBuildTarget),
-                    CloudBuildConfig = new BuildEnvironmentConfig(target =>
-                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneOSX) ||
-                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneWindows64)
-                            ? BuildOptions.Development
-                            : BuildOptions.None, target =>
-                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneOSX) ||
-                        BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneWindows64))
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig()),
+                    CloudBuildConfig = new BuildEnvironmentConfig(
+                        WorkerBuildData.AllBuildTargets,
+                        new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, true),
+                        new BuildTargetConfig(BuildTarget.StandaloneWindows64, BuildOptions.Development, true))
                 },
                 new WorkerBuildConfiguration
                 {
                     WorkerType = "UnityGameLogic",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig(
-                            target => BuildEnvironmentConfig.IsCurrentBuildTarget(target)
-                                ? BuildOptions.None
-                                : BuildOptions.Development,
-                            BuildEnvironmentConfig.IsCurrentBuildTarget),
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig()),
                     CloudBuildConfig =
                         new BuildEnvironmentConfig(
-                            target => BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneLinux64)
-                                ? BuildOptions.EnableHeadlessMode
-                                : BuildOptions.Development,
-                            target => BuildEnvironmentConfig.IsBuildTarget(target, BuildTarget.StandaloneLinux64))
+                            WorkerBuildData.AllBuildTargets, WorkerBuildData.GetLinuxBuildTargetConfig())
                 },
             };
             isInitialised = true;
         }
 
-        private SceneAsset[] GetScenesForWorker(string workerType)
+        private List<SceneAsset> GetScenesForWorker(string workerType)
         {
             var configurationForWorker = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             return configurationForWorker == null
-                ? new SceneAsset[0]
+                ? new List<SceneAsset>()
                 : configurationForWorker.ScenesForWorker;
         }
     }
