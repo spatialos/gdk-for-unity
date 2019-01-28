@@ -179,9 +179,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 for (var i = 0; i < configurationForWorker.ScenesForWorker.Count; i++)
                 {
                     var item = configurationForWorker.ScenesForWorker[i];
-
+                    
                     using (new EditorGUILayout.HorizontalScope())
                     {
+                        GUILayout.Space(EditorGUI.indentLevel * 16.0f);
                         indexToRemove = DrawSceneItem(i, dragState, item, currentEventType, indexToRemove);
 
                         var hitRect = new Rect(dragState.AllItemsRect.xMin,
