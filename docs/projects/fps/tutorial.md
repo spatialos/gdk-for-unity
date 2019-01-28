@@ -102,7 +102,7 @@ You may notice that `Position` and `Metadata` appear in the entity template of _
 
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
-**Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS load-balancer when dividing work between workers on a proximity basis.
+**Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS [load-balancer (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) when dividing work between workers on a proximity basis.
 
 **Metadata** is an identifier of the type of entity. The SpatialOS GDK for Unity uses `Metadata` for matching to a Unity prefab name within your project.
 

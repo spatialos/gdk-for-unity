@@ -67,7 +67,7 @@ The next step is to [launch a cloud deployment](https://docs.improbable.io/refer
 When launching a cloud deployment you must provide three parameters:
 
 * **the assembly name** which identifies the worker assemblies to use. These are the assemblies you uploaded earlier so the name should match the one you passed to `spatial cloud upload`.
-* **a launch configuration** which is a `JSON` file that declares the world and load balancing configuration.
+* **a launch configuration** which is a `JSON` file that declares the world and [load balancing configuration (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
 * **a name for your deployment** which is used to label the deployment in the SpatialOS web Console. It consists of lower-case letters, digits, and `_` and can be up to 32 characters long.
 * **(optional) a region to deploy to** which defaults to server clusters located in the USA. If you’re in Europe, add the `--cluster_region=eu` flag to deploy to servers in Europe. This gives you lower latency.
 
