@@ -183,10 +183,6 @@ Clone the FPS Starter Project using one of the following commands:
 **NOTE:**
 You can only clone via SSH if you have already [set up SSH keys (GitHub help)](https://help.github.com/articles/connecting-to-github-with-ssh/) with your GitHub account.
 
-Then navigate to the root folder of the FPS starter project and run the following command: `git checkout 0.1.3`
-
-This ensures that you are on the alpha release version of the FPS starter project.
-
 #### 2. Clone the GDK for Unity repository and checkout the latest release
 
 You can use scripts to automatically do this or follow manual instructions.
