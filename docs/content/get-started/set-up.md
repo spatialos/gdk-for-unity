@@ -196,7 +196,9 @@ From the root of the `gdk-for-unity-fps-starter-project` repository:
 <%(#Expandable title="Manually clone the GDK for Unity")%>
 
 Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository alongside the FPS Starter Project so that they sit side-by-side:
+
 |     |     |
+| --- | --- |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
 | SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
 
