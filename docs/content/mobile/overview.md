@@ -20,9 +20,11 @@ Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbab
   * [Setting up Android support for the GDK]({{urlRoot}}/content/mobile/android/setup)
   * [Choose the right way to test your Android client-worker]({{urlRoot}}/content/mobile/android/ways-to-test)
   * [Connect your Android client-worker to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
+  * [Connect your Android client-worker to a cloud deployment]({{urlRoot}}/content/mobile/android/cloud-deploy)
 
 ## Getting started with your iOS client-worker
 
   * [Setting up iOS support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
   * [Choose the right way to test your iOS client-worker]({{urlRoot}}/content/mobile/ios/ways-to-test)
   * [Connect your iOS client-worker to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
+  * [Connect your iOS client-worker to a cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
