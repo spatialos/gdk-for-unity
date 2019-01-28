@@ -5,7 +5,7 @@ Get started with SpatialOS for Unity by launching a cloud deployment of our FPS 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6PNDBYtIimw?autoplay=0&rel=0" frameborder="0"  allowfullscreen, style="; float: right; margin: 10px 10px 30px 30px; " ></iframe>
 
 ### Get started video
-Found out whats inlvolved in getting started with our **Get started with SpatialOS for Unity walk-through youtube video**, based on our Get Started guide (15-minute watch). <br/>
+Found out what's involved in getting started with our **Get started with SpatialOS for Unity walk-through youtube video**, based on our Get Started guide (15-minute watch). <br/>
 
 ### Get started guide
 
