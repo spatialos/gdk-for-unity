@@ -127,6 +127,10 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 - You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
 - Unity gives you build support for your development machine (Windows or Mac) by default.
 
+#### Android and iOS support
+
+Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content//mobile/overview)
+
 #### Need some help?
 
 If you need help using the GDK, come and talk to us about the software and the documentation via:

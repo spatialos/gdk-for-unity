@@ -51,7 +51,7 @@ Ensure you install this exact version as other Unity versions may not work with 
 
 **Step 5.** Install Git
 
-The SpacialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
 
 **Step 6.** Restart your machine.
 
@@ -113,7 +113,7 @@ Ensure you install this exact version as other Unity versions may not work with 
 
 **Step 5.** Install Git
 
-The SpacialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
 
 **Step 6.** Restart your machine.
 
@@ -137,6 +137,10 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 - You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
 - You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
 - Unity gives you build support for your development machine (Windows or Mac) by default.
+
+#### Android and iOS support
+
+Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content//mobile/overview)
 
 #### Need some help?
 

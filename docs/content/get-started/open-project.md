@@ -4,20 +4,7 @@ Launch the Unity Editor. It should automatically detect the project but if it do
 
 >**TIP:** The first time you open the Starter Project in your Unity Editor, It takes about 10 minutes; it's much quicker to open after this. (While you are waiting, you could look at our [Games Blog](https://improbable.io/games/blog).)
 
-**Before you start, apply these two quick Unity bug fixes:**
-
-#### Shaders
-There is a [known issue]({{urlRoot}}/known-issues) in the preview version of the [High Definition Render Pipeline](https://blogs.unity3d.com/2018/03/16/the-high-definition-render-pipeline-focused-on-visual-quality/), where shaders do not fully compile and appear visually darker than intended.
-
-There is a quick fix however:
-
-1. In your Unity Editor, open the FPS Starter Project; it's located in `workers/unity`.
-1. In your Editor's Project window, navigate to **Assets** > **Fps** > **Art** > **Materials**.
-1. Right-click on the `Source_Shaders` directory and select **Reimport**.
-<br/>
-<br/>
-![]({{assetRoot}}assets/shader-fix.png)<br/>
-_Unity Editor menu to reimport shaders_
+**Before you start, apply this quick Unity bug fix:**
 
 #### Bake Navmesh
 There is a [known issue]({{urlRoot}}/known-issues) in the Unity Editor regarding importing NavMeshes. The Unity Editor does not import the NavMesh for the `FPS-SimulatedPlayerCoordinator` correctly when you open the project for the first time. To fix this, you need to rebake the NavMesh for this Scene. To do this:
