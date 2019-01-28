@@ -102,7 +102,7 @@ Ensure you install this exact version as other Unity versions may not work with 
 
 **Step 5.** Install Git
 
-The SpacialOS GDK for Unity source code is hosted on GitHub. You need to download and install  [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
 
 **Step 6.** Restart your machine.
 
