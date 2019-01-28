@@ -144,7 +144,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 #### Android and iOS support
 
-Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content//mobile/overview)
+Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content/mobile/overview)
 
 #### Need some help?
 
