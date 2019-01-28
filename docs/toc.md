@@ -88,10 +88,12 @@
         - [Set up Android support]({{urlRoot}}/content/mobile/android/setup)
         - [Ways to  test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
         - [Connect to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
+        - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/android/cloud-deploy)
     - iOS support
         - [Set up iOS support]({{urlRoot}}/content/mobile/ios/setup)
         - [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
         - [Connect to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
+        - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
 - <h3> + Tests</h3>
     - [Test overview]({{urlRoot}}/content/testing/testing-overview)
     - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
