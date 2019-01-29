@@ -53,24 +53,27 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Sets the maximum frequency of the query.
+        ///     Defines what components to return in the query results.
         /// </summary>
+        /// <param name="resultComponentId">
+        ///     First ID of a component to return from the query results.
+        /// </param>
         /// <param name="resultComponentIds">
-        ///     IDs of components to return from the query results.
+        ///     Further IDs of components to return from the query results.
         /// </param>
         /// <remarks>
-        ///     Does nothing if no component IDs are given.
+        ///     At least one component ID must be provided.
         /// </remarks>
         /// <returns>
         ///     A ComponentInterest.Query object.
         /// </returns>
-        public ComponentInterest.Query FilterResults(params uint[] resultComponentIds)
+        public ComponentInterest.Query FilterResults(uint resultComponentId, params uint[] resultComponentIds)
         {
-            if (resultComponentIds.Length > 0)
-            {
-                query.FullSnapshotResult = null;
-                query.ResultComponentId = new List<uint>(resultComponentIds);
-            }
+            var resultIds = new List<uint>(resultComponentIds.Length + 1) { resultComponentId };
+            resultIds.AddRange(resultComponentIds);
+
+            query.FullSnapshotResult = null;
+            query.ResultComponentId = resultIds;
 
             return query;
         }

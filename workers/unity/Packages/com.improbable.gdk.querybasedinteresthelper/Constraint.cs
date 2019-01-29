@@ -236,7 +236,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static ComponentInterest.QueryConstraint All(ComponentInterest.QueryConstraint constraint,
             params ComponentInterest.QueryConstraint[] constraints)
         {
-            var andConstraints = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1) {constraint};
+            var andConstraints = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1) { constraint };
             andConstraints.AddRange(constraints);
 
             return new ComponentInterest.QueryConstraint
@@ -264,7 +264,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static ComponentInterest.QueryConstraint Any(ComponentInterest.QueryConstraint constraint,
             params ComponentInterest.QueryConstraint[] constraints)
         {
-            var orConstraints = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1) {constraint};
+            var orConstraints = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1) { constraint };
             orConstraints.AddRange(constraints);
 
             return new ComponentInterest.QueryConstraint
