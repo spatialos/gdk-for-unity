@@ -51,8 +51,9 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var differentBasicQuery = DifferentBasicQuery;
             var differentQueryRadius = DifferentBasicQuery.Constraint.RelativeSphereConstraint.Value.Radius;
 
-            var interest = BasicInterest.AddQueries<Position.Component>(initialQuery);
-            interest = interest.ReplaceQueries<Position.Component>(differentBasicQuery);
+            var interest = BasicInterest
+                .AddQueries<Position.Component>(initialQuery)
+                .ReplaceQueries<Position.Component>(differentBasicQuery);
 
             ComponentInterest replacedQuery;
             var queryExists = interest.GetInterest().TryGetValue(Position.ComponentId, out replacedQuery);
@@ -67,8 +68,9 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void ReplaceQueries_clears_previous_queries()
         {
-            var interest = BasicInterest.AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery);
-            interest = interest.ReplaceQueries<Position.Component>(DifferentBasicQuery);
+            var interest = BasicInterest
+                .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
+                .ReplaceQueries<Position.Component>(DifferentBasicQuery);
 
             ComponentInterest replacedQuery;
             var queryExists = interest.GetInterest().TryGetValue(Position.ComponentId, out replacedQuery);
