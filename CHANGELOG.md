@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.
+
 ## `0.1.4` - 2019-01-28
 
 ### Added
