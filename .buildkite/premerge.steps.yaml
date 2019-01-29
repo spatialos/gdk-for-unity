@@ -26,7 +26,7 @@ common: &common
 
 steps:
   - label: "build :bash:"
-    command: ci/build-test.sh
+    command: bash -c ci/build-test.sh
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
