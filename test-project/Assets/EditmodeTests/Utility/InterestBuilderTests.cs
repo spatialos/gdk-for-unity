@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Gdk.QueryBasedInterest;
 using NUnit.Framework;
 
@@ -6,9 +7,17 @@ namespace Improbable.Gdk.EditmodeTests.Utility
     [TestFixture]
     public class InterestBuilderTests
     {
-        private static ComponentInterest.Query BasicQuery => InterestQuery.Query(Constraint.RelativeSphere(10));
+        private static ComponentInterest.Query BasicQuery
+            => InterestQuery.Query(Constraint.RelativeSphere(10));
 
-        private static InterestBuilder BasicInterest => InterestBuilder.Begin();
+        private static ComponentInterest.Query DifferentBasicQuery
+            => InterestQuery.Query(Constraint.RelativeSphere(20));
+
+        private static InterestBuilder BasicInterest
+            => InterestBuilder.Begin();
+
+        private static InterestBuilder ModifyInterest
+            => InterestBuilder.Modify(new Dictionary<uint, ComponentInterest>());
 
         [Test]
         public void AddQueries_can_be_called_multiple_times_on_same_component()
@@ -33,17 +42,105 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AddQueries<Position.Component>(BasicQuery));
         }
 
-        //add tests
-        //replacequeries
+        [Test]
+        public void ReplaceQueries_clears_previous_query()
+        {
+            var initialQuery = BasicQuery;
+            double initialQueryRadius = 0;
+            Assert.DoesNotThrow(() =>
+            {
+                initialQueryRadius = initialQuery.Constraint.RelativeSphereConstraint.Value.Radius;
+            });
 
-        //clearqueries
+            var differentBasicQuery = DifferentBasicQuery;
+            double differentQueryRadius = 0;
+            Assert.DoesNotThrow(() =>
+            {
+                initialQueryRadius = DifferentBasicQuery.Constraint.RelativeSphereConstraint.Value.Radius;
+            });
 
-        //clearallqueries
+            Assert.AreNotEqual(initialQueryRadius, differentQueryRadius);
+
+            var interest = BasicInterest.AddQueries<Position.Component>(initialQuery);
+            interest = interest.ReplaceQueries<Position.Component>(differentBasicQuery);
+
+            ComponentInterest replacedQuery;
+            var queryExists = interest.GetInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            Assert.True(queryExists);
+
+            double replacedQueryRadius = 0;
+            Assert.DoesNotThrow(() =>
+            {
+                initialQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
+            });
+
+            Assert.AreEqual(1, replacedQuery.Queries.Count);
+            Assert.AreNotEqual(initialQueryRadius, replacedQueryRadius);
+            Assert.AreEqual(differentQueryRadius, replacedQueryRadius);
+        }
 
         [Test]
-        public void GetInterest_should_not_return_null_interest()
+        public void ReplaceQueries_clears_previous_queries()
+        {
+            var interest = BasicInterest.AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery);
+            interest = interest.ReplaceQueries<Position.Component>(DifferentBasicQuery);
+
+            ComponentInterest replacedQuery;
+            var queryExists = interest.GetInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+
+            Assert.True(queryExists);
+            Assert.AreEqual(1, replacedQuery.Queries.Count);
+        }
+
+        [Test]
+        public void ClearQueries_clears_a_single_list_of_queries()
+        {
+            var interest = BasicInterest
+                .AddQueries<Metadata.Component>(BasicQuery)
+                .AddQueries<Persistence.Component>(BasicQuery)
+                .AddQueries<Position.Component>(BasicQuery)
+                .ClearQueries<Metadata.Component>();
+
+            Assert.AreEqual(2, interest.GetInterest().Keys.Count);
+        }
+
+        [Test]
+        public void ClearQueries_can_be_used_with_empty_lists()
+        {
+            Assert.DoesNotThrow(() => BasicInterest
+                .ClearQueries<Metadata.Component>());
+        }
+
+        [Test]
+        public void ClearAllQueries_clears_entire_dictionary()
+        {
+            var interest = BasicInterest
+                .AddQueries<Metadata.Component>(BasicQuery)
+                .AddQueries<Persistence.Component>(BasicQuery)
+                .AddQueries<Position.Component>(BasicQuery)
+                .ClearAllQueries();
+
+            Assert.AreEqual(0, interest.GetInterest().Keys.Count);
+        }
+
+        [Test]
+        public void ClearAllQueries_can_be_used_with_empty_dictionary()
+        {
+            Assert.DoesNotThrow(() => BasicInterest
+                .ClearAllQueries());
+        }
+
+        [Test]
+        public void GetInterest_should_not_return_null_with_new_interest()
         {
             var interest = BasicInterest.GetInterest();
+            Assert.IsNotNull(interest);
+        }
+
+        [Test]
+        public void GetInterest_should_not_return_null_with_modified_interest()
+        {
+            var interest = ModifyInterest.GetInterest();
             Assert.IsNotNull(interest);
         }
 

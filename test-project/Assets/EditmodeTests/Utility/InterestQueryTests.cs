@@ -19,7 +19,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Query_sets_ResultComponentId_to_empty_list()
         {
             ComponentInterest.Query query = BasicQuery;
-            Assert.True(query.ResultComponentId.Count == 0);
+            Assert.AreEqual(0, query.ResultComponentId.Count);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Filter_with_no_components_does_nothing()
         {
             var query = BasicQuery.FilterResults();
-            Assert.True(query.ResultComponentId.Count == 0);
+            Assert.AreEqual(0, query.ResultComponentId.Count);
         }
 
         [Test]

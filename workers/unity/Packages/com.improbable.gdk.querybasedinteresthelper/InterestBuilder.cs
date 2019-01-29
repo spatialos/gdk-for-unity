@@ -36,7 +36,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A new InterestBuilder object.
         /// </returns>
-        public static InterestBuilder Begin(Dictionary<uint, ComponentInterest> interest)
+        public static InterestBuilder Modify(Dictionary<uint, ComponentInterest> interest)
         {
             return new InterestBuilder(interest);
         }
@@ -123,14 +123,8 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <summary>
         ///     Add queries to the Interest component.
         /// </summary>
-        /// <param name="query">
-        ///     First query to add for a given authoritative component.
-        /// </param>
-        /// <param name="queries">
-        ///     Further queries to add for a given authoritative component.
-        /// </param>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to add the queries to.
+        ///     Type of the authoritative component to clear queries from.
         /// </typeparam>
         /// <remarks>
         ///     At least one query must be provided to update the Interest component.
