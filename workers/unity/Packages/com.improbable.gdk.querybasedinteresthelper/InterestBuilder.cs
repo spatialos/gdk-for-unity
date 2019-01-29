@@ -169,7 +169,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A Interest.Snapshot object.
         /// </returns>
-        public Interest.Snapshot Snapshot()
+        public Interest.Snapshot ToSnapshot()
         {
             return new Interest.Snapshot { ComponentInterest = interest };
         }

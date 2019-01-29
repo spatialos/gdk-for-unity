@@ -30,13 +30,6 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void Filter_with_no_components_does_nothing()
-        {
-            var query = BasicQuery.FilterResults();
-            Assert.AreEqual(0, query.ResultComponentId.Count);
-        }
-
-        [Test]
         public void Filter_with_components_implies_FullSnapshotResult_is_null()
         {
             var query = BasicQuery.FilterResults(Position.ComponentId);

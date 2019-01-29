@@ -31,7 +31,15 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void Sphere_constraint_sets_AndOr_constraints_to_empty_list()
         {
-            var constraint = Constraint.Sphere(Distance, Vector3.zero);
+            var constraint = Constraint.Sphere(Distance, Coordinates.Zero);
+            Assert.AreEqual(0, constraint.AndConstraint.Count);
+            Assert.AreEqual(0, constraint.OrConstraint.Count);
+        }
+
+        [Test]
+        public void Sphere_constraint_xyz_sets_AndOr_constraints_to_empty_list()
+        {
+            var constraint = Constraint.Sphere(Distance, 0, 0, 0);
             Assert.AreEqual(0, constraint.AndConstraint.Count);
             Assert.AreEqual(0, constraint.OrConstraint.Count);
         }
@@ -39,7 +47,15 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void Cylinder_constraint_sets_AndOr_constraints_to_empty_list()
         {
-            var constraint = Constraint.Cylinder(Distance, Vector3.zero);
+            var constraint = Constraint.Cylinder(Distance, Coordinates.Zero);
+            Assert.AreEqual(0, constraint.AndConstraint.Count);
+            Assert.AreEqual(0, constraint.OrConstraint.Count);
+        }
+
+        [Test]
+        public void Cylinder_constraint_xyz_sets_AndOr_constraints_to_empty_list()
+        {
+            var constraint = Constraint.Cylinder(Distance, 0, 0, 0);
             Assert.AreEqual(0, constraint.AndConstraint.Count);
             Assert.AreEqual(0, constraint.OrConstraint.Count);
         }
@@ -47,7 +63,15 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void Box_constraint_sets_AndOr_constraints_to_empty_list()
         {
-            var constraint = Constraint.Box(Distance, Distance, Distance, Vector3.zero);
+            var constraint = Constraint.Box(Distance, Distance, Distance, Coordinates.Zero);
+            Assert.AreEqual(0, constraint.AndConstraint.Count);
+            Assert.AreEqual(0, constraint.OrConstraint.Count);
+        }
+
+        [Test]
+        public void Box_constraint__xyz_sets_AndOr_constraints_to_empty_list()
+        {
+            var constraint = Constraint.Box(Distance, Distance, Distance, 0, 0, 0);
             Assert.AreEqual(0, constraint.AndConstraint.Count);
             Assert.AreEqual(0, constraint.OrConstraint.Count);
         }
@@ -93,7 +117,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void Component_T__constraint_sets_AndOr_constraints_to_empty_list()
+        public void Component_T_constraint_sets_AndOr_constraints_to_empty_list()
         {
             var constraint = Constraint.Component<Position.Component>();
             Assert.AreEqual(0, constraint.AndConstraint.Count);

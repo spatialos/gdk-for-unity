@@ -46,34 +46,19 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void ReplaceQueries_clears_previous_query()
         {
             var initialQuery = BasicQuery;
-            double initialQueryRadius = 0;
-            Assert.DoesNotThrow(() =>
-            {
-                initialQueryRadius = initialQuery.Constraint.RelativeSphereConstraint.Value.Radius;
-            });
+            var initialQueryRadius = initialQuery.Constraint.RelativeSphereConstraint.Value.Radius;
 
             var differentBasicQuery = DifferentBasicQuery;
-            double differentQueryRadius = 0;
-            Assert.DoesNotThrow(() =>
-            {
-                initialQueryRadius = DifferentBasicQuery.Constraint.RelativeSphereConstraint.Value.Radius;
-            });
-
-            Assert.AreNotEqual(initialQueryRadius, differentQueryRadius);
+            var differentQueryRadius = DifferentBasicQuery.Constraint.RelativeSphereConstraint.Value.Radius;
 
             var interest = BasicInterest.AddQueries<Position.Component>(initialQuery);
             interest = interest.ReplaceQueries<Position.Component>(differentBasicQuery);
 
             ComponentInterest replacedQuery;
             var queryExists = interest.GetInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
+
             Assert.True(queryExists);
-
-            double replacedQueryRadius = 0;
-            Assert.DoesNotThrow(() =>
-            {
-                initialQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
-            });
-
             Assert.AreEqual(1, replacedQuery.Queries.Count);
             Assert.AreNotEqual(initialQueryRadius, replacedQueryRadius);
             Assert.AreEqual(differentQueryRadius, replacedQueryRadius);
@@ -147,7 +132,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void Snapshot_should_not_contain_null_component_interest()
         {
-            var interest = BasicInterest.Snapshot();
+            var interest = BasicInterest.ToSnapshot();
             Assert.IsNotNull(interest.ComponentInterest);
         }
     }

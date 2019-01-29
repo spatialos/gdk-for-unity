@@ -35,12 +35,45 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A QueryConstraint object.
         /// </returns>
-        public static ComponentInterest.QueryConstraint Sphere(double radius, Vector3 center)
+        public static ComponentInterest.QueryConstraint Sphere(double radius, Coordinates center)
         {
             var constraint = Default();
             constraint.SphereConstraint = new ComponentInterest.SphereConstraint
             {
-                Center = new Coordinates(center.x, center.y, center.z),
+                Center = center,
+                Radius = radius
+            };
+            return constraint;
+        }
+
+        /// <summary>
+        ///     Creates a QueryConstraint object with a Sphere constraint.
+        /// </summary>
+        /// <param name="radius">
+        ///     Radius of the Sphere constraint.
+        /// </param>
+        /// <param name="centerX">
+        ///     X coordinate of the center of the Sphere constraint.
+        /// </param>
+        /// <param name="centerY">
+        ///     Y coordinate of the center of the Sphere constraint.
+        /// </param>
+        /// <param name="centerZ">
+        ///     Z coordinate of the center of the Sphere constraint.
+        /// </param>
+        /// <returns>
+        ///     A QueryConstraint object.
+        /// </returns>
+        public static ComponentInterest.QueryConstraint Sphere(
+            double radius,
+            double centerX,
+            double centerY,
+            double centerZ)
+        {
+            var constraint = Default();
+            constraint.SphereConstraint = new ComponentInterest.SphereConstraint
+            {
+                Center = new Coordinates(centerX, centerY, centerZ),
                 Radius = radius
             };
             return constraint;
@@ -58,12 +91,45 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A QueryConstraint object.
         /// </returns>
-        public static ComponentInterest.QueryConstraint Cylinder(double radius, Vector3 center)
+        public static ComponentInterest.QueryConstraint Cylinder(double radius, Coordinates center)
         {
             var constraint = Default();
             constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint()
             {
-                Center = new Coordinates(center.x, center.y, center.z),
+                Center = center,
+                Radius = radius
+            };
+            return constraint;
+        }
+
+        /// <summary>
+        ///     Creates a QueryConstraint object with a Cylinder constraint.
+        /// </summary>
+        /// <param name="radius">
+        ///     Radius of the Cylinder constraint.
+        /// </param>
+        /// <param name="centerX">
+        ///     X coordinate of the center of the Cylinder constraint.
+        /// </param>
+        /// <param name="centerY">
+        ///     Y coordinate of the center of the Cylinder constraint.
+        /// </param>
+        /// <param name="centerZ">
+        ///     Z coordinate of the center of the Cylinder constraint.
+        /// </param>
+        /// <returns>
+        ///     A QueryConstraint object.
+        /// </returns>
+        public static ComponentInterest.QueryConstraint Cylinder(
+            double radius,
+            double centerX,
+            double centerY,
+            double centerZ)
+        {
+            var constraint = Default();
+            constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint()
+            {
+                Center = new Coordinates(centerX, centerY, centerZ),
                 Radius = radius
             };
             return constraint;
@@ -87,12 +153,57 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A QueryConstraint object.
         /// </returns>
-        public static ComponentInterest.QueryConstraint Box(double xWidth, double yHeight, double zDepth, Vector3 center)
+        public static ComponentInterest.QueryConstraint Box(
+            double xWidth,
+            double yHeight,
+            double zDepth,
+            Coordinates center)
         {
             var constraint = Default();
             constraint.BoxConstraint = new ComponentInterest.BoxConstraint
             {
-                Center = new Coordinates(center.x, center.y, center.z),
+                Center = center,
+                EdgeLength = new EdgeLength(xWidth, yHeight, zDepth)
+            };
+            return constraint;
+        }
+
+        /// <summary>
+        ///     Creates a QueryConstraint object with a Box constraint.
+        /// </summary>
+        /// <param name="xWidth">
+        ///     Width of Box constraint in the X-axis.
+        /// </param>
+        /// <param name="yHeight">
+        ///     Height of Box constraint in the Y-axis.
+        /// </param>
+        /// <param name="zDepth">
+        ///     Depth of Box constraint in the Z-axis.
+        /// </param>
+        /// <param name="centerX">
+        ///     X coordinate of the center of the Box constraint.
+        /// </param>
+        /// <param name="centerY">
+        ///     Y coordinate of the center of the Box constraint.
+        /// </param>
+        /// <param name="centerZ">
+        ///     Z coordinate of the center of the Box constraint.
+        /// </param>
+        /// <returns>
+        ///     A QueryConstraint object.
+        /// </returns>
+        public static ComponentInterest.QueryConstraint Box(
+            double xWidth,
+            double yHeight,
+            double zDepth,
+            double centerX,
+            double centerY,
+            double centerZ)
+        {
+            var constraint = Default();
+            constraint.BoxConstraint = new ComponentInterest.BoxConstraint
+            {
+                Center = new Coordinates(centerX, centerY, centerZ),
                 EdgeLength = new EdgeLength(xWidth, yHeight, zDepth)
             };
             return constraint;
