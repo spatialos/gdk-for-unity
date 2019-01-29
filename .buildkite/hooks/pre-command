@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[[ -n "${DEBUG:-}" ]] && set -x
+
+spatial auth login --log_level debug
