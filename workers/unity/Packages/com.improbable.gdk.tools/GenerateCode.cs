@@ -89,7 +89,7 @@ namespace Improbable.Gdk.Tools
                     case RuntimePlatform.LinuxEditor:
                     case RuntimePlatform.OSXEditor:
                         // Ensure the schema compiler is executable.
-                        var _ = RedirectedProcess.Run("chmod", "+x", $"\"{schemaCompilerPath}\"");
+                        var _ = RedirectedProcess.Command("chmod").WithArgs("+x", $"\"{schemaCompilerPath}\"").Run();
                         break;
                     default:
                         throw new PlatformNotSupportedException(
@@ -98,8 +98,9 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var exitCode = RedirectedProcess.Run(Common.DotNetBinary,
-                        ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath));
+                    var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
+                        .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
+                        .Run();
 
                     if (exitCode != 0)
                     {

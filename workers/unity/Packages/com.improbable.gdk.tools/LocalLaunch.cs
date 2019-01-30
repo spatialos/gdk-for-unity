@@ -62,8 +62,11 @@ namespace Improbable.Gdk.Tools
             using (new ShowProgressBarScope("Building worker configs..."))
             {
                 // Run from the root of the project to build all available worker configs.
-                RedirectedProcess.RunIn(SpatialProjectRootDir, Common.SpatialBinary, "build", "build-config",
-                    "--json_output");
+                RedirectedProcess
+                    .Command(Common.SpatialBinary)
+                    .WithArgs("build", "build-config", "--json_output")
+                    .InDirectory(SpatialProjectRootDir)
+                    .Run();
             }
         }
 
