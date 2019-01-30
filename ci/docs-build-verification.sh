@@ -66,7 +66,10 @@ pushd ${TMP_DIR}
 
     pushd unity-gdk
 
-        # TODO: If buildkite set local git info.
+        if [[ -n "${BUILDKITE_BRANCH-}" ]]; then
+            git config user.email "need-email-for-fake-merge@improbable.io"
+            git config user.name "Fake Merge"
+        fi
 
         git checkout develop
         git merge --no-commit --no-ff ${CURRENT_COMMIT}
