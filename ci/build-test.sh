@@ -4,6 +4,24 @@ set -e -u -o -x pipefail
 
 cd "$(dirname "$0")/../"
 
+function isDocsBranch() {
+  if [[ -n "${BUILDKITE-}" ]]; then
+    BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+  else
+    BRANCH="${BUILDKITE_BRANCH}"
+  fi
+
+  if [[ "${BRANCH}" == docs/* ]]; then
+    return 0
+  fi
+  return 1
+}
+
+if [[ isDocsBranch ]]; then
+    exit 0
+fi
+
+
 # Get shared CI and prepare Unity
 ci/bootstrap.sh
 .shared-ci/scripts/prepare-unity.sh
