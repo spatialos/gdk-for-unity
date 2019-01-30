@@ -32,7 +32,7 @@ function fetchCloneUrl() {
 
 trap cleanUp EXIT
 
-BRANCH_TO_TEST=$(git rev-parse --abbrev-ref HEAD)
+BRANCH_TO_TEST=$(git rev-parse HEAD)
 CURRENT_DIR=$(pwd)
 
 CLONE_URL=$(fetchCloneUrl)
