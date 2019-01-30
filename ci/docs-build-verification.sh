@@ -32,7 +32,7 @@ function fetchCloneUrl() {
 
 trap cleanUp EXIT
 
-BRANCH_TO_TEST=$(git rev-parse HEAD)
+CURRENT_COMMIT=$(git rev-parse HEAD)
 CURRENT_DIR=$(pwd)
 
 CLONE_URL=$(fetchCloneUrl)
@@ -47,7 +47,7 @@ pushd ${TMP_DIR}
     pushd unity-gdk 
 
         git checkout develop
-        git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
+        git merge --no-commit --no-ff ${CURRENT_COMMIT}
         CHANGED_FILES=$(git diff HEAD --name-only)
 
         NON_DOCS_FILES=()
