@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Improbable.Gdk.QueryBasedInterest
 {
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestQuery
     {
-        private static List<uint> EmptyList => new List<uint>();
+        private static readonly IReadOnlyList<uint> EmptyList = new List<uint>();
 
         private ComponentInterest.Query query;
 
@@ -31,7 +32,7 @@ namespace Improbable.Gdk.QueryBasedInterest
                 {
                     Constraint = constraint,
                     FullSnapshotResult = true,
-                    ResultComponentId = EmptyList
+                    ResultComponentId = EmptyList.ToList()
                 }
             };
             return interest;

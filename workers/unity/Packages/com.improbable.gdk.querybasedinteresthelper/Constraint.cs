@@ -11,15 +11,15 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public static class Constraint
     {
-        private static List<ComponentInterest.QueryConstraint> EmptyList
-            => new List<ComponentInterest.QueryConstraint>();
+        private static readonly IReadOnlyList<ComponentInterest.QueryConstraint> EmptyList
+            = new List<ComponentInterest.QueryConstraint>();
 
         private static ComponentInterest.QueryConstraint Default()
         {
             return new ComponentInterest.QueryConstraint
             {
-                AndConstraint = EmptyList,
-                OrConstraint = EmptyList
+                AndConstraint = EmptyList.ToList(),
+                OrConstraint = EmptyList.ToList()
             };
         }
 
@@ -353,7 +353,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             return new ComponentInterest.QueryConstraint
             {
                 AndConstraint = andConstraints,
-                OrConstraint = EmptyList
+                OrConstraint = EmptyList.ToList()
             };
         }
 
@@ -380,7 +380,7 @@ namespace Improbable.Gdk.QueryBasedInterest
 
             return new ComponentInterest.QueryConstraint
             {
-                AndConstraint = EmptyList,
+                AndConstraint = EmptyList.ToList(),
                 OrConstraint = orConstraints
             };
         }
