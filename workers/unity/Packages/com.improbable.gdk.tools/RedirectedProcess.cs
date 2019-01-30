@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Tools
     }
 
     [Flags]
-    public enum ProcessOutputOptions
+    public enum OutputRedirectBehaviour
     {
         /// <summary>
         ///   <para>No redirected output, only custom outputProcessors are used</para>
@@ -57,9 +57,9 @@ namespace Improbable.Gdk.Tools
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
 
-        private ProcessOutputOptions outputOptions =
-            ProcessOutputOptions.ProcessSpatialOutput |
-            ProcessOutputOptions.RedirectAccumulatedOutput;
+        private OutputRedirectBehaviour outputRedirectBehaviour =
+            OutputRedirectBehaviour.ProcessSpatialOutput |
+            OutputRedirectBehaviour.RedirectAccumulatedOutput;
 
         /// <summary>
         ///     Creates the redirected process for the command.
@@ -114,10 +114,10 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Adds custom processing for error output of process.
         /// </summary>
-        /// <param name="options">Options for redirecting process output to Debug.Log().</param>
-        public RedirectedProcess RedirectOutputOptions(ProcessOutputOptions options)
+        /// <param name="redirectBehaviour">Options for redirecting process output to Debug.Log().</param>
+        public RedirectedProcess RedirectOutputOptions(OutputRedirectBehaviour redirectBehaviour)
         {
-            outputOptions = options;
+            outputRedirectBehaviour = redirectBehaviour;
             return this;
         }
 
@@ -144,7 +144,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 StringBuilder outputLog = null;
-                if ((outputOptions & ProcessOutputOptions.RedirectAccumulatedOutput) != ProcessOutputOptions.None)
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) != OutputRedirectBehaviour.None)
                 {
                     outputLog = new StringBuilder();
                 }
@@ -152,7 +152,7 @@ namespace Improbable.Gdk.Tools
                 process.OutputDataReceived += (sender, args) =>
                 {
                     var outputString = args.Data;
-                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
                     {
                         outputString = ProcessSpatialOutput(outputString);
                     }
@@ -162,7 +162,7 @@ namespace Improbable.Gdk.Tools
                         return;
                     }
 
-                    if ((outputOptions & ProcessOutputOptions.RedirectStdOut) != ProcessOutputOptions.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdOut) != OutputRedirectBehaviour.None)
                     {
                         Debug.Log(outputString);
                     }
@@ -183,7 +183,7 @@ namespace Improbable.Gdk.Tools
                 process.ErrorDataReceived += (sender, args) =>
                 {
                     var errorString = args.Data;
-                    if ((outputOptions & ProcessOutputOptions.ProcessSpatialOutput) != ProcessOutputOptions.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
                     {
                         errorString = ProcessSpatialOutput(errorString);
                     }
@@ -193,7 +193,7 @@ namespace Improbable.Gdk.Tools
                         return;
                     }
 
-                    if ((outputOptions & ProcessOutputOptions.RedirectStdErr) != ProcessOutputOptions.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) != OutputRedirectBehaviour.None)
                     {
                         Debug.LogError(errorString);
                     }
@@ -226,7 +226,7 @@ namespace Improbable.Gdk.Tools
                 // Ensure that the first line of the log is something useful in the Unity editor console.
                 var trimmedOutput = outputLog.ToString().TrimStart();
 
-                if (string.IsNullOrEmpty(trimmedOutput))
+                if (trimmedOutput == string.Empty)
                 {
                     return process.ExitCode;
                 }
@@ -248,9 +248,9 @@ namespace Improbable.Gdk.Tools
         ///     Runs the redirected process and returns a task which can be waited on.
         /// </summary>
         /// <returns>A task which would return the exit code and output.</returns>
-        public async Task<RedirectedProcessResult> RunAsync()
+        public Task<RedirectedProcessResult> RunAsync()
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var processStandardOutput = new List<string>();
                 var processStandardError = new List<string>();
