@@ -12,7 +12,8 @@ cd "$(dirname "$0")/../"
 
 # If docs branch then do docs premerge
 if [[ $(git branch | sed -n -e 's/^\* \(.*\)/\1/p') == docs/\* ]]; then
-  buildkite-agent pipeline upload "docs-${1}"
+  STEPS=${1/premerge/docs-premerge}
+  buildkite-agent pipeline upload "$STEPS"
 else 
   buildkite-agent pipeline upload "$1"
 fi
