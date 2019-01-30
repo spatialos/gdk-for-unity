@@ -17,7 +17,7 @@ function isDocsBranch() {
   return 1
 }
 
-if [[ isDocsBranch ]]; then
+if isDocsBranch; then
     exit 0
 fi
 

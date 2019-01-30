@@ -45,7 +45,7 @@ function fetchCloneUrl() {
 
 trap cleanUp EXIT
 
-if [[ ! isDocsBranch ]]; then
+if ! isDocsBranch; then
     exit 0
 fi
 
