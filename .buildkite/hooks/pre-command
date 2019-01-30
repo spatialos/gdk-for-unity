@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[[ -n "${DEBUG:-}" ]] && set -x
+
+if [[ "${BUILDKITE_AGENT_META_DATA_CAPABLE_OF_BUILDING}" == "gdk-for-unity" ]]; then
+  spatial auth login --log_level debug
+fi
