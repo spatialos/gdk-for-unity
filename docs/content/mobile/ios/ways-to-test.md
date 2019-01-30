@@ -9,7 +9,11 @@ Before reading this document, make sure you are familiar with:
 Unity provides multiple ways to test your iOS [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for iOS, it executes code that is in preprocessor `#if UNITY_IOS` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
+For standard workflows and for minor changes, we recommend that you simply run your game in the Editor. Now that your build platform is set to iOS, Unity will compile and execute sections of code marked with the platform #define directive `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of the Unity Editor, while still executing code that would otherwise only run on an iOS device.
+
+1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
+1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
+1. In your Unity Editor, open the FPS-Development Scene and click the Play button.<br/>
 
 ## Unity Remote
 
