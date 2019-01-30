@@ -58,7 +58,7 @@ To do this:
 * Now select **Upload Assembly** to start the upload.
 
 ![]({{assetRoot}}assets/deployment-window.png)
-<br/> _Example Deployments window showing th Assembly section completed_
+<br/> _Example Deployments window showing the Assembly section completed_
 
 <br/>
 
