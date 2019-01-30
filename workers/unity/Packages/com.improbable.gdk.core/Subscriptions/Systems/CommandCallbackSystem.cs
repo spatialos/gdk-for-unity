@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Subscriptions
         private ulong callbacksRegistered = 1;
 
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
-            where T : IReceivedCommandRequest
+            where T : struct, IReceivedCommandRequest
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Subscriptions
         }
 
         public ulong RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
-            where T : IReceivedCommandResponse
+            where T : struct, IReceivedCommandResponse
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {

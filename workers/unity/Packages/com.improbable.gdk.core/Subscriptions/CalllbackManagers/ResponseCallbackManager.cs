@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class ResponseCallbackManager<T> : ICallbackManager where T : IReceivedCommandResponse
+    public class ResponseCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandResponse
     {
         private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
         private readonly CommandSystem commandSystem;
@@ -20,10 +20,10 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var responses = commandSystem.GetResponses<T>();
-            foreach (var response in responses)
+            for (int i = 0; i < responses.Count; ++i)
             {
-                callbacks.InvokeAll(response.GetRequestId(), response);
-                callbacks.RemoveAllCallbacksForIndex(response.GetRequestId());
+                callbacks.InvokeAll(responses[i].GetRequestId(), responses[i]);
+                callbacks.RemoveAllCallbacksForIndex(responses[i].GetRequestId());
             }
         }
 
