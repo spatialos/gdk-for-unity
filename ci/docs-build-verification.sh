@@ -44,7 +44,9 @@ pushd ${TMP_DIR}
     mkdir -p unity-gdk
     git clone ${CLONE_URL} unity-gdk
 
-    pushd unity-gdk 
+    pushd unity-gdk
+
+        # TODO: If buildkite set local git info.
 
         git checkout develop
         git merge --no-commit --no-ff ${CURRENT_COMMIT}
