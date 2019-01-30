@@ -1,6 +1,6 @@
 # Get started: 5 - Get playing!
 
-Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
+Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
 <img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
 
@@ -31,6 +31,8 @@ This generates a short link to share with anyone who wants to join in for the du
 These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
 
 In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
+
+The enemies will be hosted in a separate deployment so that they do not share resources with your `UnityGameLogic` workers. You can find this deployment by returning to your SpatialOS [web Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
 To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
 

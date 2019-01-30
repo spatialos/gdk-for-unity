@@ -80,7 +80,13 @@ Ensure that the `Enable simulated players` is checked and select `Launch deploym
 
 <img src="{{assetRoot}}assets/deployment-window-end.png" style="margin: 0 auto; display:block;" />
 
-> **It's finished when:** TODO
+> **It's finished when:** You see two messages printed in your Unity console indicating both deployments have been started:
+```
+Successfully created the main deployment.
+```
+```
+Successfully created the simulated player deployment.
+```
 
 ## Well done getting set up!
 It’s time to play your game.
