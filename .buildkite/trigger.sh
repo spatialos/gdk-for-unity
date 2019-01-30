@@ -11,7 +11,7 @@ cd "$(dirname "$0")/../"
 # vs changes in CI pipeline configuration.
 
 # If docs branch then do docs premerge
-BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+BRANCH=$(echo "${BUILDKITE_BRANCH}" | sed -n -e 's/^\* \(.*\)/\1/p')
 if [[ $BRANCH == docs/* ]]; then
   STEPS=${1/premerge/docs-premerge}
   buildkite-agent pipeline upload "$STEPS"
