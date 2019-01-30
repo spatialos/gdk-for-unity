@@ -45,12 +45,13 @@ function fetchCloneUrl() {
 
 trap cleanUp EXIT
 
+CURRENT_DIR=$(pwd)
+
 if ! isDocsBranch; then
     exit 0
 fi
 
 CURRENT_COMMIT=$(git rev-parse HEAD)
-CURRENT_DIR=$(pwd)
 
 CLONE_URL=$(fetchCloneUrl)
 TMP_DIR=$(mktemp -d)
