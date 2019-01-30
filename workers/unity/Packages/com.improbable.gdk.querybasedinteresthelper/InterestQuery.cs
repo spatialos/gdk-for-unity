@@ -7,7 +7,7 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestQuery
     {
-        private static readonly List<uint> EmptyList = new List<uint>();
+        private static List<uint> EmptyList => new List<uint>();
 
         private ComponentInterest.Query query;
 
