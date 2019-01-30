@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.
+- Fixed a bug where a Unity package with no dependencies field in its `package.json` would cause code generation to throw exceptions.
+
 ## `0.1.4` - 2019-01-28
 
 ### Added

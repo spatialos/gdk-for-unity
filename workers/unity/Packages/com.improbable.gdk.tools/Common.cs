@@ -95,7 +95,12 @@ namespace Improbable.Gdk.Tools
             try
             {
                 var package = Json.Deserialize(File.ReadAllText(filePath, Encoding.UTF8));
-                return ((Dictionary<string, object>) package["dependencies"]).ToDictionary(kv => kv.Key,
+                if (!package.TryGetValue("dependencies", out var dependenciesJson))
+                {
+                    return new Dictionary<string, string>();
+                }
+
+                return ((Dictionary<string, object>) dependenciesJson).ToDictionary(kv => kv.Key,
                     kv => (string) kv.Value);
             }
             catch (Exception e)
