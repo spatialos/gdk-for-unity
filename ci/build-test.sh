@@ -5,10 +5,10 @@ set -e -u -o -x pipefail
 cd "$(dirname "$0")/../"
 
 function isDocsBranch() {
-  if [[ -n "${BUILDKITE-}" ]]; then
-    BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-  else
+  if [[ -n "${BUILDKITE_BRANCH-}" ]]; then
     BRANCH="${BUILDKITE_BRANCH}"
+  else
+    BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
   fi
 
   if [[ "${BRANCH}" == docs/* ]]; then
