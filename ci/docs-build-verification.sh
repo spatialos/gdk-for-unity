@@ -32,8 +32,10 @@ function isDocsFile() {
 
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
-    cd ${CURRENT_DIR} 
-    rm -rf ${TMP_DIR}
+    cd ${CURRENT_DIR}
+    if [[ -n "${TMP_DIR-}" ]]; then
+        rm -rf ${TMP_DIR}
+    fi
 }
 
 function fetchCloneUrl() {
