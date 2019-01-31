@@ -18,6 +18,6 @@ After installing these dependencies, open the Unity project in `<path-to-your-pr
 
 | Field | How to find the path |
 |-------|------|
-| SDK  |  You can find the SDK location by opening Android Studio and selecting **Configure** from the launcher. |
+| SDK  |  You can find the SDK location by opening Android Studio and selecting **Configure** then **SDK Manager** from the launcher. |
 | JDK  |  **Windows:** default path is `C:\Program Files\Java` <br/>**Mac:** run `which java` to retrieve the path. |
 | NDK  |  Use the directory path that you noted down earlier when extracting the Android NDK.|
