@@ -3,24 +3,41 @@ using UnityEditor;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
+    /// <summary>
+    /// Build options for a particular build target.
+    /// </summary>
     [Serializable]
-    public struct BuildTargetConfig
+    internal struct BuildTargetConfig
     {
+        /// <summary>
+        /// The options to apply when the target is built.
+        /// </summary>
         public BuildOptions Options;
 
+        /// <summary>
+        /// The target to build.
+        /// </summary>
         public BuildTarget Target;
 
+        /// <summary>
+        /// Should this target be built?
+        /// </summary>
         public bool Enabled;
 
-        [NonSerialized] public readonly string Label;
+        [NonSerialized] internal readonly string Label;
 
+        /// <summary>
+        /// Returns a new instance of <see cref="BuildTargetConfig"/> with the Enabled property set to the new value.
+        /// </summary>
+        /// <param name="enabled">The new value of the Enabled property.</param>
+        /// <returns></returns>
         public BuildTargetConfig SetEnabled(bool enabled)
         {
             return new BuildTargetConfig(Target, Options, enabled);
         }
 
         /// <summary>
-        ///     Initialize a new build target for a specific platform.
+        ///     Creates a new instance of a build target and its options.
         /// </summary>
         public BuildTargetConfig(BuildTarget target, BuildOptions options, bool enabled)
         {
@@ -30,10 +47,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             switch (target)
             {
                 case BuildTarget.StandaloneWindows:
-                    Label = "Windows (x86)";
+                    Label = "Win x86";
                     break;
                 case BuildTarget.StandaloneWindows64:
-                    Label = "Windows (x86_64)";
+                    Label = "Win x64";
                     break;
                 case BuildTarget.StandaloneLinux64:
                     Label = "Linux";

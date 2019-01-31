@@ -162,7 +162,7 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
+        internal static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);

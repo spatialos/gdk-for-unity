@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    public abstract class SingletonScriptableObject<TSelf> : ScriptableObject
+    internal abstract class SingletonScriptableObject<TSelf> : ScriptableObject
         where TSelf : SingletonScriptableObject<TSelf>
     {
         private static readonly List<TSelf> Instances =

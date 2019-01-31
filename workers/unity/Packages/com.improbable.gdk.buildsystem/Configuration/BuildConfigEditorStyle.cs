@@ -27,8 +27,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         internal readonly Dictionary<BuildTarget, GUIContent> BuildErrorIcons =
             new Dictionary<BuildTarget, GUIContent>();
 
-        internal readonly Dictionary<string, GUIContent> WorkerContent = new Dictionary<string, GUIContent>();
-
         private void BuildTargetToContent(BuildTarget target, string iconName, string label)
         {
             var icon = new GUIContent(EditorGUIUtility.IconContent(iconName)) { text = label, tooltip = label };

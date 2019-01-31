@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    public class WorkerBuildData
+    internal class WorkerBuildData
     {
         public readonly string WorkerType;
 
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private readonly BuildTarget buildTarget;
 
-        public static readonly IReadOnlyList<BuildTarget> AllBuildTargets = new List<BuildTarget>
+        internal static readonly IReadOnlyList<BuildTarget> AllBuildTargets = new List<BuildTarget>
         {
             BuildTarget.StandaloneWindows,
             BuildTarget.StandaloneWindows64,
@@ -31,14 +31,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             BuildTarget.iOS,
         };
 
-        public static readonly IReadOnlyList<BuildTarget> LocalBuildTargets = new List<BuildTarget>
+        internal static readonly IReadOnlyList<BuildTarget> LocalBuildTargets = new List<BuildTarget>
         {
             CurrentBuildPlatform,
             BuildTarget.Android,
             BuildTarget.iOS,
         };
 
-        public static readonly IReadOnlyDictionary<BuildTarget, BuildOptions> BuildTargetDefaultOptions =
+        internal static readonly IReadOnlyDictionary<BuildTarget, BuildOptions> BuildTargetDefaultOptions =
             new Dictionary<BuildTarget, BuildOptions>
             {
                 { BuildTarget.StandaloneWindows, BuildOptions.None },
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.iOS, string.Empty }
             };
 
-        public static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
+        internal static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
             new Dictionary<BuildTarget, string>
             {
                 { BuildTarget.StandaloneWindows, "WindowsStandaloneSupport" },
@@ -80,11 +80,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneOSX, "MacStandaloneSupport" },
                 { BuildTarget.Android, "AndroidPlayer" },
                 { BuildTarget.iOS, "iOSSupport" }
-            };
+            };        
 
-        private static IReadOnlyDictionary<BuildTarget, bool> buildTargetsThatCanBeBuilt;
-
-        public static IReadOnlyDictionary<BuildTarget, bool> BuildTargetsThatCanBeBuilt
+        internal static IReadOnlyDictionary<BuildTarget, bool> BuildTargetsThatCanBeBuilt
         {
             get
             {
@@ -93,7 +91,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        public static BuildTarget CurrentBuildPlatform 
+        internal static BuildTarget CurrentBuildPlatform 
         {
             get
             {
@@ -111,7 +109,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        public WorkerBuildData(string workerType, BuildTarget buildTarget)
+        internal WorkerBuildData(string workerType, BuildTarget buildTarget)
         {
             if (!BuildTargetNames.ContainsKey(buildTarget))
             {
@@ -122,14 +120,16 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             this.buildTarget = buildTarget;
         }
 
-        public static BuildTargetConfig GetCurrentBuildTargetConfig()
+        internal static BuildTargetConfig GetCurrentBuildTargetConfig()
         {
             return new BuildTargetConfig(CurrentBuildPlatform, BuildTargetDefaultOptions[CurrentBuildPlatform], true);
         }
 
-        public static BuildTargetConfig GetLinuxBuildTargetConfig()
+        internal static BuildTargetConfig GetLinuxBuildTargetConfig()
         {
             return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], true);
         }
+
+        private static IReadOnlyDictionary<BuildTarget, bool> buildTargetsThatCanBeBuilt;
     }
 }

@@ -3,14 +3,13 @@ using System.Linq;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CustomEditor(typeof(BuildConfig))]
-    public class BuildConfigEditor : Editor
+    internal class BuildConfigEditor : Editor
     {
-        public const string BuildConfigurationMenu = EditorConfig.ParentMenu + "/Build Configuration";
+        internal const string BuildConfigurationMenu = EditorConfig.ParentMenu + "/Build Configuration";
 
         private class DragAndDropInfo
         {
@@ -19,7 +18,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             public float ItemHeight;
         }
 
-        internal class BuildTargetState
+        private class BuildTargetState
         {
             public int Index;
             public GUIContent[] Choices;
@@ -28,14 +27,21 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private class FoldoutState
         {
             public bool Expanded;
+            public GUIContent Content;
         }
-       
 
         private Rect addWorkerRect;
-
-        private BuildConfigEditorStyle style;
-
         private DragAndDropInfo sourceDragState;
+        private BuildConfigEditorStyle style;
+        private bool undoOccurred;
+
+        public void Awake()
+        {
+            Undo.undoRedoPerformed += () =>
+            {
+                undoOccurred = true;
+            };
+        }
 
         public override void OnInspectorGUI()
         {
@@ -45,7 +51,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
 
             if (sourceDragState != null && Event.current.type == EventType.DragExited)
-            {                
+            {
                 sourceDragState.SourceItemIndex = -1;
                 sourceDragState = null;
                 Repaint();
@@ -71,7 +77,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 BuildConfigEditorStyle.DrawHorizontalLine();
             }
 
-            using (new EditorGUI.DisabledScope(workerConfiguration.WorkerBuildConfigurations.Count == BuildWorkerMenu.AllWorkers.Length))
+            using (new EditorGUI.DisabledScope(workerConfiguration.WorkerBuildConfigurations.Count ==
+                BuildWorkerMenu.AllWorkers.Length))
             using (new GUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
@@ -87,6 +94,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 GUILayout.FlexibleSpace();
             }
+
+            undoOccurred = false;
         }
 
         private bool DrawWorkerConfiguration(WorkerBuildConfiguration configurationForWorker)
@@ -94,26 +103,30 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var workerType = configurationForWorker.WorkerType;
 
             var workerControlId = GUIUtility.GetControlID(FocusType.Passive);
-            var expandedState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
+            var foldoutState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                GUIContent content;
-                if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(t =>
-                        !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled) ||
-                    configurationForWorker.LocalBuildConfig.BuildTargets.Any(t =>
-                        !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled)
-                )
+                if (foldoutState.Content == null || undoOccurred)
                 {
-                    content = EditorGUIUtility.IconContent(style.BuiltInErrorIcon);
-                    content.text = workerType;
-                }
-                else if (!style.WorkerContent.TryGetValue(workerType, out content))
-                {
-                    style.WorkerContent[workerType] = content = new GUIContent(workerType);
+                    if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(t =>
+                            !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled) ||
+                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(t =>
+                            !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled)
+                    )
+                    {
+                        foldoutState.Content = new GUIContent(EditorGUIUtility.IconContent(style.BuiltInErrorIcon))
+                        {
+                            text = workerType
+                        };
+                    }
+                    else
+                    {
+                        foldoutState.Content = new GUIContent(workerType);
+                    }
                 }
 
-                expandedState.Expanded = EditorGUILayout.Foldout(expandedState.Expanded, content, true);
+                foldoutState.Expanded = EditorGUILayout.Foldout(foldoutState.Expanded, foldoutState.Content, true);
 
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button(style.RemoveWorkerTypeButtonContents, EditorStyles.miniButton))
@@ -122,13 +135,20 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
             }
 
+            using (var check = new EditorGUI.ChangeCheckScope())
             using (new EditorGUI.IndentLevelScope())
             {
-                if (expandedState.Expanded)
+                if (foldoutState.Expanded)
                 {
                     DrawScenesInspectorForWorker(configurationForWorker);
                     EditorGUILayout.Space();
                     DrawEnvironmentInspectorForWorker(configurationForWorker);
+                }
+
+                if (check.changed)
+                {
+                    // Re-evaluate heading.
+                    foldoutState.Content = null;
                 }
             }
 
@@ -470,26 +490,42 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var environmentConfiguration =
                 configurationForWorker.GetEnvironmentConfig(environment);
 
-            GUIContent content;
-            if (environmentConfiguration.BuildTargets.Any(t =>
-                !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled))
-            {
-                content = EditorGUIUtility.IconContent(style.BuiltInErrorIcon);
-                content.text = $"{environmentName} Build Options";
-            }
-            else
-            {
-                content = new GUIContent($"{environmentName} Build Options");
-            }
-
             var workerControlId = GUIUtility.GetControlID(FocusType.Passive);
-            var expandedState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
+            var foldoutState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
 
-            expandedState.Expanded =
-                EditorGUILayout.Foldout(expandedState.Expanded, content, true);
-            if (expandedState.Expanded)
+            if (foldoutState.Content == null || undoOccurred)
             {
-                DrawBuildTargets(environmentConfiguration);
+                var builtTargets = string.Join(",",
+                    environmentConfiguration.BuildTargets.Where(t => t.Enabled).Select(t => t.Label));
+                if (environmentConfiguration.BuildTargets.Any(t =>
+                    !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled))
+                {
+                    foldoutState.Content = new GUIContent(EditorGUIUtility.IconContent(style.BuiltInErrorIcon))
+                    {
+                        text = $"{environmentName} Build Options ({builtTargets})"
+                    };
+                }
+                else
+                {
+                    foldoutState.Content = new GUIContent($"{environmentName} Build Options ({builtTargets})");
+                }
+            }
+
+            foldoutState.Expanded =
+                EditorGUILayout.Foldout(foldoutState.Expanded, foldoutState.Content, true);
+
+            using (var check = new EditorGUI.ChangeCheckScope())
+            {
+                if (foldoutState.Expanded)
+                {
+                    DrawBuildTargets(environmentConfiguration);
+                }
+
+                if (check.changed)
+                {
+                    // Re-evaluate heading.
+                    foldoutState.Content = null;
+                }
             }
         }
 
@@ -507,7 +543,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var selectedBuildTarget =
                 (BuildTargetState) GUIUtility.GetStateObject(typeof(BuildTargetState), workerControlId);
 
-            if (selectedBuildTarget.Choices == null)
+            if (selectedBuildTarget.Choices == null || undoOccurred)
             {
                 selectedBuildTarget.Choices = env.BuildTargets.Select(GetBuildTargetGuiContents).ToArray();
 
@@ -767,6 +803,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
 
             return options;
-        }       
+        }
     }
 }
