@@ -1,25 +1,25 @@
 <#@ template language="C#" #>
-<#@ output extension=".cs" #>
-<#
-    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+        <#@ output extension=".cs" #>
+        <#
+        var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader()
+;
     var workerTypeList = GetWorkerTypes();
 #>
 <#= generatedHeader #>
 
-using Improbable.Gdk.BuildSystem;
-using Improbable.Gdk.BuildSystem.Configuration;
+using System;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
 
 namespace Improbable
 {
-    internal static class BuildWorkerMenu
+    public static class BuildWorkerMenu
     {
         private const string LocalMenu = "Build for local";
         private const string CloudMenu = "Build for cloud";
 
-        private static readonly string[] AllWorkers =
+        public static readonly string[] AllWorkers =
         {
 <# foreach (var workerType in workerTypeList) { #>
             "<#= workerType #>",
@@ -33,13 +33,13 @@ var workerType = workerTypeList[i];
         [MenuItem(EditorConfig.ParentMenu + "/" + LocalMenu + "/<#= workerType #>", false, EditorConfig.MenuOffset + <#=i #>)]
         public static void BuildLocal<#= workerType #>()
         {
-            MenuBuild(BuildEnvironment.Local, "<#= workerType #>");
+            MenuBuildLocal(new[] { "<#= workerType #>" });
         }
 
         [MenuItem(EditorConfig.ParentMenu + "/" + CloudMenu + "/<#= workerType #>", false, EditorConfig.MenuOffset + <#= i #>)]
         public static void BuildCloud<#= workerType #>()
         {
-            MenuBuild(BuildEnvironment.Cloud, "<#= workerType #>");
+            MenuBuildCloud(new[] { "<#= workerType #>" });
         }
 
 <# } #>
@@ -47,52 +47,23 @@ var workerType = workerTypeList[i];
         [MenuItem(EditorConfig.ParentMenu + "/" + LocalMenu + "/All workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
         public static void BuildLocalAll()
         {
-            MenuBuild(BuildEnvironment.Local, AllWorkers);
+            MenuBuildLocal(AllWorkers);
         }
 
         [MenuItem(EditorConfig.ParentMenu + "/" + CloudMenu + "/All workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
         public static void BuildCloudAll()
         {
-            MenuBuild(BuildEnvironment.Cloud, AllWorkers);
+            MenuBuildCloud(AllWorkers);
         }
 
         [MenuItem(EditorConfig.ParentMenu + "/Clean all workers", false, EditorConfig.MenuOffset + <#= workerTypeList.Count #>)]
         public static void Clean()
         {
-            WorkerBuilder.Clean();
-            Debug.Log("Clean completed");
+            MenuCleanAll();
         }
 
-        private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
-        {
-            // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
-            EditorApplication.delayCall += () =>
-            {
-                try
-                {
-                    LocalLaunch.BuildConfig();
-
-                    foreach (var workerType in workerTypes)
-                    {
-                        WorkerBuilder.BuildWorkerForEnvironment(workerType, environment);
-                    }
-
-                    Debug.LogFormat("Completed build for {0} target", environment);
-                }
-                catch (System.Exception)
-                {
-                    DisplayBuildFailureDialog();
-
-                    throw;
-                }
-            };
-        }
-
-        private static void DisplayBuildFailureDialog()
-        {
-            EditorUtility.DisplayDialog("Build Failed",
-                "Build failed. Please see the Unity Console Window for information.",
-                "OK");
-        }
+        public static Action<string[]> MenuBuildLocal;
+        public static Action<string[]> MenuBuildCloud;
+        public static Action MenuCleanAll;
     }
 }

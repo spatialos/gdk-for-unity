@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
+    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
     public class BuildConfig : SingletonScriptableObject<BuildConfig>
-    {
+    {      
         [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
 

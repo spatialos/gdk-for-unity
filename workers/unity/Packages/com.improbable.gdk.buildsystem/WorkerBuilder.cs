@@ -12,6 +12,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem
 {
+    [InitializeOnLoad]
     public static class WorkerBuilder
     {
         private static readonly string PlayerBuildDirectory =
@@ -22,6 +23,17 @@ namespace Improbable.Gdk.BuildSystem
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory));
 
         private const string BuildWorkerTypes = "buildWorkerTypes";
+
+        static WorkerBuilder()
+        {
+            BuildWorkerMenu.MenuBuildLocal = workerTypes => MenuBuild(BuildEnvironment.Local, workerTypes);
+            BuildWorkerMenu.MenuBuildCloud = workerTypes => MenuBuild(BuildEnvironment.Cloud, workerTypes);
+            BuildWorkerMenu.MenuCleanAll = () =>
+            {
+                Clean();
+                Debug.Log("Clean completed.");
+            };
+        }
 
         /// <summary>
         ///     Build method that is invoked by commandline
@@ -85,6 +97,38 @@ namespace Improbable.Gdk.BuildSystem
 
                 throw new BuildFailedException(e);
             }
+        }
+
+        private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
+        {
+            // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
+            EditorApplication.delayCall += () =>
+            {
+                try
+                {
+                    LocalLaunch.BuildConfig();
+
+                    foreach (var workerType in workerTypes)
+                    {
+                        BuildWorkerForEnvironment(workerType, environment);
+                    }
+
+                    Debug.LogFormat("Completed build for {0} target", environment);
+                }
+                catch (System.Exception)
+                {
+                    DisplayBuildFailureDialog();
+
+                    throw;
+                }
+            };
+        }
+        
+        private static void DisplayBuildFailureDialog()
+        {
+            EditorUtility.DisplayDialog("Build Failed",
+                "Build failed. Please see the Unity Console Window for information.",
+                "OK");
         }
 
         private static void ValidateWorkerConfiguration(string[] wantedWorkerTypes, BuildEnvironment buildEnvironment)
@@ -160,8 +204,15 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void Clean()
         {
-            Directory.Delete(AssetDatabaseDirectory, true);
-            Directory.Delete(EditorPaths.BuildScratchDirectory, true);
+            if (Directory.Exists(AssetDatabaseDirectory))
+            {
+                Directory.Delete(AssetDatabaseDirectory, true);
+            }
+
+            if (Directory.Exists(EditorPaths.BuildScratchDirectory))
+            {
+                Directory.Delete(EditorPaths.BuildScratchDirectory, true);
+            }
         }
 
         

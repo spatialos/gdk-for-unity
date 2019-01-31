@@ -21,44 +21,33 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         internal readonly Dictionary<BuildTarget, GUIContent> BuildTargetIcons =
             new Dictionary<BuildTarget, GUIContent>();
 
+        internal readonly Dictionary<BuildTarget, GUIContent> BuildTargetText =
+            new Dictionary<BuildTarget, GUIContent>();
+
         internal readonly Dictionary<BuildTarget, GUIContent> BuildErrorIcons =
             new Dictionary<BuildTarget, GUIContent>();
 
-        internal readonly HashSet<string> ExpandedWorkers = new HashSet<string>();
-        internal readonly HashSet<string> ExpandedBuildOptions = new HashSet<string>();
         internal readonly Dictionary<string, GUIContent> WorkerContent = new Dictionary<string, GUIContent>();
-
-        internal readonly Dictionary<string, BuildTargetState> SelectedBuildTarget =
-            new Dictionary<string, BuildTargetState>();
-
-        internal class BuildTargetState
-        {
-            public int Index;
-            public GUIContent[] Choices;
-        }
 
         private void BuildTargetToContent(BuildTarget target, string iconName, string label)
         {
-            var icon = new GUIContent(EditorGUIUtility.IconContent(iconName));
-
-            icon.text = label;
-            icon.tooltip = label;
+            var icon = new GUIContent(EditorGUIUtility.IconContent(iconName)) { text = label, tooltip = label };
             BuildTargetIcons[target] = icon;
 
-            icon = new GUIContent(EditorGUIUtility.IconContent(BuiltInErrorIcon));
-            icon.text = label;
-            icon.tooltip = label;
+            icon = new GUIContent(EditorGUIUtility.IconContent(BuiltInErrorIcon)) { text = label, tooltip = label };
             BuildErrorIcons[target] = icon;
+
+            BuildTargetText[target] = new GUIContent(label);
         }
 
         internal BuildConfigEditorStyle()
         {
-            BuildTargetToContent(BuildTarget.Android, "BuildSettings.Android.Small", "Android");
-            BuildTargetToContent(BuildTarget.iOS, "BuildSettings.iPhone.Small", "iOS");
-            BuildTargetToContent(BuildTarget.StandaloneWindows, "BuildSettings.Standalone.Small", "Win x86");
-            BuildTargetToContent(BuildTarget.StandaloneWindows64, "BuildSettings.Standalone.Small", "Win x64");
-            BuildTargetToContent(BuildTarget.StandaloneLinux64, "BuildSettings.Standalone.Small", "Linux");
-            BuildTargetToContent(BuildTarget.StandaloneOSX, "BuildSettings.Standalone.Small", "MacOS");
+            BuildTargetToContent(BuildTarget.Android, "BuildSettings.Android", "Android");
+            BuildTargetToContent(BuildTarget.iOS, "BuildSettings.iPhone", "iOS");
+            BuildTargetToContent(BuildTarget.StandaloneWindows, "BuildSettings.Standalone", "Win x86");
+            BuildTargetToContent(BuildTarget.StandaloneWindows64, "BuildSettings.Standalone", "Win x64");
+            BuildTargetToContent(BuildTarget.StandaloneLinux64, "BuildSettings.Standalone", "Linux");
+            BuildTargetToContent(BuildTarget.StandaloneOSX, "BuildSettings.Standalone", "MacOS");
 
             AddSceneButtonContents.image = EditorGUIUtility.IconContent("Toolbar Plus").image;
             RemoveSceneButtonContents.image = EditorGUIUtility.IconContent("Toolbar Minus").image;
