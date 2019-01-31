@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-set -e -u -o pipefail -x
+set -e -u -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 echo "Building for: ${WORKER_TYPE} ${BUILD_TARGET} ${SCRIPTING_TYPE}"
 
@@ -17,7 +21,7 @@ if [[ ${WORKER_TYPE} == "AndroidClient" ]]; then
 fi
 
 if [[ ${WORKER_TYPE} == "iOSClient" ]]; then
-    if !isMacOS; then
+    if ! isMacOS; then
         echo "I can't build for iOS!"
         exit 0
     fi
