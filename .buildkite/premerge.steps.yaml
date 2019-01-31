@@ -30,3 +30,9 @@ steps:
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
+  - label: "verify docs only changes :cop:"
+    command: bash -c ci/docs-build-verification.sh
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+  - label: "lint docs :lint-roller:"
+    command: bash -c ci/docs-lint.sh
+    <<: *common

@@ -4,12 +4,17 @@ set -e -u -o -x pipefail
 
 cd "$(dirname "$0")/../"
 
-# Get shared CI and prepare Unity
 ci/bootstrap.sh
+source ".shared-ci/scripts/pinned-tools.sh"
+
+if isDocsBranch; then
+    exit 0
+fi
+
+# Prepare Unity
 .shared-ci/scripts/prepare-unity.sh
 .shared-ci/scripts/prepare-unity-mobile.sh "$(pwd)/logs/PrepareUnityMobile.log"
 
-source ".shared-ci/scripts/pinned-tools.sh"
 
 ci/test.sh
 .shared-ci/scripts/build.sh "workers/unity" AndroidClient local mono "$(pwd)/logs/AndroidClientBuild.log"
