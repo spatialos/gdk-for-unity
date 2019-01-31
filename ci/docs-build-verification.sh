@@ -19,8 +19,7 @@ function fetchCloneUrl() {
 }
 
 ci/bootstrap.sh
-
-source .shared-ci/scripts/pinned-tool.sh
+source .shared-ci/scripts/pinned-tools.sh
 
 trap cleanUp EXIT
 
