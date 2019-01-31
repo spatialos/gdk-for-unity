@@ -7,7 +7,7 @@
        * The Android SDK
        * The Android Studio emulator
     * [Android NDK r13b](https://developer.android.com/ndk/downloads/older_releases) - Extract it to a directory of your choice. Note down this directory path as you will be needing it in the following steps.
-    * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+    * [Java Platform, Standard Edition Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - download and install the latest version.
   * (Optional) [Unity Remote](https://play.google.com/store/apps/details?id=com.unity3d.genericremote) - this is Unity’s solution for faster development iteration times.
 
 ## Set up your Unity Editor
