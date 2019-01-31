@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail -x
 
-WORKER_TYPE=$1
-BUILD_TARGET=$2
-SCRIPTING_TYPE=$3
-
 echo "Building for: ${WORKER_TYPE} ${BUILD_TARGET} ${SCRIPTING_TYPE}"
 
 cd "$(dirname "$0")/../"

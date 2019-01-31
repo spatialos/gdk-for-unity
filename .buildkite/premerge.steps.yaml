@@ -35,36 +35,56 @@ steps:
 
   - label: "test"
     command: bash -c ci/test.sh
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    <<: *common
     artifact_paths:
       - logs/**/*
 
   - label: "build :android:"
-    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"AndroidClient\" \"local\" \"mono\""
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    command: bash -c ci/build.sh
+    <<: *common
     artifact_paths:
       - logs/**/*
+    env: 
+      WORKER_TYPE: "AndroidClient"
+      BUILD_TARGET: "local"
+      SCRIPTING_TYPE: "mono"
 
   - label: "build :iphone:"
-    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"iOSClient\" \"local\" \"il2cpp\""
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    command: bash -c ci/build.sh
+    <<: *common 
     artifact_paths:
       - logs/**/*
+    env: 
+      WORKER_TYPE: "iOSClient"
+      BUILD_TARGET: "local"
+      SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityClient mono"
-    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityClient\" \"cloud\" \"mono\""
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    command: bash -c ci/build.sh
+    <<: *common 
     artifact_paths:
       - logs/**/*
+    env: 
+      WORKER_TYPE: "UnityClient"
+      BUILD_TARGET: "cloud"
+      SCRIPTING_TYPE: "mono"
 
   - label: "build UnityClient il2cpp"
-    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityClient\" \"local\" \"il2cpp\""
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    command: bash -c ci/build.sh
+    <<: *common 
     artifact_paths:
       - logs/**/*
+    env: 
+      WORKER_TYPE: "UnityClient"
+      BUILD_TARGET: "local"
+      SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityGameLogic mono"
-    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityGameLogic\" \"cloud\" \"mono\""
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    command: bash -c ci/build.sh
+    <<: *common 
     artifact_paths:
       - logs/**/*
+    env: 
+      WORKER_TYPE: "UnityGameLogic"
+      BUILD_TARGET: "cloud"
+      SCRIPTING_TYPE: "mono"
