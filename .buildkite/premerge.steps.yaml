@@ -25,14 +25,46 @@ common: &common
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
 steps:
-  - label: "build :bash:"
-    command: bash -c ci/build-test.sh
-    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
-    artifact_paths:
-      - logs/**/*
   - label: "verify docs only changes :cop:"
     command: bash -c ci/docs-build-verification.sh
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+
   - label: "lint docs :lint-roller:"
     command: bash -c ci/docs-lint.sh
     <<: *common
+
+  - label: "test"
+    command: bash -c ci/test.sh
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
+
+  - label: "build :android:"
+    command: bash -c ci/build.sh "AndroidClient" "local" "mono"
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
+
+  - label: "build :iphone:"
+    command: bash -c ci/build.sh "iOSClient" "local" "mono"
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
+
+  - label: "build UnityClient mono"
+    command: bash -c ci/build.sh "UnityClient" "cloud" "mono"
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
+
+  - label: "build UnityClient il2cpp"
+    command: bash -c ci/build.sh "UnityClient" "local" "il2cpp"
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
+
+  - label: "build UnityGameLogic mono"
+    command: bash -c ci/build.sh "UnityGameLogic" "cloud" "mono"
+    <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
+    artifact_paths:
+      - logs/**/*
