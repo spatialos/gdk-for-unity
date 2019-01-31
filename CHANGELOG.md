@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Changed `RedirectedProcess` to have Builder-like API.
+
 ### Fixed
 
 - Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.

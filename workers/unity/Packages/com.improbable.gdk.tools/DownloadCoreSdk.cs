@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope($"Installing SpatialOS libraries, version {Common.CoreSdkVersion}..."))
                 {
-                    exitCode = RedirectedProcess.Run(Common.DotNetBinary, ConstructArguments());
+                    exitCode = RedirectedProcess.Command(Common.DotNetBinary).WithArgs(ConstructArguments()).Run();
                     if (exitCode != 0)
                     {
                         Debug.LogError($"Failed to download SpatialOS Core Sdk version {Common.CoreSdkVersion}. You can use SpatialOS -> Download CoreSDK (force) to retry this.");
