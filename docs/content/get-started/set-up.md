@@ -63,19 +63,19 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
  **Using Visual Studio?**
 
-As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
+As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking the **Modify** option for Visual Studio Community 2017. If the **Modify** option is not visible, this option may also be found in the drop-down menu that appears when you select the **More** option.
 
 ![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
 Once you have navigated to the **Workloads** tab:
 
 - Select **.NET Core cross-platform development**.
-- After selecting **Game development with Unity**:
+- Select **Game development with Unity**:
   - Deselect any options in the **Summary** on the right that mention a Unity Editor (for example, Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
-  - The SpatialOS GDK for Unity requires **Unity 2018.3.2**, which should already be installed if you have followed the setup guide correctly.
+  - The SpatialOS GDK for Unity requires **Unity 2018.3.2**, which you already installed in step 1.
   - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.2 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.2 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
 
 **Using Rider?**
 
