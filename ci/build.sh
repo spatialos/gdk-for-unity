@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+set -e -u -o pipefail -x
 
-set -e -u -o -x pipefail
+WORKER_TYPE=$1
+BUILD_TARGET=$2
+SCRIPTING_TYPE=$3
+
+echo "Building for: ${WORKER_TYPE} ${BUILD_TARGET} ${SCRIPTING_TYPE}"
 
 cd "$(dirname "$0")/../"
 
@@ -10,10 +15,6 @@ source ".shared-ci/scripts/pinned-tools.sh"
 if isDocsBranch; then
     exit 0
 fi
-
-WORKER_TYPE=$1
-BUILD_TARGET=$2
-SCRIPTING_TYPE=$3
 
 if [[ ${WORKER_TYPE} == "AndroidClient" ]]; then
     .shared-ci/scripts/prepare-unity-mobile.sh "$(pwd)/logs/PrepareUnityMobile.log"
