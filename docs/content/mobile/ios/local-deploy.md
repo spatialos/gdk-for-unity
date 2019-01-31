@@ -8,9 +8,11 @@ Before reading this document, make sure you are familiar with:
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
 ## Connecting your iOS device to a local deployment using Unity Remote
-You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
+You need the Unity Remote app installed on your iOS device in order to follow the below steps. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
-  1. Connect the mobile device to your computer using a USB cable. Accept the **Trust This Computer** alert if it appears.
+  1. Open your project in the Unity Editor.
+  1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
+  1. Connect your iOS device to your computer using a USB cable. Accept the **Trust This Computer** alert if it appears.
   1. Open the project that you want to deploy with the Unity Editor and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
   1. In the **Unity Remote** section, click on the drop-down menu beside the **Device** option and select **Any iOS Device**.
   1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
@@ -18,20 +20,20 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
-  1. Open the scene that starts both your [client-]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is FPS-Development.scene.
+  1. Open the scene that starts both your [client]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
   1. In the Editor’s Game view, select **Play**.
 
     > You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
 
   1. You should now see your Unity Editor game view mirrored on your iOS device.
+  1. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.
 
 ## Connecting your iOS simulator to a local deployment
 
-  1. [Build your server-workers.]({{urlRoot}}/content/build)
-  1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch mobile_launch.json`.
+  1. Open your project in the Unity Editor.
+  1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
+  1. In the Unity Editor, Select **SpatialOS** > **Local launch**.
 
-    > You cannot use **SpatialOS** > **Local launch** in your Unity Editor, because you need to specify a different launch configuration.
-    >
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 
   1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player** > **Settings for iOS** > **Other Settings** > **Configuration** > **Target SDK** and choose **Simulator SDK**.
