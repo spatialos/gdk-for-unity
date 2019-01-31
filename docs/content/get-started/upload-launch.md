@@ -34,12 +34,11 @@ Your `spatialos.json` should look like this:
 }
 ```
 
-
 <br/>
 <br/>
 ### Upload and launch your cloud deployment
 
-The FPS Starter Project has a the Deployments window in the Unity Editor which you can use to do this.
+The FPS Starter Project has the Deployments window in the Unity Editor which you can use to do this.
 
 #### 1. Reference your Unity project in the Deployments window
 
@@ -83,7 +82,7 @@ The next step is to [start a cloud deployment](https://docs.improbable.io/refere
 <br/>
 To launch your cloud deployment:
 
-**First** enter the parameters in the Deployment Launcher section of the Deployment window. Complete the settings as below:
+First enter the parameters in the Deployment Launcher section of the Deployment window. Complete the settings as below:
 <br/>
 
 |Setting name|The setting you add|
@@ -91,17 +90,17 @@ To launch your cloud deployment:
 |**Assembly Name**| The name you gave the assembly in step 2 - for example; `myassembly`. <br/>(The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.)|
 |**Deployment Name**| A name of your choice - for example; `shootyshooty`. <br/>(The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.)|
 |**Snapshot Path**|`snapshots/cloud.snapshot`
-|**Config** | `cloud_launch_small.json`.|
+|**Config** | `cloud_launch_large.json`.|
 |**Enable simulated players**| Ensure this is checked.|
 |**Override name**| Leave this checkbox UNchecked.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
-|**Config**<br/> (The second Config listed)| Do not edit this field.|
+|**Config**<br/> (The second Config listed)|`cloud_launch_large_sim_players.json`|
 
 ![]({{assetRoot}}assets/deployment-window-end.png)
 <br/>_Example completed Deployments window_
 <br/>
 <br/>
-**Now** start your deployment: Select **Launch deployments**.
+Now start your deployment: Select **Launch deployments**.
 
 <br/>
 
