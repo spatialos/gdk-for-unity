@@ -3,8 +3,14 @@ set -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
+ci/bootstrap.sh
+
 source .shared-ci/scripts/pinned-tools.sh
 source .shared-ci/scripts/profiling.sh
+
+if isDocsBranch; then
+    exit 0
+fi
 
 markStartOfBlock "$0"
 
