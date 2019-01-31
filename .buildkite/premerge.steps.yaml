@@ -40,36 +40,31 @@ steps:
       - logs/**/*
 
   - label: "build :android:"
-    command: >
-      bash -c 'ci/build.sh "$0" "$1" "$2"' "AndroidClient" "local" "mono"
+    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"AndroidClient\" \"local\" \"mono\""
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
 
   - label: "build :iphone:"
-    command: > 
-      bash -c 'ci/build.sh "$0" "$1" "$2"' "iOSClient" "local" "mono"
+    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"iOSClient\" \"local\" \"il2cpp\""
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
 
   - label: "build UnityClient mono"
-    command: >
-      bash -c 'ci/build.sh "$0" "$1" "$2"' "UnityClient" "cloud" "mono"
+    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityClient\" \"cloud\" \"mono\""
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
 
   - label: "build UnityClient il2cpp"
-    command: >
-      bash -c 'ci/build.sh "$0" "$1" "$2"' "UnityClient" "local" "il2cpp"
+    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityClient\" \"local\" \"il2cpp\""
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
 
   - label: "build UnityGameLogic mono"
-    command: >
-      bash -c 'ci/build.sh "$0" "$1" "$2"' "UnityGameLogic" "cloud" "mono"
+    command: "bash -c 'ci/build.sh \"$0\" \"$1\" \"$2\"' \"UnityGameLogic\" \"cloud\" \"mono\""
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
     artifact_paths:
       - logs/**/*
