@@ -94,7 +94,7 @@ To launch your cloud deployment:
 |**Config** | `cloud_launch_small.json`.|
 |**Enable simulated players**| Ensure this is checked.|
 |**Override name**| Leave this checkbox UNchecked.|
-|**Deployment name**| Do not edit this field.|
+|**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
 |**Config**<br/> (The second Config listed)| Do not edit this field.|
 
 ![]({{assetRoot}}assets/deployment-window-end.png)
