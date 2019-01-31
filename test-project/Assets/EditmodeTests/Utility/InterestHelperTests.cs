@@ -15,14 +15,14 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         private static ComponentInterest.Query DifferentBasicQuery
             => InterestQuery.Query(Constraint.RelativeSphere(20));
 
-        private static InterestHelper BasicInterest
-            => InterestHelper.Begin();
+        private static InterestTemplate BasicInterest
+            => InterestTemplate.New();
 
-        private static InterestHelper FromInterest
-            => InterestHelper.From(EmptyDictionary);
+        private static InterestTemplate FromInterest
+            => InterestTemplate.From(EmptyDictionary);
 
-        private static InterestHelper MutateInterest
-            => InterestHelper.Mutate(EmptyDictionary);
+        private static InterestTemplate MutateInterest
+            => InterestTemplate.Mutate(EmptyDictionary);
 
         private static Dictionary<uint, ComponentInterest> EmptyDictionary
             => new Dictionary<uint, ComponentInterest>();
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .ReplaceQueries<Position.Component>(differentBasicQuery);
 
             ComponentInterest replacedQuery;
-            var queryExists = interest.ToComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
             var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
 
             Assert.True(queryExists);
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .ReplaceQueries<Position.Component>(DifferentBasicQuery);
 
             ComponentInterest replacedQuery;
-            var queryExists = interest.ToComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
 
             Assert.True(queryExists);
             Assert.AreEqual(1, replacedQuery.Queries.Count);
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AddQueries<Position.Component>(BasicQuery)
                 .ClearQueries<Metadata.Component>();
 
-            Assert.AreEqual(2, interest.ToComponentInterest().Keys.Count);
+            Assert.AreEqual(2, interest.AsComponentInterest().Keys.Count);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AddQueries<Position.Component>(BasicQuery)
                 .ClearAllQueries();
 
-            Assert.AreEqual(0, interest.ToComponentInterest().Keys.Count);
+            Assert.AreEqual(0, interest.AsComponentInterest().Keys.Count);
         }
 
         [Test]
@@ -128,21 +128,21 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void GetInterest_should_not_return_null_with_new_interest()
         {
-            var interest = BasicInterest.ToComponentInterest();
+            var interest = BasicInterest.AsComponentInterest();
             Assert.IsNotNull(interest);
         }
 
         [Test]
         public void GetInterest_should_not_return_null_with_from_interest()
         {
-            var interest = FromInterest.ToComponentInterest();
+            var interest = FromInterest.AsComponentInterest();
             Assert.IsNotNull(interest);
         }
 
         [Test]
         public void GetInterest_should_not_return_null_with_mutated_interest()
         {
-            var interest = MutateInterest.ToComponentInterest();
+            var interest = MutateInterest.AsComponentInterest();
             Assert.IsNotNull(interest);
         }
 
@@ -152,12 +152,12 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var originalInterest = BasicInterest
                 .AddQueries<Position.Component>(BasicQuery)
                 .AddQueries<Metadata.Component>(BasicQuery)
-                .ToComponentInterest();
+                .AsComponentInterest();
 
-            var modifiedInterest = InterestHelper
+            var modifiedInterest = InterestTemplate
                 .From(originalInterest)
                 .ClearQueries<Position.Component>()
-                .ToComponentInterest();
+                .AsComponentInterest();
 
             Assert.AreEqual(2, originalInterest.Keys.Count);
             Assert.AreEqual(1, modifiedInterest.Keys.Count);
@@ -169,12 +169,12 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var originalInterest = BasicInterest
                 .AddQueries<Position.Component>(BasicQuery)
                 .AddQueries<Metadata.Component>(BasicQuery)
-                .ToComponentInterest();
+                .AsComponentInterest();
 
-            var modifiedInterest = InterestHelper
+            var modifiedInterest = InterestTemplate
                 .Mutate(originalInterest)
                 .ClearQueries<Position.Component>()
-                .ToComponentInterest();
+                .AsComponentInterest();
 
             Assert.AreEqual(1, originalInterest.Keys.Count);
             Assert.AreEqual(1, modifiedInterest.Keys.Count);

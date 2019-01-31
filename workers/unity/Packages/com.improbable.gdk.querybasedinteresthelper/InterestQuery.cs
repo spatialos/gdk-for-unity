@@ -8,8 +8,6 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestQuery
     {
-        private static readonly IReadOnlyList<uint> EmptyList = new List<uint>();
-
         private ComponentInterest.Query query;
 
         /// <summary>
@@ -32,7 +30,7 @@ namespace Improbable.Gdk.QueryBasedInterest
                 {
                     Constraint = constraint,
                     FullSnapshotResult = true,
-                    ResultComponentId = EmptyList.ToList()
+                    ResultComponentId = new List<uint>()
                 }
             };
             return interest;

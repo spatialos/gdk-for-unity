@@ -9,17 +9,14 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// <summary>
     ///     Utility class to help construct QueryConstraint objects.
     /// </summary>
-    public static class Constraint
+    public class Constraint
     {
-        private static readonly IReadOnlyList<ComponentInterest.QueryConstraint> EmptyList
-            = new List<ComponentInterest.QueryConstraint>();
-
         private static ComponentInterest.QueryConstraint Default()
         {
             return new ComponentInterest.QueryConstraint
             {
-                AndConstraint = EmptyList.ToList(),
-                OrConstraint = EmptyList.ToList()
+                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
+                OrConstraint = new List<ComponentInterest.QueryConstraint>()
             };
         }
 
@@ -70,13 +67,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             double centerY,
             double centerZ)
         {
-            var constraint = Default();
-            constraint.SphereConstraint = new ComponentInterest.SphereConstraint
-            {
-                Center = new Coordinates(centerX, centerY, centerZ),
-                Radius = radius
-            };
-            return constraint;
+            return Sphere(radius, new Coordinates(centerX, centerY, centerZ));
         }
 
         /// <summary>
@@ -126,13 +117,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             double centerY,
             double centerZ)
         {
-            var constraint = Default();
-            constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint()
-            {
-                Center = new Coordinates(centerX, centerY, centerZ),
-                Radius = radius
-            };
-            return constraint;
+            return Cylinder(radius, new Coordinates(centerX, centerY, centerZ));
         }
 
         /// <summary>
@@ -200,13 +185,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             double centerY,
             double centerZ)
         {
-            var constraint = Default();
-            constraint.BoxConstraint = new ComponentInterest.BoxConstraint
-            {
-                Center = new Coordinates(centerX, centerY, centerZ),
-                EdgeLength = new EdgeLength(xWidth, yHeight, zDepth)
-            };
-            return constraint;
+            return Box(xWidth, yHeight, zDepth, new Coordinates(centerX, centerY, centerZ));
         }
 
         /// <summary>
@@ -353,7 +332,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             return new ComponentInterest.QueryConstraint
             {
                 AndConstraint = andConstraints,
-                OrConstraint = EmptyList.ToList()
+                OrConstraint = new List<ComponentInterest.QueryConstraint>()
             };
         }
 
@@ -380,7 +359,7 @@ namespace Improbable.Gdk.QueryBasedInterest
 
             return new ComponentInterest.QueryConstraint
             {
-                AndConstraint = EmptyList.ToList(),
+                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
                 OrConstraint = orConstraints
             };
         }
