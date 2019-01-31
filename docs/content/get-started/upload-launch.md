@@ -76,8 +76,8 @@ The next step is to [start a cloud deployment](https://docs.improbable.io/refere
 
 * **Assembly Name** - this identifies the worker assemblies to use. 
 * **Deployment Name** - this labels your deployment in the SpatialOS web Console.
-* **Snapshot Path** - this specifies which snapshot file the deployment uses. A snapshot declares the state of the world as the deployment starts.
-* **Config** - this is the deployment's launch configuration `.json` file which declares the world and load balancing configuration.
+* **Snapshot File** - this specifies which snapshot file the deployment uses. A snapshot declares the state of the world as the deployment starts.
+* **Launch Config File** - this is the deployment's launch configuration `.json` file which declares the world and load balancing configuration.
 
 <br/>
 To launch your cloud deployment:
@@ -89,14 +89,14 @@ First enter the parameters in the Deployment Launcher section of the Deployment 
 |-----|------|
 |**Assembly Name**| The name you gave the assembly in step 2 - for example; `myassembly`. <br/>(The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.)|
 |**Deployment Name**| A name of your choice - for example; `shootyshooty`. <br/>(The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.)|
-|**Snapshot Path**|`snapshots/cloud.snapshot`
-|**Config** | `cloud_launch_large.json`.|
-|**Enable simulated players**| Ensure this is checked.|
-|**Override name**| Leave this checkbox UNchecked.|
+|**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
+|**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
+|**Enable Simulated Players**| Ensure this is checked.|
+|**Override Name**| Leave this checkbox UNchecked.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
-|**Config**<br/> (The second Config listed)|`cloud_launch_large_sim_players.json`|
+|**Launch Config File**<br/> (The second Config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
 
-![]({{assetRoot}}assets/deployment-window-end.png)
+![]({{assetRoot}}assets/deployment-window.png)
 <br/>_Example completed Deployments window_
 <br/>
 <br/>
