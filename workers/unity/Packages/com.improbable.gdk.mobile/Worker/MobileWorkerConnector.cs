@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Mobile
 {
     public abstract class MobileWorkerConnector : WorkerConnector
     {
-        [SerializeField] private string DevelopmentAuthToken;
+        [SerializeField] protected string DevelopmentAuthToken;
 
         protected abstract string GetHostIp();
 
