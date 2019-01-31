@@ -53,7 +53,7 @@ To run a deployment in the cloud, you need to upload the worker assemblies to yo
 
 To do this:
 
-* First, in the **Assembly** section of the Deployments window, enter the **Assembly Name** field. The assembly name a string you choose made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`. (As shown in the example below.)
+* First, in the **Assembly** section of the Deployments window, enter the **Assembly Name** field. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`. (As shown in the example below.)
 * Now select **Upload Assembly** to start the upload.
 
 ![]({{assetRoot}}assets/deployment-window.png)
@@ -82,7 +82,7 @@ The next step is to [start a cloud deployment](https://docs.improbable.io/refere
 <br/>
 To launch your cloud deployment:
 
-First enter the parameters in the Deployment Launcher section of the Deployment window. Complete the settings as below:
+First enter the parameters in the Deployment Launcher section of the Deployments window. Complete the settings as below:
 <br/>
 
 |Setting name|The setting you add|
@@ -94,7 +94,7 @@ First enter the parameters in the Deployment Launcher section of the Deployment 
 |**Enable Simulated Players**| Ensure this is checked.|
 |**Override Name**| Leave this checkbox UNchecked.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
-|**Launch Config File**<br/> (The second Config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
+|**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
 
 ![]({{assetRoot}}assets/deployment-window.png)
 <br/>_Example completed Deployments window_
