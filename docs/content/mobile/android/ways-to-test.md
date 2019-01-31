@@ -4,7 +4,7 @@ Before reading this document, make sure you are familiar with:
 
   * [The SpatialOS GDK for Unity]({{urlRoot}}/content/intro-reference)
   * [Mobile support overview]({{urlRoot}}/content/mobile/overview)
-  * [Setting up iOS support for the GDK]({{urlRoot}}/content/mobile/android/setup)
+  * [Setting up Android support for the GDK]({{urlRoot}}/content/mobile/android/setup)
 
 Unity provides multiple ways to test your Android [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
