@@ -39,7 +39,7 @@ Your `spatialos.json` should look like this:
 <br/>
 ### Upload and launch your cloud deployment
 
-You do this through the Deployments window in the Unity Editor.
+The FPS Starter Project has a the Deployments window in the Unity Editor which you can use to do this.
 
 #### 1. Reference your Unity project in the Deployments window
 
