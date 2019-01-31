@@ -75,7 +75,7 @@ Uploaded assembly my_assembly to project unity_gdk successfully.
 The next step is to [start a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. When you launch a cloud deployment you have to provide four parameters:
 
 * **Assembly Name** - this identifies the worker assemblies to use. 
-* **Deployment Name** - this labels your deployment in the SpatialOS web Console.
+* **Deployment Name** - this labels your deployment in the SpatialOS Console.
 * **Snapshot File** - this specifies which snapshot file the deployment uses. A snapshot declares the state of the world as the deployment starts.
 * **Launch Config File** - this is the deployment's launch configuration `.json` file which declares the world and load balancing configuration.
 

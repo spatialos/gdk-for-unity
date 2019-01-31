@@ -1,6 +1,6 @@
 # Get started: 5 - Get playing!
 
-Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
+Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
 <img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
 
@@ -16,7 +16,7 @@ It’s a bit lonely in there isn’t it? Keep your client running while we get t
 
 ## Invite friends
 
-To invite other players to this game, head back to the Deployment Overview page in your web Console, and select the **Share** button:
+To invite other players to this game, head back to the Deployment Overview page in your SpatialOS Console, and select the **Share** button:
 
 <img src="{{assetRoot}}assets/overview-page-share.png" style="margin: 0 auto; display: block;" />
 
@@ -32,9 +32,9 @@ These enemies will be Unity Clients running in the cloud, mimicking real players
 
 In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
 
-The enemies will be hosted in a separate deployment so that they do not share resources with your `UnityGameLogic` workers. You can find this deployment by returning to your SpatialOS [web Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
+The enemies will be hosted in a separate deployment so that they do not share resources with your `UnityGameLogic` workers. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
-To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
+To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
