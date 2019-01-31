@@ -31,6 +31,8 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public Worker Worker;
 
+        [SerializeField] protected string DevelopmentAuthToken;
+
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
