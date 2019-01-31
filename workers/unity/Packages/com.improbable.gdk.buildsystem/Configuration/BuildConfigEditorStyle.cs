@@ -14,7 +14,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal readonly GUIContent AddSceneButtonContents = new GUIContent(string.Empty, "Add scene");
         internal readonly GUIContent RemoveSceneButtonContents = new GUIContent(string.Empty, "Remove scene");
-        internal string BuiltInErrorIcon = "console.erroricon";
+        internal const string BuiltInErrorIcon = "console.erroricon.sml";
 
         internal readonly string[] CompressionOptions = { "Default", "LZ4", "LZ4HC" };
 

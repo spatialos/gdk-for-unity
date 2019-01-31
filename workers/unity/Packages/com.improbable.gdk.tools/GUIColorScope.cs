@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Tools
 {
-    public class ScopedGUIColor : IDisposable
+    public class GUIColorScope : IDisposable
     {
         private readonly Color oldColor;
 
-        public ScopedGUIColor(Color color)
+        public GUIColorScope(Color color)
         {
             oldColor = GUI.color;
             GUI.color = color;

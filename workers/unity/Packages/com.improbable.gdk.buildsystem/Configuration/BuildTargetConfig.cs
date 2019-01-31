@@ -24,17 +24,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// </summary>
         public bool Enabled;
 
-        [NonSerialized] internal readonly string Label;
-
-        /// <summary>
-        /// Returns a new instance of <see cref="BuildTargetConfig"/> with the Enabled property set to the new value.
-        /// </summary>
-        /// <param name="enabled">The new value of the Enabled property.</param>
-        /// <returns></returns>
-        public BuildTargetConfig SetEnabled(bool enabled)
-        {
-            return new BuildTargetConfig(Target, Options, enabled);
-        }
+        [NonSerialized] internal readonly string Label;        
 
         /// <summary>
         ///     Creates a new instance of a build target and its options.

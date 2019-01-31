@@ -9,7 +9,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     {
         private readonly BuildConfig workerConfiguration;
 
-        private readonly string[] choices;
+        public readonly string[] Choices;
+        public int Choice = -1;
+
         private readonly Rect[] choiceRects;
         private readonly Vector2 windowSize;
         private int hover = -1;
@@ -19,13 +21,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             workerConfiguration = config;
             windowSize = parentRect.size;
 
-            choices =
+            Choices =
                 BuildWorkerMenu.AllWorkers.Except(
                     workerConfiguration.WorkerBuildConfigurations.Select(w => w.WorkerType)).ToArray();
 
-            choiceRects = new Rect[choices.Length];
+            choiceRects = new Rect[Choices.Length];
 
-            windowSize.y = 22.0f * choices.Length;
+            windowSize.y = 22.0f * Choices.Length;
         }
 
         public override Vector2 GetWindowSize()
@@ -38,7 +40,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var style = new GUIStyle(EditorStyles.miniLabel);
             var anyHover = false;
 
-            for (var i = 0; i < choices.Length; i++)
+            for (var i = 0; i < Choices.Length; i++)
             {
                 if (hover == i)
                 {
@@ -49,7 +51,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         var s = new GUIStyle();
                         s.normal.background = Texture2D.whiteTexture;
 
-                        using (new ScopedGUIColor(EditorStyles.foldout.active.textColor))
+                        using (new GUIColorScope(EditorStyles.foldout.active.textColor))
                         {
                             GUI.Box(choiceRects[i], Texture2D.whiteTexture, s);
                         }
@@ -61,21 +63,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     style.normal.textColor = EditorStyles.miniLabel.normal.textColor;
                 }
 
-                if (GUILayout.Button(choices[i], style))
+                if (GUILayout.Button(Choices[i], style))
                 {
-                    EditorUtility.SetDirty(workerConfiguration);
-                    Undo.RecordObject(workerConfiguration, $"Add '{choices[i]}'");
-
-                    var config = new WorkerBuildConfiguration
-                    {
-                        WorkerType = choices[i],
-                        LocalBuildConfig = new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets,
-                            WorkerBuildData.GetCurrentBuildTargetConfig()),
-                        CloudBuildConfig = new BuildEnvironmentConfig(WorkerBuildData.AllBuildTargets,
-                            WorkerBuildData.GetLinuxBuildTargetConfig())
-                    };
-                    workerConfiguration.WorkerBuildConfigurations.Add(config);
+                    Choice = i;
                     editorWindow.Close();
+                    break;
                 }
 
                 if (Event.current.type == EventType.Repaint)

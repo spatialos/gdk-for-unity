@@ -16,8 +16,8 @@ namespace Improbable.Gdk.Tools
 
         private const string CodeGeneratorLabel = "Code generator";
 
-        private static readonly GUIContent AddSchemaDirButtonText = new GUIContent("+", "Add new schema directory");
-        private static readonly GUIContent RemoveSchemaDirButtonText = new GUIContent("-", "Remove schema directory");
+        private static GUIContent AddSchemaDirButton;
+        private static GUIContent RemoveSchemaDirButton;
 
         private const string ResetConfigurationButtonText = "Reset to default";
         private const string SaveConfigurationButtonText = "Save";
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            titleContent = new GUIContent("GDK Tools");
+            titleContent = new GUIContent("GDK Tools");           
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
@@ -48,14 +48,23 @@ namespace Improbable.Gdk.Tools
 
         public void OnGUI()
         {
+            if (AddSchemaDirButton == null)
+            {
+                AddSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Plus"))
+                    { tooltip = "Add schema directory" };
+
+                RemoveSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
+                    { tooltip = "Remove schema directory" };
+            }
+
             using (new EditorGUILayout.VerticalScope())
             using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition))
             using (var check = new EditorGUI.ChangeCheckScope())
             {
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
                 {
-                    var canDelete = configErrors.Count > 0;
-                    using (new EditorGUI.DisabledScope(canDelete))
+                    var canSave = configErrors.Count > 0;
+                    using (new EditorGUI.DisabledScope(canSave))
                     {
                         if (GUILayout.Button(SaveConfigurationButtonText, EditorStyles.toolbarButton))
                         {
@@ -93,6 +102,7 @@ namespace Improbable.Gdk.Tools
             GUILayout.Label(CodeGeneratorLabel, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
+            using(new EditorGUIUtility.IconSizeScope(new Vector2(12,12)))
             using (new EditorGUI.IndentLevelScope())
             {
                 toolsConfig.CodegenOutputDir =
@@ -102,9 +112,6 @@ namespace Improbable.Gdk.Tools
                 toolsConfig.SchemaStdLibDir =
                     EditorGUILayout.TextField(SchemaStdLibDirLabel, toolsConfig.SchemaStdLibDir);
 
-                GUILayout.Label(RuntimeIpLabel, EditorStyles.boldLabel);
-                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);                    
-
                 for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
                 {
                     using (new EditorGUILayout.HorizontalScope())
@@ -112,8 +119,7 @@ namespace Improbable.Gdk.Tools
                         toolsConfig.SchemaSourceDirs[i] =
                             EditorGUILayout.TextField($"Schema dir [{i}]", toolsConfig.SchemaSourceDirs[i]);
 
-                        if (GUILayout.Button(RemoveSchemaDirButtonText, EditorStyles.toolbarButton,
-                            GUILayout.ExpandWidth(false), GUILayout.Width(18)))
+                        if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
                             toolsConfig.SchemaSourceDirs.RemoveAt(i);
                         }
@@ -124,12 +130,15 @@ namespace Improbable.Gdk.Tools
                 {
                     GUILayout.FlexibleSpace();
 
-                    if (GUILayout.Button(AddSchemaDirButtonText, EditorStyles.toolbarButton,
-                        GUILayout.ExpandWidth(false), GUILayout.Width(18)))
+                    if (GUILayout.Button(AddSchemaDirButton, EditorStyles.miniButton))
                     {
                         toolsConfig.SchemaSourceDirs.Add(string.Empty);
                     }
                 }
+
+                GUILayout.Label(RuntimeIpLabel, EditorStyles.boldLabel);
+                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);                    
+
             }
         }
     }
