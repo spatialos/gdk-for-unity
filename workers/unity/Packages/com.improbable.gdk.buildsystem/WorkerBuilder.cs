@@ -67,7 +67,8 @@ namespace Improbable.Gdk.BuildSystem
                 ValidateWorkerConfiguration(wantedWorkerTypes, buildEnvironment);
 
                 ScriptingImplementation scriptingBackend;
-                var wantedScriptingBackend = CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
+                var wantedScriptingBackend =
+                    CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
                 switch (wantedScriptingBackend)
                 {
                     case "mono":
@@ -82,7 +83,7 @@ namespace Improbable.Gdk.BuildSystem
 
                 LocalLaunch.BuildConfig();
 
-                foreach (var wantedWorkerType in wantedWorkerTypes)
+                foreach (var wantedWorkerType in filteredWorkerTypes)
                 {
                     BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
                 }
@@ -123,7 +124,7 @@ namespace Improbable.Gdk.BuildSystem
                 }
             };
         }
-        
+
         private static void DisplayBuildFailureDialog()
         {
             EditorUtility.DisplayDialog("Build Failed",
@@ -133,7 +134,7 @@ namespace Improbable.Gdk.BuildSystem
 
         private static void ValidateWorkerConfiguration(string[] wantedWorkerTypes, BuildEnvironment buildEnvironment)
         {
-            var problemWorkers = new List<string>();            
+            var problemWorkers = new List<string>();
             foreach (var wantedWorkerType in wantedWorkerTypes)
             {
                 var spatialOSBuildConfiguration = BuildConfig.GetInstance();
@@ -215,11 +216,12 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        
+
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
-            Debug.Log($"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
+            Debug.Log(
+                $"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
@@ -254,10 +256,11 @@ namespace Improbable.Gdk.BuildSystem
         {
             using (new ShowProgressBarScope($"Package {basePath}"))
             {
-                RedirectedProcess.Run(Common.SpatialBinary, "file", "zip",
-                    $"--output=\"{Path.GetFullPath(zipAbsolutePath)}\"",
-                    $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
-                    $"--compression={useCompression}");
+                RedirectedProcess.Command(Common.SpatialBinary)
+                    .WithArgs("file", "zip", $"--output=\"{Path.GetFullPath(zipAbsolutePath)}\"",
+                        $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
+                        $"--compression={useCompression}")
+                    .Run();
             }
         }
     }

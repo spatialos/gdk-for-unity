@@ -31,6 +31,8 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public Worker Worker;
 
+        [SerializeField] protected string DevelopmentAuthToken;
+
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
@@ -125,7 +127,8 @@ namespace Improbable.Gdk.Core
                 logger.HandleLog(LogType.Error, new LogEvent("Failed to create worker")
                     .WithException(e)
                     .WithField("WorkerType", workerType)
-                    .WithField("Message", e.Message));
+                    .WithField("Message", e.Message)
+                    .WithField("Stacktrace", e.StackTrace));
 #if UNITY_EDITOR
                 // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not.
                 logger.HandleLog(LogType.Warning,

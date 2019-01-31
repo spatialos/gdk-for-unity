@@ -16,6 +16,16 @@
       }
     ]
   },
+  "load_balancing": {
+    "layer_configurations": [
+      {
+        "layer": "UnityGameLogic",
+        "hex_grid": {
+          "num_workers": 1
+        }
+      }
+    ]
+  },
   "workers": [
     {
       "worker_type": "UnityGameLogic",
@@ -23,30 +33,23 @@
         {
           "all": {}
         }
-      ],
-      "load_balancing": {
-        "auto_hex_grid": {
-          "num_workers": 1
-        }
-      }
+      ]
     },
     {
       "worker_type": "AndroidClient",
-      "permissions": [{
+      "permissions": [
+        {
           "all": {}
-      }],
-      "load_balancing": {
-        "singleton_worker": {}
-      }
+        }
+      ]
     },
     {
       "worker_type": "iOSClient",
-      "permissions": [{
+      "permissions": [
+        {
           "all": {}
-      }],
-      "load_balancing": {
-        "singleton_worker": {}
-      }
+        }
+      ]
     }
   ]
 }

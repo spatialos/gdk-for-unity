@@ -28,6 +28,7 @@ namespace Playground
         protected override void HandleWorkerConnectionEstablished()
         {
             ConnectionScreenController.OnConnectionSucceeded();
+            Worker.OnDisconnect += ConnectionScreenController.OnDisconnected;
             WorkerUtils.AddClientSystems(Worker.World);
 
             if (level == null)

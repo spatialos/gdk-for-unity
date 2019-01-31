@@ -46,7 +46,7 @@ pushd ${TMP_DIR}
 
     pushd unity-gdk 
 
-        git checkout master
+        git checkout develop
         git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
         CHANGED_FILES=$(git diff HEAD --name-only)
 

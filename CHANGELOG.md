@@ -2,12 +2,24 @@
 
 ## Unreleased
 
+### Changed
+
+- Changed `RedirectedProcess` to have Builder-like API.
+
+### Fixed
+
+- Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.
+- Fixed a bug where a Unity package with no dependencies field in its `package.json` would cause code generation to throw exceptions.
+
+## `0.1.4` - 2019-01-28
+
 ### Added
 
-- Added support for the Steam authentication flow.
 - Added support for the Alpha Locator flow.
 - Added support for connecting mobile devices to cloud deployments via the anonymous authentication flow.
 - Added option to build workers out via IL2CPP in the cmd.
+- Added an example of handling disconnect for mobile workers.
+- Added support for launching an Android client from the Editor over ADB.
 
 ### Changed
 
@@ -18,6 +30,11 @@
 - Upgraded the project to be compatible with `2018.3.2f1`.
 - Upgraded the entities package to `0.0.12-preview.21`
 - Disabled protocol logging on Linux workers to prevent crashes. This will be reverted once the underlying issue is fixed.
+- Updated the `MobileWorkerConnector` to use the KCP network protocol by default.
+- Changed the `mobile_launch.json` config to use the new Runtime.
+- Updated all the launch configs to use the new Runtime.
+- Changed the build process in the Editor such that it skips builds that don't have build support rather than canceling the entire build process.
+    - Note that building via the `Improbable.Gdk.BuildSystem.WorkerBuilder.Build` static method is unchanged.
 
 ### Fixed
 
@@ -26,6 +43,7 @@
 - Code generation now captures nested package dependencies, so the generated schema contains schema components from all required packages. Previously, code generation only generated schema for top-level dependencies, skipping nested packages.
 - Fixed a bug where spaces in the path would cause code generation to fail on OSX.
 - Fixed an issue in the TransformSynchronization module where an integer underflow would cause a memory crash.
+- Fixed a bug where using `Coordinates`, `Vector3f`, or `Vector3d` in a command definition would cause the Code Generator to crash.
 
 ### Removed
 

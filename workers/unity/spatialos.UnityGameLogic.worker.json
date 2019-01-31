@@ -18,7 +18,7 @@
   "bridge": {
     "worker_attribute_set": {
       "attributes": [
-          "UnityGameLogic"
+        "UnityGameLogic"
       ]
     },
     "entity_interest": {
