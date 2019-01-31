@@ -4,30 +4,17 @@ set -e -u -o -x pipefail
 
 cd "$(dirname "$0")/../"
 
-function isDocsBranch() {
-  if [[ -n "${BUILDKITE_BRANCH-}" ]]; then
-    BRANCH="${BUILDKITE_BRANCH}"
-  else
-    BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-  fi
-
-  if [[ "${BRANCH}" == docs/* ]]; then
-    return 0
-  fi
-  return 1
-}
+ci/bootstrap.sh
+source ".shared-ci/scripts/pinned-tools.sh"
 
 if isDocsBranch; then
     exit 0
 fi
 
-
-# Get shared CI and prepare Unity
-ci/bootstrap.sh
+# Prepare Unity
 .shared-ci/scripts/prepare-unity.sh
 .shared-ci/scripts/prepare-unity-mobile.sh "$(pwd)/logs/PrepareUnityMobile.log"
 
-source ".shared-ci/scripts/pinned-tools.sh"
 
 ci/test.sh
 .shared-ci/scripts/build.sh "workers/unity" AndroidClient local mono "$(pwd)/logs/AndroidClientBuild.log"

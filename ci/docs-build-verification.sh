@@ -3,33 +3,6 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
-function isDocsBranch() {
-  if [[ -n "${BUILDKITE_BRANCH-}" ]]; then
-    BRANCH="${BUILDKITE_BRANCH}"
-  else
-    BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-  fi
-
-  if [[ "${BRANCH}" == docs/* ]]; then
-    return 0
-  fi
-  return 1
-}
-
-function isDocsFile() {
-    FILE_PATH=${1}
-
-    if echo ${FILE_PATH} | grep "docs/" ; then
-        return 0
-    fi
-
-    if echo ${FILE_PATH} | grep ".*.md" ; then
-        return 0
-    fi
-    
-    return 1
-}
-
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
     cd ${CURRENT_DIR}
@@ -44,6 +17,10 @@ function fetchCloneUrl() {
     echo "git@${GITHUB_URL/.com\//.com:}"
     return 0
 }
+
+ci/bootstrap.sh
+
+source .shared-ci/scripts/pinned-tool.sh
 
 trap cleanUp EXIT
 
