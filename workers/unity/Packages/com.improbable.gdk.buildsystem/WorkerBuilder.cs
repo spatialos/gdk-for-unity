@@ -64,8 +64,6 @@ namespace Improbable.Gdk.BuildSystem
                         "UnityClient,UnityGameLogic");
                 var wantedWorkerTypes = workerTypesArg.Split(',');
 
-                ValidateWorkerConfiguration(wantedWorkerTypes, buildEnvironment);
-
                 ScriptingImplementation scriptingBackend;
                 var wantedScriptingBackend =
                     CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
@@ -83,10 +81,19 @@ namespace Improbable.Gdk.BuildSystem
 
                 LocalLaunch.BuildConfig();
 
-                foreach (var wantedWorkerType in filteredWorkerTypes)
+                var workerResults = new Dictionary<string, bool>();
+                foreach (var wantedWorkerType in wantedWorkerTypes)
                 {
-                    BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    workerResults[wantedWorkerType] = result;
                 }
+
+                var missingWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => workerResults[k]));
+                var completedWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => !workerResults[k]));
+                Debug.LogWarning(
+                    $"Completed build for {buildEnvironment} target.\n"
+                    + $"Completed builds for: {completedWorkerTypes}\n"
+                    + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
             }
             catch (Exception e)
             {
@@ -116,7 +123,7 @@ namespace Improbable.Gdk.BuildSystem
 
                     Debug.LogFormat("Completed build for {0} target", environment);
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
                     DisplayBuildFailureDialog();
 
@@ -130,47 +137,16 @@ namespace Improbable.Gdk.BuildSystem
             EditorUtility.DisplayDialog("Build Failed",
                 "Build failed. Please see the Unity Console Window for information.",
                 "OK");
-        }
+        }        
 
-        private static void ValidateWorkerConfiguration(string[] wantedWorkerTypes, BuildEnvironment buildEnvironment)
-        {
-            var problemWorkers = new List<string>();
-            foreach (var wantedWorkerType in wantedWorkerTypes)
-            {
-                var spatialOSBuildConfiguration = BuildConfig.GetInstance();
-
-                var workerConfiguration =
-                    spatialOSBuildConfiguration.WorkerBuildConfigurations.FirstOrDefault(x =>
-                        x.WorkerType == wantedWorkerType);
-
-                var missingBuildSupport = workerConfiguration.GetEnvironmentConfig(buildEnvironment).BuildTargets
-                    .Where(t => !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target]).ToList();
-
-                foreach (var t in missingBuildSupport)
-                {
-                    Debug.LogError($"{wantedWorkerType}: Missing build support for {t.Target.ToString()}");
-                }
-
-                if (missingBuildSupport.Any())
-                {
-                    problemWorkers.Add(wantedWorkerType);
-                }
-            }
-
-            if (problemWorkers.Any())
-            {
-                throw new BuildFailedException($"Build configuration has errors for {string.Join(",", problemWorkers)}");
-            }
-        }
-
-        internal static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
+        internal static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
             if (environmentConfig == null || environmentConfig.BuildTargets.Count == 0)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
-                return;
+                return false;
             }
 
             if (!Directory.Exists(PlayerBuildDirectory))
@@ -201,6 +177,8 @@ namespace Improbable.Gdk.BuildSystem
                     PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                 }
             }
+
+            return true;
         }
 
         public static void Clean()
@@ -220,6 +198,12 @@ namespace Improbable.Gdk.BuildSystem
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
+            if (!WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget])
+            {
+                Debug.LogWarning($"Skipping {buildTarget} because support is not installed in the Unity Editor.");
+                return;
+            }
+
             Debug.Log(
                 $"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
