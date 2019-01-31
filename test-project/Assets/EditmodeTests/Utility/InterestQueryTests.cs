@@ -33,7 +33,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Filter_with_components_implies_FullSnapshotResult_is_null()
         {
             var query = BasicQuery.FilterResults(Position.ComponentId);
-            Assert.IsNull(query.FullSnapshotResult);
+            Assert.IsNull(query.AsComponentInterestQuery().FullSnapshotResult);
         }
     }
 }

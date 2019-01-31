@@ -83,9 +83,9 @@
 
 ### Added
 - Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
-    - `Improbable.Gdk.QueryBasedInterestHelper.InterestHelper` provides functionality to ergonomically add, replace and clear queries from an Interest component.
+    - `Improbable.Gdk.QueryBasedInterestHelper.InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
     - `Improbable.Gdk.QueryBasedInterestHelper.InterestQuery` enables simpler construction of interest queries.
-    - `Improbable.Gdk.QueryBasedInterestHelper.Constraint` contains static methods to construct the QueryConstraint objects which used to define interest queries.
+    - `Improbable.Gdk.QueryBasedInterestHelper.Constraint` contains static methods to easily create constraints for an interest query.
 
 ## `0.1.4` - 2019-01-28
 
