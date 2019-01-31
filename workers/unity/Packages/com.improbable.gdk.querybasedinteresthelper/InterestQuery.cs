@@ -22,13 +22,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An InterestQuery object.
         /// </returns>
-        public static InterestQuery Query(ComponentInterest.QueryConstraint constraint)
+        public static InterestQuery Query(Constraint constraint)
         {
             var interest = new InterestQuery
             {
                 query =
                 {
-                    Constraint = constraint,
+                    Constraint = constraint.AsQueryConstraint(),
                     FullSnapshotResult = true,
                     ResultComponentId = new List<uint>()
                 }
@@ -64,22 +64,21 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     At least one component ID must be provided.
         /// </remarks>
         /// <returns>
-        ///     A ComponentInterest.Query object.
+        ///     An updated InterestQuery object.
         /// </returns>
-        public ComponentInterest.Query FilterResults(uint resultComponentId, params uint[] resultComponentIds)
+        public InterestQuery FilterResults(uint resultComponentId, params uint[] resultComponentIds)
         {
             var resultIds = new List<uint>(resultComponentIds.Length + 1) { resultComponentId };
             resultIds.AddRange(resultComponentIds);
 
             query.FullSnapshotResult = null;
             query.ResultComponentId = resultIds;
-
-            return query;
+            return this;
         }
 
-        public static implicit operator ComponentInterest.Query(InterestQuery interestQuery)
+        public ComponentInterest.Query AsComponentInterestQuery()
         {
-            return interestQuery.query;
+            return query;
         }
     }
 }

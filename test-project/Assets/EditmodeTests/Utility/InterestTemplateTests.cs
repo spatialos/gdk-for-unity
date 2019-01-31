@@ -7,12 +7,12 @@ using Unity.Entities;
 namespace Improbable.Gdk.EditmodeTests.Utility
 {
     [TestFixture]
-    public class InterestHelperTests
+    public class InterestTemplateTests
     {
-        private static ComponentInterest.Query BasicQuery
+        private static InterestQuery BasicQuery
             => InterestQuery.Query(Constraint.RelativeSphere(10));
 
-        private static ComponentInterest.Query DifferentBasicQuery
+        private static InterestQuery DifferentBasicQuery
             => InterestQuery.Query(Constraint.RelativeSphere(20));
 
         private static InterestTemplate BasicInterest
@@ -54,10 +54,12 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void ReplaceQueries_clears_previous_query()
         {
             var initialQuery = BasicQuery;
-            var initialQueryRadius = initialQuery.Constraint.RelativeSphereConstraint.Value.Radius;
+            var initialQueryRadius = initialQuery.AsComponentInterestQuery()
+                .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var differentBasicQuery = DifferentBasicQuery;
-            var differentQueryRadius = DifferentBasicQuery.Constraint.RelativeSphereConstraint.Value.Radius;
+            var differentQueryRadius = DifferentBasicQuery.AsComponentInterestQuery()
+                .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var interest = BasicInterest
                 .AddQueries<Position.Component>(initialQuery)
