@@ -21,7 +21,7 @@ if [[ ${WORKER_TYPE} == "AndroidClient" ]]; then
 fi
 
 if [[ ${WORKER_TYPE} == "iOSClient" ]]; then
-    if !isMacOs; then
+    if !isMacOS; then
         echo "I can't build for iOS!"
         exit 0
     fi
