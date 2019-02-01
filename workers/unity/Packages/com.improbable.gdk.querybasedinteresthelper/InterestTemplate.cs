@@ -237,7 +237,8 @@ namespace Improbable.Gdk.QueryBasedInterest
                 return this;
             }
 
-            componentInterest.Queries = componentInterestQueries;
+            componentInterest.Queries.Clear();
+            componentInterest.Queries.AddRange(componentInterestQueries);
             return this;
         }
 

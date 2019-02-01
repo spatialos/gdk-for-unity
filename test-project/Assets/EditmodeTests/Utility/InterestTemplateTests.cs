@@ -58,7 +58,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var differentBasicQuery = DifferentBasicQuery;
-            var differentQueryRadius = DifferentBasicQuery.AsComponentInterestQuery()
+            var differentQueryRadius = differentBasicQuery.AsComponentInterestQuery()
                 .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var interest = BasicInterest
