@@ -2,7 +2,7 @@
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers]({{urlRoot}}/content/glossary#worker).
 
-1\. First, make sure burst compilation is disabled; in your Unity Editor menu, select **Jobs** and in the drop-down menu, make sure **Enable Burst Compliation** is unchecked. (If it is checked, select it to remove the check mark and disable it.)
+1\. First, make sure burst compilation is disabled; from your Unity Editor menu, select **Jobs** and in the drop-down menu, make sure **Enable Burst Compilation** is unchecked. (If it is checked, select it to remove the check mark and disable it.)
 
 2\.  Now build your workers from the Unity Editor's SpatialOS menu by selecting **SpatialOS** > **Build for cloud** > **All workers**. 
   (Shown below.) 
