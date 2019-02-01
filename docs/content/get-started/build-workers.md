@@ -34,7 +34,7 @@ You can also check our [Known Issues]({{urlRoot}}/known-issues) for other error 
 * `The worker "iOSClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for iOS. Please add the missing build support options to your Unity Editor.`
 * `The worker "AndroidClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for Android. Please add the missing build support options to your Unity Editor.`
 
-These errors are only relevant if you are developing a game for mobile so you can ignore these errors as part of setting up the FPS Starter Project. (Mobile development support is in pre-alpha; see the [mobile support documentation]({{urlRoot}}/content/mobile/overview) for more information.)
+These errors are only relevant if you are developing a game for mobile so you can ignore them as part of setting up the FPS Starter Project. (Mobile development support is in pre-alpha; see the [mobile support documentation]({{urlRoot}}/content/mobile/overview) for more information.)
 
 **After the build has successfully finished:** 
 <br/>Your `gdk-for-unity-fps-starter-project/build/assembly` folder should contain:
