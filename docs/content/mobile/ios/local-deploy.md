@@ -1,24 +1,26 @@
 [//]: # (TODO - get rid of mobile_launch.json mention and explain it differently)
 
-# Connecting to a local deployment
+# Connect to a local deployment
 
 Before reading this document, make sure you are familiar with:
 
   * [Setting up iOS Support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
+  
+There are three different ways to connect your iOS device to a local deployment, however, before you connect, you need to first prepare your project.
 
 ## Prepare your project to connect to a local deployment
 
-To connect your iOS device or simulator to a local deployment, follow these steps:
+Follow the steps below to connect your iOS device or simulator to a local deployment. The steps ensure that any local deployment you launch via the Unity Editor connects to your iOS device or simulator correctly.
 
 1. Open your project in the Unity Editor.
 1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save**, and close the window.
 
-This ensures that any local deployment that is launched via the Unity Editor is set up correctly to connect to your iOS device or simulator.
+## Connect to a local deployment
 
-## Connecting your iOS device to a local deployment using Unity Remote
+### Connect your iOS mobile device using Unity Remote
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
   1. Connect the mobile device to your computer using a USB cable.
@@ -36,7 +38,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
   1. You should now see your Unity Editor game view mirrored on your iOS device.
 
-## Connecting your iOS simulator to a local deployment
+### Connect your iOS simulator
 
   1. [Build your server-workers.]({{urlRoot}}/content/build)
   1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch mobile_launch.json`.
@@ -54,7 +56,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
   1. Play the game on the Simulator.
 
-## Connecting your iOS device to a local deployment
+### Connect your iOS mobile device
 
   1. Set up [Code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
   1. Make sure your computer and your mobile device are both connected to the same wireless network.
