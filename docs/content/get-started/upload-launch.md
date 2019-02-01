@@ -102,7 +102,7 @@ To launch your cloud deployment:
 <br/>
 2\. Now start your deployment: Select **Launch deployments**.
 
-**Note:** You will see that there are two **Deployment Names** and two **Launch Config Files** listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
+**Note:** You will see that there are two Deployment Names and two Launch Config Files listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
 <br/>
 
 **It's finished when:** You see two messages printed in your Unity Console indicating both deployments have been started:
