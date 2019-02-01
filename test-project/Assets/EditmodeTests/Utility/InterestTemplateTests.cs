@@ -16,13 +16,13 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             => InterestQuery.Query(Constraint.RelativeSphere(20));
 
         private static InterestTemplate BasicInterest
-            => InterestTemplate.New();
+            => InterestTemplate.Create();
 
         private static InterestTemplate FromInterest
-            => InterestTemplate.From(EmptyDictionary);
+            => InterestTemplate.Create(EmptyDictionary);
 
         private static InterestTemplate MutateInterest
-            => InterestTemplate.Mutate(EmptyDictionary);
+            => InterestTemplate.CreateReference(EmptyDictionary);
 
         private static Dictionary<uint, ComponentInterest> EmptyDictionary
             => new Dictionary<uint, ComponentInterest>();
@@ -157,7 +157,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AsComponentInterest();
 
             var modifiedInterest = InterestTemplate
-                .From(originalInterest)
+                .Create(originalInterest)
                 .ClearQueries<Position.Component>()
                 .AsComponentInterest();
 
@@ -174,7 +174,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AsComponentInterest();
 
             var modifiedInterest = InterestTemplate
-                .Mutate(originalInterest)
+                .CreateReference(originalInterest)
                 .ClearQueries<Position.Component>()
                 .AsComponentInterest();
 

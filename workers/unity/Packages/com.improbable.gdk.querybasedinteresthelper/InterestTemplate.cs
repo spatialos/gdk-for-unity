@@ -22,9 +22,23 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A new InterestTemplate object.
         /// </returns>
-        public static InterestTemplate New()
+        public static InterestTemplate Create()
         {
             return new InterestTemplate();
+        }
+
+        /// <summary>
+        ///     Creates a new InterestTemplate object given an existing InterestTemplate.
+        /// </summary>
+        /// <param name="interest">
+        ///     An existing InterestTemplate.
+        /// </param>
+        /// <returns>
+        ///     An InterestTemplate object.
+        /// </returns>
+        public static InterestTemplate Create(InterestTemplate interestTemplate)
+        {
+            return Create(interestTemplate.AsComponentInterest());
         }
 
         /// <summary>
@@ -36,9 +50,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public static InterestTemplate From(Interest.Component interest)
+        public static InterestTemplate Create(Interest.Component interest)
         {
-            return From(interest.ComponentInterest);
+            return Create(interest.ComponentInterest);
         }
 
         /// <summary>
@@ -50,12 +64,12 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public static InterestTemplate From(Dictionary<uint, ComponentInterest> interest)
+        public static InterestTemplate Create(Dictionary<uint, ComponentInterest> interest)
         {
-            return new InterestTemplate(DeepClone(interest));
+            return new InterestTemplate(DeepCopy(interest));
         }
 
-        private static Dictionary<uint, ComponentInterest> DeepClone(Dictionary<uint, ComponentInterest> interest)
+        private static Dictionary<uint, ComponentInterest> DeepCopy(Dictionary<uint, ComponentInterest> interest)
         {
             var clone = new Dictionary<uint, ComponentInterest>(interest.Count);
             foreach (var keyval in interest)
@@ -76,7 +90,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Mutates the given interest component.
+        ///     Mutates the given interest component directly.
         /// </summary>
         /// <param name="interest">
         ///     An existing Interest component.
@@ -84,9 +98,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public static InterestTemplate Mutate(Interest.Component interest)
+        public static InterestTemplate CreateReference(Interest.Component interest)
         {
-            return Mutate(interest.ComponentInterest);
+            return CreateReference(interest.ComponentInterest);
         }
 
         /// <summary>
@@ -98,7 +112,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public static InterestTemplate Mutate(Dictionary<uint, ComponentInterest> interest)
+        public static InterestTemplate CreateReference(Dictionary<uint, ComponentInterest> interest)
         {
             return new InterestTemplate(interest);
         }
@@ -156,7 +170,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             {
                 interest.Add(componentId, new ComponentInterest
                 {
-                    Queries = new List<ComponentInterest.Query>(componentInterestQueries)
+                    Queries = componentInterestQueries
                 });
                 return this;
             }
@@ -218,13 +232,12 @@ namespace Improbable.Gdk.QueryBasedInterest
             {
                 interest.Add(componentId, new ComponentInterest
                 {
-                    Queries = new List<ComponentInterest.Query>(componentInterestQueries)
+                    Queries = componentInterestQueries
                 });
                 return this;
             }
 
-            componentInterest.Queries.Clear();
-            componentInterest.Queries.AddRange(componentInterestQueries);
+            componentInterest.Queries = componentInterestQueries;
             return this;
         }
 
@@ -289,7 +302,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public Dictionary<uint, ComponentInterest> ToComponentInterest()
         {
-            return DeepClone(interest);
+            return DeepCopy(interest);
         }
 
         /// <summary>
