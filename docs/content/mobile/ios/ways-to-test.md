@@ -11,9 +11,9 @@ Unity provides multiple ways to test your iOS [client-worker]({{urlRoot}}/conten
 ## In the Editor
 For standard workflows and for minor changes, we recommend that you simply run your game in the Editor. Now that your build platform is set to iOS, Unity will compile and execute sections of code marked with the platform #define directive `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of the Unity Editor, while still executing code that would otherwise only run on an iOS device.
 
-1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
-1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
-1. In your Unity Editor, open the FPS-Development Scene and click the Play button.<br/>
+For more information, see the following documentation:
+
+  * [Deploy your game in the Editor]({{urlRoot}}/content/mobile/ios/local-deploy#in-editor)
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ With the Unity Remote, you don’t have to spend time building and deploying you
 For more information, see the following documentation:
 
   * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Run your game with Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-device-to-a-local-deployment-using-unity-remote)
+  * [Deploy your game to Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#unity-remote)
 
 ## iOS Simulator
 
@@ -31,7 +31,7 @@ The iOS Simulator simulates iOS devices on your development computer so that you
 For more information, see the following documentation:
 
   * [The Apple Developer documentation](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html)
-  * [Deploy your game with the iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-simulator-to-a-local-deployment)
+  * [Deploy your game to the iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#ios-simulator)
 
 ## iOS device
 
@@ -39,4 +39,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Deploy your game to an iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-device-to-a-local-deployment)
+  * [Deploy your game to an iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#ios-device)
