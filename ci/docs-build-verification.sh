@@ -3,24 +3,12 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
-function isDocsFile() {
-    FILE_PATH=${1}
-
-    if echo ${FILE_PATH} | grep "docs/" ; then
-        return 0
-    fi
-
-    if echo ${FILE_PATH} | grep ".*.md" ; then
-        return 0
-    fi
-    
-    return 1
-}
-
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
-    cd ${CURRENT_DIR} 
-    rm -rf ${TMP_DIR}
+    cd ${CURRENT_DIR}
+    if [[ -n "${TMP_DIR-}" ]]; then
+        rm -rf ${TMP_DIR}
+    fi
 }
 
 function fetchCloneUrl() {
@@ -30,10 +18,18 @@ function fetchCloneUrl() {
     return 0
 }
 
+ci/bootstrap.sh
+source .shared-ci/scripts/pinned-tools.sh
+
 trap cleanUp EXIT
 
-BRANCH_TO_TEST=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_DIR=$(pwd)
+
+if ! isDocsBranch; then
+    exit 0
+fi
+
+CURRENT_COMMIT=$(git rev-parse HEAD)
 
 CLONE_URL=$(fetchCloneUrl)
 TMP_DIR=$(mktemp -d)
@@ -44,10 +40,15 @@ pushd ${TMP_DIR}
     mkdir -p unity-gdk
     git clone ${CLONE_URL} unity-gdk
 
-    pushd unity-gdk 
+    pushd unity-gdk
+
+        if [[ -n "${BUILDKITE_BRANCH-}" ]]; then
+            git config user.email "need-email-for-fake-merge@improbable.io"
+            git config user.name "Fake Merge"
+        fi
 
         git checkout develop
-        git merge --no-commit --no-ff origin/${BRANCH_TO_TEST}
+        git merge --no-commit --no-ff ${CURRENT_COMMIT}
         CHANGED_FILES=$(git diff HEAD --name-only)
 
         NON_DOCS_FILES=()
