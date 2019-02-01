@@ -11,6 +11,10 @@ Unity provides multiple ways to test your Android [client-worker]({{urlRoot}}/co
 ## In the Editor
 For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for Android, it executes code that is in preprocessor `#if UNITY_ANDROID` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
 
+For more information, see the following documentation:
+
+  * [Deploy your game in the Editor]({{urlRoot}}/content/mobile/android/local-deploy#in-editor)
+
 ## Unity Remote
 
 With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
@@ -18,7 +22,7 @@ With the Unity Remote, you don’t have to spend time building and deploying you
 For more information, see the following documentation:
 
   * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Run your game with Unity Remote]({{urlRoot}}/content/mobile/android/local-deploy#remote)
+  * [Run your game with Unity Remote]({{urlRoot}}/content/mobile/android/local-deploy#unity-remote)
 
 ## Android Emulator
 
@@ -27,7 +31,7 @@ The Android Emulator from Android Studio emulates Android devices on your develo
 For more information, see the following documentation:
 
   * [The Android Developers documentation](https://developer.android.com/studio/run/emulator)
-  * [Deploy your game with the Android Emulator]({{urlRoot}}/content/mobile/android/local-deploy#emulator)
+  * [Deploy your game with the Android Emulator]({{urlRoot}}/content/mobile/android/local-deploy#android-emulator)
 
 ## Android device
 
@@ -35,4 +39,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Deploy your game to an Android device]({{urlRoot}}/content/mobile/android/local-deploy#device)
+  * [Deploy your game to an Android device]({{urlRoot}}/content/mobile/android/local-deploy#android-device)

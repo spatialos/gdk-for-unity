@@ -1,4 +1,4 @@
-# Connecting to a local deployment
+# Connect to a local deployment
 
 Before reading this document, make sure you are familiar with:
 
