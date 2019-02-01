@@ -28,11 +28,11 @@ This generates a short link to share with anyone who wants to join in for the du
 
 **For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
 
-These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
+These enemies will be simulated players; they are `UnityClient` client-worker instances running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
 
-In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
+In fact, as far as SpatialOS is concerned, these simulated players are indistinguishable from real players; both simulated players and real players are just `UnityClient` client-worker instances to SpatialOS, so this is a good approach for regular scale testing.
 
-The enemies are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` workers. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
+The simulated players are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` server-worker instances. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
 To get the legion of enemies started, we use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
