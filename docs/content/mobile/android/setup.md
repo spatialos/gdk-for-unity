@@ -14,10 +14,10 @@
 After installing these dependencies, open the Unity project in `<path-to-your-project>/workers/unity`.
 
   1. In the Unity Editor, go to **File** > **Build Settings**. Select **Android** and then click on **Switch Platform**.
-  1. In the Unity Editor, go to **Edit** > **Preferences**. In the **External Tools** window, add the file paths to the tools in the **Android** section:
+  1. In the Unity Editor, go to **Edit** > **Preferences**. In the **External Tools** window, in the Android section, input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the filepath correctly is to use the browse option:
 
 | Field | How to find the path |
 |-------|------|
 | SDK  |  You can find the SDK location by opening Android Studio and selecting **Configure** then **SDK Manager** from the launcher. |
-| JDK  |  **Windows:** default path is `C:\Program Files\Java` <br/>**Mac:** run `which java` to retrieve the path. |
+| JDK  |  **Windows:** default path is `C:/Program Files/Java` <br/>**Mac:** run `which java` to retrieve the path. |
 | NDK  |  Use the directory path that you noted down earlier when extracting the Android NDK.|
