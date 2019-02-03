@@ -103,25 +103,40 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Installing archive", 0.3f);
 
+                // Get chosen ios package id
+                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+                string appList = null;
+
                 // Find archive to install
                 var ipaPath = Directory.GetFiles(AbsoluteAppBuildPath, "*.ipa", SearchOption.AllDirectories).FirstOrDefault();
-                if (string.IsNullOrEmpty(ipaPath))
+                RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-l")
+                    .AddAccumulatedOutputProcessing(output => { appList = output; })
+                    .RedirectOutputOptions(OutputRedirectBehaviour.None).Run();
+                var existsOnDevice = appList.Contains(bundleId);
+                var existsLocally = !string.IsNullOrEmpty(ipaPath);
+                if (!existsLocally && !existsOnDevice)
                 {
-                    Debug.LogError($"Could not find a built out iOS .ipa archive in \"{AbsoluteAppBuildPath}\" to launch.");
-                    return;
+                    Debug.LogError($"Could not find an app on device or built out iOS .ipa archive in \"{AbsoluteAppBuildPath}\" to launch.");
                 }
 
-                if (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-i", ipaPath).Run() != 0)
+                if (existsLocally)
                 {
-                    Debug.LogError("Error while installing .ipa archive to the device. Please check the log for details about the error.");
-                    return;
+                    if (RedirectedProcess.Command(LibIDeviceInstallerBinary)
+                            .WithArgs((existsOnDevice ? "-g" : "-i"), $"\"{ipaPath}\"").Run() !=
+                        0)
+                    {
+                        Debug.LogError(
+                            "Error while installing .ipa archive to the device. Please check the log for details about the error.");
+                        return;
+                    }
+                }
+
+                // Wait until the app is installed
+                while (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-l").Run() != 0)
+                {
                 }
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Launching Client", 0.9f);
-
-                // Get chosen ios package id and launch
-                var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
-
                 // Optional arguments to be passed, same as standalone
                 // Use this to pass through the local ip to connect to
                 var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;

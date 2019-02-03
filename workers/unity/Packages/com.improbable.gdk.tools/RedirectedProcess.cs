@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Improbable.Gdk.Tools.MiniJSON;
@@ -56,6 +57,7 @@ namespace Improbable.Gdk.Tools
         private string workingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
+        private readonly List<Action<string>> accumulatedOutputProcessors = new List<Action<string>>();
 
         private OutputRedirectBehaviour outputRedirectBehaviour =
             OutputRedirectBehaviour.ProcessSpatialOutput |
@@ -114,6 +116,16 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
+        ///     Adds accumulated output processing
+        /// </summary>
+        /// <param name="errorProcessor">Processing action for error output.</param>
+        public RedirectedProcess AddAccumulatedOutputProcessing(Action<string> errorProcessor)
+        {
+            accumulatedOutputProcessors.Add(errorProcessor);
+            return this;
+        }
+
+        /// <summary>
         ///     Adds custom processing for error output of process.
         /// </summary>
         /// <param name="redirectBehaviour">Options for redirecting process output to Debug.Log().</param>
@@ -155,7 +167,8 @@ namespace Improbable.Gdk.Tools
             }
 
             StringBuilder outputLog = null;
-            if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) != OutputRedirectBehaviour.None)
+            if (((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) != OutputRedirectBehaviour.None) ||
+                accumulatedOutputProcessors.Any())
             {
                 outputLog = new StringBuilder();
             }
@@ -246,20 +259,30 @@ namespace Improbable.Gdk.Tools
             }
 
             // Ensure that the first line of the log is something useful in the Unity editor console.
-            var trimmedOutput = outputLog.ToString().TrimStart();
+            var accumulatedOutput = outputLog.ToString().TrimStart();
 
-            if (trimmedOutput == string.Empty)
+            if (accumulatedOutput == string.Empty)
+            {
+                return exitCode;
+            }
+
+            foreach (var accumulatedOutputProcessor in accumulatedOutputProcessors)
+            {
+                accumulatedOutputProcessor(accumulatedOutput);
+            }
+
+            if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) == OutputRedirectBehaviour.None)
             {
                 return exitCode;
             }
 
             if (exitCode == 0)
             {
-                Debug.Log(trimmedOutput);
+                Debug.Log(accumulatedOutput);
             }
             else
             {
-                Debug.LogError(trimmedOutput);
+                Debug.LogError(accumulatedOutput);
             }
 
             return exitCode;
