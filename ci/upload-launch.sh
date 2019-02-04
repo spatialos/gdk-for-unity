@@ -19,7 +19,7 @@ fi
 
 setAssemblyName "${PREFIX}"
 
-spatial cloud upload "${ASSEMBLY_NAME}" --log_level=debug --force --enable_pre_upload_check=false
+spatial cloud upload "${ASSEMBLY_NAME}" --log_level=debug --force
 
 markStartOfBlock "Launching deployment"
 
