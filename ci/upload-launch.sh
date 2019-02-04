@@ -11,7 +11,7 @@ source ".shared-ci/scripts/pinned-tools.sh"
 
 if [[ -n "${BUILDKITE}" ]]; then
     # In buildkite, download the artifacts and reconstruct the build/assemblies folder.
-    buildkite-agent artifact download "build/assembly/*"
+    buildkite-agent artifact download "build/assembly/*" .
 else
     # In TeamCity, just build.
     ci/build-test.sh
