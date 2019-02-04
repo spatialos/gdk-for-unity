@@ -9,9 +9,6 @@
 #
 common: &common
   agents:
-    # Choose another capable_of_building once/if you have one.
-    # If you parasite to platform's, you can be broken if the platform agents change.
-    # See also: https://github.com/improbable/platform/blob/master/docs/product-groups/dev-workflow/buildkite/concept-build-capability.md
     - "capable_of_building=gdk-for-unity"
     - "environment=production"
     - "permission_set=builder"
@@ -23,8 +20,6 @@ common: &common
         # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
       - exit_status: -1
         limit: 3
-  env: 
-    UPLOAD_ASSEMBLIES: "true"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
