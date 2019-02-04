@@ -34,7 +34,7 @@ In fact, as far as SpatialOS is concerned, these simulated players are indisting
 
 The simulated players are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` server-worker instances. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
-To get the legion of enemies started, we use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
+To get the legion of enemies started, use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
