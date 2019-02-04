@@ -7,7 +7,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
     internal class BuildConfig : SingletonScriptableObject<BuildConfig>
-    {      
+    {
         [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
 
@@ -50,7 +50,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     WorkerType = "UnityClient",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig()),
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets,
+                            WorkerBuildData.GetCurrentBuildTargetConfig()),
                     CloudBuildConfig = new BuildEnvironmentConfig(
                         WorkerBuildData.AllBuildTargets,
                         new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, true),
@@ -60,7 +61,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     WorkerType = "UnityGameLogic",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets, WorkerBuildData.GetCurrentBuildTargetConfig()),
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets,
+                            WorkerBuildData.GetCurrentBuildTargetConfig()),
                     CloudBuildConfig =
                         new BuildEnvironmentConfig(
                             WorkerBuildData.AllBuildTargets, WorkerBuildData.GetLinuxBuildTargetConfig())

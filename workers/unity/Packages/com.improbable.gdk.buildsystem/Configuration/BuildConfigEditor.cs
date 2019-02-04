@@ -36,6 +36,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private BuildConfigEditorStyle style;
         private int invalidateCachedContent;
         private WorkerChoicePopup workerChooser;
+        private readonly Dictionary<int, object> stateObjects = new Dictionary<int, object>();
 
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
 
@@ -124,8 +125,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             var workerType = configurationForWorker.WorkerType;
 
-            var workerControlId = GUIUtility.GetControlID(configurationForWorker.WorkerType.GetHashCode(), FocusType.Passive);
-            var foldoutState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
+            var foldoutState = GetStateObject<FoldoutState>(configurationForWorker.WorkerType.GetHashCode());
 
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -196,8 +196,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Scenes to include (in order)");
-                var workerControlId = GUIUtility.GetControlID(configurationForWorker.GetHashCode(), FocusType.Passive);
-                dragState = (DragAndDropInfo) GUIUtility.GetStateObject(typeof(DragAndDropInfo), workerControlId);
+                var workerControlId = configurationForWorker.WorkerType.GetHashCode() ^ typeof(DragAndDrop).GetHashCode();
+                dragState = GetStateObject<DragAndDropInfo>(workerControlId);
 
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button(style.AddSceneButtonContents, EditorStyles.miniButton))
@@ -215,8 +215,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
             else
             {
-                var indexToRemove = -1;
-                var targetItemIndex = -1;
+                int? indexToRemove = null;
+                int? targetItemIndex = null;
 
                 if (currentEventType == EventType.Repaint)
                 {
@@ -256,12 +256,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 List<SceneAsset> list = null;
 
-                if (indexToRemove != -1)
+                if (indexToRemove.HasValue)
                 {
                     list = configurationForWorker.ScenesForWorker.ToList();
-                    list.RemoveAt(indexToRemove);
+                    list.RemoveAt(indexToRemove.Value);
                 }
-                else if (targetItemIndex >= 0)
+                else if (targetItemIndex.HasValue)
                 {
                     list = configurationForWorker.ScenesForWorker.ToList();
 
@@ -281,7 +281,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                                 }
                                 else
                                 {
-                                    list.InsertRange(targetItemIndex,
+                                    list.InsertRange(targetItemIndex.Value,
                                         DragAndDrop.objectReferences.OfType<SceneAsset>());
                                 }
                             }
@@ -299,11 +299,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                                     list.RemoveAt(dragState.SourceItemIndex);
                                     if (targetItemIndex >= dragState.SourceItemIndex)
                                     {
-                                        list.Insert(targetItemIndex - 1, movingItem);
+                                        list.Insert(targetItemIndex.Value - 1, movingItem);
                                     }
                                     else
                                     {
-                                        list.Insert(targetItemIndex, movingItem);
+                                        list.Insert(targetItemIndex.Value, movingItem);
                                     }
                                 }
                             }
@@ -313,7 +313,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                             if (DragAndDrop.visualMode == DragAndDropVisualMode.Copy)
                             {
                                 var newRect = new Rect(dragState.AllItemsRect.xMin,
-                                    dragState.AllItemsRect.yMin + targetItemIndex *
+                                    dragState.AllItemsRect.yMin + targetItemIndex.Value *
                                     dragState.AllItemsRect.height / list.Count,
                                     dragState.AllItemsRect.width, 2);
                                 EditorGUI.DrawRect(newRect, new Color(0.4f, 0.4f, 0.4f, 1));
@@ -375,8 +375,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     if (sceneAssets.Any())
                     {
                         if (dragState.SourceItemIndex == -1 &&
-                            new HashSet<SceneAsset>(sceneAssets).Overlaps(configurationForWorker
-                                .ScenesForWorker))
+                            sceneAssets.Intersect(configurationForWorker.ScenesForWorker).Any())
                         {
                             DragAndDrop.visualMode = DragAndDropVisualMode.Rejected;
                         }
@@ -393,11 +392,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        private int DrawSceneItem(int i, DragAndDropInfo dragState, SceneAsset item, EventType currentEventType,
-            int indexToRemove)
+        private int? DrawSceneItem(int itemIndex, DragAndDropInfo dragState, SceneAsset item,
+            EventType currentEventType,
+            int? indexToRemove)
         {
             using (new GUIColorScope(
-                i == dragState.SourceItemIndex
+                itemIndex == dragState.SourceItemIndex
                     ? new Color(GUI.color.r, GUI.color.g, GUI.color.b, 0.25f)
                     : GUI.color))
             {
@@ -429,7 +429,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     if (GUILayout.Button(style.RemoveSceneButtonContents, EditorStyles.miniButton))
                     {
-                        indexToRemove = i;
+                        indexToRemove = itemIndex;
                     }
                 }
 
@@ -523,8 +523,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var environmentConfiguration =
                 configurationForWorker.GetEnvironmentConfig(environment);
 
-            var workerControlId = GUIUtility.GetControlID(environmentConfiguration.GetHashCode(), FocusType.Passive);
-            var foldoutState = (FoldoutState) GUIUtility.GetStateObject(typeof(FoldoutState), workerControlId);
+            var hash = configurationForWorker.WorkerType.GetHashCode() ^ environment.GetHashCode() ^ typeof(FoldoutState).GetHashCode();
+            var foldoutState = GetStateObject<FoldoutState>(hash);
 
             if (foldoutState.Content == null || invalidateCachedContent > 0)
             {
@@ -562,7 +562,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 if (foldoutState.Expanded)
                 {
-                    DrawBuildTargets(environmentConfiguration);
+                    DrawBuildTargets(environmentConfiguration, hash);
                 }
 
                 if (check.changed)
@@ -580,12 +580,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 : style.BuildTargetText[c.Target];
         }
 
-        private void DrawBuildTargets(BuildEnvironmentConfig env)
+        private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
         {
             // Init cached UI state.
-            var workerControlId = GUIUtility.GetControlID(env.GetHashCode(), FocusType.Passive);
-            var selectedBuildTarget =
-                (BuildTargetState) GUIUtility.GetStateObject(typeof(BuildTargetState), workerControlId);
+            var selectedBuildTarget = GetStateObject<BuildTargetState>(hash ^ typeof(BuildTargetState).GetHashCode());
 
             if (selectedBuildTarget.Choices == null || invalidateCachedContent > 0)
             {
@@ -597,7 +595,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 selectedBuildTarget.Index =
                     GUILayout.Toolbar(selectedBuildTarget.Index, selectedBuildTarget.Choices);
-            }            
+            }
 
             // Draw selected build target.
             var buildTarget = env.BuildTargets[selectedBuildTarget.Index];
@@ -695,7 +693,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             // NB: On Linux, headless and Development mode are mutually exclusive.
             var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Headless", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
             {
                 options |= BuildOptions.EnableHeadlessMode;
                 options &= ~BuildOptions.Development;
@@ -806,6 +804,23 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static bool IsBuildTargetError(BuildTargetConfig t)
         {
             return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled;
+        }
+
+        /// <summary>
+        /// Unity's GUIUtility.GetStateObject changes based on the structure of the GUI, for example when expanding or collapsing foldouts.
+        /// Even with hints, tracking the state objects goes awry.
+        /// This is a simpler implementation, meant to be used with object hashes generated by the call site, which at least has insight into
+        /// what parts of the object will be stable enough to track.
+        /// </summary>
+        private T GetStateObject<T>(int hash) where T : new()
+        {
+            if (!stateObjects.TryGetValue(hash, out var value))
+            {
+                value = new T();
+                stateObjects.Add(hash, value);
+            }
+
+            return (T) value;
         }
     }
 }
