@@ -92,7 +92,7 @@ First enter the parameters in the Deployment Launcher section of the Deployments
 |**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
 |**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
 |**Enable Simulated Players**| Ensure this is checked.|
-|**Override Name**| Leave this checkbox UNchecked.|
+|**Override Name**| Leave this checkbox UNchecked.<br/>This allows you to change the name of the simulated players deployment.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
 |**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
 
