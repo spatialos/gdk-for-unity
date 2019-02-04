@@ -9,7 +9,7 @@ PREFIX="playground"
 source ".shared-ci/scripts/profiling.sh"
 source ".shared-ci/scripts/pinned-tools.sh"
 
-if [[ -n "${BUILDKITE}" ]]; then
+if [[ -n "${BUILDKITE-}" ]]; then
     # In buildkite, download the artifacts and reconstruct the build/assemblies folder.
     buildkite-agent artifact download "build\assembly\**\*" .
 else
@@ -25,7 +25,7 @@ markStartOfBlock "Launching deployment"
 
 spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}" --snapshot=snapshots/default.snapshot | tee -a ./launch.log
 
-if [[ -n "${BUILDKITE}" ]]; then
+if [[ -n "${BUILDKITE-}" ]]; then
     CONSOLE_REGEX='.*Console URL:(.*)\\n"'
     LAUNCH_LOG=$(cat ./launch.log)
     if [[ $LAUNCH_LOG =~ $CONSOLE_REGEX ]]; then
