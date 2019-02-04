@@ -28,7 +28,7 @@ spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}" --s
 if [[ -n "${BUILDKITE}" ]]; then
     CONSOLE_REGEX='.*Console URL:(.*)\\n"'
     LAUNCH_LOG=$(cat ./launch.log)
-    if [[ $LAUNCH_LOG ~= $CONSOLE_REGEX ]]; then
+    if [[ $LAUNCH_LOG =~ $CONSOLE_REGEX ]]; then
         CONSOLE_URL=${BASH_REMATCH[1]}
         buildkite-agent annotate --style "success" "Deployment URL: ${CONSOLE_URL}"
     fi
