@@ -183,14 +183,14 @@ namespace Improbable.Gdk.Tools
                 process.ErrorDataReceived += (sender, args) =>
                 {
                     var errorString = args.Data;
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
-                    {
-                        errorString = ProcessSpatialOutput(errorString);
-                    }
-
                     if (string.IsNullOrEmpty(errorString))
                     {
                         return;
+                    }
+
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
+                    {
+                        errorString = ProcessSpatialOutput(errorString);
                     }
 
                     if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) != OutputRedirectBehaviour.None)
