@@ -20,7 +20,7 @@ To connect your Android device to a local deployment, you need to prepare its co
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 1. In your Unity Editor, open the `FPS-Development` Scene and click the Play button.<br/>
 
-## Connecting to a local deployment using Unity Remote{#unity-remote}
+## Connect to a local deployment using Unity Remote{#unity-remote}
 
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
@@ -40,7 +40,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
 1. You should now see your Unity Editor's game view mirrored on your Android device.
 
-## Connecting to a local deployment using Android Emulator{#android-emulator}
+## Connect to a local deployment using Android Emulator{#android-emulator}
 
 1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds).
 
@@ -55,7 +55,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Play the game on the Emulator.
 
-## Connecting to a local deployment using your Android device{#android-device}
+## Connect to a local deployment using your Android device{#android-device}
 
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same wireless network.

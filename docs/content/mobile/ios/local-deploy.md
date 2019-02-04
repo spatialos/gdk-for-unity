@@ -5,13 +5,13 @@ Before reading this document, make sure you are familiar with:
   * [Setting up iOS Support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
-## Connecting to a local deployment in the Editor{#in-editor}
+## Connect to a local deployment in the Editor{#in-editor}
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**.
 
     > **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
 1. In your Unity Editor, open the `FPS-Development` Scene and click the Play button.<br/>
 
-## Connecting to a local deployment using Unity Remote{#unity-remote}
+## Connect to a local deployment using Unity Remote{#unity-remote}
 You need the Unity Remote app installed on your iOS device in order to follow the below steps. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
 1. Open your project in the Unity Editor.
@@ -32,7 +32,7 @@ You need the Unity Remote app installed on your iOS device in order to follow th
 1. You should now see your Unity Editor game view mirrored on your iOS device.
 1. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.
 
-## Connecting to a local deployment using iOS Simulator{#ios-simulator}
+## Connect to a local deployment using iOS Simulator{#ios-simulator}
 
   1. Open your project in the Unity Editor.
   2. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
@@ -53,7 +53,7 @@ You need the Unity Remote app installed on your iOS device in order to follow th
   10. Play the game on the Simulator.
   11. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.
 
-## Connecting to a local deployment using your iOS device{#ios-device}
+## Connect to a local deployment using your iOS device{#ios-device}
 
   1. Set up [Code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
   1. Make sure your computer and your mobile device are both connected to the same wireless network.
