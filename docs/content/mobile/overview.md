@@ -1,6 +1,3 @@
-<%(Callout type="alert" message="
-Mobile support is in [pre-alpha (SpatialOS documentation)](https://docs.improbable.io/reference/13.3/shared/release-policy#maturity-stages). Currently, you can only connect your mobile [client-workers](https://docs.improbable.io/reference/latest/shared/glossary#client-worker) to a local deployment: you **cannot** connect mobile client-workers to a cloud deployment. Please follow our [Roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) to learn more about updates to this in future releases.")%>
-
 # Mobile Support Overview
 
 Before starting with mobile development, make sure you are familiar with
