@@ -38,7 +38,7 @@ Your `spatialos.json` should look like this:
 <br/>
 ### Upload and launch your cloud deployment
 
-The FPS Starter Project has the Deployments window in the Unity Editor which you can use to do this.
+The FPS Starter Project has the Deployments window in the Unity Editor which you can use to do this. (Note that this window is only available as part of the FPS Starter Project; it's not part of the GDK.)
 
 #### 1. Reference your Unity project in the Deployments window
 
@@ -82,7 +82,7 @@ The next step is to [start a cloud deployment](https://docs.improbable.io/refere
 <br/>
 To launch your cloud deployment:
 
-First enter the parameters in the Deployment Launcher section of the Deployments window. Complete the settings as below:
+1\. First enter the parameters in the **Deployment Launcher** section of the Deployments window. Complete the settings as below:
 <br/>
 
 |Setting name|The setting you add|
@@ -92,7 +92,7 @@ First enter the parameters in the Deployment Launcher section of the Deployments
 |**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 |**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 |**Enable Simulated Players**| Ensure this is checked.|
-|**Override Name**| Leave this checkbox UNchecked.<br/>This allows you to change the name of the simulated players deployment.|
+|**Override Name**| Leave this unchecked.<br/>This allows you to change the name of the simulated players deployment.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
 |**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 
@@ -100,8 +100,9 @@ First enter the parameters in the Deployment Launcher section of the Deployments
 <br/>_Example completed Deployments window_
 <br/>
 <br/>
-Now start your deployment: Select **Launch deployments**.
+2\. Now start your deployment: Select **Launch deployments**.
 
+**Note:** You will see that there are two Deployment Names and two Launch Config Files listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
 <br/>
 
 **It's finished when:** You see two messages printed in your Unity Console indicating both deployments have been started:
