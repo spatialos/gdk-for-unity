@@ -28,7 +28,7 @@ This generates a short link to share with anyone who wants to join in for the du
 
 **For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
 
-These enemies will be simulated players; they are `UnityClient` client-worker instances running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
+These enemies are simulated players; they are `UnityClient` client-worker instances running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extend them to include additional gameplay features.
 
 In fact, as far as SpatialOS is concerned, these simulated players are indistinguishable from real players; both simulated players and real players are just `UnityClient` client-worker instances to SpatialOS, so this is a good approach for regular scale testing.
 
