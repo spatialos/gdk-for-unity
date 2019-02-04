@@ -36,7 +36,6 @@ steps:
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-      - build/descriptor/**/*
     env: 
       WORKER_TYPE: "AndroidClient"
       BUILD_TARGET: "local"
@@ -48,7 +47,6 @@ steps:
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-      - build/descriptor/**/*
     env: 
       WORKER_TYPE: "iOSClient"
       BUILD_TARGET: "local"
@@ -60,7 +58,6 @@ steps:
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-      - build/descriptor/**/*
     env: 
       WORKER_TYPE: "UnityClient"
       BUILD_TARGET: "cloud"
@@ -72,7 +69,6 @@ steps:
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-      - build/descriptor/**/*
     env: 
       WORKER_TYPE: "UnityGameLogic"
       BUILD_TARGET: "cloud"
