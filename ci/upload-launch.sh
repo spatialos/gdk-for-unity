@@ -19,7 +19,7 @@ fi
 
 setAssemblyName "${PREFIX}"
 
-.shared-ci/scripts/upload-assemblies.sh "${ASSEMBLY_NAME}"
+spatial cloud upload "${ASSEMBLY_NAME}" --log_level=debug --force --enable_pre_upload_checks=false
 
 markStartOfBlock "Launching deployment"
 
