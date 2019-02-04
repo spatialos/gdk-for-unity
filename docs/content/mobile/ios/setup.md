@@ -12,7 +12,7 @@
 
 ## Set up your Unity Editor
 
-Most of your interactions with the GDK will happen inside the Unity Editor. To get started:
+Most of your interactions with the GDK happen inside the Unity Editor. To get started:
 
 1. Open the Unity Editor.
 1. Launch the Unity Editor. It should automatically detect your project but if it doesn't, select **Open** and then select `<path-to-your-project>/workers/unity`. If you don’t have a SpatialOS Unity project you can use the [FPS Starter Project]({{urlRoot}}/content/get-started/get-started) or the [Blank Starter Project]({{urlRoot}}/projects/blank/overview). If you are using one of these projects, please ensure that you've completed the setup steps for those projects before continuing these steps.
