@@ -22,9 +22,7 @@ To start a local deployment, either:
 
 (See the [SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) for details of the launch configurations.)
 
-This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used.
-
-> **It’s done when:** You see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`
+This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 
 To start your client-workers, from a terminal window, in any directory, run `spatial local worker launch <YourExternalWorker> <YourLaunchConfig>`, replacing the `<example-content>` with names relevant to your game. Use the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector) to look at the current state of your game world.
 
@@ -51,9 +49,7 @@ The assembly includes executable files for the client-workers and server-workers
 1. Launch a cloud deployment
 
    * In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
-   * This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
-
-   > **It’s done when:** You see `Deployment launched successfully` printed in your terminal output. This might take a couple of minutes.
+   * This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency. It’s done when you see `Deployment launched successfully` printed in your terminal output. This might take a couple of minutes.
 
 **About the `spatial cloud launch` command**   
 `spatial cloud launch` deploys a project to the cloud. Its full syntax is:
