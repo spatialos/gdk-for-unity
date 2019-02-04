@@ -6,6 +6,7 @@
 .vs/
 .gradle/
 .DS_Store
+DevAuthToken.txt*
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
