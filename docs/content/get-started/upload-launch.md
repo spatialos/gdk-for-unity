@@ -61,7 +61,7 @@ To do this:
 
 <br/>
 
-**It’s finished uploading when:** You see an upload report printed in your Unity console, for example:
+**It’s finished uploading when:** You see an upload report printed in your Unity Console, for example:
 
 ```
 Uploaded assembly my_assembly to project unity_gdk successfully.
@@ -89,12 +89,12 @@ First enter the parameters in the Deployment Launcher section of the Deployments
 |-----|------|
 |**Assembly Name**| The name you gave the assembly in step 2 - for example; `myassembly`. <br/>(The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.)|
 |**Deployment Name**| A name of your choice - for example; `shootyshooty`. <br/>(The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.)|
-|**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
-|**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
+|**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS project.|
+|**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 |**Enable Simulated Players**| Ensure this is checked.|
 |**Override Name**| Leave this checkbox UNchecked.<br/>This allows you to change the name of the simulated players deployment.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
-|**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS Project.|
+|**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 
 ![]({{assetRoot}}assets/deployment-window.png)
 <br/>_Example completed Deployments window_
@@ -104,7 +104,7 @@ Now start your deployment: Select **Launch deployments**.
 
 <br/>
 
-**It's finished when:** You see two messages printed in your Unity console indicating both deployments have been started:
+**It's finished when:** You see two messages printed in your Unity Console indicating both deployments have been started:
 
 ```
 Successfully created the main deployment.
