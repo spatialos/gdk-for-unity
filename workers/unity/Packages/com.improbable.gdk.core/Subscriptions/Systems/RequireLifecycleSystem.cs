@@ -8,6 +8,7 @@ namespace Improbable.Gdk.Subscriptions
     // or the order of events should be decided by system order rather than in this system
     // would enable users changing readers more easily maybe
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(RequireLifecycleGroup))]
     public class RequireLifecycleSystem : ComponentSystem
     {

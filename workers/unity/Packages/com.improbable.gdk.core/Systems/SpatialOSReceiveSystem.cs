@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Core
     ///     Receives incoming messages from the SpatialOS runtime.
     /// </summary>
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
