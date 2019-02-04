@@ -10,13 +10,13 @@ namespace Improbable.Gdk.Tools
         private static readonly string
             ResourcesDir = Path.GetFullPath(Path.Combine(Application.dataPath, "Resources"));
 
-        [MenuItem("SpatialOS/Generate DAT", false, MenuPriorities.GenerateDAT)]
-        private static void GenerateDAT()
+        [MenuItem("SpatialOS/Generate Dev Authentication Token", false, MenuPriorities.GenerateDevAuthToken)]
+        private static void GenerateDevAuthToken()
         {
             var receivedMessage = string.Empty;
             RedirectedProcess
                 .Command(Common.SpatialBinary)
-                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "Dev Auth Token", "--lifetime", "10s")
+                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "Dev Auth Token")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .AddOutputProcessing((message) => receivedMessage += message)
                 .Run();
