@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -117,6 +118,7 @@ namespace Improbable.Gdk.Mobile
                 if (!existsLocally && !existsOnDevice)
                 {
                     Debug.LogError($"Could not find an app on device or built out iOS .ipa archive in \"{AbsoluteAppBuildPath}\" to launch.");
+                    return;
                 }
 
                 if (existsLocally)
@@ -131,9 +133,17 @@ namespace Improbable.Gdk.Mobile
                     }
                 }
 
-                // Wait until the app is installed
+                // Wait until the app has finished installing
+                DateTime timeout = DateTime.Now.AddSeconds(5);
                 while (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-l").Run() != 0)
                 {
+                    if (DateTime.Now > timeout)
+                    {
+                        Debug.LogError($"Device communication error. Please ensure it is connected");
+                        return;
+                    }
+
+                    System.Threading.Thread.Sleep(500);
                 }
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Launching Client", 0.9f);
