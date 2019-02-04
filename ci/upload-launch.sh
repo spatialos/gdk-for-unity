@@ -31,7 +31,6 @@ if [[ -n "${BUILDKITE}" ]]; then
     if [[ $LAUNCH_LOG =~ $CONSOLE_REGEX ]]; then
         CONSOLE_URL=${BASH_REMATCH[1]}
         buildkite-agent annotate --style "success" "Deployment URL: ${CONSOLE_URL}"
-    fi
     else
         buildkite-agent annotate --style "warning" "Could not parse deployment URL from launch log."
     fi
