@@ -13,7 +13,7 @@ For standard workflows and for minor changes, we recommend that you simply run y
 
 For more information, see the following documentation:
 
-  * [Deploy your game in the Editor]({{urlRoot}}/content/mobile/ios/local-deploy#in-editor)
+  * [Connect to a local deployment in the Editor]({{urlRoot}}/content/mobile/ios/local-deploy#in-editor)
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ With the Unity Remote, you don’t have to spend time building and deploying you
 For more information, see the following documentation:
 
   * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Deploy your game to Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#unity-remote)
+  * [Connect to a local deployment using Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#unity-remote)
 
 ## iOS Simulator
 
@@ -31,7 +31,7 @@ The iOS Simulator simulates iOS devices on your development computer so that you
 For more information, see the following documentation:
 
   * [The Apple Developer documentation](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html)
-  * [Deploy your game to the iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#ios-simulator)
+  * [Connect to a local deployment using iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#ios-simulator)
 
 ## iOS device
 
@@ -39,4 +39,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Deploy your game to an iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#ios-device)
+  * [Connect to a local deployment using your iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#ios-device)

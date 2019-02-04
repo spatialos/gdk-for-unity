@@ -13,7 +13,7 @@ For standard workflows and for minor changes, run your game in the Editor. When 
 
 For more information, see the following documentation:
 
-  * [Deploy your game in the Editor]({{urlRoot}}/content/mobile/android/local-deploy#in-editor)
+  * [Connect to a local deployment in the Editor]({{urlRoot}}/content/mobile/android/local-deploy#in-editor)
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ With the Unity Remote, you don’t have to spend time building and deploying you
 For more information, see the following documentation:
 
   * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Run your game with Unity Remote]({{urlRoot}}/content/mobile/android/local-deploy#unity-remote)
+  * [Connect to a local deployment using Unity Remote]({{urlRoot}}/content/mobile/android/local-deploy#unity-remote)
 
 ## Android Emulator
 
@@ -31,7 +31,7 @@ The Android Emulator from Android Studio emulates Android devices on your develo
 For more information, see the following documentation:
 
   * [The Android Developers documentation](https://developer.android.com/studio/run/emulator)
-  * [Deploy your game with the Android Emulator]({{urlRoot}}/content/mobile/android/local-deploy#android-emulator)
+  * [Connect to a local deployment using Android Emulator]({{urlRoot}}/content/mobile/android/local-deploy#android-emulator)
 
 ## Android device
 
@@ -39,4 +39,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Deploy your game to an Android device]({{urlRoot}}/content/mobile/android/local-deploy#android-device)
+  * [Connect to a local deployment using your Android device]({{urlRoot}}/content/mobile/android/local-deploy#android-device)
