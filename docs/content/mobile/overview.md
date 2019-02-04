@@ -8,9 +8,9 @@ Before starting with mobile development, make sure you are familiar with
 
 ## Developing SpatialOS games for Android and iOS
 
-The SpatialOS GDK for Unity contains a [mobile feature module]({{urlRoot}}/content/modules/core-and-feature-module-overview#mobile-support-module) which enables you to develop games for Android and iOS. All feature modules work with mobile devices.
+The SpatialOS GDK for Unity contains a [mobile feature module]({{urlRoot}}/content/modules/core-and-feature-module-overview#mobile-support-module) which enables you to develop games for Android and iOS. SpatialOS games are cross-platform by default, so Android, iOS, PC, Xbox One and PS4 users can play together in the same deployment.
 
-Because your [SpatialOS World](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world), the canonical source of truth about your game, is distinct from the view of that world that your client-workers visualise, you can create cross-platform multiplayer games with ease.
+All feature modules work with mobile devices.
 
 ## Getting started with your Android client-worker
 
