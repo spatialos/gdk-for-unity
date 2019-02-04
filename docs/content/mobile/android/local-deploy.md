@@ -28,7 +28,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
 1. In the Unity Editor, open the project that you want to deploy and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
 1. In the **Editor Settings** window's **Unity Remote** section, set the **Device** setting to **Any Android Device**.
-1. Open the Scene that starts both your [client-]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker).
+1. Open the Scene that starts both your [client-workers]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker).
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
 1. In the Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.
 
