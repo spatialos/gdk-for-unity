@@ -1,6 +1,6 @@
 # Get started: 5 - Get playing!
 
-Back in your SpatialOS [web Console](https://console.improbable.io/projects), you should now see the deployment that you just created appear under your project. Select it to get to the Overview page:
+Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see the two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
 <img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
 
@@ -16,7 +16,7 @@ It’s a bit lonely in there isn’t it? Keep your client running while we get t
 
 ## Invite friends
 
-To invite other players to this game, head back to the Deployment Overview page in your web Console, and select the **Share** button:
+To invite other players to this game, head back to the Deployment Overview page in your SpatialOS Console, and select the **Share** button:
 
 <img src="{{assetRoot}}assets/overview-page-share.png" style="margin: 0 auto; display: block;" />
 
@@ -28,11 +28,13 @@ This generates a short link to share with anyone who wants to join in for the du
 
 **For more of a challenge, let’s now invite 200 enemies you can fight it out against!**
 
-These enemies will be Unity Clients running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extended them to include additional gameplay features.
+These enemies are simulated players; they are `UnityClient` client-worker instances running in the cloud, mimicking real players of your game from a behavior and load perspective. Their behavior is currently quite simple, but you could extend them to include additional gameplay features.
 
-In fact, as far as SpatialOS is concerned, these Unity Clients are indistinguishable from real players, so this is a good approach for regular scale testing.
+In fact, as far as SpatialOS is concerned, these simulated players are indistinguishable from real players; both simulated players and real players are just `UnityClient` client-worker instances to SpatialOS, so this is a good approach for regular scale testing.
 
-To get the legion of enemies started, we will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your web Console's Deployment Overview page:
+The simulated players are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` server-worker instances. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
+
+To get the legion of enemies started, use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
