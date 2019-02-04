@@ -20,6 +20,8 @@ Follow the steps below to connect your iOS device or simulator to a local deploy
 
 ## Connect to a local deployment
 
+There are three different ways to connect.
+
 ### Connect your iOS mobile device using Unity Remote
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
