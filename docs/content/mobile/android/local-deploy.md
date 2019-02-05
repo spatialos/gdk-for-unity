@@ -33,7 +33,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. In the Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor’s Game view, select **Play**.
 
-    > You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
+    > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
 
 1. You should now see your Unity Editor's game view mirrored on your Android device.
 

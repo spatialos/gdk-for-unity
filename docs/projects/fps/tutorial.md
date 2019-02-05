@@ -66,7 +66,7 @@ Code generation creates C# helper classes to allow you to make use of your `sche
 If you are worried your generated code is in a bad state (such as having helper classes for since-deleted components and properties) you can run **Generate code (force)** from the **SpatialOS menu** to ensure existing generated code is cleaned and regenerated.
 <%(/Expandable)%>
 
-<%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
+<%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the Scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
 <%(/Expandable)%>
 
 ### Entity templates
@@ -258,7 +258,7 @@ This is because the FPS Starter Project uses the GDK GameObject Creation package
 
 If you right-click in your project file hierarchy, you'll find an option **Create** > **Prefab**, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
 
-If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
@@ -358,7 +358,7 @@ You can launch a local deployment of your updated game world from the **SpatialO
 Once the world is ready you can:
 
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
-* Open the `FPS-Development` scene in your Unity Editor. The scene file is located in **Assets** > **Fps** > **Scene**.
+* Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in **Assets** > **Fps** > **Scene**.
 * Press Play in your Unity Editor to play the game.
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
@@ -664,7 +664,7 @@ It also provides a convenient link for the local SpatialOS Inspector.<%(/Expanda
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
 
-<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
+<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` Scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
 
 <%(#Expandable title="6. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
 

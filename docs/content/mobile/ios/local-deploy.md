@@ -21,10 +21,10 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 1. In the **Unity Remote** section, select **Device** > **Any iOS Device**.
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. Open the scene that starts both your [client-workers]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
+1. Open the Scene that starts both your [client-workers]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
 1. In the Editor’s Game view, select **Play**.
 
-    > You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
+    > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
 
 1. You should now see your Unity Editor game view mirrored on your iOS device.
 1. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.

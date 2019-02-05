@@ -41,7 +41,7 @@ To do this:
 
 1. With your project open in your Unity Editor, go to the Project window and select **Assets** > **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
 2. Select this Asset to view it in your Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
-    * Which scenes each worker should contain in its build.
+    * Which Scenes each worker should contain in its build.
     * Which platforms you want to build it for.
     * Which build options you want enabled. You can select the following build options:
       * [Development Build](https://docs.unity3d.com/ScriptReference/BuildOptions.Development.html)

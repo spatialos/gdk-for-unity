@@ -54,7 +54,7 @@ You can use the following fields, event callbacks, and methods, with `worker.Wor
 | World         | `World`                  | The ECS world that this worker is associated with. |
 | WorkerId      | `string`                 | The ID of this worker. |
 | WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary#worker-types). |
-| Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
+| Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same Scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
 | LogDispatcher | `ILogDispatcher`         | A reference to the [logger]({{urlRoot}}/content/ecs/logging) that you can use to send logs to the Unity Console and the SpatialOS Runtime. |
 
 **Events**

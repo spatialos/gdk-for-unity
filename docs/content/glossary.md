@@ -339,7 +339,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Each scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity Scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Each Scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)

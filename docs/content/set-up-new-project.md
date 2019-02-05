@@ -78,7 +78,7 @@ namespace YourProject
         [RuntimeInitializeOnLoadMethod]
         private static void Init()
         {
-            // ensure that it will only be run when the first scene gets loaded
+            // ensure that it will only be run when the first Scene gets loaded
             if (initialized)
             {
                 return;
@@ -92,4 +92,4 @@ namespace YourProject
 }
 
 ```
-This sets up the injection hooks needed to run Unity's hybrid ECS and ensures that all worlds are properly cleaned up. You need to set the `initialized` field to `true` to ensure it is only run once, otherwise `Init` is run whenever a scene gets loaded due to the `RuntimeInitializeOnLoadMethod` attribute.
+This sets up the injection hooks needed to run Unity's hybrid ECS and ensures that all worlds are properly cleaned up. You need to set the `initialized` field to `true` to ensure it is only run once, otherwise `Init` is run whenever a Scene gets loaded due to the `RuntimeInitializeOnLoadMethod` attribute.

@@ -75,13 +75,13 @@ public static class OneTimeInitialization
 {
     private static bool initialized;
 
-    // Using this attribute will trigger the Init() method whenever a scene gets loaded.
+    // Using this attribute will trigger the Init() method whenever a Scene gets loaded.
     [RuntimeInitializeOnLoadMethod]
     private static void Init()
     {
         if (initialized)
         {
-            // ensures to only run it the first time a scene gets loaded.
+            // ensures to only run it the first time a Scene gets loaded.
             return;
         }
 
