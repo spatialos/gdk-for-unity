@@ -227,7 +227,7 @@ using System.Runtime.CompilerServices;
 
 ### Running the new tests
 
-In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.EditModeTests.dll**. (This matches the folder name
+In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.EditModeTests.dll**. (This corresponds to the directory
  `Gdk/Core/Tests/EditMode`.)
 
 You can follow the namespace and fixture name in the hierarchy:
@@ -235,7 +235,7 @@ You can follow the namespace and fixture name in the hierarchy:
 * **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassStaticTests**
 * **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassInstanceTests**
 
-Double-click the test fixture name to run all tests within that fixture.
+To run all tests on a fixture, double-click on the fixture name.
 
 ## How to create a new test folder and assembly
 
