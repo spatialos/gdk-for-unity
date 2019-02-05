@@ -27,7 +27,7 @@ You need the Unity Remote app installed on your iOS device in order to follow st
     > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
 
 1. You should now see your Unity Editor game view mirrored on your iOS device.
-1. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.
+1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## iOS Simulator{#ios-simulator}
 
@@ -45,7 +45,7 @@ You need the Unity Remote app installed on your iOS device in order to follow st
     > You don’t need to enter anything in the text field.
 
 1. Play the game on the Simulator.
-1. When you're done, select **Play** to stop your client and input **Ctrl-C** in the terminal that's running the SpatialOS process to stop it.
+1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## iOS device{#ios-device}
 
