@@ -3,7 +3,7 @@ _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows
 
 The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang docs (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-> Note that code generation runs when you open the Unity Editor or when you select **Improbable** > **Generate Code** from the Editor menu.
+> Note that code generation runs when you open your Unity Editor or when you select **Improbable** > **Generate Code** from the Editor menu.
 
 ## Overview
 

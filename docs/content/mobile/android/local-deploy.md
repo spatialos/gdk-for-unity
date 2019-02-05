@@ -14,7 +14,7 @@ To connect your Android device to a local deployment, you need to prepare its co
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-## Connecting to a local deployment in the Editor{#in-editor}
+## Connect to a local deployment in the Editor{#in-editor}
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and click the Play button.<br/>
 

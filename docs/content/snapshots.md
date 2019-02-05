@@ -6,7 +6,7 @@ A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapsho
 You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/latest/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
 
 ## How to create a snapshot
-You set up snapshots through code and generate them through the Unity Editor.
+You set up snapshots through code and generate them through your Unity Editor.
 
 ### Set up the snapshot
 To do this, look at the [Playground project](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Assets/Playground) which comes with the GDK for Unity.
@@ -15,7 +15,7 @@ In the project’s [`Editor/SnapshotGenerator`](https://github.com/spatialos/Uni
 You can use this as a base for your own project’s snapshot generation by copying the file to the same folder in your own project and editing the `SnapshotGenerator` class to add SpatialOS entities to a snapshot.
 
 ### Generate the snapshot
-To generate the snapshot, in the Unity Editor menu: **SpatialOS** > **Generate snapshot** to open the snapshot generator window, then click `Generate snapshot` there.
+To generate the snapshot, in your Unity Editor menu: **SpatialOS** > **Generate snapshot** to open the snapshot generator window, then click `Generate snapshot` there.
 
 This saves the generated snapshot to `snapshots/default.snapshot`, which is where SpatialOS expects to find it unless explicitly told to use another path when you start the deployment.
 

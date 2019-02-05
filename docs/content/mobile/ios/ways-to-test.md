@@ -9,7 +9,7 @@ Before reading this document, make sure you are familiar with:
 Unity provides multiple ways to test your iOS [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, we recommend that you simply run your game in the Editor. Now that your build platform is set to iOS, Unity will compile and execute sections of code marked with the platform #define directive `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of the Unity Editor, while still executing code that would otherwise only run on an iOS device.
+For standard workflows and for minor changes, we recommend that you simply run your game in the Editor. Now that your build platform is set to iOS, Unity will compile and execute sections of code marked with the platform #define directive `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of your Unity Editor, while still executing code that would otherwise only run on an iOS device.
 
 For more information, see the following documentation:
 
@@ -17,7 +17,7 @@ For more information, see the following documentation:
 
 ## Unity Remote
 
-With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
+With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors your Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
 
 For more information, see the following documentation:
 

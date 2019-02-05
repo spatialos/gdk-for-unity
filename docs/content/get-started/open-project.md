@@ -1,6 +1,6 @@
 # Get started: 2 - Open the FPS Starter Project
 
-Launch the Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
+Launch your Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
 >**TIP:** The first time you open the Starter Project in your Unity Editor, It takes about 10 minutes; it's much quicker to open after this. (While you are waiting, you could look at our [Games Blog](https://improbable.io/games/blog).)
 
@@ -21,7 +21,7 @@ _The built NavMesh Asset as shown in the Unity Asset browser._
 <br/><br/>
 6. When the NavMash has finished baking, return to the **Inspector** window and disable the `FPS-Start_Large` by clicking the checkbox next to its name. 
 
-> **TIP:** You may get a number of warnings displayed in the Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages.
+> **TIP:** You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages.
 
 
 <br/>

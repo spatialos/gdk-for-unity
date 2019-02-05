@@ -34,7 +34,7 @@ Add the following dependencies to the `packages` manifest located inside `worker
 
 ## Download dependencies
 
-Open your Unity project in the Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
+Open your Unity project in your Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
 This triggers the following actions:
   
   * Unity downloads several required SpatialOS libraries. This may result in opening a browser windows prompting you to log in to your SpatialOS account.  Please log in.
@@ -61,7 +61,7 @@ If your project contains only SpatialOS logic, you can disable the `DefaultWorld
 
 To disable the default world:
 
-1. In the Unity Editor, go to **Edit** > **Project Settings** > **Player** and add `UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP` to the **Scripting Define Symbols** field. This disables the creation of the `DefaultWorld`.
+1. In your Unity Editor, go to **Edit** > **Project Settings** > **Player** and add `UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP` to the **Scripting Define Symbols** field. This disables the creation of the `DefaultWorld`.
 2. Create an initialization script that contains the logic for setting up the injection hooks and cleaning up the worlds. For example:
 
 ```csharp

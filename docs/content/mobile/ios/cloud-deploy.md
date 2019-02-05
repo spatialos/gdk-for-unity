@@ -25,7 +25,7 @@ To do this:
 1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure your Android client-worker GameObject is selected and in the Inspector, locate the script you just added to it. 
 1. In the Inspector, in the script’s drop-down window, there is a field to add the authentication token that you created. 
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
-1. In the Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
+1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Go to your file manager and open the generated XCode project in the `workers/unity/build/iOSClient@iOS` directory.

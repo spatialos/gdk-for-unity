@@ -15,7 +15,7 @@ When building workers by selecting **Build For Cloud** > **my_worker_name** the 
 You don't have the correct Unity build support packages installed.<br/>
 
 **Fix**<br/>
-In the Unity Editor:
+In your Unity Editor:
 
 * Select **SpatialOS** > **Check build support** and check the Console for errors relating to specific build platforms. <br/>
   * You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.

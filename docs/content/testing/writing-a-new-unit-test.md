@@ -243,7 +243,7 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
 1. Create the directory: `/workers/Unity/Assets/Gdk/Legacy/Tests/EditMode`
 
-1. In the Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
+1. In your Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
 
 1. Name the new **Assembly Definition** file you have just created to match: `Improbable.Gdk.Legacy.EditModeTests`.
 

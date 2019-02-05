@@ -9,7 +9,7 @@ Before reading this document, make sure you are familiar with:
 Unity provides multiple ways to test your Android [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for Android, it executes code that is in preprocessor `#if UNITY_ANDROID` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
+For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for Android, it executes code that is in preprocessor `#if UNITY_ANDROID` clauses. This way, you have the full capabilities and ease of use of your Unity Editor, while still testing code that would otherwise only run on a mobile device.
 
 For more information, see the following documentation:
 
@@ -17,7 +17,7 @@ For more information, see the following documentation:
 
 ## Unity Remote
 
-With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
+With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors your Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
 
 For more information, see the following documentation:
 

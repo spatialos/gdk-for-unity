@@ -19,7 +19,7 @@ Worker configs are built using information contained within [worker configuratio
 To build the worker configs, you can either:
 
 
-* With your project open in the Unity Editor, select **SpatialOS** > **Build worker configs**.
+* With your project open in your Unity Editor, select **SpatialOS** > **Build worker configs**.
 
     or
 * In a terminal window, from the root of your project, run: `spatial build build-config` via the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
@@ -39,8 +39,8 @@ To prepare the build of your server-workers and client-workers you can create a 
 
 To do this:
 
-1. With your project open in the Unity Editor, go to the Project window and select **Assets** > **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
-2. Select this Asset to view it in the Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
+1. With your project open in your Unity Editor, go to the Project window and select **Assets** > **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
+2. Select this Asset to view it in your Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
     * Which scenes each worker should contain in its build.
     * Which platforms you want to build it for.
     * Which build options you want enabled. You can select the following build options:
@@ -51,7 +51,7 @@ To do this:
 
 To build your workers:
 
-* With your project open in the Unity Editor, select **SpatialOS** > **Build for local** > **`<WorkerType>`** or **SpatialOS** > **Build for cloud** > **`<WorkerType>`**, where **`<WorkerType>`** is the type of worker you want to build.
+* With your project open in your Unity Editor, select **SpatialOS** > **Build for local** > **`<WorkerType>`** or **SpatialOS** > **Build for cloud** > **`<WorkerType>`**, where **`<WorkerType>`** is the type of worker you want to build.
 
 This starts the build process for the worker and deployment type (cloud or local) you selected.
 
@@ -66,6 +66,6 @@ During development you use a local deployment rather than a cloud deployment. In
  
  To use quick-run:
 
-1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
+1. With your project open in your Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
 2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: `SpatialOS ready. Access the inspector at http://localhost:21000/inspector.`
 3. In your Unity Editor, play your game's Scene.

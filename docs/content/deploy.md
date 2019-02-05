@@ -15,7 +15,7 @@ To ensure the SpatialOS Runtime starts [server-workers](https://docs.improbable.
 
 To start a local deployment, either:
 
-* In the Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
+* In your Unity Editor, from the menu select **SpatialOS** > **Local Launch**. (This runs the default launch configuration.)
 
     or
 * Open a terminal window and from the root of your game project directory run `spatial local launch` via the [`spatial` CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli).
@@ -40,7 +40,7 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
 ### Build and upload the game assembly
 The assembly includes executable files for the client-workers and server-workers, as well as the assets both types of workers use. (The assets might be the models and textures that the client-servers - that is, the game executable code - use to visualise the game.)
 
-  1. To build an assembly; in the Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
+  1. To build an assembly; in your Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
   1. To upload an assembly; open a terminal and navigate to the directory your game is in (the repository you’ve cloned). Run `spatial cloud upload <assembly name>`. The `<assembly name>` is a label you create so you can identify this assembly in the next step - for example you could call it `MyGDKAssembly`.
 
   > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your automatically opens [https://console.improbable.io](https://console.improbable.io) displaying the deployment.

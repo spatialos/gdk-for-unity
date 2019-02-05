@@ -167,6 +167,6 @@ To clone the repository using GitHub desktop: navigate to **File > Clone Reposit
 
 The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 
-  * a Unity project at `gdk-for-unity/workers/unity`, which you need to open in the Unity editor in order to use the GDK
+  * a Unity project at `gdk-for-unity/workers/unity`, which you need to open in your Unity editor in order to use the GDK
   * SpatialOS features, such as the schema and snapshot files
 

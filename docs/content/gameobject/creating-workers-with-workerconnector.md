@@ -99,7 +99,7 @@ protected override ReceptionistConfig GetReceptionistConfig(string workerType)
 ## How to decide which connect service to use
 First, see [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) to find out more about the connection flows for client-workers and server-workers).
 
-The `WorkerConnector` provides a default implementation which automatically decides which connection flow to use based on whether the application is running in the Unity Editor and whether it can find a login token. You can change the behavior by overriding the `GetConnectionService` method.
+The `WorkerConnector` provides a default implementation which automatically decides which connection flow to use based on whether the application is running in your Unity Editor and whether it can find a login token. You can change the behavior by overriding the `GetConnectionService` method.
 
 **Example** </br>
 Overriding which connection service to choose.

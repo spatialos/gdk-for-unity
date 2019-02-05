@@ -77,7 +77,7 @@ Generated code is generated from the [schema](#schema). It is used by [workers](
 * Read the state of SpatialOS entities and their [SpatialOS components](#spatialos-component).
 * [Send updates (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to SpatialOS components via the [SpatialOS Runtime](#spatialos-runtime).
 
-Code generation automatically occurs when you open the [Unity Project](#unity-project) in the Unity editor. You can also manually trigger code generation from inside the Unity editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
+Code generation automatically occurs when you open the [Unity Project](#unity-project) in your Unity editor. You can also manually trigger code generation from inside your Unity editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
 
 * Edited the schema
 * Created a new worker
@@ -220,15 +220,15 @@ From SpatialOS v13.5, there are two versions of the Locator connection. The new 
 
 
 #### v10.4+ Locator connection flow (stable version)
-Use this Locator service connection flow for:
- * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+Use this Locator connection flow to:
+ * Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
 
 
 #### New v13.5+ Locator connection flow (alpha version)
-Use this Locator service connection flow for:
+Use this Locator connection flow to:
 
-* Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
-* Connecting a client-worker instance to a cloud deployment from the Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
+* Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+* Connect a client-worker to a cloud deployment via your Unity Editor so that you can debug using the [development authentication flow](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
 
 
 Note that there are [other ways (SpatialOS documentation)](https://docs.improbable.io/reference/13.3/shared/deploy/connect-external) to connect a client-worker to a cloud deployment without using the Locator flow.
@@ -303,7 +303,7 @@ Reactive components contain all updates and messages received during the last [u
 The Receptionist service allows for a direct connection to the SpatialOS runtime and is the standard flow used to 
   * connect any type of worker in a local deployment
   * connecting a [server-worker](#server-worker) in a cloud deployment
-  * connecting a [client-worker](#client-worker) when using `spatial cloud connect external`. 
+  * connecting a [client-worker](#client-worker) when using `spatial cloud connect external`.
 
 > Related:
 >
@@ -543,7 +543,7 @@ Just as [Unity ECS Entities](#unity-ecs-entity) represent [SpatialOS entities](#
 
 Unity ECS components contain only data and are represented as structs rather than classes. This means that they are passed [by value instead of by reference](https://stackoverflow.com/questions/373419/whats-the-difference-between-passing-by-reference-vs-passing-by-value?answertab=votes#tab-top). Any behaviour that you want to associate with an ECS component needs to be defined in a [Unity ECS system](#unity-ecs-system). 
 
-The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in the Unity Editor.
+The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in your Unity Editor.
 
 Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/content/gameobject/linking-spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 

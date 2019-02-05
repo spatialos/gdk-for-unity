@@ -20,9 +20,9 @@ As you will be launching a cloud deployment, you need to build out the code exec
 > <br/><br/>Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content/mobile/overview)
 > <br/>
 
-3\.  **Your workers have finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`. 
+3\.  **Your workers have finished building when:** You see the following message in your Unity Editor's Console window: `Completed build for Cloud target`. 
 
->**TIP:** You may get a number of warnings displayed in the Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages so you can see only the relevant messages.
+>**TIP:** You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages so you can see only the relevant messages.
 
 ### If you encounter build errors:
 You might not have selected the build supports your game needs during your Unity setup.
@@ -54,7 +54,7 @@ You can also check our [Known Issues]({{urlRoot}}/known-issues) for other error 
 <br/>
  To use quick-run with the FPS Starter Project:<br/>
  <br/>
-1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
+1. With your project open in your Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
 2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
 3. In your Unity Editor, play the `FPS-Development` Scene.<br/>
 
