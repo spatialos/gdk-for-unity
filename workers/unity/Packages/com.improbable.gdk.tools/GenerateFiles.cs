@@ -16,12 +16,11 @@ namespace Improbable.Gdk.Tools
             var receivedMessage = string.Empty;
             RedirectedProcess
                 .Command(Common.SpatialBinary)
-                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "Dev Auth Token")
+                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "\"Dev Auth Token\"")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .AddOutputProcessing((message) => receivedMessage += message)
                 .Run();
-            var regexString = @"""id\\"": \\""(.*?)\\""";
-            var regex = new Regex(regexString);
+            var regex = new Regex(@"""id\\"": \\""(.*?)\\""");
             var devAuthToken = regex.Match(receivedMessage).Groups[1].Value;
 
             if (!Directory.Exists(ResourcesDir))
