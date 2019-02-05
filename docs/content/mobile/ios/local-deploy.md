@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with:
 1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
 ## Unity Remote{#unity-remote}
-You need the Unity Remote app installed on your iOS device in order to follow the below steps. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
+You need the Unity Remote app installed on your iOS device in order to follow steps below. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
 1. Open your project in the Unity Editor.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
