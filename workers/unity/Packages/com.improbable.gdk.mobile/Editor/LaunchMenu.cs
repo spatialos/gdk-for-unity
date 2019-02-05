@@ -134,16 +134,10 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Wait until the app has finished installing
-                DateTime timeout = DateTime.Now.AddSeconds(5);
-                while (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-l").Run() != 0)
+                if (RedirectedProcess.Command(LibIDeviceInstallerBinary).WithArgs("-l").RedirectOutputOptions(OutputRedirectBehaviour.None).Run() != 0)
                 {
-                    if (DateTime.Now > timeout)
-                    {
-                        Debug.LogError($"Device communication error. Please ensure it is connected");
-                        return;
-                    }
-
-                    System.Threading.Thread.Sleep(500);
+                    Debug.LogError($"Device communication error. Please ensure it is connected");
+                    return;
                 }
 
                 EditorUtility.DisplayProgressBar("Launching iOS Device Client", "Launching Client", 0.9f);
