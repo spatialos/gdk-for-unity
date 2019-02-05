@@ -1,10 +1,9 @@
 # Get started: 4 - Upload and launch your game
 
-This has 3 steps:
+This has 2 steps:
 
-* Set your project name
-* Upload worker assemblies
-* Launch a cloud deployment
+* Set your SpatialOS project name
+* Upload and launch your cloud deployment
 
 
 ### Set your SpatialOS project name
@@ -36,52 +35,89 @@ Your `spatialos.json` should look like this:
 ```
 
 <br/>
-### Upload worker assemblies
+<br/>
+### Upload and launch your cloud deployment
+
+The FPS Starter Project has the Deployments window in the Unity Editor which you can use to do this. (Note that this window is only available as part of the FPS Starter Project; it's not part of the GDK.)
+
+#### 1. Reference your Unity project in the Deployments window
+
+* To open the Deployments window, in your Unity Editor, select **SpatialOS** > **Deployment Launcher**.
+* Enter your project name in the **Project Name** field at the top of the window. (Use the one you just located in the SpatialOS Console.)
+
+#### 2. Upload worker assemblies
 
 An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
-To run a deployment in the cloud, you must upload the worker assemblies to your SpatialOS project. You can only do this in a terminal, via the [spatial CLI](https://docs.improbable.io/reference/latest/shared/glossary#the-spatial-command-line-tool-cli). You must also give the worker assemblies a name so that you can reference them when launching a deployment.
+To run a deployment in the cloud, you need to upload the worker assemblies to your SpatialOS project. <br/>
 
-Do this using a terminal of your choice - for example, PowerShell on Windows - navigate to `gdk-for-unity-fps-starter-project/` and run `spatial cloud upload <assembly_name>`. The `<assembly_name>` is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`. A valid upload command would look like this:
+To do this:
 
+* First, in the **Assembly** section of the Deployments window, enter the **Assembly Name** field. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`. (As shown in the example below.)
+* Now select **Upload Assembly** to start the upload.
+
+![]({{assetRoot}}assets/deployment-window.png)
+<br/> _Example Deployments window showing the Assembly section completed_
+
+<br/>
+
+**It’s finished uploading when:** You see an upload report printed in your Unity Console, for example:
 
 ```
-spatial cloud upload my_assembly
+Uploaded assembly my_assembly to project unity_gdk successfully.
+```
+
+> **TIP:** Depending on your network speed, the upload may take a little while (1-10 minutes) to complete.
+
+
+#### 3. Launch a cloud deployment
+
+The next step is to [start a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. When you launch a cloud deployment you have to provide four parameters:
+
+* **Assembly Name** - this identifies the worker assemblies to use. 
+* **Deployment Name** - this labels your deployment in the SpatialOS Console.
+* **Snapshot File** - this specifies which snapshot file the deployment uses. A snapshot declares the state of the world as the deployment starts.
+* **Launch Config File** - this is the deployment's launch configuration `.json` file which declares the world and load balancing configuration.
+
+<br/>
+To launch your cloud deployment:
+
+1\. First enter the parameters in the **Deployment Launcher** section of the Deployments window. Complete the settings as below:
+<br/>
+
+|Setting name|The setting you add|
+|-----|------|
+|**Assembly Name**| The name you gave the assembly in step 2 - for example; `myassembly`. <br/>(The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.)|
+|**Deployment Name**| A name of your choice - for example; `shootyshooty`. <br/>(The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.)|
+|**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS project.|
+|**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
+|**Enable Simulated Players**| Ensure this is checked.|
+|**Override Name**| Leave this unchecked.<br/>This allows you to change the name of the simulated players deployment.|
+|**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
+|**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
+
+![]({{assetRoot}}assets/deployment-window.png)
+<br/>_Example completed Deployments window_
+<br/>
+<br/>
+2\. Now start your deployment: Select **Launch deployments**.
+
+**Note:** You will see that there are two Deployment Names and two Launch Config Files listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
+<br/>
+
+**It's finished when:** You see two messages printed in your Unity Console indicating both deployments have been started:
+
+```
+Successfully created the main deployment.
+```
+```
+Successfully created the simulated player deployment.
 ```
 
 <br/>
-<br/>
-**It’s finished uploading when:** You see an upload report printed in your terminal output, for example:
-```
-Upload report:
-- 5 artifacts uploaded (4 successful, 1 skipped, 0 failed)
-```
-<br/>
-Based on your network speed, this may take a little while (1-10 minutes) to complete.
-
-<br/>
-### Launch a cloud deployment
-
-The next step is to [launch a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. This can only be done through the spatial CLI.
-
-When launching a cloud deployment you must provide three parameters:
-
-* **the assembly name** which identifies the worker assemblies to use. These are the assemblies you uploaded earlier so the name should match the one you passed to `spatial cloud upload`.
-* **a launch configuration** which is a `JSON` file that declares the world and [load balancing configuration (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
-* **a name for your deployment** which is used to label the deployment in the SpatialOS web Console. It consists of lower-case letters, digits, and `_` and can be up to 32 characters long.
-* **(optional) a region to deploy to** which defaults to server clusters located in the USA. If you’re in Europe, add the `--cluster_region=eu` flag to deploy to servers in Europe. This gives you lower latency.
-
-In a terminal window, navigate to the root directory of your SpatialOS project and run `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly_name> cloud_launch_large.json <deployment_name>` where `assembly_name` is the name you gave the assembly in the previous step and `deployment_name` is a name of your choice (for example, shootyshooty). A valid launch command would look like this:
-```
-spatial cloud launch --snapshot=snapshots/default.snapshot my_assembly cloud_launch_large.json shootyshooty
-```
-
-This command defaults to deploying to clusters located in the US. If you’re in Europe, add the `--cluster_region=eu` flag for lower latency.
-
-> **It's finished when:** You see `Deployment launched successfully` printed in your terminal output.
-
 ## Well done getting set up!
+
+<br/>
 It’s time to play your game.
 
 #### Next: [Get playing!]({{urlRoot}}/content/get-started/get-playing.md)
-
