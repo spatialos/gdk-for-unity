@@ -18,7 +18,7 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. Connect your iOS device to your computer using a USB cable. Accept the **Trust This Computer** alert if it appears.
 1. Open the project that you want to deploy with the Unity Editor and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
-1. In the **Unity Remote** section, select the drop-down menu beside the **Device** option and select **Any iOS Device**.
+1. In the **Unity Remote** section, select **Device** > **Any iOS Device**.
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. Open the scene that starts both your [client-workers]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
