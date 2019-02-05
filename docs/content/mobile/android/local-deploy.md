@@ -1,5 +1,7 @@
 # Connect to a local deployment
 
+This page explains how to connect an Android client to a local deployment of SpatialOS. You can do this from inside your [Unity Editor](#in-editor), using the [Unity Remote](#unity-remote) app, using an [Android Emulator](#android-emulator) or using your own [Android device](#android-device).
+
 Before reading this document, make sure you are familiar with:
 
 * [Setting up Android Support for the GDK]({{urlRoot}}/content/mobile/android/setup)
@@ -14,11 +16,11 @@ To connect your Android device to a local deployment, you need to prepare its co
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-## Connect to a local deployment in the Editor{#in-editor}
+## Unity Editor{#in-editor}
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and click the Play button.<br/>
 
-## Connect to a local deployment using Unity Remote{#unity-remote}
+## Unity Remote{#unity-remote}
 
 You need the Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
@@ -35,7 +37,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 
 1. You should now see your Unity Editor's game view mirrored on your Android device.
 
-## Connect to a local deployment using Android Emulator{#android-emulator}
+## Android Emulator{#android-emulator}
 
 1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds).
 
@@ -47,7 +49,7 @@ You need the Unity Remote app for this. See the [Unity documentation](https://do
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
 1. Play the game on the Emulator.
 
-## Connect to a local deployment using your Android device{#android-device}
+## Android device{#android-device}
 
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same wireless network.
