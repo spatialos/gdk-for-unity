@@ -18,7 +18,7 @@ To connect your Android device to a local deployment, you need to prepare its co
 
 ## Unity Editor{#in-editor}
 1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. In your Unity Editor, open the `FPS-Development` Scene and click the Play button.<br/>
+1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
 ## Unity Remote{#unity-remote}
 

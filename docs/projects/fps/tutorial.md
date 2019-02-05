@@ -53,7 +53,7 @@ component HealthPickup {
 
 This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The component id must be chosen by you, and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is a number that identifies the order in which these properties will appear within the component.
 
-Any time you modify your `schema` files you **must** then run code generation. To do this, click **Generate code** from the **SpatialOS menu** in your Unity Editor menu bar.
+Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS menu** in your Unity Editor menu bar.
 
 ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
 
@@ -353,7 +353,7 @@ Our aim is to have health packs which restore lost health to players. So what ha
 * You added an instance of the health pack entity type to the snapshot so it will be present in the world when the game begins.
 * You associated a local representation with your new SpatialOS entity so that Unity will know how to visually represent any health pack it encounters.
 
-You can launch a local deployment of your updated game world from the **SpatialOS menu** within your Unity Editor by clicking **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
+You can launch a local deployment of your updated game world from the **SpatialOS menu** within your Unity Editor by selecting **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
 
 Once the world is ready you can:
 
@@ -652,19 +652,19 @@ The distributed game logic is now in place, and we can test if it is working cor
 ![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
 <%(/Expandable)%>
 
-<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, click **Build UnityClient for local**.
+<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, select **Build UnityClient for local**.
 
 This is necessary because you have modified the code for the workers. If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.<%(/Expandable)%>
 
-<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, click **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
+<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
 
 It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
 
-<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, click **Launch standalone client**.
+<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, select **Launch standalone client**.
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
 
-<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` scene open in your Unity Editor, click the Unity `Play` button.<%(/Expandable)%>
+<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
 
 <%(#Expandable title="6. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
 

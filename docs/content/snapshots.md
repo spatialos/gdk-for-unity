@@ -15,7 +15,7 @@ In the project’s [`Editor/SnapshotGenerator`](https://github.com/spatialos/Uni
 You can use this as a base for your own project’s snapshot generation by copying the file to the same folder in your own project and editing the `SnapshotGenerator` class to add SpatialOS entities to a snapshot.
 
 ### Generate the snapshot
-To generate the snapshot, in your Unity Editor menu: **SpatialOS** > **Generate snapshot** to open the snapshot generator window, then click `Generate snapshot` there.
+To generate the snapshot, in your Unity Editor menu: **SpatialOS** > **Generate snapshot** to open the snapshot generator window, then select `Generate snapshot` there.
 
 This saves the generated snapshot to `snapshots/default.snapshot`, which is where SpatialOS expects to find it unless explicitly told to use another path when you start the deployment.
 

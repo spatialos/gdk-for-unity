@@ -65,7 +65,7 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
 You need to install the **.NET Core cross-platform development** and **Game development with Unity** workloads. To to this:
 
-- As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find the **Workloads** tab by opening Visual Studio Installer and, in the **Products** section, selecting **Modify** for Visual Studio 2017. If you can't see the **Modify** option, select **More**.
+- As you install [Visual Studio](https://www.visualstudio.com/downloads/), select the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find the **Workloads** tab by opening Visual Studio Installer and, in the **Products** section, selecting **Modify** for Visual Studio 2017. If you can't see the **Modify** option, select **More**.
 
 ![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 

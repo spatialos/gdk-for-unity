@@ -56,7 +56,7 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
  **Using Visual Studio?**
 
-As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
+As you install [Visual Studio](https://www.visualstudio.com/downloads/), select on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by selecting the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
 
 ![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
@@ -163,7 +163,7 @@ Clone the SpatialOS GDK for Unity repository using one of the following terminal
 
 #### Using GitHub Desktop
 
-To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, click the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then click Clone. 
+To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, select the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then select Clone. 
 
 The GDK repository is a SpatialOS project called `gdk-for-unity`. It contains:
 

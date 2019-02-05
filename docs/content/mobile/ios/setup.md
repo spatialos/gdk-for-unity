@@ -15,4 +15,4 @@
 Most of your interactions with the GDK happen inside your Unity Editor. To get started:
 
 1. Open your Unity Editor. It should automatically detect your project. If it doesn't, select **Open** and then navigate to`<path-to-your-project>/workers/unity`. If you don’t have a SpatialOS Unity project you can use the [FPS Starter Project]({{urlRoot}}/content/get-started/get-started) or the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) to get started. If you are using one of these projects, please ensure that you've completed the setup steps for those projects before continuing these steps.
-1. In your Unity Editor, go to **File** > **Build Settings**. Select **iOS** and then click on **Switch Platform**.
+1. In your Unity Editor, go to **File** > **Build Settings**. Select **iOS** and then select on **Switch Platform**.

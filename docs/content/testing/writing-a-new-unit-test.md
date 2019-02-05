@@ -249,7 +249,7 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
 1. Select this file, and change the **name** property in the Unity Inspector to match the filename:`Improbable.Gdk.Legacy.EditModeTests`.
 
-1. Click **Apply** .
+1. Select **Apply** .
 
 1. Check the **Test Assemblies** checkbox.
 
@@ -261,12 +261,12 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
     1. Check the **Editor** checkbox only.
 
-    1. Click on **Apply** again.
+    1. Select on **Apply** again.
 
 1. In the references list, add the reference to the package you are testing (in this
  case, `Improbable.Gdk.Legacy`).
 
-1. Click **Apply** again.
+1. Select **Apply** again.
 
 ### Add the entities package references to test assemblies
 
