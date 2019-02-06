@@ -67,7 +67,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
 1. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
 
-    > If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described in the previous step.
+    > **TIP:**  If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described above.
     >
     > For subsequent runs you will be prompted to pick XCode project directory again (with the one used previously preselected). You can generate a new project or append/replace existing one. In subsequent runs, if you've set up provisioning and use Append, you can use **Build and Run** to trigger project run automatically after XCode project was generated.
 
