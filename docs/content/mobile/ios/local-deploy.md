@@ -40,15 +40,20 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Simulator SDK**.
 1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
-1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform. If iOS is not selected, select it and then select **Switch Platform**.
-1. Select **Build and Run**. This prompts you to choose where to save the XCode project that Unity generates. After you've selected the directory, Unity generates the XCode project, opens it in XCode and starts the build. If the build succeeds, XCode starts a Simulator and installs the game on it.
-  * If you choose **Build**, instead of **Build and Run**, Unity generates a XCode project and opens the folder containing the project.
+1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
+If iOS is not selected, select it and then select **Switch Platform**.
+1. Select **Build and Run**. This prompts you to choose where to save the XCode project that Unity generates.<br>
+After you've selected the directory, Unity generates the XCode project, opens it in XCode and starts the build.<br>
+When the build succeeds, XCode starts a Simulator and installs the game on it.
+
+    > **TIP:**  If you choose **Build**, instead of **Build and Run**, Unity generates a XCode project and opens the folder containing the project.
+
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.
 
     > You don’t need to enter anything in the text field.
 
-1. Play the game on the Simulator.
-1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
+2. Play the game on the Simulator.
+3. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## iOS device{#ios-device}
 
@@ -63,7 +68,8 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**.
 1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
-1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform. If iOS is not selected, select it and then select **Switch Platform**.
+1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
+If iOS is not selected, select it and then select **Switch Platform**.
 1. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
 1. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
 
