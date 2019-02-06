@@ -7,7 +7,7 @@
        * The Android SDK
        * The Android Studio emulator
     * [Java Platform, Standard Edition Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - download and install the latest version.
-  1. (Optional) Download and unzip [Android NDK r13b](https://developer.android.com/ndk/downloads/older_releases), you only need this if you want to build for Android using [IL2CPP](https://docs.unity3d.com/Manual/IL2CPP.html). Extract it to a directory of your choice. Note down this directory path as you will be need to input the path into Unity later.
+  1. (Optional) Download and unzip [Android NDK r16b](https://developer.android.com/ndk/downloads/older_releases), you only need this if you want to build for Android using [IL2CPP](https://docs.unity3d.com/Manual/IL2CPP.html). Extract it to a directory of your choice. Note down this directory path as you will be need to input the path into Unity later.
   1. (Optional) [Unity Remote](https://play.google.com/store/apps/details?id=com.unity3d.genericremote) - this is Unity’s solution for faster development iteration times.
 
 ## Set up your Unity Editor
