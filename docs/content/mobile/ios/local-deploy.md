@@ -69,7 +69,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 
     > **TIP:**  If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described above.
     >
-    > For subsequent runs you will be prompted to pick XCode project directory again (with the one used previously preselected). You can generate a new project or append/replace existing one. In subsequent runs, if you've set up provisioning and use Append, you can use **Build and Run** to trigger project run automatically after XCode project was generated.
+    > For subsequent runs you will be prompted to pick an XCode project directory again (with the one you chose previously pre-selected). You can either generate a new project, append or replace an existing one. In subsequent runs, if you've set up provisioning and choose to append an existing project, you can use **Build and Run** to trigger a project run automatically once the XCode project has been generated.
 
 7. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and select **Connect**.
 8. Play the game on your mobile device.
