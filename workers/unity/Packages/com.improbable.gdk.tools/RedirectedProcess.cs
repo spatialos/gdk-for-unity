@@ -96,7 +96,8 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        ///     Adds custom processing for regular output of process.
+        ///     Adds the specified action to a list of output processors. These actions are called while running
+        /// the specified process and receive as an argument the output string.
         /// </summary>
         /// <param name="outputProcessor">Processing action for regular output.</param>
         public RedirectedProcess AddOutputProcessing(Action<string> outputProcessor)
@@ -106,7 +107,8 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        ///     Adds custom processing for error output of process.
+        ///     Adds the specified action to a list of error processors. These actions are called while running
+        /// the specified process and receive as an argument the error string.
         /// </summary>
         /// <param name="errorProcessor">Processing action for error output.</param>
         public RedirectedProcess AddErrorProcessing(Action<string> errorProcessor)
@@ -116,12 +118,13 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        ///     Adds accumulated output processing
+        ///     Adds the specified action to a list of accumulated output processors. These actions are called
+        /// at the end of running the specified process and receive as an argument the complete log of that process.
         /// </summary>
-        /// <param name="errorProcessor">Processing action for error output.</param>
-        public RedirectedProcess AddAccumulatedOutputProcessing(Action<string> errorProcessor)
+        /// <param name="accumulatedOutputProcessor">Processing action for accumulated output.</param>
+        public RedirectedProcess AddAccumulatedOutputProcessing(Action<string> accumulatedOutputProcessor)
         {
-            accumulatedOutputProcessors.Add(errorProcessor);
+            accumulatedOutputProcessors.Add(accumulatedOutputProcessor);
             return this;
         }
 
