@@ -40,7 +40,7 @@ To prepare the build of your server-workers and client-workers you can create a 
 To do this:
 
 1. With your project open in your Unity Editor, go to the Project window and select **Assets** > **Create** > **SpatialOS** > **Build Configuration**. This creates a Unity Asset called `SpatialOS Build Configuration`.
-2. Select this Asset to view it in your Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
+1. Select this Asset to view it in your Unity Editor Inspector. Here you can configure each server-worker and client-worker for both local and cloud deployments. You can configure:
     * Which Scenes each worker should contain in its build.
     * Which platforms you want to build it for.
     * Which build options you want enabled. You can select the following build options:
@@ -67,5 +67,5 @@ During development you use a local deployment rather than a cloud deployment. In
  To use quick-run:
 
 1. With your project open in your Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
-2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: `SpatialOS ready. Access the inspector at http://localhost:21000/inspector.`
-3. In your Unity Editor, play your game's Scene.
+1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: `SpatialOS ready. Access the inspector at http://localhost:21000/inspector.`
+1. In your Unity Editor, play your game's Scene.

@@ -37,8 +37,8 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 **Fix**<br/>
 
 1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing)).
-2. Ensure that the dotnet executable is added to your PATH environment variable.
-3. Restart your computer after making the above changes.
+1. Ensure that the dotnet executable is added to your PATH environment variable.
+1. Restart your computer after making the above changes.
 
 <br/>
 
@@ -135,4 +135,4 @@ You don't have the correct compilation units installed.
 Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
 
 1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing).
-2. Restart your computer.
+1. Restart your computer.

@@ -61,11 +61,11 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
-2. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**.
-3. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
-4. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform. If iOS is not selected, select it and then select **Switch Platform**.
-5. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
-6. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
+1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**.
+1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
+1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform. If iOS is not selected, select it and then select **Switch Platform**.
+1. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
+1. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
 
     > If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described in the previous step.
     >

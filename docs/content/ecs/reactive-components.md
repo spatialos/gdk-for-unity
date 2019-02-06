@@ -12,17 +12,17 @@ At the end of the tick, the GDK removes the reactive component.
 These are the types of reactive component available:
 
 1. `ReceivedUpdates`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/latest/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-2. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/ecs/authority) for information on how this works.
-3. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/ecs/events) for information on how this works.
-4. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
-5. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
+1. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/content/ecs/authority) for information on how this works.
+1. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/content/ecs/events) for information on how this works.
+1. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
+1. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands]({{urlRoot}}/content/ecs/commands) for information on how this works.
 
 ## Component Lifecycle tags
 
 There are tags for handling the addition and removal of components:
 
 1. `ComponentAdded`: SpatialOS component has been added to the local view of a SpatialOS entity due to checkout of an entity or a change in interest.
-2. `ComponentRemoved`: SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
+1. `ComponentRemoved`: SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
 
 ## Example of a system using a reactive component
 

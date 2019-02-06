@@ -22,7 +22,7 @@ The parsing stage, shown in the code snippet below, is in [CodeGenerator.cs](htt
 The code generator then does post-processing on the collection of C# objects that represent the schema.
 
 1. It flags each type and component as [blittable or not blittable](https://docs.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types). This information is required as blittable and non-blittable components need to be generated in a different manner. You can find the source for this in [BlittableFlagger.cs](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/src/Generation/SchemaProcessing/BlittableFlagger.cs).
-2. It marks data types that are used as event, command request, and/or command response payloads. You can find the source for this in [PayloadMarker.cs](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/src/Generation/SchemaProcessing/PayloadMarker.cs).
+1. It marks data types that are used as event, command request, and/or command response payloads. You can find the source for this in [PayloadMarker.cs](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/src/Generation/SchemaProcessing/PayloadMarker.cs).
 
 ### T4 templates
 
@@ -68,7 +68,7 @@ After post processing, a code generation job is run on each C# object that repre
 The process of editing the code generator is simple:
 
 1. Make the code and/or template changes.
-2. Reload scripts within Unity to see your changes in action! The code generator will automatically be rebuilt.
+1. Reload scripts within Unity to see your changes in action! The code generator will automatically be rebuilt.
 
 
 ### Spatial Codegen configuration

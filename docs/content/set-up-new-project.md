@@ -62,7 +62,7 @@ If your project contains only SpatialOS logic, you can disable the `DefaultWorld
 To disable the default world:
 
 1. In your Unity Editor, go to **Edit** > **Project Settings** > **Player** and add `UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP` to the **Scripting Define Symbols** field. This disables the creation of the `DefaultWorld`.
-2. Create an initialization script that contains the logic for setting up the injection hooks and cleaning up the worlds. For example:
+1. Create an initialization script that contains the logic for setting up the injection hooks and cleaning up the worlds. For example:
 
 ```csharp
 using Improbable.Gdk.Core;

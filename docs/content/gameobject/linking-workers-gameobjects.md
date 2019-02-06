@@ -19,7 +19,7 @@ To represent a worker with a GameObject, you use the Creation Feature Module. Fi
 To represent a worker as a GameObject:
 1. Create a GameObject in your Scene.
 
-2. Pass the GameObject into the Creation Feature Module using the following methods:
+1. Pass the GameObject into the Creation Feature Module using the following methods:
   *  If you are using the default implementation of `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, YourWorkerGameObject)` if you use the default implementation.
   * GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, new YourEntityGameObjectCreator(), YourWorkerGameObject) if you customized the `IEntityGameObjectCreator` where `YourWorkerGameObject` is the GameObject that should represent your worker.
 
