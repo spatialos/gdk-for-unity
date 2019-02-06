@@ -8,7 +8,8 @@ Before reading this document, make sure you are familiar with:
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
 ## Unity Editor{#in-editor}
-1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
+1. In the Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
 ## Unity Remote{#unity-remote}
@@ -20,7 +21,8 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 1. Open the project that you want to deploy with the Unity Editor and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
 1. In the **Unity Remote** section, select **Device** > **Any iOS Device**.
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
-1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
+1. In the Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. Open the Scene that starts both your [client-workers]({{urlRoot}}/content/glossary#client-worker) and [server-workers]({{urlRoot}}/content/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
 1. In the Editor’s Game view, select **Play**.
 
@@ -33,7 +35,8 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 
 1. Open your project in the Unity Editor.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
-1. In the Unity Editor, Select **SpatialOS** > **Local launch**. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
+1. In the Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This should open **PlayerSettings** in the Inspector window.
 1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Simulator SDK**.
 1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
@@ -54,7 +57,8 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 1. Connect the mobile device to your computer using a USB cable.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
-1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.) You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP. It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
+1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.) You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP.<br>
+It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This should open **PlayerSettings** in the Inspector window.
 1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**.
 1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
