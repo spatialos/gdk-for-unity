@@ -57,7 +57,8 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. Connect the mobile device to your computer using a USB cable.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
-1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.) You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP.<br>
+1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.)<br>
+You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This should open **PlayerSettings** in the Inspector window.
 1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Device SDK**.
