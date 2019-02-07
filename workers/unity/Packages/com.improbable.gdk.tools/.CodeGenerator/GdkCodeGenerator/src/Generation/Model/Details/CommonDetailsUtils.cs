@@ -1,3 +1,5 @@
+using System.Linq;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -13,6 +15,16 @@ namespace Improbable.Gdk.CodeGenerator
 
             return
                 $"global::{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
+        }
+
+        public static Identifier CreateIdentifier(string qualifiedName)
+        {
+            return new Identifier
+            {
+                QualifiedName = qualifiedName,
+                Name = qualifiedName.Split(".").Last(),
+                Path = qualifiedName.Split(".").ToList()
+            };
         }
     }
 }

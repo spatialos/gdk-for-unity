@@ -43,7 +43,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             if (raw.Data != null)
             {
-                FieldDetails = store.Types[Identifier.FromQualifiedName(raw.Data.QualifiedName)].FieldDetails;
+                FieldDetails = store.Types[CommonDetailsUtils.CreateIdentifier(raw.Data.QualifiedName)].FieldDetails;
             }
             else
             {

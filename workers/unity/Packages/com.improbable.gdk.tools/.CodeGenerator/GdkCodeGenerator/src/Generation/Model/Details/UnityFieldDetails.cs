@@ -54,12 +54,12 @@ namespace Improbable.Gdk.CodeGenerator
                 else if (singularType.UserType != null)
                 {
                     IsBlittable = store.BlittableMap
-                        .Contains(Identifier.FromQualifiedName(singularType.UserType.QualifiedName));
+                        .Contains(CommonDetailsUtils.CreateIdentifier(singularType.UserType.QualifiedName));
                 }
                 else if (singularType.EnumType != null)
                 {
                     IsBlittable = store.BlittableMap
-                        .Contains(Identifier.FromQualifiedName(singularType.EnumType.QualifiedName));
+                        .Contains(CommonDetailsUtils.CreateIdentifier(singularType.EnumType.QualifiedName));
                 }
                 else
                 {

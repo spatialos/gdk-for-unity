@@ -13,22 +13,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
 
         public string PackagePath => string.Join(".", Path.Take(Path.Count - 1));
 
-        public static Identifier FromQualifiedName(string qualifiedName)
-        {
-            return new Identifier
-            {
-                QualifiedName = qualifiedName,
-                Name = qualifiedName.Split(".").Last(),
-                Path = qualifiedName.Split(".").ToList()
-            };
-        }
-
-        public bool IsChild(Identifier identifier)
-        {
-            return identifier.QualifiedName.StartsWith(QualifiedName) && identifier.Path.Count == Path.Count + 1;
-        }
-
-
         public bool Equals(Identifier other)
         {
             if (ReferenceEquals(null, other))
@@ -66,7 +50,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
 
         public override int GetHashCode()
         {
-            return (QualifiedName != null ? QualifiedName.GetHashCode() : 0);
+            return QualifiedName != null ? QualifiedName.GetHashCode() : 0;
         }
     }
 

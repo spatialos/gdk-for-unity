@@ -67,9 +67,15 @@ namespace Improbable.Gdk.CodeGenerator
 
         public HashSet<Identifier> GetNestedTypes(Identifier identifier)
         {
-            return Types.Select(t => t.Key).Where(identifier.IsChild)
-                .Concat(Enums.Select(t => t.Key).Where(identifier.IsChild))
+            return Types.Select(t => t.Key).Where(t => IsIdentifierChild(identifier, t))
+                .Concat(Enums.Select(t => t.Key).Where(t => IsIdentifierChild(identifier, t)))
                 .ToHashSet();
+        }
+
+        private bool IsIdentifierChild(Identifier parent, Identifier potentialChild)
+        {
+            return potentialChild.QualifiedName.StartsWith(parent.QualifiedName)
+                && potentialChild.Path.Count == parent.Path.Count + 1;
         }
 
         private void PopulateBlittableMaps()
@@ -122,7 +128,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 if (innerSingularType.UserType != null)
                 {
-                    if (!blittableMap.TryGetValue(Identifier.FromQualifiedName(innerSingularType.UserType.QualifiedName), out var isFieldBlittable))
+                    if (!blittableMap.TryGetValue(CommonDetailsUtils.CreateIdentifier(innerSingularType.UserType.QualifiedName), out var isFieldBlittable))
                     {
                         return null;
                     }
