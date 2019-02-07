@@ -14,7 +14,10 @@
 After installing these dependencies, open the Unity project in `<path-to-your-project>/workers/unity`.
 
   1. In your Unity Editor, go to **File** > **Build Settings**. Select **Android** and then **Switch Platform**.
-  1. In your Unity Editor, go to **Edit** > **Preferences** on Windows or **Unity** > **Preferences** on macOS. In the **External Tools** window, in the **Android** section, input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the filepath correctly is to use the browse option:
+  1. Still in your Unity Editor, add the file paths Unity needs via the **External Tools** window. To do this;
+  <br/> * on Windows, go to **Edit** > **Preferences** 
+  <br/> * on MacOS, go to **Unity** > **Preferences**. 
+  <br/> In the **Android** section of the **External Tools** window,  input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the file path correctly is to use the browse option:
 
 | Field | How to find the path |
 |-------|------|
