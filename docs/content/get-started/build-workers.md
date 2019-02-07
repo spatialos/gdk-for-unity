@@ -16,7 +16,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 > When you build your workers you may see the following errors in the Unity console: 
 > <br/>`The worker "iOSClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for iOS. Please add the missing build support options to your Unity Editor.`
 > <br/><br/>`The worker "AndroidClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for Android.Please add the missing build support options to your Unity Editor.`<br/>
-> <br/>These errors can be ignored if you are not developing a game for Android or iOS
+> <br/>You can ignore these errors if you are not developing a game for Android or iOS
 > <br/><br/>Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content/mobile/overview)
 > <br/>
 
