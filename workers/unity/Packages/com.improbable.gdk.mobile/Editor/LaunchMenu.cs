@@ -115,10 +115,11 @@ namespace Improbable.Gdk.Mobile
                     .RedirectOutputOptions(OutputRedirectBehaviour.None).Run();
                 var existsOnDevice = appList.Contains(bundleId);
                 var existsLocally = !string.IsNullOrEmpty(ipaPath);
-                
-                // If .ipa exists - we install/upgrade device app and launch it
-                // If .ipa doesn't exist, but the bunlde is installed on device - we launch existing app with parameters
-                // If .ipa doesn't exist and bundle isn't found on device - we fail with an error.
+
+                // If .ipa exists and the bundle is installed - we upgrade device app and launch it
+                // If .ipa exists, but isn't installed - we install device app and launch it
+                // If .ipa doesn't exist, but the bundle is installed - we launch existing app with parameters
+                // If .ipa doesn't exist and bundle isn't found - we fail with an error.
                 if (!existsLocally && !existsOnDevice)
                 {
                     Debug.LogError($"Could not find an app on device or built out iOS .ipa archive in \"{AbsoluteAppBuildPath}\" to launch.");

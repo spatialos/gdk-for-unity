@@ -63,7 +63,7 @@ namespace Improbable.Gdk.Tools
             OutputRedirectBehaviour.ProcessSpatialOutput |
             OutputRedirectBehaviour.RedirectAccumulatedOutput;
 
-        private bool returnImmediately = false;
+        private bool returnImmediately;
 
         /// <summary>
         ///     Creates the redirected process for the command.
@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Tools
             if (process == null)
             {
                 throw new Exception(
-                    $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
+                    $"Failed to run process {info.FileName} {info.Arguments}\n. Please check if the command specified is available.");
             }
 
             StringBuilder outputLog = null;
