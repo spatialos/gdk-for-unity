@@ -35,11 +35,12 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 
 1. Open your project in the Unity Editor.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
-1. In the Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+1. In the Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In the Unity Editor, navigate to **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
-1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings** > **Configuration** > **Target SDK** and choose **Simulator SDK**.
-1. Also in the **Configuration** section of the Inspector window, select **Targer minimum iOS version** and input `10.0`.
+1. In the Inspector window, navigate to **Settings for iOS (the iPhone icon)** > **Other Settings**.
+1. In the **Configuration** section of the Inspector window, select **Target SDK** and choose **Simulator SDK**.
+1. Still in the **Configuration** section, select **Targer minimum iOS version** and input `10.0`.
 1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that iOS is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
 If iOS is not selected, select it and then select **Switch Platform**.
 1. Select **Build and Run**. This prompts you to choose where to save the XCode project that Unity generates.<br>
