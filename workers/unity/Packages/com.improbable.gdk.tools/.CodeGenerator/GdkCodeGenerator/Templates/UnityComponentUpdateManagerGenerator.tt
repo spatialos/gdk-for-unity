@@ -350,7 +350,7 @@ namespace <#= qualifiedNamespace #>
             {
                 if (!entityIdToAuthority.TryGetValue(entityId, out var authority))
                 {
-                    throw new ArgumentException("Entity not in view");
+                    throw new ArgumentException("Can not check authority; entity-component not in view.");
                 }
 
                 return authority;
