@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Improbable.CodeGeneration.FileHandling;
-using Improbable.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -42,7 +41,6 @@ namespace Improbable.Gdk.CodeGenerator
             this.fileSystem = fileSystem;
         }
 
-
         public int Run()
         {
             if (options.ShouldShowHelp)
@@ -57,23 +55,19 @@ namespace Improbable.Gdk.CodeGenerator
                 return 1;
             }
 
-            GenerateNativeTypesAndAst();
-
-            var schemaFilesRaw = SchemaFiles.GetSchemaFilesRaw(options.JsonDirectory, fileSystem).ToList();
-            var schemaProcessor = new UnitySchemaProcessor(schemaFilesRaw);
-            var globalEnumSet = ExtractEnums(schemaProcessor.ProcessedSchemaFiles);
-            
+            var bundlePath = GenerateBundle();
+            var schemaBundle = SchemaBundle.FromJson(File.ReadAllText(bundlePath));
+            var store = new DetailsStore(schemaBundle);
             var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
-            var aggegrateJob = new AggregateJob(fileSystem, options, schemaProcessor, globalEnumSet);
-            
+            var singleJob = new SingleGenerationJob(options.NativeOutputDirectory, store, fileSystem);
+
             var runner = new JobRunner(fileSystem);
-            
-            runner.Run(new List<ICodegenJob> { aggegrateJob, workerGenerationJob }, 
-                new[] { options.NativeOutputDirectory });
+
+            runner.Run(singleJob, workerGenerationJob);
             return 0;
         }
 
-        private void GenerateNativeTypesAndAst()
+        private string GenerateBundle()
         {
             var files = options.SchemaInputDirs.SelectMany(dir =>
                 Directory.GetFiles(dir, "*.schema", SearchOption.AllDirectories));
@@ -81,44 +75,16 @@ namespace Improbable.Gdk.CodeGenerator
 
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
+            var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
+
             var arguments = new[]
             {
-                $@"--ast_json_out={options.JsonDirectory}"
+                $@"--bundle_json_out={bundlePath}"
             }.Union(inputPaths).Union(files).ToList();
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
-        }
 
-        private HashSet<string> ExtractEnums(ICollection<UnitySchemaFile> schemas)
-        {
-            var enumSet = new HashSet<string>();
-            foreach (var schema in schemas)
-            {
-                foreach (var unityEnum in schema.EnumDefinitions)
-                {
-                    enumSet.Add(unityEnum.qualifiedName);
-                }
-
-                foreach (var typeDefinition in schema.TypeDefinitions)
-                {
-                    ExtractEnums(typeDefinition, enumSet);
-                }
-            }
-
-            return enumSet;
-        }
-
-        private void ExtractEnums(UnityTypeDefinition typeDefinition, HashSet<string> enumSet)
-        {
-            foreach (var enumDefinition in typeDefinition.EnumDefinitions)
-            {
-                enumSet.Add(enumDefinition.qualifiedName);
-            }
-
-            foreach (var nestedTypeDefinition in typeDefinition.TypeDefinitions)
-            {
-                ExtractEnums(nestedTypeDefinition, enumSet);
-            }
+            return bundlePath;
         }
 
         private void ShowHelpMessage()
