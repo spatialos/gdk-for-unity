@@ -24,21 +24,20 @@ namespace Improbable.Gdk.CodeGenerator
             CamelCaseName = Formatting.PascalCaseToCamelCase(PascalCaseName);
             FieldNumber = field.FieldId;
 
+            IsBlittable = store.BlittableMap.Contains(field.Identifier);
+
             if (field.Option != null)
             {
-                IsBlittable = false;
                 CanBeEmpty = true;
                 fieldType = new OptionFieldType(field.Option.InnerType, store);
             }
             else if (field.List != null)
             {
-                IsBlittable = false;
                 CanBeEmpty = true;
                 fieldType = new ListFieldType(field.List.InnerType, store);
             }
             else if (field.Map != null)
             {
-                IsBlittable = false;
                 CanBeEmpty = true;
                 fieldType = new MapFieldType(field.Map.KeyType, field.Map.ValueType, store);
             }
@@ -46,25 +45,6 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 var singularType = field.Singular.Type;
                 fieldType = new SingularFieldType(singularType, store);
-
-                if (singularType.Primitive != null)
-                {
-                    IsBlittable = !DetailsStore.NonBlittableSchemaTypes.Contains(singularType.Primitive);
-                }
-                else if (singularType.UserType != null)
-                {
-                    IsBlittable = store.BlittableMap
-                        .Contains(CommonDetailsUtils.CreateIdentifier(singularType.UserType.QualifiedName));
-                }
-                else if (singularType.EnumType != null)
-                {
-                    IsBlittable = store.BlittableMap
-                        .Contains(CommonDetailsUtils.CreateIdentifier(singularType.EnumType.QualifiedName));
-                }
-                else
-                {
-                    throw new ArgumentException("Malformed field.");
-                }
             }
         }
 

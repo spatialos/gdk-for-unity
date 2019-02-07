@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1

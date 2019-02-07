@@ -18,13 +18,9 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 
         public static string SnakeCaseToPascalCase(string text)
         {
-            return ToPascalCase(text.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries));
-        }
-
-        private static string ToPascalCase(IEnumerable<string> parts)
-        {
-            return parts.Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
-                .Aggregate(string.Empty, (s1, s2) => s1 + s2);
+            return text.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1))
+                .Aggregate(string.Empty, (s1, s2) => s1 + s2);;
         }
 
         public static string GetNamespacePath(string packageName)

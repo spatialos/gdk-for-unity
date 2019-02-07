@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
@@ -117,35 +118,45 @@ namespace Improbable.Gdk.CodeGenerator
 
         private bool? CheckBlittable(IEnumerable<Field> fields)
         {
-            foreach (var field in fields)
+            var results = fields.Select(CheckBlittable);
+
+            if (results.Any(res => res == null))
             {
-                if (field.Map != null || field.List != null || field.Option != null)
-                {
-                    return false;
-                }
-
-                var innerSingularType = field.Singular.Type;
-
-                if (innerSingularType.UserType != null)
-                {
-                    if (!blittableMap.TryGetValue(CommonDetailsUtils.CreateIdentifier(innerSingularType.UserType.QualifiedName), out var isFieldBlittable))
-                    {
-                        return null;
-                    }
-
-                    if (!isFieldBlittable)
-                    {
-                        return false;
-                    }
-                }
-                else if (innerSingularType.Primitive != null && NonBlittableSchemaTypes.Contains(innerSingularType.Primitive))
-                {
-                    return false;
-                }
-
-                // No need to check enums - they are always blittable.
+                return null;
             }
 
+            return !results.Any(res => res.HasValue && !res.Value);
+        }
+
+        private bool? CheckBlittable(Field field)
+        {
+            if (field.Map != null || field.List != null || field.Option != null)
+            {
+                blittableMap[field.Identifier] = false;
+                return false;
+            }
+
+            var innerSingularType = field.Singular.Type;
+
+            if (innerSingularType.UserType != null)
+            {
+                if (!blittableMap.TryGetValue(CommonDetailsUtils.CreateIdentifier(innerSingularType.UserType.QualifiedName), out var isFieldBlittable))
+                {
+                    return null;
+                }
+
+                blittableMap[field.Identifier] = isFieldBlittable;
+                return isFieldBlittable;
+            }
+
+            if (innerSingularType.Primitive != null && NonBlittableSchemaTypes.Contains(innerSingularType.Primitive))
+            {
+                blittableMap[field.Identifier] = false;
+                return false;
+            }
+
+            // No need to check enums - they are always blittable.
+            blittableMap[field.Identifier] = true;
             return true;
         }
     }
