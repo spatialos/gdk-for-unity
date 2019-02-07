@@ -228,6 +228,7 @@ namespace <#= qualifiedNamespace #>
             }
 
             if (workerSystem.TryGetEntity(entityId, out var entity)
+                && componentUpdateSystem.HasComponent(<#= componentDetails.ComponentName #>.ComponentId, entityId)
                 && componentUpdateSystem.GetAuthority(entityId, <#= componentDetails.ComponentName #>.ComponentId) != Authority.NotAuthoritative)
             {
                 entitiesMatchingRequirements.Add(entityId);
