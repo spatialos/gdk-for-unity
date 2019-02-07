@@ -56,7 +56,7 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
  **Using Visual Studio?**
 
-As you install [Visual Studio](https://www.visualstudio.com/downloads/), select on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by selecting the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
+As you install [Visual Studio](https://www.visualstudio.com/downloads/), navigate to the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by selecting the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
 
 ![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 

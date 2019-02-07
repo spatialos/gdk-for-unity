@@ -26,7 +26,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 
 
 ### If you encounter build errors:
-You might not have selected the build supports your game needs during your Unity setup.
+You might not have selected the build support modules that your game needs during your Unity setup.
 
 * You need **Linux** build support. This is because server-workers in a cloud deployment always run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
 * You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
@@ -63,7 +63,7 @@ These errors are only relevant if you are developing a game for mobile so you ca
 <br/>
  To use quick-run with the FPS Starter Project:<br/>
  <br/>
-1. With your project open in your Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
+1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).<br/>
 1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
 1. In your Unity Editor, play the `FPS-Development` Scene.<br/>
 
