@@ -8,7 +8,7 @@ Before reading this document, make sure you are familiar with:
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
 ## Unity Editor{#in-editor}
-1. In the Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+1. In the Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
