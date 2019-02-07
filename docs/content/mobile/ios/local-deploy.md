@@ -51,7 +51,7 @@ When the build succeeds, XCode starts a Simulator and installs the game on it.
 
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.
 
-    > You don’t need to enter anything in the text field.
+Note: You don’t need to enter anything in the text field.
 
 1. Play the game on the Simulator.
 1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
