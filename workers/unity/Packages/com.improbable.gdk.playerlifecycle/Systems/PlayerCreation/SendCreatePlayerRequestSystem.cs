@@ -72,8 +72,10 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    workerSystem.TryGetEntity(response.EntityId, out var entity);
-                    PostUpdateCommands.AddComponent(entity, new ShouldRequestPlayerTag());
+                    if (workerSystem.TryGetEntity(response.EntityId, out var entity))
+                    {
+                        PostUpdateCommands.AddComponent(entity, new ShouldRequestPlayerTag());
+                    }
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {
