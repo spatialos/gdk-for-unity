@@ -53,15 +53,15 @@ When the build succeeds, XCode starts a Simulator and installs the game on it.
 
     > You don’t need to enter anything in the text field.
 
-2. Play the game on the Simulator.
-3. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
+1. Play the game on the Simulator.
+1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## iOS device{#ios-device}
 
 1. Set up [Code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Make sure your computer and your mobile device are both connected to the same wireless network.
 1. Connect the mobile device to your computer using a USB cable.
-1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
+1. In your Unity Editor, build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
 1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.)<br>
 You cannot use **SpatialOS** > **Local launch** in your Unity Editor as you would normally, because you need to specify the runtime IP.<br>
@@ -80,5 +80,5 @@ If iOS is not selected, select it and then select **Switch Platform**.
     >
     > For subsequent runs you will be prompted to pick an XCode project directory again (with the one you chose previously pre-selected). You can either generate a new project, append or replace an existing one. In subsequent runs, if you've set up provisioning and choose to append an existing project, you can use **Build and Run** to trigger a project run automatically once the XCode project has been generated.
 
-7. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and select **Connect**.
-8. Play the game on your mobile device.
+1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and select **Connect**.
+1. Play the game on your mobile device.

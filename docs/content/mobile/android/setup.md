@@ -11,13 +11,18 @@
   1. (Optional) [Unity Remote](https://play.google.com/store/apps/details?id=com.unity3d.genericremote) - this is Unity’s solution for faster development iteration times.
 
 ## Set up your Unity Editor
-After installing these dependencies, open the Unity project in `<path-to-your-project>/workers/unity`.
 
-  1. In your Unity Editor, go to **File** > **Build Settings**. Select **Android** and then **Switch Platform**.
-  1. Still in your Unity Editor, add the file paths Unity needs via the **External Tools** window. To do this;
-  <br/> * on Windows, go to **Edit** > **Preferences** 
-  <br/> * on MacOS, go to **Unity** > **Preferences**. 
-  <br/> In the **Android** section of the **External Tools** window,  input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the file path correctly is to use the browse option:
+Most of your interactions with the GDK happen inside your Unity Editor. To get started:
+
+1. Open your Unity Editor.
+1. It should automatically detect your project. If it doesn't, select **Open**, navigate to `<path-to-your-project>/workers/unity` and select **Open**.<br>
+If you don’t have a SpatialOS Unity project you can use the [FPS Starter Project]({{urlRoot}}/content/get-started/get-started) or the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) to get started. If you are using one of these projects, please ensure that you've completed the [setup]({{urlRoot}}/content/get-started/set-up) steps for those projects before continuing these steps.
+1. In your Unity Editor, go to **File** > **Build Settings**. Select **Android** and then **Switch Platform**.
+1. Still in your Unity Editor, add the file paths Unity needs via the **External Tools** window. To do this:
+    * on Windows, go to **Edit** > **Preferences** 
+    * on MacOS, go to **Unity** > **Preferences**.
+
+    In the **Android** section of the **External Tools** window,  input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the file path correctly is to use the browse option:
 
 | Field | How to find the path |
 |-------|------|
