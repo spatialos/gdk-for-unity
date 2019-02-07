@@ -28,7 +28,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 
     > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
 
-1. You should now see your Unity Editor game view mirrored on your iOS device.
+1. You should now see your Unity Editor Game view mirrored on your iOS device.
 1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## iOS Simulator{#ios-simulator}
