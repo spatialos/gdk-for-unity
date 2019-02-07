@@ -66,6 +66,6 @@ During development you use a local deployment rather than a cloud deployment. In
  
  To use quick-run:
 
-1. With your project open in your Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).
+1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).
 1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: `SpatialOS ready. Access the inspector at http://localhost:21000/inspector.`
 1. In your Unity Editor, play your game's Scene.
