@@ -1,5 +1,4 @@
-using Improbable.CodeGeneration.Model;
-using Improbable.CodeGeneration.Utils;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -14,13 +13,6 @@ namespace Improbable.Gdk.CodeGenerator
 
             return
                 $"global::{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
-        }
-
-        public static string GetFqnTypeFromTypeReference(TypeReferenceRaw typeReferenceRaw)
-        {
-            return typeReferenceRaw.IsBuiltInType
-                ? UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[typeReferenceRaw.TypeName]
-                : GetCapitalisedFqnTypename(typeReferenceRaw.TypeName);
         }
     }
 }
