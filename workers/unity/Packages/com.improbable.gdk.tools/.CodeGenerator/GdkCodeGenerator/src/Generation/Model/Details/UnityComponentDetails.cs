@@ -23,7 +23,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             ComponentName = componentDefinitionRaw.Identifier.Name;
             ComponentId = componentDefinitionRaw.ComponentId;
-            IsBlittable = store.BlittableMap[componentDefinitionRaw.Identifier];
+            IsBlittable = store.BlittableMap.Contains(componentDefinitionRaw.Identifier);
 
             CommandDetails = componentDefinitionRaw.Commands
                 .Select(command => new UnityCommandDetails(command))

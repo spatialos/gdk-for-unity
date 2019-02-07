@@ -11,8 +11,6 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseName { get; }
         public string FullyQualifiedTypeName { get; }
 
-        public string FullyQualifiedSpatialTypeName { get; }
-
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
 
         public Identifier Identifier { get; }
@@ -28,7 +26,6 @@ namespace Improbable.Gdk.CodeGenerator
             CamelCaseName = Formatting.PascalCaseToCamelCase(CapitalisedName);
             FullyQualifiedTypeName =
                 $"global::{Formatting.CapitaliseQualifiedNameParts(typeDefinitionRaw.Identifier.QualifiedName)}";
-            FullyQualifiedSpatialTypeName = "Not sure if needed";
 
             Identifier = typeDefinitionRaw.Identifier;
             raw = typeDefinitionRaw;

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -11,10 +13,10 @@ namespace Improbable.Gdk.CodeGenerator
         public IReadOnlyDictionary<Identifier, UnityTypeDetails> Types { get; }
         public IReadOnlyDictionary<Identifier, UnityEnumDetails> Enums { get; }
         public IReadOnlyDictionary<Identifier, UnityComponentDetails> Components { get; }
-        public readonly ReadOnlyDictionary<Identifier, bool> BlittableMap;
+        public readonly ImmutableHashSet<Identifier> BlittableMap;
         public IReadOnlyList<string> SchemaFiles { get; }
 
-        public static readonly HashSet<string> NonBlittableSchemaTypes = new HashSet<string> { "String", "Bytes" };
+        public static readonly HashSet<string> NonBlittableSchemaTypes = new HashSet<string> { BuiltInSchemaTypes.BuiltInString, BuiltInSchemaTypes.BuiltInBytes };
 
         private Dictionary<Identifier, bool> blittableMap = new Dictionary<Identifier, bool>();
 
@@ -25,7 +27,7 @@ namespace Improbable.Gdk.CodeGenerator
             this.bundle = bundle;
 
             PopulateBlittableMaps();
-            BlittableMap = new ReadOnlyDictionary<Identifier, bool>(blittableMap);
+            BlittableMap = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
 
             var enums = bundle.BundleContents.EnumDefinitions
                 .Select(enumm => (enumm.EnumIdentifier, new UnityEnumDetails(enumm)))

@@ -53,11 +53,13 @@ namespace Improbable.Gdk.CodeGenerator
                 }
                 else if (singularType.UserType != null)
                 {
-                    IsBlittable = store.BlittableMap[Identifier.FromQualifiedName(singularType.UserType.QualifiedName)];
+                    IsBlittable = store.BlittableMap
+                        .Contains(Identifier.FromQualifiedName(singularType.UserType.QualifiedName));
                 }
                 else if (singularType.EnumType != null)
                 {
-                    IsBlittable = store.BlittableMap[Identifier.FromQualifiedName(singularType.EnumType.QualifiedName)];
+                    IsBlittable = store.BlittableMap
+                        .Contains(Identifier.FromQualifiedName(singularType.EnumType.QualifiedName));
                 }
                 else
                 {
