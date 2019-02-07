@@ -77,7 +77,7 @@ Generated code is generated from the [schema](#schema). It is used by [workers](
 * Read the state of SpatialOS entities and their [SpatialOS components](#spatialos-component).
 * [Send updates (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to SpatialOS components via the [SpatialOS Runtime](#spatialos-runtime).
 
-Code generation automatically occurs when you open the [Unity Project](#unity-project) in your Unity editor. You can also manually trigger code generation from inside your Unity editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
+Code generation automatically occurs when you open the [Unity Project](#unity-project) in your Unity editor. You can also manually trigger code generation from inside your Unity Editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
 
 * Edited the schema
 * Created a new worker

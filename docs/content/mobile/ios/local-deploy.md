@@ -1,6 +1,6 @@
 # Connect to a local deployment
 
-This page describes how to connect an iOS client to a local deployment of SpatialOS. You can do this from inside your [Unity Editor](#in-editor), using the [Unity Remote](#unity-remote) app, using the [iOS Simulator](#ios-simulator) or using your own [iOS device](#ios-device).
+This page describes how to connect an iOS client to a local deployment of SpatialOS. You can do this using either; just your[Unity Editor](#in-editor), the [Unity Remote](#unity-remote) app, the [iOS Simulator](#ios-simulator), or your own [iOS device](#ios-device).
 
 Before reading this document, make sure you are familiar with:
 
@@ -51,7 +51,7 @@ When the build succeeds, XCode starts a Simulator and installs the game on it.
 
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.
 
-    > You don’t need to enter anything in the text field.
+Note: You don’t need to enter anything in the text field.
 
 1. Play the game on the Simulator.
 1. When you're done, select **Play** to stop your client and, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
