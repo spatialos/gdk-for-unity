@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using Improbable.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 using Improbable.Gdk.CodeGenerator.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -8,21 +8,21 @@ namespace Improbable.Gdk.CodeGenerator
     public interface IFieldType
     {
         string Type { get; }
-        string GetSerializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents);
-        string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents);
+        string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents);
+        string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents);
 
-        string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int fieldNumber, int indents);
+        string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber, int indents);
 
-        string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, int fieldNumber,
+        string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber,
             int indents);
 
-        string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, int fieldNumber,
+        string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber,
             int indents);
     }
 
     public static class CommonCodeWriterBlocks
     {
-        public static void WriteCheckIsCleared(CodeWriter codeWriter, int fieldNumber)
+        public static void WriteCheckIsCleared(CodeWriter codeWriter, uint fieldNumber)
         {
             codeWriter.WriteLine("bool isCleared = false;");
             codeWriter.WriteLine("foreach (var fieldIndex in clearedFields)");
@@ -44,23 +44,23 @@ namespace Improbable.Gdk.CodeGenerator
 
         private ContainedType containedType;
 
-        public SingularFieldType(TypeReferenceRaw typeReferenceRaw, HashSet<string> enumSet)
+        public SingularFieldType(Field.InnerType innerType, DetailsStore store)
         {
-            containedType = new ContainedType(typeReferenceRaw, enumSet);
+            containedType = new ContainedType(innerType, store);
         }
 
-        public string GetSerializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             return containedType.GetSerializationStatement(fieldInstance, schemaObject, fieldNumber);
         }
 
-        public string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             return $"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};";
         }
 
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
@@ -74,7 +74,7 @@ namespace Improbable.Gdk.CodeGenerator
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, int fieldNumber,
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber,
             int indents)
         {
             return "";
@@ -101,10 +101,10 @@ namespace Improbable.Gdk.CodeGenerator
             get
             {
                 if (containedType.Type ==
-                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInTypeConstants.builtInString]
+                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInSchemaTypes.BuiltInString]
                     ||
                     containedType.Type ==
-                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInTypeConstants.builtInBytes])
+                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInSchemaTypes.BuiltInBytes])
                 {
                     return $"global::Improbable.Gdk.Core.Option<{containedType.Type}>";
                 }
@@ -115,12 +115,12 @@ namespace Improbable.Gdk.CodeGenerator
 
         private ContainedType containedType;
 
-        public OptionFieldType(FieldDefinitionRaw.OptionTypeRaw optionTypeRaw, HashSet<string> enumSet)
+        public OptionFieldType(Field.InnerType innerType, DetailsStore store)
         {
-            containedType = new ContainedType(optionTypeRaw.valueType, enumSet);
+            containedType = new ContainedType(innerType, store);
         }
 
-        public string GetSerializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"if ({fieldInstance}.HasValue)");
@@ -132,7 +132,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
@@ -144,7 +144,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
 
@@ -167,7 +167,7 @@ namespace Improbable.Gdk.CodeGenerator
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
 
@@ -189,7 +189,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, int fieldNumber,
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber,
             int indents)
         {
             var codeWriter = new CodeWriter();
@@ -210,12 +210,12 @@ namespace Improbable.Gdk.CodeGenerator
 
         private ContainedType containedType;
 
-        public ListFieldType(FieldDefinitionRaw.ListTypeRaw listTypeRaw, HashSet<string> enumSet)
+        public ListFieldType(Field.InnerType innerType, DetailsStore store)
         {
-            containedType = new ContainedType(listTypeRaw.valueType, enumSet);
+            containedType = new ContainedType(innerType, store);
         }
 
-        public string GetSerializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"foreach (var value in {fieldInstance})");
@@ -227,7 +227,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
@@ -243,7 +243,7 @@ namespace Improbable.Gdk.CodeGenerator
         }
 
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
@@ -267,7 +267,7 @@ namespace Improbable.Gdk.CodeGenerator
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
@@ -290,7 +290,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, int fieldNumber,
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber,
             int indents)
         {
             var codeWriter = new CodeWriter();
@@ -312,13 +312,13 @@ namespace Improbable.Gdk.CodeGenerator
         private ContainedType keyType;
         private ContainedType valueType;
 
-        public MapFieldType(FieldDefinitionRaw.MapTypeRaw mapTypeRaw, HashSet<string> enumSet)
+        public MapFieldType(Field.InnerType keyType, Field.InnerType valueType, DetailsStore store)
         {
-            keyType = new ContainedType(mapTypeRaw.keyType, enumSet);
-            valueType = new ContainedType(mapTypeRaw.valueType, enumSet);
+            this.keyType = new ContainedType(keyType, store);
+            this.valueType = new ContainedType(valueType, store);
         }
 
-        public string GetSerializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"foreach (var keyValuePair in {fieldInstance})");
@@ -332,7 +332,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetDeserializationString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
 
@@ -351,7 +351,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int fieldNumber, int indents)
+        public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
@@ -377,7 +377,7 @@ namespace Improbable.Gdk.CodeGenerator
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject,
-            int fieldNumber, int indents)
+            uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
             codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
@@ -402,7 +402,7 @@ namespace Improbable.Gdk.CodeGenerator
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
 
-        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, int fieldNumber,
+        public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber,
             int indents)
         {
             var codeWriter = new CodeWriter();
@@ -430,18 +430,34 @@ namespace Improbable.Gdk.CodeGenerator
         private ContainedTypeCategory category;
         private string rawType;
 
-        public ContainedType(TypeReferenceRaw typeReferenceRaw, HashSet<string> enumSet)
+        // TODO: This can probably be reworked with the inner type concept.
+        public ContainedType(Field.InnerType innerType, DetailsStore store)
         {
-            category = enumSet.Contains(typeReferenceRaw.TypeName)
-                ? ContainedTypeCategory.Enum
-                : SchemaFunctionMappings.BuiltInTypeWithSchemaFunctions.Contains(typeReferenceRaw.TypeName)
-                    ? ContainedTypeCategory.Primitive
-                    : ContainedTypeCategory.UserDefined;
-            Type = CommonDetailsUtils.GetFqnTypeFromTypeReference(typeReferenceRaw);
-            rawType = typeReferenceRaw.TypeName;
+            if (innerType.Primitive != null)
+            {
+                category = ContainedTypeCategory.Primitive;
+                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Primitive);
+                rawType = innerType.Primitive;
+            }
+            else if (innerType.UserType != null)
+            {
+                category = ContainedTypeCategory.UserDefined;
+                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.UserType.QualifiedName);
+                rawType = innerType.UserType.QualifiedName;
+            }
+            else if (innerType.EnumType != null)
+            {
+                category = ContainedTypeCategory.Enum;
+                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.EnumType.QualifiedName);
+                rawType = innerType.EnumType.QualifiedName;
+            }
+            else
+            {
+                throw new ArgumentException("Malformed inner type.");
+            }
         }
 
-        public string GetSerializationStatement(string instance, string schemaObject, int fieldNumber)
+        public string GetSerializationStatement(string instance, string schemaObject, uint fieldNumber)
         {
             switch (category)
             {
@@ -456,7 +472,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public string GetDeserializationExpression(string schemaObject, int fieldNumber)
+        public string GetDeserializationExpression(string schemaObject, uint fieldNumber)
         {
             switch (category)
             {
@@ -472,7 +488,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public string GetCountExpression(string schemaObject, int fieldNumber)
+        public string GetCountExpression(string schemaObject, uint fieldNumber)
         {
             switch (category)
             {
@@ -488,7 +504,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public string GetFieldIndexExpression(string schemaObject, int fieldNumber, string index)
+        public string GetFieldIndexExpression(string schemaObject, uint fieldNumber, string index)
         {
             switch (category)
             {
