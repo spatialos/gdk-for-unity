@@ -71,9 +71,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                     continue;
                 }
 
-
-                // TODO: Not sure if the HasValue check is required
-                if (response.StatusCode != StatusCode.Success || !response.EntityId.HasValue)
+                if (response.StatusCode != StatusCode.Success)
                 {
                     var responseFailed = new PlayerCreator.CreatePlayer.Response(
                         requestContext.createPlayerRequest.RequestId,
