@@ -58,7 +58,7 @@ Note: You don’t need to enter anything in the text field.
 ## iOS device{#ios-device}
 
 1. Set up [Code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
-1. Make sure your computer and your mobile device are both connected to the same wireless network.
+1. Make sure your computer and your mobile device are both connected to the same network.
 1. Connect the mobile device to your computer using a USB cable.
 1. In your Unity Editor, build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
