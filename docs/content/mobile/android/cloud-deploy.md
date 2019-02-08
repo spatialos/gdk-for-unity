@@ -13,6 +13,7 @@ Altenatively, if you want to create your own authentication server, follow [this
 
 ## Connecting your Android device or emulator to a cloud deployment
 
+1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds) or connect your Android device to your development computer.
 
     > If you start an emulator, ensure you choose the same CPU architecture for your virtual machine as your development computer. Using a different architecture might affect the performance of your emulator.
