@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -48,21 +45,13 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
 
             timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
+            var spatialIDData = group.GetComponentDataArray<SpatialEntityId>();
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
-            var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
-
-            foreach (var chunk in chunkArray)
+            for (var i = 0; i < spatialIDData.Length; i++)
             {
-                var spatialIds = chunk.GetNativeArray(spatialIdType);
-                for (var i = 0; i < spatialIds.Length; i++)
-                {
-                    commandSystem.SendCommand(
-                        new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIds[i].EntityId, new Empty()));
-                }
+                commandSystem.SendCommand(
+                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIDData[i].EntityId, new Empty()));
             }
-
-            chunkArray.Dispose();
         }
     }
 }

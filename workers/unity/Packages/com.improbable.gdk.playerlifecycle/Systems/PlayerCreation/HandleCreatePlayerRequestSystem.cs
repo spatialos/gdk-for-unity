@@ -3,7 +3,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.PlayerLifecycle;
 using Improbable.Worker.CInterop;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
