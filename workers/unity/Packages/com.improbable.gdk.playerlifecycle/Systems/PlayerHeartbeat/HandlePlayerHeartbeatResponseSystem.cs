@@ -40,8 +40,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             var heartbeats = GetComponentDataFromEntity<HeartbeatData>();
 
             // Concatenate command responses
-            foreach (var response in responses)
+            for (var i = 0; i < responses.Count; i++)
             {
+                var response = responses[i];
                 var spatialId = response.EntityId;
                 if (!workerSystem.TryGetEntity(spatialId, out var entity) || !heartbeats.Exists(entity))
                 {

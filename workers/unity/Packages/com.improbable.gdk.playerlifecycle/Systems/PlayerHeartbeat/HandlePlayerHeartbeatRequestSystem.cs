@@ -24,8 +24,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         protected override void OnUpdate()
         {
             var requests = commandSystem.GetRequests<PlayerHeartbeatClient.PlayerHeartbeat.ReceivedRequest>();
-            foreach (var receivedRequest in requests)
+            for (var i = 0; i < requests.Count; i++)
             {
+                var receivedRequest = requests[i];
                 var response = new PlayerHeartbeatClient.PlayerHeartbeat.Response
                 {
                     RequestId = receivedRequest.RequestId,

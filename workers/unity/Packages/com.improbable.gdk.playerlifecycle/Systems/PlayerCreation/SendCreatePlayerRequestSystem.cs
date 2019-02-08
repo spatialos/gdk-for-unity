@@ -68,8 +68,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             // Currently this has a race condition where you can receive two entities
             // The fix for this is more sophisticated server side handling of requests
             var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
-            foreach (var response in responses)
+            for (var i = 0; i < responses.Count; i++)
             {
+                var response = responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
                     PostUpdateCommands.AddComponent(response.SendingEntity, new ShouldRequestPlayerTag());

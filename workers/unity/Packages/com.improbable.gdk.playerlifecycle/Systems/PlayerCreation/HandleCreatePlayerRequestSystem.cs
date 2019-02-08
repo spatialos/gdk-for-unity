@@ -62,8 +62,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         private void HandlePlayerCreateEntityResponses()
         {
             var responses = commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
-            foreach (var response in responses)
+            for (var i = 0; i < responses.Count; i++)
             {
+                var response = responses[i];
                 if (!(response.Context is PlayerCreationRequestContext requestContext))
                 {
                     // Ignore non-player entity creation requests
