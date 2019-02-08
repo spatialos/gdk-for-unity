@@ -1,0 +1,11 @@
+agent_queue_id: trigger-pipelines
+description: GDK for Unity release QA pipeline
+github:
+  branch_configuration: []
+  default_branch: develop
+  pull_request_branch_filter_configuration: []
+teams:
+- name: Everyone
+  permission: BUILD_AND_READ
+- name: gbu/develop/unity
+  permission: MANAGE_BUILD_AND_READ
