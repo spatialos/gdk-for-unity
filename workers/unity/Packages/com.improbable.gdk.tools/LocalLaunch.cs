@@ -259,7 +259,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var message = $"For more information, check the Spatial local launch logfile: {latestLogFile.FullName}";
+                var message = $"For more information, check the spatial local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
