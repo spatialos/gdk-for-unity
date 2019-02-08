@@ -49,8 +49,7 @@ When the build succeeds, XCode starts a Simulator and installs the game on it.
 
     > **TIP:**  If you choose **Build**, instead of **Build and Run**, Unity generates a XCode project and opens the folder containing the project.
 
-1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.
-
+1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.<br>
 Note: You don’t need to enter anything in the text field.
 
 1. Play the game on the Simulator.
