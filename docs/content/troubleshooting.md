@@ -15,7 +15,7 @@ When building workers by selecting **Build For Cloud** > **my_worker_name** the 
 You don't have the correct Unity build support packages installed.<br/>
 
 **Fix**<br/>
-In the Unity Editor:
+In your Unity Editor:
 
 * Select **SpatialOS** > **Check build support** and check the Console for errors relating to specific build platforms. <br/>
   * You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.
@@ -37,8 +37,8 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 **Fix**<br/>
 
 1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing)).
-2. Ensure that the dotnet executable is added to your PATH environment variable.
-3. Restart your computer after making the above changes.
+1. Ensure that the dotnet executable is added to your PATH environment variable.
+1. Restart your computer after making the above changes.
 
 <br/>
 
@@ -135,4 +135,4 @@ You don't have the correct compilation units installed.
 Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
 
 1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing).
-2. Restart your computer.
+1. Restart your computer.

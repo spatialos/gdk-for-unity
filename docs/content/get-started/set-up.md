@@ -63,19 +63,21 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
  **Using Visual Studio?**
 
-As you install [Visual Studio](https://www.visualstudio.com/downloads/), click on the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by clicking on the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
+You need to install the **.NET Core cross-platform development** and **Game development with Unity** workloads. To to this:
+
+- As you install [Visual Studio](https://www.visualstudio.com/downloads/), select the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find the **Workloads** tab by opening Visual Studio Installer and, in the **Products** section, selecting **Modify** for Visual Studio 2017. If you can't see the **Modify** option, select **More**.
 
 ![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
 Once you have navigated to the **Workloads** tab:
 
 - Select **.NET Core cross-platform development**.
-- After selecting **Game development with Unity**:
+- Select **Game development with Unity**:
   - Deselect any options in the **Summary** on the right that mention a Unity Editor (for example, Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
-  - The SpatialOS GDK for Unity requires **Unity 2018.3.2**, which should already be installed if you have followed the setup guide correctly.
+  - The SpatialOS GDK for Unity requires **Unity 2018.3.2**, which you already installed in step 1.
   - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.2 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.2 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
 
 **Using Rider?**
 
@@ -162,7 +164,7 @@ To run the GDK and the FPS Starter project, you need to download the source code
 
 ### Zip file download
 
- While we recommend using Git, if you prefer to, you can get the source code for both the GDK and FPS Starter Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases/tag/0.1.3" data-track-link="Starter Project Zip Clicked|product=Docs" target="_blank">here</a>. 
+ While we recommend using Git, if you prefer to, you can get the source code for both the GDK and FPS Starter Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases" data-track-link="Starter Project Zip Clicked|product=Docs" target="_blank">here</a>. Please download the latest release, the file should be called something like `gdk-for-unity-fps-starter-project-x.y.z.zip`.
 
 **NOTE:**
 If you have downloaded the source code via a zip file, skip the rest of this page and move on to the next step: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md).

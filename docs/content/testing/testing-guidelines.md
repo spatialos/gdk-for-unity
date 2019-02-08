@@ -1,6 +1,6 @@
 # Test guidelines
 
-This document provides guidelines on testing the Unity editor project contained within the SpatialOS GDK for Unity (GDK).
+This document provides guidelines on testing your Unity project contained within the SpatialOS GDK for Unity (GDK).
 
 You can set up your own tests to validate that your functionality is resilient. Every test should always:
 

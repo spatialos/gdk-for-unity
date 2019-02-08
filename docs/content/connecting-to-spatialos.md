@@ -24,12 +24,12 @@ Use the Receptionist service connection flow in the following cases:
 
   * Connecting a server-worker or a client-worker instance to a local deployment.
   * Connecting server-worker instances to a cloud deployment.
-  * The special case of connecting a client-worker instance to a cloud deployment from the Unity Editor for debugging. (Note you can also use the Locator to connect in this situation.)  
+  * The special case of connecting a client-worker instance to a cloud deployment from your Unity Editor for debugging. (Note you can also use the Locator to connect in this situation.)  
 
 **Notes:**
 
 *  You usually connect client-worker instances to a cloud deployment via the Locator connection flow (outlined below) but you may want to debug your client-worker instance from your Unity Editor In this case, you can either use the Receptionist service connection flow via `spatial cloud connect external <deploymentname>` or the Locator service connection flow via the development-authentication.  See the SpatialOS documentation to find out more about [`spatial cloud connect external <deploymentname>`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-connect-external#spatial-cloud-connect-externall).
-* For mobile development, you need to use the new v13.5+ Locator connection flow to launch client-workers to the cloud from the Unity Editor.
+* For mobile development, you need to use the new v13.5+ Locator connection flow to launch client-workers to the cloud from your Unity Editor.
 
 
 ### Locator connection flow
@@ -46,7 +46,7 @@ Use this Locator service connection flow for:
 Use this Locator service connection flow for:
 
 * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
-* Connecting a client-worker instance to a cloud deployment from the Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
+* Connecting a client-worker instance to a cloud deployment from your Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
 
 ## When to use the `Connection` object
 Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.

@@ -227,7 +227,7 @@ using System.Runtime.CompilerServices;
 
 ### Running the new tests
 
-In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.EditModeTests.dll**. (This matches the folder name
+In the Test Runner window of Unity, find your test under: **Improbable.Gdk.Core.EditModeTests.dll**. (This corresponds to the directory
  `Gdk/Core/Tests/EditMode`.)
 
 You can follow the namespace and fixture name in the hierarchy:
@@ -235,7 +235,7 @@ You can follow the namespace and fixture name in the hierarchy:
 * **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassStaticTests**
 * **Improbable** > **Gdk** > **Core** > **EditModeTests** > **Utility** > **MyClassInstanceTests**
 
-Double-click the test fixture name to run all tests within that fixture.
+To run all tests on a fixture, double-click on the fixture name.
 
 ## How to create a new test folder and assembly
 
@@ -243,13 +243,13 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
 1. Create the directory: `/workers/Unity/Assets/Gdk/Legacy/Tests/EditMode`
 
-1. In the Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
+1. In your Unity Editor’s Project window, right-click the directory in the Project and select **Create** > **Assembly Definition**.
 
 1. Name the new **Assembly Definition** file you have just created to match: `Improbable.Gdk.Legacy.EditModeTests`.
 
 1. Select this file, and change the **name** property in the Unity Inspector to match the filename:`Improbable.Gdk.Legacy.EditModeTests`.
 
-1. Click **Apply** .
+1. Select **Apply** .
 
 1. Check the **Test Assemblies** checkbox.
 
@@ -261,12 +261,12 @@ To add tests for the `/workers/Unity/Assets/Gdk/Legacy` folder within the GDK Un
 
     1. Check the **Editor** checkbox only.
 
-    1. Click on **Apply** again.
+    1. Select on **Apply** again.
 
 1. In the references list, add the reference to the package you are testing (in this
  case, `Improbable.Gdk.Legacy`).
 
-1. Click **Apply** again.
+1. Select **Apply** again.
 
 ### Add the entities package references to test assemblies
 

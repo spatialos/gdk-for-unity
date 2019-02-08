@@ -14,9 +14,9 @@ The `WorkerSystem` class stores information about a worker during [Runtime]({{ur
 |-------------------|------------------------|--------------------------------|
 | Connection    | [`Connection`]({{urlRoot}}/content/connecting-to-spatialos) | The connection to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime). You can use it to send data and messages. |
 | WorkerType    | `string`                 | The [type of this worker]({{urlRoot}}/content/glossary#worker-types). |
-| Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
+| Origin        | `Vector3`                | The vector by which we translate all ECS entities added to a worker. This is useful when running multiple workers in the same Scene. You can choose to set a [worker origin]({{urlRoot}}/content/glossary#worker-origin) to be large enough so that entities that are visible to or checked out by different workers don’t interact with each other. |
 | WorkerEntity  | `Entity`                 | The corresponding [Worker entity]({{urlRoot}}/content/workers/worker-entity) which allows you to query the current state of the worker as well as send and receive commands. |
-| LogDispatcher | `ILogDispatcher`         | A reference to the [logger]({{urlRoot}}/content/ecs/logging) that you can use to log to the Unity Editor’s console and the [SpatialOS Console]({{urlRoot}}/content/glossary#console) |
+| LogDispatcher | `ILogDispatcher`         | A reference to the [logger]({{urlRoot}}/content/ecs/logging) that you can use to log to your Unity Editor’s console and the [SpatialOS Console]({{urlRoot}}/content/glossary#console) |
 
 **Methods**
 

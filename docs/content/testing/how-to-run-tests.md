@@ -18,7 +18,7 @@ To run tests on all elements of the GDK (the tools and the Unity project which f
 
 ## How to test the GDK’s Unity project only
 
-In addition to the `test.sh` script mentioned above, you can use the Test Runner Window in the Unity Editor to test the Unity Engine integration specific parts of the GDK.
+In addition to the `test.sh` script mentioned above, you can use the Test Runner Window in your Unity Editor to test the Unity Engine integration specific parts of the GDK.
 The tests for the GDK are the assemblies that start with `Improbable.Gdk.`.<br>
 For more information on how to use the Unity Test Runner, see Unity’s [Unity Test Runner manual page](https://docs.unity3d.com/Manual/testing-editortestsrunner.html).
 

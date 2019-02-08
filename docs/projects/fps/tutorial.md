@@ -18,7 +18,7 @@ To implement this feature you:
 
 ## Open the FPS Starter Project in your Unity Editor
 
-Most of your interactions with the SpatialOS GDK will be from within the Unity Editor.
+Most of your interactions with the SpatialOS GDK will be from within your Unity Editor.
 
 To get started, from your Unity Editor's file browser, open the `workers/unity` directory inside the FPS Starter Project.
 
@@ -53,7 +53,7 @@ component HealthPickup {
 
 This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The component id must be chosen by you, and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is a number that identifies the order in which these properties will appear within the component.
 
-Any time you modify your `schema` files you **must** then run code generation. To do this, click **Generate code** from the **SpatialOS menu** in the Unity Editor menu bar.
+Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS menu** in your Unity Editor menu bar.
 
 ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
 
@@ -61,12 +61,12 @@ Code generation creates C# helper classes to allow you to make use of your `sche
 
 <%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
 
-**Note:** Code generation is automatically run once whenever you open the FPS Starter Project in the Unity editor.
+**Note:** Code generation is automatically run once whenever you open the FPS Starter Project in your Unity editor.
 
 If you are worried your generated code is in a bad state (such as having helper classes for since-deleted components and properties) you can run **Generate code (force)** from the **SpatialOS menu** to ensure existing generated code is cleaned and regenerated.
 <%(/Expandable)%>
 
-<%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
+<%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the Scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
 <%(/Expandable)%>
 
 ### Entity templates
@@ -148,7 +148,7 @@ For health packs we will do the latter, so that when the game begins there will 
 
 ### Edit snapshot generation
 
-The **SpatialOS menu** option in the Unity Editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
+The **SpatialOS menu** option in your Unity Editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
 
 Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
@@ -194,7 +194,7 @@ Snapshot files are found in your project root directory, in a directory named `s
 
 If you have updated the snapshot generation function (as you just did in the step above), or if you've altered which components are specified in one of your entity templates, then your snapshot will be out of date. The snapshot is a big collection of entities, and all their individual component values, so any change to these and the snapshot file must be regenerated.
 
-You can regenerate the `default.snapshot` file from the **SpatialOS menu** option in the Unity Editor, by running **"Generate FPS Snapshot"**.
+You can regenerate the `default.snapshot` file from the **SpatialOS menu** option in your Unity Editor, by running **"Generate FPS Snapshot"**.
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
@@ -258,7 +258,7 @@ This is because the FPS Starter Project uses the GDK GameObject Creation package
 
 If you right-click in your project file hierarchy, you'll find an option **Create** > **Prefab**, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
 
-If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
@@ -353,12 +353,12 @@ Our aim is to have health packs which restore lost health to players. So what ha
 * You added an instance of the health pack entity type to the snapshot so it will be present in the world when the game begins.
 * You associated a local representation with your new SpatialOS entity so that Unity will know how to visually represent any health pack it encounters.
 
-You can launch a local deployment of your updated game world from the **SpatialOS menu** within the Unity Editor by clicking **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
+You can launch a local deployment of your updated game world from the **SpatialOS menu** within your Unity Editor by selecting **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
 
 Once the world is ready you can:
 
 * View all entities in the inspector from your browser: http://localhost:21000/inspector/
-* Open the `FPS-Development` scene in the Unity Editor. The scene file is located in **Assets** > **Fps** > **Scene**.
+* Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in **Assets** > **Fps** > **Scene**.
 * Press Play in your Unity Editor to play the game.
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
@@ -652,19 +652,19 @@ The distributed game logic is now in place, and we can test if it is working cor
 ![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
 <%(/Expandable)%>
 
-<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, click **Build UnityClient for local**.
+<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, select **Build UnityClient for local**.
 
-This is necessary because you have modified the code for the workers. If you are running your workers from within the Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.<%(/Expandable)%>
+This is necessary because you have modified the code for the workers. If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.<%(/Expandable)%>
 
-<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, click **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
+<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
 
 It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
 
-<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, click **Launch standalone client**.
+<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, select **Launch standalone client**.
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
 
-<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` scene open in the Unity Editor, click the Unity `Play` button.<%(/Expandable)%>
+<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` Scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
 
 <%(#Expandable title="6. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
 

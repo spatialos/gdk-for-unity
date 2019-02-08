@@ -13,13 +13,20 @@ As you will be launching a cloud deployment, you need to build out the code exec
   <br/>**NOTE:** Building workers for the first time may take a while (about 10 minutes). Why not make yourself a cup of tea or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos) while you wait?
   <br/>
   
-3\.  **Your workers have finished building when:** You see the following message in the Unity Editor's Console window: `Completed build for Cloud target`. 
+> When you build your workers you may see the following errors in the Unity console: 
+> <br/>`The worker "iOSClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for iOS. Please add the missing build support options to your Unity Editor.`
+> <br/><br/>`The worker "AndroidClient" cannot be built for a Cloud deployment: your Unity Editor is missing build support for Android.Please add the missing build support options to your Unity Editor.`<br/>
+> <br/>You can ignore these errors if you are not developing a game for Android or iOS
+> <br/><br/>Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content/mobile/overview)
+> <br/>
 
->**TIP:** You may get a number of warnings displayed in the Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages so you can see only the relevant messages.
+3\.  **Your workers have finished building when:** You see the following message in your Unity Editor's Console window: `Completed build for Cloud target`. 
+
+>**TIP:** You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages so you can see only the relevant messages.
 
 
 ### If you encounter build errors:
-You might not have selected the build supports your game needs during your Unity setup.
+You might not have selected the build support modules that your game needs during your Unity setup.
 
 * You need **Linux** build support. This is because server-workers in a cloud deployment always run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
 * You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
@@ -56,9 +63,9 @@ These errors are only relevant if you are developing a game for mobile so you ca
 <br/>
  To use quick-run with the FPS Starter Project:<br/>
  <br/>
-1. With your project open in the Unity Editor, on your computer’s keyboard, select Ctrl+L (Windows) or Cmd+L (Mac).<br/>
-2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
-3. In your Unity Editor, play the FPS-Development Scene.<br/>
+1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).<br/>
+1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
+1. In your Unity Editor, play the `FPS-Development` Scene.<br/>
 
 <br/>
 #### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch.md)

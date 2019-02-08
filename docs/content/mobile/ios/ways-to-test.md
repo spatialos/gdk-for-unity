@@ -9,16 +9,20 @@ Before reading this document, make sure you are familiar with:
 Unity provides multiple ways to test your iOS [client-worker]({{urlRoot}}/content/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/content/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
-For standard workflows and for minor changes, run your game in the Editor. When the build platform is set for iOS, it executes code that is in preprocessor `#if UNITY_IOS` clauses. This way, you have the full capabilities and ease of use of the Unity Editor, while still testing code that would otherwise only run on a mobile device.
+For standard workflows and for minor changes, we recommend that you run your game in the Editor. Now that your build platform is set to **iOS**, Unity compiles and executes sections of code marked with the [platform #define directive](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html); `#if UNITY_IOS`. This means that you have the full capabilities and ease of use of your Unity Editor, while still executing code that would otherwise only run on an iOS device.
+
+For more information, see the following documentation:
+
+  * [Connect to a local deployment in the Editor]({{urlRoot}}/content/mobile/ios/local-deploy#in-editor)
 
 ## Unity Remote
 
-With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors the Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
+With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors your Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
 
 For more information, see the following documentation:
 
   * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Run your game with Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-device-to-a-local-deployment-using-unity-remote)
+  * [Connect to a local deployment using Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#unity-remote)
 
 ## iOS Simulator
 
@@ -27,7 +31,7 @@ The iOS Simulator simulates iOS devices on your development computer so that you
 For more information, see the following documentation:
 
   * [The Apple Developer documentation](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html)
-  * [Deploy your game with the iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-simulator-to-a-local-deployment)
+  * [Connect to a local deployment using iOS Simulator]({{urlRoot}}/content/mobile/ios/local-deploy#ios-simulator)
 
 ## iOS device
 
@@ -35,4 +39,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Deploy your game to an iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#connecting-your-ios-device-to-a-local-deployment)
+  * [Connect to a local deployment using your iOS device]({{urlRoot}}/content/mobile/ios/local-deploy#ios-device)
