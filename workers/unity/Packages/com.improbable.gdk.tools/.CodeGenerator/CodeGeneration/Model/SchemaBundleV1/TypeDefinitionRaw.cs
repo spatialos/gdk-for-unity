@@ -7,5 +7,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
     {
         [JsonProperty("identifier")] public Identifier Identifier;
         [JsonProperty("fieldDefinitions")] public List<Field> Fields;
+        [JsonProperty("annotations")] public List<AnnotationRaw> Annotations;
     }
 }

@@ -68,6 +68,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
         [JsonProperty("mapType")] public MapType Map;
         [JsonProperty("optionType")] public OptionType Option;
         [JsonProperty("singularType")] public SingularType Singular;
+        [JsonProperty("annotations")] public List<AnnotationRaw> Annotations;
 
         public class ListType
         {
