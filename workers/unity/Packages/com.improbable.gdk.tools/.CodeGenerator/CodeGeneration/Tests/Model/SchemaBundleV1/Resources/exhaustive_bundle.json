@@ -25,7 +25,8 @@
                 "FIRST_VALUE"
               ]
             },
-            "value": 0
+            "value": 0,
+            "annotations": []
           },
           {
             "identifier": {
@@ -39,9 +40,11 @@
                 "SECOND_VALUE"
               ]
             },
-            "value": 1
+            "value": 1,
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -73,9 +76,11 @@
                 "enum_value"
               ]
             },
-            "value": 1
+            "value": 1,
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       }
     ],
     "typeDefinitions": [
@@ -89,7 +94,8 @@
             "Empty"
           ]
         },
-        "fieldDefinitions": []
+        "fieldDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -123,9 +129,11 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -159,9 +167,11 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -195,9 +205,11 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -231,9 +243,11 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -267,9 +281,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -303,7 +319,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -324,9 +341,11 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -360,7 +379,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -381,9 +401,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -397,7 +419,8 @@
             "Empty"
           ]
         },
-        "fieldDefinitions": []
+        "fieldDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -410,7 +433,8 @@
             "SomeType"
           ]
         },
-        "fieldDefinitions": []
+        "fieldDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -444,9 +468,11 @@
                   "qualifiedName": "improbable.gdk.tests.TypeName.Other"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -482,9 +508,11 @@
                   "qualifiedName": "improbable.gdk.tests.TypeName.Other.NestedTypeName"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -522,7 +550,8 @@
                   "qualifiedName": "improbable.gdk.tests.TypeName.Other.NestedTypeName.Other0"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -546,9 +575,11 @@
                   "qualifiedName": "improbable.gdk.tests.TypeName.Other.NestedTypeName.NestedEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -586,9 +617,11 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -622,9 +655,11 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -658,9 +693,11 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -694,9 +731,11 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -730,9 +769,11 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -766,7 +807,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -787,9 +829,11 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -823,7 +867,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -844,9 +889,11 @@
               "innerType": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -874,9 +921,11 @@
               "innerType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -906,9 +955,11 @@
                   "qualifiedName": "improbable.WorkerAttributeSet"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -936,7 +987,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -954,7 +1006,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -972,9 +1025,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1002,7 +1057,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1020,7 +1076,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1038,9 +1095,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1070,9 +1129,11 @@
                   "qualifiedName": "improbable.ComponentInterest.Query"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1104,7 +1165,8 @@
                   "qualifiedName": "improbable.ComponentInterest.QueryConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1123,7 +1185,8 @@
               "innerType": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1142,7 +1205,8 @@
               "innerType": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1161,9 +1225,11 @@
               "innerType": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1195,7 +1261,8 @@
                   "qualifiedName": "improbable.ComponentInterest.SphereConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1216,7 +1283,8 @@
                   "qualifiedName": "improbable.ComponentInterest.CylinderConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1237,7 +1305,8 @@
                   "qualifiedName": "improbable.ComponentInterest.BoxConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1258,7 +1327,8 @@
                   "qualifiedName": "improbable.ComponentInterest.RelativeSphereConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1279,7 +1349,8 @@
                   "qualifiedName": "improbable.ComponentInterest.RelativeCylinderConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1300,7 +1371,8 @@
                   "qualifiedName": "improbable.ComponentInterest.RelativeBoxConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1319,7 +1391,8 @@
               "innerType": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1338,7 +1411,8 @@
               "innerType": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1359,7 +1433,8 @@
                   "qualifiedName": "improbable.ComponentInterest.QueryConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1380,9 +1455,11 @@
                   "qualifiedName": "improbable.ComponentInterest.QueryConstraint"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1414,7 +1491,8 @@
                   "qualifiedName": "improbable.Coordinates"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1433,9 +1511,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1467,7 +1547,8 @@
                   "qualifiedName": "improbable.Coordinates"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1486,9 +1567,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1520,7 +1603,8 @@
                   "qualifiedName": "improbable.Coordinates"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1541,9 +1625,11 @@
                   "qualifiedName": "improbable.EdgeLength"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1573,9 +1659,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1605,9 +1693,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1639,9 +1729,11 @@
                   "qualifiedName": "improbable.EdgeLength"
                 }
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1669,7 +1761,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1687,7 +1780,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1705,9 +1799,11 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1735,7 +1831,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1753,7 +1850,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1771,9 +1869,11 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       }
     ],
     "componentDefinitions": [
@@ -1806,11 +1906,13 @@
               "type": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1841,11 +1943,13 @@
               "type": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1876,11 +1980,13 @@
               "type": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1918,10 +2024,12 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.alternate_schema_syntax.RandomDataType"
               }
-            }
+            },
+            "annotations": []
           }
         ],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -1956,7 +2064,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1977,7 +2086,8 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -1998,7 +2108,8 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2019,7 +2130,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2040,7 +2152,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [
@@ -2062,7 +2175,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.blittable_types.FirstEventPayload"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2082,7 +2196,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.blittable_types.SecondEventPayload"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "commandDefinitions": [
@@ -2109,7 +2224,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.blittable_types.FirstCommandResponse"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2134,9 +2250,11 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.blittable_types.SecondCommandResponse"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -2153,7 +2271,8 @@
         "componentId": 1003,
         "fieldDefinitions": [],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -2188,10 +2307,12 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.components_with_no_fields.Empty"
               }
-            }
+            },
+            "annotations": []
           }
         ],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -2232,9 +2353,11 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.components_with_no_fields.Empty"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -2267,7 +2390,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2287,7 +2411,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2307,7 +2432,8 @@
               "type": {
                 "primitive": "Bytes"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2327,7 +2453,8 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2347,7 +2474,8 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2367,7 +2495,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2387,7 +2516,8 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2407,7 +2537,8 @@
               "type": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2427,7 +2558,8 @@
               "type": {
                 "primitive": "Uint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2447,7 +2579,8 @@
               "type": {
                 "primitive": "Sint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2467,7 +2600,8 @@
               "type": {
                 "primitive": "Sint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2487,7 +2621,8 @@
               "type": {
                 "primitive": "Fixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2507,7 +2642,8 @@
               "type": {
                 "primitive": "Fixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2527,7 +2663,8 @@
               "type": {
                 "primitive": "Sfixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2547,7 +2684,8 @@
               "type": {
                 "primitive": "Sfixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2567,7 +2705,8 @@
               "type": {
                 "primitive": "EntityId"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2589,7 +2728,8 @@
                   "qualifiedName": "improbable.gdk.tests.SomeType"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2611,11 +2751,13 @@
                   "qualifiedName": "improbable.gdk.tests.SomeEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -2648,7 +2790,8 @@
               "innerType": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2668,7 +2811,8 @@
               "innerType": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2688,7 +2832,8 @@
               "innerType": {
                 "primitive": "Bytes"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2708,7 +2853,8 @@
               "innerType": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2728,7 +2874,8 @@
               "innerType": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2748,7 +2895,8 @@
               "innerType": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2768,7 +2916,8 @@
               "innerType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2788,7 +2937,8 @@
               "innerType": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2808,7 +2958,8 @@
               "innerType": {
                 "primitive": "Uint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2828,7 +2979,8 @@
               "innerType": {
                 "primitive": "Sint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2848,7 +3000,8 @@
               "innerType": {
                 "primitive": "Sint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2868,7 +3021,8 @@
               "innerType": {
                 "primitive": "Fixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2888,7 +3042,8 @@
               "innerType": {
                 "primitive": "Fixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2908,7 +3063,8 @@
               "innerType": {
                 "primitive": "Sfixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2928,7 +3084,8 @@
               "innerType": {
                 "primitive": "Sfixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2948,7 +3105,8 @@
               "innerType": {
                 "primitive": "EntityId"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2970,7 +3128,8 @@
                   "qualifiedName": "improbable.gdk.tests.SomeType"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -2992,11 +3151,13 @@
                   "qualifiedName": "improbable.gdk.tests.SomeEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -3029,7 +3190,8 @@
               "innerType": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3049,7 +3211,8 @@
               "innerType": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3069,7 +3232,8 @@
               "innerType": {
                 "primitive": "Bytes"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3089,7 +3253,8 @@
               "innerType": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3109,7 +3274,8 @@
               "innerType": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3129,7 +3295,8 @@
               "innerType": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3149,7 +3316,8 @@
               "innerType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3169,7 +3337,8 @@
               "innerType": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3189,7 +3358,8 @@
               "innerType": {
                 "primitive": "Uint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3209,7 +3379,8 @@
               "innerType": {
                 "primitive": "Sint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3229,7 +3400,8 @@
               "innerType": {
                 "primitive": "Sint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3249,7 +3421,8 @@
               "innerType": {
                 "primitive": "Fixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3269,7 +3442,8 @@
               "innerType": {
                 "primitive": "Fixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3289,7 +3463,8 @@
               "innerType": {
                 "primitive": "Sfixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3309,7 +3484,8 @@
               "innerType": {
                 "primitive": "Sfixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3329,7 +3505,8 @@
               "innerType": {
                 "primitive": "EntityId"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3351,7 +3528,8 @@
                   "qualifiedName": "improbable.gdk.tests.SomeType"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3373,11 +3551,13 @@
                   "qualifiedName": "improbable.gdk.tests.SomeEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -3413,7 +3593,8 @@
               "valueType": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3436,7 +3617,8 @@
               "valueType": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3459,7 +3641,8 @@
               "valueType": {
                 "primitive": "Bytes"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3482,7 +3665,8 @@
               "valueType": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3505,7 +3689,8 @@
               "valueType": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3528,7 +3713,8 @@
               "valueType": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3551,7 +3737,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3574,7 +3761,8 @@
               "valueType": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3597,7 +3785,8 @@
               "valueType": {
                 "primitive": "Uint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3620,7 +3809,8 @@
               "valueType": {
                 "primitive": "Sint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3643,7 +3833,8 @@
               "valueType": {
                 "primitive": "Sint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3666,7 +3857,8 @@
               "valueType": {
                 "primitive": "Fixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3689,7 +3881,8 @@
               "valueType": {
                 "primitive": "Fixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3712,7 +3905,8 @@
               "valueType": {
                 "primitive": "Sfixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3735,7 +3929,8 @@
               "valueType": {
                 "primitive": "Sfixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3758,7 +3953,8 @@
               "valueType": {
                 "primitive": "EntityId"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3783,7 +3979,8 @@
                   "qualifiedName": "improbable.gdk.tests.SomeType"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3808,11 +4005,13 @@
                   "qualifiedName": "improbable.gdk.tests.SomeEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -3848,7 +4047,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3871,7 +4071,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3894,7 +4095,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3917,7 +4119,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3940,7 +4143,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3963,7 +4167,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -3986,7 +4191,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4009,7 +4215,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4032,7 +4239,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4055,7 +4263,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4078,7 +4287,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4101,7 +4311,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4124,7 +4335,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4147,7 +4359,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4170,7 +4383,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4193,7 +4407,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4218,7 +4433,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4243,11 +4459,13 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -4280,7 +4498,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4300,7 +4519,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4320,7 +4540,8 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4340,7 +4561,8 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4360,7 +4582,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4380,7 +4603,8 @@
               "type": {
                 "primitive": "Uint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4400,7 +4624,8 @@
               "type": {
                 "primitive": "Uint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4420,7 +4645,8 @@
               "type": {
                 "primitive": "Sint32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4440,7 +4666,8 @@
               "type": {
                 "primitive": "Sint64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4460,7 +4687,8 @@
               "type": {
                 "primitive": "Fixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4480,7 +4708,8 @@
               "type": {
                 "primitive": "Fixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4500,7 +4729,8 @@
               "type": {
                 "primitive": "Sfixed32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4520,7 +4750,8 @@
               "type": {
                 "primitive": "Sfixed64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4540,7 +4771,8 @@
               "type": {
                 "primitive": "EntityId"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4562,7 +4794,8 @@
                   "qualifiedName": "improbable.gdk.tests.SomeType"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4584,11 +4817,13 @@
                   "qualifiedName": "improbable.gdk.tests.SomeEnum"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -4623,11 +4858,13 @@
                   "qualifiedName": "improbable.gdk.tests.TypeName"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -4662,7 +4899,8 @@
               "type": {
                 "primitive": "Bool"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4683,7 +4921,8 @@
               "type": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4704,7 +4943,8 @@
               "type": {
                 "primitive": "Int64"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4725,7 +4965,8 @@
               "type": {
                 "primitive": "Float"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4746,7 +4987,8 @@
               "type": {
                 "primitive": "Double"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4767,7 +5009,8 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4788,7 +5031,8 @@
               "innerType": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4809,7 +5053,8 @@
               "innerType": {
                 "primitive": "Int32"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4833,7 +5078,8 @@
               "valueType": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [
@@ -4855,7 +5101,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.nonblittable_types.FirstEventPayload"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4875,7 +5122,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.nonblittable_types.SecondEventPayload"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "commandDefinitions": [
@@ -4902,7 +5150,8 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.nonblittable_types.FirstCommandResponse"
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4927,9 +5176,11 @@
               "type": {
                 "qualifiedName": "improbable.gdk.tests.nonblittable_types.SecondCommandResponse"
               }
-            }
+            },
+            "annotations": []
           }
-        ]
+        ],
+        "annotations": []
       },
       {
         "identifier": {
@@ -4960,7 +5211,8 @@
                   "qualifiedName": "improbable.WorkerRequirementSet"
                 }
               }
-            }
+            },
+            "annotations": []
           },
           {
             "identifier": {
@@ -4983,11 +5235,13 @@
                   "qualifiedName": "improbable.WorkerRequirementSet"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -5016,11 +5270,13 @@
               "type": {
                 "primitive": "String"
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -5051,11 +5307,13 @@
                   "qualifiedName": "improbable.Coordinates"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -5069,7 +5327,8 @@
         "componentId": 55,
         "fieldDefinitions": [],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       },
       {
         "identifier": {
@@ -5103,11 +5362,13 @@
                   "qualifiedName": "improbable.ComponentInterest"
                 }
               }
-            }
+            },
+            "annotations": []
           }
         ],
         "eventDefinitions": [],
-        "commandDefinitions": []
+        "commandDefinitions": [],
+        "annotations": []
       }
     ]
   },
