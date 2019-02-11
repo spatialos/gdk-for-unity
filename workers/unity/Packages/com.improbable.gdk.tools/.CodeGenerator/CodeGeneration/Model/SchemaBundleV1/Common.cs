@@ -54,7 +54,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
         }
     }
 
-    public class UserType
+    public class FullyQualifiedReference
     {
         [JsonProperty("qualifiedName")] public string QualifiedName;
     }
@@ -94,9 +94,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
         // The type is either a primitive or its a user defined type.
         public class InnerType
         {
-            [JsonProperty("type")] public UserType UserType;
+            [JsonProperty("type")] public FullyQualifiedReference UserType;
             [JsonProperty("primitive")] public string Primitive;
-            [JsonProperty("enum")] public UserType EnumType;
+            [JsonProperty("enum")] public FullyQualifiedReference EnumType;
         }
     }
 }

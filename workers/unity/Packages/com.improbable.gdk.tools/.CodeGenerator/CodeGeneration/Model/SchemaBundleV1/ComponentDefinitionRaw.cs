@@ -8,14 +8,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
         [JsonProperty("identifier")] public Identifier Identifier;
         [JsonProperty("componentId")] public uint ComponentId;
         [JsonProperty("fieldDefinitions")] public List<Field> Fields;
-        [JsonProperty("dataDefinition")] public UserType Data;
+        [JsonProperty("dataDefinition")] public FullyQualifiedReference Data;
 
         [JsonProperty("eventDefinitions")] public List<EventDefinitionRaw> Events;
         [JsonProperty("commandDefinitions")] public List<CommandDefinitionRaw> Commands;
 
         public class WrappedType
         {
-            [JsonProperty("type")] public UserType Type;
+            [JsonProperty("type")] public FullyQualifiedReference Type;
         }
 
         public class EventDefinitionRaw
