@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var message = $"Unity Standalone Client local launch logfile: {latestLogFile}";
+                var message = $"For more information, check the Unity Standalone Client local launch logfile: {latestLogFile}";
 
                 if (WasProcessKilled(process))
                 {
@@ -259,7 +259,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var message = $"Spatial local launch logfile: {latestLogFile.FullName}";
+                var message = $"For more information, check the spatial local launch logfile: {latestLogFile.FullName}";
 
                 if (WasProcessKilled(process))
                 {
