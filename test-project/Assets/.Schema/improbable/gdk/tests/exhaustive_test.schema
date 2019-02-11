@@ -7,8 +7,12 @@ enum SomeEnum {
   SECOND_VALUE = 1;
 }
 
-component ExhaustiveSingular {
-  id = 197715;
+[ExhaustiveSingularData(
+    field1 = true, field2 = 10.5, field3 = "foo", field4 = -2, field5 = 3,
+    field6 = -15.5, field7 = "bar", field8 = 0, field9 = 1, field10 = 4,
+    field11 = 5, field12 = 6, field13 = 7, field14 = -8, field15 = -9,
+    field16 = 10, field17 = SomeType, field18 = SomeEnum.FIRST_VALUE)]
+type ExhaustiveSingularData {
   bool field1 = 1;
   float field2 = 2;
   bytes field3 = 3;
@@ -29,8 +33,17 @@ component ExhaustiveSingular {
   SomeEnum field18 = 18;
 }
 
-component ExhaustiveOptional {
-  id = 197716;
+component ExhaustiveSingular {
+  id = 197715;
+  data ExhaustiveSingularData;
+}
+
+[ExhaustiveOptionalData(
+    field1 = true, field2 = 10.5, field3 = "foo", field4 = -2, field5 = 3,
+    field6 = -15.5, field7 = "bar", field8 = 0, field9 = 1, field10 = 4,
+    field11 = 5, field12 = 6, field13 = 7, field14 = -8, field15 = -9,
+    field16 = 10, field17 = SomeType, field18 = SomeEnum.FIRST_VALUE)]
+type ExhaustiveOptionalData {
   option<bool> field1 = 1;
   option<float> field2 = 2;
   option<bytes> field3 = 3;
@@ -51,8 +64,17 @@ component ExhaustiveOptional {
   option<SomeEnum> field18 = 18;
 }
 
-component ExhaustiveRepeated {
-  id = 197717;
+component ExhaustiveOptional {
+  id = 197716;
+  data ExhaustiveOptionalData;
+}
+
+[ExhaustiveRepeatedData(
+    field1 = [true], field2 = [10.5], field3 = ["foo"], field4 = [-2], field5 = [3],
+    field6 = [-15.5], field7 = ["bar"], field8 = [0], field9 = [1], field10 = [4],
+    field11 = [5], field12 = [6], field13 = [7], field14 = [-8], field15 = [-9],
+    field16 = [10], field17 = [SomeType], field18 = [SomeEnum.FIRST_VALUE])]
+type ExhaustiveRepeatedData {
   list<bool> field1 = 1;
   list<float> field2 = 2;
   list<bytes> field3 = 3;
@@ -73,8 +95,17 @@ component ExhaustiveRepeated {
   list<SomeEnum> field18 = 18;
 }
 
-component ExhaustiveMapValue {
-  id = 197718;
+component ExhaustiveRepeated {
+  id = 197717;
+  data ExhaustiveRepeatedData;
+}
+
+[ExhaustiveMapValueData(
+    {"field1" : true}, {"field2" : 10.5}, {"field3" : "foo"}, {"field4" : -2}, {"field5" : 3},
+    {"field6" : -15.5}, {"field7" : "bar"}, {"field8" : 0}, {"field9" : 1}, {"field10" : 4},
+    {"field11" : 5}, {"field12" : 6}, {"field13" : 7}, {"field14" : -8}, {"field15" : -9},
+    {"field16" : 10}, {"field17" : SomeType}, {"field18" : SomeEnum.FIRST_VALUE})]
+type ExhaustiveMapValueData {
   map<string, bool> field1 = 1;
   map<string, float> field2 = 2;
   map<string, bytes> field3 = 3;
@@ -95,11 +126,20 @@ component ExhaustiveMapValue {
   map<string, SomeEnum> field18 = 18;
 }
 
-component ExhaustiveMapKey {
-  id = 197719;
+component ExhaustiveMapValue {
+  id = 197718;
+  data ExhaustiveMapValueData;
+}
+
+[ExhaustiveMapKeyData(
+    {true : "field1"}, {10.5 : "field2"}, {"foo" : "field3"}, {-2 : "field4"}, {3 : "field5"},
+    {-15.5 : "field6"}, {"bar" : "field7"}, {0 : "field8"}, {1 : "field9"}, {4 : "field10"},
+    {5 : "field11"}, {6 : "field12"}, {7 : "field13"}, {-8 : "field14"}, {-9 : "field15"},
+    {10 : "field16"}, {SomeType : "field17"}, {SomeEnum.FIRST_VALUE : "field18"})]
+type ExhaustiveMapKeyData {
   map<bool, string> field1 = 1;
   map<float, string> field2 = 2;
-  map<bytes, string> field3 = 3; 
+  map<bytes, string> field3 = 3;
   map<int32, string> field4 = 4;
   map<int64, string> field5 = 5;
   map<double, string> field6 = 6;
@@ -117,23 +157,7 @@ component ExhaustiveMapKey {
   map<SomeEnum, string> field18 = 18;
 }
 
-// Blittable subset
-component ExhaustiveBlittableSingular {
-  id = 197720;
-  bool field1 = 1;
-  float field2 = 2;
-  int32 field4 = 4;
-  int64 field5 = 5;
-  double field6 = 6;
-  uint32 field8 = 8;
-  uint64 field9 = 9;
-  sint32 field10 = 10;
-  sint64 field11 = 11;
-  fixed32 field12 = 12;
-  fixed64 field13 = 13;
-  sfixed32 field14 = 14;
-  sfixed64 field15 = 15;
-  EntityId field16 = 16;
-  SomeType field17 = 17;
-  SomeEnum field18 = 18;
+component ExhaustiveMapKey {
+  id = 197719;
+  data ExhaustiveMapKeyData;
 }
