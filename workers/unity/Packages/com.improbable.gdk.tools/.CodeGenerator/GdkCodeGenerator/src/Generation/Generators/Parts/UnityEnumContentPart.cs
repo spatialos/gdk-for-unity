@@ -1,20 +1,18 @@
-using Improbable.CodeGeneration.Model;
-
 namespace Improbable.Gdk.CodeGenerator
 {
     public partial class UnityEnumContent
     {
-        private EnumDefinitionRaw enumDefinition;
+        private UnityEnumDetails details;
 
-        public string Generate(EnumDefinitionRaw enumDefinition)
+        public string Generate(UnityEnumDetails details)
         {
-            this.enumDefinition = enumDefinition;
+            this.details = details;
             return TransformText();
         }
 
         public UnityEnumDetails GetEnumDetails()
         {
-            return new UnityEnumDetails(enumDefinition);
+            return details;
         }
     }
 }

@@ -83,7 +83,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-            private const uint componentId = <#= unityComponentDefinition.Id #>;
+            private const uint componentId = <#= componentDetails.ComponentId #>;
             private static readonly InjectableId readerWriterInjectableId = new InjectableId(InjectableType.ReaderWriter, componentId);
 <# if (commandDetailsList.Count > 0) { #>
             private static readonly InjectableId commandRequestHandlerInjectableId = new InjectableId(InjectableType.CommandRequestHandler, componentId);

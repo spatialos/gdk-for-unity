@@ -1,13 +1,57 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
 {
-    public class Identifier
+    public class Identifier : IEquatable<Identifier>
     {
         [JsonProperty("qualifiedName")] public string QualifiedName;
         [JsonProperty("name")] public string Name;
         [JsonProperty("path")] public List<string> Path;
+
+        public string PackagePath => string.Join(".", Path.Take(Path.Count - 1));
+
+        public bool Equals(Identifier other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return string.Equals(QualifiedName, other.QualifiedName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((Identifier) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return QualifiedName != null ? QualifiedName.GetHashCode() : 0;
+        }
     }
 
     public class UserType
@@ -52,6 +96,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1
         {
             [JsonProperty("type")] public UserType UserType;
             [JsonProperty("primitive")] public string Primitive;
+            [JsonProperty("enum")] public UserType EnumType;
         }
     }
 }

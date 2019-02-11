@@ -6,7 +6,7 @@
 
 public enum <#=  enumDetails.TypeName #> : uint
 {
-<# foreach (var valueDefinition in enumDefinition.valueDefinitions) { #>
-    <#= valueDefinition.name #> = <#= valueDefinition.value #>,
+<# foreach (var valueDefinition in enumDetails.Values) { #>
+    <#= valueDefinition.Item2 #> = <#= valueDefinition.Item1 #>,
 <# } #>
 }

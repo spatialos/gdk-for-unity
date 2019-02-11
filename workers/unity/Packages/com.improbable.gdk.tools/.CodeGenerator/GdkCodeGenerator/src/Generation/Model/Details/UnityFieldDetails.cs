@@ -1,44 +1,50 @@
-using System.Collections.Generic;
-using Improbable.CodeGeneration.Model;
-using Improbable.CodeGeneration.Utils;
+using System;
+using System.Collections.ObjectModel;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityFieldDetails
     {
         public string Type => fieldType.Type;
-        public string PascalCaseName => Formatting.SnakeCaseToCapitalisedCamelCase(rawFieldDefinition.name);
-        public string CamelCaseName => Formatting.SnakeCaseToCamelCase(rawFieldDefinition.name);
-        public int FieldNumber => rawFieldDefinition.Number;
-        public bool IsBlittable;
-        public bool CanBeEmpty;
+
+        public string PascalCaseName { get; }
+        public string CamelCaseName { get; }
+        public uint FieldNumber { get; }
+
+        public bool IsBlittable { get; }
+        public bool CanBeEmpty { get; }
 
         private IFieldType fieldType;
-        private FieldDefinitionRaw rawFieldDefinition;
 
-        public UnityFieldDetails(FieldDefinitionRaw rawFieldDefinition, bool isBlittable, HashSet<string> enumSet)
+        public UnityFieldDetails(Field field, DetailsStore store)
         {
-            this.rawFieldDefinition = rawFieldDefinition;
-            IsBlittable = isBlittable;
+            PascalCaseName = Formatting.SnakeCaseToPascalCase(field.Identifier.Name);
+            CamelCaseName = Formatting.PascalCaseToCamelCase(PascalCaseName);
+            FieldNumber = field.FieldId;
 
-            if (rawFieldDefinition.IsOption())
+            IsBlittable = store.BlittableMap.Contains(field.Identifier);
+
+            if (field.Option != null)
             {
-                fieldType = new OptionFieldType(rawFieldDefinition.optionType, enumSet);
                 CanBeEmpty = true;
+                fieldType = new OptionFieldType(field.Option.InnerType, store);
             }
-            else if (rawFieldDefinition.IsList())
+            else if (field.List != null)
             {
-                fieldType = new ListFieldType(rawFieldDefinition.listType, enumSet);
                 CanBeEmpty = true;
+                fieldType = new ListFieldType(field.List.InnerType, store);
             }
-            else if (rawFieldDefinition.IsMap())
+            else if (field.Map != null)
             {
-                fieldType = new MapFieldType(rawFieldDefinition.mapType, enumSet);
                 CanBeEmpty = true;
+                fieldType = new MapFieldType(field.Map.KeyType, field.Map.ValueType, store);
             }
             else
             {
-                fieldType = new SingularFieldType(rawFieldDefinition.singularType, enumSet);
+                var singularType = field.Singular.Type;
+                fieldType = new SingularFieldType(singularType, store);
             }
         }
 

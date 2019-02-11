@@ -57,7 +57,7 @@ if (fieldDetailsList.Count > 0)
     {
 #>
 
-    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, enumSet)) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType)) #>
 <# } #>
 <#
     var enumGenerator = new UnityEnumContent();
