@@ -4,21 +4,21 @@ namespace Improbable.Gdk.CodeGeneration.Model
 {
     public class BuiltInSchemaTypes
     {
-        public const string BuiltInDouble = "double";
-        public const string BuiltInFloat = "float";
-        public const string BuiltInInt32 = "int32";
-        public const string BuiltInInt64 = "int64";
-        public const string BuiltInUint32 = "uint32";
-        public const string BuiltInUint64 = "uint64";
-        public const string BuiltInSint32 = "sint32";
-        public const string BuiltInSint64 = "sint64";
-        public const string BuiltInFixed32 = "fixed32";
-        public const string BuiltInFixed64 = "fixed64";
-        public const string BuiltInSfixed32 = "sfixed32";
-        public const string BuiltInSfixed64 = "sfixed64";
-        public const string BuiltInBool = "bool";
-        public const string BuiltInString = "string";
-        public const string BuiltInBytes = "bytes";
+        public const string BuiltInDouble = "Double";
+        public const string BuiltInFloat = "Float";
+        public const string BuiltInInt32 = "Int32";
+        public const string BuiltInInt64 = "Int64";
+        public const string BuiltInUint32 = "Uint32";
+        public const string BuiltInUint64 = "Uint64";
+        public const string BuiltInSint32 = "Sint32";
+        public const string BuiltInSint64 = "Sint64";
+        public const string BuiltInFixed32 = "Fixed32";
+        public const string BuiltInFixed64 = "Fixed64";
+        public const string BuiltInSfixed32 = "Sfixed32";
+        public const string BuiltInSfixed64 = "Sfixed64";
+        public const string BuiltInBool = "Bool";
+        public const string BuiltInString = "String";
+        public const string BuiltInBytes = "Bytes";
         public const string BuiltInEntityId = "EntityId";
 
         public static HashSet<string> BuiltInTypes = new HashSet<string>

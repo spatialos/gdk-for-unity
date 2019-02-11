@@ -1,89 +1,93 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Improbable.CodeGeneration.FileHandling;
-using Improbable.CodeGeneration.Jobs;
-using Improbable.CodeGeneration.Model;
-using Improbable.CodeGeneration.Utils;
+using Improbable.Gdk.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class SingleGenerationJob : CodegenJob
     {
-        private readonly string relativeOutputPath;
-        private readonly string package;
-        private readonly List<UnityTypeDefinition> typesToGenerate;
-        private readonly List<UnityComponentDefinition> componentsToGenerate;
-        private readonly List<EnumDefinitionRaw> enumsToGenerate;
+        private readonly List<GenerationTarget<UnityComponentDetails>> componentsToGenerate;
 
-        private readonly HashSet<string> enumSet = new HashSet<string>();
+        private readonly List<GenerationTarget<UnityTypeDetails>> typesToGenerate;
 
-        private const string fileExtension = ".cs";
+        private readonly List<GenerationTarget<UnityEnumDetails>> enumsToGenerate;
 
-        public SingleGenerationJob(string outputDir, UnitySchemaFile schemaFile, IFileSystem fileSystem,
-            HashSet<string> enumSet) : base(
+        private const string FileExtension = ".cs";
+
+        public SingleGenerationJob(string outputDir, DetailsStore store, IFileSystem fileSystem) : base(
             outputDir, fileSystem)
         {
-            InputFiles = new List<string> { schemaFile.CompletePath };
+            InputFiles = store.SchemaFiles.ToList();
             OutputFiles = new List<string>();
 
-            relativeOutputPath = Formatting.GetNamespacePath(schemaFile.Package);
-            package = Formatting.CapitaliseQualifiedNameParts(schemaFile.Package);
+            var allNestedTypes = store.Types
+                .SelectMany(kv => store.GetNestedTypes(kv.Key))
+                .ToHashSet();
 
-            typesToGenerate = SelectTypesToGenerate(schemaFile);
+            typesToGenerate = store.Types
+                .Where(kv => !allNestedTypes.Contains(kv.Key))
+                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Key.PackagePath))
+                .ToList();
 
-            foreach (var unityTypeDefinition in typesToGenerate)
+            enumsToGenerate = store.Enums
+                .Where(kv => !allNestedTypes.Contains(kv.Key))
+                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Key.PackagePath))
+                .ToList();
+
+            componentsToGenerate = store.Components
+                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Key.PackagePath))
+                .ToList();
+
+            foreach (var typeTarget in typesToGenerate)
             {
-                var fileName = Path.ChangeExtension(unityTypeDefinition.Name, fileExtension);
-                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
+                OutputFiles.Add(Path.Combine(typeTarget.OutputPath, fileName));
             }
 
-            componentsToGenerate = schemaFile.ComponentDefinitions;
-            foreach (var component in componentsToGenerate)
+            foreach (var componentTarget in componentsToGenerate)
             {
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(component.Name, fileExtension)));
+                var relativeOutputPath = componentTarget.OutputPath;
+                var componentName = componentTarget.Content.ComponentName;
 
-                if (component.CommandDefinitions.Count > 0)
+                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
+
+                if (componentTarget.Content.CommandDetails.Count > 0)
                 {
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension)));
+                        Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension)));
+                        Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension)));
+                        Path.ChangeExtension($"{componentName}CommandStorage", FileExtension)));
+
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension)));
                 }
 
-                if (component.EventDefinitions.Count > 0)
+                if (componentTarget.Content.EventDetails.Count > 0)
                 {
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}Events", fileExtension)));
+                        Path.ChangeExtension($"{componentName}Events", FileExtension)));
                 }
 
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
+                    Path.ChangeExtension($"{componentName}Translation", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}Providers", fileExtension)));
+                    Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension)));
+                    Path.ChangeExtension($"{componentName}GameObjectComponentDispatcher", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension)));
-
-                if (component.CommandDefinitions.Count > 0)
-                {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension)));
-                }
+                    Path.ChangeExtension($"{componentName}ReaderWriter", FileExtension)));
             }
 
-            enumsToGenerate = new List<EnumDefinitionRaw>();
-            enumsToGenerate.AddRange(schemaFile.EnumDefinitions);
-            foreach (var unityEnum in enumsToGenerate)
+            foreach (var enumTarget in enumsToGenerate)
             {
-                var fileName = Path.ChangeExtension(unityEnum.name, fileExtension);
-                OutputFiles.Add(Path.Combine(relativeOutputPath, fileName));
+                var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
+                OutputFiles.Add(Path.Combine(enumTarget.OutputPath, fileName));
             }
-
-            this.enumSet = enumSet;
         }
 
         protected override void RunImpl()
@@ -101,112 +105,101 @@ namespace Improbable.Gdk.CodeGenerator
             var gameObjectCommandHandlersGenerator = new UnityGameObjectCommandHandlersGenerator();
             var readerWriterGenerator = new UnityReaderWriterGenerator();
 
-            foreach (var enumType in enumsToGenerate)
+            foreach (var enumTarget in enumsToGenerate)
             {
-                var fileName = Path.ChangeExtension(enumType.name, fileExtension);
-                var enumCode = enumGenerator.Generate(enumType, package);
-                Content.Add(Path.Combine(relativeOutputPath, fileName), enumCode);
+                var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
+                var enumCode = enumGenerator.Generate(enumTarget.Content, enumTarget.Package);
+                Content.Add(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
 
-            foreach (var type in typesToGenerate)
+            foreach (var typeTarget in typesToGenerate)
             {
-                var fileName = Path.ChangeExtension(type.Name, fileExtension);
-                var typeCode = typeGenerator.Generate(type, package, enumSet);
-                Content.Add(Path.Combine(relativeOutputPath, fileName), typeCode);
+                var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
+                var typeCode = typeGenerator.Generate(typeTarget.Content, typeTarget.Package);
+                Content.Add(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
 
-            foreach (var component in componentsToGenerate)
+            foreach (var componentTarget in componentsToGenerate)
             {
-                var componentFileName = Path.ChangeExtension(component.Name, fileExtension);
-                var componentCode = blittableComponentGenerator.Generate(component, package, enumSet);
+                var relativeOutputPath = componentTarget.OutputPath;
+                var componentName = componentTarget.Content.ComponentName;
+                var package = componentTarget.Package;
+
+                var componentFileName = Path.ChangeExtension(componentName, FileExtension);
+                var componentCode = blittableComponentGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
-                if (component.CommandDefinitions.Count > 0)
+                if (componentTarget.Content.CommandDetails.Count > 0)
                 {
                     var commandPayloadsFileName =
-                        Path.ChangeExtension($"{component.Name}CommandPayloads", fileExtension);
+                        Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
                     var commandPayloadCode =
-                        commandPayloadGenerator.Generate(component, package);
+                        commandPayloadGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
 
                     var commandComponentsFileName =
-                        Path.ChangeExtension($"{component.Name}CommandComponents", fileExtension);
+                        Path.ChangeExtension($"{componentName}CommandComponents", FileExtension);
                     var commandComponentsCode =
-                        commandComponentsGenerator.Generate(component, package);
+                        commandComponentsGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
 
                     var commandStorageFileName =
-                        Path.ChangeExtension($"{component.Name}CommandStorage", fileExtension);
-                    var commandStorageCode = commandStorageGenerator.Generate(component, package);
+                        Path.ChangeExtension($"{componentName}CommandStorage", FileExtension);
+                    var commandStorageCode = commandStorageGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandStorageFileName), commandStorageCode);
+
+                    var monobehaviourCommandHandlerFileName =
+                        Path.ChangeExtension($"{componentName}MonoBehaviourCommandHandlers", FileExtension);
+                    var monobehaviourCommandHandlerCode =
+                        gameObjectCommandHandlersGenerator.Generate(componentTarget.Content, package);
+                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName),
+                        monobehaviourCommandHandlerCode);
                 }
 
-                if (component.EventDefinitions.Count > 0)
+                if (componentTarget.Content.EventDetails.Count > 0)
                 {
-                    var eventsFileName = Path.ChangeExtension($"{component.Name}Events", fileExtension);
-                    var eventsCode = eventGenerator.Generate(component, package);
+                    var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
+                    var eventsCode = eventGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
 
-                var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
-                var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
+                var conversionFileName = Path.ChangeExtension($"{componentName}Translation", FileExtension);
+                var componentTranslationCode = componentConversionGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
 
-                var referenceProviderFileName = Path.ChangeExtension($"{component.Name}Providers", fileExtension);
+                var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
                 var referenceProviderTranslationCode =
-                    referenceTypeProviderGenerator.Generate(component, package, enumSet);
+                    referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
                     referenceProviderTranslationCode);
 
                 var gameObjectComponentDispatcherFileName =
-                    Path.ChangeExtension($"{component.Name}GameObjectComponentDispatcher", fileExtension);
+                    Path.ChangeExtension($"{componentName}GameObjectComponentDispatcher", FileExtension);
                 var gameObjectComponentDispatcherCode =
-                    gameObjectComponentDispatcherGenerator.Generate(component, package, enumSet);
+                    gameObjectComponentDispatcherGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, gameObjectComponentDispatcherFileName),
                     gameObjectComponentDispatcherCode);
 
                 var readerWriterFileName =
-                    Path.ChangeExtension($"{component.Name}ReaderWriter", fileExtension);
+                    Path.ChangeExtension($"{componentName}ReaderWriter", FileExtension);
                 var readerWriterCode =
-                    readerWriterGenerator.Generate(component, package, enumSet);
+                    readerWriterGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, readerWriterFileName), readerWriterCode);
-
-                if (component.CommandDefinitions.Count > 0)
-                {
-                    var monobehaviourCommandHandlerFileName =
-                        Path.ChangeExtension($"{component.Name}MonoBehaviourCommandHandlers", fileExtension);
-                    var monobehaviourCommandHandlerCode =
-                        gameObjectCommandHandlersGenerator.Generate(component, package);
-                    Content.Add(Path.Combine(relativeOutputPath, monobehaviourCommandHandlerFileName),
-                        monobehaviourCommandHandlerCode);
-                }
             }
         }
 
-        /// <summary>
-        ///     Filters out auto-generated types like PositionData from the JSON AST.
-        ///     However, we want to keep types that are used as a "data" field in a component.
-        /// </summary>
-        private List<UnityTypeDefinition> SelectTypesToGenerate(UnitySchemaFile schemaFile)
+        private struct GenerationTarget<T>
         {
-            var componentDataTypes =
-                schemaFile.ComponentDefinitions.Select(component => component.RawDataDefinition);
+            public readonly T Content;
+            public readonly string Package;
+            public readonly string OutputPath;
 
-            // From inspection of the JSON AST you can observe that a type definition is auto-generated if the following
-            // conditions are true:
-            //     1. The FQN type names are the same .
-            //     2. The source references are the same.
-            // Using this information, we can effectively filter out auto-generated types.
-            var filteredTypes = schemaFile.TypeDefinitions.Where(type => componentDataTypes.All(componentData =>
-                type.QualifiedName != componentData.TypeName ||
-                !SourceReferenceEquals(type.SourceReference, componentData.sourceReference)));
-
-            return filteredTypes.ToList();
-        }
-
-        private bool SourceReferenceEquals(SourceReferenceRaw sourceRef1, SourceReferenceRaw sourceRef2)
-        {
-            return sourceRef1.column == sourceRef2.column && sourceRef1.line == sourceRef2.line;
+            public GenerationTarget(T content, string package)
+            {
+                Content = content;
+                Package = Formatting.CapitaliseQualifiedNameParts(package);
+                OutputPath = Formatting.GetNamespacePath(package);
+            }
         }
     }
 }

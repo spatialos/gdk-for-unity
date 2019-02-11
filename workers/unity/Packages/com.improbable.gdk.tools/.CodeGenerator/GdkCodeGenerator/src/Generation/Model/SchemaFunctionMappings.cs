@@ -1,30 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration.Model;
 
 namespace Improbable.Gdk.CodeGenerator
 {
-    public class SchemaFunctionMappings
+    public static class SchemaFunctionMappings
     {
-        public static HashSet<string> BuiltInTypeWithSchemaFunctions = new HashSet<string>
+        private static readonly HashSet<string> BuiltInTypeWithSchemaFunctions = new HashSet<string>
         {
-            BuiltInTypeConstants.builtInBool,
-            BuiltInTypeConstants.builtInBytes,
-            BuiltInTypeConstants.builtInDouble,
-            BuiltInTypeConstants.builtInEntityId,
-            BuiltInTypeConstants.builtInFixed32,
-            BuiltInTypeConstants.builtInFixed64,
-            BuiltInTypeConstants.builtInFloat,
-            BuiltInTypeConstants.builtInInt32,
-            BuiltInTypeConstants.builtInInt64,
-            BuiltInTypeConstants.builtInSfixed32,
-            BuiltInTypeConstants.builtInSfixed64,
-            BuiltInTypeConstants.builtInUint32,
-            BuiltInTypeConstants.builtInUint64,
-            BuiltInTypeConstants.builtInSint32,
-            BuiltInTypeConstants.builtInSint64,
-            BuiltInTypeConstants.builtInString,
+            BuiltInSchemaTypes.BuiltInBool,
+            BuiltInSchemaTypes.BuiltInBytes,
+            BuiltInSchemaTypes.BuiltInDouble,
+            BuiltInSchemaTypes.BuiltInEntityId,
+            BuiltInSchemaTypes.BuiltInFixed32,
+            BuiltInSchemaTypes.BuiltInFixed64,
+            BuiltInSchemaTypes.BuiltInFloat,
+            BuiltInSchemaTypes.BuiltInInt32,
+            BuiltInSchemaTypes.BuiltInInt64,
+            BuiltInSchemaTypes.BuiltInSfixed32,
+            BuiltInSchemaTypes.BuiltInSfixed64,
+            BuiltInSchemaTypes.BuiltInUint32,
+            BuiltInSchemaTypes.BuiltInUint64,
+            BuiltInSchemaTypes.BuiltInSint32,
+            BuiltInSchemaTypes.BuiltInSint64,
+            BuiltInSchemaTypes.BuiltInString,
         };
 
         public static string AddSchemaFunctionFromType(string builtInType)
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.CodeGenerator
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return builtInType == BuiltInTypeConstants.builtInEntityId
+            return builtInType == BuiltInSchemaTypes.BuiltInEntityId
                 ? $"Get{ToUppercase(builtInType)}Struct"
                 : $"Get{ToUppercase(builtInType)}";
         }
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.CodeGenerator
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return builtInType == BuiltInTypeConstants.builtInEntityId
+            return builtInType == BuiltInSchemaTypes.BuiltInEntityId
                 ? $"Index{ToUppercase(builtInType)}Struct"
                 : $"Index{ToUppercase(builtInType)}";
         }

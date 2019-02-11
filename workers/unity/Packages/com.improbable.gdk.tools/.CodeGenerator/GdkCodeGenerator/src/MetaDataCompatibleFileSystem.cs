@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.FileHandling;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -11,10 +11,10 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private readonly FileSystem fileSystem = new FileSystem();
 
-        public IEnumerable<IFile> GetFilesInDirectory(string path, string searchPattern = "*.*", bool recursive = true)
+        public List<IFile> GetFilesInDirectory(string path, string searchPattern = "*.*", bool recursive = true)
         {
             var files = fileSystem.GetFilesInDirectory(path, searchPattern, recursive);
-            return files.Where(f => !f.CompletePath.EndsWith(".meta"));
+            return files.Where(f => !f.CompletePath.EndsWith(".meta")).ToList();
         }
 
         public void WriteToFile(string path, string content)

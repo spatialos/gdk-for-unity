@@ -1,37 +1,31 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.CodeGeneration.Model;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public partial class UnityTypeContent
     {
-        private UnityTypeDefinition typeDefinition;
-        private HashSet<string> enumSet;
-        private List<UnityTypeDefinition> nestedTypes;
-        private List<EnumDefinitionRaw> nestedEnums;
+        private UnityTypeDetails details;
+        private IReadOnlyList<UnityTypeDetails> nestedTypes;
+        private IReadOnlyList<UnityEnumDetails> nestedEnums;
 
-        public string Generate(UnityTypeDefinition typeDefinition, HashSet<string> enumSet)
+        public string Generate(UnityTypeDetails details)
         {
-            this.typeDefinition = typeDefinition;
-            this.enumSet = enumSet;
-            this.nestedTypes = typeDefinition.TypeDefinitions;
-            this.nestedEnums = typeDefinition.EnumDefinitions.ToList();
+            this.details = details;
+            nestedTypes = details.ChildTypes;
+            nestedEnums = details.ChildEnums;
+
             return TransformText();
         }
 
         private UnityTypeDetails GetTypeDetails()
         {
-            return new UnityTypeDetails(typeDefinition);
+            return details;
         }
 
-        private List<UnityFieldDetails> GetFieldDetailsList()
+        private IReadOnlyList<UnityFieldDetails> GetFieldDetailsList()
         {
-            return typeDefinition.FieldDefinitions
-                .Select((fieldDefinition) =>
-                    new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
-                .ToList();
+            return details.FieldDetails;
         }
 
         private string GetConstructorArgs()
