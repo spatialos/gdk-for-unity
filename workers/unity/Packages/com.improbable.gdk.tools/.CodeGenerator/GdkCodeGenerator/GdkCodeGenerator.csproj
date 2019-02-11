@@ -19,17 +19,13 @@
     <EmbeddedResource Include="Partials\Improbable.Coordinates" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="NUnit" Version="3.10.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-    <PackageReference Include="NunitXml.TestLogger" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Mono.Options" Version="5.3.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="2.1.17" />
     <PackageReference Include="System.CodeDom" Version="4.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CodeGenerator">
-      <HintPath>dependencies\CodeGenerator.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
@@ -53,9 +49,12 @@
   <ItemGroup>
     <Folder Include="Partials" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGeneration\CodeGeneration.csproj" />
+  </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">
-    <TransformAllTask InputFiles="@(T4Files)" ProjectDirectory="$(MSBuildProjectDirectory)" Imports="Improbable.CodeGeneration.Jobs" ClassNameSpace="Improbable.Gdk.CodeGenerator">
+    <TransformAllTask InputFiles="@(T4Files)" ProjectDirectory="$(MSBuildProjectDirectory)" Imports="Improbable.Gdk.CodeGeneration.Jobs" ClassNameSpace="Improbable.Gdk.CodeGenerator">
       <Output TaskParameter="OutputFiles" PropertyName="GeneratedFiles" />
     </TransformAllTask>
     <ItemGroup>

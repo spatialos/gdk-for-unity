@@ -6,30 +6,24 @@ namespace Improbable.Gdk.CodeGenerator
     public partial class UnityComponentDataGenerator
     {
         private string qualifiedNamespace;
-        private UnityComponentDefinition unityComponentDefinition;
-        private HashSet<string> enumSet;
+        private UnityComponentDetails details;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package,
-            HashSet<string> enumSet)
+        public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;
-            this.unityComponentDefinition = unityComponentDefinition;
-            this.enumSet = enumSet;
+            this.details = details;
 
             return TransformText();
         }
 
         private UnityComponentDetails GetComponentDetails()
         {
-            return new UnityComponentDetails(unityComponentDefinition);
+            return details;
         }
 
-        private List<UnityFieldDetails> GetFieldDetailsList()
+        private IReadOnlyList<UnityFieldDetails> GetFieldDetailsList()
         {
-            return unityComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
-                .Select(fieldDefinition =>
-                    new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
-                .ToList();
+            return details.FieldDetails;
         }
 
         private bool ShouldGenerateClearedFieldsSet()
