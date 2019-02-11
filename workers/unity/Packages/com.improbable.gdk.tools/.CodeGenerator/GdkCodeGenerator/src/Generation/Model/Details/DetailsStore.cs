@@ -105,7 +105,11 @@ namespace Improbable.Gdk.CodeGenerator
 
             foreach (var component in bundle.BundleContents.ComponentDefinitions)
             {
-                var blittableCheckResult = CheckBlittable(component.Fields);
+                var fields = component.Data != null
+                    ? bundle.BundleContents.TypeDefinitions.First(type => type.Identifier.QualifiedName == component.Data.QualifiedName).Fields
+                    : component.Fields;
+
+                var blittableCheckResult = CheckBlittable(fields);
 
                 if (!blittableCheckResult.HasValue)
                 {
