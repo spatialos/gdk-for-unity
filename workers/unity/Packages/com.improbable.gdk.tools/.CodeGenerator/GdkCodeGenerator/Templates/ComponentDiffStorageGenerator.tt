@@ -35,6 +35,15 @@ namespace <#= qualifiedNamespace #>
             private List<EntityId> componentsAdded = new List<EntityId>();
             private List<EntityId> componentsRemoved = new List<EntityId>();
 
+            // Used to represent a state machine of authority changes. Valid state changes are:
+            // authority lost -> authority lost temporarily
+            // authority lost temporarily -> authority lost
+            // authority gained -> authority gained
+            // Creating the authority lost temporarily set is the aim as it signifies authority epoch changes
+            private readonly HashSet<EntityId> authorityLost = new HashSet<EntityId>();
+            private readonly HashSet<EntityId> authorityGained = new HashSet<EntityId>();
+            private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
+
             private ReceivedMessageList<ComponentUpdateReceived<Update>> updateStorage =
                 new ReceivedMessageList<ComponentUpdateReceived<Update>>();
 
@@ -102,6 +111,25 @@ namespace <#= qualifiedNamespace #>
 
             public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
             {
+                if (authorityChange.Authority == Authority.NotAuthoritative)
+                {
+                    if (authorityLostTemporary.Remove(authorityChange.EntityId) || !authorityGained.Contains(authorityChange.EntityId))
+                    {
+                        authorityLost.Add(authorityChange.EntityId);
+                    }
+                }
+                else if (authorityChange.Authority == Authority.Authoritative)
+                {
+                    if (authorityLost.Remove(authorityChange.EntityId))
+                    {
+                        authorityLostTemporary.Add(authorityChange.EntityId);
+                    }
+                    else
+                    {
+                        authorityGained.Add(authorityChange.EntityId);
+                    }
+                }
+
                 authorityChanges.Add(authorityChange);
             }
 
