@@ -7,17 +7,15 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Wrapper around an array for use in command and update managers
     ///     Returns values by ref readonly
-    ///     Values can be added but only removed via Clear
     /// </summary>
     /// <remarks>
     ///     Should only be used with readonly structs
-    ///     Intended use is to use Add, Clear, Sort, ref [], and to iterate via a regular for loop
     ///     Missing most safety checks as it is for internal use only
     ///     T constrained to struct so that null checks aren't needed
     ///     Does not detect the array being edited during iteration
-    ///     Items are not removed or set to default on clear
+    ///     The internal array is not resized or zeroed on clear
     /// </remarks>
-    internal class ReceivedMessageList<T> : ICollection<T> where T : struct, IReceivedMessage
+    internal class ReceivedMessageList<T> : IEnumerable<T> where T : struct
     {
         private static readonly T[] EmptyArray = new T[0];
 
@@ -25,10 +23,10 @@ namespace Improbable.Gdk.Core
 
         public int Count { get; private set; }
 
-        public bool IsReadOnly => false;
-
+        // Todo should probably have a starting size and a max size
         public ReceivedMessageList()
         {
+            Count = 0;
             items = EmptyArray;
         }
 
@@ -59,6 +57,38 @@ namespace Improbable.Gdk.Core
             ++Count;
         }
 
+        // Similar to the List<> RemoveAll. No return value and the array is not resized down.
+        public void RemoveAll(Predicate<T> match)
+        {
+            int freeIndex = 0;
+
+            while (freeIndex < Count && !match(items[freeIndex]))
+            {
+                ++freeIndex;
+            }
+
+            if (freeIndex >= Count)
+            {
+                return;
+            }
+
+            int currentIndex = freeIndex + 1;
+            while (currentIndex < Count)
+            {
+                while (currentIndex < Count && match(items[currentIndex]))
+                {
+                    ++currentIndex;
+                }
+
+                if (currentIndex < Count)
+                {
+                    items[freeIndex++] = items[currentIndex++];
+                }
+            }
+
+            Count = freeIndex;
+        }
+
         public void Clear()
         {
             Count = 0;
@@ -67,31 +97,6 @@ namespace Improbable.Gdk.Core
         public void Sort(IComparer<T> comparer)
         {
             Array.Sort(items, 0, Count, comparer);
-        }
-
-        public bool Contains(T item)
-        {
-            EqualityComparer<T> comparer = EqualityComparer<T>.Default;
-            foreach (var element in items)
-            {
-                if (comparer.Equals(element, item))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            items.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(T item)
-        {
-            throw new InvalidOperationException(
-                "Can not remove a single element from a ReceivedMessageList. Please use Clear");
         }
 
         public Enumerator GetEnumerator()
