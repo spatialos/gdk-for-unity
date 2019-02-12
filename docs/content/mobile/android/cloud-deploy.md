@@ -25,11 +25,10 @@ Altenatively, if you want to create your own authentication server, follow [this
 To do this:
   *  From the [SpatialOS Console](https://console.improbable.io/projects), select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
-1. [Create a Development Authentication Token (SpatialOS documentation).](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance)
-1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and includes the functionality you want. In your Unity Editor, add this script it to your Android client-worker GameObject.
-1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure your Android client-worker GameObject is selected and in the Inspector, locate the script you just added to it. 
-1. In the Inspector, in the script’s drop-down window, there is a field to add the authentication token that you created. 
-1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
+1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).
+1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. <br> 
+In your Unity Editor, add this script it to your Android client-worker GameObject. In the FPS Starter Project this is located at **Assets** > **Fps** > **Prefabs** > **AndroidClientWorker**.
+1. In your Unity Editor, in the Inspector window, in the script’s drop-down window, add the token to the `Development Auth Token` field and ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
