@@ -56,6 +56,10 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{component.Name}CommandSenderReceiver", fileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{component.Name}ReactiveCommandComponents", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandDiffDeserializer", fileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandDiffStorage", fileExtension)));
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -70,6 +74,10 @@ namespace Improbable.Gdk.CodeGenerator
                     Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}ComponentDiffStorage", fileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{component.Name}ComponentDiffDeserializer", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}ReactiveComponents", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
@@ -106,6 +114,10 @@ namespace Improbable.Gdk.CodeGenerator
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
             var reactiveComponentGenerator = new ReactiveComponentGenerator();
             var reactiveCommandComponentGenerator = new ReactiveCommandComponentGenerator();
+            var componentDiffStorageGenerator = new ComponentDiffStorageGenerator();
+            var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
+            var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
+            var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
 
             foreach (var enumType in enumsToGenerate)
             {
@@ -159,6 +171,20 @@ namespace Improbable.Gdk.CodeGenerator
                         reactiveCommandComponentGenerator.Generate(component, package, enumSet);
                     Content.Add(Path.Combine(relativeOutputPath, reactiveCommandComponentsFileName),
                         reactiveCommandComponentsCode);
+
+                    var commandDiffDeserializerFileName =
+                        Path.ChangeExtension($"{component.Name}CommandDiffDeserializer", fileExtension);
+                    var commandDiffDeserializerCode =
+                        commandDiffDeserializerGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
+                        commandDiffDeserializerCode);
+
+                    var commandDiffStorageFileName =
+                        Path.ChangeExtension($"{component.Name}CommandDiffStorage", fileExtension);
+                    var commandDiffStorageCode =
+                        commandDiffStorageGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
+                        commandDiffStorageCode);
                 }
 
                 if (component.EventDefinitions.Count > 0)
@@ -179,6 +205,14 @@ namespace Improbable.Gdk.CodeGenerator
                 var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension);
                 var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
+
+                var componentDiffStorageFileName = Path.ChangeExtension($"{component.Name}ComponentDiffStorage", fileExtension);
+                var componentDiffStorageCode = componentDiffStorageGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
+
+                var componentDiffDeserializerFileName = Path.ChangeExtension($"{component.Name}ComponentDiffDeserializer", fileExtension);
+                var componentDiffDeserializerCode = componentDiffDeserializerGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
 
                 var reactiveComponentsFileName = Path.ChangeExtension($"{component.Name}ReactiveComponents", fileExtension);
                 var reactiveComponentsCode = reactiveComponentGenerator.Generate(component, package, enumSet);

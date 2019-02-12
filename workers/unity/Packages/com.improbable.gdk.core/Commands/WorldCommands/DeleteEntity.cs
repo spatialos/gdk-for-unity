@@ -368,10 +368,14 @@ namespace Improbable.Gdk.Core.Commands
                     {
                         throw new ArgumentException("World instance is not running a valid SpatialOS worker");
                     }
+                }
 
-                    var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
-
-                    dispatcher.OnDeleteEntityResponse(AddResponse);
+                public void ApplyAndCleanDiff(ViewDiff diff)
+                {
+                    foreach (var response in diff.GetWorldCommandStorage().GetDeleteEntityResponses())
+                    {
+                        AddResponse(response);
+                    }
                 }
 
                 public long SendCommand(Request request, Unity.Entities.Entity entity)

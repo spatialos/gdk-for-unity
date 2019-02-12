@@ -1,0 +1,159 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var fieldDetailsList = GetFieldDetailsList();
+    var componentDetails = GetComponentDetails();
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var commandDetailsList = GetCommandDetailsList();
+    var eventDetailsList = GetEventDetailsList();
+    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
+    var profilingEnd = "Profiler.EndSample();";
+#>
+<#= generatedHeader #>
+
+using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
+using Unity.Entities;
+using Improbable.Gdk.Core;
+using Improbable.Worker.CInterop;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+        public class DiffComponentStorage : IDiffUpdateStorage<Update>, IDiffComponentAddedStorage<Update>, IDiffAuthorityStorage
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+            , IDiffEventStorage<<#= eventType #>>
+<# } #>
+        {
+            private readonly HashSet<EntityId> entitiesUpdated = new HashSet<EntityId>();
+
+            private List<EntityId> componentsAdded = new List<EntityId>();
+            private List<EntityId> componentsRemoved = new List<EntityId>();
+
+            private ReceivedMessageList<ComponentUpdateReceived<Update>> updateStorage =
+                new ReceivedMessageList<ComponentUpdateReceived<Update>>();
+
+            private ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
+                new ReceivedMessageList<AuthorityChangeReceived>();
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+
+            private ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventStorage =
+                new ReceivedMessageList<ComponentEventReceived<<#= eventType #>>>();
+<# } #>
+
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public void Clear()
+            {
+                entitiesUpdated.Clear();
+                updateStorage.Clear();
+                authorityChanges.Clear();
+                componentsAdded.Clear();
+                componentsRemoved.Clear();
+<# foreach (var ev in eventDetailsList) {#>
+
+                <#= ev.CamelCaseEventName #>EventStorage.Clear();
+<# } #>
+            }
+
+            public void RemoveEntityComponent(long entityId)
+            {
+                var id = new EntityId(entityId);
+
+                // Adding a component always updates it, so this will catch the case where the component was just added
+                if (entitiesUpdated.Remove(id))
+                {
+                    updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
+                    authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
+                }
+
+                if (!componentsAdded.Remove(id))
+                {
+                    componentsRemoved.Add(id);
+                }
+            }
+
+            public void AddEntityComponent(long entityId, Update component)
+            {
+                var id = new EntityId(entityId);
+                if (!componentsRemoved.Remove(id))
+                {
+                    componentsAdded.Add(id);
+                }
+
+                AddUpdate(new ComponentUpdateReceived<Update>(component, id, 0));
+            }
+
+            public void AddUpdate(ComponentUpdateReceived<Update> update)
+            {
+                entitiesUpdated.Add(update.EntityId);
+                updateStorage.Add(update);
+            }
+
+            public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
+            {
+                authorityChanges.Add(authorityChange);
+            }
+
+            internal void SwapAndClearMessageLists(ref ReceivedMessageList<ComponentUpdateReceived<Update>> messageList)
+            {
+                ReceivedMessageList<ComponentUpdateReceived<Update>> temp = messageList;
+                messageList = updateStorage;
+                updateStorage = temp;
+                updateStorage.Clear();
+            }
+
+            internal void SwapAndClearMessageLists(ref ReceivedMessageList<AuthorityChangeReceived> messageList)
+            {
+                ReceivedMessageList<AuthorityChangeReceived> temp = messageList;
+                messageList = authorityChanges;
+                authorityChanges = temp;
+                authorityChanges.Clear();
+            }
+
+            internal void SwapAndClearComponentsAdded(ref List<EntityId> list)
+            {
+                List<EntityId> temp = list;
+                list = componentsAdded;
+                componentsAdded = temp;
+                componentsAdded.Clear();
+            }
+
+            internal void SwapAndClearComponentsRemoved(ref List<EntityId> list)
+            {
+                List<EntityId> temp = list;
+                list = componentsRemoved;
+                componentsRemoved = temp;
+                componentsRemoved.Clear();
+            }
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+
+            void IDiffEventStorage<<#= eventType #>>.AddEvent(ComponentEventReceived<<#= eventType #>> ev)
+            {
+                <#= ev.CamelCaseEventName #>EventStorage.Add(ev);
+            }
+
+            internal void SwapAndClearMessageLists(ref ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> messageList)
+            {
+                ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> temp = messageList;
+                messageList = <#= ev.CamelCaseEventName #>EventStorage;
+                <#= ev.CamelCaseEventName #>EventStorage = temp;
+                <#= ev.CamelCaseEventName #>EventStorage.Clear();
+            }
+<# } #>
+        }
+    }
+}
+
