@@ -19,8 +19,6 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        public Dispatcher Dispatcher;
-
         private WorkerSystem worker;
 
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
@@ -29,6 +27,10 @@ namespace Improbable.Gdk.Core
         public List<Action<Unity.Entities.Entity>> AddAllCommandComponents = new List<Action<Unity.Entities.Entity>>();
 
         private bool inCriticalSection;
+
+        private readonly DiffCreatorFromOpList opDeserializer = new DiffCreatorFromOpList();
+        private readonly ViewDiff diff = new ViewDiff();
+
 
         private const string LoggerName = nameof(SpatialOSReceiveSystem);
         private const string UnknownComponentIdError = "Received an op with an unknown ComponentId";
@@ -40,7 +42,6 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager();
 
             worker = World.GetExistingManager<WorkerSystem>();
-            Dispatcher = new Dispatcher();
             SetupDispatcherHandlers();
         }
 
@@ -54,33 +55,68 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
             if (worker.Connection == null)
             {
                 return;
             }
 
-            do
+            try
             {
-                using (var opList = worker.Connection.GetOpList(0))
+                do
                 {
-                    try
+                    using (var opList = worker.Connection.GetOpList(0))
                     {
-                        Dispatcher.Process(opList);
-                    }
-                    catch (Exception e)
-                    {
-                        worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
-                            .WithException(e));
+                        inCriticalSection = opDeserializer.ParseOpListIntoDiff(opList, diff);
                     }
                 }
+                while (inCriticalSection);
+
+                inCriticalSection = false;
+                opDeserializer.Reset();
+
+                if (diff.Disconnected)
+                {
+                    OnDisconnect(diff.DisconnectMessage);
+                    return;
+                }
+
+                foreach (var entityId in diff.GetEntitiesAdded())
+                {
+                    AddEntity(entityId);
+                }
+
+                World.GetExistingManager<ComponentUpdateSystem>().ApplyDiff(diff);
+                World.GetExistingManager<CommandSystem>().ApplyDiff(diff);
+                World.GetExistingManager<EntitySystem>().ApplyDiff(diff);
+
+                foreach (var entityId in diff.GetEntitiesRemoved())
+                {
+                    RemoveEntity(entityId);
+                }
+
+                diff.Clean();
             }
-            while (inCriticalSection);
+            catch (Exception e)
+            {
+                worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+                    .WithException(e));
+            }
         }
 
         internal void OnAddEntity(AddEntityOp op)
         {
-            var entityId = new EntityId(op.EntityId);
+        }
+
+        internal void OnRemoveEntity(RemoveEntityOp op)
+        {
+        }
+
+        internal void OnDisconnect(DisconnectOp op)
+        {
+        }
+
+        internal void AddEntity(EntityId entityId)
+        {
             if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
                 throw new InvalidSpatialEntityStateException(
@@ -108,9 +144,8 @@ namespace Improbable.Gdk.Core
             Profiler.EndSample();
         }
 
-        internal void OnRemoveEntity(RemoveEntityOp op)
+        internal void RemoveEntity(EntityId entityId)
         {
-            var entityId = new EntityId(op.EntityId);
             if (!worker.TryGetEntity(entityId, out var entity))
             {
                 throw new InvalidSpatialEntityStateException(
@@ -124,12 +159,12 @@ namespace Improbable.Gdk.Core
             Profiler.EndSample();
         }
 
-        internal void OnDisconnect(DisconnectOp op)
+        internal void OnDisconnect(string reason)
         {
             WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             EntityManager.AddSharedComponentData(worker.WorkerEntity,
-                new OnDisconnected { ReasonForDisconnect = op.Reason });
+                new OnDisconnected { ReasonForDisconnect = reason });
         }
 
         internal void OnAddComponent(AddComponentOp op)
@@ -230,16 +265,6 @@ namespace Improbable.Gdk.Core
                 AddDispatcherHandler((ComponentDispatcherHandler)
                     Activator.CreateInstance(componentDispatcherType, worker, World));
             }
-
-            Dispatcher.OnAddEntity(OnAddEntity);
-            Dispatcher.OnRemoveEntity(OnRemoveEntity);
-            Dispatcher.OnDisconnect(OnDisconnect);
-            Dispatcher.OnCriticalSection(op => { inCriticalSection = op.InCriticalSection; });
-
-            Dispatcher.OnAddComponent(OnAddComponent);
-            Dispatcher.OnRemoveComponent(OnRemoveComponent);
-            Dispatcher.OnComponentUpdate(OnComponentUpdate);
-            Dispatcher.OnAuthorityChange(OnAuthorityChange);
         }
 
         private static class Errors

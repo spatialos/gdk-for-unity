@@ -11,6 +11,10 @@ namespace Improbable.Gdk.Core
     public class CommandSystem : ComponentSystem
     {
         private readonly List<ICommandManager> managers = new List<ICommandManager>();
+
+        private readonly Dictionary<uint, Dictionary<uint, ICommandManager>> componentIdToCommandIdToManager =
+            new Dictionary<uint, Dictionary<uint, ICommandManager>>();
+
         private readonly Dictionary<Type, int> requestTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> receivedRequestTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> responseTypeToIndex = new Dictionary<Type, int>();
@@ -59,6 +63,14 @@ namespace Improbable.Gdk.Core
             }
 
             return ((ICommandResponseReceiver<T>) managers[index]).GetResponsesReceived();
+        }
+
+        internal void ApplyDiff(ViewDiff diff)
+        {
+            foreach (var manager in managers)
+            {
+                manager.ApplyAndCleanDiff(diff);
+            }
         }
 
         protected override void OnCreateManager()
