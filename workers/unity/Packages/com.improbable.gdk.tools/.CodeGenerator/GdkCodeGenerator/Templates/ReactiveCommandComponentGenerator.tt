@@ -37,9 +37,9 @@ namespace <#= qualifiedNamespace #>
             {
                 var receivedRequests = commandSystem.GetRequests<<#= receivedRequestType #>>();
                 // todo Not efficient if it keeps jumping all over entities but don't care right now
-                foreach (var request in receivedRequests)
+                for (int i = 0; i < receivedRequests.Count; ++i)
                 {
-                    if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
+                    if (!workerSystem.TryGetEntity(receivedRequests[i].EntityId, out var entity))
                     {
                         continue;
                     }
@@ -60,14 +60,16 @@ namespace <#= qualifiedNamespace #>
                         entityManager.AddComponentData(entity, data);
                     }
 
-                    requests.Add(request);
+                    requests.Add(receivedRequests[i]);
                 }
 
 
                 var receivedResponses = commandSystem.GetResponses<<#= receivedResponseType #>>();
                 // todo Not efficient if it keeps jumping all over entities but don't care right now
-                foreach (var response in receivedResponses)
+                for (int i = 0; i < receivedResponses.Count; ++i)
                 {
+                    ref readonly var response = ref receivedResponses[i];
+
                     if (response.SendingEntity == Unity.Entities.Entity.Null || !entityManager.Exists(response.SendingEntity))
                     {
                         continue;

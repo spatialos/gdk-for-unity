@@ -289,8 +289,9 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     var receivedResponses = commandSystem.GetResponses<ReceivedResponse>();
                     // todo Not efficient if it keeps jumping all over entities but don't care right now
-                    foreach (var response in receivedResponses)
+                    for (int i = 0; i < receivedResponses.Count; ++i)
                     {
+                        ref readonly var response = ref receivedResponses[i];
                         if (response.SendingEntity == Unity.Entities.Entity.Null ||
                             !entityManager.Exists(response.SendingEntity))
                         {
@@ -337,8 +338,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private List<(Request Request, long Id)> requestsToSend = new List<(Request Request, long Id)>();
 
-                private List<ReceivedResponse> responsesReceived =
-                    new List<ReceivedResponse>();
+                private ReceivedMessageList<ReceivedResponse> responsesReceived =
+                    new ReceivedMessageList<ReceivedResponse>();
 
                 private Dictionary<long, Request> sentInternalRequestIdToRequest =
                     new Dictionary<long, Request>();
@@ -413,9 +414,9 @@ namespace Improbable.Gdk.Core.Commands
                     return requestsToSend;
                 }
 
-                public List<ReceivedResponse> GetResponsesReceived()
+                public ReceivedMessagesSpan<ReceivedResponse> GetResponsesReceived()
                 {
-                    return responsesReceived;
+                    return new ReceivedMessagesSpan<ReceivedResponse>(responsesReceived);
                 }
 
                 public List<ReceivedResponse> GetResponsesReceivedForEntity(Unity.Entities.Entity entity)
