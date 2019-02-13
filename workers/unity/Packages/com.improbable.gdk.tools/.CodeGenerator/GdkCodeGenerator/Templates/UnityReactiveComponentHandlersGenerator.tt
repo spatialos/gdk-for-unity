@@ -26,62 +26,6 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        internal class DispatcherHandler : ComponentDispatcherHandler
-        {
-            public override uint ComponentId => <#= componentDetails.ComponentId #>;
-
-            private readonly EntityManager entityManager;
-
-            private const string LoggerName = "<#= componentDetails.ComponentName #>.DispatcherHandler";
-
-            public DispatcherHandler(WorkerSystem worker, World world) : base(worker, world)
-            {
-                entityManager = world.GetOrCreateManager<EntityManager>();
-            }
-
-            public override void Dispose()
-            {
-            }
-
-            public override void OnAddComponent(AddComponentOp op)
-            {
-                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
-
-                <#= profilingStart #>
-                <#= profilingEnd #>
-            }
-
-            public override void OnRemoveComponent(RemoveComponentOp op)
-            {
-                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
-
-                <#= profilingStart #>
-                <#= profilingEnd #>
-            }
-
-            public override void OnComponentUpdate(ComponentUpdateOp op)
-            {
-                var entity = TryGetEntityFromEntityId(new EntityId(op.EntityId));
-
-                <#= profilingStart #>
-                <#= profilingEnd #>
-            }
-
-            public override void OnAuthorityChange(AuthorityChangeOp op)
-            {
-                var entityId = new EntityId(op.EntityId);
-                var entity = TryGetEntityFromEntityId(entityId);
-
-                <#= profilingStart #>
-                <#= profilingEnd #>
-            }
-
-            // todo can move this into the reactive component manager
-            public override void AddCommandComponents(Unity.Entities.Entity entity)
-            {
-            }
-        }
-
         internal class ReactiveComponentReplicator : IReactiveComponentReplicationHandler
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;

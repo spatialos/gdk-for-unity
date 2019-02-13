@@ -7,7 +7,7 @@ namespace Improbable.Gdk.CodeGenerator
     ///     This class contains the data required to fill out the "UnityComponentConversionGenerator.tt" templates.
     ///     This template generates the ComponentTranslation implementation for Components.
     /// </summary>
-    public partial class UnityComponentConversionGenerator
+    public partial class UnityReactiveComponentHandlersGenerator
     {
         private string qualifiedNamespace;
         private string spatialNamespace;

@@ -71,7 +71,7 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateSender", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{component.Name}Translation", fileExtension)));
+                    Path.ChangeExtension($"{component.Name}ReactiveHandlers", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
@@ -106,7 +106,7 @@ namespace Improbable.Gdk.CodeGenerator
             var commandManagerGenerator = new UnityCommandManagerGenerator();
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
-            var componentConversionGenerator = new UnityComponentConversionGenerator();
+            var componentReactiveHandlersGenerator = new UnityReactiveComponentHandlersGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
             var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
@@ -198,9 +198,9 @@ namespace Improbable.Gdk.CodeGenerator
                 var updateSenderCode = componentSenderGenerator.Generate(component, package, enumSet);
                 Content.Add(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
-                var conversionFileName = Path.ChangeExtension($"{component.Name}Translation", fileExtension);
-                var componentTranslationCode = componentConversionGenerator.Generate(component, package, enumSet);
-                Content.Add(Path.Combine(relativeOutputPath, conversionFileName), componentTranslationCode);
+                var reactiveComponentHandlersFileName = Path.ChangeExtension($"{component.Name}ReactiveHandlers", fileExtension);
+                var reactiveComponentHandlersCode = componentReactiveHandlersGenerator.Generate(component, package, enumSet);
+                Content.Add(Path.Combine(relativeOutputPath, reactiveComponentHandlersFileName), reactiveComponentHandlersCode);
 
                 var updateManagerFileName = Path.ChangeExtension($"{component.Name}UpdateManager", fileExtension);
                 var updateManagerCode = componentUpdateManagerGenerator.Generate(component, package, enumSet);
