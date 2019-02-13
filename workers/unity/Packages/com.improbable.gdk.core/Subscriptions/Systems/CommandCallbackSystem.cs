@@ -25,11 +25,11 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandCallbackManager<T>(World);
+                manager = new CommandRequestCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((CommandCallbackManager<T>) manager).RegisterCallback(entityId, callback);
+            var key = ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
             keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
             return callbacksRegistered++;
         }
@@ -39,11 +39,11 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new ResponseCallbackManager<T>(World);
+                manager = new CommandResponseCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((ResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
+            var key = ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
             keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
             return callbacksRegistered++;
         }

@@ -5,14 +5,14 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class ResponseCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandResponse
+    public class CommandResponseCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandResponse
     {
         private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
         private readonly CommandSystem commandSystem;
 
         private ulong nextCallbackId = 1;
 
-        public ResponseCallbackManager(World world)
+        public CommandResponseCallbackManager(World world)
         {
             commandSystem = world.GetExistingManager<CommandSystem>();
         }
@@ -22,8 +22,9 @@ namespace Improbable.Gdk.Subscriptions
             var responses = commandSystem.GetResponses<T>();
             for (int i = 0; i < responses.Count; ++i)
             {
-                callbacks.InvokeAll(responses[i].GetRequestId(), responses[i]);
-                callbacks.RemoveAllCallbacksForIndex(responses[i].GetRequestId());
+                ref readonly var response = ref responses[i];
+                callbacks.InvokeAll(response.GetRequestId(), response);
+                callbacks.RemoveAllCallbacksForIndex(response.GetRequestId());
             }
         }
 

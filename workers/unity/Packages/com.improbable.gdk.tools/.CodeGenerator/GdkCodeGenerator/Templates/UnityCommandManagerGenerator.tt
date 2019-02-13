@@ -173,7 +173,7 @@ namespace <#= qualifiedNamespace #>
 
             public bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
             {
-                var responseIndex = responsesReceived.GetResponse(requestId);
+                var responseIndex = responsesReceived.GetResponseIndex(requestId);
                 if (responseIndex < 0)
                 {
                     response = default(<#= receivedResponseType #>);
