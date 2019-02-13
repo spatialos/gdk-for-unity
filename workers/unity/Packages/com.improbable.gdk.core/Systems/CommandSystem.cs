@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Core
             ((ICommandResponseSender<T>) managers[index]).SendResponse(response);
         }
 
-        public List<T> GetRequests<T>() where T : IReceivedCommandRequest
+        public ReceivedMessagesSpan<T> GetRequests<T>() where T : struct, IReceivedCommandRequest
         {
             if (!receivedRequestTypeToIndex.TryGetValue(typeof(T), out var index))
             {
@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Core
             return ((ICommandRequestReceiver<T>) managers[index]).GetRequestsReceived();
         }
 
-        public List<T> GetResponses<T>() where T : IReceivedCommandResponse
+        public ReceivedMessagesSpan<T> GetResponses<T>() where T : struct, IReceivedCommandResponse
         {
             if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
             {
