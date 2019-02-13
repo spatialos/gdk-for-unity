@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.Commands
     {
     }
 
-    public interface IReceivedCommandRequest
+    public interface IReceivedCommandRequest : IReceivedMessage
     {
         /// <summary>
         ///     Gets the request ID from the request. For use in generic methods.
@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core.Commands
     {
     }
 
-    public interface IReceivedCommandResponse
+    public interface IReceivedCommandResponse : IReceivedMessage
     {
         /// <summary>
         ///     Gets the request ID from the request. For use in generic methods.

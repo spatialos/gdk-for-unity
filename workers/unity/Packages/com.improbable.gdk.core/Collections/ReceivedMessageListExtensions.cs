@@ -1,13 +1,48 @@
+using Improbable.Gdk.Core.Commands;
+
 namespace Improbable.Gdk.Core
 {
     // todo consider exposing the private methods - the upper limit one can be used to find the last event/auth change
     internal static class ReceivedMessageListExtensions
     {
+        // binary search for the command for given request ID
+        // invariant: lower <= target <= upper
+        public static int GetResponseIndex<T>(this ReceivedMessageList<T> list, long requestId)
+            where T : struct, IReceivedCommandResponse
+        {
+            long targetId = requestId;
+
+            int lower = 0;
+            int upper = list.Count - 1;
+
+            while (upper >= lower)
+            {
+                var current = (lower + upper) / 2;
+
+                long id = list[current].GetRequestId();
+
+                if (id > targetId)
+                {
+                    upper = current - 1;
+                }
+                else if (id < targetId)
+                {
+                    lower = current + 1;
+                }
+                else
+                {
+                    return current;
+                }
+            }
+
+            return -1;
+        }
+
         public static (int FirstIndex, int Count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)
             where T : struct, IReceivedEntityMessage
         {
             var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
-            if (range.Count != 0)
+            if (range.Count > 1)
             {
                 range = list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
             }
