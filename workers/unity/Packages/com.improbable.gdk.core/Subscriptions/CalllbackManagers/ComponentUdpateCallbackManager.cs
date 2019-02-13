@@ -21,7 +21,8 @@ namespace Improbable.Gdk.Subscriptions
             var updates = componentUpdateSystem.GetComponentUpdatesReceived<T>();
             for (int i = 0; i < updates.Count; ++i)
             {
-                callbacks.InvokeAll(updates[i].EntityId.Id, updates[i].Update);
+                ref readonly var update = ref updates[i];
+                callbacks.InvokeAll(update.EntityId.Id, update.Update);
             }
         }
 

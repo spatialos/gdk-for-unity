@@ -2,7 +2,7 @@ using System;
 
 namespace Improbable.Gdk.Core
 {
-    public readonly ref struct ReceivedMessagesSpan<T> where T : struct, IReceivedEntityMessage
+    public readonly ref struct ReceivedMessagesSpan<T> where T : struct, IReceivedMessage
     {
         private readonly ReceivedMessageList<T> updates;
 

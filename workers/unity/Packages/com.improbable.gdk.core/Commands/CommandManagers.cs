@@ -37,14 +37,14 @@ namespace Improbable.Gdk.Core.Commands
         List<TResponse> GetResponsesToSend();
     }
 
-    public interface ICommandRequestReceiver<TReceivedRequest> where TReceivedRequest : IReceivedCommandRequest
+    public interface ICommandRequestReceiver<TReceivedRequest> where TReceivedRequest : struct, IReceivedCommandRequest
     {
-        List<TReceivedRequest> GetRequestsReceived();
+        ReceivedMessagesSpan<TReceivedRequest> GetRequestsReceived();
     }
 
-    public interface ICommandResponseReceiver<TReceivedResponse> where TReceivedResponse : IReceivedCommandResponse
+    public interface ICommandResponseReceiver<TReceivedResponse> where TReceivedResponse : struct, IReceivedCommandResponse
     {
-        List<TReceivedResponse> GetResponsesReceived();
+        ReceivedMessagesSpan<TReceivedResponse> GetResponsesReceived();
         bool TryGetResponseReceivedForRequestId(long requestId, out TReceivedResponse response);
     }
 
@@ -53,9 +53,9 @@ namespace Improbable.Gdk.Core.Commands
         IComponentCommandManager, ICommandRequestSender<TRequest>, ICommandRequestReceiver<TReceivedRequest>,
         ICommandResponseSender<TResponse>, ICommandResponseReceiver<TReceivedResponse>
         where TRequest : ICommandRequest
-        where TReceivedRequest : IReceivedCommandRequest
+        where TReceivedRequest : struct, IReceivedCommandRequest
         where TResponse : ICommandResponse
-        where TReceivedResponse : IReceivedCommandResponse
+        where TReceivedResponse : struct, IReceivedCommandResponse
     {
     }
 
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.Core.Commands
     public interface IWorldCommandManager<TRequest, TReceivedResponse> :
         IWorldCommandManager, ICommandRequestSender<TRequest>, ICommandResponseReceiver<TReceivedResponse>
         where TRequest : ICommandRequest
-        where TReceivedResponse : IReceivedCommandResponse
+        where TReceivedResponse : struct, IReceivedCommandResponse
     {
     }
 }

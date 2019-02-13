@@ -47,10 +47,10 @@ namespace <#= qualifiedNamespace #>
             private EntityManager entityManager;
 
             private List<(<#= requestType #> Request, long Id)> requestsToSend = new List<(<#= requestType #> Request, long Id)>();
-            private List<<#= receivedRequestType #>> requestsReceived = new List<<#= receivedRequestType #>>();
+            private ReceivedMessageList<<#= receivedRequestType #>> requestsReceived = new ReceivedMessageList<<#= receivedRequestType #>>();
 
-            private List<<#= receivedResponseType #>> responsesReceived = new List<<#= receivedResponseType #>>();
             private List<<#= responseType #>> responsesToSend = new List<<#= responseType #>>();
+            private ReceivedMessageList<<#= receivedResponseType #>> responsesReceived = new ReceivedMessageList<<#= receivedResponseType #>>();
 
             private Dictionary<long, <#= requestType #>> sentInternalRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
             private Dictionary<long, Unity.Entities.Entity> sentInternalRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();
@@ -156,9 +156,9 @@ namespace <#= qualifiedNamespace #>
                 return requestsToSend;
             }
 
-            public List<<#= receivedRequestType #>> GetRequestsReceived()
+            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequestsReceived()
             {
-                return requestsReceived;
+                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestsReceived);
             }
 
             public List<<#= responseType #>> GetResponsesToSend()
@@ -166,24 +166,22 @@ namespace <#= qualifiedNamespace #>
                 return responsesToSend;
             }
 
-            public List<<#= receivedResponseType #>> GetResponsesReceived()
+            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponsesReceived()
             {
-                return responsesReceived;
+                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responsesReceived);
             }
 
             public bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
             {
-                foreach (var r in responsesReceived)
+                var responseIndex = responsesReceived.GetResponseIndex(requestId);
+                if (responseIndex < 0)
                 {
-                    if (r.RequestId == requestId)
-                    {
-                        response = r;
-                        return true;
-                    }
+                    response = default(<#= receivedResponseType #>);
+                    return false;
                 }
 
-                response = default(<#= receivedResponseType #>);
-                return false;
+                response = responsesReceived[responseIndex];
+                return true;
             }
 
             private void AddRequest(CommandRequestOp op)

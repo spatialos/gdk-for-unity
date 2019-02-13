@@ -21,29 +21,29 @@ namespace Improbable.Gdk.Subscriptions
         private ulong callbacksRegistered = 1;
 
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
-            where T : IReceivedCommandRequest
+            where T : struct, IReceivedCommandRequest
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandCallbackManager<T>(World);
+                manager = new CommandRequestCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((CommandCallbackManager<T>) manager).RegisterCallback(entityId, callback);
+            var key = ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
             keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
             return callbacksRegistered++;
         }
 
         public ulong RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
-            where T : IReceivedCommandResponse
+            where T : struct, IReceivedCommandResponse
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new ResponseCallbackManager<T>(World);
+                manager = new CommandResponseCallbackManager<T>(World);
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((ResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
+            var key = ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
             keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
             return callbacksRegistered++;
         }
