@@ -34,12 +34,6 @@ namespace Improbable.Gdk.CodeGenerator
                 .ToList();
         }
 
-        private List<UnityCommandDetails> GetCommandDetailsList()
-        {
-            return unityComponentDefinition.CommandDefinitions
-                .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
-        }
-
         private List<UnityEventDetails> GetEventDetailsList()
         {
             return unityComponentDefinition.EventDefinitions
