@@ -423,35 +423,18 @@ namespace Improbable.Gdk.Core.Commands
                     return new ReceivedMessagesSpan<ReceivedResponse>(responsesReceived);
                 }
 
-                public List<ReceivedResponse> GetResponsesReceivedForEntity(Unity.Entities.Entity entity)
-                {
-                    // todo don't actually use this - decide if this function is needed or not and if so index things properly
-                    return responsesReceived.Where(response =>
-                    {
-                        if (!sentInternalRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
-                        {
-                            return false;
-                        }
-
-                        return entityForRequest == entity;
-                    }).ToList();
-                    return null;
-                }
-
                 public bool TryGetResponseReceivedForRequestId(long requestId,
                     out ReceivedResponse response)
                 {
-                    foreach (var r in responsesReceived)
+                    var responseIndex = responsesReceived.GetResponseIndex(requestId);
+                    if (responseIndex < 0)
                     {
-                        if (r.RequestId == requestId)
-                        {
-                            response = r;
-                            return true;
-                        }
+                        response = default(ReceivedResponse);
+                        return false;
                     }
 
-                    response = default(ReceivedResponse);
-                    return false;
+                    response = responsesReceived[responseIndex];
+                    return true;
                 }
 
                 private void AddResponse(EntityQueryResponseOp op)
