@@ -20,6 +20,9 @@ namespace Improbable.Gdk.Core
     public class SpatialOSReceiveSystem : ComponentSystem
     {
         private WorkerSystem worker;
+        private ComponentUpdateSystem updateSystem;
+        private CommandSystem commandSystem;
+        private EntitySystem entitySystem;
 
         private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
             new Dictionary<uint, ComponentDispatcherHandler>();
@@ -31,7 +34,6 @@ namespace Improbable.Gdk.Core
         private readonly DiffCreatorFromOpList opDeserializer = new DiffCreatorFromOpList();
         private readonly ViewDiff diff = new ViewDiff();
 
-
         private const string LoggerName = nameof(SpatialOSReceiveSystem);
         private const string UnknownComponentIdError = "Received an op with an unknown ComponentId";
         private const string EntityNotFound = "No entity found for SpatialOS EntityId specified in op.";
@@ -42,6 +44,9 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager();
 
             worker = World.GetExistingManager<WorkerSystem>();
+            updateSystem = World.GetOrCreateManager<ComponentUpdateSystem>();
+            commandSystem = World.GetOrCreateManager<CommandSystem>();
+            entitySystem = World.GetOrCreateManager<EntitySystem>();
             SetupDispatcherHandlers();
         }
 
@@ -71,7 +76,6 @@ namespace Improbable.Gdk.Core
                 }
                 while (inCriticalSection);
 
-                inCriticalSection = false;
                 opDeserializer.Reset();
 
                 if (diff.Disconnected)
@@ -85,9 +89,9 @@ namespace Improbable.Gdk.Core
                     AddEntity(entityId);
                 }
 
-                World.GetExistingManager<ComponentUpdateSystem>().ApplyDiff(diff);
-                World.GetExistingManager<CommandSystem>().ApplyDiff(diff);
-                World.GetExistingManager<EntitySystem>().ApplyDiff(diff);
+                updateSystem.ApplyDiff(diff);
+                commandSystem.ApplyDiff(diff);
+                entitySystem.ApplyDiff(diff);
 
                 foreach (var entityId in diff.GetEntitiesRemoved())
                 {

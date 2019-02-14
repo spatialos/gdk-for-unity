@@ -70,7 +70,6 @@ namespace <#= qualifiedNamespace #>
                 componentsAdded.Clear();
                 componentsRemoved.Clear();
 <# foreach (var ev in eventDetailsList) {#>
-
                 <#= ev.CamelCaseEventName #>EventStorage.Clear();
 <# } #>
             }
