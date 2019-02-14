@@ -30,14 +30,6 @@ namespace Improbable.Gdk.CodeGenerator
             return new UnityComponentDetails(unityComponentDefinition);
         }
 
-        private List<UnityFieldDetails> GetFieldDetailsList()
-        {
-            return unityComponentDefinition.DataDefinition.typeDefinition.FieldDefinitions
-                .Select(fieldDefinition =>
-                    new UnityFieldDetails(fieldDefinition.RawFieldDefinition, fieldDefinition.IsBlittable, enumSet))
-                .ToList();
-        }
-
         private List<UnityCommandDetails> GetCommandDetailsList()
         {
             return unityComponentDefinition.CommandDefinitions
