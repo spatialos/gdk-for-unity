@@ -5,6 +5,7 @@
 ### Changed
 
 - Changed `RedirectedProcess` to have Builder-like API.
+- Upgraded the project to be compatible with `2018.3.5f1`.
 
 ### Fixed
 
