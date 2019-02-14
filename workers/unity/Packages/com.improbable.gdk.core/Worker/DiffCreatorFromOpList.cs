@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Core
                         viewDiff.RemoveEntity(opList.GetRemoveEntityOp(i).EntityId);
                         break;
                     case OpType.ReserveEntityIdResponse:
-                        throw new InvalidOperationException("Not supposed to get this one");
+                        throw new InvalidOperationException("Reserve Entity ID is deprecated. Please use Reserve Entity IDs");
                         break;
                     case OpType.ReserveEntityIdsResponse:
                         var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);

@@ -102,7 +102,9 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException("Unknown component ID");
+                throw new ArgumentException(
+                    $"Can not add component with ID {componentId} on entity with ID {entityId}. " +
+                    $"Unknown component ID");
             }
 
             ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component);
@@ -112,7 +114,9 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException("Unknown component ID");
+                throw new ArgumentException(
+                    $"Can not set remove component with ID {componentId} from entity with ID {entityId}. " +
+                    $"Unknown component ID");
             }
 
             storage.RemoveEntityComponent(entityId);
@@ -122,7 +126,9 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
             {
-                throw new ArgumentException("Unknown component");
+                throw new ArgumentException(
+                    $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
+                    $"Unknown component ID");
             }
 
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
@@ -141,25 +147,14 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        // public void MarkAuthorityTemporarilyLost(long entityId, uint componentId)
-        // {
-        //     if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
-        //     {
-        //         throw new ArgumentException("Unknown component");
-        //     }
-        //
-        //     ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
-        //         new AuthorityChangeReceived(authority, new EntityId(entityId)));
-        //
-        //     authorityLostTemporarily.Add(new EntityComponent(entityId, componentId));
-        // }
-
         public void AddComponentUpdate<T>(T update, long entityId, uint componentId, uint updateId)
             where T : ISpatialComponentUpdate
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException("Unknown component");
+                throw new ArgumentException(
+                    $"Can not update component with ID {componentId} on entity with ID {entityId}. " +
+                    $"Unknown component ID");
             }
 
             ((IDiffUpdateStorage<T>) storage).AddUpdate(new ComponentUpdateReceived<T>(update, new EntityId(entityId),
@@ -170,7 +165,9 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException("Unknown component");
+                throw new ArgumentException(
+                    $"Can not add event from component with ID {componentId} on entity with ID {entityId}. " +
+                    $"Unknown component ID");
             }
 
             ((IDiffEventStorage<T>) storage).AddEvent(new ComponentEventReceived<T>(ev, new EntityId(entityId),
@@ -184,7 +181,8 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandRequestStorage<T>) storage).AddRequest(request);
         }
 
-        public void AddCommandResponse<T>(T response, uint componentId, uint commandId) where T : IRawReceivedCommandResponse
+        public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
+            where T : IRawReceivedCommandResponse
         {
             var storage = componentIdToCommandIdToStorage[componentId][commandId];
 
@@ -233,7 +231,7 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException("Can not find component diff storage. Unknown component ID");
+                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
             }
 
             return storage;
@@ -243,12 +241,12 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
-                throw new ArgumentException("Can not find command diff storage. Unknown component ID");
+                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
             }
 
             if (!commandIdToStorage.TryGetValue(commandId, out var storage))
             {
-                throw new ArgumentException("Can not find command diff storage. Unknown command ID");
+                throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
             }
 
             return storage;
