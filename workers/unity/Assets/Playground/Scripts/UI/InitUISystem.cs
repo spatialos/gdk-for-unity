@@ -28,15 +28,12 @@ namespace Playground
             [ReadOnly] public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthority;
         }
 
-        private bool initialized;
-
         [Inject] private Data data;
 
         protected override void OnUpdate()
         {
             for (var i = 0; i < data.Length; i++)
             {
-                initialized = true;
                 var ui = Resources.Load("Prefabs/UIGameObject");
                 var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
                 var uiComponent = inst.GetComponent<UIComponent>();
@@ -51,7 +48,7 @@ namespace Playground
 
         protected override void OnDestroyManager()
         {
-            if (initialized)
+            if (UIComponent.Main != null)
             {
                 UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
             }
