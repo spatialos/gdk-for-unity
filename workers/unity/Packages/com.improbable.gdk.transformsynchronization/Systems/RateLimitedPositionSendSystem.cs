@@ -13,6 +13,7 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class RateLimitedPositionSendSystem : ComponentSystem
     {
+#pragma warning disable 649       
         private struct Data
         {
             public readonly int Length;
@@ -25,6 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         [Inject] private Data data;
+#pragma warning restore 649       
 
         protected override void OnUpdate()
         {

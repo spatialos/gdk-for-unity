@@ -12,6 +12,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {
+#pragma warning disable 649
         private struct CreatePlayerData
         {
             public readonly int Length;
@@ -29,6 +30,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         }
 
         [Inject] private EntityCreationResponseData entityCreationResponseData;
+#pragma warning restore 649
 
         private class PlayerCreationRequestContext
         {

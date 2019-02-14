@@ -10,13 +10,14 @@ namespace Playground
 
         private const string MissingWorkerConnectorMessage =
             "The WorkerConnector behaviour was not found on the worker prefab";
-
+#pragma warning disable 649
         [SerializeField] private GameObject connectionPanel;
         [SerializeField] private InputField ipAddressInput;
         [SerializeField] private Button localConnectButton;
         [SerializeField] private Button cloudConnectButton;
         [SerializeField] private Text errorMessage;
         [SerializeField] private GameObject clientWorkerPrefab;
+#pragma warning restore 649
 
         private GameObject worker;
 
