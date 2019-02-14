@@ -72,7 +72,6 @@ namespace Improbable.Gdk.Core
                         break;
                     case OpType.ReserveEntityIdResponse:
                         throw new InvalidOperationException("Reserve Entity ID is deprecated. Please use Reserve Entity IDs");
-                        break;
                     case OpType.ReserveEntityIdsResponse:
                         var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);
                         viewDiff.AddReserveEntityIdsResponse(reserveEntityIdsOp);
