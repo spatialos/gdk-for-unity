@@ -16,7 +16,7 @@ To connect your Android device to a local deployment, you need to prepare its co
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-Create and add a MonoBehaviour script to your Android client-worker GameObject.
+Create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
 
 1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want.
 1. In the Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject. In the FPS Starter Project, navigate to **Assets** > **Fps** > **Prefabs** > **AndroidClientWorker**.
