@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Improbable.Gdk.Subscriptions;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -47,15 +46,23 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly IEntityGameObjectCreator gameObjectCreator;
         private EntityGameObjectLinker linker;
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator)
+        private readonly GameObject workerGameObject;
+
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
             this.gameObjectCreator = gameObjectCreator;
+            this.workerGameObject = workerGameObject;
         }
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             linker = new EntityGameObjectLinker(World);
+
+            if (workerGameObject != null)
+            {
+                linker.LinkGameObjectToSpatialOSEntity(new EntityId(0), workerGameObject);
+            }
         }
 
         protected override void OnDestroyManager()
@@ -66,6 +73,8 @@ namespace Improbable.Gdk.GameObjectCreation
                 linker.UnlinkAllGameObjectsFromEntityId(id);
                 gameObjectCreator.OnEntityRemoved(id);
             }
+
+            linker.UnlinkAllGameObjectsFromEntityId(new EntityId(0));
 
             base.OnDestroyManager();
         }
