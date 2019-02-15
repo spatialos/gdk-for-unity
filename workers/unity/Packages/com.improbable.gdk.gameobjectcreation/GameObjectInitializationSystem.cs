@@ -48,8 +48,7 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly GameObject workerGameObject;
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator,
-            GameObject workerGameObject = null)
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
