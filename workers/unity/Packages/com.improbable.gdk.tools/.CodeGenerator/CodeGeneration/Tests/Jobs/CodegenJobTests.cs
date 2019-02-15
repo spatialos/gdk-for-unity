@@ -57,7 +57,7 @@ namespace CodeGeneration.Tests.Jobs
             job.AddOutputFile("output/test.cs", DateTime.Now, true);
             job.AddOutputFile("output/test2.cs", DateTime.Now, true);
 
-            Assert.IsTrue(job.IsDirty());
+            Assert.IsFalse(job.IsDirty());
         }
 
         [Test]
