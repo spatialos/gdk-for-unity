@@ -6,7 +6,7 @@ There are four parts to this step:
 * Get the GDK and the FPS Starter Project source code
 * Open the FPS Starter Project in your Unity Editor
 
-(This step is the longest of the 6 steps - the others are much quicker.)
+(This page is the longest of the get started guide - the others are much quicker.)
 <br/>
 <br/>
 
