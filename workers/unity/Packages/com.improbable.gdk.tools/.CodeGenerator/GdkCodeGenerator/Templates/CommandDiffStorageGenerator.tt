@@ -23,10 +23,10 @@ namespace <#= qualifiedNamespace #>
 #>
         public class Diff<#= command.CommandName #>CommandStorage : IDiffCommandRequestStorage<<#= receivedRequestType #>>, IDiffCommandResponseStorage<<#= receivedResponseType #>>
         {
-            ReceivedMessageList<<#= receivedRequestType #>> requestStorage =
+            private ReceivedMessageList<<#= receivedRequestType #>> requestStorage =
                 new ReceivedMessageList<<#= receivedRequestType #>>();
 
-            ReceivedMessageList<<#= receivedResponseType #>> responseStorage =
+            private ReceivedMessageList<<#= receivedResponseType #>> responseStorage =
                 new ReceivedMessageList<<#= receivedResponseType #>>();
 
             public uint GetComponentId()
@@ -45,7 +45,7 @@ namespace <#= qualifiedNamespace #>
                 responseStorage.Clear();
             }
 
-            public void RemoveEntityComponent(long entityId)
+            public void RemoveRequests(long entityId)
             {
                 requestStorage.RemoveAll(request => request.EntityId.Id == entityId);
             }
