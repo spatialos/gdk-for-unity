@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,10 +7,7 @@ using Quaternion = UnityEngine.Quaternion;
 
 #region Diagnostic control
 
-#pragma warning disable 649
 #pragma warning disable 169
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -23,27 +19,39 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InterpolateTransformSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public BufferArray<BufferedTransform> TransformBuffer;
-            public ComponentDataArray<DeferredUpdateTransform> LastTransformValue;
-            [ReadOnly] public SharedComponentDataArray<InterpolationConfig> Config;
-            [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> EntityIds;
-        }
+        private ComponentUpdateSystem updateSystem;
+        private ComponentGroup interpolationGroup;
 
-        [Inject] private Data data;
-        [Inject] private ComponentUpdateSystem updateSystem;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
+            interpolationGroup = GetComponentGroup(
+                ComponentType.Create<BufferedTransform>(),
+                ComponentType.Create<DeferredUpdateTransform>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<InterpolationConfig>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+        }
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
+            interpolationGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            var interpolationConfigArray = interpolationGroup.GetSharedComponentDataArray<InterpolationConfig>();
+            var bufferedTransformArray = interpolationGroup.GetBufferArray<BufferedTransform>();
+            var spatialEntityIdArray = interpolationGroup.GetComponentDataArray<SpatialEntityId>();
+            var transformComponentArray = interpolationGroup.GetComponentDataArray<TransformInternal.Component>();
+            var lastTransformArray = interpolationGroup.GetComponentDataArray<DeferredUpdateTransform>();
+
+            for (int i = 0; i < transformComponentArray.Length; ++i)
             {
-                var config = data.Config[i];
-                var transformBuffer = data.TransformBuffer[i];
-                var lastTransformApplied = data.LastTransformValue[i].Transform;
+                var config = interpolationConfigArray[i];
+                var transformBuffer = bufferedTransformArray[i];
+                var lastTransformApplied = lastTransformArray[i].Transform;
 
                 if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                 {
@@ -52,13 +60,13 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 if (transformBuffer.Length == 0)
                 {
-                    var currentTransformComponent = data.CurrentTransform[i];
+                    var currentTransformComponent = transformComponentArray[i];
                     if (currentTransformComponent.PhysicsTick <= lastTransformApplied.PhysicsTick)
                     {
                         continue;
                     }
 
-                    data.LastTransformValue[i] = new DeferredUpdateTransform
+                    lastTransformArray[i] = new DeferredUpdateTransform
                     {
                         Transform = currentTransformComponent
                     };
@@ -87,13 +95,13 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var updates =
                     updateSystem
-                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(data.EntityIds[i].EntityId);
+                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(spatialEntityIdArray[i].EntityId);
 
                 for (int j = 0; j < updates.Count; ++j)
                 {
                     var update = updates[j].Update;
-                    UpdateLastTransfrom(ref lastTransformApplied, update);
-                    data.LastTransformValue[i] = new DeferredUpdateTransform
+                    UpdateLastTransform(ref lastTransformApplied, update);
+                    lastTransformArray[i] = new DeferredUpdateTransform
                     {
                         Transform = lastTransformApplied
                     };
@@ -128,7 +136,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
         }
 
-        private void UpdateLastTransfrom(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        private static void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {

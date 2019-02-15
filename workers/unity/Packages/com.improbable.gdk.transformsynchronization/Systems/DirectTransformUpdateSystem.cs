@@ -1,13 +1,9 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 
 #region Diagnostic control
 
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -19,26 +15,47 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateBefore(typeof(DefaultUpdateLatestTransformSystem))]
     public class DirectTransformUpdateSystem : ComponentSystem
     {
-        private struct Data
+        private WorkerSystem worker;
+        private ComponentUpdateSystem updateSystem;
+
+        private ComponentGroup transformGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            [WriteOnly] public ComponentDataArray<TransformToSet> TransfomToSet;
-            [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> DenotesReceivedUpdate;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
-            [ReadOnly] public ComponentDataArray<DirectReceiveTag> DenotesShouldUseDirectReceive;
+            worker = World.GetExistingManager<WorkerSystem>();
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
+            transformGroup = GetComponentGroup(
+                ComponentType.Create<TransformToSet>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<DirectReceiveTag>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
         }
-
-        [Inject] private Data data;
-        [Inject] private WorkerSystem worker;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
+            var spatialEntityIdArray = transformGroup.GetComponentDataArray<SpatialEntityId>();
+            var transformComponentArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
+
+            for (int i = 0; i < transformToSetArray.Length; ++i)
             {
-                var t = data.Transform[i];
-                data.TransfomToSet[i] = new TransformToSet
+                var entityId = spatialEntityIdArray[i];
+                var updates =
+                    updateSystem.GetEntityComponentUpdatesReceived<TransformInternal.Update>(entityId.EntityId);
+
+                if (updates.Count == 0)
+                {
+                    continue;
+                }
+
+                var t = transformComponentArray[i];
+                transformToSetArray[i] = new TransformToSet
                 {
                     Position = t.Location.ToUnityVector3() + worker.Origin,
                     Velocity = t.Velocity.ToUnityVector3(),
