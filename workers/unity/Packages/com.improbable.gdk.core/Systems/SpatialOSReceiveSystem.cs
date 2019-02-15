@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Core
             Profiler.EndSample();
         }
 
-        internal void OnDisconnect(string reason)
+        private void OnDisconnect(string reason)
         {
             EntityManager.AddSharedComponentData(worker.WorkerEntity,
                 new OnDisconnected { ReasonForDisconnect = reason });
