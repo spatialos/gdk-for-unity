@@ -94,6 +94,7 @@ namespace Improbable.Gdk.TransformSynchronization
             if (SetKinematicWhenNotAuthoritative)
             {
                 commandBuffer.AddComponent(entity, new ManageKinematicOnAuthorityChangeTag());
+                commandBuffer.AddComponent(entity, new KinematicStateWhenAuth());
             }
 
             ApplyReceiveStrategies(commandBuffer);

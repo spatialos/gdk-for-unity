@@ -1,8 +1,13 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+
+#region Diagnostic control
+
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -12,36 +17,44 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class RateLimitedPositionSendSystem : ComponentSystem
     {
-        private struct Data
+        private ComponentGroup positionGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public ComponentDataArray<Position.Component> PositionComponent;
-            public ComponentDataArray<LastPositionSentData> LastPositionSent;
-            [ReadOnly] public ComponentDataArray<TransformInternal.Component> TransformComponent;
-            [ReadOnly] public SharedComponentDataArray<RateLimitedSendConfig> RateLimitedConfig;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<Authoritative<Position.Component>> DenotesAuthoritative;
+            positionGroup = GetComponentGroup(
+                ComponentType.Create<LastPositionSentData>(),
+                ComponentType.Create<Position.Component>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<RateLimitedSendConfig>(),
+                ComponentType.ReadOnly<Position.ComponentAuthority>());
         }
-
-        [Inject] private Data data;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
-            {
-                var position = data.PositionComponent[i];
+            positionGroup.SetFilter(Position.ComponentAuthority.Authoritative);
 
-                var lastPositionSent = data.LastPositionSent[i];
+            var rateLimitedConfigArray = positionGroup.GetSharedComponentDataArray<RateLimitedSendConfig>();
+            var positionArray = positionGroup.GetComponentDataArray<Position.Component>();
+            var transformArray = positionGroup.GetComponentDataArray<TransformInternal.Component>();
+            var lastSentPositionArray = positionGroup.GetComponentDataArray<LastPositionSentData>();
+
+            for (int i = 0; i < positionArray.Length; ++i)
+            {
+                var position = positionArray[i];
+
+                var lastPositionSent = lastSentPositionArray[i];
                 lastPositionSent.TimeSinceLastUpdate += Time.deltaTime;
-                data.LastPositionSent[i] = lastPositionSent;
+                lastSentPositionArray[i] = lastPositionSent;
 
                 if (lastPositionSent.TimeSinceLastUpdate <
-                    1.0f / data.RateLimitedConfig[i].MaxPositionUpdateRateHz)
+                    1.0f / rateLimitedConfigArray[i].MaxPositionUpdateRateHz)
                 {
                     continue;
                 }
 
-                var transform = data.TransformComponent[i];
+                var transform = transformArray[i];
 
                 var coords = transform.Location.ToCoordinates();
 
@@ -51,11 +64,11 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 position.Coords = coords;
-                data.PositionComponent[i] = position;
+                positionArray[i] = position;
 
                 lastPositionSent.TimeSinceLastUpdate = 0.0f;
                 lastPositionSent.Position = position;
-                data.LastPositionSent[i] = lastPositionSent;
+                lastSentPositionArray[i] = lastPositionSent;
             }
         }
     }

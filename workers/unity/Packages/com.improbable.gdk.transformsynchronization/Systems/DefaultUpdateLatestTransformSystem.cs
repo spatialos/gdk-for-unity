@@ -1,14 +1,10 @@
 ﻿using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
 #region Diagnostic control
 
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -20,56 +16,70 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class DefaultUpdateLatestTransformSystem : ComponentSystem
     {
-        private struct RigidbodyData
+        private ComponentGroup rigidbodyGroup;
+        private ComponentGroup transformGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            [ReadOnly] public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<TransformToSend> TransformToSend;
-            [ReadOnly] public ComponentDataArray<GetTransformFromGameObjectTag> DenotesShouldGetTransformFromGameObject;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>>
-                DenotesAuthoritative;
+            rigidbodyGroup = GetComponentGroup(
+                ComponentType.ReadOnly<Rigidbody>(),
+                ComponentType.Create<TransformToSend>(),
+                ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+
+            transformGroup = GetComponentGroup(
+                ComponentType.Subtractive<Rigidbody>(),
+                ComponentType.ReadOnly<UnityEngine.Transform>(),
+                ComponentType.Create<TransformToSend>(),
+                ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
         }
-
-        private struct TransformData
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentArray<UnityEngine.Transform> Transform;
-            public ComponentDataArray<TransformToSend> TransformToSend;
-            public SubtractiveComponent<Rigidbody> DenotesNoRigidbody;
-            [ReadOnly] public ComponentDataArray<GetTransformFromGameObjectTag> DenotesShouldGetTransformFromGameObject;
-
-            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>>
-                DenotesAuthoritative;
-        }
-
-        [Inject] private RigidbodyData rigidbodyData;
-        [Inject] private TransformData transformData;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < rigidbodyData.Length; ++i)
+            UpdateRigidbodyData();
+            UpdateTransformData();
+        }
+
+        private void UpdateRigidbodyData()
+        {
+            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
+            var transformToSendArray = rigidbodyGroup.GetComponentDataArray<TransformToSend>();
+
+            for (int i = 0; i < rigidbodyArray.Length; ++i)
             {
-                var rigidbody = rigidbodyData.Rigidbody[i];
+                var rigidbody = rigidbodyArray[i];
                 var transformToSend = new TransformToSend
                 {
                     Position = rigidbody.position,
                     Velocity = rigidbody.velocity,
                     Orientation = rigidbody.rotation
                 };
-                rigidbodyData.TransformToSend[i] = transformToSend;
+                transformToSendArray[i] = transformToSend;
             }
+        }
 
-            for (int i = 0; i < transformData.Length; ++i)
+        private void UpdateTransformData()
+        {
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            var transformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
+            var transformToSendArray = transformGroup.GetComponentDataArray<TransformToSend>();
+
+            for (int i = 0; i < transformArray.Length; ++i)
             {
-                var transform = transformData.Transform[i];
+                var transform = transformArray[i];
                 var transformToSend = new TransformToSend
                 {
                     Position = transform.position,
                     Velocity = Vector3.zero,
                     Orientation = transform.rotation
                 };
-                transformData.TransformToSend[i] = transformToSend;
+                transformToSendArray[i] = transformToSend;
             }
         }
     }

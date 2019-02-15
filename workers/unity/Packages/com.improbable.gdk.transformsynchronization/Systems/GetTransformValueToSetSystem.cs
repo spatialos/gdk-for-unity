@@ -1,14 +1,10 @@
 ﻿using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Experimental.PlayerLoop;
 
 #region Diagnostic control
 
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -20,22 +16,32 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class GetTransformValueToSetSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public BufferArray<BufferedTransform> TransformBuffer;
-            public ComponentDataArray<TransformToSet> CurrentTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
-        }
+        private WorkerSystem worker;
 
-        [Inject] private Data data;
-        [Inject] private WorkerSystem worker;
+        private ComponentGroup transformGroup;
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            worker = World.GetExistingManager<WorkerSystem>();
+
+            transformGroup = GetComponentGroup(
+                ComponentType.Create<BufferedTransform>(),
+                ComponentType.Create<TransformToSet>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+        }
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
+            var transformBufferArray = transformGroup.GetBufferArray<BufferedTransform>();
+
+            for (int i = 0; i < transformToSetArray.Length; ++i)
             {
-                var buffer = data.TransformBuffer[i];
+                var buffer = transformBufferArray[i];
                 if (buffer.Length == 0)
                 {
                     continue;
@@ -51,8 +57,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     ApproximateRemoteTick = bufferHead.PhysicsTick
                 };
 
-                data.CurrentTransform[i] = currentTransform;
-
+                transformToSetArray[i] = currentTransform;
                 buffer.RemoveAt(0);
             }
         }

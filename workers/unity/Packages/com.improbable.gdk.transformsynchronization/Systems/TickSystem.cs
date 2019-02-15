@@ -1,6 +1,4 @@
-using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Experimental.PlayerLoop;
 
@@ -20,24 +18,29 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     public class TickSystem : ComponentSystem
     {
-        private struct Data
+        private ComponentGroup transformGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<TransformInternal.Component> Transform;
-            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> DenotesAuthority;
+            transformGroup = GetComponentGroup(
+                ComponentType.Create<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
         }
-
-        [Inject] private Data data;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
+
+            for (int i = 0; i < ticksSinceLastUpdateArray.Length; ++i)
             {
-                TicksSinceLastTransformUpdate t = data.TicksSinceLastUpdate[i];
+                var t = ticksSinceLastUpdateArray[i];
                 t.NumberOfTicks += 1;
-                data.TicksSinceLastUpdate[i] = t;
+                ticksSinceLastUpdateArray[i] = t;
             }
         }
     }
