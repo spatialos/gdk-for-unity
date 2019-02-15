@@ -105,7 +105,26 @@ namespace Improbable.Gdk.CodeGenerator
 
             foreach (var component in bundle.BundleContents.ComponentDefinitions)
             {
-                var blittableCheckResult = CheckBlittable(component.Fields);
+                List<Field> fields;
+
+                if (component.Data != null)
+                {
+                    var dataType = bundle.BundleContents.TypeDefinitions.FirstOrDefault(type =>
+                        type.Identifier.QualifiedName == component.Data.QualifiedName);
+
+                    if (dataType == null)
+                    {
+                        throw new Exception($"Invalid bundle JSON. Could not find type reference: {component.Data.QualifiedName}");
+                    }
+
+                    fields = dataType.Fields;
+                }
+                else
+                {
+                    fields = component.Fields;
+                }
+
+                var blittableCheckResult = CheckBlittable(fields);
 
                 if (!blittableCheckResult.HasValue)
                 {
