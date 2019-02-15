@@ -46,7 +46,6 @@ namespace Improbable.Gdk.TransformSynchronization
             for (int i = 0; i < transformToSetArray.Length; ++i)
             {
                 var entityId = spatialEntityIdArray[i];
-                // todo this means an api is missing
                 var updates =
                     updateSystem.GetEntityComponentUpdatesReceived<TransformInternal.Update>(entityId.EntityId);
 
