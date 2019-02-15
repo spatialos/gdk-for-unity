@@ -1,11 +1,12 @@
 # Get started: 1 - Set up
-There are three parts to this step: 
+There are four parts to this step: 
 
 * Sign up for a SpatialOS account (or make sure you are logged in)
 * Set up your machine
 * Get the GDK and the FPS Starter Project source code
+* Open the FPS Starter Project in your Unity Editor
 
-(This step is the longest of the 6 steps - the others are much quicker.)
+(This page is the longest of the get started guide - the others are much quicker.)
 <br/>
 <br/>
 
@@ -167,7 +168,7 @@ To run the GDK and the FPS Starter project, you need to download the source code
  While we recommend using Git, if you prefer to, you can get the source code for both the GDK and FPS Starter Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases" data-track-link="Starter Project Zip Clicked|product=Docs" target="_blank">here</a>. Please download the latest release, the file should be called something like `gdk-for-unity-fps-starter-project-x.y.z.zip`.
 
 **NOTE:**
-If you have downloaded the source code via a zip file, skip the rest of this page and move on to the next step: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md).
+If you have downloaded the source code via a zip file, skip the rest of this page and move on to the next section of this page: [Open the FPS Starter Project in your Unity Editor](#open-the-fps-starter-project-in-your-unity-editor).
 
 ### Clone the two repositories using Git
 
@@ -211,9 +212,11 @@ Clone the [GDK for Unity](https://github.com/spatialos/gdk-for-unity) repository
       ├── gdk-for-unity-fps-starter-project
       ├── gdk-for-unity
 ```
-
 <%(/Expandable)%>
+## Open the FPS Starter Project in your Unity Editor
+Launch your Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
+
+>**TIP:** The first time you open the Starter Project in your Unity Editor, It takes about 10 minutes; it's much quicker to open after this. (While you are waiting, you could look at our [Games Blog](https://improbable.io/games/blog).)
 
 <br/>
-
-#### Next: [Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project.md)
+#### Next: [Build your workers]({{urlRoot}}/content/get-started/build-workers.md)

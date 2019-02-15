@@ -1,4 +1,4 @@
-# Get started: 5 - Get playing!
+# Get started: 4 - Get playing!
 
 Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see the two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
