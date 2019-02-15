@@ -32,7 +32,7 @@ namespace <#= qualifiedNamespace #>
                 return <#= command.CommandIndex #>;
             }
 
-            public void AddRequest(CommandRequestOp op, ViewDiff diff)
+            public void AddRequestToDiff(CommandRequestOp op, ViewDiff diff)
             {
                 var deserializedRequest = <#= command.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
@@ -46,7 +46,7 @@ namespace <#= qualifiedNamespace #>
                 diff.AddCommandRequest(request, ComponentId, <#= command.CommandIndex #>);
             }
 
-            public void AddResponse(CommandResponseOp op, ViewDiff diff)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff)
             {
                 <#= command.FqnResponseType #>? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)

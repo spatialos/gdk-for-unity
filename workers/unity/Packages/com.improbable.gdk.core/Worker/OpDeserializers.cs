@@ -6,8 +6,8 @@ namespace Improbable.Gdk.Core
     {
         uint GetComponentId();
 
-        void AddUpdate(ComponentUpdateOp op, ViewDiff diff, uint updateId);
-        void AddComponent(AddComponentOp op, ViewDiff diff);
+        void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId);
+        void AddComponentToDiff(AddComponentOp op, ViewDiff diff);
     }
 
     public interface ICommandDiffDeserializer
@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core
         uint GetComponentId();
         uint GetCommandId();
 
-        void AddRequest(CommandRequestOp op, ViewDiff diff);
-        void AddResponse(CommandResponseOp op, ViewDiff diff);
+        void AddRequestToDiff(CommandRequestOp op, ViewDiff diff);
+        void AddResponseToDiff(CommandResponseOp op, ViewDiff diff);
     }
 }

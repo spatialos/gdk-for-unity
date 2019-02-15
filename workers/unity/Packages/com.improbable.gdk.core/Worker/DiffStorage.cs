@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         uint GetCommandId();
 
         void Clear();
-        void RemoveEntityComponent(long entityId);
+        void RemoveRequests(long entityId);
     }
 
     public interface IDiffComponentAddedStorage<T> where T : ISpatialComponentUpdate

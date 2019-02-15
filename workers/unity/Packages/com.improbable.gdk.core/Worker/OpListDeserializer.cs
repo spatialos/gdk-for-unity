@@ -4,7 +4,7 @@ using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
-    internal class DiffCreatorFromOpList
+    internal class OpListDeserializer
     {
         private readonly Dictionary<uint, IComponentDiffDeserializer> componentIdToComponentDeserializer =
             new Dictionary<uint, IComponentDiffDeserializer>();
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
 
         private uint componentUpdateId;
 
-        public DiffCreatorFromOpList()
+        public OpListDeserializer()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -62,7 +62,8 @@ namespace Improbable.Gdk.Core
                         var metricsOp = opList.GetMetricsOp(i);
                         break;
                     case OpType.CriticalSection:
-                        inCriticalSection = true;
+                        var criticalSectionOp = opList.GetCriticalSectionOp(i);
+                        inCriticalSection = criticalSectionOp.InCriticalSection;
                         break;
                     case OpType.AddEntity:
                         viewDiff.AddEntity(opList.GetAddEntityOp(i).EntityId);
@@ -89,7 +90,7 @@ namespace Improbable.Gdk.Core
                         viewDiff.AddEntityQueryResponse(entityQueryOp);
                         break;
                     case OpType.AddComponent:
-                        DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff, i);
+                        DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff);
                         break;
                     case OpType.RemoveComponent:
                         var removeComponentOp = opList.GetRemoveComponentOp(i);
@@ -100,52 +101,52 @@ namespace Improbable.Gdk.Core
                         viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority);
                         break;
                     case OpType.ComponentUpdate:
-                        DeserializeAndApplyComponentUpdate(opList.GetComponentUpdateOp(i), viewDiff, i);
+                        DeserializeAndApplyComponentUpdate(opList.GetComponentUpdateOp(i), viewDiff);
                         break;
                     case OpType.CommandRequest:
-                        DeserializeApplyCommandRequestReceived(opList.GetCommandRequestOp(i), viewDiff, i);
+                        DeserializeApplyCommandRequestReceived(opList.GetCommandRequestOp(i), viewDiff);
                         break;
                     case OpType.CommandResponse:
                         DeserializeAndApplyCommandResponseReceived(opList.GetCommandResponseOp(i), viewDiff);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException($"Can not deserialise unkown op type {opList.GetOpType(i)}");
                 }
             }
 
             return inCriticalSection;
         }
 
-        private void DeserializeAndAddComponent(AddComponentOp op, ViewDiff viewDiff, int opIndex)
+        private void DeserializeAndAddComponent(AddComponentOp op, ViewDiff viewDiff)
         {
             if (!componentIdToComponentDeserializer.TryGetValue(op.Data.ComponentId, out var deserializer))
             {
-                throw new ArgumentException("Component ID not recognised");
+                throw new ArgumentException($"Can not deserialize component with ID {op.Data.ComponentId}");
             }
 
-            deserializer.AddComponent(op, viewDiff);
+            deserializer.AddComponentToDiff(op, viewDiff);
         }
 
-        private void DeserializeAndApplyComponentUpdate(ComponentUpdateOp op, ViewDiff viewDiff, int opIndex)
+        private void DeserializeAndApplyComponentUpdate(ComponentUpdateOp op, ViewDiff viewDiff)
         {
             if (!componentIdToComponentDeserializer.TryGetValue(op.Update.ComponentId, out var deserializer))
             {
-                throw new ArgumentException("Component ID not recognised");
+                throw new ArgumentException($"Can not deserialize component with ID {op.Update.ComponentId}");
             }
 
-            deserializer.AddUpdate(op, viewDiff, componentUpdateId);
+            deserializer.AddUpdateToDiff(op, viewDiff, componentUpdateId);
             ++componentUpdateId;
         }
 
-        private void DeserializeApplyCommandRequestReceived(CommandRequestOp op, ViewDiff viewDiff, int opIndex)
+        private void DeserializeApplyCommandRequestReceived(CommandRequestOp op, ViewDiff viewDiff)
         {
             if (!commandIdsToCommandDeserializer.TryGetValue((op.Request.ComponentId, op.Request.SchemaData.Value.GetCommandIndex()),
                 out var deserializer))
             {
-                throw new ArgumentException("Component ID not recognised");
+                throw new ArgumentException($"Can not deserialize component with ID {op.Request.ComponentId}");
             }
 
-            deserializer.AddRequest(op, viewDiff);
+            deserializer.AddRequestToDiff(op, viewDiff);
         }
 
         private void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff)
@@ -153,10 +154,10 @@ namespace Improbable.Gdk.Core
             if (!commandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.CommandIndex),
                 out var deserializer))
             {
-                throw new ArgumentException("Component ID not recognised");
+                throw new ArgumentException($"Can not deserialize component with ID {op.Response.ComponentId}");
             }
 
-            deserializer.AddResponse(op, viewDiff);
+            deserializer.AddResponseToDiff(op, viewDiff);
         }
     }
 }

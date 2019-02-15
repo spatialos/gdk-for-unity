@@ -26,7 +26,7 @@ namespace <#= qualifiedNamespace #>
                 return ComponentId;
             }
 
-            public void AddUpdate(ComponentUpdateOp op, ViewDiff diff, uint updateId)
+            public void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId)
             {
                 var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
                 diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
@@ -52,18 +52,10 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public void AddComponent(AddComponentOp op, ViewDiff diff)
+            public void AddComponentToDiff(AddComponentOp op, ViewDiff diff)
             {
                 var data = Serialization.DeserializeUpdate(op.Data.SchemaData.Value);
-
-                var update = new Update
-                {
-<# foreach (var fieldDetails in fieldDetailsList) { #>
-                    <#= fieldDetails.PascalCaseName #> = data.<#= fieldDetails.PascalCaseName #>,
-<# } #>
-                };
-
-                diff.AddComponent(update, op.EntityId, op.Data.ComponentId);
+                diff.AddComponent(data, op.EntityId, op.Data.ComponentId);
             }
         }
     }

@@ -14,10 +14,6 @@ namespace Improbable.Gdk.Core
         private readonly HashSet<EntityId> entitiesAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
 
-        private readonly List<LogMessageOp> logs = new List<LogMessageOp>();
-        private readonly List<MetricsOp> metrics = new List<MetricsOp>();
-        private readonly List<FlagUpdateOp> flags = new List<FlagUpdateOp>();
-
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
@@ -62,7 +58,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void Clean()
+        public void Clear()
         {
             foreach (var storage in componentStorageList)
             {
@@ -77,9 +73,6 @@ namespace Improbable.Gdk.Core
             worldCommandStorage.Clear();
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
-            logs.Clear();
-            metrics.Clear();
-            flags.Clear();
         }
 
         public void AddEntity(long entityId)
@@ -141,7 +134,7 @@ namespace Improbable.Gdk.Core
                 {
                     foreach (var storage in commandIdToStorage)
                     {
-                        storage.Value.RemoveEntityComponent(entityId);
+                        storage.Value.RemoveRequests(entityId);
                     }
                 }
             }
@@ -176,7 +169,15 @@ namespace Improbable.Gdk.Core
 
         public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : IReceivedCommandRequest
         {
-            var storage = componentIdToCommandIdToStorage[componentId][commandId];
+            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            {
+                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
+            }
+
+            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
+            {
+                throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
+            }
 
             ((IDiffCommandRequestStorage<T>) storage).AddRequest(request);
         }
@@ -184,7 +185,15 @@ namespace Improbable.Gdk.Core
         public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
             where T : IRawReceivedCommandResponse
         {
-            var storage = componentIdToCommandIdToStorage[componentId][commandId];
+            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            {
+                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
+            }
+
+            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
+            {
+                throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
+            }
 
             ((IDiffCommandResponseStorage<T>) storage).AddResponse(response);
         }
@@ -207,18 +216,6 @@ namespace Improbable.Gdk.Core
         public void AddEntityQueryResponse(EntityQueryResponseOp response)
         {
             worldCommandStorage.AddResponse(response);
-        }
-
-        public void SetFlag(string name, string value)
-        {
-        }
-
-        public void SetMetrics(Metrics metrics)
-        {
-        }
-
-        public void SetLogs(string message, LogLevel logLevel)
-        {
         }
 
         public void Disconnect(string message)
@@ -265,41 +262,6 @@ namespace Improbable.Gdk.Core
         internal HashSet<EntityId> GetEntitiesRemoved()
         {
             return entitiesRemoved;
-        }
-
-        internal readonly struct EntityComponent : IEquatable<EntityComponent>
-        {
-            public readonly long EntityId;
-            public readonly uint ComponentId;
-
-            public EntityComponent(long entityId, uint componentId)
-            {
-                ComponentId = componentId;
-                EntityId = entityId;
-            }
-
-            public bool Equals(EntityComponent other)
-            {
-                return EntityId == other.EntityId && ComponentId == other.ComponentId;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj))
-                {
-                    return false;
-                }
-
-                return obj is EntityComponent other && Equals(other);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (EntityId.GetHashCode() * 397) ^ (int) ComponentId;
-                }
-            }
         }
     }
 }

@@ -4,16 +4,16 @@ namespace Improbable.Gdk.Core
 {
     public class WorldCommandStorage
     {
-        ReceivedMessageList<CreateEntityResponseOp> createEntityResponses =
+        private readonly ReceivedMessageList<CreateEntityResponseOp> createEntityResponses =
             new ReceivedMessageList<CreateEntityResponseOp>();
 
-        ReceivedMessageList<DeleteEntityResponseOp> deleteEntityResponses =
+        private readonly ReceivedMessageList<DeleteEntityResponseOp> deleteEntityResponses =
             new ReceivedMessageList<DeleteEntityResponseOp>();
 
-        ReceivedMessageList<ReserveEntityIdsResponseOp> reserveEntityIdsResponses =
+        private readonly ReceivedMessageList<ReserveEntityIdsResponseOp> reserveEntityIdsResponses =
             new ReceivedMessageList<ReserveEntityIdsResponseOp>();
 
-        ReceivedMessageList<EntityQueryResponseOp> entityQueryResponses =
+        private readonly ReceivedMessageList<EntityQueryResponseOp> entityQueryResponses =
             new ReceivedMessageList<EntityQueryResponseOp>();
 
         public void Clear()

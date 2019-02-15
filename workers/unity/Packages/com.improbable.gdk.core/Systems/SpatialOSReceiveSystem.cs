@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Core
 
         private bool inCriticalSection;
 
-        private readonly DiffCreatorFromOpList opDeserializer = new DiffCreatorFromOpList();
+        private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
         private readonly ViewDiff diff = new ViewDiff();
 
         private const string LoggerName = nameof(SpatialOSReceiveSystem);
@@ -98,7 +98,7 @@ namespace Improbable.Gdk.Core
                     RemoveEntity(entityId);
                 }
 
-                diff.Clean();
+                diff.Clear();
             }
             catch (Exception e)
             {
