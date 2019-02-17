@@ -11,7 +11,6 @@ namespace Improbable.Gdk.Core
     /// <remarks>
     ///     Should only be used with readonly structs
     ///     Missing most safety checks as it is for internal use only
-    ///     T constrained to struct so that null checks aren't needed
     ///     Does not detect the array being edited during iteration
     ///     The internal array is not resized or zeroed on clear
     /// </remarks>
@@ -32,7 +31,7 @@ namespace Improbable.Gdk.Core
 
         public ref readonly T this[int index] => ref items[index];
 
-        public void Add(T item)
+        public void Add(in T item)
         {
             if (items.Length <= Count)
             {

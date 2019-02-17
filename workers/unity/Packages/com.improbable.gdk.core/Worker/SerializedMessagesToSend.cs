@@ -1,0 +1,222 @@
+using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop.Query;
+
+namespace Improbable.Gdk.Core
+{
+    internal class SerializedMessagesToSend
+    {
+        private readonly ReceivedMessageList<UpdateToSend> updates = new ReceivedMessageList<UpdateToSend>();
+        private readonly ReceivedMessageList<RequestToSend> requests = new ReceivedMessageList<RequestToSend>();
+        private readonly ReceivedMessageList<ResponseToSend> responses = new ReceivedMessageList<ResponseToSend>();
+        private readonly ReceivedMessageList<FailureToSend> failures = new ReceivedMessageList<FailureToSend>();
+
+        private readonly ReceivedMessageList<ReserveEntityIdsRequestToSend> reserveEntityIdsRequests =
+            new ReceivedMessageList<ReserveEntityIdsRequestToSend>();
+
+        private readonly ReceivedMessageList<CreateEntityRequestToSend> createEntityRequests =
+            new ReceivedMessageList<CreateEntityRequestToSend>();
+
+        private readonly ReceivedMessageList<DeleteEntityRequestToSend> deleteEntityRequests =
+            new ReceivedMessageList<DeleteEntityRequestToSend>();
+
+        private readonly ReceivedMessageList<EntityQueryRequestToSend> entityQueryRequests =
+            new ReceivedMessageList<EntityQueryRequestToSend>();
+
+        private readonly ReceivedMessageList<LogMessageToSend> logMessages =
+            new ReceivedMessageList<LogMessageToSend>();
+
+        private readonly ReceivedMessageList<MetricsToSend> metricsToSend = new ReceivedMessageList<MetricsToSend>();
+
+        public void Clear()
+        {
+            updates.Clear();
+            requests.Clear();
+            responses.Clear();
+            failures.Clear();
+            reserveEntityIdsRequests.Clear();
+            createEntityRequests.Clear();
+            deleteEntityRequests.Clear();
+            entityQueryRequests.Clear();
+            metricsToSend.Clear();
+            logMessages.Clear();
+        }
+
+        public void SendAll(Connection connection)
+        {
+            for (int i = 0; i < updates.Count; ++i)
+            {
+                ref readonly var update = ref updates[i];
+                connection.SendComponentUpdate(update.EntityId, update.Update);
+            }
+
+            for (int i = 0; i < requests.Count; ++i)
+            {
+                ref readonly var request = ref requests[i];
+                connection.SendCommandRequest(request.EntityId, request.Request, request.CommandId, request.Timeout);
+            }
+
+            for (int i = 0; i < responses.Count; ++i)
+            {
+                ref readonly var response = ref responses[i];
+                connection.SendCommandResponse(response.RequestId, response.Response);
+            }
+
+            for (int i = 0; i < failures.Count; ++i)
+            {
+                ref readonly var failure = ref failures[i];
+                connection.SendCommandFailure(failure.RequestId, failure.Reason);
+            }
+
+            for (int i = 0; i < reserveEntityIdsRequests.Count; ++i)
+            {
+                ref readonly var request = ref reserveEntityIdsRequests[i];
+                connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
+            }
+
+            for (int i = 0; i < createEntityRequests.Count; ++i)
+            {
+                ref readonly var request = ref createEntityRequests[i];
+                connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
+            }
+
+            for (int i = 0; i < deleteEntityRequests.Count; ++i)
+            {
+                ref readonly var request = ref deleteEntityRequests[i];
+                connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
+            }
+
+            for (int i = 0; i < entityQueryRequests.Count; ++i)
+            {
+                ref readonly var request = ref entityQueryRequests[i];
+                connection.SendEntityQueryRequest(request.Query, request.Timeout);
+            }
+
+            for (int i = 0; i < metricsToSend.Count; ++i)
+            {
+                ref readonly var metrics = ref metricsToSend[i];
+                connection.SendMetrics(metrics.Metrics);
+            }
+
+            for (int i = 0; i < logMessages.Count; ++i)
+            {
+                ref readonly var logMessage = ref logMessages[i];
+                connection.SendLogMessage(logMessage.LogLevel, logMessage.LoggerName, logMessage.Message,
+                    logMessage.EntityId);
+            }
+        }
+
+        public void AddComponentUpdate(in UpdateToSend update)
+        {
+            updates.Add(in update);
+        }
+
+        public void AddRequest(in RequestToSend request)
+        {
+            requests.Add(in request);
+        }
+
+        public void AddResponse(in ResponseToSend response)
+        {
+            responses.Add(in response);
+        }
+
+        public void AddFailure(in FailureToSend failure)
+        {
+            failures.Add(in failure);
+        }
+
+        public void AddReserveEntityIdsRequest(in ReserveEntityIdsRequestToSend request)
+        {
+            reserveEntityIdsRequests.Add(in request);
+        }
+
+        public void AddCreateEntityRequest(in CreateEntityRequestToSend request)
+        {
+            createEntityRequests.Add(in request);
+        }
+
+        public void AddDeleteEntityRequest(in DeleteEntityRequestToSend request)
+        {
+            deleteEntityRequests.Add(in request);
+        }
+
+        public void AddEntityQueryRequest(in EntityQueryRequestToSend request)
+        {
+            entityQueryRequests.Add(in request);
+        }
+
+        public void AddMetrics(in MetricsToSend metrics)
+        {
+            metricsToSend.Add(in metrics);
+        }
+
+        public void AddLogMessage(in LogMessageToSend logMessage)
+        {
+            logMessages.Add(in logMessage);
+        }
+
+        public readonly struct UpdateToSend
+        {
+            public readonly ComponentUpdate Update;
+            public readonly long EntityId;
+        }
+
+        public readonly struct RequestToSend
+        {
+            public readonly CommandRequest Request;
+            public readonly uint CommandId;
+            public readonly long EntityId;
+            public readonly uint? Timeout;
+        }
+
+        public readonly struct ResponseToSend
+        {
+            public readonly CommandResponse Response;
+            public readonly uint RequestId;
+        }
+
+        public readonly struct FailureToSend
+        {
+            public readonly uint RequestId;
+            public readonly string Reason;
+        }
+
+        public readonly struct ReserveEntityIdsRequestToSend
+        {
+            public readonly uint NumberOfEntityIds;
+            public readonly uint? Timeout;
+        }
+
+        public readonly struct CreateEntityRequestToSend
+        {
+            public readonly Entity Entity;
+            public readonly long? EntityId;
+            public readonly uint? Timeout;
+        }
+
+        public readonly struct DeleteEntityRequestToSend
+        {
+            public readonly long EntityId;
+            public readonly uint? Timeout;
+        }
+
+        public readonly struct EntityQueryRequestToSend
+        {
+            public readonly EntityQuery Query;
+            public readonly uint? Timeout;
+        }
+
+        public readonly struct LogMessageToSend
+        {
+            public readonly string Message;
+            public readonly string LoggerName;
+            public readonly LogLevel LogLevel;
+            public readonly long? EntityId;
+        }
+
+        public readonly struct MetricsToSend
+        {
+            public readonly Metrics Metrics;
+        }
+    }
+}
