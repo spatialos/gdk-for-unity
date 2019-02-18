@@ -26,9 +26,6 @@ To do this:
   *  From the [SpatialOS Console](https://console.improbable.io/projects), select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
 1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).
-
-    > While developing your game you may want your game clients to use the proper authentication flow without already having developed your own authentication and login servers (following the process described [here](https://docs.improbable.io/reference/13.6/shared/auth/integrate-authentication-platform-sdk)). To facilitate this, Improbable hosts both a development authentication service and a development login service for use in early-stage game development.
-
 1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want.
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
 1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure the Android client-worker GameObject is selected and in the Inspector, locate the script you just added to it.
