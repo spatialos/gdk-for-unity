@@ -135,11 +135,6 @@ namespace Improbable.Gdk.Core
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
-            // TODO: Remove when UTY-1578 is fixed.
-#if UNITY_STANDALONE_LINUX
-            connectionParameters.EnableProtocolLoggingAtStartup = false;
-            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
-#endif
             using (var connectionFuture =
                 Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId,
                     connectionParameters))
@@ -168,11 +163,6 @@ namespace Improbable.Gdk.Core
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
-            // TODO: Remove when UTY-1578 is fixed.
-#if UNITY_STANDALONE_LINUX
-            connectionParameters.EnableProtocolLoggingAtStartup = false;
-            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
-#endif
             using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 var deploymentList = await GetDeploymentList(locator);
@@ -211,11 +201,6 @@ namespace Improbable.Gdk.Core
             ConnectionParameters connectionParameters,
             ILogDispatcher logger, Vector3 origin)
         {
-            // TODO: Remove when UTY-1578 is fixed.
-#if UNITY_STANDALONE_LINUX
-            connectionParameters.EnableProtocolLoggingAtStartup = false;
-            Debug.LogWarning("Automatically disabling protocol logging on Linux workers to prevent crashes.");
-#endif
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
