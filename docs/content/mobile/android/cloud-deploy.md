@@ -28,9 +28,8 @@ To do this:
 1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).
 1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want.
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
-1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure the Android client-worker GameObject is selected and in the Inspector and locate the script you just added to it.
-1. In the Inspector, in the script’s drop-down window, add the authentication token you created to the `DevelopmentAuthToken` field.
-1. In the same drop-down window, ensure the `ShouldConnectLocally` checkbox is **not** checked.
+1. In your Unity Editor, navigate to your Android client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is **not** checked in the script's drop-down window of the Inspector window.
+1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. In the same drop-down window, add the authentication token you created to the `DevelopmentAuthToken` field.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
