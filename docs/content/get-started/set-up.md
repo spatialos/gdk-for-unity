@@ -22,7 +22,7 @@ If you have not signed up before, you can do this [here](https://improbable.io/g
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.2</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.5</strong></a>**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
@@ -75,10 +75,10 @@ Once you have navigated to the **Workloads** tab:
 - Select **.NET Core cross-platform development**.
 - Select **Game development with Unity**:
   - Deselect any options in the **Summary** on the right that mention a Unity Editor (for example, Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
-  - The SpatialOS GDK for Unity requires **Unity 2018.3.2**, which you already installed in step 1.
+  - The SpatialOS GDK for Unity requires **Unity 2018.3.5**, which you already installed in step 1.
   - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.2 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.5 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
 
 **Using Rider?**
 
@@ -88,7 +88,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.2</strong></a>**
+**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.5</strong></a>**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
