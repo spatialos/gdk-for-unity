@@ -24,7 +24,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             var requests = commandSystem.GetRequests<PlayerHeartbeatClient.PlayerHeartbeat.ReceivedRequest>();
             for (var i = 0; i < requests.Count; i++)
             {
-                var receivedRequest = requests[i];
+                ref readonly var receivedRequest = ref requests[i];
                 var response = new PlayerHeartbeatClient.PlayerHeartbeat.Response
                 {
                     RequestId = receivedRequest.RequestId,

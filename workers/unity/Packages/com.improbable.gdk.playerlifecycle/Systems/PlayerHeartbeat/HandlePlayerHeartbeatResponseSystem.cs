@@ -42,7 +42,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             // Concatenate command responses
             for (var i = 0; i < responses.Count; i++)
             {
-                var response = responses[i];
+                ref readonly var response = ref responses[i];
                 var spatialId = response.EntityId;
                 if (!workerSystem.TryGetEntity(spatialId, out var entity) || !heartbeats.Exists(entity))
                 {

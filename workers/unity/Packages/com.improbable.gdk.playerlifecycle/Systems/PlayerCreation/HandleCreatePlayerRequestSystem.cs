@@ -38,8 +38,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
 
             var requests = commandSystem.GetRequests<PlayerCreator.CreatePlayer.ReceivedRequest>();
-            foreach (var request in requests)
+            for (var i = 0; i < requests.Count; ++i)
             {
+                ref readonly var request = ref requests[i];
                 var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
                     request.CallerWorkerId,
                     request.Payload.Position
@@ -63,7 +64,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             var responses = commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
             for (var i = 0; i < responses.Count; i++)
             {
-                var response = responses[i];
+                ref readonly var response = ref responses[i];
                 if (!(response.Context is PlayerCreationRequestContext requestContext))
                 {
                     // Ignore non-player entity creation requests

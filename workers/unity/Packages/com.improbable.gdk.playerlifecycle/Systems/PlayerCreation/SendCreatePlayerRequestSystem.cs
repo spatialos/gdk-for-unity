@@ -70,7 +70,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
             for (var i = 0; i < responses.Count; i++)
             {
-                var response = responses[i];
+                ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
                     PostUpdateCommands.AddComponent(response.SendingEntity, new ShouldRequestPlayerTag());
