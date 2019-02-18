@@ -30,7 +30,7 @@ To do this:
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
 1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure the Android client-worker GameObject is selected and in the Inspector, locate the script you just added to it.
 1. In the Inspector, in the script’s drop-down window, add the authentication token you created to the `DevelopmentAuthToken` field.
-1. In the same drop-down window, ensure the `ShouldConnectLocally` checkbox is not checked.
+1. In the same drop-down window, ensure the `ShouldConnectLocally` checkbox is **not** checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
