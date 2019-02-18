@@ -30,3 +30,4 @@ fi
 LOG_LOCATION="$(pwd)/logs/${WORKER_TYPE}-${BUILD_TARGET}-${SCRIPTING_TYPE}.log"
 
 .shared-ci/scripts/build.sh "workers/unity" ${WORKER_TYPE} ${BUILD_TARGET} ${SCRIPTING_TYPE} "${LOG_LOCATION}"
+spatial prepare-for-run

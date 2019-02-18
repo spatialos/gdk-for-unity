@@ -9,11 +9,13 @@
 - Improved the UX of the GDK Tools Configuration window.
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - Fixed `SpatialOS -> Generate code` always re-running, even if no files had changed.
+- Upgraded the project to be compatible with `2018.3.5f1`.
 
 ### Fixed
 
 - Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.
 - Fixed a bug where a Unity package with no dependencies field in its `package.json` would cause code generation to throw exceptions.
+- Fixed a bug where protocol logging would crash Linux workers.
 
 ## `0.1.4` - 2019-01-28
 
