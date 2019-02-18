@@ -39,30 +39,24 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         protected override void OnUpdate()
         {
-            if (!initializationGroup.IsEmptyIgnoreFilter)
+            var initEntities = initializationGroup.GetEntityArray();
+            for (var i = 0; i < initEntities.Length; ++i)
             {
-                var entities = initializationGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; ++i)
-                {
-                    PostUpdateCommands.AddComponent(entities[i], new ShouldRequestPlayerTag());
-                }
+                PostUpdateCommands.AddComponent(initEntities[i], new ShouldRequestPlayerTag());
             }
 
-            if (!playerSpawnGroup.IsEmptyIgnoreFilter)
+            var spawnEntities = playerSpawnGroup.GetEntityArray();
+            for (var i = 0; i < spawnEntities.Length; ++i)
             {
-                var entities = playerSpawnGroup.GetEntityArray();
-                for (var i = 0; i < entities.Length; ++i)
+                var request = new CreatePlayerRequestType
                 {
-                    var request = new CreatePlayerRequestType
-                    {
-                        Position = new Vector3f(0, 0, 0)
-                    };
+                    Position = new Vector3f(0, 0, 0)
+                };
 
-                    var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
+                var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
-                    commandSystem.SendCommand(createPlayerRequest);
-                    PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(entities[i]);
-                }
+                commandSystem.SendCommand(createPlayerRequest);
+                PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(spawnEntities[i]);
             }
 
             // Currently this has a race condition where you can receive two entities
