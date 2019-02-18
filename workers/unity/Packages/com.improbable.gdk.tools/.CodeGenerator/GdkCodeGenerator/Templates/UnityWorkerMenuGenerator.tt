@@ -1,25 +1,27 @@
 <#@ template language="C#" #>
-        <#@ output extension=".cs" #>
-        <#
-        var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader()
+<#@ output extension=".cs" #>
+<#
+var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader()
 ;
     var workerTypeList = GetWorkerTypes();
 #>
 <#= generatedHeader #>
 
 using System;
+using Improbable.Gdk.BuildSystem;
+using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
 
 namespace Improbable
 {
-    public static class BuildWorkerMenu
+    internal static class BuildWorkerMenu
     {
         private const string LocalMenu = "Build for local";
         private const string CloudMenu = "Build for cloud";
 
-        public static readonly string[] AllWorkers =
+        private static readonly string[] AllWorkers =
         {
 <# foreach (var workerType in workerTypeList) { #>
             "<#= workerType #>",
@@ -62,8 +64,20 @@ var workerType = workerTypeList[i];
             MenuCleanAll();
         }
 
-        public static Action<string[]> MenuBuildLocal;
-        public static Action<string[]> MenuBuildCloud;
-        public static Action MenuCleanAll;
+        private static void MenuBuildLocal(string[] filteredWorkerTypes)
+        {
+            WorkerBuilder.MenuBuild(BuildEnvironment.Local, filteredWorkerTypes);
+        }
+
+        private static void MenuBuildCloud(string[] filteredWorkerTypes)
+        {
+            WorkerBuilder.MenuBuild(BuildEnvironment.Cloud, filteredWorkerTypes);
+        }
+
+        private static void MenuCleanAll()
+        {
+            WorkerBuilder.Clean();
+            Debug.Log("Clean completed");
+        }
     }
 }

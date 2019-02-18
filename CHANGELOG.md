@@ -8,6 +8,7 @@
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- Fixed `SpatialOS -> Generate code` always re-running, even if no files had changed.
 
 ### Fixed
 

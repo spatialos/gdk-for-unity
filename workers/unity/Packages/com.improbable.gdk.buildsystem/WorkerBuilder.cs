@@ -12,7 +12,6 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem
 {
-    [InitializeOnLoad]
     public static class WorkerBuilder
     {
         private static readonly string PlayerBuildDirectory =
@@ -23,17 +22,6 @@ namespace Improbable.Gdk.BuildSystem
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory));
 
         private const string BuildWorkerTypes = "buildWorkerTypes";
-
-        static WorkerBuilder()
-        {
-            BuildWorkerMenu.MenuBuildLocal = workerTypes => MenuBuild(BuildEnvironment.Local, workerTypes);
-            BuildWorkerMenu.MenuBuildCloud = workerTypes => MenuBuild(BuildEnvironment.Cloud, workerTypes);
-            BuildWorkerMenu.MenuCleanAll = () =>
-            {
-                Clean();
-                Debug.Log("Clean completed.");
-            };
-        }
 
         /// <summary>
         ///     Build method that is invoked by commandline
@@ -107,7 +95,7 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        private static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
+        internal static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
         {
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
@@ -125,19 +113,14 @@ namespace Improbable.Gdk.BuildSystem
                 }
                 catch (Exception)
                 {
-                    DisplayBuildFailureDialog();
+                    EditorUtility.DisplayDialog("Build Failed",
+                        "Build failed. Please see the Unity Console Window for information.",
+                        "OK");
 
                     throw;
                 }
             };
         }
-
-        private static void DisplayBuildFailureDialog()
-        {
-            EditorUtility.DisplayDialog("Build Failed",
-                "Build failed. Please see the Unity Console Window for information.",
-                "OK");
-        }        
 
         internal static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {

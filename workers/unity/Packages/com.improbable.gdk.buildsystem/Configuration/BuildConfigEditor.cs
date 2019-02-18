@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Improbable.Gdk.Tools;
 using UnityEditor;
@@ -38,11 +40,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private WorkerChoicePopup workerChooser;
         private readonly Dictionary<int, object> stateObjects = new Dictionary<int, object>();
 
+        private static string[] allWorkers;
+        
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
 
         public void Awake()
         {
-            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };
+            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };            
         }
 
         public override void OnInspectorGUI()
@@ -50,6 +54,27 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             if (style == null)
             {
                 style = new BuildConfigEditorStyle();
+            }
+
+            if (allWorkers == null)
+            {
+                try
+                {
+                    var guids = AssetDatabase.FindAssets("WorkerMenu");
+                    var textFile = guids.Select(AssetDatabase.GUIDToAssetPath)
+                        .FirstOrDefault(f => Path.GetExtension(f) == ".txt");
+                    if (string.IsNullOrEmpty(textFile))
+                    {
+                        throw new Exception("Could not find WorkerMenu.txt - you may need to regenerate code.");
+                    }
+
+                    allWorkers = File.ReadAllLines(Path.Combine(Application.dataPath, "..", textFile));
+                }
+                catch (Exception e)
+                {
+                    allWorkers = new string[0];
+                    Debug.LogException(e);
+                }
             }
 
             // Clean up state when drag events end.
@@ -80,13 +105,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
 
             using (new EditorGUI.DisabledScope(workerConfiguration.WorkerBuildConfigurations.Count ==
-                BuildWorkerMenu.AllWorkers.Length))
+                allWorkers.Length))
             using (new GUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Add new worker type"))
                 {
-                    workerChooser = new WorkerChoicePopup(addWorkerButtonRect, workerConfiguration);
+                    workerChooser = new WorkerChoicePopup(addWorkerButtonRect, workerConfiguration, allWorkers);
                     PopupWindow.Show(addWorkerButtonRect, workerChooser);
                 }
 

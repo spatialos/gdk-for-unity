@@ -7,8 +7,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 {
     internal class WorkerChoicePopup : PopupWindowContent
     {
-        private readonly BuildConfig workerConfiguration;
-
         public readonly string[] Choices;
         public int Choice = -1;
 
@@ -16,14 +14,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private readonly Vector2 windowSize;
         private int hover = -1;
 
-        public WorkerChoicePopup(Rect parentRect, BuildConfig config)
-        {
-            workerConfiguration = config;
+        public WorkerChoicePopup(Rect parentRect, BuildConfig config, string[] allWorkers)
+        {          
             windowSize = parentRect.size;
 
             Choices =
-                BuildWorkerMenu.AllWorkers.Except(
-                    workerConfiguration.WorkerBuildConfigurations.Select(w => w.WorkerType)).ToArray();
+                allWorkers.Except(
+                    config.WorkerBuildConfigurations.Select(w => w.WorkerType)).ToArray();
 
             choiceRects = new Rect[Choices.Length];
 
