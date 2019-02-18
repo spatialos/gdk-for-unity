@@ -126,7 +126,10 @@ namespace Improbable.Gdk.BuildSystem
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
-            if (environmentConfig == null || environmentConfig.BuildTargets.Count == 0)
+
+            var enabledTargets = environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList();
+
+            if (environmentConfig == null || enabledTargets.Count == 0)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
                 return false;
@@ -137,7 +140,7 @@ namespace Improbable.Gdk.BuildSystem
                 Directory.CreateDirectory(PlayerBuildDirectory);
             }
 
-            foreach (var config in environmentConfig.BuildTargets)
+            foreach (var config in enabledTargets)
             {
                 var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(config.Target);
                 var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
@@ -176,7 +179,6 @@ namespace Improbable.Gdk.BuildSystem
                 Directory.Delete(EditorPaths.BuildScratchDirectory, true);
             }
         }
-
 
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
