@@ -22,6 +22,9 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, Dictionary<uint, ICommandDiffStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, ICommandDiffStorage>>();
 
+        private Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
+            new Dictionary<Type, IComponentDiffStorage>();
+
         private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();
 
         private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
@@ -38,6 +41,12 @@ namespace Improbable.Gdk.Core
 
                         componentStorageList.Add(instance);
                         componentIdToComponentStorage.Add(instance.GetComponentId(), instance);
+
+                        typeToComponentStorage.Add(instance.GetUpdateType(), instance);
+                        foreach (var eventType in instance.GetEventTypes())
+                        {
+                            typeToComponentStorage.Add(eventType, instance);
+                        }
                     }
 
                     if (typeof(ICommandDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
@@ -229,6 +238,16 @@ namespace Improbable.Gdk.Core
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
                 throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
+            }
+
+            return storage;
+        }
+
+        internal IComponentDiffStorage GetComponentDiffStorage(Type type)
+        {
+            if (!typeToComponentStorage.TryGetValue(type, out var storage))
+            {
+                throw new ArgumentException($"Can not find component diff storage. Unknown type {type.FullName}");
             }
 
             return storage;
