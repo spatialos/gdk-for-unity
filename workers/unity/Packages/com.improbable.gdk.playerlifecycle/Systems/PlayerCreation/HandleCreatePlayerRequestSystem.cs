@@ -3,7 +3,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.PlayerLifecycle;
 using Improbable.Worker.CInterop;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
@@ -12,23 +11,13 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {
-        private struct CreatePlayerData
+        private CommandSystem commandSystem;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandRequests.CreatePlayer> CreatePlayerRequests;
-            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
+            base.OnCreateManager();
+            commandSystem = World.GetExistingManager<CommandSystem>();
         }
-
-        [Inject] private CreatePlayerData createPlayerData;
-
-        private struct EntityCreationResponseData
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorldCommands.CreateEntity.CommandResponses> CreateEntityResponses;
-            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponders.CreatePlayer> CreatePlayerResponders;
-        }
-
-        [Inject] private EntityCreationResponseData entityCreationResponseData;
 
         private class PlayerCreationRequestContext
         {
@@ -37,58 +26,71 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < createPlayerData.Length; i++)
+            HandlePlayerCreateRequests();
+            HandlePlayerCreateEntityResponses();
+        }
+
+        private void HandlePlayerCreateRequests()
+        {
+            if (PlayerLifecycleConfig.CreatePlayerEntityTemplate == null)
             {
-                var requests = createPlayerData.CreatePlayerRequests[i].Requests;
-                var createEntitySender = createPlayerData.CreateEntitySender[i];
-
-                foreach (var request in requests)
-                {
-                    if (PlayerLifecycleConfig.CreatePlayerEntityTemplate == null)
-                    {
-                        throw new InvalidOperationException(Errors.PlayerEntityTemplateNotFound);
-                    }
-
-                    var playerEntity = PlayerLifecycleConfig.CreatePlayerEntityTemplate(request.CallerWorkerId,
-                        request.Payload.Position);
-                    createEntitySender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
-                    (
-                        playerEntity,
-                        context: new PlayerCreationRequestContext
-                        {
-                            createPlayerRequest = request
-                        }
-                    ));
-                }
+                throw new InvalidOperationException(Errors.PlayerEntityTemplateNotFound);
             }
 
-            for (var i = 0; i < entityCreationResponseData.Length; ++i)
+            var requests = commandSystem.GetRequests<PlayerCreator.CreatePlayer.ReceivedRequest>();
+            for (var i = 0; i < requests.Count; ++i)
             {
-                var entityCreationResponses = entityCreationResponseData.CreateEntityResponses[i];
-                var responder = entityCreationResponseData.CreatePlayerResponders[i];
+                ref readonly var request = ref requests[i];
+                var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
+                    request.CallerWorkerId,
+                    request.Payload.Position
+                );
 
-                foreach (var receivedResponse in entityCreationResponses.Responses)
+                var entityRequest = new WorldCommands.CreateEntity.Request
+                (
+                    playerEntityTemplate,
+                    context: new PlayerCreationRequestContext
+                    {
+                        createPlayerRequest = request
+                    }
+                );
+
+                commandSystem.SendCommand(entityRequest);
+            }
+        }
+
+        private void HandlePlayerCreateEntityResponses()
+        {
+            var responses = commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
+            for (var i = 0; i < responses.Count; i++)
+            {
+                ref readonly var response = ref responses[i];
+                if (!(response.Context is PlayerCreationRequestContext requestContext))
                 {
-                    if (!(receivedResponse.Context is PlayerCreationRequestContext requestContext))
-                    {
-                        // Ignore non-player entity creation requests
-                        continue;
-                    }
+                    // Ignore non-player entity creation requests
+                    continue;
+                }
 
-                    if (receivedResponse.StatusCode != StatusCode.Success || !receivedResponse.EntityId.HasValue)
-                    {
-                        responder.ResponsesToSend.Add(new PlayerCreator.CreatePlayer
-                            .Response(requestContext.createPlayerRequest.RequestId,
-                                $"Failed to create player: \"{receivedResponse.Message}\""));
+                if (response.StatusCode != StatusCode.Success)
+                {
+                    var responseFailed = new PlayerCreator.CreatePlayer.Response(
+                        requestContext.createPlayerRequest.RequestId,
+                        $"Failed to create player: \"{response.Message}\""
+                    );
 
-                        continue;
-                    }
-
-                    responder.ResponsesToSend.Add(new PlayerCreator.CreatePlayer
-                        .Response(requestContext.createPlayerRequest.RequestId, new CreatePlayerResponseType
+                    commandSystem.SendResponse(responseFailed);
+                }
+                else
+                {
+                    var responseSuccess = new PlayerCreator.CreatePlayer.Response(
+                        requestContext.createPlayerRequest.RequestId,
+                        new CreatePlayerResponseType
                         {
-                            CreatedEntityId = receivedResponse.EntityId.Value
-                        }));
+                            CreatedEntityId = response.EntityId.Value
+                        }
+                    );
+
+                    commandSystem.SendResponse(responseSuccess);
                 }
             }
         }
