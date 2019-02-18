@@ -1,8 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using Improbable.Worker.CInterop;
-
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -14,75 +12,68 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private readonly EntityId playerCreatorEntityId = new EntityId(1);
 
-        private struct NewEntityData
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-            [ReadOnly] public ComponentDataArray<OnConnected> DenotesJustConnected;
-            public EntityArray Entities;
-        }
-
-        private struct SendData
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandSenders.CreatePlayer> RequestSenders;
-            [ReadOnly] public ComponentDataArray<ShouldRequestPlayerTag> DenotesShouldRequestPlayer;
-            public EntityArray Entities;
-        }
-
-        private struct ResponseData
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<PlayerCreator.CommandResponses.CreatePlayer> Responses;
-            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-            public EntityArray Entities;
-        }
-
+        private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
         private ILogDispatcher logDispatcher;
 
-        [Inject] private NewEntityData newEntityData;
-        [Inject] private SendData sendData;
-        [Inject] private ResponseData responseData;
+        private ComponentGroup initializationGroup;
+        private ComponentGroup playerSpawnGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            logDispatcher = World.GetExistingManager<WorkerSystem>().LogDispatcher;
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            logDispatcher = workerSystem.LogDispatcher;
+
+            initializationGroup = GetComponentGroup(
+                ComponentType.ReadOnly<WorkerEntityTag>(),
+                ComponentType.ReadOnly<OnConnected>()
+            );
+
+            playerSpawnGroup = GetComponentGroup(
+                ComponentType.ReadOnly<ShouldRequestPlayerTag>()
+            );
         }
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < newEntityData.Length; ++i)
+            var initEntities = initializationGroup.GetEntityArray();
+            for (var i = 0; i < initEntities.Length; ++i)
             {
-                PostUpdateCommands.AddComponent(newEntityData.Entities[i], new ShouldRequestPlayerTag());
+                PostUpdateCommands.AddComponent(initEntities[i], new ShouldRequestPlayerTag());
             }
 
-            for (var i = 0; i < sendData.Length; ++i)
+            var spawnEntities = playerSpawnGroup.GetEntityArray();
+            for (var i = 0; i < spawnEntities.Length; ++i)
             {
-                var request = new CreatePlayerRequestType(new Improbable.Vector3f { X = 0, Y = 0, Z = 0 });
+                var request = new CreatePlayerRequestType
+                {
+                    Position = new Vector3f(0, 0, 0)
+                };
+
                 var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
-                sendData.RequestSenders[i].RequestsToSend
-                    .Add(createPlayerRequest);
-                PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(sendData.Entities[i]);
+                commandSystem.SendCommand(createPlayerRequest);
+                PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(spawnEntities[i]);
             }
 
-            // Currently this has a race condition where you can receive two entites
-            // The fix for this is more sophisticted server side handling of requests
-            for (var i = 0; i < responseData.Length; ++i)
+            // Currently this has a race condition where you can receive two entities
+            // The fix for this is more sophisticated server side handling of requests
+            var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
+            for (var i = 0; i < responses.Count; i++)
             {
-                foreach (var receivedResponse in responseData.Responses[i].Responses)
+                ref readonly var response = ref responses[i];
+                if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    if (receivedResponse.StatusCode == StatusCode.AuthorityLost)
-                    {
-                        PostUpdateCommands.AddComponent(responseData.Entities[i], new ShouldRequestPlayerTag());
-                    }
-                    else if (receivedResponse.StatusCode != StatusCode.Success)
-                    {
-                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            $"Create player request failed: {receivedResponse.Message}"));
-                    }
+                    PostUpdateCommands.AddComponent(response.SendingEntity, new ShouldRequestPlayerTag());
+                }
+                else if (response.StatusCode != StatusCode.Success)
+                {
+                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        $"Create player request failed: {response.Message}"
+                    ));
                 }
             }
         }
