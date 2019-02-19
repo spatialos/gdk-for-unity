@@ -57,7 +57,6 @@ Note: You don’t need to enter anything in the text field.
 
 ## iOS device{#ios-device}
 
-1. Set up [Code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Make sure your computer and your mobile device are both connected to the same network.
 1. Connect the mobile device to your computer using a USB cable.
 1. In your Unity Editor, build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
@@ -75,7 +74,9 @@ If iOS is not selected, select it and then select **Switch Platform**.
 1. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
 1. After the build has finished, Unity opens the folder containing the project in Finder. You must then open the project directory and then open the `.xcodeproj` file in XCode.
 1. In XCode, in the Navigation Area, select the **Project root**.
-1. Still in Xcode, now in the Editor Area, select **General** > **Signing** and sign the project.
+1. Still in Xcode, now in the Editor Area, go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
+1. Still in the Editor Area, select **General** > **Signing** and sign the project.<br>
+	For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 
     > **TIP:**  If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail upon your first attempt, because you need to sign the application as described above prior to running it.
     >

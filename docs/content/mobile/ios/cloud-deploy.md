@@ -30,7 +30,8 @@ You know it’s complete when it says `Completed build for Cloud target` in your
 1. Select **SpatialOS** > **Launch mobile client** > **iOS Device**.
 1. Open Finder and navigate to the generated XCode project in the `workers/unity/build/iOSClient@iOS` directory. Select it to open it in Xcode.
 1. In XCode, in the Navigation Area, select the **Project root**.
-1. Still in Xcode, now in the Editor Area, select **General** > **Signing** and sign the project.<br>
-	For more information - see the _Building an XCode project using Unity_ section in the [Unity documentation](https://unity3d.com/learn/tutorials/topics/mobile-touch/building-your-unity-game-ios-device-testing).
+1. Still in Xcode, now in the Editor Area, go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
+1. Still in the Editor Area, select **General** > **Signing** and sign the project.<br>
+	For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in Xcode, click the Play button in the top left of the window.
 1. Play the game on your iOS device or simulator.
