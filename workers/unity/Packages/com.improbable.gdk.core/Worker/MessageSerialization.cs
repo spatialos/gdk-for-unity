@@ -18,4 +18,19 @@ namespace Improbable.Gdk.Core
         void AddRequestToDiff(CommandRequestOp op, ViewDiff diff);
         void AddResponseToDiff(CommandResponseOp op, ViewDiff diff);
     }
+
+    public interface IComponentSerializer
+    {
+        uint GetComponentId();
+
+        void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages);
+    }
+
+    public interface ICommandSerializer
+    {
+        uint GetComponentId();
+        uint GetCommandId();
+
+        void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages);
+    }
 }

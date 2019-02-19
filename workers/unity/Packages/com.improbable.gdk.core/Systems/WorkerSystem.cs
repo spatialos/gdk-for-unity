@@ -23,6 +23,7 @@ namespace Improbable.Gdk.Core
         public Entity WorkerEntity;
 
         internal readonly ViewDiff Diff = new ViewDiff();
+        public readonly MessagesToSend MessagesToSend = new MessagesToSend();
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 

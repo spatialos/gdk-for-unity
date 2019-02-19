@@ -257,12 +257,12 @@ namespace Improbable.Gdk.Core
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
+                throw new ArgumentException($"Can not find command diff storage. Unknown component ID {componentId}");
             }
 
             if (!commandIdToStorage.TryGetValue(commandId, out var storage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
+                throw new ArgumentException($"Can not find command diff storage. Unknown command ID {commandId}");
             }
 
             return storage;

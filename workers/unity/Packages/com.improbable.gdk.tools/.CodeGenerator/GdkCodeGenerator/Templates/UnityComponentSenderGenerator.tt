@@ -2,6 +2,7 @@
 <#@ output extension=".cs" #>
 <#
     var componentDetails = GetComponentDetails();
+    var fieldDetailsList = GetFieldDetailsList();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
     var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
@@ -70,7 +71,17 @@ namespace <#= qualifiedNamespace #>
                         var data = componentArray[i];
                         if (data.IsDataDirty())
                         {
-                            componentUpdateSystem.SendComponentUpdate(data, entityIdArray[i].EntityId);
+                            Update update = new Update();
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
+
+                            if (data.IsDataDirty(<#= i #>))
+                            {
+                                update.<#= fieldDetails.PascalCaseName #> = data.<#= fieldDetails.PascalCaseName #>;
+                            }
+<# } #>
+
+                            componentUpdateSystem.SendUpdate(update, entityIdArray[i].EntityId);
                             data.MarkDataClean();
                             componentArray[i] = data;
                         }

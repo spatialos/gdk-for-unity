@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
 
 namespace Improbable.Gdk.Core
 {
-    internal class SerializedMessagesToSend
+    public class SerializedMessagesToSend
     {
         private readonly ReceivedMessageList<UpdateToSend> updates = new ReceivedMessageList<UpdateToSend>();
         private readonly ReceivedMessageList<RequestToSend> requests = new ReceivedMessageList<RequestToSend>();
@@ -26,6 +29,43 @@ namespace Improbable.Gdk.Core
             new ReceivedMessageList<LogMessageToSend>();
 
         private readonly ReceivedMessageList<MetricsToSend> metricsToSend = new ReceivedMessageList<MetricsToSend>();
+
+        private readonly ReceivedMessageList<EntityComponent> authorityLossAcks =
+            new ReceivedMessageList<EntityComponent>();
+
+        private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
+        private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
+
+        public SerializedMessagesToSend()
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (typeof(IComponentSerializer).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        var instance = (IComponentSerializer) Activator.CreateInstance(type);
+                        componentSerializers.Add(instance);
+                    }
+
+                    if (typeof(ICommandSerializer).IsAssignableFrom(type) && !type.IsAbstract)
+                    {
+                        var instance = (ICommandSerializer) Activator.CreateInstance(type);
+                        commandSerializers.Add(instance);
+                    }
+                }
+            }
+        }
+
+        public void SerializeFrom(MessagesToSend messages)
+        {
+            foreach (var serializer in componentSerializers)
+            {
+                serializer.Serialize(messages, this);
+            }
+
+            messages.GetAuthorityLossAcknowledgements().CopyTo(authorityLossAcks);
+        }
 
         public void Clear()
         {
@@ -103,11 +143,17 @@ namespace Improbable.Gdk.Core
                 connection.SendLogMessage(logMessage.LogLevel, logMessage.LoggerName, logMessage.Message,
                     logMessage.EntityId);
             }
+
+            for (int i = 0; i < authorityLossAcks.Count; ++i)
+            {
+                ref readonly var entityComponent = ref authorityLossAcks[i];
+                connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId, entityComponent.ComponentId);
+            }
         }
 
-        public void AddComponentUpdate(in UpdateToSend update)
+        public void AddComponentUpdate(ComponentUpdate update, long entityId)
         {
-            updates.Add(in update);
+            updates.Add(new UpdateToSend(update, entityId));
         }
 
         public void AddRequest(in RequestToSend request)
@@ -155,10 +201,16 @@ namespace Improbable.Gdk.Core
             logMessages.Add(in logMessage);
         }
 
-        public readonly struct UpdateToSend
+        private readonly struct UpdateToSend
         {
             public readonly ComponentUpdate Update;
             public readonly long EntityId;
+
+            public UpdateToSend(ComponentUpdate update, long entityId)
+            {
+                Update = update;
+                EntityId = entityId;
+            }
         }
 
         public readonly struct RequestToSend

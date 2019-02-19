@@ -55,5 +55,51 @@ namespace <#= qualifiedNamespace #>
                 diff.AddComponent(data, op.EntityId, op.Data.ComponentId);
             }
         }
+
+        public class ComponentSerializer : IComponentSerializer
+        {
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages)
+            {
+                var storage = messages.GetComponentDiffStorage(ComponentId);
+
+                var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
+
+                for (int i = 0; i < updates.Count; ++i)
+                {
+                    ref readonly var update = ref updates[i];
+                    var schemaUpdate = new SchemaComponentUpdate(ComponentId);
+                    var componentUpdate = new ComponentUpdate(schemaUpdate);
+                    Serialization.SerializeUpdate(update.Update, schemaUpdate);
+                    serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
+                }
+
+<# if (eventDetailsList.Count > 0) { #>
+<# foreach (var ev in eventDetailsList) {
+        var eventType = ev.EventName + ".Event";
+#>
+
+                {
+                    var events = ((IDiffEventStorage<<#= eventType #>>) storage).GetEvents();
+
+                    for (int i = 0; i < events.Count; ++i)
+                    {
+                        ref readonly var ev = ref events[i];
+                        var schemaUpdate = new SchemaComponentUpdate(ComponentId);
+                        var componentUpdate = new ComponentUpdate(schemaUpdate);
+                        var obj = schemaUpdate.GetEvents().AddObject(<#= ev.EventIndex #>);
+                        <#= ev.FqnPayloadType #>.Serialization.Serialize(ev.Event.Payload, obj);
+                        serializedMessages.AddComponentUpdate(componentUpdate, ev.EntityId.Id);
+
+                    }
+                }
+<# } #>
+<# } #>
+            }
+        }
     }
 }

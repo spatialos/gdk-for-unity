@@ -77,6 +77,24 @@ namespace Improbable.Gdk.Core
             Count = freeIndex;
         }
 
+        public void CopyTo(ReceivedMessageList<T> other)
+        {
+            if (other.items.Length < Count)
+            {
+                other.items = new T[Count];
+            }
+
+            Array.Copy(items, other.items, Count);
+            other.Count = Count;
+        }
+
+        public T[] ToArray()
+        {
+            var t = new T[Count];
+            Array.Copy(items, t, Count);
+            return t;
+        }
+
         public void Clear()
         {
             Count = 0;
