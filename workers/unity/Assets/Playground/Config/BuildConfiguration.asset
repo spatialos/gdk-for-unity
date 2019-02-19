@@ -27,7 +27,7 @@ MonoBehaviour:
     - {fileID: 102900000, guid: f5fda56aad5d91d408ff123b26ab6ade, type: 3}
     LocalBuildConfig:
       BuildPlatforms: 1
-      BuildOptions: 0
+      BuildOptions: 1
     CloudBuildConfig:
       BuildPlatforms: 8
       BuildOptions: 16384
@@ -48,5 +48,5 @@ MonoBehaviour:
       BuildOptions: 1
     CloudBuildConfig:
       BuildPlatforms: 64
-      BuildOptions: 16384
+      BuildOptions: 0
   isInitialised: 1
