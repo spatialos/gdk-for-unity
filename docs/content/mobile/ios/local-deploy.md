@@ -47,7 +47,7 @@ If iOS is not selected, select it and then select **Switch Platform**.
 After you've selected the directory, Unity generates the XCode project, opens it in XCode and starts the build.<br>
 When the build succeeds, XCode starts a Simulator and installs the game on it.
 
-    > **TIP:**  If you choose **Build**, instead of **Build and Run**, Unity generates a XCode project and opens the folder containing the project.
+    > **TIP:**  If you choose **Build**, instead of **Build and Run**, Unity generates a XCode project and opens the folder containing the project in Finder. You must then open the generated `.xcodeproj` file.
 
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.<br>
 Note: You don’t need to enter anything in the text field.
@@ -73,11 +73,14 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. In the Unity Editor, navigate to **File** > **Build Settings**, and ensure that **iOS** is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
 If iOS is not selected, select it and then select **Switch Platform**.
 1. Select **Build**. This prompts you to choose where to save the XCode project that Unity generates. Select a directory and Unity generates the XCode project.
-1. After the build has finished, Unity opens the folder containing the project. Open the project in XCode, select the Project root, go to **General** > **Signing** and sign the project.
+1. After the build has finished, Unity opens the folder containing the project in Finder. You must then open the project directory and then open the `.xcodeproj` file in XCode.
+1. In XCode, in the Navigation Area, select the **Project root**.
+1. Still in Xcode, now in the Editor Area, select **General** > **Signing** and sign the project.
 
-    > **TIP:**  If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail, because you need to first sign the application as described above.
+    > **TIP:**  If you choose **Build and Run** instead of **Build** Unity generates the XCode project, automatically opens it for you and starts the build to install the game on the connected device. This will most likely fail upon your first attempt, because you need to sign the application as described above prior to running it.
     >
     > For subsequent runs you will be prompted to pick an XCode project directory again (with the one you chose previously pre-selected). You can either generate a new project, append or replace an existing one. In subsequent runs, if you've set up provisioning and choose to append an existing project, you can use **Build and Run** to trigger a project run automatically once the XCode project has been generated.
 
+1. Still in Xcode, click the Play button in the top left of the window.
 1. Once the game is running on your device, you see an empty text field and a **Connect** button: enter the local IP address of your computer in the text field and select **Connect**.
 1. Play the game on your mobile device.
