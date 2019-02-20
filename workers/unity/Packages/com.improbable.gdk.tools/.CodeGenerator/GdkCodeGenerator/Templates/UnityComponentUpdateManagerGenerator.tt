@@ -4,11 +4,8 @@
     var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
-    var commandDetailsList = GetCommandDetailsList();
     var eventDetailsList = GetEventDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
-    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
-    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
@@ -24,6 +21,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.ReactiveComponents;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -50,7 +48,7 @@ namespace <#= qualifiedNamespace #>
             private readonly Dictionary<EntityId, List<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
                 new Dictionary<EntityId, List<<#= eventType #>>>();
 
-            private readonly ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
+            private ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
                 new ReceivedMessageList<ComponentEventReceived<<#= eventType #>>>();
 
             // todo consider putting this in the list type
@@ -65,10 +63,10 @@ namespace <#= qualifiedNamespace #>
             private readonly List<ComponentUpdateToSend<Component>> updatesToSend =
                 new List<ComponentUpdateToSend<Component>>();
 
-            private readonly ReceivedMessageList<ComponentUpdateReceived<Update>> updatesReceived =
+            private ReceivedMessageList<ComponentUpdateReceived<Update>> updatesReceived =
                 new ReceivedMessageList<ComponentUpdateReceived<Update>>();
 
-            private readonly ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
+            private ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
                 new ReceivedMessageList<AuthorityChangeReceived>();
 
             private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
@@ -79,8 +77,8 @@ namespace <#= qualifiedNamespace #>
             private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
             private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
-            private readonly List<EntityId> componentsAdded = new List<EntityId>();
-            private readonly List<EntityId> componentsRemoved = new List<EntityId>();
+            private List<EntityId> componentsAdded = new List<EntityId>();
+            private List<EntityId> componentsRemoved = new List<EntityId>();
 
             private readonly HashSet<EntityId> entitiesWithComponent = new HashSet<EntityId>();
 
@@ -124,6 +122,38 @@ namespace <#= qualifiedNamespace #>
             public ComponentType[] GetInitialComponents()
             {
                 return initialComponents;
+            }
+
+            public void ApplyAndCleanDiff(ViewDiff diff)
+            {
+                var diffStorage = (DiffComponentStorage) diff.GetComponentDiffStorage(ComponentId);
+                diffStorage.SwapAndClearMessageLists(ref updatesReceived);
+                diffStorage.SwapAndClearMessageLists(ref authorityChanges);
+                diffStorage.SwapAndClearComponentsAdded(ref componentsAdded);
+                diffStorage.SwapAndClearComponentsRemoved(ref componentsRemoved);
+<# foreach (var ev in eventDetailsList) { #>
+                diffStorage.SwapAndClearMessageLists(ref <#= ev.CamelCaseEventName #>EventsReceived);
+<# } #>
+
+                foreach (var entityId in componentsAdded)
+                {
+                    AddComponent(entityId);
+                }
+
+                for (int i = 0; i < updatesReceived.Count; ++i)
+                {
+                    ApplyUpdate(updatesReceived[i]);
+                }
+
+                foreach (var change in authorityChanges)
+                {
+                    SetAuthority(change.EntityId, change.Authority);
+                }
+
+                foreach (var entityId in componentsRemoved)
+                {
+                    RemoveComponent(entityId);
+                }
             }
 
             public void SendAll()
@@ -214,13 +244,6 @@ namespace <#= qualifiedNamespace #>
                 {
                     throw new ArgumentException("World instance is not running a valid SpatialOS worker");
                 }
-
-                var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
-
-                dispatcher.OnComponentUpdate(OnUpdate);
-                dispatcher.OnAuthorityChange(OnAuthority);
-                dispatcher.OnAddComponent(OnAddComponent);
-                dispatcher.OnRemoveComponent(OnRemoveComponent);
             }
 
             public void Clean(World world)
@@ -366,143 +389,28 @@ namespace <#= qualifiedNamespace #>
                 authLossToAck.Add(entityId);
             }
 
-            private void OnUpdate(ComponentUpdateOp op)
+            private void AddComponent(EntityId entityId)
             {
-                if (op.Update.ComponentId != ComponentId)
-                {
-                    return;
-                }
-
-                workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-
-                ++currentUpdateId;
-
-                if (entityIdToAuthority[new EntityId(op.EntityId)] == Authority.NotAuthoritative)
-                {
-                    var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
-                    <#= componentNamespace #>.Serialization.ApplyUpdate(op.Update.SchemaData.Value, ref data);
-                    data.MarkDataClean();
-                    entityManager.SetComponentData(entity, data);
-                }
-
-                var update = <#= componentNamespace #>.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
-
-                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, new EntityId(op.EntityId), currentUpdateId));
-
-<# if (eventDetailsList.Count > 0) { #>
-                var eventsObject = op.Update.SchemaData.Value.GetEvents();
-<# foreach (var ev in eventDetailsList) {
-        var eventType = ev.EventName + ".Event";
-#>
-                {
-                    var eventCount = eventsObject.GetObjectCount(<#= ev.EventIndex #>);
-                    if (eventCount > 0)
-                    {
-                        for (uint i = 0; i < eventCount; i++)
-                        {
-                            var payload = <#= ev.FqnPayloadType #>.Serialization.Deserialize(eventsObject.IndexObject(<#= ev.EventIndex #>, i));
-                            var e = new <#= eventType #>(payload);
-                            <#= ev.CamelCaseEventName #>EventsReceived.Add(new ComponentEventReceived<<#= eventType #>>(e, new EntityId(op.EntityId), currentUpdateId));
-                        }
-                    }
-                }
-<# } #>
-<# } #>
-            }
-
-            private void OnAuthority(AuthorityChangeOp op)
-            {
-                if (op.ComponentId != ComponentId)
-                {
-                    return;
-                }
-
-                entityIdToAuthority[new EntityId(op.EntityId)] = op.Authority;
-                authorityChanges.Add(new AuthorityChangeReceived(op.Authority, new EntityId(op.EntityId)));
-
-                switch (op.Authority)
-                {
-                    case Authority.NotAuthoritative:
-                    {
-                        workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
-                        break;
-                    }
-                    case Authority.Authoritative:
-                    {
-                        workerSystem.TryGetEntity(new EntityId(op.EntityId), out var entity);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
-                        break;
-                    }
-                    case Authority.AuthorityLossImminent:
-                        break;
-                }
-            }
-
-            private void OnAddComponent(AddComponentOp op)
-            {
-                if (op.Data.ComponentId != ComponentId)
-                {
-                    return;
-                }
-
-                var entityId = new EntityId(op.EntityId);
-
                 entitiesWithComponent.Add(entityId);
-
-                if (componentsRemoved.Contains(entityId))
-                {
-                    componentsRemoved.Remove(entityId);
-                }
-                else
-                {
-                    componentsAdded.Add(entityId);
-                }
 
                 entityIdToAuthority[entityId] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(entityId, out var entity);
 
-                var data = Serialization.Deserialize(op.Data.SchemaData.Value.GetFields(), world);
-                data.MarkDataClean();
-                if (entityManager.HasComponent<Component>(entity))
-                {
-                    entityManager.SetComponentData(entity, data);
-                }
-                else
-                {
-                    entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
-                    entityManager.AddComponentData(entity, data);
-                }
+                var component = new <#= componentNamespace #>.Component();
 
-                var update = new Update
-                {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                    <#= fieldDetails.PascalCaseName #> = data.<#= fieldDetails.PascalCaseName #>,
+<# if (!fieldDetails.IsBlittable) { #>
+                component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
-                };
-
-                updatesReceived.Add(new ComponentUpdateReceived<Update>(update, entityId, currentUpdateId));
+<# } #>
+                component.MarkDataClean();
+                entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                entityManager.AddComponentData(entity, component);
             }
 
-            private void OnRemoveComponent(RemoveComponentOp op)
+            private void RemoveComponent(EntityId entityId)
             {
-                if (op.ComponentId != ComponentId)
-                {
-                    return;
-                }
-
-                var entityId = new EntityId(op.EntityId);
-
                 entitiesWithComponent.Remove(entityId);
-
-                if (componentsAdded.Contains(entityId))
-                {
-                    componentsAdded.Remove(entityId);
-                }
-                else
-                {
-                    componentsRemoved.Add(entityId);
-                }
 
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
@@ -518,6 +426,50 @@ namespace <#= qualifiedNamespace #>
 <# } #>
 
                 entityManager.RemoveComponent<<#= componentNamespace #>.Component>(entity);
+            }
+
+            private void ApplyUpdate(in ComponentUpdateReceived<Update> update)
+            {
+                workerSystem.TryGetEntity(update.EntityId, out var entity);
+                if (!entityManager.HasComponent<<#= componentNamespace #>.Component>(entity))
+                {
+                    return;
+                }
+
+                var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
+<# foreach(var fieldDetails in fieldDetailsList) { #>
+
+                if (update.Update.<#= fieldDetails.PascalCaseName #>.HasValue)
+                {
+                    data.<#= fieldDetails.PascalCaseName #> = update.Update.<#= fieldDetails.PascalCaseName #>.Value;
+                }
+<# } #>
+
+                data.MarkDataClean();
+                entityManager.SetComponentData(entity, data);
+            }
+
+            private void SetAuthority(EntityId entityId, Authority authority)
+            {
+                entityIdToAuthority[entityId] = authority;
+
+                switch (authority)
+                {
+                    case Authority.NotAuthoritative:
+                    {
+                        workerSystem.TryGetEntity(entityId, out var entity);
+                        entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                        break;
+                    }
+                    case Authority.Authoritative:
+                    {
+                        workerSystem.TryGetEntity(entityId, out var entity);
+                        entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
+                        break;
+                    }
+                    case Authority.AuthorityLossImminent:
+                        break;
+                }
             }
         }
     }

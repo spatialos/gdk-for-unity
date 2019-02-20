@@ -167,6 +167,14 @@ namespace Improbable.Gdk.Core
             return manager.HasComponent(entityId);
         }
 
+        internal void ApplyDiff(ViewDiff diff)
+        {
+            foreach (var manager in managers)
+            {
+                manager.ApplyAndCleanDiff(diff);
+            }
+        }
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();

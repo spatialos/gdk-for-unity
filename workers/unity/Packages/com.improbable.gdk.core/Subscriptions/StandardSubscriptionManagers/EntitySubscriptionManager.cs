@@ -94,11 +94,7 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("Go away");
             }
 
-            var x = subscriptions.Remove((Subscription<Entity>) subscription);
-            if (x == false)
-            {
-                int y = 9;
-            }
+            subscriptions.Remove((Subscription<Entity>) subscription);
         }
 
         public override void ResetValue(ISubscription subscription)

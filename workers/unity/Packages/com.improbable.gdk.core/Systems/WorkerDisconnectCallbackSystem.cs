@@ -13,17 +13,29 @@ namespace Improbable.Gdk.Core
     [UpdateAfter(typeof(SpatialOSReceiveSystem))]
     public class WorkerDisconnectCallbackSystem : ComponentSystem
     {
+#pragma warning disable 649
         private struct Data
         {
             public readonly int Length;
             [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectedMessage;
             [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
         }
+#pragma warning restore 649
 
         public event Action<string> OnDisconnected;
 
+        private WorkerSystem worker;
+
+#pragma warning disable 649
         [Inject] private Data data;
-        [Inject] private WorkerSystem worker;
+#pragma warning restore 649
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            worker = World.GetExistingManager<WorkerSystem>();
+        }
 
         protected override void OnUpdate()
         {

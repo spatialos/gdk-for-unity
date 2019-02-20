@@ -33,4 +33,8 @@ namespace Improbable.Gdk.Core.Commands
         /// <returns> The request ID associated with the request </returns>
         long GetRequestId();
     }
+
+    public interface IRawReceivedCommandResponse
+    {
+    }
 }
