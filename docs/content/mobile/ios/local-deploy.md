@@ -34,7 +34,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 ## iOS Simulator{#ios-simulator}
 
 1. Open your project in the Unity Editor.
-1. In the Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
+1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
 1. In the Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
