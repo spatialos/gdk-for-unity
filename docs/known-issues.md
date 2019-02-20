@@ -2,7 +2,7 @@
 
 
 Something in the GDK not working as expected? These are the known issues; later releases of the GDK may contain fixes for these.  
-If your issue is not listed here, you can raise an issue on through our [GitHub repo](https://github.com/spatialos/unrealgdk/issues).
+If your issue is not listed here, you can raise an issue through our [GitHub repo](https://github.com/spatialos/unrealgdk/issues).
 
 | Issue                                                                                                                                                                                                                                                                                                                        | Date added | Unity Ticket                                                                                           | Workaround?                                                           |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
