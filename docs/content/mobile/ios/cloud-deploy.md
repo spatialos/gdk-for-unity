@@ -42,7 +42,7 @@ You know it’s complete when it says `Completed build for Cloud target` in your
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.<br>
 Note: You don’t need to enter anything in the text field.
 1. Play the game on the Simulator.
-1. When you're done, exit the Simulator.<br>
+1. When you're done, exit the Simulator:<br>
 	In XCode, select the **Play** button to stop your the game running.<br>
 	In your SpatialOS Console, select **Stop** to halt your cloud deployment.
 
