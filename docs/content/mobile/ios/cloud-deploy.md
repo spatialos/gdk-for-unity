@@ -44,7 +44,7 @@ Note: You don’t need to enter anything in the text field.
 1. Play the game on the Simulator.
 1. When you're done, exit the Simulator:<br>
 	In XCode, select the **Play** button to stop your the game running.<br>
-	In your SpatialOS Console, select **Stop** to halt your cloud deployment.
+	* In your SpatialOS Console, select **Stop** to halt your cloud deployment.
 
 ## iOS device{#ios-device}
 
