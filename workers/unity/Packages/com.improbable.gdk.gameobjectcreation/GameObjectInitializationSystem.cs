@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -15,38 +14,14 @@ namespace Improbable.Gdk.GameObjectCreation
     [UpdateInGroup(typeof(GameObjectInitializationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
-        private struct InitializedEntitySystemState : ISystemStateComponentData
-        {
-            public EntityId EntityId;
-        }
-
-        private struct AddedEntitiesData
-        {
-            public readonly int Length;
-            [ReadOnly] public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-            [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewSpatialOSEntity;
-            [ReadOnly] public SubtractiveComponent<InitializedEntitySystemState> DenotesEntityIsNotInitialized;
-        }
-
-        private struct RemovedEntitiesData
-        {
-            public readonly int Length;
-            [ReadOnly] public EntityArray Entities;
-            [ReadOnly] public ComponentDataArray<InitializedEntitySystemState> DenotesEntityIsInitialized;
-            [ReadOnly] public SubtractiveComponent<SpatialEntityId> NoSpatialEntityIds;
-        }
-
-        [Inject] private AddedEntitiesData addedEntitiesData;
-        [Inject] private RemovedEntitiesData removedEntitiesData;
-
-        [Inject] private WorkerSystem worker;
-        [Inject] private EntitySystem entitySystem;
-
         private readonly IEntityGameObjectCreator gameObjectCreator;
-        private EntityGameObjectLinker linker;
 
         private readonly GameObject workerGameObject;
+
+        private EntityGameObjectLinker linker;
+
+        private EntitySystem entitySystem;
+        private WorkerSystem workerSystem;
 
         public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
@@ -57,6 +32,10 @@ namespace Improbable.Gdk.GameObjectCreation
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            entitySystem = World.GetExistingManager<EntitySystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+
             linker = new EntityGameObjectLinker(World);
 
             if (workerGameObject != null)
@@ -79,37 +58,25 @@ namespace Improbable.Gdk.GameObjectCreation
             base.OnDestroyManager();
         }
 
-        // todo replace this with something that polls for entities added and removed
         protected override unsafe void OnUpdate()
         {
-            for (var i = 0; i < addedEntitiesData.Length; i++)
+            foreach (var entityId in entitySystem.GetEntitiesAdded())
             {
-                var entity = addedEntitiesData.Entities[i];
-                var spatialEntityId = addedEntitiesData.SpatialEntityIds[i].EntityId;
+                workerSystem.TryGetEntity(entityId, out var entity);
                 gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), linker);
-
-                PostUpdateCommands.AddComponent(entity, new InitializedEntitySystemState
-                {
-                    EntityId = spatialEntityId
-                });
             }
 
-            EntityId* entitiesToRemove = stackalloc EntityId[removedEntitiesData.Length];
-            for (var i = 0; i < removedEntitiesData.Length; i++)
+            var removedEntities = entitySystem.GetEntitiesRemoved();
+            foreach (var entityId in removedEntities)
             {
-                var entity = removedEntitiesData.Entities[i];
-                var spatialEntityId = EntityManager.GetComponentData<InitializedEntitySystemState>(entity).EntityId;
-                entitiesToRemove[i] = spatialEntityId;
-                linker.UnlinkAllGameObjectsFromEntityId(spatialEntityId);
-
-                PostUpdateCommands.RemoveComponent<InitializedEntitySystemState>(entity);
+                linker.UnlinkAllGameObjectsFromEntityId(entityId);
             }
 
             linker.FlushCommandBuffer();
 
-            for (var i = 0; i < removedEntitiesData.Length; i++)
+            foreach (var entityId in removedEntities)
             {
-                gameObjectCreator.OnEntityRemoved(entitiesToRemove[i]);
+                gameObjectCreator.OnEntityRemoved(entityId);
             }
         }
     }

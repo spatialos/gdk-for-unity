@@ -275,6 +275,19 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return update;
             }
 
+            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new <#= componentNamespace #>.Update();
+                var obj = data.GetFields();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetDeserializeDataIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+<# } #>
+                return update;
+            }
+
             public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new <#= componentNamespace #>.Snapshot();
@@ -299,6 +312,21 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+<# } #>
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                var clearedFields = updateObj.GetClearedFields();
+
+<# } #>
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetDeserializeUpdateString("snapshot." + fieldDetails.PascalCaseName, "obj", 5) #>
                 }
 <# } #>
             }
