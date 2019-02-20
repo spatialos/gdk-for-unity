@@ -17,13 +17,16 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
+        private Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
+            new Dictionary<Type, IComponentDiffStorage>();
+
         private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
 
         private readonly Dictionary<uint, Dictionary<uint, ICommandDiffStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, ICommandDiffStorage>>();
 
-        private Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
-            new Dictionary<Type, IComponentDiffStorage>();
+        private Dictionary<Type, ICommandDiffStorage> typeToCommandStorage =
+            new Dictionary<Type, ICommandDiffStorage>();
 
         private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();
 
@@ -62,6 +65,9 @@ namespace Improbable.Gdk.Core
                         }
 
                         commandIdToStorage.Add(instance.GetCommandId(), instance);
+
+                        typeToCommandStorage.Add(instance.GetRequestType(), instance);
+                        typeToCommandStorage.Add(instance.GetResponseType(), instance);
                     }
                 }
             }
@@ -176,7 +182,7 @@ namespace Improbable.Gdk.Core
                 updateId));
         }
 
-        public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : IReceivedCommandRequest
+        public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : struct, IReceivedCommandRequest
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
@@ -192,7 +198,7 @@ namespace Improbable.Gdk.Core
         }
 
         public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
-            where T : IRawReceivedCommandResponse
+            where T : struct, IReceivedCommandResponse
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
@@ -247,7 +253,7 @@ namespace Improbable.Gdk.Core
         {
             if (!typeToComponentStorage.TryGetValue(type, out var storage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown type {type.FullName}");
+                throw new ArgumentException($"Can not find component diff storage. Unknown component type {type.FullName}");
             }
 
             return storage;
@@ -263,6 +269,16 @@ namespace Improbable.Gdk.Core
             if (!commandIdToStorage.TryGetValue(commandId, out var storage))
             {
                 throw new ArgumentException($"Can not find command diff storage. Unknown command ID {commandId}");
+            }
+
+            return storage;
+        }
+
+        internal ICommandDiffStorage GetCommandDiffStorage(Type type)
+        {
+            if (!typeToCommandStorage.TryGetValue(type, out var storage))
+            {
+                throw new ArgumentException($"Can not find command diff storage. Unknown command type {type.FullName}");
             }
 
             return storage;

@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         uint GetCommandId();
 
         void AddRequestToDiff(CommandRequestOp op, ViewDiff diff);
-        void AddResponseToDiff(CommandResponseOp op, ViewDiff diff);
+        void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData);
     }
 
     public interface IComponentSerializer
@@ -31,6 +31,7 @@ namespace Improbable.Gdk.Core
         uint GetComponentId();
         uint GetCommandId();
 
-        void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages);
+        void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages,
+            CommandMetaData commandMetaData);
     }
 }

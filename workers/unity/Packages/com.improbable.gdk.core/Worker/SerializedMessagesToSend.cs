@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
 
@@ -57,11 +56,16 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void SerializeFrom(MessagesToSend messages)
+        public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
             foreach (var serializer in componentSerializers)
             {
                 serializer.Serialize(messages, this);
+            }
+
+            foreach (var serializer in commandSerializers)
+            {
+                serializer.Serialize(messages, this, commandMetaData);
             }
 
             messages.GetAuthorityLossAcknowledgements().CopyTo(authorityLossAcks);
@@ -81,7 +85,7 @@ namespace Improbable.Gdk.Core
             logMessages.Clear();
         }
 
-        public void SendAll(Connection connection)
+        public void SendAll(Connection connection, CommandMetaData commandMetaData)
         {
             for (int i = 0; i < updates.Count; ++i)
             {
@@ -92,7 +96,8 @@ namespace Improbable.Gdk.Core
             for (int i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                connection.SendCommandRequest(request.EntityId, request.Request, request.CommandId, request.Timeout);
+                var id = connection.SendCommandRequest(request.EntityId, request.Request, request.CommandId, request.Timeout);
+                commandMetaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId, id);
             }
 
             for (int i = 0; i < responses.Count; ++i)
@@ -156,19 +161,19 @@ namespace Improbable.Gdk.Core
             updates.Add(new UpdateToSend(update, entityId));
         }
 
-        public void AddRequest(in RequestToSend request)
+        public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, long requestId)
         {
-            requests.Add(in request);
+            requests.Add(new RequestToSend(request, commandId, entityId, timeout, requestId));
         }
 
-        public void AddResponse(in ResponseToSend response)
+        public void AddResponse(CommandResponse response, uint requestId)
         {
-            responses.Add(in response);
+            responses.Add(new ResponseToSend(response, requestId));
         }
 
-        public void AddFailure(in FailureToSend failure)
+        public void AddFailure(string reason, uint requestId)
         {
-            failures.Add(in failure);
+            failures.Add(new FailureToSend(reason, requestId));
         }
 
         public void AddReserveEntityIdsRequest(in ReserveEntityIdsRequestToSend request)
@@ -201,6 +206,8 @@ namespace Improbable.Gdk.Core
             logMessages.Add(in logMessage);
         }
 
+        #region Containers
+
         private readonly struct UpdateToSend
         {
             public readonly ComponentUpdate Update;
@@ -213,30 +220,55 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public readonly struct RequestToSend
+        private readonly struct RequestToSend
         {
             public readonly CommandRequest Request;
             public readonly uint CommandId;
             public readonly long EntityId;
             public readonly uint? Timeout;
+            public readonly long RequestId;
+
+            public RequestToSend(CommandRequest request, uint commandId, long entityId, uint? timeout, long requestId)
+            {
+                Request = request;
+                CommandId = commandId;
+                EntityId = entityId;
+                Timeout = timeout;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct ResponseToSend
+        private readonly struct ResponseToSend
         {
             public readonly CommandResponse Response;
             public readonly uint RequestId;
+
+            public ResponseToSend(CommandResponse response, uint requestId)
+            {
+                Response = response;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct FailureToSend
+        private readonly struct FailureToSend
         {
-            public readonly uint RequestId;
             public readonly string Reason;
+            public readonly uint RequestId;
+
+            public FailureToSend(string reason, uint requestId)
+            {
+                Reason = reason;
+                RequestId = requestId;
+            }
         }
+
+        #endregion
 
         public readonly struct ReserveEntityIdsRequestToSend
         {
             public readonly uint NumberOfEntityIds;
             public readonly uint? Timeout;
+            public readonly long RequestId;
         }
 
         public readonly struct CreateEntityRequestToSend
@@ -244,18 +276,21 @@ namespace Improbable.Gdk.Core
             public readonly Entity Entity;
             public readonly long? EntityId;
             public readonly uint? Timeout;
+            public readonly long RequestId;
         }
 
         public readonly struct DeleteEntityRequestToSend
         {
             public readonly long EntityId;
             public readonly uint? Timeout;
+            public readonly long RequestId;
         }
 
         public readonly struct EntityQueryRequestToSend
         {
             public readonly EntityQuery Query;
             public readonly uint? Timeout;
+            public readonly long RequestId;
         }
 
         public readonly struct LogMessageToSend

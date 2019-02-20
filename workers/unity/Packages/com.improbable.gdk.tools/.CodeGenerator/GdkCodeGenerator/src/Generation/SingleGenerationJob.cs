@@ -70,6 +70,8 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{component.Name}CommandMetaDataStorage", FileExtension)));
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
@@ -124,6 +126,7 @@ namespace Improbable.Gdk.CodeGenerator
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
             var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
+            var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -195,6 +198,13 @@ namespace Improbable.Gdk.CodeGenerator
                         commandDiffStorageGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
                         commandDiffStorageCode);
+
+                    var commandMetaDataStorageFileName =
+                        Path.ChangeExtension($"{component.Name}CommandMetaDataStorage", fileExtension);
+                    var commandMetaDataStorageCode =
+                        commandMetaDataStorageGenerator.Generate(component, package, enumSet);
+                    Content.Add(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
+                        commandMetaDataStorageCode);
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)

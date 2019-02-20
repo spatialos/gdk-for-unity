@@ -11,6 +11,8 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(ComponentUpdateSystem))]
     public class CommandSystem : ComponentSystem
     {
+        private WorkerSystem worker;
+
         private readonly List<ICommandManager> managers = new List<ICommandManager>();
 
         private readonly Dictionary<Type, int> requestTypeToIndex = new Dictionary<Type, int>();
@@ -18,49 +20,50 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, int> responseTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> receivedResponseTypeToIndex = new Dictionary<Type, int>();
 
+        private long nextRequestId = 1;
+
         public long SendCommand<T>(T request, Entity sendingEntity) where T : ICommandRequest
         {
-            if (!requestTypeToIndex.TryGetValue(typeof(T), out var index))
+            if (requestTypeToIndex.TryGetValue(typeof(T), out var index))
             {
-                throw new ArgumentException("Type is not a valid command request");
+                return ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
             }
 
-            return ((ICommandRequestSender<T>) managers[index]).SendCommand(request, sendingEntity);
+            worker.MessagesToSend.AddCommandRequest(request, sendingEntity, nextRequestId);
+            return nextRequestId++;
         }
 
         public long SendCommand<T>(T request) where T : ICommandRequest
         {
-            return SendCommand(request, Entity.Null);
+            if (requestTypeToIndex.TryGetValue(typeof(T), out var index))
+            {
+                return ((ICommandRequestSender<T>) managers[index]).SendCommand(request, Entity.Null);
+            }
+
+            worker.MessagesToSend.AddCommandRequest(request, Entity.Null, nextRequestId);
+            return nextRequestId++;
         }
 
         public void SendResponse<T>(T response) where T : ICommandResponse
         {
-            if (!responseTypeToIndex.TryGetValue(typeof(T), out var index))
-            {
-                throw new ArgumentException("Type is not a valid command request");
-            }
-
-            ((ICommandResponseSender<T>) managers[index]).SendResponse(response);
+            worker.MessagesToSend.AddCommandResponse(response);
         }
 
         public ReceivedMessagesSpan<T> GetRequests<T>() where T : struct, IReceivedCommandRequest
         {
-            if (!receivedRequestTypeToIndex.TryGetValue(typeof(T), out var index))
-            {
-                throw new ArgumentException("Type is not a valid received request");
-            }
-
-            return ((ICommandRequestReceiver<T>) managers[index]).GetRequestsReceived();
+            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            return manager.GetRequests();
         }
 
         public ReceivedMessagesSpan<T> GetResponses<T>() where T : struct, IReceivedCommandResponse
         {
-            if (!receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
+            if (receivedResponseTypeToIndex.TryGetValue(typeof(T), out var index))
             {
-                throw new ArgumentException("Type is not a valid received response");
+                return ((ICommandResponseReceiver<T>) managers[index]).GetResponsesReceived();
             }
 
-            return ((ICommandResponseReceiver<T>) managers[index]).GetResponsesReceived();
+            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            return manager.GetResponses();
         }
 
         internal void ApplyDiff(ViewDiff diff)
@@ -73,6 +76,8 @@ namespace Improbable.Gdk.Core
 
         protected override void OnCreateManager()
         {
+            worker = World.GetExistingManager<WorkerSystem>();
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -88,10 +93,10 @@ namespace Improbable.Gdk.Core
                     switch (instance)
                     {
                         case IComponentCommandManager componentCommandManager:
-                            requestTypeToIndex.Add(componentCommandManager.GetRequestType(), managers.Count);
-                            receivedRequestTypeToIndex.Add(componentCommandManager.GetReceivedRequestType(), managers.Count);
-                            responseTypeToIndex.Add(componentCommandManager.GetResponseType(), managers.Count);
-                            receivedResponseTypeToIndex.Add(componentCommandManager.GetReceivedResponseType(), managers.Count);
+                            // requestTypeToIndex.Add(componentCommandManager.GetRequestType(), managers.Count);
+                            // receivedRequestTypeToIndex.Add(componentCommandManager.GetReceivedRequestType(), managers.Count);
+                            // responseTypeToIndex.Add(componentCommandManager.GetResponseType(), managers.Count);
+                            // receivedResponseTypeToIndex.Add(componentCommandManager.GetReceivedResponseType(), managers.Count);
                             break;
                         case IWorldCommandManager worldCommandManager:
                             requestTypeToIndex.Add(worldCommandManager.GetRequestType(), managers.Count);

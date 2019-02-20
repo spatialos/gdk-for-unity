@@ -22,6 +22,9 @@ namespace Improbable.Gdk.Core
         uint GetComponentId();
         uint GetCommandId();
 
+        Type GetRequestType();
+        Type GetResponseType();
+
         void Clear();
         void RemoveRequests(long entityId);
     }
@@ -55,14 +58,16 @@ namespace Improbable.Gdk.Core
     }
 
     public interface IDiffCommandRequestStorage<T> : ICommandDiffStorage
-        where T : IReceivedCommandRequest
+        where T : struct, IReceivedCommandRequest
     {
         void AddRequest(T request);
+        ReceivedMessagesSpan<T> GetRequests();
     }
 
     public interface IDiffCommandResponseStorage<T> : ICommandDiffStorage
-        where T : IRawReceivedCommandResponse
+        where T : struct, IReceivedCommandResponse
     {
         void AddResponse(T response);
+        ReceivedMessagesSpan<T> GetResponses();
     }
 }

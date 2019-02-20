@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
@@ -10,17 +9,20 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
-        private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
-
-        private readonly Dictionary<uint, Dictionary<uint, ICommandDiffStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, ICommandDiffStorage>>();
-
         private readonly Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
             new Dictionary<Type, IComponentDiffStorage>();
 
-        private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();
+        private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
 
-        private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
+        private readonly Dictionary<uint, Dictionary<uint, ICommandSendStorage>> componentIdToCommandIdToStorage =
+            new Dictionary<uint, Dictionary<uint, ICommandSendStorage>>();
+
+        private readonly Dictionary<Type, ICommandSendStorage> typeToCommandStorage =
+            new Dictionary<Type, ICommandSendStorage>();
+
+        private readonly List<ICommandSendStorage> commandStorageList = new List<ICommandSendStorage>();
+
+        //private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
 
         private readonly MessageList<EntityComponent> authorityLossAcks =
             new MessageList<EntityComponent>();
@@ -45,19 +47,21 @@ namespace Improbable.Gdk.Core
                         }
                     }
 
-                    if (typeof(ICommandDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
+                    if (typeof(ICommandSendStorage).IsAssignableFrom(type) && !type.IsAbstract)
                     {
-                        var instance = (ICommandDiffStorage) Activator.CreateInstance(type);
+                        var instance = (ICommandSendStorage) Activator.CreateInstance(type);
 
                         commandStorageList.Add(instance);
                         if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
                             out var commandIdToStorage))
                         {
-                            commandIdToStorage = new Dictionary<uint, ICommandDiffStorage>();
+                            commandIdToStorage = new Dictionary<uint, ICommandSendStorage>();
                             componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
                         }
 
                         commandIdToStorage.Add(instance.GetCommandId(), instance);
+                        typeToCommandStorage.Add(instance.GetRequestType(), instance);
+                        typeToCommandStorage.Add(instance.GetResponseType(), instance);
                     }
                 }
             }
@@ -75,7 +79,7 @@ namespace Improbable.Gdk.Core
                 storage.Clear();
             }
 
-            worldCommandStorage.Clear();
+            //worldCommandStorage.Clear();
             authorityLossAcks.Clear();
         }
 
@@ -103,37 +107,19 @@ namespace Improbable.Gdk.Core
                 0));
         }
 
-        // public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : IReceivedCommandRequest
-        // {
-        //     if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
-        //     {
-        //         throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
-        //     }
-        //
-        //     if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-        //     {
-        //         throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
-        //     }
-        //
-        //     ((IDiffCommandRequestStorage<T>) storage).AddRequest(request);
-        // }
-        //
-        // public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
-        //     where T : IRawReceivedCommandResponse
-        // {
-        //     if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
-        //     {
-        //         throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
-        //     }
-        //
-        //     if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-        //     {
-        //         throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
-        //     }
-        //
-        //     ((IDiffCommandResponseStorage<T>) storage).AddResponse(response);
-        // }
-        //
+        public void AddCommandRequest<T>(T request, Unity.Entities.Entity sendingEntity, long requestId) where T : ICommandRequest
+        {
+            var storage = (ICommandRequestSendStorage<T>) GetCommandSendStorage(typeof(T));
+            storage.AddRequest(request, sendingEntity, requestId);
+        }
+
+        public void AddCommandResponse<T>(T response)
+            where T : ICommandResponse
+        {
+            var storage = (ICommandResponseSendStorage<T>) GetCommandSendStorage(typeof(T));
+            storage.AddResponse(response);
+        }
+
         // public void AddCreateEntityRequest(CreateEntityResponseOp response)
         // {
         //     worldCommandStorage.AddResponse(response);
@@ -179,21 +165,31 @@ namespace Improbable.Gdk.Core
             return storage;
         }
 
-        // internal ICommandDiffStorage GetCommandDiffStorage(uint componentId, uint commandId)
-        // {
-        //     if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
-        //     {
-        //         throw new ArgumentException($"Can not find command diff storage. Unknown component ID {componentId}");
-        //     }
-        //
-        //     if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-        //     {
-        //         throw new ArgumentException($"Can not find command diff storage. Unknown command ID {commandId}");
-        //     }
-        //
-        //     return storage;
-        // }
-        //
+        internal ICommandSendStorage GetCommandSendStorage(Type type)
+        {
+            if (!typeToCommandStorage.TryGetValue(type, out var storage))
+            {
+                throw new ArgumentException($"Can not find command send storage. Unknown command type {type.FullName}");
+            }
+
+            return storage;
+        }
+
+        internal ICommandSendStorage GetCommandSendStorage(uint componentId, uint commandId)
+        {
+            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            {
+                throw new ArgumentException($"Can not find command send storage. Unknown component ID {componentId}");
+            }
+
+            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
+            {
+                throw new ArgumentException($"Can not find command send storage. Unknown command ID {commandId}");
+            }
+
+            return storage;
+        }
+
         // internal WorldCommandStorage GetWorldCommandStorage()
         // {
         //     return worldCommandStorage;

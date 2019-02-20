@@ -77,14 +77,14 @@ namespace <#= qualifiedNamespace #>
 
             public void ApplyAndCleanDiff(ViewDiff diff)
             {
-                var diffStorage = (Diff<#= command.CommandName #>CommandStorage) diff.GetCommandDiffStorage(ComponentId, <#= command.CommandIndex #>);
-                diffStorage.SwapAndClearMessageLists(ref requestsReceived);
-                diffStorage.SwapAndClearMessageLists(ref rawResponsesReceived);
+                //var diffStorage = (Diff<#= command.CommandName #>CommandStorage) diff.GetCommandDiffStorage(ComponentId, <#= command.CommandIndex #>);
+                //diffStorage.SwapAndClearMessageLists(ref requestsReceived);
+                //diffStorage.SwapAndClearMessageLists(ref rawResponsesReceived);
 
-                for (int i = 0; i < rawResponsesReceived.Count; ++i)
-                {
-                    AddResponse(in rawResponsesReceived[i]);
-                }
+                //for (int i = 0; i < rawResponsesReceived.Count; ++i)
+                //{
+                 //   AddResponse(in rawResponsesReceived[i]);
+                //}
             }
 
             public void SendAll()

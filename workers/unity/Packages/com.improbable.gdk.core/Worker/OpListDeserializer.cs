@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
             componentUpdateId = 1;
         }
 
-        public bool ParseOpListIntoDiff(OpList opList, ViewDiff viewDiff)
+        public bool ParseOpListIntoDiff(OpList opList, ViewDiff viewDiff, CommandMetaData commandMetaData)
         {
             bool inCriticalSection = false;
             for (int i = 0; i < opList.GetOpCount(); ++i)
@@ -107,7 +107,8 @@ namespace Improbable.Gdk.Core
                         DeserializeApplyCommandRequestReceived(opList.GetCommandRequestOp(i), viewDiff);
                         break;
                     case OpType.CommandResponse:
-                        DeserializeAndApplyCommandResponseReceived(opList.GetCommandResponseOp(i), viewDiff);
+                        DeserializeAndApplyCommandResponseReceived(opList.GetCommandResponseOp(i), viewDiff,
+                            commandMetaData);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Can not deserialise unkown op type {opList.GetOpType(i)}");
@@ -149,7 +150,7 @@ namespace Improbable.Gdk.Core
             deserializer.AddRequestToDiff(op, viewDiff);
         }
 
-        private void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff)
+        private void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff, CommandMetaData commandMetaData)
         {
             if (!commandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.CommandIndex),
                 out var deserializer))
@@ -157,7 +158,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException($"Can not deserialize component with ID {op.Response.ComponentId}");
             }
 
-            deserializer.AddResponseToDiff(op, viewDiff);
+            deserializer.AddResponseToDiff(op, viewDiff, commandMetaData);
         }
     }
 }
