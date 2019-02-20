@@ -88,14 +88,14 @@ namespace Improbable.Gdk.Core
             var commandLineArguments = Environment.GetCommandLineArgs();
             var commandLineArgs = CommandLineUtility.ParseCommandLineArgs(commandLineArguments);
             return new ReceptionistConfig
-                {
-                    ReceptionistHost = CommandLineUtility.GetCommandLineValue(
-                        commandLineArgs, RuntimeConfigNames.ReceptionistHost, RuntimeConfigDefaults.ReceptionistHost),
-                    ReceptionistPort = CommandLineUtility.GetCommandLineValue(
-                        commandLineArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort),
-                    WorkerId = CommandLineUtility.GetCommandLineValue(
-                        commandLineArgs, RuntimeConfigNames.WorkerId, CreateNewWorkerId(workerType)),
-                };
+            {
+                ReceptionistHost = CommandLineUtility.GetCommandLineValue(
+                    commandLineArgs, RuntimeConfigNames.ReceptionistHost, RuntimeConfigDefaults.ReceptionistHost),
+                ReceptionistPort = CommandLineUtility.GetCommandLineValue(
+                    commandLineArgs, RuntimeConfigNames.ReceptionistPort, RuntimeConfigDefaults.ReceptionistPort),
+                WorkerId = CommandLineUtility.GetCommandLineValue(
+                    commandLineArgs, RuntimeConfigNames.WorkerId, CreateNewWorkerId(workerType)),
+            };
         }
 
         protected override LocatorConfig GetLocatorConfig()

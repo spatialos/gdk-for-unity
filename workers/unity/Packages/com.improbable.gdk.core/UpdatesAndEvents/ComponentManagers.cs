@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Core
         List<EntityId> GetComponentsRemoved();
 
         bool HasComponent(EntityId entityId);
+
+        void ApplyAndCleanDiff(ViewDiff diff);
     }
 
     public interface IAuthorityManager

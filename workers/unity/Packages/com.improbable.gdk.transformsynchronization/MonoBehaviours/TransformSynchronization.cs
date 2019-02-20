@@ -14,9 +14,11 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public class TransformSynchronization : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private TransformInternalReader transformReader;
         [Require] private Entity entity;
         [Require] private World world;
+#pragma warning restore 649
 
         public List<TransformSynchronizationReceiveStrategy> ReceiveStrategies;
         public List<TransformSynchronizationSendStrategy> SendStrategies;

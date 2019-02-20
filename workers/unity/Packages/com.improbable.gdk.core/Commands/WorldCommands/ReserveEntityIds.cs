@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
@@ -380,10 +381,14 @@ namespace Improbable.Gdk.Core.Commands
                     {
                         throw new ArgumentException("World instance is not running a valid SpatialOS worker");
                     }
+                }
 
-                    var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
-
-                    dispatcher.OnReserveEntityIdsResponse(AddResponse);
+                public void ApplyAndCleanDiff(ViewDiff diff)
+                {
+                    foreach (var response in diff.GetWorldCommandStorage().GetReserveEntityIdsResponseOps())
+                    {
+                        AddResponse(response);
+                    }
                 }
 
                 public long SendCommand(Request request, Unity.Entities.Entity entity)
@@ -405,35 +410,18 @@ namespace Improbable.Gdk.Core.Commands
                     return new ReceivedMessagesSpan<ReceivedResponse>(responsesReceived);
                 }
 
-                public List<ReceivedResponse> GetResponsesReceivedForEntity(Unity.Entities.Entity entity)
-                {
-                    // todo don't actually use this - decide if this function is needed or not and if so index things properly
-                    return responsesReceived.Where(response =>
-                    {
-                        if (!sentInternalRequestIdToEntity.TryGetValue(response.RequestId, out var entityForRequest))
-                        {
-                            return false;
-                        }
-
-                        return entityForRequest == entity;
-                    }).ToList();
-                    return null;
-                }
-
                 public bool TryGetResponseReceivedForRequestId(long requestId,
                     out ReceivedResponse response)
                 {
-                    foreach (var r in responsesReceived)
+                    var responseIndex = responsesReceived.GetResponseIndex(requestId);
+                    if (responseIndex < 0)
                     {
-                        if (r.RequestId == requestId)
-                        {
-                            response = r;
-                            return true;
-                        }
+                        response = default(ReceivedResponse);
+                        return false;
                     }
 
-                    response = default(ReceivedResponse);
-                    return false;
+                    response = responsesReceived[responseIndex];
+                    return true;
                 }
 
                 private void AddResponse(ReserveEntityIdsResponseOp op)

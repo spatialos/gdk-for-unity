@@ -7,8 +7,10 @@ namespace Playground.MonoBehaviours
 {
     public class ProcessSpinnerColorChange : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private CollisionsReader collisionsReader;
         [Require] private SpinnerColorReader colorReader;
+#pragma warning restore 649
 
         private float collideTime;
         private bool flashing;

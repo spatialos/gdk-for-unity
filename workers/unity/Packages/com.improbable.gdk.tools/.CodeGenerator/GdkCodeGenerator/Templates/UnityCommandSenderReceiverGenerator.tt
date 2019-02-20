@@ -1,14 +1,9 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
 <#
-    var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var commandDetailsList = GetCommandDetailsList();
-    var eventDetailsList = GetEventDetailsList();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
-    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
-    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 

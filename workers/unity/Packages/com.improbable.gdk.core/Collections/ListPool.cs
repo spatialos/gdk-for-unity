@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core
 {
-    public class ListPool<T>
+    internal class ListPool<T>
     {
         private readonly Stack<List<T>> pool = new Stack<List<T>>();
 

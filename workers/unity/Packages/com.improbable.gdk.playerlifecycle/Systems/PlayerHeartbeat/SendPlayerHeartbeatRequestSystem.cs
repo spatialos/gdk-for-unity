@@ -1,5 +1,6 @@
 using Improbable.Common;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.PlayerLifecycle;
 using Unity.Entities;
 using UnityEngine;

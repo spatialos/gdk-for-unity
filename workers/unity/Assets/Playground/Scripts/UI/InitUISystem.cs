@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
@@ -48,7 +49,10 @@ namespace Playground
 
         protected override void OnDestroyManager()
         {
-            UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
+            if (UIComponent.Main != null)
+            {
+                UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
+            }
         }
     }
 }

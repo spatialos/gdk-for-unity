@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.ReactiveComponents;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core.Commands
@@ -101,18 +102,6 @@ namespace Improbable.Gdk.Core.Commands
                 ReserveEntityIds.RequestsProvider.CleanDataInWorld(world);
                 EntityQuery.RequestsProvider.CleanDataInWorld(world);
             }
-        }
-
-        internal static void AddWorldCommandRequesters(World world, EntityManager manager, Unity.Entities.Entity entity)
-        {
-        }
-
-        internal static void RemoveWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
-        {
-        }
-
-        internal static void DeallocateWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
-        {
         }
     }
 }

@@ -6,7 +6,6 @@
     var componentDetails = GetComponentDetails();
     var fieldDetailsList = GetFieldDetailsList();
     var eventDetailsList = GetEventDetailsList();
-    var commandDetailsList = GetCommandDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>

@@ -138,6 +138,29 @@ namespace <#= qualifiedNamespace #>
                     return RequestId;
                 }
             }
+
+            public readonly struct RawReceivedResponse : IRawReceivedCommandResponse
+            {
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly <#= commandDetails.FqnResponseType #>? ResponsePayload;
+                public readonly long RequestId;
+
+                public RawReceivedResponse(
+                    EntityId entityId,
+                    string message,
+                    StatusCode statusCode,
+                    <#= commandDetails.FqnResponseType #>? response,
+                    long requestId)
+                {
+                    EntityId = entityId;
+                    Message = message;
+                    StatusCode = statusCode;
+                    ResponsePayload = response;
+                    RequestId = requestId;
+                }
+            }
         }
 <# } #>
     }
