@@ -1,14 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Improbable.Gdk.Core.CodegenAdapters;
-using Improbable.Gdk.Core.Commands;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Profiling;
-using Entity = Improbable.Worker.CInterop.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -24,20 +17,8 @@ namespace Improbable.Gdk.Core
         private CommandSystem commandSystem;
         private EntitySystem entitySystem;
 
-        private readonly Dictionary<uint, ComponentDispatcherHandler> componentSpecificDispatchers =
-            new Dictionary<uint, ComponentDispatcherHandler>();
-
-        public List<Action<Unity.Entities.Entity>> AddAllCommandComponents = new List<Action<Unity.Entities.Entity>>();
-
-        private bool inCriticalSection;
-
         private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
         private readonly ViewDiff diff = new ViewDiff();
-
-        private const string LoggerName = nameof(SpatialOSReceiveSystem);
-        private const string UnknownComponentIdError = "Received an op with an unknown ComponentId";
-        private const string EntityNotFound = "No entity found for SpatialOS EntityId specified in op.";
-        private const string RequestIdNotFound = "No corresponding request found for response.";
 
         protected override void OnCreateManager()
         {
@@ -47,15 +28,6 @@ namespace Improbable.Gdk.Core
             updateSystem = World.GetOrCreateManager<ComponentUpdateSystem>();
             commandSystem = World.GetOrCreateManager<CommandSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
-            SetupDispatcherHandlers();
-        }
-
-        protected override void OnDestroyManager()
-        {
-            foreach (var pair in componentSpecificDispatchers)
-            {
-                pair.Value.Dispose();
-            }
         }
 
         protected override void OnUpdate()
@@ -67,6 +39,7 @@ namespace Improbable.Gdk.Core
 
             try
             {
+                bool inCriticalSection = false;
                 do
                 {
                     using (var opList = worker.Connection.GetOpList(0))
@@ -107,19 +80,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        internal void OnAddEntity(AddEntityOp op)
-        {
-        }
-
-        internal void OnRemoveEntity(RemoveEntityOp op)
-        {
-        }
-
-        internal void OnDisconnect(DisconnectOp op)
-        {
-        }
-
-        internal void AddEntity(EntityId entityId)
+        private void AddEntity(EntityId entityId)
         {
             if (worker.EntityIdToEntity.ContainsKey(entityId))
             {
@@ -138,17 +99,11 @@ namespace Improbable.Gdk.Core
 
             EntityManager.AddComponent(entity, ComponentType.Create<NewlyAddedSpatialOSEntity>());
 
-            foreach (var AddCommandCompoent in AddAllCommandComponents)
-            {
-                AddCommandCompoent(entity);
-            }
-
-            WorldCommands.AddWorldCommandRequesters(World, EntityManager, entity);
             worker.EntityIdToEntity.Add(entityId, entity);
             Profiler.EndSample();
         }
 
-        internal void RemoveEntity(EntityId entityId)
+        private void RemoveEntity(EntityId entityId)
         {
             if (!worker.TryGetEntity(entityId, out var entity))
             {
@@ -157,118 +112,15 @@ namespace Improbable.Gdk.Core
             }
 
             Profiler.BeginSample("OnRemoveEntity");
-            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, entity);
             EntityManager.DestroyEntity(worker.EntityIdToEntity[entityId]);
             worker.EntityIdToEntity.Remove(entityId);
             Profiler.EndSample();
         }
 
-        internal void OnDisconnect(string reason)
+        private void OnDisconnect(string reason)
         {
-            WorldCommands.DeallocateWorldCommandRequesters(EntityManager, worker.WorkerEntity);
-            WorldCommands.RemoveWorldCommandRequesters(EntityManager, worker.WorkerEntity);
             EntityManager.AddSharedComponentData(worker.WorkerEntity,
                 new OnDisconnected { ReasonForDisconnect = reason });
-        }
-
-        internal void OnAddComponent(AddComponentOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.Data.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Data.ComponentId));
-            }
-
-            Profiler.BeginSample("OnAddComponent");
-            specificDispatcher.OnAddComponent(op);
-            Profiler.EndSample();
-        }
-
-        internal void OnRemoveComponent(RemoveComponentOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
-            }
-
-            Profiler.BeginSample("OnRemoveComponent");
-            specificDispatcher.OnRemoveComponent(op);
-            Profiler.EndSample();
-        }
-
-        internal void OnComponentUpdate(ComponentUpdateOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.Update.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Update.ComponentId));
-            }
-
-            Profiler.BeginSample("OnComponentUpdate");
-            specificDispatcher.OnComponentUpdate(op);
-            Profiler.EndSample();
-        }
-
-        internal void OnAuthorityChange(AuthorityChangeOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.ComponentId));
-            }
-
-            Profiler.BeginSample("OnAuthorityChange");
-            specificDispatcher.OnAuthorityChange(op);
-            Profiler.EndSample();
-        }
-
-        internal void OnCommandRequest(CommandRequestOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.Request.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Request.ComponentId));
-            }
-
-            Profiler.BeginSample("OnCommandRequest");
-            Profiler.EndSample();
-        }
-
-        internal void OnCommandResponse(CommandResponseOp op)
-        {
-            if (!componentSpecificDispatchers.TryGetValue(op.Response.ComponentId, out var specificDispatcher))
-            {
-                throw new UnknownComponentIdException(
-                    string.Format(Errors.UnknownComponentIdError, op.GetType(), op.Response.ComponentId));
-            }
-
-            Profiler.BeginSample("OnCommandResponse");
-            Profiler.EndSample();
-        }
-
-        internal void AddDispatcherHandler(ComponentDispatcherHandler componentDispatcher)
-        {
-            componentSpecificDispatchers.Add(componentDispatcher.ComponentId, componentDispatcher);
-            AddAllCommandComponents.Add(componentDispatcher.AddCommandComponents);
-            componentDispatcher.AddCommandComponents(worker.WorkerEntity);
-        }
-
-        private void SetupDispatcherHandlers()
-        {
-            // Find all component specific dispatchers and create an instance.
-            var componentDispatcherTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ComponentDispatcherHandler).IsAssignableFrom(type) && !type.IsAbstract
-                    && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) ==
-                    null);
-
-            WorldCommands.AddWorldCommandRequesters(World, EntityManager, worker.WorkerEntity);
-            foreach (var componentDispatcherType in componentDispatcherTypes)
-            {
-                AddDispatcherHandler((ComponentDispatcherHandler)
-                    Activator.CreateInstance(componentDispatcherType, worker, World));
-            }
         }
 
         private static class Errors

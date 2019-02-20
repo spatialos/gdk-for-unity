@@ -21,6 +21,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.ReactiveComponents;
 
 namespace <#= qualifiedNamespace #>
 {

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 using Entity = Unity.Entities.Entity;
 
