@@ -15,11 +15,13 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private ComponentGroup group;
 
-        [Inject] private WorkerSystem worker;
+        private WorkerSystem worker;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            worker = World.GetExistingManager<WorkerSystem>();
 
             var query = new EntityArchetypeQuery
             {

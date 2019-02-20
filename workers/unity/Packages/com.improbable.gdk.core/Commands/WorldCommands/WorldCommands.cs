@@ -103,17 +103,5 @@ namespace Improbable.Gdk.Core.Commands
                 EntityQuery.RequestsProvider.CleanDataInWorld(world);
             }
         }
-
-        internal static void AddWorldCommandRequesters(World world, EntityManager manager, Unity.Entities.Entity entity)
-        {
-        }
-
-        internal static void RemoveWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
-        {
-        }
-
-        internal static void DeallocateWorldCommandRequesters(EntityManager manager, Unity.Entities.Entity entity)
-        {
-        }
     }
 }

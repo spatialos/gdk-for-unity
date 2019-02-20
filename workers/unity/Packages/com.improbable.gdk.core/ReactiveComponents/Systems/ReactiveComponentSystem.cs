@@ -13,9 +13,18 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         private readonly List<IReactiveComponentManager> managers = new List<IReactiveComponentManager>();
 
+        private EntityManager entityManager;
+        private ComponentUpdateSystem updateSystem;
+        private WorkerSystem workerSystem;
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            entityManager = World.GetExistingManager<EntityManager>();
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -30,10 +39,6 @@ namespace Improbable.Gdk.ReactiveComponents
                 }
             }
         }
-
-        [Inject] private EntityManager entityManager;
-        [Inject] private ComponentUpdateSystem updateSystem;
-        [Inject] private WorkerSystem workerSystem;
 
         protected override void OnDestroyManager()
         {
