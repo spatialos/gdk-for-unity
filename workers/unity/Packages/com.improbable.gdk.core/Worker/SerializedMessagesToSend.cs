@@ -8,30 +8,30 @@ namespace Improbable.Gdk.Core
 {
     public class SerializedMessagesToSend
     {
-        private readonly ReceivedMessageList<UpdateToSend> updates = new ReceivedMessageList<UpdateToSend>();
-        private readonly ReceivedMessageList<RequestToSend> requests = new ReceivedMessageList<RequestToSend>();
-        private readonly ReceivedMessageList<ResponseToSend> responses = new ReceivedMessageList<ResponseToSend>();
-        private readonly ReceivedMessageList<FailureToSend> failures = new ReceivedMessageList<FailureToSend>();
+        private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
+        private readonly MessageList<RequestToSend> requests = new MessageList<RequestToSend>();
+        private readonly MessageList<ResponseToSend> responses = new MessageList<ResponseToSend>();
+        private readonly MessageList<FailureToSend> failures = new MessageList<FailureToSend>();
 
-        private readonly ReceivedMessageList<ReserveEntityIdsRequestToSend> reserveEntityIdsRequests =
-            new ReceivedMessageList<ReserveEntityIdsRequestToSend>();
+        private readonly MessageList<ReserveEntityIdsRequestToSend> reserveEntityIdsRequests =
+            new MessageList<ReserveEntityIdsRequestToSend>();
 
-        private readonly ReceivedMessageList<CreateEntityRequestToSend> createEntityRequests =
-            new ReceivedMessageList<CreateEntityRequestToSend>();
+        private readonly MessageList<CreateEntityRequestToSend> createEntityRequests =
+            new MessageList<CreateEntityRequestToSend>();
 
-        private readonly ReceivedMessageList<DeleteEntityRequestToSend> deleteEntityRequests =
-            new ReceivedMessageList<DeleteEntityRequestToSend>();
+        private readonly MessageList<DeleteEntityRequestToSend> deleteEntityRequests =
+            new MessageList<DeleteEntityRequestToSend>();
 
-        private readonly ReceivedMessageList<EntityQueryRequestToSend> entityQueryRequests =
-            new ReceivedMessageList<EntityQueryRequestToSend>();
+        private readonly MessageList<EntityQueryRequestToSend> entityQueryRequests =
+            new MessageList<EntityQueryRequestToSend>();
 
-        private readonly ReceivedMessageList<LogMessageToSend> logMessages =
-            new ReceivedMessageList<LogMessageToSend>();
+        private readonly MessageList<LogMessageToSend> logMessages =
+            new MessageList<LogMessageToSend>();
 
-        private readonly ReceivedMessageList<MetricsToSend> metricsToSend = new ReceivedMessageList<MetricsToSend>();
+        private readonly MessageList<MetricsToSend> metricsToSend = new MessageList<MetricsToSend>();
 
-        private readonly ReceivedMessageList<EntityComponent> authorityLossAcks =
-            new ReceivedMessageList<EntityComponent>();
+        private readonly MessageList<EntityComponent> authorityLossAcks =
+            new MessageList<EntityComponent>();
 
         private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();

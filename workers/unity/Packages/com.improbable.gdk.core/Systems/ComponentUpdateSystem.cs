@@ -11,8 +11,7 @@ namespace Improbable.Gdk.Core
     public class ComponentUpdateSystem : ComponentSystem
     {
         private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
-        private ViewDiff viewDiff;
-        private MessagesToSend messagesToSend;
+        private WorkerSystem worker;
 
         private readonly List<IComponentManager> managers = new List<IComponentManager>();
 
@@ -21,62 +20,62 @@ namespace Improbable.Gdk.Core
 
         public void SendUpdate<T>(T update, EntityId entityId) where T : ISpatialComponentUpdate
         {
-            messagesToSend.AddComponentUpdate(update, entityId.Id);
+            worker.MessagesToSend.AddComponentUpdate(update, entityId.Id);
         }
 
         public void SendEvent<T>(T eventToSend, EntityId entityId) where T : IEvent
         {
-            messagesToSend.AddEvent(eventToSend, entityId.Id);
+            worker.MessagesToSend.AddEvent(eventToSend, entityId.Id);
         }
 
         public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>() where T : IEvent
         {
-            var manager = (IDiffEventStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents();
         }
 
         public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>(EntityId entityId) where T : IEvent
         {
-            var manager = (IDiffEventStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents(entityId);
         }
 
         public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>()
             where T : ISpatialComponentUpdate
         {
-            var manager = (IDiffUpdateStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates();
         }
 
         public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
             where T : ISpatialComponentUpdate
         {
-            var manager = (IDiffUpdateStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates(entityId);
         }
 
         public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(uint componentId)
         {
-            var manager = (IDiffAuthorityStorage) viewDiff.GetComponentDiffStorage(componentId);
+            var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetAuthorityChanges();
         }
 
         public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId,
             uint componentId)
         {
-            var manager = (IDiffAuthorityStorage) viewDiff.GetComponentDiffStorage(componentId);
+            var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetAuthorityChanges(entityId);
         }
 
         public List<EntityId> GetComponentsAdded(uint componentId)
         {
-            var manager = viewDiff.GetComponentDiffStorage(componentId);
+            var manager = worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetComponentsAdded();
         }
 
         public List<EntityId> GetComponentsRemoved(uint componentId)
         {
-            var manager = viewDiff.GetComponentDiffStorage(componentId);
+            var manager = worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetComponentsRemoved();
         }
 
@@ -92,7 +91,7 @@ namespace Improbable.Gdk.Core
 
         public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
         {
-            messagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);
+            worker.MessagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);
         }
 
         internal ComponentType[] GetInitialComponentsToAdd(uint componentId)
@@ -127,8 +126,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            viewDiff = World.GetExistingManager<WorkerSystem>().Diff;
-            messagesToSend = World.GetExistingManager<WorkerSystem>().MessagesToSend;
+            worker = World.GetExistingManager<WorkerSystem>();
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -160,10 +158,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            serializedMessagesToSend.SerializeFrom(messagesToSend);
-            serializedMessagesToSend.SendAll(World.GetExistingManager<WorkerSystem>().Connection);
-            serializedMessagesToSend.Clear();
-            messagesToSend.Clear();
+            worker.SendMessages();
         }
     }
 }

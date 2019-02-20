@@ -12,20 +12,23 @@ namespace Improbable.Gdk.Core
     [DisableAutoCreation]
     public class WorkerSystem : ComponentSystem
     {
-        public readonly Connection Connection;
-        public readonly ILogDispatcher LogDispatcher;
-        public readonly string WorkerType;
-        public readonly Vector3 Origin;
-
         /// <summary>
         ///     An ECS entity that represents the Worker.
         /// </summary>
         public Entity WorkerEntity;
 
-        internal readonly ViewDiff Diff = new ViewDiff();
-        public readonly MessagesToSend MessagesToSend = new MessagesToSend();
+        public readonly Connection Connection;
+        public readonly ILogDispatcher LogDispatcher;
+        public readonly string WorkerType;
+        public readonly Vector3 Origin;
+
+        internal readonly MessagesToSend MessagesToSend = new MessagesToSend();
+
+        internal readonly IConnectionHandler connectionHandler;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
+
+        internal ViewDiff Diff;
 
         public WorkerSystem(Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
         {
@@ -33,6 +36,8 @@ namespace Improbable.Gdk.Core
             LogDispatcher = logDispatcher;
             WorkerType = workerType;
             Origin = origin;
+
+            connectionHandler = new SpatialOSConnectionHandler(connection);
         }
 
         /// <summary>
@@ -59,6 +64,17 @@ namespace Improbable.Gdk.Core
         public bool HasEntity(EntityId entityId)
         {
             return EntityIdToEntity.ContainsKey(entityId);
+        }
+
+        internal void GetMessages()
+        {
+            Diff = connectionHandler.GetMessagesReceived();
+        }
+
+        internal void SendMessages()
+        {
+            connectionHandler.PushMessagesToSend(MessagesToSend);
+            MessagesToSend.Clear();
         }
 
         protected override void OnCreateManager()

@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     {
         // binary search for the command for given request ID
         // invariant: lower <= target <= upper
-        public static int GetResponseIndex<T>(this ReceivedMessageList<T> list, long requestId)
+        public static int GetResponseIndex<T>(this MessageList<T> list, long requestId)
             where T : struct, IReceivedCommandResponse
         {
             long targetId = requestId;
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Core
             return -1;
         }
 
-        public static (int FirstIndex, int Count) GetEntityRange<T>(this ReceivedMessageList<T> list, EntityId entityId)
+        public static (int FirstIndex, int Count) GetEntityRange<T>(this MessageList<T> list, EntityId entityId)
             where T : struct, IReceivedEntityMessage
         {
             var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Core
 
         // binary search for the first update for given entity ID
         // invariant: lower < target <= upper
-        private static (int FirstIndex, int Count) LimitEntityRangeLower<T>(this ReceivedMessageList<T> list,
+        private static (int FirstIndex, int Count) LimitEntityRangeLower<T>(this MessageList<T> list,
             EntityId entityId, int index, int length)
             where T : struct, IReceivedEntityMessage
         {
@@ -95,7 +95,7 @@ namespace Improbable.Gdk.Core
 
         // binary search for the last update for given entity ID with bounds
         // invariant: lower <= target < upper
-        private static (int FirstIndex, int Count) LimitEntityRangeUpper<T>(this ReceivedMessageList<T> list,
+        private static (int FirstIndex, int Count) LimitEntityRangeUpper<T>(this MessageList<T> list,
             EntityId entityId, int index, int length)
             where T : struct, IReceivedEntityMessage
         {

@@ -19,11 +19,11 @@ namespace <#= qualifiedNamespace #>
 #>
         public class Diff<#= command.CommandName #>CommandStorage : IDiffCommandRequestStorage<<#= receivedRequestType #>>, IDiffCommandResponseStorage<<#= receivedResponseType #>>
         {
-            private ReceivedMessageList<<#= receivedRequestType #>> requestStorage =
-                new ReceivedMessageList<<#= receivedRequestType #>>();
+            private MessageList<<#= receivedRequestType #>> requestStorage =
+                new MessageList<<#= receivedRequestType #>>();
 
-            private ReceivedMessageList<<#= receivedResponseType #>> responseStorage =
-                new ReceivedMessageList<<#= receivedResponseType #>>();
+            private MessageList<<#= receivedResponseType #>> responseStorage =
+                new MessageList<<#= receivedResponseType #>>();
 
             public uint GetComponentId()
             {
@@ -56,17 +56,17 @@ namespace <#= qualifiedNamespace #>
                 responseStorage.Add(response);
             }
 
-            internal void SwapAndClearMessageLists(ref ReceivedMessageList<<#= receivedRequestType #>> messageList)
+            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedRequestType #>> messageList)
             {
-                ReceivedMessageList<<#= receivedRequestType #>> temp = messageList;
+                MessageList<<#= receivedRequestType #>> temp = messageList;
                 messageList = requestStorage;
                 requestStorage = temp;
                 requestStorage.Clear();
             }
 
-            internal void SwapAndClearMessageLists(ref ReceivedMessageList<<#= receivedResponseType #>> messageList)
+            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedResponseType #>> messageList)
             {
-                ReceivedMessageList<<#= receivedResponseType #>> temp = messageList;
+                MessageList<<#= receivedResponseType #>> temp = messageList;
                 messageList = responseStorage;
                 responseStorage = temp;
                 responseStorage.Clear();

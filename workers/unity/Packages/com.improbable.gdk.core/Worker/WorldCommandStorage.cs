@@ -4,17 +4,17 @@ namespace Improbable.Gdk.Core
 {
     public class WorldCommandStorage
     {
-        private readonly ReceivedMessageList<CreateEntityResponseOp> createEntityResponses =
-            new ReceivedMessageList<CreateEntityResponseOp>();
+        private readonly MessageList<CreateEntityResponseOp> createEntityResponses =
+            new MessageList<CreateEntityResponseOp>();
 
-        private readonly ReceivedMessageList<DeleteEntityResponseOp> deleteEntityResponses =
-            new ReceivedMessageList<DeleteEntityResponseOp>();
+        private readonly MessageList<DeleteEntityResponseOp> deleteEntityResponses =
+            new MessageList<DeleteEntityResponseOp>();
 
-        private readonly ReceivedMessageList<ReserveEntityIdsResponseOp> reserveEntityIdsResponses =
-            new ReceivedMessageList<ReserveEntityIdsResponseOp>();
+        private readonly MessageList<ReserveEntityIdsResponseOp> reserveEntityIdsResponses =
+            new MessageList<ReserveEntityIdsResponseOp>();
 
-        private readonly ReceivedMessageList<EntityQueryResponseOp> entityQueryResponses =
-            new ReceivedMessageList<EntityQueryResponseOp>();
+        private readonly MessageList<EntityQueryResponseOp> entityQueryResponses =
+            new MessageList<EntityQueryResponseOp>();
 
         public void Clear()
         {
@@ -44,22 +44,22 @@ namespace Improbable.Gdk.Core
             entityQueryResponses.Add(response);
         }
 
-        internal ReceivedMessageList<CreateEntityResponseOp> GetCreateEntityResponses()
+        internal MessageList<CreateEntityResponseOp> GetCreateEntityResponses()
         {
             return createEntityResponses;
         }
 
-        internal ReceivedMessageList<DeleteEntityResponseOp> GetDeleteEntityResponses()
+        internal MessageList<DeleteEntityResponseOp> GetDeleteEntityResponses()
         {
             return deleteEntityResponses;
         }
 
-        internal ReceivedMessageList<ReserveEntityIdsResponseOp> GetReserveEntityIdsResponseOps()
+        internal MessageList<ReserveEntityIdsResponseOp> GetReserveEntityIdsResponseOps()
         {
             return reserveEntityIdsResponses;
         }
 
-        internal ReceivedMessageList<EntityQueryResponseOp> GetEntityQueryResponses()
+        internal MessageList<EntityQueryResponseOp> GetEntityQueryResponses()
         {
             return entityQueryResponses;
         }

@@ -43,11 +43,11 @@ namespace <#= qualifiedNamespace #>
             private EntityManager entityManager;
 
             private List<(<#= requestType #> Request, long Id)> requestsToSend = new List<(<#= requestType #> Request, long Id)>();
-            private ReceivedMessageList<<#= receivedRequestType #>> requestsReceived = new ReceivedMessageList<<#= receivedRequestType #>>();
+            private MessageList<<#= receivedRequestType #>> requestsReceived = new MessageList<<#= receivedRequestType #>>();
 
             private List<<#= responseType #>> responsesToSend = new List<<#= responseType #>>();
-            private ReceivedMessageList<<#= rawReceivedResponseType #>> rawResponsesReceived = new ReceivedMessageList<<#= rawReceivedResponseType #>>();
-            private ReceivedMessageList<<#= receivedResponseType #>> responsesReceived = new ReceivedMessageList<<#= receivedResponseType #>>();
+            private MessageList<<#= rawReceivedResponseType #>> rawResponsesReceived = new MessageList<<#= rawReceivedResponseType #>>();
+            private MessageList<<#= receivedResponseType #>> responsesReceived = new MessageList<<#= receivedResponseType #>>();
 
             private Dictionary<long, <#= requestType #>> sentInternalRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
             private Dictionary<long, Unity.Entities.Entity> sentInternalRequestIdToEntity = new Dictionary<long, Unity.Entities.Entity>();

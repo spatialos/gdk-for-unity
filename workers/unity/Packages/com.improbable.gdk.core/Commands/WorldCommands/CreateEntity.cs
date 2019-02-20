@@ -327,8 +327,8 @@ namespace Improbable.Gdk.Core.Commands
 
                 private List<(Request Request, long Id)> requestsToSend = new List<(Request Request, long Id)>();
 
-                private ReceivedMessageList<ReceivedResponse> responsesReceived =
-                    new ReceivedMessageList<ReceivedResponse>();
+                private MessageList<ReceivedResponse> responses =
+                    new MessageList<ReceivedResponse>();
 
                 private Dictionary<long, Request> sentInternalRequestIdToRequest =
                     new Dictionary<long, Request>();
@@ -376,7 +376,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
 
                     requestsToSend.Clear();
-                    responsesReceived.Clear();
+                    responses.Clear();
                 }
 
                 public void Init(World world)
@@ -413,20 +413,20 @@ namespace Improbable.Gdk.Core.Commands
 
                 public ReceivedMessagesSpan<ReceivedResponse> GetResponsesReceived()
                 {
-                    return new ReceivedMessagesSpan<ReceivedResponse>(responsesReceived);
+                    return new ReceivedMessagesSpan<ReceivedResponse>(responses);
                 }
 
                 public bool TryGetResponseReceivedForRequestId(long requestId,
                     out ReceivedResponse response)
                 {
-                    var responseIndex = responsesReceived.GetResponseIndex(requestId);
+                    var responseIndex = responses.GetResponseIndex(requestId);
                     if (responseIndex < 0)
                     {
                         response = default(ReceivedResponse);
                         return false;
                     }
 
-                    response = responsesReceived[responseIndex];
+                    response = responses[responseIndex];
                     return true;
                 }
 
@@ -447,7 +447,7 @@ namespace Improbable.Gdk.Core.Commands
                         request,
                         internalRequestId);
 
-                    responsesReceived.Add(response);
+                    responses.Add(response);
                 }
             }
         }

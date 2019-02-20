@@ -22,8 +22,8 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
 
-        private readonly ReceivedMessageList<EntityComponent> authorityLossAcks =
-            new ReceivedMessageList<EntityComponent>();
+        private readonly MessageList<EntityComponent> authorityLossAcks =
+            new MessageList<EntityComponent>();
 
         public MessagesToSend()
         {
@@ -154,7 +154,7 @@ namespace Improbable.Gdk.Core
         //     worldCommandStorage.AddResponse(response);
         // }
 
-        internal ReceivedMessageList<EntityComponent> GetAuthorityLossAcknowledgements()
+        internal MessageList<EntityComponent> GetAuthorityLossAcknowledgements()
         {
             return authorityLossAcks;
         }
