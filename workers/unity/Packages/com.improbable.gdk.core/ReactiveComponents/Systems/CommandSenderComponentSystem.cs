@@ -13,12 +13,16 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         private readonly List<ICommandSenderComponentManager> managers = new List<ICommandSenderComponentManager>();
 
-        [Inject] private WorkerSystem workerSystem;
-        [Inject] private EntitySystem entitySystem;
+        private WorkerSystem workerSystem;
+        private EntitySystem entitySystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+            entitySystem = World.GetExistingManager<EntitySystem>();
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())

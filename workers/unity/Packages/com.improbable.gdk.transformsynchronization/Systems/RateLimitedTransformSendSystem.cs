@@ -12,6 +12,7 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class RateLimitedTransformSendSystem : ComponentSystem
     {
+#pragma warning disable 649
         private struct Data
         {
             public readonly int Length;
@@ -27,6 +28,7 @@ namespace Improbable.Gdk.TransformSynchronization
         [Inject] private Data data;
         [Inject] private WorkerSystem worker;
         [Inject] private TickRateEstimationSystem tickRate;
+#pragma warning restore 649
 
         protected override void OnUpdate()
         {

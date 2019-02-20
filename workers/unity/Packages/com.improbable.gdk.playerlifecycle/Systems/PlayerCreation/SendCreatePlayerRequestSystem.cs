@@ -1,7 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using Improbable.Worker.CInterop;
-
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -14,6 +13,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private readonly EntityId playerCreatorEntityId = new EntityId(1);
 
+#pragma warning disable 649
         private struct NewEntityData
         {
             public readonly int Length;
@@ -38,11 +38,12 @@ namespace Improbable.Gdk.PlayerLifecycle
             public EntityArray Entities;
         }
 
-        private ILogDispatcher logDispatcher;
-
         [Inject] private NewEntityData newEntityData;
         [Inject] private SendData sendData;
         [Inject] private ResponseData responseData;
+#pragma warning restore 649
+
+        private ILogDispatcher logDispatcher;
 
         protected override void OnCreateManager()
         {

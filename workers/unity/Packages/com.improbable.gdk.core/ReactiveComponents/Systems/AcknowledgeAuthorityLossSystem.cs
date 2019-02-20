@@ -14,14 +14,15 @@ namespace Improbable.Gdk.ReactiveComponents
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class AcknowledgeAuthorityLossSystem : ComponentSystem
     {
-        [Inject] private WorkerSystem workerSystem;
-
         private readonly List<ComponentAuthorityLossDetails> authorityLossDetails =
             new List<ComponentAuthorityLossDetails>();
+
+        private WorkerSystem workerSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
             GenerateComponentGroups();
         }
 
