@@ -9,9 +9,13 @@ namespace CodeGeneration.Tests.FileHandling
     {
         private readonly FileTreeNode rootNode = new FileTreeNode();
 
-        // TODO: Search pattern?
         public List<IFile> GetFilesInDirectory(string path, string searchPattern = "*.*", bool recursive = true)
         {
+            if (searchPattern != ".*")
+            {
+                throw new NotImplementedException("Search patterns other than '.*' are not supported.");
+            }
+
             var pathParts = path.Split("/");
             var currentNode = rootNode;
 

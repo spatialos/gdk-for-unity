@@ -32,7 +32,6 @@ namespace CodeGeneration.Tests.Utils
             Assert.AreEqual(expectedOutput, output);
         }
 
-        // TODO: Is this platform dependent? Likely.
         [TestCase("", "")]
         [TestCase("single", "single")]
         [TestCase("some.snake_case", "some\\snakecase")]
