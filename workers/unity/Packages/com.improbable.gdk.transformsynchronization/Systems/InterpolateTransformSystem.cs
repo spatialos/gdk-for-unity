@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Transform;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -116,15 +117,14 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
                     uint lastTickId = transformToInterpolateFrom.PhysicsTick;
 
-                    uint remoteTickDifference = transformToInterpolateTo.PhysicsTick - lastTickId;
-                    // This could go backwards if authority trashes between two workers with different loads
-                    if (remoteTickDifference <= 0)
+                    // This could go backwards if authority changes quickly between two workers with different loads
+                    if (lastTickId >= transformToInterpolateTo.PhysicsTick)
                     {
                         continue;
                     }
 
-                    uint ticksToFill =
-                        math.max((uint) (transformToInterpolateTo.PhysicsTick - lastTickId), 1);
+                    uint ticksToFill = math.max(transformToInterpolateTo.PhysicsTick - lastTickId, 1);
+
                     for (uint k = 0; k < ticksToFill - 1; ++k)
                     {
                         transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,

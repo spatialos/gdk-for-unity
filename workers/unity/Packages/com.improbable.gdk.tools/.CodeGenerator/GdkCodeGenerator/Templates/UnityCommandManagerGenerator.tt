@@ -1,14 +1,9 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
 <#
-    var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var commandDetailsList = GetCommandDetailsList();
-    var eventDetailsList = GetEventDetailsList();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
-    var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
-    var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
@@ -33,6 +28,7 @@ namespace <#= qualifiedNamespace #>
         var requestType = command.CommandName + ".Request";
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
         var responseType = command.CommandName + ".Response";
+        var rawReceivedResponseType = command.CommandName + ".RawReceivedResponse";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
         public class <#= command.CommandName #>CommandManager : IComponentCommandManager<
@@ -50,6 +46,7 @@ namespace <#= qualifiedNamespace #>
             private ReceivedMessageList<<#= receivedRequestType #>> requestsReceived = new ReceivedMessageList<<#= receivedRequestType #>>();
 
             private List<<#= responseType #>> responsesToSend = new List<<#= responseType #>>();
+            private ReceivedMessageList<<#= rawReceivedResponseType #>> rawResponsesReceived = new ReceivedMessageList<<#= rawReceivedResponseType #>>();
             private ReceivedMessageList<<#= receivedResponseType #>> responsesReceived = new ReceivedMessageList<<#= receivedResponseType #>>();
 
             private Dictionary<long, <#= requestType #>> sentInternalRequestIdToRequest = new Dictionary<long, <#= requestType #>>();
@@ -75,6 +72,19 @@ namespace <#= qualifiedNamespace #>
             public Type GetReceivedResponseType()
             {
                 return typeof(<#= receivedResponseType #>);
+            }
+
+
+            public void ApplyAndCleanDiff(ViewDiff diff)
+            {
+                var diffStorage = (Diff<#= command.CommandName #>CommandStorage) diff.GetCommandDiffStorage(ComponentId, <#= command.CommandIndex #>);
+                diffStorage.SwapAndClearMessageLists(ref requestsReceived);
+                diffStorage.SwapAndClearMessageLists(ref rawResponsesReceived);
+
+                for (int i = 0; i < rawResponsesReceived.Count; ++i)
+                {
+                    AddResponse(in rawResponsesReceived[i]);
+                }
             }
 
             public void SendAll()
@@ -124,11 +134,6 @@ namespace <#= qualifiedNamespace #>
                 {
                     throw new ArgumentException("World instance is not running a valid SpatialOS worker");
                 }
-
-                var dispatcher = world.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
-
-                dispatcher.OnCommandRequest(AddRequest);
-                dispatcher.OnCommandResponse(AddResponse);
             }
 
             public long SendCommand(<#= requestType #> request, Unity.Entities.Entity entity)
@@ -184,54 +189,10 @@ namespace <#= qualifiedNamespace #>
                 return true;
             }
 
-            private void AddRequest(CommandRequestOp op)
+            private void AddResponse(in <#= rawReceivedResponseType #> rawResponse)
             {
-                var componentId = op.Request.ComponentId;
-                if (componentId != ComponentId)
-                {
-                    return;
-                }
-
-                var commandIndex = op.Request.SchemaData.Value.GetCommandIndex();
-                if (commandIndex != <#= command.CommandIndex #>)
-                {
-                    return;
-                }
-
-                var deserializedRequest = <#= command.FqnRequestType #>.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
-
-                var request = new <#= receivedRequestType #>(
-                    new EntityId(op.EntityId),
-                    op.RequestId,
-                    op.CallerWorkerId,
-                    op.CallerAttributeSet,
-                    deserializedRequest);
-
-                requestsReceived.Add(request);
-            }
-
-            private void AddResponse(CommandResponseOp op)
-            {
-                var componentId = op.Response.ComponentId;
-                if (componentId != ComponentId)
-                {
-                    return;
-                }
-
-                var commandIndex = op.CommandIndex;
-                if (commandIndex != <#= command.CommandIndex #>)
-                {
-                    return;
-                }
-
-                <#= command.FqnResponseType #>? rawResponse = null;
-                if (op.StatusCode == StatusCode.Success)
-                {
-                    rawResponse = <#= command.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
-                }
-
-                var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
-                sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
+                var internalRequestId = sentWorkerRequestIdToInternalRequestId[rawResponse.RequestId];
+                sentWorkerRequestIdToInternalRequestId.Remove(rawResponse.RequestId);
 
                 var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
                 sentInternalRequestIdToEntity.Remove(internalRequestId);
@@ -241,10 +202,10 @@ namespace <#= qualifiedNamespace #>
 
                 var response = new <#= receivedResponseType #>(
                     sendingEntity,
-                    new EntityId(op.EntityId),
-                    op.Message,
-                    op.StatusCode,
-                    rawResponse,
+                    rawResponse.EntityId,
+                    rawResponse.Message,
+                    rawResponse.StatusCode,
+                    rawResponse.ResponsePayload,
                     request.Payload,
                     request.Context,
                     internalRequestId);

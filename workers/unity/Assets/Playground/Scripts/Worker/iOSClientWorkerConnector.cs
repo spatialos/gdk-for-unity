@@ -13,7 +13,9 @@ namespace Playground
         public string IpAddress { get; set; }
         public ConnectionScreenController ConnectionScreenController { get; set; }
 
+#pragma warning disable 649
         [SerializeField] private GameObject level;
+#pragma warning restore 649
 
         private GameObject levelInstance;
         private ConnectionService connectionService;

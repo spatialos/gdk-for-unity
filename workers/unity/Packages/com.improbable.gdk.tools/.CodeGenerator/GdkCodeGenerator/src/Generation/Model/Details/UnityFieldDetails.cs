@@ -103,6 +103,23 @@ namespace Improbable.Gdk.CodeGenerator
                 indents);
         }
 
+        /// <summary>
+        ///     Helper function that returns a (multi-line) string that represents the C# code required to deserialize
+        ///     this field on a ComponentData object into an update.
+        /// </summary>
+        /// <param name="updateFieldInstance">
+        ///     The name of the instance of this field on the update object that is being
+        ///     deserialized into.
+        /// </param>
+        /// <param name="schemaObject">The name of the SchemaObject is to be used in deserialization.</param>
+        /// <param name="indents">The indent level that the block of code should be at.</param>
+        /// <returns></returns>
+        public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, int indents)
+        {
+            return fieldType.GetDeserializeDataIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber,
+                indents);
+        }
+
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObj, int indents)
         {
             return fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber, indents);

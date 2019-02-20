@@ -8,8 +8,6 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(SpatialOSReceiveSystem))]
     public class EntitySystem : ComponentSystem
     {
-        private readonly List<IComponentManager> managers = new List<IComponentManager>();
-
         private readonly HashSet<EntityId> localEntities = new HashSet<EntityId>();
 
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
@@ -54,13 +52,20 @@ namespace Improbable.Gdk.Core
             localEntities.Remove(entityId);
         }
 
-        protected override void OnCreateManager()
+        internal void ApplyDiff(ViewDiff diff)
         {
-            base.OnCreateManager();
+            entitiesAdded.Clear();
+            entitiesRemoved.Clear();
 
-            var dispatcher = World.GetExistingManager<SpatialOSReceiveSystem>().Dispatcher;
-            dispatcher.OnAddEntity(op => AddEntity(new EntityId(op.EntityId)));
-            dispatcher.OnRemoveEntity(op => RemoveEntity(new EntityId(op.EntityId)));
+            foreach (var entityId in diff.GetEntitiesAdded())
+            {
+                entitiesAdded.Add(entityId);
+            }
+
+            foreach (var entityId in diff.GetEntitiesRemoved())
+            {
+                entitiesRemoved.Add(entityId);
+            }
         }
 
         protected override void OnUpdate()

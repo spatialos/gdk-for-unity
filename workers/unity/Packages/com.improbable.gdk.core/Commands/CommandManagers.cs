@@ -9,6 +9,8 @@ namespace Improbable.Gdk.Core.Commands
     {
         void SendAll();
         void Init(World world);
+
+        void ApplyAndCleanDiff(ViewDiff diff);
     }
 
     public interface IWorldCommandManager : ICommandManager

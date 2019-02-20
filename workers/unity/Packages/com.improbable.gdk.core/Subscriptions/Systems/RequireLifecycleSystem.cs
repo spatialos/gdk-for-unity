@@ -14,6 +14,10 @@ namespace Improbable.Gdk.Subscriptions
         private readonly List<MonoBehaviour> behavioursToEnable = new List<MonoBehaviour>();
         private readonly List<MonoBehaviour> behavioursToDisable = new List<MonoBehaviour>();
 
+        private CommandCallbackSystem commandCallbackSystem;
+        private ComponentCallbackSystem componentCallbackSystem;
+        private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
+
         // todo make this order the behaviours somehow
         internal void EnableMonoBehaviour(MonoBehaviour behaviour)
         {
@@ -26,9 +30,14 @@ namespace Improbable.Gdk.Subscriptions
             behavioursToEnable.Remove(behaviour);
         }
 
-        [Inject] private CommandCallbackSystem commandCallbackSystem;
-        [Inject] private ComponentCallbackSystem componentCallbackSystem;
-        [Inject] private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            commandCallbackSystem = World.GetExistingManager<CommandCallbackSystem>();
+            componentCallbackSystem = World.GetExistingManager<ComponentCallbackSystem>();
+            componentConstraintsCallbackSystem = World.GetExistingManager<ComponentConstraintsCallbackSystem>();
+        }
 
         protected override void OnUpdate()
         {
