@@ -250,15 +250,8 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CommandSystem>();
             World.GetOrCreateManager<ComponentUpdateSystem>();
             World.GetOrCreateManager<EntitySystem>();
-            World.GetOrCreateManager<ReactiveComponentSendSystem>();
             World.GetOrCreateManager<ComponentSendSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
-            World.GetOrCreateManager<CleanReactiveComponentsSystem>();
-            World.GetOrCreateManager<WorldCommandsCleanSystem>();
-            World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
-            World.GetOrCreateManager<ReactiveCommandComponentSystem>();
-            World.GetOrCreateManager<CommandSenderComponentSystem>();
             World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
 
             // Subscriptions systems
