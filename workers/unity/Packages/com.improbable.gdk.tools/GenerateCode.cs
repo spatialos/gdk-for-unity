@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
 {
-    [InitializeOnLoad]
     internal static class GenerateCode
     {
         private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
@@ -27,10 +27,15 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
+        private static readonly Regex dotnetRegex = new Regex(
+            @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>
         ///     Ensure that code is generated on editor startup.
         /// </summary>
-        static GenerateCode()
+        [InitializeOnLoadMethod]
+        private static void InitializeOnLoad()
         {
             if (!CanGenerateOnLoad())
             {
@@ -100,11 +105,22 @@ namespace Improbable.Gdk.Tools
                 {
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
+                        .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                        .AddErrorProcessing(Debug.LogError)
+                        .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
                     if (exitCode != 0)
                     {
-                        Debug.LogError("Failed to generate code.");
+                        if (!Application.isBatchMode)
+                        {
+                            EditorApplication.delayCall += () =>
+                            {
+                                EditorUtility.DisplayDialog("Generate Code",
+                                        "Failed to generate code from schema.\nPlease view the console for errors.",
+                                        "Close");
+                            };
+                        }
                     }
                     else
                     {
@@ -121,6 +137,30 @@ namespace Improbable.Gdk.Tools
             finally
             {
                 EditorApplication.UnlockReloadAssemblies();
+            }
+        }
+
+        private static void ProcessStdOut(string output)
+        {
+            var match = dotnetRegex.Match(output);
+            if (match.Success)
+            {
+                switch (match.Groups["type"].Value)
+                {
+                    case "warning":
+                        Debug.LogWarning(output);
+                        break;
+                    case "error":
+                        Debug.LogError(output);
+                        break;
+                    default:
+                        Debug.Log(output);
+                        break;
+                }
+            }
+            else
+            {
+                Debug.Log(output);
             }
         }
 
