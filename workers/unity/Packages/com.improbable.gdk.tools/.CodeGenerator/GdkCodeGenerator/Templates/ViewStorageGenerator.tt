@@ -16,7 +16,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewUpdateHandler<Update>
+        public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>
         {
             private readonly Dictionary<long, Authority> authorityStates = new Dictionary<long, Authority>();
             private readonly Dictionary<long, Snapshot> componentData = new Dictionary<long, Snapshot>();
@@ -24,22 +24,6 @@ namespace <#= qualifiedNamespace #>
             public Type GetSnapshotType()
             {
                 return typeof(Snapshot);
-            }
-
-            public Type GetUpdateType()
-            {
-                return typeof(Update);
-            }
-
-            public void AddComponent(long entityId, Snapshot component)
-            {
-                componentData[entityId] = component;
-            }
-
-            public void RemoveComponent(long entityId)
-            {
-                componentData.Remove(entityId);
-                authorityStates.Remove(entityId);
             }
 
             public bool HasComponent(long entityId)
@@ -67,12 +51,36 @@ namespace <#= qualifiedNamespace #>
                 return authority;
             }
 
-            public void SetAuthority(long entityId, Authority authority)
+            public void ApplyDiff(ComponentUpdateSystem componentUpdateSystem)
             {
-                authorityStates[entityId] = authority;
+                foreach (var entity in componentUpdateSystem.GetComponentsAdded(ComponentId))
+                {
+                    authorityStates[entity.Id] = Authority.NotAuthoritative;
+                    componentData[entity.Id] = new Snapshot();
+                }
+
+                foreach (var entity in componentUpdateSystem.GetComponentsRemoved(ComponentId))
+                {
+                    authorityStates.Remove(entity.Id);
+                    componentData.Remove(entity.Id);
+                }
+
+                var updates = componentUpdateSystem.GetComponentUpdatesReceived<Update>();
+                for (var i = 0; i < updates.Count; i++)
+                {
+                    var update = updates[i];
+                    ApplyUpdate(update.EntityId.Id, update.Update);
+                }
+
+                var authorityChanges = componentUpdateSystem.GetAuthorityChangesReceived(ComponentId);
+                for (var i = 0; i < authorityChanges.Count; i++)
+                {
+                    var authorityChange = authorityChanges[i];
+                    authorityStates[authorityChange.EntityId.Id] = authorityChange.Authority;
+                }
             }
 
-            public void ApplyUpdate(long entityId, Update update)
+            private void ApplyUpdate(long entityId, Update update)
             {
                 var data = componentData[entityId];
 <# foreach (var field in fields) {

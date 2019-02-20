@@ -31,6 +31,7 @@ namespace Improbable.Gdk.Core
             entitySystem = World.GetOrCreateManager<EntitySystem>();
 
             diff = worker.Diff;
+            view.Init(updateSystem);
         }
 
         protected override void OnUpdate()
@@ -70,6 +71,7 @@ namespace Improbable.Gdk.Core
                 updateSystem.ApplyDiff(diff);
                 commandSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
+                view.ApplyDiff(diff);
 
                 foreach (var entityId in diff.GetEntitiesRemoved())
                 {

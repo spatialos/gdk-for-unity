@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Worker.CInterop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public class View
     {
-        private readonly Dictionary<Type, IViewStorage> viewStorages = new Dictionary<Type, IViewStorage>();
+        private readonly Dictionary<Type, IViewStorage> typeToViewStorage = new Dictionary<Type, IViewStorage>();
+        private readonly List<IViewStorage> viewStorages = new List<IViewStorage>();
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
+
+        private ComponentUpdateSystem componentUpdateSystem;
 
         public View()
         {
@@ -20,10 +24,37 @@ namespace Improbable.Gdk.Core
                     {
                         var instance = (IViewStorage) Activator.CreateInstance(type);
 
-                        viewStorages[instance.GetUpdateType()] = instance;
-                        viewStorages[instance.GetSnapshotType()] = instance;
+                        typeToViewStorage[instance.GetSnapshotType()] = instance;
+
+                        viewStorages.Add(instance);
                     }
                 }
+            }
+        }
+
+        public void Init(ComponentUpdateSystem componentUpdateSystem)
+        {
+            this.componentUpdateSystem = componentUpdateSystem;
+        }
+
+        public void ApplyDiff(ViewDiff diff)
+        {
+            var entitiesAdded = diff.GetEntitiesAdded();
+            foreach (var entity in entitiesAdded)
+            {
+                entities.Add(entity);
+            }
+
+            var entitiesRemoved = diff.GetEntitiesRemoved();
+            foreach (var entity in entitiesRemoved)
+            {
+                entities.Remove(entity);
+            }
+
+            foreach (var storage in viewStorages)
+            {
+                // Resolve this with an actual diff!
+                storage.ApplyDiff(componentUpdateSystem);
             }
         }
 
@@ -40,7 +71,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id}");
             }
 
-            var storage = (IViewComponentStorage<T>) viewStorages[typeof(T)];
+            var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];
             return storage.GetComponent(entityId.Id);
         }
 
@@ -51,7 +82,7 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            var storage = (IViewComponentStorage<T>) viewStorages[typeof(T)];
+            var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];
             return storage.HasComponent(entityId.Id);
         }
 
@@ -62,7 +93,7 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id}");
             }
 
-            return ((IViewComponentStorage<T>) viewStorages[typeof(T)]).GetAuthority(entityId.Id);
+            return ((IViewComponentStorage<T>) typeToViewStorage[typeof(T)]).GetAuthority(entityId.Id);
         }
 
         public bool IsAuthoritative<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
@@ -72,40 +103,7 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            return ((IViewComponentStorage<T>) viewStorages[typeof(T)]).GetAuthority(entityId.Id) == Authority.Authoritative;
-        }
-
-        internal void AddEntity(EntityId entityId)
-        {
-            entities.Add(entityId);
-        }
-
-        internal void RemoveEntity(EntityId entityId)
-        {
-            entities.Remove(entityId);
-        }
-
-        internal void AddComponent<T>(EntityId entityId, T component) where T : struct, ISpatialComponentSnapshot
-        {
-            var storage = (IViewComponentStorage<T>) viewStorages[typeof(T)];
-            storage.AddComponent(entityId.Id, component);
-        }
-
-        internal void ApplyUpdate<U>(EntityId entityId, U update) where U : struct, ISpatialComponentUpdate
-        {
-            var storage = (IViewUpdateHandler<U>) viewStorages[typeof(U)];
-            storage.ApplyUpdate(entityId.Id, update);
-        }
-
-        internal void RemoveComponent<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
-        {
-            var storage = (IViewComponentStorage<T>) viewStorages[typeof(T)];
-            storage.RemoveComponent(entityId.Id);
-        }
-
-        internal void SetAuthority<T>(EntityId entityId, Authority authority) where T : struct, ISpatialComponentSnapshot
-        {
-            ((IViewComponentStorage<T>) viewStorages[typeof(T)]).SetAuthority(entityId.Id, authority);
+            return ((IViewComponentStorage<T>) typeToViewStorage[typeof(T)]).GetAuthority(entityId.Id) == Authority.Authoritative;
         }
     }
 }
