@@ -56,30 +56,35 @@ namespace Improbable.Gdk.Core
 
                 opDeserializer.Reset();
 
-                if (diff.Disconnected)
-                {
-                    OnDisconnect(diff.DisconnectMessage);
-                    return;
-                }
-
-                foreach (var entityId in diff.GetEntitiesAdded())
-                {
-                    AddEntity(entityId);
-                }
-
-                updateSystem.ApplyDiff(diff);
-                commandSystem.ApplyDiff(diff);
-                entitySystem.ApplyDiff(diff);
-
-                foreach (var entityId in diff.GetEntitiesRemoved())
-                {
-                    RemoveEntity(entityId);
-                }
+                ApplyDiff(diff);
             }
             catch (Exception e)
             {
                 worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
                     .WithException(e));
+            }
+        }
+
+        public void ApplyDiff(ViewDiff diff)
+        {
+            if (diff.Disconnected)
+            {
+                OnDisconnect(diff.DisconnectMessage);
+                return;
+            }
+
+            foreach (var entityId in diff.GetEntitiesAdded())
+            {
+                AddEntity(entityId);
+            }
+
+            updateSystem.ApplyDiff(diff);
+            commandSystem.ApplyDiff(diff);
+            entitySystem.ApplyDiff(diff);
+
+            foreach (var entityId in diff.GetEntitiesRemoved())
+            {
+                RemoveEntity(entityId);
             }
         }
 
