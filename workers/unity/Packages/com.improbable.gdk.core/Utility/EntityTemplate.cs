@@ -256,7 +256,7 @@ namespace Improbable.Gdk.Core
             }
 
             public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot,
-                DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
+                DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : struct, ISpatialComponentSnapshot
             {
                 if (!data.ContainsKey(componentId))
                 {
