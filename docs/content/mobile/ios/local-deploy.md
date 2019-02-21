@@ -62,7 +62,7 @@ Note: You don’t need to enter anything in the text field.
 If **iOS** is not selected, select it and then select **Switch Platform**.
 1. In the Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
-1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Simulator SDK**.
+1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Device SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
