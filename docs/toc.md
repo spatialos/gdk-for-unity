@@ -3,19 +3,16 @@
     - Get started
         - [Introduction]({{urlRoot}}/content/get-started/get-started)
         - [1 - Set up]({{urlRoot}}/content/get-started/set-up)
-        - [2 - Open the FPS Starter Project]({{urlRoot}}/content/get-started/open-project)
-        - [3 - Build your workers]({{urlRoot}}/content/get-started/build-workers)
-        - [4 - Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
-        - [5 - Get playing]({{urlRoot}}/content/get-started/get-playing.md)
-        - [6 - View your game world]({{urlRoot}}/content/get-started/view-game-world)   
+        - [2 - Build your workers]({{urlRoot}}/content/get-started/build-workers)
+        - [3 - Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
+        - [4 - Get playing]({{urlRoot}}/content/get-started/get-playing.md)
+        - [5 - View your game world]({{urlRoot}}/content/get-started/view-game-world)   
     - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
-
 - <h3>Starter projects</h3>
     - FPS Starter Project
         - [Overview]({{urlRoot}}/projects/fps/overview)
         - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
     - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)
-
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/content/intro-reference)
     - Concepts and terminology
@@ -71,7 +68,6 @@
         - SpatialOS entities
             - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
             - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
-            - [API - EntityBuilder]({{urlRoot}}/content/api-entity-builder)
         - Commands
             - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
     - Tools
@@ -98,7 +94,6 @@
         - [Write a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
     - [Troubleshooting]({{urlRoot}}/content/troubleshooting)
     - [Known issues]({{urlRoot}}/known-issues)
-
 - <h3>Get involved</h3>
     - Contributing to the GDK
         - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
