@@ -2,6 +2,7 @@
 [//]: # (TODO - Tech writer pass)
 [//]: # (TODO - See if `option` struct needs defining)
 
+<%(TOC)%>
 # Readers and Writers
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 

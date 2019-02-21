@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Testing GDK Systems
 
 We can test systems functionality like this:

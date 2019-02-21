@@ -2,6 +2,7 @@
 [//]: # (TODO - technical author pass)
 [//]: # (TODO - split into Commands intro doc + API doc)
 [//]: # (TODO - Update the ECS Commands doc to refer to this for relevant info. It doesn’t seem to have much of this duplicated, so IMO this is just a matter of removing 2 sentences of details about the request/response types and adding 1 sentence with a link here. Could do a straightforward PR once this doc is in.)
+<%(TOC)%>
 # Commands: World and component command requests and responses
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

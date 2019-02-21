@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Connect to a cloud deployment
 
 Before reading this document, make sure you are familiar with:

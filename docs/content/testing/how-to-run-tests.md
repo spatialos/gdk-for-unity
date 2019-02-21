@@ -1,3 +1,4 @@
+<%(TOC)%>
 # How to run tests
 
 This document describes how to run tests for the two parts of the SpatialOS GDK for Unity (GDK):

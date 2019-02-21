@@ -1,4 +1,5 @@
 [//]: # (Doc of docs reference 15)
+<%(TOC)%>
 # Workers: Workers in the GDK
 
 Before reading this document, make sure you are familiar with the [MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).

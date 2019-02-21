@@ -2,6 +2,7 @@
 [//]: # (TODO - Tech writer review)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
 
+<%(TOC)%>
 # System update order
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

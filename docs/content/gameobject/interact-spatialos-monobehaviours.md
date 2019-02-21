@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 5.2)
 [//]: # (TODO - tech writer review)
+<%(TOC)%>
 # How to interact with SpatialOS using MonoBehaviours
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

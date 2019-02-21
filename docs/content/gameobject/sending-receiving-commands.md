@@ -4,6 +4,7 @@
 [//]: # (TODO - split API section into a different doc)
 [//]: # (TODO - add how to do spawn logic in code example below)
 
+<%(TOC)%>
 # Commands: Sending and receiving component commands
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 

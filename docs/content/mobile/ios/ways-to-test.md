@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Ways to test your iOS client
 
 Before reading this document, make sure you are familiar with:

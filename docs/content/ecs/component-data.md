@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Components and component updates
 _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 10)
 [//]: # (TODO: technical writer review)
 
+<%(TOC)%>
 #  API - SpatialOSComponent
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

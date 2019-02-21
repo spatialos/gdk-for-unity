@@ -2,6 +2,7 @@
 [//]: # (TODO: Tech writer pass)
 [//]: # (Sam C has captured all remaining debates and contentious topics in this doc so that it can be reviewed and fixed after M2 release: https://docs.google.com/document/d/1jCKcf93gjvY1_T037ClcWEea0EdRCe943Mr6fJ0oBYg/edit?usp=sharing)
 
+<%(TOC)%>
 # Glossary
 
 >**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary) sections for a full glossary of generic SpatialOS concepts.

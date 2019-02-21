@@ -3,6 +3,7 @@
 [//]: # (TODO - explain what “handling the response based on the information contained in this object” means - see note below.)
 [//]: # (TODO - link to status codes for error messages - see note below.)
 
+<%(TOC)%>
 # World commands
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 

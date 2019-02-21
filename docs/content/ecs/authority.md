@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Authority
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities.md)._
 

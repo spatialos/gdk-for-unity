@@ -1,5 +1,6 @@
 [//]: # (TODO: Add examples of additional data you might add)
 
+<%(TOC)%>
 # Connect to the SpatialOS Runtime
 
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._

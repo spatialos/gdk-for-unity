@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Create workers with WorkerConnector
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

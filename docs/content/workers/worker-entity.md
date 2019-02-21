@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 15.2a)
 [//]: # (TODO: Move to the ecs folder)
 
+<%(TOC)%>
 # Workers: Worker entity
 _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

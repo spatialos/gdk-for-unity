@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 5.1)
 
+<%(TOC)%>
 # SpatialOS entities: How to link SpatialOS entities with GameObjects
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

@@ -1,4 +1,5 @@
 [//]: # (Doc of docs reference 15.1a)
+<%(TOC)%>
 # API - WorkerConnector
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

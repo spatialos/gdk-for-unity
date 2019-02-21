@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Mobile Support Overview
 
 Before starting with mobile development, make sure you are familiar with

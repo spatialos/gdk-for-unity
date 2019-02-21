@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 21)
 [//]: # (TODO - technical author pass)
+<%(TOC)%>
 # SpatialOS entities: update entity lifecycle
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

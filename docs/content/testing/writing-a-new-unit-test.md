@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Writing a new unit test
 
 This document covers Unity tests only (that is tests of the Unity project which forms part of the SpatialOS GDK for Unity). It walks through creating tests for a made-up class to explain how you can test parts of the GDK. You need to get to know NUnit and the Unity Test Runner before creating tests. See below for more information on these.

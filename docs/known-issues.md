@@ -1,3 +1,4 @@
+<%(TOC)%>
 # SpatialOS GDK for Unity known issues
 
 Known issue = any major user-facing bug or lack of user-facing feature that:

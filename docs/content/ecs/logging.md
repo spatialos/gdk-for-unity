@@ -1,4 +1,5 @@
 [//]: # (TODO: Move this doc from the ecs folder)
+<%(TOC)%>
 #  Logging
  _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

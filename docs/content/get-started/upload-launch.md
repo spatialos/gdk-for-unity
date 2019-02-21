@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Get started: 3 - Upload and launch your game
 
 This has 2 steps:

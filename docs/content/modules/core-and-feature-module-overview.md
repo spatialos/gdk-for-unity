@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 11)
 [//]: # (TODO - which module is ECS or GO-MB specific and which is generic?)
 
+<%(TOC)%>
 # Core Module and Feature Modules overview
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

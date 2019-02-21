@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Get started: 1 - Set up
 There are four parts to this step: 
 
