@@ -417,14 +417,28 @@ var fieldDetails = fieldDetailsList[i]; #>
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(Snapshot snapshot)
+            {
+                var update = new Update();
+<# foreach (var field in fieldDetailsList) { #>
+                update.<#= field.PascalCaseName #> = new Option<<#= field.Type #>>(snapshot.<#= field.PascalCaseName #>);
+<# } #>
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }
