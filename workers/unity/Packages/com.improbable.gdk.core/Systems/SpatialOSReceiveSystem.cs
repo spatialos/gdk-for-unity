@@ -12,13 +12,14 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
+        private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
+
+        private ViewDiff diff = new ViewDiff();
+
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
         private CommandSystem commandSystem;
         private EntitySystem entitySystem;
-
-        private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
-        private readonly ViewDiff diff = new ViewDiff();
 
         protected override void OnCreateManager()
         {
@@ -28,6 +29,8 @@ namespace Improbable.Gdk.Core
             updateSystem = World.GetOrCreateManager<ComponentUpdateSystem>();
             commandSystem = World.GetOrCreateManager<CommandSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
+
+            diff = worker.Diff;
         }
 
         protected override void OnUpdate()
@@ -39,6 +42,8 @@ namespace Improbable.Gdk.Core
 
             try
             {
+                diff.Clear();
+
                 bool inCriticalSection = false;
                 do
                 {
@@ -70,8 +75,6 @@ namespace Improbable.Gdk.Core
                 {
                     RemoveEntity(entityId);
                 }
-
-                diff.Clear();
             }
             catch (Exception e)
             {

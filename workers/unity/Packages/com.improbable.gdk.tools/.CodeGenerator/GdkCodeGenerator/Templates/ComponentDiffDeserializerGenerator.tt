@@ -9,9 +9,6 @@
 #>
 <#= generatedHeader #>
 
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.Entities;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 

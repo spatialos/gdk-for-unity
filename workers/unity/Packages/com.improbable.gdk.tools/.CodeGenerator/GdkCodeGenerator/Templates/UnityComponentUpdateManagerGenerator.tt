@@ -27,7 +27,7 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class UpdateEventManager : IComponentManager, IUpdateSender<Component>, IUpdateReceiver<Update>, IAuthorityManager
+        public class UpdateEventManager : IComponentManager, IUpdateSender<Component>, IAuthorityManager
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
@@ -47,15 +47,6 @@ namespace <#= qualifiedNamespace #>
 
             private readonly Dictionary<EntityId, List<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsToSend =
                 new Dictionary<EntityId, List<<#= eventType #>>>();
-
-            private ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventsReceived =
-                new ReceivedMessageList<ComponentEventReceived<<#= eventType #>>>();
-
-            // todo consider putting this in the list type
-            private bool <#= ev.CamelCaseEventName #>Sorted;
-
-            private readonly EventComparer<<#= eventType #>> <#= ev.CamelCaseEventName #>Comparer =
-                new EventComparer<<#= eventType #>>();
 <# } #>
 
             private readonly List<EntityId> entitiesWithEventsToSend = new List<EntityId>();
@@ -63,27 +54,12 @@ namespace <#= qualifiedNamespace #>
             private readonly List<ComponentUpdateToSend<Component>> updatesToSend =
                 new List<ComponentUpdateToSend<Component>>();
 
-            private ReceivedMessageList<ComponentUpdateReceived<Update>> updatesReceived =
-                new ReceivedMessageList<ComponentUpdateReceived<Update>>();
-
-            private ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
-                new ReceivedMessageList<AuthorityChangeReceived>();
-
             private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
                 new Dictionary<EntityId, Authority>();
 
             private readonly List<EntityId> authLossToAck = new List<EntityId>();
 
-            private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
-            private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
-
-            private List<EntityId> componentsAdded = new List<EntityId>();
-            private List<EntityId> componentsRemoved = new List<EntityId>();
-
             private readonly HashSet<EntityId> entitiesWithComponent = new HashSet<EntityId>();
-
-            private bool authoritySorted;
-            private bool updatesSorted;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -109,11 +85,6 @@ namespace <#= qualifiedNamespace #>
                 };
             }
 
-            public Type GetUpdateType()
-            {
-                return typeof(Update);
-            }
-
             public Type GetComponentType()
             {
                 return typeof(Component);
@@ -124,33 +95,29 @@ namespace <#= qualifiedNamespace #>
                 return initialComponents;
             }
 
-            public void ApplyAndCleanDiff(ViewDiff diff)
+            public void ApplyDiff(ViewDiff diff)
             {
                 var diffStorage = (DiffComponentStorage) diff.GetComponentDiffStorage(ComponentId);
-                diffStorage.SwapAndClearMessageLists(ref updatesReceived);
-                diffStorage.SwapAndClearMessageLists(ref authorityChanges);
-                diffStorage.SwapAndClearComponentsAdded(ref componentsAdded);
-                diffStorage.SwapAndClearComponentsRemoved(ref componentsRemoved);
-<# foreach (var ev in eventDetailsList) { #>
-                diffStorage.SwapAndClearMessageLists(ref <#= ev.CamelCaseEventName #>EventsReceived);
-<# } #>
 
-                foreach (var entityId in componentsAdded)
+                foreach (var entityId in diffStorage.GetComponentsAdded())
                 {
                     AddComponent(entityId);
                 }
 
-                for (int i = 0; i < updatesReceived.Count; ++i)
+                var updates = diffStorage.GetUpdates();
+                for (int i = 0; i < updates.Count; ++i)
                 {
-                    ApplyUpdate(updatesReceived[i]);
+                    ApplyUpdate(in updates[i]);
                 }
 
-                foreach (var change in authorityChanges)
+                var authChanges = diffStorage.GetAuthorityChanges();
+                for (int i = 0; i < authChanges.Count; ++i)
                 {
+                    ref readonly var change = ref authChanges[i];
                     SetAuthority(change.EntityId, change.Authority);
                 }
 
-                foreach (var entityId in componentsRemoved)
+                foreach (var entityId in diffStorage.GetComponentsRemoved())
                 {
                     RemoveComponent(entityId);
                 }
@@ -215,21 +182,13 @@ namespace <#= qualifiedNamespace #>
                     connection.SendComponentUpdate(entityId.Id, new global::Improbable.Worker.CInterop.ComponentUpdate(componentUpdate));
                 }
 
-                componentsAdded.Clear();
-                componentsRemoved.Clear();
-                authorityChanges.Clear();
                 entitiesWithEventsToSend.Clear();
                 authLossToAck.Clear();
                 updatesToSend.Clear();
-                updatesReceived.Clear();
-                authoritySorted = false;
-                updatesSorted = false;
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
-                <#= ev.CamelCaseEventName #>Sorted = false;
                 <#= ev.CamelCaseEventName #>EventsToSend.Clear();
-                <#= ev.CamelCaseEventName #>EventsReceived.Clear();
 <# } #>
             }
 
@@ -255,16 +214,6 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public List<EntityId> GetComponentsAdded()
-            {
-                return componentsAdded;
-            }
-
-            public List<EntityId> GetComponentsRemoved()
-            {
-                return componentsRemoved;
-            }
-
             public bool HasComponent(EntityId entityId)
             {
                 return entitiesWithComponent.Contains(entityId);
@@ -288,85 +237,11 @@ namespace <#= qualifiedNamespace #>
 
                 events.Add(eventToSend);
             }
-
-            ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived(EntityId entityId)
-            {
-                if (!<#= ev.CamelCaseEventName #>Sorted)
-                {
-                    <#= ev.CamelCaseEventName #>EventsReceived.Sort(<#= ev.CamelCaseEventName #>Comparer);
-                    <#= ev.CamelCaseEventName #>Sorted = true;
-                }
-
-                var range = <#= ev.CamelCaseEventName #>EventsReceived.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(
-                    <#= ev.CamelCaseEventName #>EventsReceived, range.FirstIndex, range.Count);
-            }
-
-            ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>> IEventManager<<#= eventType #>>.GetEventsReceived()
-            {
-                if (!<#= ev.CamelCaseEventName #>Sorted)
-                {
-                    <#= ev.CamelCaseEventName #>EventsReceived.Sort(<#= ev.CamelCaseEventName #>Comparer);
-                    <#= ev.CamelCaseEventName #>Sorted = true;
-                }
-
-                return new ReceivedMessagesSpan<ComponentEventReceived<<#= eventType #>>>(<#= ev.CamelCaseEventName #>EventsReceived);
-            }
 <# } #>
 
             public void SendComponentUpdate(Component updateToSend, EntityId entityId)
             {
                 updatesToSend.Add(new ComponentUpdateToSend<Component>(updateToSend, entityId));
-            }
-
-            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetComponentUpdatesReceived()
-            {
-                // todo consider if this needs to be sorted
-                // possible offer two functions
-                // probably just sort it
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updatesReceived.Sort(updateComparer);
-                }
-
-                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updatesReceived);
-            }
-
-            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetComponentUpdatesReceived(EntityId entityId)
-            {
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updatesReceived.Sort(updateComparer);
-                }
-
-                var range = updatesReceived.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updatesReceived, range.FirstIndex,
-                    range.Count);
-            }
-
-            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived()
-            {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
-                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
-            }
-
-            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId)
-            {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
-                var range = authorityChanges.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
             }
 
             public Authority GetAuthority(EntityId entityId)

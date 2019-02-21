@@ -30,18 +30,7 @@ namespace Improbable.Gdk.Core
             items = EmptyArray;
         }
 
-        public ref readonly T this[int index]
-        {
-            get
-            {
-                if (index >= Count || index < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-
-                return ref items[index];
-            }
-        }
+        public ref readonly T this[int index] => ref items[index];
 
         public void Add(T item)
         {

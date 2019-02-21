@@ -22,6 +22,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public Entity WorkerEntity;
 
+        internal readonly ViewDiff Diff = new ViewDiff();
+
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
         public WorkerSystem(Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
