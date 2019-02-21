@@ -1,0 +1,14 @@
+{
+    "name": "Improbable.Gdk.TestUtils",
+    "references": [
+        "Improbable.Gdk.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
