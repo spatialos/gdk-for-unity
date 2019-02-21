@@ -27,6 +27,16 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
+        /// <summary>
+        /// This regex matches a C# compile error or warning log.
+        /// It captures the following components:
+        ///     File that caused the issue
+        ///     Line and column in the file
+        ///     Log type, warning or error
+        ///     CS error code
+        ///     Message
+        /// </summary>
+        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\com.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
         private static readonly Regex dotnetRegex = new Regex(
             @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -117,8 +127,8 @@ namespace Improbable.Gdk.Tools
                             EditorApplication.delayCall += () =>
                             {
                                 EditorUtility.DisplayDialog("Generate Code",
-                                        "Failed to generate code from schema.\nPlease view the console for errors.",
-                                        "Close");
+                                    "Failed to generate code from schema.\nPlease view the console for errors.",
+                                    "Close");
                             };
                         }
                     }

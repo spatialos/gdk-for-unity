@@ -178,7 +178,7 @@ namespace Improbable.Gdk.Tools
                     {
                         try
                         {
-                            outputProcessor?.Invoke(outputString);
+                            outputProcessor.Invoke(outputString);
                         }
                         catch (Exception e)
                         {
@@ -218,7 +218,7 @@ namespace Improbable.Gdk.Tools
                     {
                         try
                         {
-                            errorProcessor?.Invoke(errorString);
+                            errorProcessor.Invoke(errorString);
                         }
                         catch (Exception e)
                         {
@@ -232,7 +232,7 @@ namespace Improbable.Gdk.Tools
                 if (!process.Start())
                 {
                     throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
+                        $"Failed to run {info.FileName} {info.Arguments}");
                 }
 
                 process.BeginOutputReadLine();

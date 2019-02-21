@@ -34,7 +34,7 @@ namespace Improbable.TextTemplating
                 return false;
             }
 
-            string generatedPath = Path.Combine(this.ProjectDirectory.ItemSpec, "Generated");
+            string generatedPath = Path.Combine(ProjectDirectory.ItemSpec, "Generated");
             Log.LogMessage(MessageImportance.Normal, "Generated files will be output to directory: {0}", generatedPath);
 
             if (Directory.Exists(generatedPath))
