@@ -75,7 +75,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         private bool IsIdentifierChild(Identifier parent, Identifier potentialChild)
         {
-            return potentialChild.QualifiedName.StartsWith(parent.QualifiedName)
+            return potentialChild.QualifiedName.StartsWith($"{parent.QualifiedName}.")
                 && potentialChild.Path.Count == parent.Path.Count + 1;
         }
 
