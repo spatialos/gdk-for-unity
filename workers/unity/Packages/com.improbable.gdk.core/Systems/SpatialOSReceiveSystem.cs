@@ -14,7 +14,8 @@ namespace Improbable.Gdk.Core
     {
         private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
 
-        private ViewDiff diff = new ViewDiff();
+        private View view;
+        private ViewDiff diff;
 
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
@@ -30,8 +31,8 @@ namespace Improbable.Gdk.Core
             commandSystem = World.GetOrCreateManager<CommandSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
 
+            view = worker.View;
             diff = worker.Diff;
-            view.Init(updateSystem);
         }
 
         protected override void OnUpdate()

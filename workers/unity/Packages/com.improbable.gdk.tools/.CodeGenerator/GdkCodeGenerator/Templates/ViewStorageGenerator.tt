@@ -51,28 +51,30 @@ namespace <#= qualifiedNamespace #>
                 return authority;
             }
 
-            public void ApplyDiff(ComponentUpdateSystem componentUpdateSystem)
+            public void ApplyDiff(ViewDiff viewDiff)
             {
-                foreach (var entity in componentUpdateSystem.GetComponentsAdded(ComponentId))
+                var storage = viewDiff.GetComponentDiffStorage(ComponentId);
+
+                foreach (var entity in storage.GetComponentsAdded())
                 {
                     authorityStates[entity.Id] = Authority.NotAuthoritative;
                     componentData[entity.Id] = new Snapshot();
                 }
 
-                foreach (var entity in componentUpdateSystem.GetComponentsRemoved(ComponentId))
+                foreach (var entity in storage.GetComponentsRemoved())
                 {
                     authorityStates.Remove(entity.Id);
                     componentData.Remove(entity.Id);
                 }
 
-                var updates = componentUpdateSystem.GetComponentUpdatesReceived<Update>();
+                var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
                 for (var i = 0; i < updates.Count; i++)
                 {
                     var update = updates[i];
                     ApplyUpdate(update.EntityId.Id, update.Update);
                 }
 
-                var authorityChanges = componentUpdateSystem.GetAuthorityChangesReceived(ComponentId);
+                var authorityChanges = ((IDiffAuthorityStorage) storage).GetAuthorityChanges();
                 for (var i = 0; i < authorityChanges.Count; i++)
                 {
                     var authorityChange = authorityChanges[i];

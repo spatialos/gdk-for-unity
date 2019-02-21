@@ -12,8 +12,6 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
 
-        private ComponentUpdateSystem componentUpdateSystem;
-
         public View()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -30,11 +28,6 @@ namespace Improbable.Gdk.Core
                     }
                 }
             }
-        }
-
-        public void Init(ComponentUpdateSystem componentUpdateSystem)
-        {
-            this.componentUpdateSystem = componentUpdateSystem;
         }
 
         public void ApplyDiff(ViewDiff diff)
@@ -54,7 +47,7 @@ namespace Improbable.Gdk.Core
             foreach (var storage in viewStorages)
             {
                 // Resolve this with an actual diff!
-                storage.ApplyDiff(componentUpdateSystem);
+                storage.ApplyDiff(diff);
             }
         }
 
