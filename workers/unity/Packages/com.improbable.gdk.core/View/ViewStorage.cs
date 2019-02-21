@@ -7,6 +7,7 @@ namespace Improbable.Gdk.Core
     {
         Type GetSnapshotType();
 
+        // TODO: This should take an actual diff once the data is exposed.
         void ApplyDiff(ComponentUpdateSystem componentUpdateSystem);
     }
 
