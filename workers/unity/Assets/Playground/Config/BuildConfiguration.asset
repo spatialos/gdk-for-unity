@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -26,7 +27,7 @@ MonoBehaviour:
     - {fileID: 102900000, guid: f5fda56aad5d91d408ff123b26ab6ade, type: 3}
     LocalBuildConfig:
       BuildPlatforms: 1
-      BuildOptions: 0
+      BuildOptions: 1
     CloudBuildConfig:
       BuildPlatforms: 8
       BuildOptions: 16384
@@ -37,7 +38,7 @@ MonoBehaviour:
       BuildPlatforms: 32
       BuildOptions: 1
     CloudBuildConfig:
-      BuildPlatforms: 0
+      BuildPlatforms: 32
       BuildOptions: 0
   - WorkerType: iOSClient
     ScenesForWorker:
@@ -46,6 +47,6 @@ MonoBehaviour:
       BuildPlatforms: 64
       BuildOptions: 1
     CloudBuildConfig:
-      BuildPlatforms: 0
-      BuildOptions: 16384
+      BuildPlatforms: 64
+      BuildOptions: 0
   isInitialised: 1

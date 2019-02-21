@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.1.5` - 2019-02-18
+
 ### Changed
 
 - Changed `RedirectedProcess` to have Builder-like API.
