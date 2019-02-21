@@ -16,8 +16,6 @@ namespace Improbable.Gdk.Core
         private readonly List<ICommandManager> managers = new List<ICommandManager>();
 
         private readonly Dictionary<Type, int> requestTypeToIndex = new Dictionary<Type, int>();
-        private readonly Dictionary<Type, int> receivedRequestTypeToIndex = new Dictionary<Type, int>();
-        private readonly Dictionary<Type, int> responseTypeToIndex = new Dictionary<Type, int>();
         private readonly Dictionary<Type, int> receivedResponseTypeToIndex = new Dictionary<Type, int>();
 
         private long nextRequestId = 1;
@@ -93,10 +91,6 @@ namespace Improbable.Gdk.Core
                     switch (instance)
                     {
                         case IComponentCommandManager componentCommandManager:
-                            // requestTypeToIndex.Add(componentCommandManager.GetRequestType(), managers.Count);
-                            // receivedRequestTypeToIndex.Add(componentCommandManager.GetReceivedRequestType(), managers.Count);
-                            // responseTypeToIndex.Add(componentCommandManager.GetResponseType(), managers.Count);
-                            // receivedResponseTypeToIndex.Add(componentCommandManager.GetReceivedResponseType(), managers.Count);
                             break;
                         case IWorldCommandManager worldCommandManager:
                             requestTypeToIndex.Add(worldCommandManager.GetRequestType(), managers.Count);
