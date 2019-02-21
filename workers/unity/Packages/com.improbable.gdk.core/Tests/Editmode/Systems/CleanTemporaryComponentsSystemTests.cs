@@ -6,7 +6,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core.EditmodeTests.Systems
 {
     [TestFixture]
-    public class CleanReactiveComponentsSystemTests
+    public class CleanTemporaryComponentsSystemTests
     {
         private World world;
 
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
 
             var entityWithReactiveComponent = entityManager.CreateEntity(reactiveComponentType);
 
-            var cleanReactiveComponentsSystem = world.GetOrCreateManager<CleanReactiveComponentsSystem>();
+            var cleanReactiveComponentsSystem = world.GetOrCreateManager<CleanTemporaryComponentsSystem>();
 
             // Test that the system does not perform removal immediately, but only on Update
             Assert.IsTrue(entityManager.HasComponent(entityWithReactiveComponent, reactiveComponentType));
