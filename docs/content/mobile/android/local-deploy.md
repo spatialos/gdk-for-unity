@@ -16,6 +16,12 @@ To connect your Android device to a local deployment, you need to prepare its co
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
+Create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
+
+1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want.
+1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
+1. In your Unity Editor, navigate to your Android client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is checked in the script's drop-down window of the Inspector window.
+
 ## Unity Editor{#in-editor}
 1. In your Unity Editor, Select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
@@ -57,8 +63,6 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Make sure your computer and your mobile device are both connected to the same network.
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
-1. [Build your server-workers]({{urlRoot}}/content/build).
-1. [Set up your local deployment](#prepare).
 1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. Still in your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.
