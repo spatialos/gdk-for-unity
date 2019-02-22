@@ -4,8 +4,6 @@ using Unity.Entities;
 namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
-    [UpdateBefore(typeof(ComponentUpdateSystem))]
     public class CommandSystem : ComponentSystem
     {
         private WorkerSystem worker;
