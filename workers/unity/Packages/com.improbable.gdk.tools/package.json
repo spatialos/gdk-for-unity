@@ -1,7 +1,7 @@
 {
     "name": "com.improbable.gdk.tools",
     "displayName": "SpatialOS GDK Tools",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "unity": "2018.3",
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Support Tools. Made by Improbable.",

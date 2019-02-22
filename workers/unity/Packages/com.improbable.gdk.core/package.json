@@ -1,12 +1,12 @@
 {
     "name": "com.improbable.gdk.core",
     "displayName": "SpatialOS GDK Core",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "unity": "2018.3",
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Core Module. Made by Improbable.",
     "dependencies": {
-        "com.improbable.gdk.tools": "0.1.4",
+        "com.improbable.gdk.tools": "0.1.5",
         "com.unity.entities": "0.0.12-preview.21"
     }
 }
