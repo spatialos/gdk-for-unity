@@ -60,7 +60,7 @@ Parameters:
 
   * `EntityId entityId` - The ID of the SpatialOS entity that you want to send the command to.
   * `TRequest payload` - This is the data which is sent to the worker with [write access]({{urlRoot}}/content/glossary#authority) with your command. The type `TRequest` of this payload depends on what you defined in your schema as the payload.
-  * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is `null` by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction) (SpatialOS documentation).
+  * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is `null` by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction).
   * `bool allowShortCircuiting` - Optional.
 A boolean specifying whether or not a command which is sent to the same worker can be handled without going through the SpatialOS Runtime. The default is `false`.   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response. The default is `null`.
 

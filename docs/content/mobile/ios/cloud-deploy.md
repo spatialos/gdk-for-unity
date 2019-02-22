@@ -21,7 +21,7 @@ Alternatively, if you want to create your own authentication server, follow [thi
 To do this:
   *  From the [SpatialOS Console](https://console.improbable.io/projects), select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
-1. [Create a Development Authentication Token (SpatialOS documentation).](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance)
+1. [Create a Development Authentication Token.](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance)
 1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and includes the functionality you want. In your Unity Editor, add this script it to your iOS client-worker GameObject.
 1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure your iOS client-worker GameObject is selected and in the Inspector, locate the script you just added to it. 
 1. In the Inspector, in the script’s drop-down window, there is a field to add the authentication token that you created. 

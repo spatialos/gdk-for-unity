@@ -8,7 +8,7 @@
 
 > Note this document refers to ECS components but it is also relevant if you are using the MonoBehaviour workflow. You don't need to know about ECS to use component generation.
 
-The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
  Code generation runs when you open your Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
 
@@ -19,7 +19,7 @@ The code generator generates two structs for each SpatialOS component defined in
   * A **snapshot** `struct` which implements `Improbable.Gdk.Core.ISpatialComponentSnapshot`. Its fully qualified name is: `{schema package}.{name of schema component}.Snapshot`.
   * A **component** `struct` which implements `Unity.Entities.IComponentData`, `Improbable.Gdk.Core.ISpatialComponentData`, and `Improbable.Gdk.Core.ISnapshottable<{schema package}.{name of schema component}.Snapshot>`. Its fully qualified name is: `{schema package}.{name of schema component}.Component`.
 
-These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands) or [events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
+These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands) or [events](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
 
 ## Generation details
 

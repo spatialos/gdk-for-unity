@@ -4,7 +4,7 @@
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).
 
-> If you don't know about authority, you should read [Understanding access (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
+> If you don't know about authority, you should read [Understanding access](https://docs.improbable.io/reference/latest/shared/design/understanding-access) in the SpatialOS documentation.
 >
 > Crucially: at runtime, your worker instance may or may not have authority over a given SpatialOS component.
 
