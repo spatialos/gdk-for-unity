@@ -51,7 +51,7 @@ Note: You don’t need to enter anything in the text field.
 1. Make sure your computer and your mobile device are both connected to the same network.
 1. Connect the mobile device to your computer using a USB cable.
 1. Open your project in your Unity Editor.
-1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
+1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
 1. In the Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
