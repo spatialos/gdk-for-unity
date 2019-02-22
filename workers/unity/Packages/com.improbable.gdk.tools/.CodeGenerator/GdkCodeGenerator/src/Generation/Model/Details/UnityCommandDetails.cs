@@ -1,25 +1,28 @@
-using Improbable.CodeGeneration.Utils;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityCommandDetails
     {
-        public string CommandName => Formatting.SnakeCaseToCapitalisedCamelCase(commandDefinition.Name);
-        public string CamelCaseCommandName => Formatting.SnakeCaseToCamelCase(commandDefinition.Name);
+        public string CommandName { get; }
+        public string CamelCaseCommandName { get; }
 
-        public string FqnRequestType =>
-            CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinition.RequestType.typeDefinition.QualifiedName);
+        public string FqnRequestType { get; }
+        public string FqnResponseType { get; }
 
-        public string FqnResponseType =>
-            CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinition.ResponseType.typeDefinition.QualifiedName);
+        public uint CommandIndex { get; }
 
-        public uint CommandIndex => commandDefinition.CommandIndex;
-
-        private readonly UnityComponentDefinition.UnityCommandDefinition commandDefinition;
-
-        public UnityCommandDetails(UnityComponentDefinition.UnityCommandDefinition commandDefinition)
+        public UnityCommandDetails(ComponentDefinitionRaw.CommandDefinitionRaw commandDefinitionRaw)
         {
-            this.commandDefinition = commandDefinition;
+            CommandName = Formatting.SnakeCaseToPascalCase(commandDefinitionRaw.Identifier.Name);
+            CamelCaseCommandName = Formatting.PascalCaseToCamelCase(CommandName);
+            FqnRequestType =
+                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.RequestType.Type.QualifiedName);
+            FqnResponseType =
+                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.ResponseType.Type.QualifiedName);
+
+            CommandIndex = commandDefinitionRaw.CommandIndex;
         }
     }
 }

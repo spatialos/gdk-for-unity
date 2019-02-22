@@ -1,5 +1,6 @@
-using Improbable.CodeGeneration.Model;
-using Improbable.CodeGeneration.Utils;
+using System.Linq;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -16,11 +17,14 @@ namespace Improbable.Gdk.CodeGenerator
                 $"global::{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
         }
 
-        public static string GetFqnTypeFromTypeReference(TypeReferenceRaw typeReferenceRaw)
+        public static Identifier CreateIdentifier(string qualifiedName)
         {
-            return typeReferenceRaw.IsBuiltInType
-                ? UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[typeReferenceRaw.TypeName]
-                : GetCapitalisedFqnTypename(typeReferenceRaw.TypeName);
+            return new Identifier
+            {
+                QualifiedName = qualifiedName,
+                Name = qualifiedName.Split(".").Last(),
+                Path = qualifiedName.Split(".").ToList()
+            };
         }
     }
 }

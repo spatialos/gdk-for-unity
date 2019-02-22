@@ -21,6 +21,7 @@ markStartOfBlock "Setup variables"
 PROJECT_DIR="$(pwd)"
 mkdir -p "${PROJECT_DIR}/logs/"
 
+CODE_GEN_LIB_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-gen-lib-test-results.xml"
 CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-results.xml"
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
@@ -36,6 +37,9 @@ cleanUnity "$(pwd)/workers/unity"
 cleanUnity "$(pwd)/test-project"
 
 markStartOfBlock "Code Generator Testing"
+
+dotnet test --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
+CODE_GEN_LIB_TEST_RESULT=$?
 
 dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
@@ -91,6 +95,10 @@ popd
 
 markEndOfBlock "Generated Code Testing"
 
+if [ $CODE_GEN_LIB_TEST_RESULT -ne 0 ]; then
+    >&2 echo "Code Generator Tests failed. Please check the file ${CODE_GEN_LIB_TEST_RESULTS_FILE} for more information."
+fi
+
 if [ $CODE_GENERATOR_TEST_RESULT -ne 0 ]; then
     >&2 echo "Code Generator Tests failed. Please check the file ${CODE_GENERATOR_TEST_RESULTS_FILE} for more information."
 fi
@@ -115,7 +123,8 @@ cleanUnity "$(pwd)/test-project"
 if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
-   [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ] 
+   [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ] || \
+   [ $CODE_GEN_LIB_TEST_RESULT -ne 0 ]
 then
     >&2 echo "Tests failed! See above for more information."
     exit 1

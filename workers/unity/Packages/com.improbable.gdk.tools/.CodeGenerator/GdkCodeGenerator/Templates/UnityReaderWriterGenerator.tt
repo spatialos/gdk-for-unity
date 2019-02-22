@@ -24,7 +24,7 @@ namespace <#= qualifiedNamespace #>
     {
         public partial class Requirable
         {
-            [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.ReaderWriter, <#= componentDetails.ComponentId #>)]
             internal class ReaderWriterCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -33,7 +33,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.ReaderWriter, <#= componentDetails.ComponentId #>)]
             [InjectionCondition(InjectionCondition.RequireComponentPresent)]
             public interface Reader : IReader<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {
@@ -49,7 +49,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            [InjectableId(InjectableType.ReaderWriter, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.ReaderWriter, <#= componentDetails.ComponentId #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
             public interface Writer : Reader, IWriter<<#= componentNamespace #>.Component, <#= componentNamespace #>.Update>
             {

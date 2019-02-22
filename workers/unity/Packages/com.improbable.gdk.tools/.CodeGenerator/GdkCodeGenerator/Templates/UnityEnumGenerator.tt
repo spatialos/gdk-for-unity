@@ -4,6 +4,6 @@
 <#= CommonGeneratorUtils.GetGeneratedHeader() #>
 
 namespace <#= qualifiedNamespace #>
-{ 
-    <#= CommonGeneratorUtils.IndentEveryNewline(new UnityEnumContent().Generate(enumDefinition)) #>
+{
+    <#= CommonGeneratorUtils.IndentEveryNewline(new UnityEnumContent().Generate(details)) #>
 }
