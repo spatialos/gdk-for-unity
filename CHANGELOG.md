@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Internal
+
+- Changed the code generator to use the schema bundle JSON rather than AST JSON.
+    - If you have forked the code generator, this may be a breaking change.
+- Exposed annotations in the code generator model.
+
 ## `0.1.5` - 2019-02-18
 
 ### Changed
