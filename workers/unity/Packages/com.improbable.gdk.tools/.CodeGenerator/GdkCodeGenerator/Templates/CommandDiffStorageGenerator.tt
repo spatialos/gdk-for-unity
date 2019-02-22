@@ -19,7 +19,9 @@ namespace <#= qualifiedNamespace #>
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
-        public class Diff<#= command.CommandName #>CommandStorage : IDiffCommandRequestStorage<<#= receivedRequestType #>>, IDiffCommandResponseStorage<<#= receivedResponseType #>>
+        public class Diff<#= command.CommandName #>CommandStorage : IComponentCommandDiffStorage
+            , IDiffCommandRequestStorage<<#= receivedRequestType #>>
+            , IDiffCommandResponseStorage<<#= receivedResponseType #>>
         {
             private MessageList<<#= receivedRequestType #>> requestStorage =
                 new MessageList<<#= receivedRequestType #>>();
@@ -114,7 +116,9 @@ namespace <#= qualifiedNamespace #>
         var requestType = command.CommandName + ".Request";
         var responseType = command.CommandName + ".Response";
 #>
-        public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, ICommandRequestSendStorage<<#= requestType #>>, ICommandResponseSendStorage<<#= responseType #>>
+        public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
+            , ICommandRequestSendStorage<<#= requestType #>>
+            , ICommandResponseSendStorage<<#= responseType #>>
         {
             private MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)> requestStorage =
                 new MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)>();

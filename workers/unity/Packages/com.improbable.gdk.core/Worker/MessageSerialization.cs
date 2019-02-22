@@ -28,9 +28,6 @@ namespace Improbable.Gdk.Core
 
     public interface ICommandSerializer
     {
-        uint GetComponentId();
-        uint GetCommandId();
-
         void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages,
             CommandMetaData commandMetaData);
     }

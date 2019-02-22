@@ -56,7 +56,6 @@ namespace Improbable.Gdk.Core
                 }
 
                 updateSystem.ApplyDiff(diff);
-                commandSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
 
                 foreach (var entityId in diff.GetEntitiesRemoved())

@@ -112,28 +112,32 @@ namespace Improbable.Gdk.Core
                 connection.SendCommandFailure(failure.RequestId, failure.Reason);
             }
 
-            for (int i = 0; i < reserveEntityIdsRequests.Count; ++i)
-            {
-                ref readonly var request = ref reserveEntityIdsRequests[i];
-                connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
-            }
-
             for (int i = 0; i < createEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref createEntityRequests[i];
-                connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
+                var id = connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < deleteEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref deleteEntityRequests[i];
-                connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
+                var id = connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+            }
+
+            for (int i = 0; i < reserveEntityIdsRequests.Count; ++i)
+            {
+                ref readonly var request = ref reserveEntityIdsRequests[i];
+                var id = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < entityQueryRequests.Count; ++i)
             {
                 ref readonly var request = ref entityQueryRequests[i];
-                connection.SendEntityQueryRequest(request.Query, request.Timeout);
+                var id = connection.SendEntityQueryRequest(request.Query, request.Timeout);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < metricsToSend.Count; ++i)
@@ -176,34 +180,34 @@ namespace Improbable.Gdk.Core
             failures.Add(new FailureToSend(reason, requestId));
         }
 
-        public void AddReserveEntityIdsRequest(in ReserveEntityIdsRequestToSend request)
+        public void AddCreateEntityRequest(Entity entity, long? entityId, uint? timeout, long requestId)
         {
-            reserveEntityIdsRequests.Add(in request);
+            createEntityRequests.Add(new CreateEntityRequestToSend(entity, entityId, timeout, requestId));
         }
 
-        public void AddCreateEntityRequest(in CreateEntityRequestToSend request)
+        public void AddDeleteEntityRequest(long entityId, uint? timeout, long requestId)
         {
-            createEntityRequests.Add(in request);
+            deleteEntityRequests.Add(new DeleteEntityRequestToSend(entityId, timeout, requestId));
         }
 
-        public void AddDeleteEntityRequest(in DeleteEntityRequestToSend request)
+        public void AddReserveEntityIdsRequest(uint numberOfEntityIds, uint? timeout, long requestId)
         {
-            deleteEntityRequests.Add(in request);
+            reserveEntityIdsRequests.Add(new ReserveEntityIdsRequestToSend(numberOfEntityIds, timeout, requestId));
         }
 
-        public void AddEntityQueryRequest(in EntityQueryRequestToSend request)
+        public void AddEntityQueryRequest(EntityQuery query, uint? timeout, long requestId)
         {
-            entityQueryRequests.Add(in request);
+            entityQueryRequests.Add(new EntityQueryRequestToSend(query, timeout, requestId));
         }
 
-        public void AddMetrics(in MetricsToSend metrics)
+        public void AddLogMessage(string message, string loggerName, LogLevel logLevel, long? entityId)
         {
-            metricsToSend.Add(in metrics);
+            logMessages.Add(new LogMessageToSend(message, loggerName, logLevel, entityId));
         }
 
-        public void AddLogMessage(in LogMessageToSend logMessage)
+        public void AddMetrics(Metrics metrics)
         {
-            logMessages.Add(in logMessage);
+            metricsToSend.Add(new MetricsToSend(metrics));
         }
 
         #region Containers
@@ -262,48 +266,90 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        #endregion
-
-        public readonly struct ReserveEntityIdsRequestToSend
+        private readonly struct ReserveEntityIdsRequestToSend
         {
             public readonly uint NumberOfEntityIds;
             public readonly uint? Timeout;
             public readonly long RequestId;
+
+            public ReserveEntityIdsRequestToSend(uint numberOfEntityIds, uint? timeout, long requestId)
+            {
+                NumberOfEntityIds = numberOfEntityIds;
+                Timeout = timeout;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct CreateEntityRequestToSend
+        private readonly struct CreateEntityRequestToSend
         {
             public readonly Entity Entity;
             public readonly long? EntityId;
             public readonly uint? Timeout;
             public readonly long RequestId;
+
+            public CreateEntityRequestToSend(Entity entity, long? entityId, uint? timeout, long requestId)
+            {
+                Entity = entity;
+                EntityId = entityId;
+                Timeout = timeout;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct DeleteEntityRequestToSend
+        private readonly struct DeleteEntityRequestToSend
         {
             public readonly long EntityId;
             public readonly uint? Timeout;
             public readonly long RequestId;
+
+            public DeleteEntityRequestToSend(long entityId, uint? timeout, long requestId)
+            {
+                EntityId = entityId;
+                Timeout = timeout;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct EntityQueryRequestToSend
+        private readonly struct EntityQueryRequestToSend
         {
             public readonly EntityQuery Query;
             public readonly uint? Timeout;
             public readonly long RequestId;
+
+            public EntityQueryRequestToSend(EntityQuery query, uint? timeout, long requestId)
+            {
+                Query = query;
+                Timeout = timeout;
+                RequestId = requestId;
+            }
         }
 
-        public readonly struct LogMessageToSend
+        private readonly struct LogMessageToSend
         {
             public readonly string Message;
             public readonly string LoggerName;
             public readonly LogLevel LogLevel;
             public readonly long? EntityId;
+
+            public LogMessageToSend(string message, string loggerName, LogLevel logLevel, long? entityId)
+            {
+                Message = message;
+                LoggerName = loggerName;
+                LogLevel = logLevel;
+                EntityId = entityId;
+            }
         }
 
-        public readonly struct MetricsToSend
+        private readonly struct MetricsToSend
         {
             public readonly Metrics Metrics;
+
+            public MetricsToSend(Metrics metrics)
+            {
+                Metrics = metrics;
+            }
         }
+
+        #endregion
     }
 }

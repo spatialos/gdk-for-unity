@@ -14,15 +14,15 @@ namespace Improbable.Gdk.Core
 
         private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
 
-        private readonly Dictionary<uint, Dictionary<uint, ICommandSendStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, ICommandSendStorage>>();
+        private readonly Dictionary<uint, Dictionary<uint, IComponentCommandSendStorage>> componentIdToCommandIdToStorage =
+            new Dictionary<uint, Dictionary<uint, IComponentCommandSendStorage>>();
 
         private readonly Dictionary<Type, ICommandSendStorage> typeToCommandStorage =
             new Dictionary<Type, ICommandSendStorage>();
 
         private readonly List<ICommandSendStorage> commandStorageList = new List<ICommandSendStorage>();
 
-        //private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
+        private readonly WorldCommandsToSendStorage worldCommandStorage = new WorldCommandsToSendStorage();
 
         private readonly MessageList<EntityComponent> authorityLossAcks =
             new MessageList<EntityComponent>();
@@ -47,15 +47,15 @@ namespace Improbable.Gdk.Core
                         }
                     }
 
-                    if (typeof(ICommandSendStorage).IsAssignableFrom(type) && !type.IsAbstract)
+                    if (typeof(IComponentCommandSendStorage).IsAssignableFrom(type) && !type.IsAbstract)
                     {
-                        var instance = (ICommandSendStorage) Activator.CreateInstance(type);
+                        var instance = (IComponentCommandSendStorage) Activator.CreateInstance(type);
 
                         commandStorageList.Add(instance);
                         if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
                             out var commandIdToStorage))
                         {
-                            commandIdToStorage = new Dictionary<uint, ICommandSendStorage>();
+                            commandIdToStorage = new Dictionary<uint, IComponentCommandSendStorage>();
                             componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
                         }
 
@@ -65,6 +65,12 @@ namespace Improbable.Gdk.Core
                     }
                 }
             }
+
+            commandStorageList.Add(worldCommandStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.CreateEntity.Request), worldCommandStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.DeleteEntity.Request), worldCommandStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.ReserveEntityIds.Request), worldCommandStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.EntityQuery.Request), worldCommandStorage);
         }
 
         public void Clear()
@@ -120,26 +126,6 @@ namespace Improbable.Gdk.Core
             storage.AddResponse(response);
         }
 
-        // public void AddCreateEntityRequest(CreateEntityResponseOp response)
-        // {
-        //     worldCommandStorage.AddResponse(response);
-        // }
-        //
-        // public void AddDeleteEntityRequest(DeleteEntityResponseOp response)
-        // {
-        //     worldCommandStorage.AddResponse(response);
-        // }
-        //
-        // public void AddReserveEntityIdsRequest(ReserveEntityIdsResponseOp response)
-        // {
-        //     worldCommandStorage.AddResponse(response);
-        // }
-        //
-        // public void AddEntityQueryRequest(EntityQueryResponseOp response)
-        // {
-        //     worldCommandStorage.AddResponse(response);
-        // }
-
         internal MessageList<EntityComponent> GetAuthorityLossAcknowledgements()
         {
             return authorityLossAcks;
@@ -175,7 +161,7 @@ namespace Improbable.Gdk.Core
             return storage;
         }
 
-        internal ICommandSendStorage GetCommandSendStorage(uint componentId, uint commandId)
+        internal IComponentCommandSendStorage GetCommandSendStorage(uint componentId, uint commandId)
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
@@ -190,9 +176,9 @@ namespace Improbable.Gdk.Core
             return storage;
         }
 
-        // internal WorldCommandStorage GetWorldCommandStorage()
-        // {
-        //     return worldCommandStorage;
-        // }
+        internal WorldCommandsToSendStorage GetWorldCommandStorage()
+        {
+            return worldCommandStorage;
+        }
     }
 }

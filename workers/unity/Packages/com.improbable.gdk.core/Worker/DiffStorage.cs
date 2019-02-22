@@ -19,13 +19,17 @@ namespace Improbable.Gdk.Core
 
     public interface ICommandDiffStorage
     {
+        void Clear();
+    }
+
+    public interface IComponentCommandDiffStorage : ICommandDiffStorage
+    {
         uint GetComponentId();
         uint GetCommandId();
 
         Type GetRequestType();
         Type GetResponseType();
 
-        void Clear();
         void RemoveRequests(long entityId);
     }
 
