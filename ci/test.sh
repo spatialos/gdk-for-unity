@@ -123,7 +123,7 @@ cleanUnity "$(pwd)/test-project"
 if [ $EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $PLAYMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GENERATOR_TEST_RESULT -ne 0 ] || \
-   [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ] \
+   [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ] || \
    [ $CODE_GEN_LIB_TEST_RESULT -ne 0 ]
 then
     >&2 echo "Tests failed! See above for more information."

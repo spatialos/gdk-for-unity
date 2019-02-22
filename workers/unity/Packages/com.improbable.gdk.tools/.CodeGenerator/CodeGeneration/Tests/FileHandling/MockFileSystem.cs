@@ -11,9 +11,9 @@ namespace CodeGeneration.Tests.FileHandling
 
         public List<IFile> GetFilesInDirectory(string path, string searchPattern = "*.*", bool recursive = true)
         {
-            if (searchPattern != ".*")
+            if (searchPattern != "*.*")
             {
-                throw new NotImplementedException("Search patterns other than '.*' are not supported.");
+                throw new NotImplementedException("Search patterns other than '*.*' are not supported.");
             }
 
             var pathParts = path.Split("/");
