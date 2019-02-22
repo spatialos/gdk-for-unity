@@ -17,14 +17,36 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         /// The target to build.
         /// </summary>
-        public BuildTarget Target;
+        [NonSerialized] public BuildTarget Target;
 
         /// <summary>
         /// Should this target be built?
         /// </summary>
         public bool Enabled;
 
-        [NonSerialized] internal readonly string Label;        
+        internal string Label
+        {
+            get
+            {
+                switch (Target)
+                {
+                    case BuildTarget.StandaloneWindows:
+                        return "Win x86";
+                    case BuildTarget.StandaloneWindows64:
+                        return "Win x64";
+                    case BuildTarget.StandaloneLinux64:
+                        return "Linux";
+                    case BuildTarget.StandaloneOSX:
+                        return "MacOS";
+                    case BuildTarget.iOS:
+                        return "iOS";
+                    case BuildTarget.Android:
+                        return "Android";
+                    default:
+                        return "Unknown";
+                }
+            }
+        }
 
         /// <summary>
         ///     Creates a new instance of a build target and its options.
@@ -33,31 +55,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             Enabled = enabled;
             Target = target;
-            Options = options;
-            switch (target)
-            {
-                case BuildTarget.StandaloneWindows:
-                    Label = "Win x86";
-                    break;
-                case BuildTarget.StandaloneWindows64:
-                    Label = "Win x64";
-                    break;
-                case BuildTarget.StandaloneLinux64:
-                    Label = "Linux";
-                    break;
-                case BuildTarget.StandaloneOSX:
-                    Label = "MacOS";
-                    break;
-                case BuildTarget.iOS:
-                    Label = "iOS";
-                    break;
-                case BuildTarget.Android:
-                    Label = "Android";
-                    break;
-                default:
-                    Label = "Unknown";
-                    break;
-            }
+            Options = options;            
         }
     }
 }

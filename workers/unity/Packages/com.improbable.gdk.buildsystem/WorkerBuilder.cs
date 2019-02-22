@@ -129,7 +129,7 @@ namespace Improbable.Gdk.BuildSystem
 
             var enabledTargets = environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList();
 
-            if (environmentConfig == null || enabledTargets.Count == 0)
+            if (enabledTargets == null || enabledTargets.Count == 0)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
                 return false;
