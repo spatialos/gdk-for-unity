@@ -14,9 +14,9 @@ Alternatively, if you want to create your own authentication server, follow [thi
 ## iOS Simulator{#ios-simulator}
 
 1. Open your project in your Unity Editor.
-1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. Selection is indicated by a Unity logo that appears next to the name of the selected platform.<br>
+1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
-1. In the Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
+1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
 1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Simulator SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
@@ -53,7 +53,7 @@ Note: You don’t need to enter anything in the text field.
 1. Open your project in your Unity Editor.
 1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
-1. In the Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
+1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
 1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Device SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
@@ -83,6 +83,7 @@ You know it’s complete when it says `Completed build for Cloud target` in your
 1. Once the game is deployed and started on your device, you see an empty text field and a **Connect** button: Select **Connect**.<br>
 Note: You don’t need to enter anything in the text field.
 1. Play the game on the Simulator.
-1. When you're done, exit the app on your device.<br>
-	In XCode, select the **Play** button to stop your the game running.<br>
-	In your SpatialOS Console, select **Stop** to halt your cloud deployment.
+1. When you're done:<br>
+	* Exit the app on your device.
+	* In XCode, select the **Play** button to stop your the game running.
+	* In your SpatialOS Console, select **Stop** to halt your cloud deployment.
