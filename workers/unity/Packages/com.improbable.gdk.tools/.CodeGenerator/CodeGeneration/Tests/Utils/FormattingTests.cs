@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Improbable.Gdk.CodeGeneration.Utils;
 using NUnit.Framework;
 
@@ -42,6 +43,12 @@ namespace CodeGeneration.Tests.Utils
         [TestCase(".leading.period", "leading\\period")]
         public void GetNamespacePath_has_correct_behaviour(string input, string expectedOutput)
         {
+            // Platform dependent paths.
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                expectedOutput = expectedOutput.Replace("\\", "/");
+            }
+
             var output = Formatting.GetNamespacePath(input);
             Assert.AreEqual(expectedOutput, output);
         }
