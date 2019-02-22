@@ -73,7 +73,7 @@ To do this:
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **iOS Device**.
-1. In Finder, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.<br>
+1. In your file manager, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.<br>
 	Open it in Xcode.
 1. In XCode, in the Navigation Area, select the **Project root**.
 1. Still in XCode, now in the Editor Area, go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.

@@ -43,7 +43,7 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. In the Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. In Finder, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.<br>
+1. In your file manager, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.<br>
 	Open it in Xcode.
 1. Still in XCode, select the **Play** button in the top left of the window.
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.<br>
