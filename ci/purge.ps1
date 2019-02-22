@@ -4,30 +4,30 @@
 # to find all processes of a particular name which have file locks on our build (project) directory.
 # We can then attempt to kill each of these processes if any exist.
 
-$SCRIPT_LOCATION = $MyInvocation.MyCommand.Path
-$SCRIPT_DIR = Split-Path $SCRIPT_LOCATION
-cd "${SCRIPT_DIR}/.."
+$ScriptLocation = $MyInvocation.MyCommand.Path
+$ScriptDir = Split-Path $ScriptLocation
+cd "$ScriptDir/.."
 
 function Kill-Dangling-Processes {
 	param( [string]$ProcessName )
 
 	echo "Looking for ${ProcessName} processes to kill..."
-	${DIR}=$(pwd).Path
-	${OUT}=$(handle64 -accepteula -p "${ProcessName}.exe" ${DIR})
+	$Dir=$(pwd).Path
+	$Out=$(handle64 -accepteula -p "$($ProcessName).exe" $Dir)
 	ForEach ($line in $($OUT -split "`r`n"))
 	{
-		$result = $([regex]::Match("${line}", "pid: (.*) type"))
-		if ($result.Success)
+		$Result = $([regex]::Match("$line", "pid: (.*) type"))
+		if ($Result.Success)
 		{
-			$ppid = $result.Groups[1].Value
+			$ppid = $Result.Groups[1].Value
 			taskkill /f /pid $ppid
 		}
 	}
 }
 
-$PROCESSES_TO_KILL = @("dotnet", "Unity", "UnityPackageManager")
+$ProcessesToKill = @("dotnet", "Unity", "UnityPackageManager")
 
-ForEach ($Process in $PROCESSES_TO_KILL) 
+ForEach ($Process in $ProcessesToKill) 
 {
 	Kill-Dangling-Processes $Process
 }
