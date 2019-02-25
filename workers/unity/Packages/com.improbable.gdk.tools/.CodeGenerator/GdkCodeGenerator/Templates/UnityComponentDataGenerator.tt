@@ -115,7 +115,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(<#= componentDetails.ComponentId #>));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -234,6 +234,24 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
             }
 
+            public static void SerializeUpdate(<#= componentNamespace #>.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
+                {
+                    if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
+                    {
+                        var field = update.<#= fieldDetails.PascalCaseName #>.Value;
+                        <#= fieldDetails.GetSerializationString("field", "obj", 6) #>
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                        <#= fieldDetails.GetTrySetClearedFieldString("field", "updateObj", 6) #>
+<# } #>
+                    }
+                }
+<# } #>
+            }
+
             public static void SerializeSnapshot(<#= componentNamespace #>.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
@@ -289,7 +307,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return update;
             }
 
-            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new <#= componentNamespace #>.Snapshot();
 
@@ -377,7 +395,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -385,7 +403,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)

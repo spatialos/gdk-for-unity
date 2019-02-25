@@ -44,17 +44,17 @@ namespace <#= qualifiedNamespace #>
             private readonly HashSet<EntityId> authorityGained = new HashSet<EntityId>();
             private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
 
-            private ReceivedMessageList<ComponentUpdateReceived<Update>> updateStorage =
-                new ReceivedMessageList<ComponentUpdateReceived<Update>>();
+            private MessageList<ComponentUpdateReceived<Update>> updateStorage =
+                new MessageList<ComponentUpdateReceived<Update>>();
 
-            private ReceivedMessageList<AuthorityChangeReceived> authorityChanges =
-                new ReceivedMessageList<AuthorityChangeReceived>();
+            private MessageList<AuthorityChangeReceived> authorityChanges =
+                new MessageList<AuthorityChangeReceived>();
 <# foreach (var ev in eventDetailsList) {
         var eventType = ev.EventName + ".Event";
 #>
 
-            private ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventStorage =
-                new ReceivedMessageList<ComponentEventReceived<<#= eventType #>>>();
+            private MessageList<ComponentEventReceived<<#= eventType #>>> <#= ev.CamelCaseEventName #>EventStorage =
+                new MessageList<ComponentEventReceived<<#= eventType #>>>();
 
             // todo consider putting this in the list type
             private bool <#= ev.CamelCaseEventName #>Sorted;
@@ -250,14 +250,6 @@ namespace <#= qualifiedNamespace #>
             void IDiffEventStorage<<#= eventType #>>.AddEvent(ComponentEventReceived<<#= eventType #>> ev)
             {
                 <#= ev.CamelCaseEventName #>EventStorage.Add(ev);
-            }
-
-            internal void SwapAndClearMessageLists(ref ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> messageList)
-            {
-                ReceivedMessageList<ComponentEventReceived<<#= eventType #>>> temp = messageList;
-                messageList = <#= ev.CamelCaseEventName #>EventStorage;
-                <#= ev.CamelCaseEventName #>EventStorage = temp;
-                <#= ev.CamelCaseEventName #>EventStorage.Clear();
             }
 <# } #>
         }

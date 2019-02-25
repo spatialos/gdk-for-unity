@@ -30,11 +30,11 @@
   <ItemGroup>
     <T4Files Include="Templates\CommandDiffDeserializerGenerator.tt" />
     <T4Files Include="Templates\CommandDiffStorageGenerator.tt" />
+    <T4Files Include="Templates\CommandMetaDataStorageGenerator.tt" />
     <T4Files Include="Templates\ComponentDiffDeserializerGenerator.tt" />
     <T4Files Include="Templates\ComponentDiffStorageGenerator.tt" />
     <T4Files Include="Templates\ReactiveCommandComponentGenerator.tt" />
     <T4Files Include="Templates\ReactiveComponentGenerator.tt" />
-    <T4Files Include="Templates\UnityCommandManagerGenerator.tt" />
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
     <T4Files Include="Templates\UnityReactiveComponentHandlersGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />

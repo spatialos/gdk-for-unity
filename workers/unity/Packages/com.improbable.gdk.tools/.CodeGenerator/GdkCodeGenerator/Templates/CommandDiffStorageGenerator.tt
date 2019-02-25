@@ -7,7 +7,9 @@
 #>
 <#= generatedHeader #>
 
+using System;
 using Improbable.Gdk.Core;
+using Unity.Entities;
 
 namespace <#= qualifiedNamespace #>
 {
@@ -15,15 +17,17 @@ namespace <#= qualifiedNamespace #>
     {
 <# foreach (var command in commandDetailsList) {
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
-        var receivedResponseType = command.CommandName + ".RawReceivedResponse";
+        var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
-        public class Diff<#= command.CommandName #>CommandStorage : IDiffCommandRequestStorage<<#= receivedRequestType #>>, IDiffCommandResponseStorage<<#= receivedResponseType #>>
+        public class Diff<#= command.CommandName #>CommandStorage : IComponentCommandDiffStorage
+            , IDiffCommandRequestStorage<<#= receivedRequestType #>>
+            , IDiffCommandResponseStorage<<#= receivedResponseType #>>
         {
-            private ReceivedMessageList<<#= receivedRequestType #>> requestStorage =
-                new ReceivedMessageList<<#= receivedRequestType #>>();
+            private MessageList<<#= receivedRequestType #>> requestStorage =
+                new MessageList<<#= receivedRequestType #>>();
 
-            private ReceivedMessageList<<#= receivedResponseType #>> responseStorage =
-                new ReceivedMessageList<<#= receivedResponseType #>>();
+            private MessageList<<#= receivedResponseType #>> responseStorage =
+                new MessageList<<#= receivedResponseType #>>();
 
             public uint GetComponentId()
             {
@@ -33,6 +37,16 @@ namespace <#= qualifiedNamespace #>
             public uint GetCommandId()
             {
                 return <#= command.CommandIndex #>;
+            }
+
+            public Type GetRequestType()
+            {
+                return typeof(<#= receivedRequestType #>);
+            }
+
+            public Type GetResponseType()
+            {
+                return typeof(<#= receivedResponseType #>);
             }
 
             public void Clear()
@@ -56,20 +70,106 @@ namespace <#= qualifiedNamespace #>
                 responseStorage.Add(response);
             }
 
-            internal void SwapAndClearMessageLists(ref ReceivedMessageList<<#= receivedRequestType #>> messageList)
+            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests()
             {
-                ReceivedMessageList<<#= receivedRequestType #>> temp = messageList;
+                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage);
+            }
+
+            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponses()
+            {
+                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage);
+            }
+
+            internal bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
+            {
+                var responseIndex = responseStorage.GetResponseIndex(requestId);
+                if (responseIndex < 0)
+                {
+                    response = default(<#= receivedResponseType #>);
+                    return false;
+                }
+
+                response = responseStorage[responseIndex];
+                return true;
+            }
+
+            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedRequestType #>> messageList)
+            {
+                MessageList<<#= receivedRequestType #>> temp = messageList;
                 messageList = requestStorage;
                 requestStorage = temp;
                 requestStorage.Clear();
             }
 
-            internal void SwapAndClearMessageLists(ref ReceivedMessageList<<#= receivedResponseType #>> messageList)
+            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedResponseType #>> messageList)
             {
-                ReceivedMessageList<<#= receivedResponseType #>> temp = messageList;
+                MessageList<<#= receivedResponseType #>> temp = messageList;
                 messageList = responseStorage;
                 responseStorage = temp;
                 responseStorage.Clear();
+            }
+        }
+
+<# } #>
+
+<# foreach (var command in commandDetailsList) {
+        var requestType = command.CommandName + ".Request";
+        var responseType = command.CommandName + ".Response";
+#>
+        public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
+            , ICommandRequestSendStorage<<#= requestType #>>
+            , ICommandResponseSendStorage<<#= responseType #>>
+        {
+            private MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)> requestStorage =
+                new MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)>();
+
+            private MessageList<<#= responseType #>> responseStorage =
+                new MessageList<<#= responseType #>>();
+
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public uint GetCommandId()
+            {
+                return <#= command.CommandIndex #>;
+            }
+
+            public Type GetRequestType()
+            {
+                return typeof(<#= requestType #>);
+            }
+
+            public Type GetResponseType()
+            {
+                return typeof(<#= responseType #>);
+            }
+
+            public void Clear()
+            {
+                requestStorage.Clear();
+                responseStorage.Clear();
+            }
+
+            public void AddRequest(<#= requestType #> request, Entity entity, long requestId)
+            {
+                requestStorage.Add((request, entity, requestId));
+            }
+
+            public void AddResponse(<#= responseType #> response)
+            {
+                responseStorage.Add(response);
+            }
+
+            internal MessageList<(<#= requestType #> request, Entity sendingEntity, long requestId)> GetRequests()
+            {
+                return requestStorage;
+            }
+
+            internal MessageList<<#= responseType #>> GetResponses()
+            {
+                return responseStorage;
             }
         }
 
