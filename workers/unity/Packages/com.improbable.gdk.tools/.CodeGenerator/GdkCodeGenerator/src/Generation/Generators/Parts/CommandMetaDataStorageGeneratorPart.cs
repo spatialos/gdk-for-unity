@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -7,29 +6,25 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private string qualifiedNamespace;
         private string spatialNamespace;
-        private UnityComponentDefinition unityComponentDefinition;
-        private HashSet<string> enumSet;
+        private UnityComponentDetails componentDetails;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package,
-            HashSet<string> enumSet)
+        public string Generate(UnityComponentDetails componentDetails, string package)
         {
             qualifiedNamespace = package;
             spatialNamespace = package;
-            this.unityComponentDefinition = unityComponentDefinition;
-            this.enumSet = enumSet;
+            this.componentDetails = componentDetails;
 
             return TransformText();
         }
 
         private UnityComponentDetails GetComponentDetails()
         {
-            return new UnityComponentDetails(unityComponentDefinition);
+            return componentDetails;
         }
 
-        private List<UnityCommandDetails> GetCommandDetailsList()
+        private IReadOnlyList<UnityCommandDetails> GetCommandDetailsList()
         {
-            return unityComponentDefinition.CommandDefinitions
-                .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
+            return componentDetails.CommandDetails;
         }
     }
 }

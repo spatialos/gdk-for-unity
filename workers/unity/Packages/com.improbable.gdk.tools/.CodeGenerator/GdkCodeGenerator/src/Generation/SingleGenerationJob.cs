@@ -69,7 +69,7 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{component.Name}CommandMetaDataStorage", FileExtension)));
+                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension)));
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
@@ -191,9 +191,9 @@ namespace Improbable.Gdk.CodeGenerator
                         commandDiffStorageCode);
 
                     var commandMetaDataStorageFileName =
-                        Path.ChangeExtension($"{component.Name}CommandMetaDataStorage", fileExtension);
+                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
                     var commandMetaDataStorageCode =
-                        commandMetaDataStorageGenerator.Generate(component, package, enumSet);
+                        commandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
                         commandMetaDataStorageCode);
                 }
