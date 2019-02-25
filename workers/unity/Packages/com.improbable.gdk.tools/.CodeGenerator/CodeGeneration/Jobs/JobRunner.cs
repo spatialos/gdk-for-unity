@@ -47,7 +47,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var expectedFiles = jobs.SelectMany(job => job.OutputFiles)
                 .Select(path => Path.GetFullPath(Path.Combine(outputDir, path))).ToList();
 
-            return outputFolderFiles.Intersect(expectedFiles).Count() == outputFolderFiles.Count;
+            return outputFolderFiles.Intersect(expectedFiles).Count() != outputFolderFiles.Count;
         }
 
         private void RunJobs(CodegenJob[] jobs)
