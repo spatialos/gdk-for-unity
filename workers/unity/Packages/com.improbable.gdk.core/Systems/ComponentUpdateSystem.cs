@@ -10,87 +10,72 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class ComponentUpdateSystem : ComponentSystem
     {
-        private ViewDiff viewDiff;
+        private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
+        private WorkerSystem worker;
 
         private readonly List<IComponentManager> managers = new List<IComponentManager>();
-
-        private readonly Dictionary<Type, IComponentManager> eventTypeToManager =
-            new Dictionary<Type, IComponentManager>();
-
-        private readonly Dictionary<Type, IComponentManager> componentTypeToManager =
-            new Dictionary<Type, IComponentManager>();
 
         private readonly Dictionary<uint, IComponentManager> componentIdToManager =
             new Dictionary<uint, IComponentManager>();
 
-        public void SendComponentUpdate<T>(T updateToSend, EntityId entityId) where T : ISpatialComponentData
+        public void SendUpdate<T>(T update, EntityId entityId) where T : ISpatialComponentUpdate
         {
-            if (!componentTypeToManager.TryGetValue(typeof(T), out var manager))
-            {
-                throw new ArgumentException("Type is not a valid update");
-            }
-
-            ((IUpdateSender<T>) manager).SendComponentUpdate(updateToSend, entityId);
+            worker.MessagesToSend.AddComponentUpdate(update, entityId.Id);
         }
 
         public void SendEvent<T>(T eventToSend, EntityId entityId) where T : IEvent
         {
-            if (!eventTypeToManager.TryGetValue(typeof(T), out var manager))
-            {
-                throw new ArgumentException("Type is not a valid event");
-            }
-
-            ((IEventManager<T>) manager).SendEvent(eventToSend, entityId);
+            worker.MessagesToSend.AddEvent(eventToSend, entityId.Id);
         }
 
         public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>() where T : IEvent
         {
-            var manager = (IDiffEventStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents();
         }
 
         public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>(EntityId entityId) where T : IEvent
         {
-            var manager = (IDiffEventStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents(entityId);
         }
 
         public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>()
             where T : ISpatialComponentUpdate
         {
-            var manager = (IDiffUpdateStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates();
         }
 
         public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
             where T : ISpatialComponentUpdate
         {
-            var manager = (IDiffUpdateStorage<T>) viewDiff.GetComponentDiffStorage(typeof(T));
+            var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates(entityId);
         }
 
         public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(uint componentId)
         {
-            var manager = (IDiffAuthorityStorage) viewDiff.GetComponentDiffStorage(componentId);
+            var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetAuthorityChanges();
         }
 
         public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId,
             uint componentId)
         {
-            var manager = (IDiffAuthorityStorage) viewDiff.GetComponentDiffStorage(componentId);
+            var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetAuthorityChanges(entityId);
         }
 
         public List<EntityId> GetComponentsAdded(uint componentId)
         {
-            var manager = viewDiff.GetComponentDiffStorage(componentId);
+            var manager = worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetComponentsAdded();
         }
 
         public List<EntityId> GetComponentsRemoved(uint componentId)
         {
-            var manager = viewDiff.GetComponentDiffStorage(componentId);
+            var manager = worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetComponentsRemoved();
         }
 
@@ -106,12 +91,7 @@ namespace Improbable.Gdk.Core
 
         public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
         {
-            if (!componentIdToManager.TryGetValue(componentId, out var manager))
-            {
-                throw new ArgumentException("Component ID not recognized");
-            }
-
-            ((IAuthorityManager) manager).AcknowledgeAuthorityLoss(entityId);
+            worker.MessagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);
         }
 
         internal ComponentType[] GetInitialComponentsToAdd(uint componentId)
@@ -146,7 +126,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            viewDiff = World.GetExistingManager<WorkerSystem>().Diff;
+            worker = World.GetExistingManager<WorkerSystem>();
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -160,14 +140,7 @@ namespace Improbable.Gdk.Core
                     var instance = (IComponentManager) Activator.CreateInstance(type);
                     instance.Init(World);
 
-                    componentTypeToManager.Add(instance.GetComponentType(), instance);
                     componentIdToManager.Add(instance.GetComponentId(), instance);
-
-                    foreach (var eventType in instance.GetEventTypes())
-                    {
-                        eventTypeToManager.Add(eventType, instance);
-                    }
-
                     managers.Add(instance);
                 }
             }
@@ -185,11 +158,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            foreach (var manager in managers)
-            {
-                // todo there isn't currently a reason to couple the storage with the point at which sending happens
-                manager.SendAll();
-            }
+            worker.SendMessages();
         }
     }
 }

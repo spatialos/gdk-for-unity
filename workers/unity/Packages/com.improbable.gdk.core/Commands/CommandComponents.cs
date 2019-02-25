@@ -1,5 +1,3 @@
-using Improbable.Worker;
-
 namespace Improbable.Gdk.Core.Commands
 {
     public interface ICommandRequest

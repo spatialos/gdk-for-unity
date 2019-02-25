@@ -296,7 +296,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
         }
 
         internal class AcknowledgeAuthorityLossHandler : AbstractAcknowledgeAuthorityLossHandler
-        {
+       {
             public override EntityArchetypeQuery Query => new EntityArchetypeQuery
             {
                 All = new ComponentType[]
@@ -309,7 +309,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
             };
 
             public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
-                Improbable.Worker.CInterop.Connection connection)
+                ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<<#= componentNamespace #>.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
@@ -325,7 +325,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                     {
                         if (authorityArray[i].AcknowledgeAuthorityLoss)
                         {
-                            connection.SendAuthorityLossImminentAcknowledgement(spatialEntityIdArray[i].EntityId.Id,
+                            updateSystem.AcknowledgeAuthorityLoss(spatialEntityIdArray[i].EntityId,
                                 <#= componentDetails.ComponentId #>);
                         }
                     }

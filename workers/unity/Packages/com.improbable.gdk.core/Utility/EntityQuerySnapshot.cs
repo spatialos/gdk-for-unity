@@ -17,26 +17,24 @@ namespace Improbable.Gdk.Core
         private struct ComponentDataHandler : DynamicSnapshot.ISnapshotHandler
         {
             public Entity EntitySnapshot;
-            public World World;
             public Dictionary<uint, ISpatialComponentSnapshot> Components;
 
             public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
             {
                 var schemaObject = EntitySnapshot.Get(componentId).Value;
-                Components.Add(componentId, deserializeSnapshot(schemaObject, World));
+                Components.Add(componentId, deserializeSnapshot(schemaObject));
             }
         }
 
         private readonly Dictionary<uint, ISpatialComponentSnapshot> components;
 
-        internal EntityQuerySnapshot(Entity entitySnapshot, World world)
+        internal EntityQuerySnapshot(Entity entitySnapshot)
         {
             components = new Dictionary<uint, ISpatialComponentSnapshot>();
 
             var componentDataHandler = new ComponentDataHandler
             {
                 EntitySnapshot = entitySnapshot,
-                World = world,
                 Components = components,
             };
 

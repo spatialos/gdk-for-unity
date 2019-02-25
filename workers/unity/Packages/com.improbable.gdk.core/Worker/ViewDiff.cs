@@ -17,17 +17,20 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
-        private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
-
-        private readonly Dictionary<uint, Dictionary<uint, ICommandDiffStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, ICommandDiffStorage>>();
-
         private Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
             new Dictionary<Type, IComponentDiffStorage>();
 
+        private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
+
+        private readonly Dictionary<uint, Dictionary<uint, IComponentCommandDiffStorage>> componentIdToCommandIdToStorage =
+            new Dictionary<uint, Dictionary<uint, IComponentCommandDiffStorage>>();
+
+        private Dictionary<Type, ICommandDiffStorage> typeToCommandStorage =
+            new Dictionary<Type, ICommandDiffStorage>();
+
         private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();
 
-        private readonly WorldCommandStorage worldCommandStorage = new WorldCommandStorage();
+        private readonly WorldCommandsReceivedStorage worldCommandsReceivedStorage = new WorldCommandsReceivedStorage();
 
         public ViewDiff()
         {
@@ -49,22 +52,31 @@ namespace Improbable.Gdk.Core
                         }
                     }
 
-                    if (typeof(ICommandDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
+                    if (typeof(IComponentCommandDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
                     {
-                        var instance = (ICommandDiffStorage) Activator.CreateInstance(type);
+                        var instance = (IComponentCommandDiffStorage) Activator.CreateInstance(type);
 
                         commandStorageList.Add(instance);
                         if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
                             out var commandIdToStorage))
                         {
-                            commandIdToStorage = new Dictionary<uint, ICommandDiffStorage>();
+                            commandIdToStorage = new Dictionary<uint, IComponentCommandDiffStorage>();
                             componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
                         }
 
                         commandIdToStorage.Add(instance.GetCommandId(), instance);
+
+                        typeToCommandStorage.Add(instance.GetRequestType(), instance);
+                        typeToCommandStorage.Add(instance.GetResponseType(), instance);
                     }
                 }
             }
+
+            commandStorageList.Add(worldCommandsReceivedStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.CreateEntity.ReceivedResponse), worldCommandsReceivedStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.DeleteEntity.ReceivedResponse), worldCommandsReceivedStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.ReserveEntityIds.ReceivedResponse), worldCommandsReceivedStorage);
+            typeToCommandStorage.Add(typeof(WorldCommands.EntityQuery.ReceivedResponse), worldCommandsReceivedStorage);
         }
 
         public void Clear()
@@ -79,7 +91,6 @@ namespace Improbable.Gdk.Core
                 storage.Clear();
             }
 
-            worldCommandStorage.Clear();
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
         }
@@ -176,7 +187,7 @@ namespace Improbable.Gdk.Core
                 updateId));
         }
 
-        public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : IReceivedCommandRequest
+        public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : struct, IReceivedCommandRequest
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
@@ -192,7 +203,7 @@ namespace Improbable.Gdk.Core
         }
 
         public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
-            where T : IRawReceivedCommandResponse
+            where T : struct, IReceivedCommandResponse
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
@@ -207,24 +218,24 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandResponseStorage<T>) storage).AddResponse(response);
         }
 
-        public void AddCreateEntityResponse(CreateEntityResponseOp response)
+        public void AddCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
         {
-            worldCommandStorage.AddResponse(response);
+            worldCommandsReceivedStorage.AddResponse(response);
         }
 
-        public void AddDeleteEntityResponse(DeleteEntityResponseOp response)
+        public void AddDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
-            worldCommandStorage.AddResponse(response);
+            worldCommandsReceivedStorage.AddResponse(response);
         }
 
-        public void AddReserveEntityIdsResponse(ReserveEntityIdsResponseOp response)
+        public void AddReserveEntityIdsResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
-            worldCommandStorage.AddResponse(response);
+            worldCommandsReceivedStorage.AddResponse(response);
         }
 
-        public void AddEntityQueryResponse(EntityQueryResponseOp response)
+        public void AddEntityQueryResponse(WorldCommands.EntityQuery.ReceivedResponse response)
         {
-            worldCommandStorage.AddResponse(response);
+            worldCommandsReceivedStorage.AddResponse(response);
         }
 
         public void Disconnect(string message)
@@ -247,30 +258,35 @@ namespace Improbable.Gdk.Core
         {
             if (!typeToComponentStorage.TryGetValue(type, out var storage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown type {type.FullName}");
+                throw new ArgumentException($"Can not find component diff storage. Unknown component type {type.FullName}");
             }
 
             return storage;
         }
 
-        internal ICommandDiffStorage GetCommandDiffStorage(uint componentId, uint commandId)
+        internal IComponentCommandDiffStorage GetComponentCommandDiffStorage(uint componentId, uint commandId)
         {
             if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown component ID {componentId}");
+                throw new ArgumentException($"Can not find command diff storage. Unknown component ID {componentId}");
             }
 
             if (!commandIdToStorage.TryGetValue(commandId, out var storage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown command ID {commandId}");
+                throw new ArgumentException($"Can not find command diff storage. Unknown command ID {commandId}");
             }
 
             return storage;
         }
 
-        internal WorldCommandStorage GetWorldCommandStorage()
+        internal ICommandDiffStorage GetCommandDiffStorage(Type type)
         {
-            return worldCommandStorage;
+            if (!typeToCommandStorage.TryGetValue(type, out var storage))
+            {
+                throw new ArgumentException($"Can not find command diff storage. Unknown command type {type.FullName}");
+            }
+
+            return storage;
         }
 
         internal HashSet<EntityId> GetEntitiesAdded()
