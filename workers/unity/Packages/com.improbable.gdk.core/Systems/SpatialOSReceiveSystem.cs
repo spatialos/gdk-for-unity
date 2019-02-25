@@ -12,11 +12,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        private ViewDiff diff;
-
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
-        private CommandSystem commandSystem;
         private EntitySystem entitySystem;
 
         protected override void OnCreateManager()
@@ -25,10 +22,7 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingManager<WorkerSystem>();
             updateSystem = World.GetOrCreateManager<ComponentUpdateSystem>();
-            commandSystem = World.GetOrCreateManager<CommandSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
-
-            diff = worker.Diff;
         }
 
         protected override void OnUpdate()
