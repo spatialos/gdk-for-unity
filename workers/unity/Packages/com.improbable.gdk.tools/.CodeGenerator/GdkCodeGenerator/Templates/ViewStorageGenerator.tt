@@ -70,8 +70,8 @@ namespace <#= qualifiedNamespace #>
                 var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
                 for (var i = 0; i < updates.Count; i++)
                 {
-                    var update = updates[i];
-                    ApplyUpdate(update.EntityId.Id, update.Update);
+                    ref readonly var update = ref updates[i];
+                    ApplyUpdate(update.EntityId.Id, in update.Update);
                 }
 
                 var authorityChanges = ((IDiffAuthorityStorage) storage).GetAuthorityChanges();
@@ -82,7 +82,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            private void ApplyUpdate(long entityId, Update update)
+            private void ApplyUpdate(long entityId, in Update update)
             {
                 var data = componentData[entityId];
 <# foreach (var field in fields) {

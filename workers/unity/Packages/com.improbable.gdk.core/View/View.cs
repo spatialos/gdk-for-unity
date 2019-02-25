@@ -59,9 +59,9 @@ namespace Improbable.Gdk.Core
         // TODO: Make ref readonly when we have a dictionary type with ref indexing semantics.
         public T GetComponent<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
         {
-            if (!HasEntity(entityId))
+            if (!HasComponent<T>(entityId))
             {
-                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id}");
+                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id} and component with ID: {DynamicSnapshot.GetSnapshotComponentId<T>()}");
             }
 
             var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];
