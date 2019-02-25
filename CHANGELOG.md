@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
+    - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
+
 ### Internal
 
 - Changed the code generator to use the schema bundle JSON rather than AST JSON.
