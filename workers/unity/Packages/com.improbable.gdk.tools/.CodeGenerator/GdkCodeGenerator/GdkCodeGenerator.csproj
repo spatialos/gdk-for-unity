@@ -28,6 +28,7 @@
     <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <T4Files Include="Templates\ViewStorageGenerator.tt" />
     <T4Files Include="Templates\CommandDiffDeserializerGenerator.tt" />
     <T4Files Include="Templates\CommandDiffStorageGenerator.tt" />
     <T4Files Include="Templates\CommandMetaDataStorageGenerator.tt" />
