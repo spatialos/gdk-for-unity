@@ -23,8 +23,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>>();
 
-        private List<(uint ComponentId, uint CommandId, uint InternalRequestId)> requestsToRemove =
-            new List<(uint ComponentId, uint CommandId, uint InternalRequestId)>();
+        private List<CommandIds> requestsToRemove = new List<CommandIds>();
 
         public CommandMetaData()
         {
@@ -51,15 +50,15 @@ namespace Improbable.Gdk.Core
 
         public void MarkIdForRemoval(uint componentId, uint commandId, uint internalRequestId)
         {
-            requestsToRemove.Add((componentId, commandId, internalRequestId));
+            requestsToRemove.Add(new CommandIds(componentId, commandId, internalRequestId));
         }
 
         public void FlushRemovedIds()
         {
-            foreach (var (componentId, commandId, internalRequestId) in requestsToRemove)
+            foreach (var commandIds in requestsToRemove)
             {
-                var s = GetCommandDiffStorage(componentId, commandId);
-                s.RemoveMetaData(internalRequestId);
+                var s = GetCommandDiffStorage(commandIds.ComponentId, commandIds.CommandId);
+                s.RemoveMetaData(commandIds.InternalRequestId);
             }
 
             requestsToRemove.Clear();
@@ -102,6 +101,20 @@ namespace Improbable.Gdk.Core
             }
 
             return storage;
+        }
+
+        private readonly struct CommandIds
+        {
+            public readonly uint ComponentId;
+            public readonly uint CommandId;
+            public readonly uint InternalRequestId;
+
+            public CommandIds(uint componentId, uint commandId, uint internalRequestId)
+            {
+                ComponentId = componentId;
+                CommandId = commandId;
+                InternalRequestId = internalRequestId;
+            }
         }
     }
 }

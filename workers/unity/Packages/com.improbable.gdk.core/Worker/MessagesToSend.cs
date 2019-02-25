@@ -85,7 +85,6 @@ namespace Improbable.Gdk.Core
                 storage.Clear();
             }
 
-            //worldCommandStorage.Clear();
             authorityLossAcks.Clear();
         }
 

@@ -24,20 +24,19 @@ namespace Improbable.Gdk.Core
 
         internal readonly MessagesToSend MessagesToSend = new MessagesToSend();
 
-        internal readonly IConnectionHandler connectionHandler;
+        internal readonly IConnectionHandler ConnectionHandler;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
         internal ViewDiff Diff;
 
-        public WorkerSystem(Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
+        public WorkerSystem(IConnectionHandler connectionHandler, Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
         {
             Connection = connection;
             LogDispatcher = logDispatcher;
             WorkerType = workerType;
             Origin = origin;
-
-            connectionHandler = new SpatialOSConnectionHandler(connection);
+            ConnectionHandler = connectionHandler;
         }
 
         /// <summary>
@@ -68,12 +67,12 @@ namespace Improbable.Gdk.Core
 
         internal void GetMessages()
         {
-            Diff = connectionHandler.GetMessagesReceived();
+            Diff = ConnectionHandler.GetMessagesReceived();
         }
 
         internal void SendMessages()
         {
-            connectionHandler.PushMessagesToSend(MessagesToSend);
+            ConnectionHandler.PushMessagesToSend(MessagesToSend);
             MessagesToSend.Clear();
         }
 

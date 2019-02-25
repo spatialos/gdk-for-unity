@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (!worker.connectionHandler.IsConnected())
+            if (!worker.ConnectionHandler.IsConnected())
             {
                 return;
             }

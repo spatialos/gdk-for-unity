@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 
@@ -38,10 +39,15 @@ namespace Improbable.Gdk.Core
         {
             var requestId = internalRequestIdToRequestId[internalRequestId];
             internalRequestIdToRequestId.Remove(internalRequestId);
-            idToCreateEntityRequest.Remove(requestId);
-            idToDeleteEntityRequest.Remove(requestId);
-            idToReserveEntityIdsRequest.Remove(requestId);
-            idToEntityQueryRequest.Remove(requestId);
+
+            if (!idToCreateEntityRequest.Remove(requestId) &&
+                !idToDeleteEntityRequest.Remove(requestId) &&
+                !idToReserveEntityIdsRequest.Remove(requestId) &&
+                !idToEntityQueryRequest.Remove(requestId))
+            {
+                throw new ArgumentException($"Can not remove non-existent command metadata for request ID {requestId}",
+                    nameof(internalRequestId));
+            }
         }
 
         public void AddRequestId(uint internalRequestId, long requestId)

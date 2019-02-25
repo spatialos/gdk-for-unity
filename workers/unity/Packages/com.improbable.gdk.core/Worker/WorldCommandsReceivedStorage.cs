@@ -55,7 +55,6 @@ namespace Improbable.Gdk.Core
             return new ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>(createEntityResponses);
         }
 
-
         ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponses()
         {

@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly ViewDiff diff = new ViewDiff();
         private readonly OpListDeserializer deserializer = new OpListDeserializer();
-        private readonly SerializedMessagesToSend messagesToSend = new SerializedMessagesToSend();
+        private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
 
         private readonly CommandMetaData commandMetaData = new CommandMetaData();
 
@@ -44,9 +44,9 @@ namespace Improbable.Gdk.Core
 
         public void PushMessagesToSend(MessagesToSend messages)
         {
-            messagesToSend.SerializeFrom(messages, commandMetaData);
-            messagesToSend.SendAll(connection, commandMetaData);
-            messagesToSend.Clear();
+            serializedMessagesToSend.SerializeFrom(messages, commandMetaData);
+            serializedMessagesToSend.SendAll(connection, commandMetaData);
+            serializedMessagesToSend.Clear();
         }
     }
 }
