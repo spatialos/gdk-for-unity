@@ -7,6 +7,27 @@ Before reading this document, make sure you are familiar with:
   * [Setting up iOS Support for the GDK]({{urlRoot}}/content/mobile/ios/setup)
   * [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
 
+## Prepare your project to connect to a local deployment {#prepare}
+
+To connect your iOS device to a local deployment, you need to prepare its configuration. Follow the steps below to ensure any local deployment you launch via your Unity Editor is correctly set up.
+
+1. Open your project in your Unity Editor.
+1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
+1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
+1. Select **Save** and close the window.
+
+<%(Callout message="If you are using one of our Starter Projects, you can skip the **Create a mobile connector script** section below, as you already have one in your project.")%>
+
+<%(#Expandable title="Create a mobile connector script")%>
+
+If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your iOS client-worker GameObject. To do this:
+
+1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-fps-starter-project/blob/master/workers/unity/Assets/Fps/Scripts/SetupLogic/iOSWorkerConnector.cs) in our FPS Starter Project.
+1. In your Unity Editor, add the MonoBehaviour script to your iOS client-worker GameObject.
+1. In your Unity Editor, navigate to your iOS client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is checked in the script's drop-down window of the Inspector window.
+
+<%(/Expandable)%>
+
 ## Unity Editor{#in-editor}
 1. In your Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
