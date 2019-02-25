@@ -10,30 +10,24 @@ namespace Improbable.Gdk.CodeGenerator
     public partial class ReactiveComponentGenerator
     {
         private string qualifiedNamespace;
-        private string spatialNamespace;
-        private UnityComponentDefinition unityComponentDefinition;
-        private HashSet<string> enumSet;
+        private UnityComponentDetails details;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package,
-            HashSet<string> enumSet)
+        public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;
-            spatialNamespace = package;
-            this.unityComponentDefinition = unityComponentDefinition;
-            this.enumSet = enumSet;
+            this.details = details;
 
             return TransformText();
         }
 
         private UnityComponentDetails GetComponentDetails()
         {
-            return new UnityComponentDetails(unityComponentDefinition);
+            return details;
         }
 
-        private List<UnityEventDetails> GetEventDetailsList()
+        private IReadOnlyList<UnityEventDetails> GetEventDetailsList()
         {
-            return unityComponentDefinition.EventDefinitions
-                .Select(eventDefinition => new UnityEventDetails(eventDefinition)).ToList();
+            return details.EventDetails;
         }
     }
 }
