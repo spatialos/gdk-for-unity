@@ -14,7 +14,7 @@ namespace Playground
 {
     public class MetricSendSystem : ComponentSystem
     {
-        private Connection connection;
+        private WorkerSystem worker;
 
         private DateTime timeOfNextUpdate;
         private DateTime timeOfLastUpdate;
@@ -37,7 +37,8 @@ namespace Playground
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().Connection;
+
+            worker = World.GetExistingManager<WorkerSystem>();
 
             targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate
@@ -52,11 +53,6 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (connection == null)
-            {
-                return;
-            }
-
             if (DateTime.Now >= timeOfNextUpdate)
             {
                 CalculateFps();
@@ -64,7 +60,7 @@ namespace Playground
                 WorkerMetrics.GaugeMetrics["Unity used heap size"] = GC.GetTotalMemory(false);
                 WorkerMetrics.Load = CalculateLoad();
 
-                connection.SendMetrics(WorkerMetrics);
+                worker.SendMetrics(WorkerMetrics);
 
                 timeOfLastUpdate = DateTime.Now;
                 timeOfNextUpdate = timeOfLastUpdate.AddSeconds(TimeBetweenMetricUpdatesSecs);

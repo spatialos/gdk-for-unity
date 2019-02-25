@@ -14,6 +14,9 @@ namespace Improbable.Gdk.Core
         private readonly HashSet<EntityId> entitiesAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
 
+        private readonly List<LogMessageReceived> logsReceived = new List<LogMessageReceived>();
+        private Metrics metricsReceived;
+
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
@@ -93,6 +96,8 @@ namespace Improbable.Gdk.Core
 
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
+            logsReceived.Clear();
+            metricsReceived = null;
         }
 
         public void AddEntity(long entityId)
@@ -238,10 +243,37 @@ namespace Improbable.Gdk.Core
             worldCommandsReceivedStorage.AddResponse(response);
         }
 
+        public void AddLogMessage(string message, LogLevel level)
+        {
+            logsReceived.Add(new LogMessageReceived(message, level));
+        }
+
+        public void AddMetrics(Metrics metrics)
+        {
+            if (metricsReceived == null)
+            {
+                metricsReceived = metrics;
+            }
+            else
+            {
+                metricsReceived.Merge(metrics);
+            }
+        }
+
         public void Disconnect(string message)
         {
             Disconnected = true;
             DisconnectMessage = message;
+        }
+
+        internal Metrics GetMetrics()
+        {
+            return metricsReceived;
+        }
+
+        internal List<LogMessageReceived> GetLogsMessages()
+        {
+            return logsReceived;
         }
 
         internal IComponentDiffStorage GetComponentDiffStorage(uint componentId)

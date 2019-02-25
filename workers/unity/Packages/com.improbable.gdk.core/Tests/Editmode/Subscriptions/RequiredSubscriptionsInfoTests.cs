@@ -12,10 +12,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     {
         private class RequiredFields
         {
+#pragma warning disable 649
             [Require] public World World;
             [Require] protected EntityId EntityId;
             [Require] internal ILogDispatcher LogDispatcher;
             [Require] private Entity entity;
+#pragma warning restore 649
         }
 
         [Test]
@@ -32,8 +34,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 
         private class RequiredStaticFields
         {
+#pragma warning disable 649
             [Require] public static World World;
             [Require] private static Entity entity;
+#pragma warning restore 649
         }
 
         [Test]
