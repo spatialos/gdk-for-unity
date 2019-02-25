@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core
         private readonly MessageList<LogMessageToSend> logMessages =
             new MessageList<LogMessageToSend>();
 
-        private readonly MessageList<MetricsToSend> metricsToSend = new MessageList<MetricsToSend>();
+        private readonly List<Metrics> metricsToSend = new List<Metrics>();
 
         private readonly MessageList<EntityComponent> authorityLossAcks =
             new MessageList<EntityComponent>();
@@ -67,6 +67,13 @@ namespace Improbable.Gdk.Core
             {
                 serializer.Serialize(messages, this, commandMetaData);
             }
+
+            foreach (var metrics in messages.GetMetrics())
+            {
+                metricsToSend.Add(metrics);
+            }
+
+            messages.GetLogMessages().CopyTo(logMessages);
 
             messages.GetAuthorityLossAcknowledgements().CopyTo(authorityLossAcks);
         }
@@ -142,8 +149,7 @@ namespace Improbable.Gdk.Core
 
             for (int i = 0; i < metricsToSend.Count; ++i)
             {
-                ref readonly var metrics = ref metricsToSend[i];
-                connection.SendMetrics(metrics.Metrics);
+                connection.SendMetrics(metricsToSend[i]);
             }
 
             for (int i = 0; i < logMessages.Count; ++i)
@@ -198,16 +204,6 @@ namespace Improbable.Gdk.Core
         public void AddEntityQueryRequest(EntityQuery query, uint? timeout, long requestId)
         {
             entityQueryRequests.Add(new EntityQueryRequestToSend(query, timeout, requestId));
-        }
-
-        public void AddLogMessage(string message, string loggerName, LogLevel logLevel, long? entityId)
-        {
-            logMessages.Add(new LogMessageToSend(message, loggerName, logLevel, entityId));
-        }
-
-        public void AddMetrics(Metrics metrics)
-        {
-            metricsToSend.Add(new MetricsToSend(metrics));
         }
 
         #region Containers
@@ -321,32 +317,6 @@ namespace Improbable.Gdk.Core
                 Query = query;
                 Timeout = timeout;
                 RequestId = requestId;
-            }
-        }
-
-        private readonly struct LogMessageToSend
-        {
-            public readonly string Message;
-            public readonly string LoggerName;
-            public readonly LogLevel LogLevel;
-            public readonly long? EntityId;
-
-            public LogMessageToSend(string message, string loggerName, LogLevel logLevel, long? entityId)
-            {
-                Message = message;
-                LoggerName = loggerName;
-                LogLevel = logLevel;
-                EntityId = entityId;
-            }
-        }
-
-        private readonly struct MetricsToSend
-        {
-            public readonly Metrics Metrics;
-
-            public MetricsToSend(Metrics metrics)
-            {
-                Metrics = metrics;
             }
         }
 

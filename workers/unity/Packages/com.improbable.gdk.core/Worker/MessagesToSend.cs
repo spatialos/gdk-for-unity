@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
@@ -26,6 +27,10 @@ namespace Improbable.Gdk.Core
 
         private readonly MessageList<EntityComponent> authorityLossAcks =
             new MessageList<EntityComponent>();
+
+        private readonly MessageList<LogMessageToSend> logsToSend = new MessageList<LogMessageToSend>();
+
+        private readonly List<Metrics> metricsToSend = new List<Metrics>();
 
         public MessagesToSend()
         {
@@ -86,6 +91,8 @@ namespace Improbable.Gdk.Core
             }
 
             authorityLossAcks.Clear();
+            logsToSend.Clear();
+            metricsToSend.Clear();
         }
 
         public void AcknowledgeAuthorityLoss(long entityId, uint componentId)
@@ -123,6 +130,26 @@ namespace Improbable.Gdk.Core
         {
             var storage = (ICommandResponseSendStorage<T>) GetCommandSendStorage(typeof(T));
             storage.AddResponse(response);
+        }
+
+        public void AddLogMessage(in LogMessageToSend log)
+        {
+            logsToSend.Add(in log);
+        }
+
+        public void AddMetrics(Metrics metrics)
+        {
+            metricsToSend.Add(metrics);
+        }
+
+        internal MessageList<LogMessageToSend> GetLogMessages()
+        {
+            return logsToSend;
+        }
+
+        internal List<Metrics> GetMetrics()
+        {
+            return metricsToSend;
         }
 
         internal MessageList<EntityComponent> GetAuthorityLossAcknowledgements()
