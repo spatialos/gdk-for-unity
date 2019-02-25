@@ -35,6 +35,8 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 
 ## iOS Simulator{#ios-simulator}
 
+<%(Callout type="alert" message="The [**First Person Shooter (FPS) Starter Project**]({{urlRoot}}/projects/fps/overview) cannot currently run on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project, and the Simulator.")%>
+
 1. Open your project in your Unity Editor.
 1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
