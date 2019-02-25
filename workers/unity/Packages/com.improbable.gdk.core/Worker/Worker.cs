@@ -246,7 +246,8 @@ namespace Improbable.Gdk.Core
 
         private void AddCoreSystems()
         {
-            World.CreateManager<WorkerSystem>(Connection, LogDispatcher, WorkerType, Origin);
+            var connectionHandler = new SpatialOSConnectionHandler(Connection);
+            World.CreateManager<WorkerSystem>(connectionHandler, Connection, LogDispatcher, WorkerType, Origin);
             World.GetOrCreateManager<CommandSystem>();
             World.GetOrCreateManager<ComponentUpdateSystem>();
             World.GetOrCreateManager<EntitySystem>();

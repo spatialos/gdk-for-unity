@@ -28,21 +28,21 @@ namespace Improbable.Gdk.ReactiveComponents
             None = Array.Empty<ComponentType>(),
         };
 
-        private Connection connection;
+        private IConnectionHandler connection;
         private CommandSystem commandSystem;
         private ComponentGroup group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().Connection;
+            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
             commandSystem = World.GetExistingManager<CommandSystem>();
             group = GetComponentGroup(worldCommandSendersQuery);
         }
 
         protected override void OnUpdate()
         {
-            if (connection == null)
+            if (!connection.IsConnected())
             {
                 return;
             }
