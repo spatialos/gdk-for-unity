@@ -1,4 +1,4 @@
-using Improbable.Worker.CInterop;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -8,6 +8,6 @@ namespace Improbable.Gdk.ReactiveComponents
         public abstract EntityArchetypeQuery Query { get; }
 
         public abstract void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
-            Connection connection);
+            ComponentUpdateSystem updateSystem);
     }
 }

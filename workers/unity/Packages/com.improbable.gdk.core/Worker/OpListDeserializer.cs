@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -42,7 +43,7 @@ namespace Improbable.Gdk.Core
             componentUpdateId = 1;
         }
 
-        public bool ParseOpListIntoDiff(OpList opList, ViewDiff viewDiff)
+        public bool ParseOpListIntoDiff(OpList opList, ViewDiff viewDiff, CommandMetaData commandMetaData)
         {
             bool inCriticalSection = false;
             for (int i = 0; i < opList.GetOpCount(); ++i)
@@ -75,19 +76,19 @@ namespace Improbable.Gdk.Core
                         throw new InvalidOperationException("Reserve Entity ID is deprecated. Please use Reserve Entity IDs");
                     case OpType.ReserveEntityIdsResponse:
                         var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);
-                        viewDiff.AddReserveEntityIdsResponse(reserveEntityIdsOp);
+                        ApplyReserveEntityIdsResponse(reserveEntityIdsOp, viewDiff, commandMetaData);
                         break;
                     case OpType.CreateEntityResponse:
                         var createEntityOp = opList.GetCreateEntityResponseOp(i);
-                        viewDiff.AddCreateEntityResponse(createEntityOp);
+                        ApplyCreateEntityResponse(createEntityOp, viewDiff, commandMetaData);
                         break;
                     case OpType.DeleteEntityResponse:
                         var deleteEntityOp = opList.GetDeleteEntityResponseOp(i);
-                        viewDiff.AddDeleteEntityResponse(deleteEntityOp);
+                        ApplyDeleteEntityResponse(deleteEntityOp, viewDiff, commandMetaData);
                         break;
                     case OpType.EntityQueryResponse:
                         var entityQueryOp = opList.GetEntityQueryResponseOp(i);
-                        viewDiff.AddEntityQueryResponse(entityQueryOp);
+                        ApplyEntityQueryResponse(entityQueryOp, viewDiff, commandMetaData);
                         break;
                     case OpType.AddComponent:
                         DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff);
@@ -107,7 +108,8 @@ namespace Improbable.Gdk.Core
                         DeserializeApplyCommandRequestReceived(opList.GetCommandRequestOp(i), viewDiff);
                         break;
                     case OpType.CommandResponse:
-                        DeserializeAndApplyCommandResponseReceived(opList.GetCommandResponseOp(i), viewDiff);
+                        DeserializeAndApplyCommandResponseReceived(opList.GetCommandResponseOp(i), viewDiff,
+                            commandMetaData);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Can not deserialise unkown op type {opList.GetOpType(i)}");
@@ -149,7 +151,7 @@ namespace Improbable.Gdk.Core
             deserializer.AddRequestToDiff(op, viewDiff);
         }
 
-        private void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff)
+        private void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff, CommandMetaData commandMetaData)
         {
             if (!commandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.CommandIndex),
                 out var deserializer))
@@ -157,7 +159,59 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException($"Can not deserialize component with ID {op.Response.ComponentId}");
             }
 
-            deserializer.AddResponseToDiff(op, viewDiff);
+            deserializer.AddResponseToDiff(op, viewDiff, commandMetaData);
+        }
+
+        private void ApplyCreateEntityResponse(CreateEntityResponseOp op, ViewDiff viewDiff,
+            CommandMetaData commandMetaData)
+        {
+            var id = commandMetaData.GetRequestId(0, 0, op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.CreateEntity.Request>(0, 0, id);
+            var response =
+                new WorldCommands.CreateEntity.ReceivedResponse(op, context.SendingEntity, context.Request, id);
+
+            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+
+            viewDiff.AddCreateEntityResponse(response);
+        }
+
+        private void ApplyDeleteEntityResponse(DeleteEntityResponseOp op, ViewDiff viewDiff,
+            CommandMetaData commandMetaData)
+        {
+            var id = commandMetaData.GetRequestId(0, 0, op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.DeleteEntity.Request>(0, 0, id);
+            var response =
+                new WorldCommands.DeleteEntity.ReceivedResponse(op, context.SendingEntity, context.Request, id);
+
+            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+
+            viewDiff.AddDeleteEntityResponse(response);
+        }
+
+        private void ApplyReserveEntityIdsResponse(ReserveEntityIdsResponseOp op, ViewDiff viewDiff,
+            CommandMetaData commandMetaData)
+        {
+            var id = commandMetaData.GetRequestId(0, 0, op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.ReserveEntityIds.Request>(0, 0, id);
+            var response =
+                new WorldCommands.ReserveEntityIds.ReceivedResponse(op, context.SendingEntity, context.Request, id);
+
+            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+
+            viewDiff.AddReserveEntityIdsResponse(response);
+        }
+
+        private void ApplyEntityQueryResponse(EntityQueryResponseOp op, ViewDiff viewDiff,
+            CommandMetaData commandMetaData)
+        {
+            var id = commandMetaData.GetRequestId(0, 0, op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.EntityQuery.Request>(0, 0, id);
+            var response =
+                new WorldCommands.EntityQuery.ReceivedResponse(op, context.SendingEntity, context.Request, id);
+
+            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+
+            viewDiff.AddEntityQueryResponse(response);
         }
     }
 }

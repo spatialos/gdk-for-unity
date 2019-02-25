@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -22,6 +23,11 @@ namespace Improbable.Gdk.CodeGenerator
         private UnityComponentDetails GetComponentDetails()
         {
             return details;
+        }
+
+        private IReadOnlyList<UnityFieldDetails> GetFieldDetailsList()
+        {
+            return details.FieldDetails;
         }
     }
 }

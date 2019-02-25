@@ -59,8 +59,6 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandManager", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
@@ -70,6 +68,8 @@ namespace Improbable.Gdk.CodeGenerator
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
+                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension)));
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
@@ -109,7 +109,6 @@ namespace Improbable.Gdk.CodeGenerator
             var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
-            var commandManagerGenerator = new UnityCommandManagerGenerator();
             var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentReactiveHandlersGenerator = new UnityReactiveComponentHandlersGenerator();
@@ -124,6 +123,7 @@ namespace Improbable.Gdk.CodeGenerator
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
             var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
+            var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -157,12 +157,6 @@ namespace Improbable.Gdk.CodeGenerator
                         commandPayloadGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
 
-                    var commandManagerFileName =
-                        Path.ChangeExtension($"{componentName}CommandManager", FileExtension);
-                    var commandManagerCode =
-                        commandManagerGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandManagerFileName), commandManagerCode);
-
                     var commandComponentsFileName =
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension);
                     var commandComponentsCode =
@@ -195,6 +189,13 @@ namespace Improbable.Gdk.CodeGenerator
                         commandDiffStorageGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
                         commandDiffStorageCode);
+
+                    var commandMetaDataStorageFileName =
+                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
+                    var commandMetaDataStorageCode =
+                        commandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
+                    Content.Add(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
+                        commandMetaDataStorageCode);
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)

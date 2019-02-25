@@ -11,11 +11,10 @@ namespace Improbable.Gdk.Core
     /// <remarks>
     ///     Should only be used with readonly structs
     ///     Missing most safety checks as it is for internal use only
-    ///     T constrained to struct so that null checks aren't needed
     ///     Does not detect the array being edited during iteration
     ///     The internal array is not resized or zeroed on clear
     /// </remarks>
-    internal class ReceivedMessageList<T> : IEnumerable<T> where T : struct
+    internal class MessageList<T> : IEnumerable<T> where T : struct
     {
         private static readonly T[] EmptyArray = new T[0];
 
@@ -24,7 +23,7 @@ namespace Improbable.Gdk.Core
         public int Count { get; private set; }
 
         // Todo should probably have a starting size and a max size
-        public ReceivedMessageList()
+        public MessageList()
         {
             Count = 0;
             items = EmptyArray;
@@ -32,7 +31,7 @@ namespace Improbable.Gdk.Core
 
         public ref readonly T this[int index] => ref items[index];
 
-        public void Add(T item)
+        public void Add(in T item)
         {
             if (items.Length <= Count)
             {
@@ -78,6 +77,24 @@ namespace Improbable.Gdk.Core
             Count = freeIndex;
         }
 
+        public void CopyTo(MessageList<T> other)
+        {
+            if (other.items.Length < Count)
+            {
+                other.items = new T[Count];
+            }
+
+            Array.Copy(items, other.items, Count);
+            other.Count = Count;
+        }
+
+        public T[] ToArray()
+        {
+            var t = new T[Count];
+            Array.Copy(items, t, Count);
+            return t;
+        }
+
         public void Clear()
         {
             Count = 0;
@@ -105,11 +122,11 @@ namespace Improbable.Gdk.Core
 
         public struct Enumerator : IEnumerator<T>
         {
-            private readonly ReceivedMessageList<T> list;
+            private readonly MessageList<T> list;
 
             private int currentIndex;
 
-            public Enumerator(ReceivedMessageList<T> list)
+            public Enumerator(MessageList<T> list)
             {
                 this.list = list;
                 currentIndex = -1;

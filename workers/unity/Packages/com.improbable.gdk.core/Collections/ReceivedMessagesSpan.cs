@@ -4,13 +4,13 @@ namespace Improbable.Gdk.Core
 {
     public readonly ref struct ReceivedMessagesSpan<T> where T : struct, IReceivedMessage
     {
-        private readonly ReceivedMessageList<T> updates;
+        private readonly MessageList<T> updates;
 
         private readonly int firstIndex;
 
         public int Count { get; }
 
-        internal ReceivedMessagesSpan(ReceivedMessageList<T> updates)
+        internal ReceivedMessagesSpan(MessageList<T> updates)
         {
             this.updates = updates;
 
@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
             Count = updates.Count;
         }
 
-        internal ReceivedMessagesSpan(ReceivedMessageList<T> updates, int index, int count)
+        internal ReceivedMessagesSpan(MessageList<T> updates, int index, int count)
         {
             this.updates = updates;
             firstIndex = index;

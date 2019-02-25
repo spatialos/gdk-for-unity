@@ -86,8 +86,7 @@ namespace Improbable.Gdk.Core.Commands
                 /// </summary>
                 public readonly long RequestId;
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Entity sendingEntity, Request req, long requestId,
-                    World world)
+                internal ReceivedResponse(EntityQueryResponseOp op, Entity sendingEntity, Request req, long requestId)
                 {
                     SendingEntity = sendingEntity;
                     StatusCode = op.StatusCode;
@@ -106,7 +105,7 @@ namespace Improbable.Gdk.Core.Commands
                     Result = new Dictionary<EntityId, EntityQuerySnapshot>();
                     foreach (var entityIdToEntity in op.Result)
                     {
-                        Result.Add(new EntityId(entityIdToEntity.Key), new EntityQuerySnapshot(entityIdToEntity.Value, world));
+                        Result.Add(new EntityId(entityIdToEntity.Key), new EntityQuerySnapshot(entityIdToEntity.Value));
                     }
                 }
 
@@ -325,137 +324,6 @@ namespace Improbable.Gdk.Core.Commands
                 {
                     RequestsProvider.CleanDataInWorld(world);
                     ResponsesProvider.CleanDataInWorld(world);
-                }
-            }
-
-
-            public class CommandManager : IWorldCommandManager<Request, ReceivedResponse>
-            {
-                private WorkerSystem workerSystem;
-                private EntityManager entityManager;
-
-                // todo only entity query stuff needs a world - see if there is some other way of doing that
-                private World world;
-
-                private List<(Request Request, long Id)> requestsToSend = new List<(Request Request, long Id)>();
-
-                private ReceivedMessageList<ReceivedResponse> responsesReceived =
-                    new ReceivedMessageList<ReceivedResponse>();
-
-                private Dictionary<long, Request> sentInternalRequestIdToRequest =
-                    new Dictionary<long, Request>();
-
-                private Dictionary<long, Unity.Entities.Entity> sentInternalRequestIdToEntity =
-                    new Dictionary<long, Unity.Entities.Entity>();
-
-                private Dictionary<long, long> sentWorkerRequestIdToInternalRequestId = new Dictionary<long, long>();
-
-                public Type GetRequestType()
-                {
-                    return typeof(Request);
-                }
-
-                public Type GetReceivedRequestType()
-                {
-                    return null;
-                }
-
-                public Type GetResponseType()
-                {
-                    return null;
-                }
-
-                public Type GetReceivedResponseType()
-                {
-                    return typeof(ReceivedResponse);
-                }
-
-                public void SendAll()
-                {
-                    var connection = workerSystem.Connection;
-
-                    foreach (var (request, id) in requestsToSend)
-                    {
-                        var requestId = connection.SendEntityQueryRequest(request.EntityQuery,
-                            request.TimeoutMillis);
-
-                        sentWorkerRequestIdToInternalRequestId[requestId] = id;
-                    }
-
-                    requestsToSend.Clear();
-                    responsesReceived.Clear();
-                }
-
-                public void Init(World world)
-                {
-                    this.world = world;
-                    workerSystem = world.GetExistingManager<WorkerSystem>();
-
-                    if (workerSystem == null)
-                    {
-                        throw new ArgumentException("World instance is not running a valid SpatialOS worker");
-                    }
-                }
-
-                public void ApplyAndCleanDiff(ViewDiff diff)
-                {
-                    foreach (var response in diff.GetWorldCommandStorage().GetEntityQueryResponses())
-                    {
-                        AddResponse(response);
-                    }
-                }
-
-                public long SendCommand(Request request, Unity.Entities.Entity entity)
-                {
-                    var id = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext();
-                    requestsToSend.Add((request, id));
-                    sentInternalRequestIdToEntity.Add(id, entity);
-                    sentInternalRequestIdToRequest[id] = request;
-                    return id;
-                }
-
-                public List<(Request Request, long Id)> GetRequestsToSend()
-                {
-                    return requestsToSend;
-                }
-
-                public ReceivedMessagesSpan<ReceivedResponse> GetResponsesReceived()
-                {
-                    return new ReceivedMessagesSpan<ReceivedResponse>(responsesReceived);
-                }
-
-                public bool TryGetResponseReceivedForRequestId(long requestId,
-                    out ReceivedResponse response)
-                {
-                    var responseIndex = responsesReceived.GetResponseIndex(requestId);
-                    if (responseIndex < 0)
-                    {
-                        response = default(ReceivedResponse);
-                        return false;
-                    }
-
-                    response = responsesReceived[responseIndex];
-                    return true;
-                }
-
-                private void AddResponse(EntityQueryResponseOp op)
-                {
-                    var internalRequestId = sentWorkerRequestIdToInternalRequestId[op.RequestId];
-                    sentWorkerRequestIdToInternalRequestId.Remove(op.RequestId);
-
-                    var sendingEntity = sentInternalRequestIdToEntity[internalRequestId];
-                    sentInternalRequestIdToEntity.Remove(internalRequestId);
-
-                    var request = sentInternalRequestIdToRequest[internalRequestId];
-                    sentInternalRequestIdToRequest.Remove(internalRequestId);
-
-                    var response = new ReceivedResponse(
-                        op,
-                        sendingEntity,
-                        request,
-                        internalRequestId, world);
-
-                    responsesReceived.Add(response);
                 }
             }
         }

@@ -18,11 +18,13 @@ namespace Improbable.Gdk.ReactiveComponents
             new List<ComponentAuthorityLossDetails>();
 
         private WorkerSystem workerSystem;
+        private ComponentUpdateSystem updateSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             workerSystem = World.GetExistingManager<WorkerSystem>();
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
             GenerateComponentGroups();
         }
 
@@ -53,7 +55,7 @@ namespace Improbable.Gdk.ReactiveComponents
             foreach (var details in authorityLossDetails)
             {
                 Profiler.BeginSample("AcknowledgingAuthorityLoss");
-                details.Handler.AcknowledgeAuthorityLoss(details.AuthorityLossGroup, this, workerSystem.Connection);
+                details.Handler.AcknowledgeAuthorityLoss(details.AuthorityLossGroup, this, updateSystem);
                 Profiler.EndSample();
             }
         }

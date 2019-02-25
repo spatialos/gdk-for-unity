@@ -20,20 +20,20 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
 
-        private Connection connection;
+        private IConnectionHandler connection;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            connection = World.GetExistingManager<WorkerSystem>().Connection;
+            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
         }
 
         protected override void OnUpdate()
         {
-            if (connection == null)
+            if (!connection.IsConnected())
             {
                 return;
             }

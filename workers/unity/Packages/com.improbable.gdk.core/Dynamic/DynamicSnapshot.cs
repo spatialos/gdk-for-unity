@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
 {
     public static class DynamicSnapshot
     {
-        public delegate T SnapshotDeserializer<out T>(ComponentData update, World world) where T : ISpatialComponentSnapshot;
+        public delegate T SnapshotDeserializer<out T>(ComponentData update) where T : ISpatialComponentSnapshot;
 
         public delegate void SnapshotSerializer<T>(T snapshot, ComponentData data) where T : ISpatialComponentSnapshot;
 

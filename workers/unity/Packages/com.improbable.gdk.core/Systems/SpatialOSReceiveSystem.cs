@@ -12,13 +12,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        private readonly OpListDeserializer opDeserializer = new OpListDeserializer();
-
-        private ViewDiff diff = new ViewDiff();
-
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
-        private CommandSystem commandSystem;
         private EntitySystem entitySystem;
 
         protected override void OnCreateManager()
@@ -27,34 +22,21 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingManager<WorkerSystem>();
             updateSystem = World.GetOrCreateManager<ComponentUpdateSystem>();
-            commandSystem = World.GetOrCreateManager<CommandSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
-
-            diff = worker.Diff;
         }
 
         protected override void OnUpdate()
         {
-            if (worker.Connection == null)
+            if (!worker.ConnectionHandler.IsConnected())
             {
                 return;
             }
 
             try
             {
-                diff.Clear();
+                worker.GetMessages();
 
-                bool inCriticalSection = false;
-                do
-                {
-                    using (var opList = worker.Connection.GetOpList(0))
-                    {
-                        inCriticalSection = opDeserializer.ParseOpListIntoDiff(opList, diff);
-                    }
-                }
-                while (inCriticalSection);
-
-                opDeserializer.Reset();
+                var diff = worker.Diff;
 
                 if (diff.Disconnected)
                 {
@@ -68,7 +50,6 @@ namespace Improbable.Gdk.Core
                 }
 
                 updateSystem.ApplyDiff(diff);
-                commandSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
 
                 foreach (var entityId in diff.GetEntitiesRemoved())
