@@ -23,7 +23,7 @@ If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Un
 
 <%(/Expandable)%>
 
-## Connecting your Android device or emulator to a cloud deployment
+## Android device or Android emulator
 
 To connect your mobile application to a cloud deployment, you need to authenticate against our services.
 This guide describes how to authenticate using the development authentication flow which we provide for the early stages of game development.
