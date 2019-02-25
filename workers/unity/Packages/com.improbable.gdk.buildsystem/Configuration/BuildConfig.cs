@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -6,8 +5,8 @@ using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = EditorConfig.BuildConfigurationMenu)]
-    public class SpatialOSBuildConfiguration : SingletonScriptableObject<SpatialOSBuildConfiguration>
+    [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
+    internal class BuildConfig : SingletonScriptableObject<BuildConfig>
     {
         [SerializeField] public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
@@ -50,28 +49,33 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 new WorkerBuildConfiguration
                 {
                     WorkerType = "UnityClient",
-                    LocalBuildConfig = new BuildEnvironmentConfig { BuildOptions = BuildOptions.Development },
+                    LocalBuildConfig =
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets,
+                            WorkerBuildData.GetCurrentBuildTargetConfig()),
+                    CloudBuildConfig = new BuildEnvironmentConfig(
+                        WorkerBuildData.AllBuildTargets,
+                        new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, true),
+                        new BuildTargetConfig(BuildTarget.StandaloneWindows64, BuildOptions.Development, true))
                 },
                 new WorkerBuildConfiguration
                 {
                     WorkerType = "UnityGameLogic",
                     LocalBuildConfig =
-                        new BuildEnvironmentConfig { BuildOptions = BuildOptions.EnableHeadlessMode },
-                    CloudBuildConfig = new BuildEnvironmentConfig
-                    {
-                        BuildPlatforms = SpatialBuildPlatforms.Linux,
-                        BuildOptions = BuildOptions.EnableHeadlessMode
-                    }
+                        new BuildEnvironmentConfig(WorkerBuildData.LocalBuildTargets,
+                            WorkerBuildData.GetCurrentBuildTargetConfig()),
+                    CloudBuildConfig =
+                        new BuildEnvironmentConfig(
+                            WorkerBuildData.AllBuildTargets, WorkerBuildData.GetLinuxBuildTargetConfig())
                 },
             };
             isInitialised = true;
         }
 
-        private SceneAsset[] GetScenesForWorker(string workerType)
+        private List<SceneAsset> GetScenesForWorker(string workerType)
         {
             var configurationForWorker = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             return configurationForWorker == null
-                ? new SceneAsset[0]
+                ? new List<SceneAsset>()
                 : configurationForWorker.ScenesForWorker;
         }
     }
