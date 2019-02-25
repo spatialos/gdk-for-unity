@@ -83,7 +83,7 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ReactiveHandlers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}UpdateManager", FileExtension)));
+                    Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.CodeGenerator
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentReactiveHandlersGenerator = new UnityReactiveComponentHandlersGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
-            var componentUpdateManagerGenerator = new UnityComponentUpdateManagerGenerator();
+            var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
@@ -216,9 +216,9 @@ namespace Improbable.Gdk.CodeGenerator
                 var reactiveComponentHandlersCode = componentReactiveHandlersGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, reactiveComponentHandlersFileName), reactiveComponentHandlersCode);
 
-                var updateManagerFileName = Path.ChangeExtension($"{componentName}UpdateManager", FileExtension);
-                var updateManagerCode = componentUpdateManagerGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, updateManagerFileName), updateManagerCode);
+                var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
+                var ecsViewManagerCode = ecsViewManagerGenerator.Generate(componentTarget.Content, package);
+                Content.Add(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
 
                 var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
                 var componentDiffStorageCode = componentDiffStorageGenerator.Generate(componentTarget.Content, package);
