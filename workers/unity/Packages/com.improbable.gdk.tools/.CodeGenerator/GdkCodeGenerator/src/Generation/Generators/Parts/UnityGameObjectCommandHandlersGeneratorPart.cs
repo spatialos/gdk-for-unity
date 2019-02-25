@@ -10,25 +10,24 @@ namespace Improbable.Gdk.CodeGenerator
     public partial class UnityGameObjectCommandHandlersGenerator
     {
         private string qualifiedNamespace;
-        private UnityComponentDefinition unityComponentDefinition;
+        private UnityComponentDetails details;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package)
+        public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;
-            this.unityComponentDefinition = unityComponentDefinition;
+            this.details = details;
 
             return TransformText();
         }
 
         private UnityComponentDetails GetComponentDetails()
         {
-            return new UnityComponentDetails(unityComponentDefinition);
+            return details;
         }
 
-        private List<UnityCommandDetails> GetCommandDetailsList()
+        private IReadOnlyList<UnityCommandDetails> GetCommandDetailsList()
         {
-            return unityComponentDefinition.CommandDefinitions
-                .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
+            return details.CommandDetails;
         }
     }
 }

@@ -1,18 +1,25 @@
-using Improbable.CodeGeneration.Model;
-using Improbable.CodeGeneration.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityEnumDetails
     {
-        public string TypeName => Formatting.SnakeCaseToCapitalisedCamelCase(enumDefinition.name);
-        public string FqnTypeName => CommonDetailsUtils.GetCapitalisedFqnTypename(enumDefinition.qualifiedName);
+        public string TypeName;
+        public string FqnTypeName;
 
-        private readonly EnumDefinitionRaw enumDefinition;
-        
-        public UnityEnumDetails(EnumDefinitionRaw enumDefinition)
+        public List<(uint, string)> Values;
+
+        public Identifier Identifier;
+
+        public UnityEnumDetails(EnumDefinitionRaw enumDefinitionRaw)
         {
-            this.enumDefinition = enumDefinition;
+            TypeName = enumDefinitionRaw.EnumIdentifier.Name;
+            FqnTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(enumDefinitionRaw.EnumIdentifier.QualifiedName);
+            Identifier = enumDefinitionRaw.EnumIdentifier;
+
+            Values = enumDefinitionRaw.Values.Select(value => (value.EnumValue, value.Identifier.Name)).ToList();
         }
     }
 }

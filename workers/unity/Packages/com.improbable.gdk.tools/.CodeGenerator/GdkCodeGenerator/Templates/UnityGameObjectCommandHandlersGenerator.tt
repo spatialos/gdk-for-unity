@@ -59,7 +59,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
         public partial class Requirable
         {
-            [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestSender, <#= componentDetails.ComponentId #>)]
             internal class CommandRequestSenderCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -68,7 +68,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestSender, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestSender, <#= componentDetails.ComponentId #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandRequestSender : RequirableBase
             {
@@ -118,7 +118,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestHandler, <#= componentDetails.ComponentId #>)]
             internal class CommandRequestHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -127,7 +127,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            [InjectableId(InjectableType.CommandRequestHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandRequestHandler, <#= componentDetails.ComponentId #>)]
             [InjectionCondition(InjectionCondition.RequireComponentWithAuthority)]
             public class CommandRequestHandler : RequirableBase
             {
@@ -178,7 +178,7 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandResponseHandler, <#= componentDetails.ComponentId #>)]
             internal class CommandResponseHandlerCreator : IInjectableCreator
             {
                 public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
@@ -187,7 +187,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            [InjectableId(InjectableType.CommandResponseHandler, <#= unityComponentDefinition.Id #>)]
+            [InjectableId(InjectableType.CommandResponseHandler, <#= componentDetails.ComponentId #>)]
             [InjectionCondition(InjectionCondition.RequireNothing)]
             public class CommandResponseHandler : RequirableBase
             {

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+      <PackageReference Include="NUnit" Version="3.11.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+      <PackageReference Include="NunitXml.TestLogger" Version="2.1.17" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Tests\Model\SchemaBundleV1\Resources\exhaustive_bundle.json" />
+      <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\exhaustive_bundle.json" />
+    </ItemGroup>
+
+</Project>

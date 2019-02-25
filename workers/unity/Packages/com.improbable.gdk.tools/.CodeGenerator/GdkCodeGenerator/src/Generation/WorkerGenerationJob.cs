@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Improbable.CodeGeneration.FileHandling;
-using Improbable.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.Jobs;
 using Newtonsoft.Json.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -23,7 +23,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             InputFiles = new List<string>();
             OutputFiles = new List<string>();
-            
+
             workerTypesToGenerate = ExtractWorkerTypes(options.WorkerJsonDirectory);
 
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerFileName));
