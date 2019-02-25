@@ -6,30 +6,29 @@ namespace Improbable.Gdk.CodeGenerator
     public partial class ReactiveCommandComponentGenerator
     {
         private string qualifiedNamespace;
-        private string spatialNamespace;
-        private UnityComponentDefinition unityComponentDefinition;
-        private HashSet<string> enumSet;
+        private UnityComponentDetails details;
 
-        public string Generate(UnityComponentDefinition unityComponentDefinition, string package,
-            HashSet<string> enumSet)
+        public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;
-            spatialNamespace = package;
-            this.unityComponentDefinition = unityComponentDefinition;
-            this.enumSet = enumSet;
+            this.details = details;
 
             return TransformText();
         }
 
         private UnityComponentDetails GetComponentDetails()
         {
-            return new UnityComponentDetails(unityComponentDefinition);
+            return details;
         }
 
-        private List<UnityCommandDetails> GetCommandDetailsList()
+        private IReadOnlyList<UnityFieldDetails> GetFieldDetailsList()
         {
-            return unityComponentDefinition.CommandDefinitions
-                .Select(commandDefinition => new UnityCommandDetails(commandDefinition)).ToList();
+            return details.FieldDetails;
+        }
+
+        private IReadOnlyList<UnityCommandDetails> GetCommandDetailsList()
+        {
+            return details.CommandDetails;
         }
     }
 }
