@@ -94,6 +94,8 @@ namespace Improbable.Gdk.CodeGenerator
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
+                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{componentName}ViewStorage", FileExtension)));
             }
 
             foreach (var enumTarget in enumsToGenerate)
@@ -123,6 +125,7 @@ namespace Improbable.Gdk.CodeGenerator
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
             var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
+            var viewStorageGenerator = new ViewStorageGenerator();
             var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
 
             foreach (var enumTarget in enumsToGenerate)
@@ -240,6 +243,10 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentReaderWriterCode =
                     componentReaderWriterGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
+
+                var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
+                var viewStorageCode = viewStorageGenerator.Generate(componentTarget.Content, package);
+                Content.Add(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
             }
         }
 

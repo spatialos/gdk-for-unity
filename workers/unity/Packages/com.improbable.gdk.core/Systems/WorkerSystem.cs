@@ -24,6 +24,7 @@ namespace Improbable.Gdk.Core
 
         internal readonly MessagesToSend MessagesToSend = new MessagesToSend();
 
+        internal readonly View View = new View();
         internal readonly IConnectionHandler ConnectionHandler;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
