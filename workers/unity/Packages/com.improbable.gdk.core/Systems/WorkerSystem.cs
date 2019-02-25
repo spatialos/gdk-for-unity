@@ -66,6 +66,16 @@ namespace Improbable.Gdk.Core
             return EntityIdToEntity.ContainsKey(entityId);
         }
 
+        public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
+        {
+            MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+        }
+
+        public void SendMetrics(Metrics metrics)
+        {
+            MessagesToSend.AddMetrics(metrics);
+        }
+
         internal void GetMessages()
         {
             Diff = ConnectionHandler.GetMessagesReceived();

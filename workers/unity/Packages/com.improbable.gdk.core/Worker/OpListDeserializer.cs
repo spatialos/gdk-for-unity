@@ -58,9 +58,11 @@ namespace Improbable.Gdk.Core
                         break;
                     case OpType.LogMessage:
                         var logOp = opList.GetLogMessageOp(i);
+                        viewDiff.AddLogMessage(logOp.Message, logOp.Level);
                         break;
                     case OpType.Metrics:
                         var metricsOp = opList.GetMetricsOp(i);
+                        viewDiff.AddMetrics(metricsOp.Metrics);
                         break;
                     case OpType.CriticalSection:
                         var criticalSectionOp = opList.GetCriticalSectionOp(i);
