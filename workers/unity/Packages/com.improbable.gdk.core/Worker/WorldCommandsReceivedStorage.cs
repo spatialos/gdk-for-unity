@@ -38,7 +38,6 @@ namespace Improbable.Gdk.Core
             deleteEntityResponses.Add(response);
         }
 
-
         public void AddResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
             reserveEntityIdsResponses.Add(response);
@@ -66,7 +65,6 @@ namespace Improbable.Gdk.Core
         {
             return new ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>(reserveEntityIdsResponses);
         }
-
 
         ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponses()
