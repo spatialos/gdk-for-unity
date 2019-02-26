@@ -145,6 +145,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
             return gameObject;
         }
 
+        #pragma warning disable 649
         private class PositionReaderBehaviour : MonoBehaviour
         {
             [Require] public PositionReader Reader;
@@ -170,5 +171,6 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
             [Require] public PositionReader Reader;
             [Require] public PositionWriter Writer;
         }
+        #pragma warning restore 649
     }
 }
