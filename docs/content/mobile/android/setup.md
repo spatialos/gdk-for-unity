@@ -4,7 +4,7 @@
   1. Follow the steps in [Get the dependencies]({{urlRoot}}/setup-and-installing) and additionally install **Android build support** for Unity.
   1. Install Android prerequisites:
     * [Android Studio](https://developer.android.com/studio/)
-       * At the Choose Components stage of the instalation, select **Android Virtual Device**.
+       * At the Choose Components stage of the installation, select **Android Virtual Device**.
        * Once the installation is complete, open Android Studio and select **Configure** > **SDK Manager**.<br>
          Select the version you intend to develop your game for.<br>
          Select **Apply** to download and install the matching **Android SDK** version.
