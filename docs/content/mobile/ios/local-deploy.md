@@ -88,6 +88,9 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
 1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Device SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
+1. In your Unity Editor, select **Assets** > **Fps** > **Prefabs** > **iOSClientWorker**.
+1. In the Inspector pane, enter your local IP address into the **IOS Worker Connector (Script)** > **Forced Ip Address** field.
+1. Still in the Inspector pane, ensure that the **should connect locally** checkbox is checked.
 1. Build your workers from the SpatialOS menu by selecting **Build for local** > **All workers**.
 1. You need to know the local IP address of your computer to connect. [This page](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address) (on the Lifehacker website)  describes how you can find your external and local IP address.
 1. In a terminal window from the root folder of your SpatialOS project,  run: `spatial local launch --runtime_ip=<your-local-ip>`. (Where `<your-local-ip>` is the IP address you just located.)<br>
