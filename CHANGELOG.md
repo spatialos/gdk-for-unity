@@ -6,6 +6,7 @@
 
 - All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
     - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
+- Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
 
 ### Changed
 
@@ -22,6 +23,9 @@
 - Changed the code generator to use the schema bundle JSON rather than AST JSON.
     - If you have forked the code generator, this may be a breaking change.
 - Exposed annotations in the code generator model.
+- Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
+- Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
+- Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
 
 ## `0.1.5` - 2019-02-18
 
