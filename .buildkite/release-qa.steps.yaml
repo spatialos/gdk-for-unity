@@ -26,7 +26,7 @@ common: &common
 
 steps:
   - label: "build :android:"
-    command: bash -c .shared-ci/scripts/build.sh
+    command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
       - logs/**/*
@@ -37,7 +37,7 @@ steps:
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityClient mono"
-    command: bash -c .shared-ci/scripts/build.sh
+    command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
       - logs/**/*
@@ -48,7 +48,7 @@ steps:
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityGameLogic mono"
-    command: bash -c .shared-ci/scripts/build.sh
+    command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
       - logs/**/*
