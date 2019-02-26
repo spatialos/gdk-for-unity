@@ -417,7 +417,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
-            private static Update SnapshotToUpdate(Snapshot snapshot)
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
                 var update = new Update();
 <# foreach (var field in fieldDetailsList) { #>

@@ -4,7 +4,7 @@ namespace Improbable.Gdk.Core
 {
     public static class DynamicConverter
     {
-        public delegate TUpdate SnapshotToUpdate<TSnapshot, out TUpdate>(TSnapshot snapshot)
+        public delegate TUpdate SnapshotToUpdate<TSnapshot, out TUpdate>(in TSnapshot snapshot)
             where TSnapshot : struct, ISpatialComponentSnapshot
             where TUpdate : struct, ISpatialComponentUpdate;
 
