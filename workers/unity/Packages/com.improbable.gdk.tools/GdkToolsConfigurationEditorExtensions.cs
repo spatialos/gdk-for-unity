@@ -9,24 +9,23 @@ namespace Improbable.Gdk.Tools
     /// </summary>
     public class GdkToolsConfigurationWindow : EditorWindow
     {
-        internal const string SchemaStdLibDirLabel = "Schema standard library directory";
-        internal const string CodegenOutputDirLabel = "Code generator output directory";
-        internal const string SchemaSourceDirsLabel = "Schema source directories";
-        internal const string RuntimeIpLabel = "Runtime IP for local deployment";
+        internal const string SchemaStdLibDirLabel = "Standard library";
+        internal const string CodegenOutputDirLabel = "Code generator output";
+        internal const string SchemaSourceDirsLabel = "Schema sources";
+        internal const string RuntimeIpLabel = "Local runtime IP";
 
-        private const string CodeGeneratorLabel = "Code generator options";
-        private const string DownloadCoreSdkLabel = "CoreSDK options";
+        private const string CodeGeneratorLabel = "Code generator";
 
-        private const string AddSchemaDirButtonText = "Add schema source directory";
-        private const string RemoveSchemaDirButtonText = "Remove";
+        private static GUIContent AddSchemaDirButton;
+        private static GUIContent RemoveSchemaDirButton;
 
-        private const string ResetConfigurationButtonText = "Reset GDK tools configuration to default";
+        private const string ResetConfigurationButtonText = "Reset to default";
         private const string SaveConfigurationButtonText = "Save";
 
         private GdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
 
-        private readonly GUIStyle errorLayoutOption = new GUIStyle();
+        private Vector2 scrollPosition;
 
         [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
         public static void ShowWindow()
@@ -41,100 +40,106 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
+            titleContent = new GUIContent("GDK Tools");           
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-
-            errorLayoutOption.normal.textColor = Color.red;
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
         }
 
         public void OnGUI()
         {
-            EditorGUI.BeginChangeCheck();
+            if (AddSchemaDirButton == null)
+            {
+                AddSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Plus"))
+                    { tooltip = "Add schema directory" };
 
+                RemoveSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
+                    { tooltip = "Remove schema directory" };
+            }
+
+            using (new EditorGUILayout.VerticalScope())
+            using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition))
             using (var check = new EditorGUI.ChangeCheckScope())
             {
-                DrawCoreSdkOptions();
-                DrawHorizontalBreak();
-                DrawCodeGenerationOptions();
-                DrawHorizontalBreak();
-
-                using (new EditorGUI.DisabledScope(configErrors.Count != 0))
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
                 {
-                    if (GUILayout.Button(SaveConfigurationButtonText, GUILayout.Width(250)))
+                    var canSave = configErrors.Count > 0;
+                    using (new EditorGUI.DisabledScope(canSave))
                     {
-                        toolsConfig.Save();
+                        if (GUILayout.Button(SaveConfigurationButtonText, EditorStyles.toolbarButton))
+                        {
+                            toolsConfig.Save();
+                        }
+                    }
+
+                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.toolbarButton))
+                    {
+                        if (EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?", "Yes", "No"))
+                        {
+                            toolsConfig.ResetToDefault();
+                        }
                     }
                 }
 
-                GUILayout.Space(15);
-
-                if (GUILayout.Button(ResetConfigurationButtonText, GUILayout.Width(250)))
-                {
-                    toolsConfig.ResetToDefault();
-                }
+                DrawCodeGenerationOptions();
 
                 if (check.changed)
                 {
                     configErrors = toolsConfig.Validate();
                 }
+
+                scrollPosition = scroll.scrollPosition;
             }
 
-            if (configErrors.Count <= 0)
-            {
-                return;
-            }
-
-            DrawHorizontalBreak();
             foreach (var error in configErrors)
             {
                 EditorGUILayout.HelpBox(error, MessageType.Error);
             }
         }
 
-        private void DrawCoreSdkOptions()
-        {
-            GUILayout.Label(DownloadCoreSdkLabel);
-            GUILayout.Space(5);
-            GUILayout.Label(SchemaStdLibDirLabel);
-            toolsConfig.SchemaStdLibDir = GUILayout.TextField(toolsConfig.SchemaStdLibDir);
-            GUILayout.Label(RuntimeIpLabel);
-            toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);
-        }
-
         private void DrawCodeGenerationOptions()
         {
-            GUILayout.Label(CodeGeneratorLabel);
-            GUILayout.Space(5);
-            GUILayout.Label(CodegenOutputDirLabel);
-            toolsConfig.CodegenOutputDir = GUILayout.TextField(toolsConfig.CodegenOutputDir);
+            GUILayout.Label(CodeGeneratorLabel, EditorStyles.boldLabel);
+            GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
-            GUILayout.Label(SchemaSourceDirsLabel);
-            for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
+            using(new EditorGUIUtility.IconSizeScope(new Vector2(12,12)))
+            using (new EditorGUI.IndentLevelScope())
             {
-                using (new EditorGUILayout.HorizontalScope())
+                toolsConfig.CodegenOutputDir =
+                    EditorGUILayout.TextField(CodegenOutputDirLabel, toolsConfig.CodegenOutputDir);
+
+                GUILayout.Label(SchemaSourceDirsLabel, EditorStyles.boldLabel);
+                toolsConfig.SchemaStdLibDir =
+                    EditorGUILayout.TextField(SchemaStdLibDirLabel, toolsConfig.SchemaStdLibDir);
+
+                for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
                 {
-                    toolsConfig.SchemaSourceDirs[i] = GUILayout.TextField(toolsConfig.SchemaSourceDirs[i]);
-
-
-                    if (GUILayout.Button(RemoveSchemaDirButtonText, GUILayout.Width(100)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                        toolsConfig.SchemaSourceDirs[i] =
+                            EditorGUILayout.TextField($"Schema dir [{i}]", toolsConfig.SchemaSourceDirs[i]);
+
+                        if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        {
+                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                        }
                     }
                 }
-            }
 
-            if (GUILayout.Button(AddSchemaDirButtonText, GUILayout.Width(250)))
-            {
-                toolsConfig.SchemaSourceDirs.Add(string.Empty);
-            }
-        }
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
 
-        private void DrawHorizontalBreak()
-        {
-            GUILayout.Space(10);
-            EditorGUILayout.TextArea(string.Empty, GUI.skin.horizontalSlider);
-            GUILayout.Space(10);
+                    if (GUILayout.Button(AddSchemaDirButton, EditorStyles.miniButton))
+                    {
+                        toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                    }
+                }
+
+                GUILayout.Label(RuntimeIpLabel, EditorStyles.boldLabel);
+                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);                    
+
+            }
         }
     }
 }

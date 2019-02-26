@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Tools
         public string CodegenOutputDir;
         public string RuntimeIp;
 
-        private static string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
+        private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()
         {
@@ -44,11 +44,6 @@ namespace Improbable.Gdk.Tools
             if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
             {
                 errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
-            }
-
-            if (SchemaSourceDirs.Count == 0)
-            {
-                errors.Add($"You must have at least one item in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
             }
 
             if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
