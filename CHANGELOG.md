@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Changed
+
+- Improved the UX of the BuildConfiguration inspector.
+- Improved the UX of the GDK Tools Configuration window.
+- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+
+### Fixed
+
+- Fixed a bug where running `SpatialOS -> Generate code` would always regenerate code, even if no files had changed.
+
 ### Internal
 
 - Changed the code generator to use the schema bundle JSON rather than AST JSON.

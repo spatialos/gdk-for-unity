@@ -4,6 +4,7 @@
 .spatialos/
 .idea/
 .vs/
+.gradle/
 .DS_Store
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)

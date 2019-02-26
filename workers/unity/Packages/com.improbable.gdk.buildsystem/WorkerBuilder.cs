@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -13,9 +14,6 @@ namespace Improbable.Gdk.BuildSystem
 {
     public static class WorkerBuilder
     {
-        internal static readonly string IncompatibleWindowsPlatformsErrorMessage =
-            $"Please choose only one of {SpatialBuildPlatforms.Windows32} or {SpatialBuildPlatforms.Windows32} as a build platform.";
-
         private static readonly string PlayerBuildDirectory =
             Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
                 "worker"));
@@ -52,15 +50,7 @@ namespace Improbable.Gdk.BuildSystem
                 var workerTypesArg =
                     CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
                         "UnityClient,UnityGameLogic");
-
-                var desiredWorkerTypes = workerTypesArg.Split(',');
-                var filteredWorkerTypes = BuildSupportChecker.FilterWorkerTypes(buildEnvironment, desiredWorkerTypes);
-
-                if (desiredWorkerTypes.Length != filteredWorkerTypes.Length)
-                {
-                    throw new BuildFailedException(
-                        "Unable to complete build. Missing build support. Check logs for specific errors.");
-                }
+                var wantedWorkerTypes = workerTypesArg.Split(',');
 
                 ScriptingImplementation scriptingBackend;
                 var wantedScriptingBackend =
@@ -79,10 +69,19 @@ namespace Improbable.Gdk.BuildSystem
 
                 LocalLaunch.BuildConfig();
 
-                foreach (var wantedWorkerType in filteredWorkerTypes)
+                var workerResults = new Dictionary<string, bool>();
+                foreach (var wantedWorkerType in wantedWorkerTypes)
                 {
-                    BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    workerResults[wantedWorkerType] = result;
                 }
+
+                var missingWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => workerResults[k]));
+                var completedWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => !workerResults[k]));
+                Debug.LogWarning(
+                    $"Completed build for {buildEnvironment} target.\n"
+                    + $"Completed builds for: {completedWorkerTypes}\n"
+                    + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
             }
             catch (Exception e)
             {
@@ -96,42 +95,54 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        public static BuildTarget[] GetBuildTargetsForWorkerForEnvironment(string workerType,
-            BuildEnvironment targetEnvironment)
+        internal static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
         {
-            var environmentConfig = SpatialOSBuildConfiguration.GetInstance()
-                .GetEnvironmentConfigForWorker(workerType, targetEnvironment);
-            if (environmentConfig == null)
+            // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
+            EditorApplication.delayCall += () =>
             {
-                return new BuildTarget[0];
-            }
+                try
+                {
+                    LocalLaunch.BuildConfig();
 
-            return GetUnityBuildTargets(environmentConfig.BuildPlatforms);
+                    foreach (var workerType in workerTypes)
+                    {
+                        BuildWorkerForEnvironment(workerType, environment);
+                    }
+
+                    Debug.LogFormat("Completed build for {0} target", environment);
+                }
+                catch (Exception)
+                {
+                    EditorUtility.DisplayDialog("Build Failed",
+                        "Build failed. Please see the Unity Console Window for information.",
+                        "OK");
+
+                    throw;
+                }
+            };
         }
 
-        public static void BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment,
-            ScriptingImplementation? scriptingBackend = null)
+        internal static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
-            var environmentConfig =
-                spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
-            if (environmentConfig == null)
+            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
+            var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+
+            var enabledTargets = environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList();
+
+            if (enabledTargets == null || enabledTargets.Count == 0)
             {
                 Debug.LogWarning($"Skipping build for {workerType}.");
-                return;
+                return false;
             }
-
-            var buildPlatforms = environmentConfig.BuildPlatforms;
-            var buildOptions = environmentConfig.BuildOptions;
 
             if (!Directory.Exists(PlayerBuildDirectory))
             {
                 Directory.CreateDirectory(PlayerBuildDirectory);
             }
 
-            foreach (var unityBuildTarget in GetUnityBuildTargets(buildPlatforms))
+            foreach (var config in enabledTargets)
             {
-                var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(unityBuildTarget);
+                var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(config.Target);
                 var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
                 try
                 {
@@ -141,7 +152,7 @@ namespace Improbable.Gdk.BuildSystem
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
 
-                    BuildWorkerForTarget(workerType, unityBuildTarget, buildOptions, targetEnvironment);
+                    BuildWorkerForTarget(workerType, config.Target, config.Options, targetEnvironment);
                 }
                 catch (Exception e)
                 {
@@ -152,81 +163,36 @@ namespace Improbable.Gdk.BuildSystem
                     PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
                 }
             }
+
+            return true;
         }
 
         public static void Clean()
         {
-            Directory.Delete(AssetDatabaseDirectory, true);
-            Directory.Delete(EditorPaths.BuildScratchDirectory, true);
-        }
-
-        public static BuildTarget[] GetUnityBuildTargets(SpatialBuildPlatforms actualPlatforms)
-        {
-            var result = new List<BuildTarget>();
-            if ((actualPlatforms & SpatialBuildPlatforms.Current) != 0)
+            if (Directory.Exists(AssetDatabaseDirectory))
             {
-                actualPlatforms |= GetCurrentBuildPlatform();
+                Directory.Delete(AssetDatabaseDirectory, true);
             }
 
-            if ((actualPlatforms & SpatialBuildPlatforms.Linux) != 0)
+            if (Directory.Exists(EditorPaths.BuildScratchDirectory))
             {
-                result.Add(BuildTarget.StandaloneLinux64);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.OSX) != 0)
-            {
-                result.Add(BuildTarget.StandaloneOSX);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Windows32) != 0)
-            {
-                if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
-                {
-                    throw new Exception(IncompatibleWindowsPlatformsErrorMessage);
-                }
-
-                result.Add(BuildTarget.StandaloneWindows);
-            }
-            else if ((actualPlatforms & SpatialBuildPlatforms.Windows64) != 0)
-            {
-                result.Add(BuildTarget.StandaloneWindows64);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.Android) != 0)
-            {
-                result.Add(BuildTarget.Android);
-            }
-
-            if ((actualPlatforms & SpatialBuildPlatforms.iOS) != 0)
-            {
-                result.Add(BuildTarget.iOS);
-            }
-
-            return result.ToArray();
-        }
-
-        internal static SpatialBuildPlatforms GetCurrentBuildPlatform()
-        {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsEditor:
-                    return SpatialBuildPlatforms.Windows64;
-                case RuntimePlatform.OSXEditor:
-                    return SpatialBuildPlatforms.OSX;
-                case RuntimePlatform.LinuxEditor:
-                    return SpatialBuildPlatforms.Linux;
-                default:
-                    throw new Exception($"Unsupported platform detected: {Application.platform}");
+                Directory.Delete(EditorPaths.BuildScratchDirectory, true);
             }
         }
 
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
+            if (!WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget])
+            {
+                Debug.LogWarning($"Skipping {buildTarget} because support is not installed in the Unity Editor.");
+                return;
+            }
+
             Debug.Log(
                 $"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
-            var spatialOSBuildConfiguration = SpatialOSBuildConfiguration.GetInstance();
+            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
             var scenes = spatialOSBuildConfiguration.GetScenePathsForWorker(workerType);
 
