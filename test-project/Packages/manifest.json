@@ -2,8 +2,8 @@
   "dependencies": {
     "com.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/com.improbable.gdk.buildsystem",
     "com.improbable.gdk.core": "file:../../workers/unity/Packages/com.improbable.gdk.core",
-    "com.improbable.gdk.dependencytest": "file:com.improbable.gdk.dependencytest",
     "com.improbable.gdk.testutils": "file:../../workers/unity/Packages/com.improbable.gdk.testutils",
+    "com.improbable.gdk.dependencytest": "file:com.improbable.gdk.dependencytest",
     "com.improbable.gdk.tools": "file:../../workers/unity/Packages/com.improbable.gdk.tools"
   },
   "registry": "https://staging-packages.unity.com"
