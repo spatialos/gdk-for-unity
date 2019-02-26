@@ -73,5 +73,5 @@ steps:
     command: bash -c ci/launch.sh
     <<: *common
     env:
-      PREFIX: "playground"
+      ASSEMBLY_PREFIX: "playground"
       PROJECT_NAME: "unity_gdk"
