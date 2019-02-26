@@ -2,17 +2,33 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. A similar rename applies to Writers. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
+- The generated command senders in Monobehaviours have also changed. 
+    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` is now called `{COMPONENT_NAME}CommandSender`. This object also contains the responsibility for sending responses as well as requests.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandReceiver`.
+- When creating game objects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
+    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the ECS entity to the GameObject.
+    - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the GameObject to the ECS entity.
+        - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` GameObject component.
+
 ### Added
 
 - All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
     - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
 - Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
+- Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
+    - This component contains a single bool which denotes whether you have authority over that component.
+    - It will not tell you about soft-handover (`AuthorityLossImminent`).
+- You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
 
 ### Changed
 
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
-- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
 
 ### Fixed
 
@@ -26,6 +42,10 @@
 - Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
 - Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
 - Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
+- Reactive components have been isolated and can be enabled or disabled.
+- Subscriptions API has been added, this allows you to subscribe to Reader, Writers, et al outside of Monobehaviours
+- Low level APIs have been changed significantly.
+- Added a View separate from the Unity ECS.
 
 ## `0.1.5` - 2019-02-18
 
