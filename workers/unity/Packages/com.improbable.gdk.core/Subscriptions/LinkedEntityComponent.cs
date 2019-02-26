@@ -9,10 +9,8 @@ namespace Improbable.Gdk.Subscriptions
     {
         public EntityId EntityId;
         public World World;
-        public Entity Entity;
+        public WorkerSystem Worker;
 
-        // todo everything below here is to detect when a gameobject is disabled so that it can be unlinked
-        // need to decide if this is desired behaviour or if this should be allowed to cause errors
         internal bool IsValid;
         internal EntityGameObjectLinker Linker;
 

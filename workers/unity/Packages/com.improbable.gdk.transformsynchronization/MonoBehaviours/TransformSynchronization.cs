@@ -66,13 +66,6 @@ namespace Improbable.Gdk.TransformSynchronization
                     $"on {gameObject.name} must be provided a transform receive strategy");
             }
 
-            // spatialOSComponent = GetComponent<SpatialOSComponent>();
-            // if (spatialOSComponent == null)
-            // {
-            //     throw new InvalidOperationException($"{nameof(TransformSynchronization)} " +
-            //         $" on should only be added to a GameObject linked to a SpatialOS entity");
-            // }
-
             entityManager = world.GetOrCreateManager<EntityManager>();
 
             StartCoroutine(DelayedApply());
