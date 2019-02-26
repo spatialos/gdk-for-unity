@@ -11,7 +11,7 @@ Before reading this document, make sure you are familiar with:
 
 To connect your Android device to a cloud deployment, you need a mobile connector script.
 
-<%(Callout message="If you are using one of our Starter Projects, you can skip the **Create a mobile connector script** section below, as you already have one in your project.")%>
+<%(Callout message="If you are using one of our [Starter Projects]({{urlRoot}}/content/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.")%>
 
 <%(#Expandable title="Create a mobile connector script")%>
 
