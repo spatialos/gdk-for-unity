@@ -7,13 +7,29 @@ Before reading this document, make sure you are familiar with:
 * [Development Authentication Flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/content/gameobject/creating-workers-with-workerconnector)
 
-To connect your mobile application to a cloud deployment, you need to authenticate against our services.
-This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
-Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
+## Prepare your project to connect to a cloud deployment {#prepare}
+
+To connect your iOS device to a cloud deployment, you need a mobile connector script.
+
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/content/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
+
+<%(#Expandable title="Create a mobile connector script")%>
+
+If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your iOS client-worker GameObject. To do this:
+
+1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/iOSClientWorkerConnector.cs) in our Blank Starter Project.
+1. In your Unity Editor, add the MonoBehaviour script to your iOS client-worker GameObject.
+1. In your Unity Editor, navigate to your iOS client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is **not** checked in the script's drop-down window of the Inspector window.
+
+<%(/Expandable)%>
 
 ## iOS Simulator{#ios-simulator}
 
 **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
+
+To connect your mobile application to a cloud deployment, you need to authenticate against our services.
+This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 1. Open your project in your Unity Editor.
 1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
@@ -49,6 +65,10 @@ Note: You don’t need to enter anything in the text field.
 	* In your SpatialOS Console, select **Stop** to halt your cloud deployment.
 
 ## iOS device{#ios-device}
+
+To connect your mobile application to a cloud deployment, you need to authenticate against our services.
+This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 1. Make sure your computer and your mobile device are both connected to the same network.
 1. Connect the mobile device to your computer using a USB cable.
