@@ -6,32 +6,49 @@ namespace Improbable.Gdk.Core
     {
         private uint updateId;
 
-        private readonly ViewDiff diff = new ViewDiff();
+        private ViewDiff currentDiff => diffs[currentDiffIndex];
 
-        public void ClearDiff()
+        private readonly ViewDiff[] diffs = new[]
         {
-            diff.Clear();
-        }
+            new ViewDiff(),
+            new ViewDiff()
+        };
+
+        private int currentDiffIndex = 0;
 
         public void CreateEntity(long entityId, EntityTemplate template)
         {
-            var handler = new EntityTemplateDynamicHandler(template, entityId, diff);
+            var handler = new EntityTemplateDynamicHandler(template, entityId, currentDiff);
             DynamicConverter.ForEachComponent(handler);
         }
 
         public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
         {
-            diff.SetAuthority(entityId, componentId, newAuthority);
+            currentDiff.SetAuthority(entityId, componentId, newAuthority);
         }
 
         public void UpdateComponent<T>(long entityId, uint componentId, T update) where T : ISpatialComponentUpdate
         {
-            diff.AddComponentUpdate(update, entityId, componentId, updateId++);
+            currentDiff.AddComponentUpdate(update, entityId, componentId, updateId++);
         }
 
         public void AddEvent<T>(long entityId, uint componentId, T ev) where T : IEvent
         {
-            diff.AddEvent(ev, entityId, componentId, updateId++);
+            currentDiff.AddEvent(ev, entityId, componentId, updateId++);
+        }
+
+        public void UpdateComponentAndAddEvents<TUpdate, TEvent>(long entityId, uint componentId, TUpdate update,
+            params TEvent[] events)
+            where TUpdate : ISpatialComponentUpdate
+            where TEvent : IEvent
+        {
+            var thisUpdateId = updateId++;
+
+            currentDiff.AddComponentUpdate(update, entityId, componentId, thisUpdateId);
+            foreach (var ev in events)
+            {
+                currentDiff.AddEvent(ev, entityId, componentId, thisUpdateId);
+            }
         }
 
         // TODO: Commands
@@ -40,7 +57,13 @@ namespace Improbable.Gdk.Core
 
         public ViewDiff GetMessagesReceived()
         {
-            return diff;
+            var diffToReturn = currentDiff;
+
+            currentDiffIndex = (currentDiffIndex + 1) % diffs.Length;
+            var nextDiff = currentDiff;
+            nextDiff.Clear();
+
+            return diffToReturn;
         }
 
         public void PushMessagesToSend(MessagesToSend messages)

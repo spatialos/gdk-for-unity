@@ -45,7 +45,6 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
             template.AddComponent(new Position.Snapshot(), "worker");
             connectionHandler.CreateEntity(EntityId, template);
             receiveSystem.Update();
-            connectionHandler.ClearDiff();
         }
 
         [TearDown]
