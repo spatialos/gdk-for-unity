@@ -61,7 +61,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 1. Open your project in your Unity Editor.
 1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
-1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
+1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens the **Project Settings** window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
 1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Simulator SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
@@ -86,7 +86,7 @@ Note: You don’t need to enter anything in the text field.
 1. Open your project in your Unity Editor.
 1. In your Unity Editor, select **File** > **Build Settings**, and ensure that **iOS** is selected. (The Unity logo next to a platform name indicates it's selected.)<br>
 If **iOS** is not selected, select it and then select **Switch Platform**.
-1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens **PlayerSettings** in the Inspector window.
+1. In your Unity Editor, select **Edit** > **Project Settings** > **Player**. This opens the **Project Settings** window.
 1. In the Inspector window, select **Settings for iOS (the iPhone icon)** > **Other Settings**.
 1. In the **Configuration** section of the Inspector window, locate **Target SDK** and select **Device SDK**.
 1. Still in the **Configuration** section, locate **Target minimum iOS version** and input `10.0`.
