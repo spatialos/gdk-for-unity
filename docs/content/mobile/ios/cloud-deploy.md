@@ -17,7 +17,7 @@ To connect your iOS device to a cloud deployment, you need a mobile connector sc
 
 If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your iOS client-worker GameObject. To do this:
 
-1. If your project does not already contain one, create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-fps-starter-project/blob/master/workers/unity/Assets/Fps/Scripts/SetupLogic/iOSWorkerConnector.cs) in our FPS Starter Project.
+1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-fps-starter-project/blob/master/workers/unity/Assets/Fps/Scripts/SetupLogic/iOSWorkerConnector.cs) in our FPS Starter Project.
 1. In your Unity Editor, add the MonoBehaviour script to your iOS client-worker GameObject.
 1. In your Unity Editor, navigate to your iOS client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is **not** checked in the script's drop-down window of the Inspector window.
 
