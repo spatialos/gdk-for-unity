@@ -504,7 +504,7 @@ When writing game logic you don't need to worry about synchronisation code. Stan
 
 ### Starter project
 
-The GDK has two starter projects, the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) and the [Blank Starter Project]({{urlRoot}}/projects/blank/overview). They provide a solid foundations for you to build an entirely new game on-top of.
+The GDK has two starter projects, the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) and the [Blank Starter Project]({{urlRoot}}/projects/blank/overview). They provide a solid foundation for you to build an entirely new game on-top of SpatialOS GDK for Unity.
 
 ### Temporary Components
 
