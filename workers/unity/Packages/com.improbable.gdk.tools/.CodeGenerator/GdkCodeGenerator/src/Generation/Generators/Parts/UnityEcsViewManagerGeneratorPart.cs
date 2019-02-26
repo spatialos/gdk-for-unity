@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
 {
-    public partial class UnityComponentUpdateManagerGenerator
+    public partial class UnityEcsViewManagerGenerator
     {
         private string qualifiedNamespace;
         private UnityComponentDetails details;

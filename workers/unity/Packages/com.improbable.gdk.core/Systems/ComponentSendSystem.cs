@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
@@ -15,7 +14,7 @@ namespace Improbable.Gdk.Core
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
-    [UpdateBefore(typeof(ComponentUpdateSystem))]
+    [UpdateBefore(typeof(SpatialOSSendSystem))]
     public class ComponentSendSystem : ComponentSystem
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();

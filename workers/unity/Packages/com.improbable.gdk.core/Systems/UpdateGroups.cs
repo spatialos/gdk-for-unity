@@ -16,13 +16,13 @@ namespace Improbable.Gdk.Core
     public class SpatialOSSendGroup
     {
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        public class InternalSpatialOSSendGroup
+        public class CustomSpatialOSSendGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [UpdateAfter(typeof(InternalSpatialOSSendGroup))]
-        public class CustomSpatialOSSendGroup
+        [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
+        public class InternalSpatialOSSendGroup
         {
         }
 

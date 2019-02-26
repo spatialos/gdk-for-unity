@@ -10,66 +10,29 @@
 <#= generatedHeader #>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Profiling;
-using Unity.Mathematics;
 using Unity.Entities;
-using Unity.Collections;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.CodegenAdapters;
-using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.ReactiveComponents;
 
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class UpdateEventManager : IComponentManager, IAuthorityManager
+        public class EcsViewManager : IEcsViewManager
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
             private World world;
 
-            private readonly Dictionary<EntityId, Authority> entityIdToAuthority =
-                new Dictionary<EntityId, Authority>();
-
-            private readonly HashSet<EntityId> entitiesWithComponent = new HashSet<EntityId>();
-
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
                 ComponentType.Create<Component>(),
                 ComponentType.Create<ComponentAuthority>(),
-                ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>(),
             };
 
             public uint GetComponentId()
             {
                 return ComponentId;
-            }
-
-            public Type[] GetEventTypes()
-            {
-                return new Type[]
-                {
-<# foreach (var ev in eventDetailsList) {
-        var eventType = ev.EventName + ".Event";
-#>
-                    typeof(<#= eventType #>),
-<# } #>
-                };
-            }
-
-            public Type GetComponentType()
-            {
-                return typeof(Component);
-            }
-
-            public Type GetUpdateType()
-            {
-                return typeof(Update);
             }
 
             public ComponentType[] GetInitialComponents()
@@ -127,26 +90,8 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             }
 
-            public bool HasComponent(EntityId entityId)
-            {
-                return entitiesWithComponent.Contains(entityId);
-            }
-
-            public Authority GetAuthority(EntityId entityId)
-            {
-                if (!entityIdToAuthority.TryGetValue(entityId, out var authority))
-                {
-                    throw new ArgumentException("Can not check authority; entity-component not in view.");
-                }
-
-                return authority;
-            }
-
             private void AddComponent(EntityId entityId)
             {
-                entitiesWithComponent.Add(entityId);
-
-                entityIdToAuthority[entityId] = Authority.NotAuthoritative;
                 workerSystem.TryGetEntity(entityId, out var entity);
 
                 var component = new <#= componentNamespace #>.Component();
@@ -163,11 +108,8 @@ namespace <#= qualifiedNamespace #>
 
             private void RemoveComponent(EntityId entityId)
             {
-                entitiesWithComponent.Remove(entityId);
-
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
-                entityIdToAuthority.Remove(entityId);
 <# if (!componentDetails.IsBlittable) { #>
 
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
@@ -204,8 +146,6 @@ namespace <#= qualifiedNamespace #>
 
             private void SetAuthority(EntityId entityId, Authority authority)
             {
-                entityIdToAuthority[entityId] = authority;
-
                 switch (authority)
                 {
                     case Authority.NotAuthoritative:

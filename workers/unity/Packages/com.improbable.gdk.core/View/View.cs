@@ -8,6 +8,7 @@ namespace Improbable.Gdk.Core
     public class View
     {
         private readonly Dictionary<Type, IViewStorage> typeToViewStorage = new Dictionary<Type, IViewStorage>();
+        private readonly Dictionary<uint, IViewStorage> componentIdToViewStorage = new Dictionary<uint, IViewStorage>();
         private readonly List<IViewStorage> viewStorages = new List<IViewStorage>();
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
@@ -22,7 +23,8 @@ namespace Improbable.Gdk.Core
                     {
                         var instance = (IViewStorage) Activator.CreateInstance(type);
 
-                        typeToViewStorage[instance.GetSnapshotType()] = instance;
+                        typeToViewStorage.Add(instance.GetSnapshotType(), instance);
+                        componentIdToViewStorage.Add(instance.GetComponentId(), instance);
 
                         viewStorages.Add(instance);
                     }
@@ -75,7 +77,18 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];
+            var storage = typeToViewStorage[typeof(T)];
+            return storage.HasComponent(entityId.Id);
+        }
+
+        public bool HasComponent(EntityId entityId, uint componentId)
+        {
+            if (!HasEntity(entityId))
+            {
+                return false;
+            }
+
+            var storage = componentIdToViewStorage[componentId];
             return storage.HasComponent(entityId.Id);
         }
 
@@ -86,7 +99,17 @@ namespace Improbable.Gdk.Core
                 throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id}");
             }
 
-            return ((IViewComponentStorage<T>) typeToViewStorage[typeof(T)]).GetAuthority(entityId.Id);
+            return typeToViewStorage[typeof(T)].GetAuthority(entityId.Id);
+        }
+
+        public Authority GetAuthority(EntityId entityId, uint componentId)
+        {
+            if (!HasEntity(entityId))
+            {
+                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id}");
+            }
+
+            return componentIdToViewStorage[componentId].GetAuthority(entityId.Id);
         }
 
         public bool IsAuthoritative<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
@@ -96,7 +119,17 @@ namespace Improbable.Gdk.Core
                 return false;
             }
 
-            return ((IViewComponentStorage<T>) typeToViewStorage[typeof(T)]).GetAuthority(entityId.Id) == Authority.Authoritative;
+            return typeToViewStorage[typeof(T)].GetAuthority(entityId.Id) == Authority.Authoritative;
+        }
+
+        public bool IsAuthoritative(EntityId entityId, uint componentId)
+        {
+            if (!HasComponent(entityId, componentId))
+            {
+                return false;
+            }
+
+            return componentIdToViewStorage[componentId].GetAuthority(entityId.Id) == Authority.Authoritative;
         }
     }
 }

@@ -26,6 +26,11 @@ namespace <#= qualifiedNamespace #>
                 return typeof(Snapshot);
             }
 
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
             public bool HasComponent(long entityId)
             {
                 return componentData.ContainsKey(entityId);
