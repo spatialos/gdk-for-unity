@@ -16,7 +16,7 @@ To connect your iOS device to a local deployment, you need to prepare its config
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-<%(Callout message="If you are using one of our [Starter Projects]({{urlRoot}}/content/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.")%>
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/content/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
 
 <%(#Expandable title="Create a mobile connector script")%>
 
