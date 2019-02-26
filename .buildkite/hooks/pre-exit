@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-[[ -n "${DEBUG:-}" ]] && set -x
-
-# The premerge step runs on linux agents!
-if [[ ${BUILDKITE_AGENT_META_DATA_OS} == "windows" ]]; then
-    powershell -NoProfile -NonInteractive ci/purge.ps1
-fi

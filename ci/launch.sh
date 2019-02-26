@@ -4,8 +4,6 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
-PREFIX="playground"
-
 source ".shared-ci/scripts/profiling.sh"
 source ".shared-ci/scripts/pinned-tools.sh"
 
@@ -17,9 +15,7 @@ else
     ci/build-test.sh
 fi
 
-setAssemblyName "${PREFIX}"
-
-spatial cloud upload "${ASSEMBLY_NAME}" --log_level=debug --force --enable_pre_upload_check=false
+uploadAssembly "${ASSEMBLY_PREFIX}" "${PROJECT_NAME}"
 
 markStartOfBlock "Launching deployment"
 

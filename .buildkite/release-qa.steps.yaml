@@ -13,7 +13,7 @@ common: &common
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=v2-1548806151-96e92a815a76456b-------z"
+    - "queue=v2-1550169760-797337f060834fd6-------z"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -26,50 +26,41 @@ common: &common
 
 steps:
   - label: "build :android:"
-    command: bash -c ci/build.sh
+    command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-    env: 
+    env:
       WORKER_TYPE: "AndroidClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "mono"
 
-  - label: "build :iphone:"
-    command: bash -c ci/build.sh
-    <<: *common 
-    artifact_paths:
-      - logs/**/*
-      - build/assembly/**/*
-    env: 
-      WORKER_TYPE: "iOSClient"
-      BUILD_TARGET: "local"
-      SCRIPTING_TYPE: "il2cpp"
-
   - label: "build UnityClient mono"
-    command: bash -c ci/build.sh
-    <<: *common 
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-    env: 
+    env:
       WORKER_TYPE: "UnityClient"
       BUILD_TARGET: "cloud"
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityGameLogic mono"
-    command: bash -c ci/build.sh
-    <<: *common 
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
     artifact_paths:
       - logs/**/*
       - build/assembly/**/*
-    env: 
+    env:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_TARGET: "cloud"
       SCRIPTING_TYPE: "mono"
   - wait
-  - label: Launch deployment
-    command: bash -c ci/upload-launch.sh
+  - label: Launch deployments
+    command: bash -c ci/launch.sh
     <<: *common
-
+    env:
+      ASSEMBLY_PREFIX: "playground"
+      PROJECT_NAME: "unity_gdk"
