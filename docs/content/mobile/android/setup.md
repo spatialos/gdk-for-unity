@@ -5,7 +5,7 @@
   1. Install Android prerequisites:
     * [Android Studio](https://developer.android.com/studio/)
        * At the Choose Components stage of the instalation, select **Android Virtual Device**.
-       * Once the instalation is complete, open Android Studio and select **Configure** > **SDK Manager**.<br>
+       * Once the installation is complete, open Android Studio and select **Configure** > **SDK Manager**.<br>
          Select the version you intend to develop your game for.<br>
          Select **Apply** to download and install the matching **Android SDK** version.
     * [Java Platform, Standard Edition Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - download and install the latest version.
