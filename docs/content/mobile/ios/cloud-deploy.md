@@ -25,6 +25,8 @@ If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Un
 
 ## iOS Simulator{#ios-simulator}
 
+**Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
+
 To connect your mobile application to a cloud deployment, you need to authenticate against our services.
 This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
 Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
