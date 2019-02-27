@@ -46,10 +46,13 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 To do this:
   *  In your SpatialOS Console, select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
-1. [Create a Development Authentication Token (SpatialOS documentation).](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance)
-1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and includes the functionality you want. In your Unity Editor, add this script it to your iOS client-worker GameObject.
-1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure your iOS client-worker GameObject is selected and in the Inspector, locate the script you just added to it. 
-1. In the Inspector, in the script’s drop-down window, there is a field to add the authentication token that you created. 
+1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).<br>
+Be sure to note down the `id` that is output when you create this, you will need it in a moment.
+1. In your Unity editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
+If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/iOSClientWorker`.<br>
+If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
+1. Still in your Unity Editor, in the Inspector, in the `iOS Worker Connector` section, there is a **Development Auth Token** field.<br>
+Add the `id` that you noted down.
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
@@ -87,10 +90,13 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 To do this:
   *  In your SpatialOS Console, select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
-1. [Create a Development Authentication Token (SpatialOS documentation).](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance)
-1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and includes the functionality you want. In your Unity Editor, add this script it to your iOS client-worker GameObject.
-1. The `MobileWorkerConnector` provides a `DevelopmentAuthToken` field. Still in your Unity Editor, make sure your iOS client-worker GameObject is selected and in the Inspector, locate the script you just added to it. 
-1. In the Inspector, in the script’s drop-down window, there is a field to add the authentication token that you created. 
+1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).<br>
+Be sure to note down the `id` that is output when you create this, you will need it in a moment.
+1. In your Unity editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
+If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/iOSClientWorker`.<br>
+If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
+1. Still in your Unity Editor, in the Inspector, in the `iOS Worker Connector` section, there is a **Development Auth Token** field.<br>
+Add the `id` that you noted down.
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
