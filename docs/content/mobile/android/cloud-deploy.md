@@ -41,10 +41,14 @@ Altenatively, if you want to create your own authentication server, follow [this
 To do this:
   *  From the [SpatialOS Console](https://console.improbable.io/projects), select your deployment name to display the project **OVERVIEW** screen.
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
-1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).
-1. In your Unity Editor, select the prefab containing the MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
-In the FPS Starter Project this is located at: **Assets** > **Fps** > **Prefabs** > **AndroidClientWorker**.
-1. Still in your Unity Editor, in the Inspector window, enter the Development Authentication Token you created in the `DevelopmentAuthToken` field.
+1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).<br>
+Be sure to note down the `id` that is output when you create this, you will need it in a moment.
+1. In your Unity Editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
+If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/AndroidClientWorker`.<br>
+If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
+1. Still in your Unity Editor, in the Inspector, in the `Android Worker Connector` section, there is a **Development Auth Token** field.<br>
+Enter the `id` that you noted down earlier.
+1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your Android client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
 1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
