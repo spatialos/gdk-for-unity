@@ -53,9 +53,9 @@ To do this:
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
-1. Select **SpatialOS** > **Launch mobile client** > **iOS Device**.
-1. In your file manager, navigate to `/workers/unity/build/worker/` and locate the open the generated XCode project file (ending in `.xcodeproj`) that corresponds to your iOS client-worker. (The XCode file has a similar name to your client-worker and may be in a sub-folder.)<br>
-	1. Open the `.xcodeproj` file in Xcode.
+1. In your file manager, from the root of your SpatialOS project, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
+Locate the generated XCode project file (ending in `.xcodeproj`) that corresponds to your iOS client-worker.<br>
+1. Open the `.xcodeproj` file in Xcode.
 1. Still in XCode, select the **Play** button in the top left of the window.
 1. Once the game is deployed and started on the Simulator, you see an empty text field and a **Connect** button: Select **Connect**.<br>
 Note: You don’t need to enter anything in the text field.
@@ -94,9 +94,9 @@ To do this:
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
-1. Select **SpatialOS** > **Launch mobile client** > **iOS Device**.
-1. In your file manager, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.<br>
-	Open it in Xcode.
+1. In your file manager, from the root of your SpatialOS project, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
+Locate the generated XCode project file (ending in `.xcodeproj`) that corresponds to your iOS client-worker.<br>
+1. Open the `.xcodeproj` file in Xcode.
 1. In XCode, in the Navigation Area, select the **Project root**.
 1. Still in XCode, now in the Editor Area, go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
 1. Still in the Editor Area, select **General** > **Signing** and sign the project.<br>
