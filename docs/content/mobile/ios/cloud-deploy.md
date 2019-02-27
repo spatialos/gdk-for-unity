@@ -53,7 +53,7 @@ To do this:
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
-1. In your file manager, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
+1. In your file manager, from the root of your SpatialOS project, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
 Locate the generated XCode project file (ending in `.xcodeproj`) that corresponds to your iOS client-worker.<br>
 1. Open the `.xcodeproj` file in Xcode.
 1. Still in XCode, select the **Play** button in the top left of the window.
@@ -94,7 +94,7 @@ To do this:
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
-1. In your file manager, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
+1. In your file manager, from the root of your SpatialOS project, navigate to `/workers/unity/build/worker/iOSClient@iOS`.<br>
 Locate the generated XCode project file (ending in `.xcodeproj`) that corresponds to your iOS client-worker.<br>
 1. Open the `.xcodeproj` file in Xcode.
 1. In XCode, in the Navigation Area, select the **Project root**.
