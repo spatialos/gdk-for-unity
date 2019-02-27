@@ -92,7 +92,7 @@ To do this:
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
 1. [Create a Development Authentication Token (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).<br>
 Be sure to note down the `id` that is output when you create this, you will need it in a moment.
-1. In your Unity editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
+1. In your Unity Editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
 If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/iOSClientWorker`.<br>
 If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
 1. Still in your Unity Editor, in the Inspector, in the `iOS Worker Connector` section, there is a **Development Auth Token** field.<br>
