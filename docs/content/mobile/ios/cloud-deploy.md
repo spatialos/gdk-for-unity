@@ -52,7 +52,7 @@ Be sure to note down the `id` that is output when you create this, you will need
 If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/iOSClientWorker`.<br>
 If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
 1. Still in your Unity Editor, in the Inspector, in the `iOS Worker Connector` section, there is a **Development Auth Token** field.<br>
-Add the `id` that you noted down earlier.
+Enter the `id` that you noted down earlier.
 1. In the same drop-down window, ensure that the checkbox `ShouldConnectLocally` is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your iOS client-worker, and wait for the build to complete. <br/>
 You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
