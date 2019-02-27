@@ -41,7 +41,7 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 1. Build your workers from the SpatialOS menu by selecting **Build for cloud** > **All workers**.
 1. Upload your server-workers.<br>
 	To do this, open a terminal window and from the root directory of your SpatialOS project, enter `spatial cloud upload <assembly name>`.
-1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly name> <launch configuration>.json <deployment name>`.
+1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/<your snapshot> <assembly name> <launch configuration>.json <deployment name>`.
 1. In your [SpatialOS Console](https://console.improbable.io), tag your cloud deployment with the tag `dev_login`. <br/>
 To do this:
   *  In your SpatialOS Console, select your deployment name to display the project **OVERVIEW** screen.
@@ -82,7 +82,7 @@ If **iOS** is not selected, select it and then select **Switch Platform**.
 1. Build your workers from the SpatialOS menu by selecting **Build for cloud** > **All workers**.
 1. Upload your server-workers.<br>
 	To do this, open a terminal window and from the root directory of your SpatialOS project, enter `spatial cloud upload <assembly name>`.
-1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/default.snapshot <assembly name> <launch configuration>.json <deployment name>`.
+1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/<your snapshot> <assembly name> <launch configuration>.json <deployment name>`.
 1. In your [SpatialOS Console](https://console.improbable.io), tag your cloud deployment with the tag `dev_login`. <br/>
 To do this:
   *  In your SpatialOS Console, select your deployment name to display the project **OVERVIEW** screen.

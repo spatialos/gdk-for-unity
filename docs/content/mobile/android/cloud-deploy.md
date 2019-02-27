@@ -36,7 +36,7 @@ Altenatively, if you want to create your own authentication server, follow [this
 
 1. [Build your server-workers.]({{urlRoot}}/content/build)
 1. Upload your server-workers. To do this, open a terminal window and from the root directory of your SpatialOS project, enter `spatial cloud upload <assembly name>`.
-1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/default.snapshot my_assembly <launch configuration>.json <deployment name>`.
+1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/<your snapshot> <assembly name> <launch configuration>.json <deployment name>`.
 1. In the SpatialOS Console, tag your cloud deployment with the tag `dev_login`. <BR/>
 To do this:
   *  From the [SpatialOS Console](https://console.improbable.io/projects), select your deployment name to display the project **OVERVIEW** screen.
