@@ -56,6 +56,16 @@ namespace Improbable.Gdk.Tools
             {
                 errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} cannot be empty.");
             }
+            else
+            {
+                if (!DevAuthTokenDir.Contains("/Resources/")
+                    && !DevAuthTokenDir.Contains("Resources/")
+                    && !DevAuthTokenDir.EndsWith("Resources"))
+                {
+                    errors.Add(
+                        $"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} must be inside a Resources folder.");
+                }
+            }
 
             return errors;
         }
