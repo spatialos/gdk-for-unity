@@ -41,12 +41,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private readonly Dictionary<int, object> stateObjects = new Dictionary<int, object>();
 
         private static string[] allWorkers;
-        
+
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
 
         public void Awake()
         {
-            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };            
+            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };
         }
 
         public override void OnInspectorGUI()
@@ -628,6 +628,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             var options = buildTarget.Options;
             var enabled = buildTarget.Enabled;
+            var required = buildTarget.Required;
 
             using (var check = new EditorGUI.ChangeCheckScope())
             using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
@@ -639,6 +640,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 using (new EditorGUI.DisabledScope(!buildTarget.Enabled))
                 {
+                    required = EditorGUILayout.Toggle("Required", required);
+
                     switch (buildTarget.Target)
                     {
                         case BuildTarget.StandaloneOSX:
@@ -677,7 +680,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     RecordUndo("Worker build options");
 
                     env.BuildTargets[selectedBuildTarget.Index] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled);
+                        new BuildTargetConfig(buildTarget.Target, options, enabled, required);
 
                     selectedBuildTarget.Choices = null;
                 }

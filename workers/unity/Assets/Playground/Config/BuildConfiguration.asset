@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: add92caab7fb7f24589c2e7198c19491, type: 3}
   m_Name: BuildConfiguration
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   WorkerBuildConfigurations:
   - WorkerType: UnityClient
     ScenesForWorker:
@@ -20,24 +20,33 @@ MonoBehaviour:
       BuildTargets:
       - Options: 0
         Enabled: 1
+        Required: 1
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 1
+        Required: 1
       - Options: 16384
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 1
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
   - WorkerType: UnityGameLogic
     ScenesForWorker:
     - {fileID: 102900000, guid: f5fda56aad5d91d408ff123b26ab6ade, type: 3}
@@ -45,24 +54,33 @@ MonoBehaviour:
       BuildTargets:
       - Options: 0
         Enabled: 1
+        Required: 1
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 16384
         Enabled: 1
+        Required: 1
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
   - WorkerType: iOSClient
     ScenesForWorker:
     - {fileID: 102900000, guid: 424c4b2c090874512badc5e7ee757d5f, type: 3}
@@ -70,24 +88,33 @@ MonoBehaviour:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 1
         Enabled: 1
+        Required: 0
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 16384
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 1
+        Required: 0
   - WorkerType: AndroidClient
     ScenesForWorker:
     - {fileID: 102900000, guid: 82ccd0fd96a2ba24f88d0c7d01592f2e, type: 3}
@@ -95,22 +122,31 @@ MonoBehaviour:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 1
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 16384
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
       - Options: 0
         Enabled: 1
+        Required: 0
       - Options: 0
         Enabled: 0
+        Required: 0
   isInitialised: 1

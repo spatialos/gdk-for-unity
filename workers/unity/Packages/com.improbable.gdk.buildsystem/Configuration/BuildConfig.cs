@@ -54,8 +54,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                             WorkerBuildData.GetCurrentBuildTargetConfig()),
                     CloudBuildConfig = new BuildEnvironmentConfig(
                         WorkerBuildData.AllBuildTargets,
-                        new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, true),
-                        new BuildTargetConfig(BuildTarget.StandaloneWindows64, BuildOptions.Development, true))
+                        new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, true, false),
+                        new BuildTargetConfig(BuildTarget.StandaloneWindows64, BuildOptions.Development, true, false))
                 },
                 new WorkerBuildConfiguration
                 {

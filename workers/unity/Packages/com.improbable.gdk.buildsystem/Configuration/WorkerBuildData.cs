@@ -80,7 +80,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.StandaloneOSX, "MacStandaloneSupport" },
                 { BuildTarget.Android, "AndroidPlayer" },
                 { BuildTarget.iOS, "iOSSupport" }
-            };        
+            };
 
         internal static IReadOnlyDictionary<BuildTarget, bool> BuildTargetsThatCanBeBuilt
         {
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        internal static BuildTarget CurrentBuildPlatform 
+        internal static BuildTarget CurrentBuildPlatform
         {
             get
             {
@@ -122,12 +122,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal static BuildTargetConfig GetCurrentBuildTargetConfig()
         {
-            return new BuildTargetConfig(CurrentBuildPlatform, BuildTargetDefaultOptions[CurrentBuildPlatform], true);
+            return new BuildTargetConfig(CurrentBuildPlatform, BuildTargetDefaultOptions[CurrentBuildPlatform], true, false);
         }
 
         internal static BuildTargetConfig GetLinuxBuildTargetConfig()
         {
-            return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], true);
+            return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], true, false);
         }
 
         private static IReadOnlyDictionary<BuildTarget, bool> buildTargetsThatCanBeBuilt;
