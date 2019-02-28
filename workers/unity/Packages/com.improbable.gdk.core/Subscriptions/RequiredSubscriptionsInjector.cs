@@ -38,7 +38,6 @@ namespace Improbable.Gdk.Subscriptions
         // todo the disposal pattern for this is currently awful and needs to be improved
         public void CancelSubscriptions()
         {
-            Debug.Log(target.GetType().FullName);
             Handler.Pool.Return((Handler) subscriptions.GetAvailabilityHandler());
             subscriptions.Cancel();
 
