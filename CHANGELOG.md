@@ -5,15 +5,31 @@
 ### Breaking Changes
 
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
-- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. A similar rename applies to Writers. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
+- Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
+- The `Require` attriute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
+- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. 
+- A similar rename applies to Writers; `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
+- The Reader callback events' names have changed. 
+    - `On{EVENT_NAME}` is now `On{EVENT_NAME}Event`.
+    - `{FIELD_NAME}Updated` is now `On{FIELD_NAME}Update`.
+- The Writer send method names have changed.
+    - `Send{EVENT_NAME}` is now `Send{EVENT_NAME}Event`.
+    - `Send` is now `SendUpdate`.
 - The generated command senders in Monobehaviours have also changed.
     - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandSender`.
     - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` is now called `{COMPONENT_NAME}CommandReceiver`.
 - When creating game objects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
-    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the ECS entity to the GameObject.
-    - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the GameObject to the ECS entity.
-        - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` GameObject component.
-- `Improbable.Gdk.Core.Dispatcher` has been removed.
+- The signature of `IEntityGameObjectCreator.OnEntityCreated` has changed from `void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)` to `void OnEntityRemoved(EntityId entityId)`.
+    - All linked `GameObject` instances will still be unlinked before this is called, however it is now the user's responsibility to track if a `GameObject` was created when the entity was added.
+    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the `GameObject` to the SpatiaOS entity.
+    - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
+        - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` `GameObject` component. `Rigidbody` should also be added if one is present on the `GameObject`.
+    - There is no limit on the number of `GameObject` instances that can be linked to a SpatailOS entity. However the same component type can not be added more than once.
+    - Deleting a linked `GameObject` will unlink it from the SpatailOS entity automatically.
+- `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
+    - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
+    - The field `Entity` has been removed.
+- The field `Dispatcher` has been removed from the `SpatialOSReceiveSystem`.
 
 ### Added
 
