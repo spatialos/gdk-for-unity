@@ -6,7 +6,6 @@
 .vs/
 .gradle/
 .DS_Store
-DevAuthToken.txt*
 
 #Unity Engine Gitignore (https://github.com/github/gitignore/blob/master/Unity.gitignore)
 workers/unity/[Ll]ibrary/
@@ -67,4 +66,3 @@ test-project/Assets/.Schema/from_gdk_packages
 !test-project/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
 .shared-ci/
-
