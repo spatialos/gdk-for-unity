@@ -2,17 +2,50 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
+- The `Require` attribute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
+- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. 
+- The Reader callback events' names have changed. 
+    - `On{EVENT_NAME}` is now `On{EVENT_NAME}Event`.
+    - `{FIELD_NAME}Updated` is now `On{FIELD_NAME}Update`.
+- The generated Writers have been renamed, previously they were called. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
+- The Writer send method names have changed.
+    - `Send{EVENT_NAME}` is now `Send{EVENT_NAME}Event`.
+    - `Send` is now `SendUpdate`.
+- The generated command senders in Monobehaviours have also changed.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandSender`.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` is now called `{COMPONENT_NAME}CommandReceiver`.
+- When creating game objects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
+- The signature of `IEntityGameObjectCreator.OnEntityCreated` has changed from `void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)` to `void OnEntityRemoved(EntityId entityId)`.
+    - All linked `GameObject` instances will still be unlinked before this is called, however it is now the user's responsibility to track if a `GameObject` was created when the entity was added.
+    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the `GameObject` to the SpatiaOS entity.
+    - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
+        - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` `GameObject` component. `Rigidbody` should also be added if one is present on the `GameObject`.
+    - There is no limit on the number of `GameObject` instances that can be linked to a SpatialOS entity. However the same component type can not be added more than once.
+    - Deleting a linked `GameObject` will unlink it from the SpatialOS entity automatically.
+- `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
+    - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
+    - The field `Entity` has been removed.
+- The field `Dispatcher` has been removed from the `SpatialOSReceiveSystem`.
+
 ### Added
 
 - All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
     - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
 - Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
+- Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
+    - This component contains a single bool which denotes whether you have authority over that component.
+    - It will not tell you about soft-handover (`AuthorityLossImminent`).
+- You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
 
 ### Changed
 
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
-- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
 
 ### Fixed
 
@@ -26,6 +59,11 @@
 - Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
 - Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
 - Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
+- Reactive components have been isolated and can be disabled.
+- Subscriptions API has been added, this allows you to subscribe anything for which a manager has been defined.
+    - This now backs the `Require` API in Monobehaviours
+- Low level APIs have been changed significantly.
+- Added a View separate from the Unity ECS.
 
 ## `0.1.5` - 2019-02-18
 
