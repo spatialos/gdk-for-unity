@@ -40,6 +40,7 @@
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- Added constructors for all generated component snapshot types.
 
 ### Changed
 
