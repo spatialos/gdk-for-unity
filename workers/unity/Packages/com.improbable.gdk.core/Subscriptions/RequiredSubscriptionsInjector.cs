@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
