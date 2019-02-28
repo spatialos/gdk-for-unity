@@ -94,7 +94,7 @@ MonoBehaviour:
         Required: 0
       - Options: 1
         Enabled: 1
-        Required: 0
+        Required: 1
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
