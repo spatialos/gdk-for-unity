@@ -72,7 +72,6 @@ namespace Improbable.Gdk.Subscriptions
             linkedGameObjects.Add(gameObject);
 
             linkedComponent.IsValid = true;
-            linkedComponent.Linker = this;
             linkedComponent.EntityId = entityId;
             linkedComponent.World = world;
             linkedComponent.Worker = workerSystem;
@@ -106,6 +105,7 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
+        // todo remove components from entity
         public void UnlinkGameObjectFromEntity(EntityId entityId, GameObject gameObject)
         {
             if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
@@ -129,10 +129,9 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             var linkComponent = gameObject.GetComponent<LinkedEntityComponent>();
-            // todo check if this can happen - right now I think it can on application quit
             if (linkComponent != null)
             {
-                linkComponent.Invalidate();
+                linkComponent.IsValid = false;
             }
 
             foreach (var injector in injectors)
@@ -149,6 +148,15 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
+        public void UnlinkAllGameObjects()
+        {
+            var ids = entityIdToGameObjects.Keys.ToArray();
+            foreach (var id in ids)
+            {
+                UnlinkAllGameObjectsFromEntityId(id);
+            }
+        }
+
         public void UnlinkAllGameObjectsFromEntityId(EntityId entityId)
         {
             if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
@@ -162,18 +170,6 @@ namespace Improbable.Gdk.Subscriptions
             {
                 UnlinkGameObjectFromEntity(entityId, gameObjectSet[gameObjectSet.Count - 1]);
             }
-        }
-
-        // todo this is slow and crap - work out if it needs to not be
-        public List<EntityId> GetLinkedEntityIds()
-        {
-            List<EntityId> entitiesToRemove = new List<EntityId>(entityIdToGameObjects.Count);
-            foreach (var entityIdAndGameObjects in entityIdToGameObjects)
-            {
-                entitiesToRemove.Add(entityIdAndGameObjects.Key);
-            }
-
-            return entitiesToRemove;
         }
 
         public void FlushCommandBuffer()
