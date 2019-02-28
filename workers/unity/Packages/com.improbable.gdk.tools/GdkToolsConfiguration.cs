@@ -58,12 +58,10 @@ namespace Improbable.Gdk.Tools
             }
             else
             {
-                if (!DevAuthTokenDir.Contains("/Resources/")
-                    && !DevAuthTokenDir.Contains("Resources/")
-                    && !DevAuthTokenDir.EndsWith("Resources"))
+                if (!DevAuthTokenDir.Equals("Resources") && !DevAuthTokenDir.EndsWith("/Resources"))
                 {
                     errors.Add(
-                        $"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} must be inside a Resources folder.");
+                        $"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} must be at root of a Resources folder.");
                 }
             }
 
