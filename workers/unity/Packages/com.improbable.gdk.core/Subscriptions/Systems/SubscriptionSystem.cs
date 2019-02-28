@@ -16,8 +16,6 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (typeToSubscriptionManager.ContainsKey(type))
             {
-                // delete this once I work out how it should actually work
-                //return;
                 throw new InvalidOperationException("Already a manager registered");
             }
 
@@ -28,7 +26,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!typeToSubscriptionManager.TryGetValue(typeof(T), out var manager))
             {
-                throw new ArgumentException($"no manager for {typeof(T).Name}");
+                throw new ArgumentException($"No manager for {typeof(T).Name}.");
             }
 
             return ((SubscriptionManager<T>) manager).Subscribe(entity);
@@ -38,7 +36,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!typeToSubscriptionManager.TryGetValue(type, out var manager))
             {
-                throw new ArgumentException($"no manager for {type.Name}");
+                throw new ArgumentException($"No manager for {type.Name}.");
             }
 
             return manager.SubscribeTypeErased(entity);

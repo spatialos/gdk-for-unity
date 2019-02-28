@@ -36,16 +36,19 @@ namespace Improbable.Gdk.Subscriptions
 
             viewCommandBuffer = new ViewCommandBuffer(entityManager, workerSystem.LogDispatcher);
 
+            workerSystem = world.GetExistingManager<WorkerSystem>();
             if (workerSystem == null)
             {
-                throw new ArgumentException("Whatever you do don't jump");
+                throw new ArgumentException(
+                    $"Can not create {nameof(EntityGameObjectLinker)}. {world.Name} does not contain a {nameof(workerSystem)}");
             }
 
             subscriptionSystem = world.GetExistingManager<SubscriptionSystem>();
 
             if (subscriptionSystem == null)
             {
-                throw new ArgumentException("There are people who love you presumably");
+                throw new ArgumentException(
+                    $"Can not create {nameof(EntityGameObjectLinker)}. {world.Name} does not contain a {nameof(SubscriptionSystem)}");
             }
         }
 
@@ -113,15 +116,14 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException($"Can not unlink null GameObject from entity {entityId}");
             }
 
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet) ||
+                !gameObjectSet.Contains(gameObject))
             {
-                throw new ArgumentException("This princess is in another castle");
+                throw new ArgumentException(
+                    $"Can not unlink GameObject {gameObject.name} from entity {entityId}. Not previously linked.");
             }
 
-            if (!gameObjectToInjectors.TryGetValue(gameObject, out var injectors))
-            {
-                throw new ArgumentException("Nothing is here anymore. Maybe there never was");
-            }
+            var injectors = gameObjectToInjectors[gameObject];
 
             if (workerSystem.TryGetEntity(entityId, out var entity))
             {
@@ -191,7 +193,8 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!workerSystem.TryGetEntity(entityId, out var entity))
             {
-                throw new ArgumentException("Entity not in view");
+                throw new ArgumentException(
+                    $"Can not add GameObjet components to entity {entityId}. Entity not in view");
             }
 
             var componentTypes = new List<ComponentType>(componentTypesToAdd.Length);
@@ -201,7 +204,8 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (!type.IsSubclassOf(typeof(Component)))
                 {
-                    throw new InvalidOperationException("Types must be derived from Component or MonoBehaviour");
+                    throw new InvalidOperationException(
+                        $"Can not add {type.Name} to an ECS Entity. Linked components must be derived from Component or MonoBehaviour");
                 }
 
                 var c = gameObject.GetComponent(type);
