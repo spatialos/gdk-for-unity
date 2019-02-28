@@ -170,19 +170,24 @@ This script now creates a health pack entity at position `(5, 0, 0)`, and sets t
 
 ```csharp
 [MenuItem("SpatialOS/Generate FPS Snapshot")]
-private static void GenerateDefaultSnapshot()
+private static void GenerateFpsSnapshot()
 {
-    var snapshot = new Snapshot();
+    var localSnapshot = new Snapshot();
+    var cloudSnapshot = new Snapshot();
 
-    var spawner = FpsEntityTemplates.Spawner();
-    snapshot.AddEntity(spawner);
+    GenerateSnapshot(localSnapshot);
+    GenerateSnapshot(cloudSnapshot);
 
-    var SimulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
-    snapshot.AddEntity(SimulatedPlayerCoordinatorTrigger);
+    // The local snapshot is identical to the cloud snapshot, but also includes a simulated player coordinator
+    // trigger.
+    var simulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
+    localSnapshot.AddEntity(simulatedPlayerCoordinatorTrigger);
 
-    AddHealthPacks(snapshot);
+    AddHealthPacks(localSnapshot);
+    AddHealthPacks(cloudSnapshot);
 
-    SaveSnapshot(snapshot);
+    SaveSnapshot(DefaultSnapshotPath, localSnapshot);
+    SaveSnapshot(CloudSnapshotPath, cloudSnapshot);
 }
 ```
 
