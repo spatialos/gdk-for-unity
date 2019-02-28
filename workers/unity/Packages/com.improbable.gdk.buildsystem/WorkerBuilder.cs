@@ -183,16 +183,28 @@ namespace Improbable.Gdk.BuildSystem
         private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
+            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
+
             if (!WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget])
             {
-                Debug.LogWarning($"Skipping {buildTarget} because support is not installed in the Unity Editor.");
+                var config = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
+                var target = config.BuildTargets.First(targetConfig => targetConfig.Target == buildTarget);
+
+                if (target.Required)
+                {
+                    throw new BuildFailedException(
+                        $"Build failed for {workerType}. Cannot build for {buildTarget} because build support is not installed in the Unity Editor.");
+                }
+
+                Debug.LogWarning($"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
+
                 return;
             }
 
             Debug.Log(
                 $"Building \"{buildTarget}\" for worker platform: \"{workerType}\", environment: \"{targetEnvironment}\"");
 
-            var spatialOSBuildConfiguration = BuildConfig.GetInstance();
+
             var workerBuildData = new WorkerBuildData(workerType, buildTarget);
             var scenes = spatialOSBuildConfiguration.GetScenePathsForWorker(workerType);
 
