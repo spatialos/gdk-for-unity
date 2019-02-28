@@ -6,13 +6,14 @@
 
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. A similar rename applies to Writers. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
-- The generated command senders in Monobehaviours have also changed. 
-    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` is now called `{COMPONENT_NAME}CommandSender`. This object also contains the responsibility for sending responses as well as requests.
-    - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandReceiver`.
+- The generated command senders in Monobehaviours have also changed.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandSender`.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` is now called `{COMPONENT_NAME}CommandReceiver`.
 - When creating game objects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
     - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the ECS entity to the GameObject.
     - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the GameObject to the ECS entity.
         - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` GameObject component.
+- `Improbable.Gdk.Core.Dispatcher` has been removed.
 
 ### Added
 
@@ -42,8 +43,9 @@
 - Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
 - Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
 - Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
-- Reactive components have been isolated and can be enabled or disabled.
-- Subscriptions API has been added, this allows you to subscribe to Reader, Writers, et al outside of Monobehaviours
+- Reactive components have been isolated and can be disabled.
+- Subscriptions API has been added, this allows you to subscribe anything for which a manager has been defined.
+    - This now backs the `Require` API in Monobehaviours
 - Low level APIs have been changed significantly.
 - Added a View separate from the Unity ECS.
 
