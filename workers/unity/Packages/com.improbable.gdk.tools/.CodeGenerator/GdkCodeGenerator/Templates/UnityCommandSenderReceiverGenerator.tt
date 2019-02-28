@@ -124,6 +124,11 @@ namespace <#= qualifiedNamespace #>
 
         public override void ResetValue(ISubscription subscription)
         {
+            var sub = ((Subscription<<#= componentDetails.ComponentName #>CommandSender>) subscription);
+            if (sub.HasValue)
+            {
+                sub.Value.RemoveAllCallbacks();
+            }
         }
     }
 
@@ -258,7 +263,9 @@ namespace <#= qualifiedNamespace #>
         private readonly CommandSystem commandSender;
         private readonly CommandCallbackSystem callbackSystem;
 
-        public <#= componentDetails.ComponentName #>CommandSender(Entity entity, World world)
+        private int callbackEpoch;
+
+        internal <#= componentDetails.ComponentName #>CommandSender(Entity entity, World world)
         {
             this.entity = entity;
             callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
@@ -272,23 +279,36 @@ namespace <#= qualifiedNamespace #>
     var receivedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
     var commandRequest = $"{componentDetails.ComponentName}.{commandDetails.CommandName}.Request";
 #>
+        public void Send<#= commandDetails.CommandName #>Command(EntityId targetEntityId, <#= commandDetails.FqnRequestType #> request, Action<<#= receivedCommandResponseType #>> callback = null)
+        {
+            var commandRequest = new <#= commandRequest #>(targetEntityId, request);
+            Send<#= commandDetails.CommandName #>Command(commandRequest, callback);
+        }
+
         public void Send<#= commandDetails.CommandName #>Command(<#= commandRequest #> request, Action<<#= receivedCommandResponseType #>> callback = null)
         {
+            int validCallbackEpoch = callbackEpoch;
             var requestId = commandSender.SendCommand(request, entity);
             if (callback != null)
             {
                 Action<<#= receivedCommandResponseType #>> wrappedCallback = response =>
                 {
-                    if (!this.IsValid)
+                    if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
                     {
                         return;
                     }
+
                     callback(response);
                 };
                 callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
             }
         }
 <# } #>
+
+        public void RemoveAllCallbacks()
+        {
+            ++callbackEpoch;
+        }
     }
 
     public class <#= componentDetails.ComponentName #>CommandReceiver
@@ -338,14 +358,23 @@ namespace <#= qualifiedNamespace #>
 
             IsValid = true;
         }
-
 <# foreach (var commandDetails in commandDetailsList) {
     var commandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Response";
 #>
-        // todo could just aske for an id and a payload
+
         public void Send<#= commandDetails.CommandName #>Response(<#= commandResponseType #> response)
         {
             commandSystem.SendResponse(response);
+        }
+
+        public void Send<#= commandDetails.CommandName #>Response(long requestId, <#= commandDetails.FqnResponseType #> response)
+        {
+            commandSystem.SendResponse(new <#= commandResponseType #>(requestId, response));
+        }
+
+        public void Send<#= commandDetails.CommandName #>Failure(long requestId, string failureMessage)
+        {
+            commandSystem.SendResponse(new <#= commandResponseType #>(requestId, failureMessage));
         }
 <# } #>
 

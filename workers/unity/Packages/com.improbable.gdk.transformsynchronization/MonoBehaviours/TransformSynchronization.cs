@@ -33,20 +33,12 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             get
             {
-                if (enabled == false)
+                if (!initialised || enabled == false)
                 {
                     return 0;
                 }
 
                 var manager = world.GetOrCreateManager<EntityManager>();
-                if (!initialised)
-                {
-                    initialised = manager.HasComponent<TransformToSet>(entity);
-                    if (!initialised)
-                    {
-                        return 0;
-                    }
-                }
 
                 if (transformReader.Authority != Authority.NotAuthoritative)
                 {
@@ -66,13 +58,6 @@ namespace Improbable.Gdk.TransformSynchronization
                     $"on {gameObject.name} must be provided a transform receive strategy");
             }
 
-            // spatialOSComponent = GetComponent<SpatialOSComponent>();
-            // if (spatialOSComponent == null)
-            // {
-            //     throw new InvalidOperationException($"{nameof(TransformSynchronization)} " +
-            //         $" on should only be added to a GameObject linked to a SpatialOS entity");
-            // }
-
             entityManager = world.GetOrCreateManager<EntityManager>();
 
             StartCoroutine(DelayedApply());
@@ -81,7 +66,13 @@ namespace Improbable.Gdk.TransformSynchronization
         private IEnumerator DelayedApply()
         {
             yield return null;
+            if (initialised)
+            {
+                yield break;
+            }
+
             ApplyStrategies();
+            initialised = true;
         }
 
         private void OnDisable()
