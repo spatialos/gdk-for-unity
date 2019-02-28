@@ -30,11 +30,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (!worker.ConnectionHandler.IsConnected())
-            {
-                return;
-            }
-
             try
             {
                 worker.GetMessages();

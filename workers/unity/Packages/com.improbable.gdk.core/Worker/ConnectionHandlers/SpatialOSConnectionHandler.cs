@@ -24,6 +24,12 @@ namespace Improbable.Gdk.Core
 
         public ViewDiff GetMessagesReceived()
         {
+            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
+            {
+                diff.Clear();
+                return diff;
+            }
+
             commandMetaData.FlushRemovedIds();
             diff.Clear();
 

@@ -36,16 +36,19 @@ namespace Improbable.Gdk.Subscriptions
 
             viewCommandBuffer = new ViewCommandBuffer(entityManager, workerSystem.LogDispatcher);
 
+            workerSystem = world.GetExistingManager<WorkerSystem>();
             if (workerSystem == null)
             {
-                throw new ArgumentException("Whatever you do don't jump");
+                throw new ArgumentException(
+                    $"Can not create {nameof(EntityGameObjectLinker)}. {world.Name} does not contain a {nameof(workerSystem)}");
             }
 
             subscriptionSystem = world.GetExistingManager<SubscriptionSystem>();
 
             if (subscriptionSystem == null)
             {
-                throw new ArgumentException("There are people who love you presumably");
+                throw new ArgumentException(
+                    $"Can not create {nameof(EntityGameObjectLinker)}. {world.Name} does not contain a {nameof(SubscriptionSystem)}");
             }
         }
 
@@ -72,10 +75,10 @@ namespace Improbable.Gdk.Subscriptions
             linkedGameObjects.Add(gameObject);
 
             linkedComponent.IsValid = true;
-            linkedComponent.Linker = this;
             linkedComponent.EntityId = entityId;
             linkedComponent.World = world;
             linkedComponent.Worker = workerSystem;
+            linkedComponent.Linker = this;
 
             var injectors = new List<RequiredSubscriptionsInjector>();
 
@@ -108,17 +111,21 @@ namespace Improbable.Gdk.Subscriptions
 
         public void UnlinkGameObjectFromEntity(EntityId entityId, GameObject gameObject)
         {
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
+            if (gameObject == null)
             {
-                throw new ArgumentException("This princess is in another castle");
+                throw new ArgumentException($"Can not unlink null GameObject from entity {entityId}");
             }
 
-            if (!gameObjectToInjectors.TryGetValue(gameObject, out var injectors))
+            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet) ||
+                !gameObjectSet.Contains(gameObject))
             {
-                throw new ArgumentException("Nothing is here anymore. Maybe there never was");
+                throw new ArgumentException(
+                    $"Can not unlink GameObject {gameObject.name} from entity {entityId}. Not previously linked.");
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity) && gameObject != null)
+            var injectors = gameObjectToInjectors[gameObject];
+
+            if (workerSystem.TryGetEntity(entityId, out var entity))
             {
                 foreach (var componentType in gameObjectToComponentsAdded[gameObject])
                 {
@@ -129,10 +136,13 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             var linkComponent = gameObject.GetComponent<LinkedEntityComponent>();
-            // todo check if this can happen - right now I think it can on application quit
             if (linkComponent != null)
             {
-                linkComponent.Invalidate();
+                linkComponent.IsValid = false;
+                linkComponent.EntityId = new EntityId(0);
+                linkComponent.World = null;
+                linkComponent.Worker = null;
+                linkComponent.Linker = null;
             }
 
             foreach (var injector in injectors)
@@ -146,6 +156,15 @@ namespace Improbable.Gdk.Subscriptions
             if (gameObjectSet.Count == 0)
             {
                 entityIdToGameObjects.Remove(entityId);
+            }
+        }
+
+        public void UnlinkAllGameObjects()
+        {
+            var ids = entityIdToGameObjects.Keys.ToArray();
+            foreach (var id in ids)
+            {
+                UnlinkAllGameObjectsFromEntityId(id);
             }
         }
 
@@ -164,18 +183,6 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        // todo this is slow and crap - work out if it needs to not be
-        public List<EntityId> GetLinkedEntityIds()
-        {
-            List<EntityId> entitiesToRemove = new List<EntityId>(entityIdToGameObjects.Count);
-            foreach (var entityIdAndGameObjects in entityIdToGameObjects)
-            {
-                entitiesToRemove.Add(entityIdAndGameObjects.Key);
-            }
-
-            return entitiesToRemove;
-        }
-
         public void FlushCommandBuffer()
         {
             viewCommandBuffer.FlushBuffer();
@@ -186,7 +193,8 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (!workerSystem.TryGetEntity(entityId, out var entity))
             {
-                throw new ArgumentException("Entity not in view");
+                throw new ArgumentException(
+                    $"Can not add GameObjet components to entity {entityId}. Entity not in view");
             }
 
             var componentTypes = new List<ComponentType>(componentTypesToAdd.Length);
@@ -196,7 +204,8 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (!type.IsSubclassOf(typeof(Component)))
                 {
-                    throw new InvalidOperationException("Types must be derived from Component or MonoBehaviour");
+                    throw new InvalidOperationException(
+                        $"Can not add {type.Name} to an ECS Entity. Linked components must be derived from Component or MonoBehaviour");
                 }
 
                 var c = gameObject.GetComponent(type);

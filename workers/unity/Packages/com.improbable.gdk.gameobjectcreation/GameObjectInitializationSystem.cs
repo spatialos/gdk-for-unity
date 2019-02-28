@@ -46,19 +46,17 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnDestroyManager()
         {
-            var ids = linker.GetLinkedEntityIds();
-            foreach (var id in ids)
-            {
-                linker.UnlinkAllGameObjectsFromEntityId(id);
-                gameObjectCreator.OnEntityRemoved(id);
-            }
+            linker.UnlinkAllGameObjects();
 
-            linker.UnlinkAllGameObjectsFromEntityId(new EntityId(0));
+            foreach (var entityId in entitySystem.GetEntitiesInView())
+            {
+                gameObjectCreator.OnEntityRemoved(entityId);
+            }
 
             base.OnDestroyManager();
         }
 
-        protected override unsafe void OnUpdate()
+        protected override void OnUpdate()
         {
             foreach (var entityId in entitySystem.GetEntitiesAdded())
             {
