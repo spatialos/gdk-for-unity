@@ -1,5 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,26 +12,35 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Generate Dev Authentication Token", false, MenuPriorities.GenerateDevAuthToken)]
         private static void Generate()
         {
+            string devAuthToken = string.Empty;
             var devAuthTokenDir = GdkToolsConfiguration.GetOrCreateInstance().DevAuthTokenDir;
             var devAuthTokenFilePath = Path.Combine(Application.dataPath, devAuthTokenDir, "DevAuthToken.txt");
 
             var receivedMessage = string.Empty;
             RedirectedProcess
                 .Command(Common.SpatialBinary)
-                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "\"Dev Auth Token\"")
+                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "\"Dev Auth Token\"",
+                    "--json_output")
                 .InDirectory(Common.SpatialProjectRootDir)
-                .AddOutputProcessing((message) => receivedMessage += message)
+                .AddOutputProcessing(message => receivedMessage += message)
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
-            var regex = new Regex(@"token_secret:\\""(.*?)\\");
-            var match = regex.Match(receivedMessage);
 
-            if (!match.Success || match.Groups.Count < 2)
+            try
             {
-                Debug.LogError("Unable to generate Dev Auth Token.");
+                if (Json.Deserialize(receivedMessage).TryGetValue("json_data", out var jsonData))
+                {
+                    if (((Dictionary<string, object>) jsonData).TryGetValue("token_secret", out var tokenSecret))
+                    {
+                        devAuthToken = (string) tokenSecret;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Unable to generate Dev Auth Token. {e.Message}");
                 return;
             }
-
-            var devAuthToken = match.Groups[1].Value;
 
             if (!Directory.Exists(devAuthTokenDir))
             {
