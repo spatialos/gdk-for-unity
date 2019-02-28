@@ -9,7 +9,16 @@ namespace Improbable.Gdk.Subscriptions
         public EntityId EntityId;
         public World World;
         public WorkerSystem Worker;
+        public bool IsValid;
 
-        internal bool IsValid;
+        internal EntityGameObjectLinker Linker;
+
+        private void OnDestroy()
+        {
+            if (IsValid)
+            {
+                Linker.UnlinkGameObjectFromEntity(EntityId, gameObject);
+            }
+        }
     }
 }

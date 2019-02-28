@@ -75,6 +75,7 @@ namespace Improbable.Gdk.Subscriptions
             linkedComponent.EntityId = entityId;
             linkedComponent.World = world;
             linkedComponent.Worker = workerSystem;
+            linkedComponent.Linker = this;
 
             var injectors = new List<RequiredSubscriptionsInjector>();
 
@@ -105,9 +106,13 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        // todo remove components from entity
         public void UnlinkGameObjectFromEntity(EntityId entityId, GameObject gameObject)
         {
+            if (gameObject == null)
+            {
+                throw new ArgumentException($"Can not unlink null GameObject from entity {entityId}");
+            }
+
             if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
             {
                 throw new ArgumentException("This princess is in another castle");
@@ -118,7 +123,7 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException("Nothing is here anymore. Maybe there never was");
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity) && gameObject != null)
+            if (workerSystem.TryGetEntity(entityId, out var entity))
             {
                 foreach (var componentType in gameObjectToComponentsAdded[gameObject])
                 {
@@ -132,6 +137,10 @@ namespace Improbable.Gdk.Subscriptions
             if (linkComponent != null)
             {
                 linkComponent.IsValid = false;
+                linkComponent.EntityId = new EntityId(0);
+                linkComponent.World = null;
+                linkComponent.Worker = null;
+                linkComponent.Linker = null;
             }
 
             foreach (var injector in injectors)
