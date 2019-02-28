@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Tools
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
         public string RuntimeIp;
+        public string DevAuthTokenDir;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
@@ -51,6 +52,11 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"Runtime IP \"{RuntimeIp}\" is not a valid IP address.");
             }
 
+            if (string.IsNullOrEmpty(DevAuthTokenDir))
+            {
+                errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} cannot be empty.");
+            }
+
             return errors;
         }
 
@@ -59,6 +65,7 @@ namespace Improbable.Gdk.Tools
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             RuntimeIp = DefaultValues.RuntimeIp;
+            DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
 
             SchemaSourceDirs.Clear();
             SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
@@ -89,6 +96,7 @@ namespace Improbable.Gdk.Tools
             public const string CodegenOutputDir = "Assets/Generated/Source";
             public const string SchemaSourceDir = "../../schema";
             public const string RuntimeIp = null;
+            public const string DevAuthTokenDir = "Resources";
         }
     }
 }
