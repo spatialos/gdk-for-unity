@@ -33,20 +33,12 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             get
             {
-                if (enabled == false)
+                if (!initialised || enabled == false)
                 {
                     return 0;
                 }
 
                 var manager = world.GetOrCreateManager<EntityManager>();
-                if (!initialised)
-                {
-                    initialised = manager.HasComponent<TransformToSet>(entity);
-                    if (!initialised)
-                    {
-                        return 0;
-                    }
-                }
 
                 if (transformReader.Authority != Authority.NotAuthoritative)
                 {
@@ -74,7 +66,13 @@ namespace Improbable.Gdk.TransformSynchronization
         private IEnumerator DelayedApply()
         {
             yield return null;
+            if (initialised)
+            {
+                yield break;
+            }
+
             ApplyStrategies();
+            initialised = true;
         }
 
         private void OnDisable()
