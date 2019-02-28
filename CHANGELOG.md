@@ -25,7 +25,7 @@
     - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
         - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` `GameObject` component. `Rigidbody` should also be added if one is present on the `GameObject`.
     - There is no limit on the number of `GameObject` instances that can be linked to a SpatialOS entity. However the same component type can not be added more than once.
-    - Deleting a linked `GameObject` will unlink it from the SpatailOS entity automatically.
+    - Deleting a linked `GameObject` will unlink it from the SpatialOS entity automatically.
 - `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
     - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
     - The field `Entity` has been removed.
