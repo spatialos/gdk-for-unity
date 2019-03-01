@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tools
         {
             var devAuthToken = string.Empty;
             var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
-            var devAuthTokenDir = gdkToolsConfiguration.DevAuthTokenDir;
+            var devAuthTokenDir = gdkToolsConfiguration.DevAuthTokenFullDir;
             var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
             var devAuthTokenLifetimeHours = $"{gdkToolsConfiguration.DevAuthTokenLifetimeHours}h";
 

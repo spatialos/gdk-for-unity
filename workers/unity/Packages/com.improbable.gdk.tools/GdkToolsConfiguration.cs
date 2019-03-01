@@ -17,7 +17,8 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
 
-        public string DevAuthTokenFilepath => Path.Combine(Application.dataPath, DevAuthTokenDir, "DevAuthToken.txt");
+        public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
+        public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => DevAuthTokenLifetimeDays * 24;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
