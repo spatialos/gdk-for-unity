@@ -166,7 +166,7 @@ Additionally, add the following line at the top of the file to ensure that the `
 using Improbable;
 ```
 
-This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
+This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateFpsSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
 
 ```csharp
 [MenuItem("SpatialOS/Generate FPS Snapshot")]
