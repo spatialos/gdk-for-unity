@@ -339,7 +339,7 @@ cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
 
 When you wrote the schema for the `HealthPickup` component you included a bool property called `is_active`, and code generation has created the `IsActive` member within the reader's `Data` object. We'll cover updating component property values later in this tutorial.
 
-Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer. Make sure you drag the child GameObject's mesh renderer to this field in the Unity Inspector panel to set the reference.
+Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer.
 
 The client-side representation of the health pack entity is now complete! Next we will test the game so far and make sure we are visualising the health packs correctly.
 
