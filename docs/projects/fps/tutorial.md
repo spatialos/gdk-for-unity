@@ -624,7 +624,7 @@ namespace Fps
 
         private IEnumerator RespawnCubeRoutine()
         {
-            yield return new WaitForSeconds(HealthPickupSettings.HealthPickupRespawnTimeSecs);
+            yield return new WaitForSeconds(15f);
             SetIsActive(true);
         }
     }
