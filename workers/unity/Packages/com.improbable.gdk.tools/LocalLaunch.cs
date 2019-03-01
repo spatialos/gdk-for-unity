@@ -13,8 +13,8 @@ namespace Improbable.Gdk.Tools
     {
         private const string InspectorUrl = "http://localhost:21000/inspector";
 
-        private static readonly string
-            DefaultLogFileName = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "*unityclient.log"));
+        private static readonly string DefaultLogFileName
+            = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "logs", "*unityclient.log"));
 
         private static readonly string
             BuildPath = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "build", "assembly", "worker"));
