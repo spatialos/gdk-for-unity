@@ -441,6 +441,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
+
+                authorityCallbackToCallbackKey.Clear();
             }
 
             if (updateCallbackToCallbackKey != null)
@@ -449,7 +451,10 @@ namespace <#= qualifiedNamespace #>
                 {
                     CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
+
+                updateCallbackToCallbackKey.Clear();
             }
+
 <# foreach(var fieldDetails in fieldDetailsList) { #>
 
             if (<#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey != null)
@@ -458,6 +463,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
+
+                <#= fieldDetails.CamelCaseName #>UpdateCallbackToCallbackKey.Clear();
             }
 <# } #>
 <# foreach(var eventDetails in eventDetailsList) { #>
@@ -468,6 +475,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     CallbackSystem.UnregisterCallback(callbackToKey.Value);
                 }
+
+                <#= eventDetails.CamelCaseEventName #>EventCallbackToCallbackKey.Clear();
             }
 <# } #>
         }

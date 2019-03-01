@@ -76,6 +76,11 @@ namespace Improbable.Gdk.Core
             return worker.View.GetAuthority(entityId, componentId);
         }
 
+        public T GetComponent<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
+        {
+            return worker.View.GetComponent<T>(entityId);
+        }
+
         public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
         {
             worker.MessagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);

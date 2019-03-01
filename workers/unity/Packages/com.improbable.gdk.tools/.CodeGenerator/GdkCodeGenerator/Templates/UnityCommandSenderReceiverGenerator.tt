@@ -389,6 +389,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     callbackSystem.UnregisterCommandRequestCallback(callbackToKey.Value);
                 }
+
+                <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey.Clear();
             }
 
 <# } #>
