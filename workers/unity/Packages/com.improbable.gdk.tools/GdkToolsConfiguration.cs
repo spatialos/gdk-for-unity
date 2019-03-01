@@ -15,6 +15,10 @@ namespace Improbable.Gdk.Tools
         public string CodegenOutputDir;
         public string RuntimeIp;
         public string DevAuthTokenDir;
+        public int DevAuthTokenLifetimeDays;
+
+        public string DevAuthTokenFilepath => Path.Combine(Application.dataPath, DevAuthTokenDir, "DevAuthToken.txt");
+        public int DevAuthTokenLifetimeHours => DevAuthTokenLifetimeDays * 24;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
@@ -54,15 +58,20 @@ namespace Improbable.Gdk.Tools
 
             if (string.IsNullOrEmpty(DevAuthTokenDir))
             {
-                errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} cannot be empty.");
+                errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} cannot be empty.");
             }
             else
             {
                 if (!DevAuthTokenDir.Equals("Resources") && !DevAuthTokenDir.EndsWith("/Resources"))
                 {
                     errors.Add(
-                        $"{GdkToolsConfigurationWindow.DevAuthTokenPathLabel} must be at root of a Resources folder.");
+                        $"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} must be at root of a Resources folder.");
                 }
+            }
+
+            if (DevAuthTokenLifetimeDays < 0 || DevAuthTokenLifetimeDays > 90)
+            {
+                errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenLifetimeLabel} must be between 1 and 90 days.");
             }
 
             return errors;
@@ -74,6 +83,7 @@ namespace Improbable.Gdk.Tools
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             RuntimeIp = DefaultValues.RuntimeIp;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
+            DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
 
             SchemaSourceDirs.Clear();
             SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
@@ -105,6 +115,7 @@ namespace Improbable.Gdk.Tools
             public const string SchemaSourceDir = "../../schema";
             public const string RuntimeIp = null;
             public const string DevAuthTokenDir = "Resources";
+            public const int DevAuthTokenLifetimeDays = 30;
         }
     }
 }

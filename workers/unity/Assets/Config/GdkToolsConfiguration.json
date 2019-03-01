@@ -5,5 +5,6 @@
     ],
     "CodegenOutputDir": "Assets/Generated/Source",
     "RuntimeIp": "",
-    "DevAuthTokenDir": "Resources"
+    "DevAuthTokenDir": "Resources",
+    "DevAuthTokenLifetimeDays": 30
 }

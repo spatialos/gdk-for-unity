@@ -12,28 +12,28 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Generate Dev Authentication Token", false, MenuPriorities.GenerateDevAuthToken)]
         private static void Generate()
         {
-            string devAuthToken = string.Empty;
-            var devAuthTokenDir = GdkToolsConfiguration.GetOrCreateInstance().DevAuthTokenDir;
-            var devAuthTokenFilePath = Path.Combine(Application.dataPath, devAuthTokenDir, "DevAuthToken.txt");
+            var devAuthToken = string.Empty;
+            var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
+            var devAuthTokenDir = gdkToolsConfiguration.DevAuthTokenDir;
+            var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
+            var devAuthTokenLifetimeHours = $"{gdkToolsConfiguration.DevAuthTokenLifetimeHours}h";
 
             var receivedMessage = string.Empty;
             RedirectedProcess
                 .Command(Common.SpatialBinary)
                 .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "\"Dev Auth Token\"",
-                    "--json_output")
+                    "--lifetime", devAuthTokenLifetimeHours, "--json_output")
                 .InDirectory(Common.SpatialProjectRootDir)
-                .AddOutputProcessing(message => receivedMessage += message)
+                .AddOutputProcessing(message => receivedMessage = message)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
             try
             {
-                if (Json.Deserialize(receivedMessage).TryGetValue("json_data", out var jsonData))
+                if (Json.Deserialize(receivedMessage).TryGetValue("json_data", out var jsonData) &&
+                    ((Dictionary<string, object>) jsonData).TryGetValue("token_secret", out var tokenSecret))
                 {
-                    if (((Dictionary<string, object>) jsonData).TryGetValue("token_secret", out var tokenSecret))
-                    {
-                        devAuthToken = (string) tokenSecret;
-                    }
+                    devAuthToken = (string) tokenSecret;
                 }
             }
             catch (Exception e)
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Tools
                 writer.WriteLine(devAuthToken);
             }
 
-            Debug.Log($"Saving Token {devAuthToken} to {devAuthTokenFilePath}");
+            Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");
         }
     }
 }
