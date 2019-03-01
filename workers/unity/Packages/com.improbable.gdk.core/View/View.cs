@@ -53,6 +53,11 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        public HashSet<EntityId> GetEntityIds()
+        {
+            return entities;
+        }
+
         public bool HasEntity(EntityId entityId)
         {
             return entities.Contains(entityId);

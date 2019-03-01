@@ -13,12 +13,13 @@ namespace Improbable.Gdk.Subscriptions
 
         public void Add(long index, ulong callbackKey, Action<T> value)
         {
-            if (!callbacks.ContainsKey(index))
+            if (!callbacks.TryGetValue(index, out var callbacksForIndex))
             {
-                callbacks.Add(index, new Callbacks<T>());
-                callbackKeyToIndex.Add(callbackKey, index);
+                callbacksForIndex = new Callbacks<T>();
+                callbacks.Add(index, callbacksForIndex);
             }
 
+            callbackKeyToIndex.Add(callbackKey, index);
             callbacks[index].Add(callbackKey, value);
         }
 
@@ -58,12 +59,13 @@ namespace Improbable.Gdk.Subscriptions
 
         public void Add(long index, ulong callbackKey, Action<T> value)
         {
-            if (!callbacks.ContainsKey(index))
+            if (!callbacks.TryGetValue(index, out var callbacksForIndex))
             {
-                callbacks.Add(index, new Callbacks<T>());
+                callbacksForIndex = new Callbacks<T>();
+                callbacks.Add(index, callbacksForIndex);
             }
 
-            callbacks[index].Add(callbackKey, value);
+            callbacksForIndex.Add(callbackKey, value);
         }
 
         public void RemoveAllCallbacksForIndex(long index)

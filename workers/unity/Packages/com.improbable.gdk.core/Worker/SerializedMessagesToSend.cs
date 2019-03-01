@@ -7,6 +7,8 @@ namespace Improbable.Gdk.Core
 {
     public class SerializedMessagesToSend
     {
+        private const uint PositionComponentId = 54;
+
         private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
         private readonly MessageList<RequestToSend> requests = new MessageList<RequestToSend>();
         private readonly MessageList<ResponseToSend> responses = new MessageList<ResponseToSend>();
@@ -54,15 +56,23 @@ namespace Improbable.Gdk.Core
                     }
                 }
             }
+
+            // Move the position serializer to the end of the queue so that the updates get sent last
+            // This is to prevent an authority change before other updates have been applied from the same frame
+            for (int i = 0; i < componentSerializers.Count; ++i)
+            {
+                if (componentSerializers[i].GetComponentId() == PositionComponentId)
+                {
+                    var positionSerializer = componentSerializers[i];
+                    componentSerializers.RemoveAt(i);
+                    componentSerializers.Add(positionSerializer);
+                    break;
+                }
+            }
         }
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
-            foreach (var serializer in componentSerializers)
-            {
-                serializer.Serialize(messages, this);
-            }
-
             foreach (var serializer in commandSerializers)
             {
                 serializer.Serialize(messages, this, commandMetaData);
@@ -76,6 +86,11 @@ namespace Improbable.Gdk.Core
             messages.GetLogMessages().CopyTo(logMessages);
 
             messages.GetAuthorityLossAcknowledgements().CopyTo(authorityLossAcks);
+
+            foreach (var serializer in componentSerializers)
+            {
+                serializer.Serialize(messages, this);
+            }
         }
 
         public void Clear()
