@@ -4,15 +4,11 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    // todo this should really just subsume the callback systems
-    // or the order of events should be decided by system order rather than in this system
-    // would enable users changing readers more easily maybe
     [DisableAutoCreation]
     [UpdateInGroup(typeof(RequireLifecycleGroup))]
     public class RequireLifecycleSystem : ComponentSystem
     {
         private readonly List<MonoBehaviour> behavioursToEnable = new List<MonoBehaviour>();
-        private readonly List<MonoBehaviour> behavioursToDisable = new List<MonoBehaviour>();
 
         private CommandCallbackSystem commandCallbackSystem;
         private ComponentCallbackSystem componentCallbackSystem;
@@ -26,7 +22,8 @@ namespace Improbable.Gdk.Subscriptions
 
         internal void DisableMonoBehaviour(MonoBehaviour behaviour)
         {
-            behavioursToDisable.Add(behaviour);
+            // Behaviours can be disabled immediately, as conflicting information can not arrive in the same frame.
+            behaviour.enabled = false;
             behavioursToEnable.Remove(behaviour);
         }
 
@@ -42,18 +39,6 @@ namespace Improbable.Gdk.Subscriptions
         protected override void OnUpdate()
         {
             componentConstraintsCallbackSystem.Invoke();
-
-            foreach (var behaviour in behavioursToDisable)
-            {
-                if (behaviour == null)
-                {
-                    continue;
-                }
-
-                behaviour.enabled = false;
-            }
-
-            behavioursToDisable.Clear();
 
             componentCallbackSystem.InvokeNoLossImminent();
 

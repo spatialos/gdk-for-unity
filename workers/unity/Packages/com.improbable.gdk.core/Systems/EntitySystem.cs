@@ -8,15 +8,11 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(SpatialOSReceiveSystem))]
     public class EntitySystem : ComponentSystem
     {
-        private readonly HashSet<EntityId> localEntities = new HashSet<EntityId>();
-
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
         private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
 
-        // todo would like to make these all readonly
-        // don't think it can be done without allocation without new types
-        // could make these spans too + some special type for a set of entities
-        // might also want to keep things sorted although it's not faster unless there are a lot of entities added and removed in one tick
+        private WorkerSystem workerSystem;
+
         public List<EntityId> GetEntitiesAdded()
         {
             return entitiesAdded;
@@ -29,27 +25,7 @@ namespace Improbable.Gdk.Core
 
         public HashSet<EntityId> GetEntitiesInView()
         {
-            return localEntities;
-        }
-
-        internal void AddEntity(EntityId entityId)
-        {
-            if (!entitiesRemoved.Remove(entityId))
-            {
-                entitiesAdded.Add(entityId);
-            }
-
-            localEntities.Add(entityId);
-        }
-
-        internal void RemoveEntity(EntityId entityId)
-        {
-            if (!entitiesAdded.Remove(entityId))
-            {
-                entitiesRemoved.Add(entityId);
-            }
-
-            localEntities.Remove(entityId);
+            return workerSystem.View.GetEntityIds();
         }
 
         internal void ApplyDiff(ViewDiff diff)
@@ -57,6 +33,7 @@ namespace Improbable.Gdk.Core
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
 
+            // todo decide on a container and remove this
             foreach (var entityId in diff.GetEntitiesAdded())
             {
                 entitiesAdded.Add(entityId);
@@ -66,6 +43,13 @@ namespace Improbable.Gdk.Core
             {
                 entitiesRemoved.Add(entityId);
             }
+        }
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            workerSystem = World.GetExistingManager<WorkerSystem>();
         }
 
         protected override void OnUpdate()
