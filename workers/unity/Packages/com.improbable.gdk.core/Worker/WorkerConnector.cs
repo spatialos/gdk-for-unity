@@ -117,10 +117,12 @@ namespace Improbable.Gdk.Core
 
                 Worker.OnDisconnect += OnDisconnected;
 
-                HandleWorkerConnectionEstablished();
-
-                World.Active = World.Active ?? Worker.World;
-                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
+                if (Application.isPlaying)
+                {
+                    HandleWorkerConnectionEstablished();
+                    World.Active = World.Active ?? Worker.World;
+                    ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
+                }
             }
             catch (Exception e)
             {
