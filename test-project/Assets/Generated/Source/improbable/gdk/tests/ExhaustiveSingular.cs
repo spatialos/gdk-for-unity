@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(197715));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -332,6 +332,47 @@ namespace Improbable.Gdk.Tests
             }
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 197715;
@@ -544,6 +585,137 @@ namespace Improbable.Gdk.Tests
                         obj.AddEnum(18, (uint) component.Field18);
                     }
 
+                }
+            }
+
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveSingular.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                {
+                    if (update.Field1.HasValue)
+                    {
+                        var field = update.Field1.Value;
+                        obj.AddBool(1, field);
+                    }
+                }
+                {
+                    if (update.Field2.HasValue)
+                    {
+                        var field = update.Field2.Value;
+                        obj.AddFloat(2, field);
+                    }
+                }
+                {
+                    if (update.Field3.HasValue)
+                    {
+                        var field = update.Field3.Value;
+                        obj.AddBytes(3, field);
+                    }
+                }
+                {
+                    if (update.Field4.HasValue)
+                    {
+                        var field = update.Field4.Value;
+                        obj.AddInt32(4, field);
+                    }
+                }
+                {
+                    if (update.Field5.HasValue)
+                    {
+                        var field = update.Field5.Value;
+                        obj.AddInt64(5, field);
+                    }
+                }
+                {
+                    if (update.Field6.HasValue)
+                    {
+                        var field = update.Field6.Value;
+                        obj.AddDouble(6, field);
+                    }
+                }
+                {
+                    if (update.Field7.HasValue)
+                    {
+                        var field = update.Field7.Value;
+                        obj.AddString(7, field);
+                    }
+                }
+                {
+                    if (update.Field8.HasValue)
+                    {
+                        var field = update.Field8.Value;
+                        obj.AddUint32(8, field);
+                    }
+                }
+                {
+                    if (update.Field9.HasValue)
+                    {
+                        var field = update.Field9.Value;
+                        obj.AddUint64(9, field);
+                    }
+                }
+                {
+                    if (update.Field10.HasValue)
+                    {
+                        var field = update.Field10.Value;
+                        obj.AddSint32(10, field);
+                    }
+                }
+                {
+                    if (update.Field11.HasValue)
+                    {
+                        var field = update.Field11.Value;
+                        obj.AddSint64(11, field);
+                    }
+                }
+                {
+                    if (update.Field12.HasValue)
+                    {
+                        var field = update.Field12.Value;
+                        obj.AddFixed32(12, field);
+                    }
+                }
+                {
+                    if (update.Field13.HasValue)
+                    {
+                        var field = update.Field13.Value;
+                        obj.AddFixed64(13, field);
+                    }
+                }
+                {
+                    if (update.Field14.HasValue)
+                    {
+                        var field = update.Field14.Value;
+                        obj.AddSfixed32(14, field);
+                    }
+                }
+                {
+                    if (update.Field15.HasValue)
+                    {
+                        var field = update.Field15.Value;
+                        obj.AddSfixed64(15, field);
+                    }
+                }
+                {
+                    if (update.Field16.HasValue)
+                    {
+                        var field = update.Field16.Value;
+                        obj.AddEntityId(16, field);
+                    }
+                }
+                {
+                    if (update.Field17.HasValue)
+                    {
+                        var field = update.Field17.Value;
+                        global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(field, obj.AddObject(17));
+                    }
+                }
+                {
+                    if (update.Field18.HasValue)
+                    {
+                        var field = update.Field18.Value;
+                        obj.AddEnum(18, (uint) field);
+                    }
                 }
             }
 
@@ -820,7 +992,105 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveSingular.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveSingular.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new Improbable.Gdk.Tests.ExhaustiveSingular.Update();
+                var obj = data.GetFields();
+
+                {
+                    var value = obj.GetBool(1);
+                    update.Field1 = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
+                    
+                }
+                {
+                    var value = obj.GetFloat(2);
+                    update.Field2 = new global::Improbable.Gdk.Core.Option<float>(value);
+                    
+                }
+                {
+                    var value = obj.GetBytes(3);
+                    update.Field3 = new global::Improbable.Gdk.Core.Option<byte[]>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt32(4);
+                    update.Field4 = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt64(5);
+                    update.Field5 = new global::Improbable.Gdk.Core.Option<long>(value);
+                    
+                }
+                {
+                    var value = obj.GetDouble(6);
+                    update.Field6 = new global::Improbable.Gdk.Core.Option<double>(value);
+                    
+                }
+                {
+                    var value = obj.GetString(7);
+                    update.Field7 = new global::Improbable.Gdk.Core.Option<string>(value);
+                    
+                }
+                {
+                    var value = obj.GetUint32(8);
+                    update.Field8 = new global::Improbable.Gdk.Core.Option<uint>(value);
+                    
+                }
+                {
+                    var value = obj.GetUint64(9);
+                    update.Field9 = new global::Improbable.Gdk.Core.Option<ulong>(value);
+                    
+                }
+                {
+                    var value = obj.GetSint32(10);
+                    update.Field10 = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                {
+                    var value = obj.GetSint64(11);
+                    update.Field11 = new global::Improbable.Gdk.Core.Option<long>(value);
+                    
+                }
+                {
+                    var value = obj.GetFixed32(12);
+                    update.Field12 = new global::Improbable.Gdk.Core.Option<uint>(value);
+                    
+                }
+                {
+                    var value = obj.GetFixed64(13);
+                    update.Field13 = new global::Improbable.Gdk.Core.Option<ulong>(value);
+                    
+                }
+                {
+                    var value = obj.GetSfixed32(14);
+                    update.Field14 = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                {
+                    var value = obj.GetSfixed64(15);
+                    update.Field15 = new global::Improbable.Gdk.Core.Option<long>(value);
+                    
+                }
+                {
+                    var value = obj.GetEntityIdStruct(16);
+                    update.Field16 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntityId>(value);
+                    
+                }
+                {
+                    var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
+                    update.Field17 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Tests.SomeType>(value);
+                    
+                }
+                {
+                    var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                    update.Field18 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Tests.SomeEnum>(value);
+                    
+                }
+                return update;
+            }
+
+            public static Improbable.Gdk.Tests.ExhaustiveSingular.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveSingular.Snapshot();
 
@@ -1048,6 +1318,156 @@ namespace Improbable.Gdk.Tests
                     
                 }
             }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveSingular.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+                {
+                    if (obj.GetBoolCount(1) == 1)
+                    {
+                        var value = obj.GetBool(1);
+                        snapshot.Field1 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFloatCount(2) == 1)
+                    {
+                        var value = obj.GetFloat(2);
+                        snapshot.Field2 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetBytesCount(3) == 1)
+                    {
+                        var value = obj.GetBytes(3);
+                        snapshot.Field3 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt32Count(4) == 1)
+                    {
+                        var value = obj.GetInt32(4);
+                        snapshot.Field4 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt64Count(5) == 1)
+                    {
+                        var value = obj.GetInt64(5);
+                        snapshot.Field5 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetDoubleCount(6) == 1)
+                    {
+                        var value = obj.GetDouble(6);
+                        snapshot.Field6 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetStringCount(7) == 1)
+                    {
+                        var value = obj.GetString(7);
+                        snapshot.Field7 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetUint32Count(8) == 1)
+                    {
+                        var value = obj.GetUint32(8);
+                        snapshot.Field8 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetUint64Count(9) == 1)
+                    {
+                        var value = obj.GetUint64(9);
+                        snapshot.Field9 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetSint32Count(10) == 1)
+                    {
+                        var value = obj.GetSint32(10);
+                        snapshot.Field10 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetSint64Count(11) == 1)
+                    {
+                        var value = obj.GetSint64(11);
+                        snapshot.Field11 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFixed32Count(12) == 1)
+                    {
+                        var value = obj.GetFixed32(12);
+                        snapshot.Field12 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFixed64Count(13) == 1)
+                    {
+                        var value = obj.GetFixed64(13);
+                        snapshot.Field13 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetSfixed32Count(14) == 1)
+                    {
+                        var value = obj.GetSfixed32(14);
+                        snapshot.Field14 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetSfixed64Count(15) == 1)
+                    {
+                        var value = obj.GetSfixed64(15);
+                        snapshot.Field15 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetEntityIdCount(16) == 1)
+                    {
+                        var value = obj.GetEntityIdStruct(16);
+                        snapshot.Field16 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetObjectCount(17) == 1)
+                    {
+                        var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.GetObject(17));
+                        snapshot.Field17 = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetEnumCount(18) == 1)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.GetEnum(18);
+                        snapshot.Field18 = value;
+                    }
+                    
+                }
+            }
         }
 
         public struct Update : ISpatialComponentUpdate
@@ -1109,7 +1529,7 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -1117,7 +1537,7 @@ namespace Improbable.Gdk.Tests
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -1131,14 +1551,43 @@ namespace Improbable.Gdk.Tests
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+                update.Field1 = new Option<BlittableBool>(snapshot.Field1);
+                update.Field2 = new Option<float>(snapshot.Field2);
+                update.Field3 = new Option<byte[]>(snapshot.Field3);
+                update.Field4 = new Option<int>(snapshot.Field4);
+                update.Field5 = new Option<long>(snapshot.Field5);
+                update.Field6 = new Option<double>(snapshot.Field6);
+                update.Field7 = new Option<string>(snapshot.Field7);
+                update.Field8 = new Option<uint>(snapshot.Field8);
+                update.Field9 = new Option<ulong>(snapshot.Field9);
+                update.Field10 = new Option<int>(snapshot.Field10);
+                update.Field11 = new Option<long>(snapshot.Field11);
+                update.Field12 = new Option<uint>(snapshot.Field12);
+                update.Field13 = new Option<ulong>(snapshot.Field13);
+                update.Field14 = new Option<int>(snapshot.Field14);
+                update.Field15 = new Option<long>(snapshot.Field15);
+                update.Field16 = new Option<global::Improbable.Gdk.Core.EntityId>(snapshot.Field16);
+                update.Field17 = new Option<global::Improbable.Gdk.Tests.SomeType>(snapshot.Field17);
+                update.Field18 = new Option<global::Improbable.Gdk.Tests.SomeEnum>(snapshot.Field18);
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(ExhaustiveSingular.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveSingular.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

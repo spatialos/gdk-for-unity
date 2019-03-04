@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(1001));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -160,6 +160,47 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             }
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 1001;
@@ -229,6 +270,46 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         obj.AddDouble(5, component.DoubleField);
                     }
 
+                }
+            }
+
+            public static void SerializeUpdate(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                {
+                    if (update.BoolField.HasValue)
+                    {
+                        var field = update.BoolField.Value;
+                        obj.AddBool(1, field);
+                    }
+                }
+                {
+                    if (update.IntField.HasValue)
+                    {
+                        var field = update.IntField.Value;
+                        obj.AddInt32(2, field);
+                    }
+                }
+                {
+                    if (update.LongField.HasValue)
+                    {
+                        var field = update.LongField.Value;
+                        obj.AddInt64(3, field);
+                    }
+                }
+                {
+                    if (update.FloatField.HasValue)
+                    {
+                        var field = update.FloatField.Value;
+                        obj.AddFloat(4, field);
+                    }
+                }
+                {
+                    if (update.DoubleField.HasValue)
+                    {
+                        var field = update.DoubleField.Value;
+                        obj.AddDouble(5, field);
+                    }
                 }
             }
 
@@ -321,7 +402,40 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
+                var obj = data.GetFields();
+
+                {
+                    var value = obj.GetBool(1);
+                    update.BoolField = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt32(2);
+                    update.IntField = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt64(3);
+                    update.LongField = new global::Improbable.Gdk.Core.Option<long>(value);
+                    
+                }
+                {
+                    var value = obj.GetFloat(4);
+                    update.FloatField = new global::Improbable.Gdk.Core.Option<float>(value);
+                    
+                }
+                {
+                    var value = obj.GetDouble(5);
+                    update.DoubleField = new global::Improbable.Gdk.Core.Option<double>(value);
+                    
+                }
+                return update;
+            }
+
+            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot();
 
@@ -393,6 +507,52 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     
                 }
             }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+                {
+                    if (obj.GetBoolCount(1) == 1)
+                    {
+                        var value = obj.GetBool(1);
+                        snapshot.BoolField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt32Count(2) == 1)
+                    {
+                        var value = obj.GetInt32(2);
+                        snapshot.IntField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt64Count(3) == 1)
+                    {
+                        var value = obj.GetInt64(3);
+                        snapshot.LongField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFloatCount(4) == 1)
+                    {
+                        var value = obj.GetFloat(4);
+                        snapshot.FloatField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetDoubleCount(5) == 1)
+                    {
+                        var value = obj.GetDouble(5);
+                        snapshot.DoubleField = value;
+                    }
+                    
+                }
+            }
         }
 
         public struct Update : ISpatialComponentUpdate
@@ -441,7 +601,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -449,7 +609,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -463,14 +623,30 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+                update.BoolField = new Option<BlittableBool>(snapshot.BoolField);
+                update.IntField = new Option<int>(snapshot.IntField);
+                update.LongField = new Option<long>(snapshot.LongField);
+                update.FloatField = new Option<float>(snapshot.FloatField);
+                update.DoubleField = new Option<double>(snapshot.DoubleField);
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(BlittableComponent.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(BlittableComponent.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

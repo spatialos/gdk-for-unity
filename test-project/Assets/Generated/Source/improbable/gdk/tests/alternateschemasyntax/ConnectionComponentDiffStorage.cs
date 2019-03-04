@@ -1,0 +1,234 @@
+// ===========
+// DO NOT EDIT - this file is automatically regenerated.
+// ===========
+
+using System.Collections.Generic;
+using System;
+using Improbable.Gdk.Core;
+using Improbable.Worker.CInterop;
+
+namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
+{
+    public partial class Connection
+    {
+        public class DiffComponentStorage : IDiffUpdateStorage<Update>, IDiffComponentAddedStorage<Update>, IDiffAuthorityStorage
+            , IDiffEventStorage<MyEvent.Event>
+        {
+            private readonly HashSet<EntityId> entitiesUpdated = new HashSet<EntityId>();
+
+            private List<EntityId> componentsAdded = new List<EntityId>();
+            private List<EntityId> componentsRemoved = new List<EntityId>();
+
+            private bool authoritySorted;
+            private bool updatesSorted;
+
+            private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
+            private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
+
+            // Used to represent a state machine of authority changes. Valid state changes are:
+            // authority lost -> authority lost temporarily
+            // authority lost temporarily -> authority lost
+            // authority gained -> authority gained
+            // Creating the authority lost temporarily set is the aim as it signifies authority epoch changes
+            private readonly HashSet<EntityId> authorityLost = new HashSet<EntityId>();
+            private readonly HashSet<EntityId> authorityGained = new HashSet<EntityId>();
+            private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
+
+            private MessageList<ComponentUpdateReceived<Update>> updateStorage =
+                new MessageList<ComponentUpdateReceived<Update>>();
+
+            private MessageList<AuthorityChangeReceived> authorityChanges =
+                new MessageList<AuthorityChangeReceived>();
+
+            private MessageList<ComponentEventReceived<MyEvent.Event>> myEventEventStorage =
+                new MessageList<ComponentEventReceived<MyEvent.Event>>();
+
+            // todo consider putting this in the list type
+            private bool myEventSorted;
+
+            private readonly EventComparer<MyEvent.Event> myEventComparer =
+                new EventComparer<MyEvent.Event>();
+
+            public Type[] GetEventTypes()
+            {
+                return new Type[]
+                {
+                    typeof(MyEvent.Event),
+                };
+            }
+
+            public Type GetUpdateType()
+            {
+                return typeof(Update);
+            }
+
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public void Clear()
+            {
+                entitiesUpdated.Clear();
+                updateStorage.Clear();
+                authorityChanges.Clear();
+                componentsAdded.Clear();
+                componentsRemoved.Clear();
+
+                authoritySorted = false;
+                updatesSorted = false;
+
+                myEventEventStorage.Clear();
+                myEventSorted = false;
+            }
+
+            public void RemoveEntityComponent(long entityId)
+            {
+                var id = new EntityId(entityId);
+
+                // Adding a component always updates it, so this will catch the case where the component was just added
+                if (entitiesUpdated.Remove(id))
+                {
+                    updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
+                    authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
+                }
+
+                if (!componentsAdded.Remove(id))
+                {
+                    componentsRemoved.Add(id);
+                }
+            }
+
+            public void AddEntityComponent(long entityId, Update component)
+            {
+                var id = new EntityId(entityId);
+                if (!componentsRemoved.Remove(id))
+                {
+                    componentsAdded.Add(id);
+                }
+
+                AddUpdate(new ComponentUpdateReceived<Update>(component, id, 0));
+            }
+
+            public void AddUpdate(ComponentUpdateReceived<Update> update)
+            {
+                entitiesUpdated.Add(update.EntityId);
+                updateStorage.Add(update);
+            }
+
+            public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
+            {
+                if (authorityChange.Authority == Authority.NotAuthoritative)
+                {
+                    if (authorityLostTemporary.Remove(authorityChange.EntityId) || !authorityGained.Contains(authorityChange.EntityId))
+                    {
+                        authorityLost.Add(authorityChange.EntityId);
+                    }
+                }
+                else if (authorityChange.Authority == Authority.Authoritative)
+                {
+                    if (authorityLost.Remove(authorityChange.EntityId))
+                    {
+                        authorityLostTemporary.Add(authorityChange.EntityId);
+                    }
+                    else
+                    {
+                        authorityGained.Add(authorityChange.EntityId);
+                    }
+                }
+
+                authorityChanges.Add(authorityChange);
+            }
+
+            public List<EntityId> GetComponentsAdded()
+            {
+                return componentsAdded;
+            }
+
+            public List<EntityId> GetComponentsRemoved()
+            {
+                return componentsRemoved;
+            }
+
+            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates()
+            {
+                // todo consider if this needs to be sorted
+                // possible offer two functions
+                // probably just sort it
+                if (!updatesSorted)
+                {
+                    updatesSorted = true;
+                    updateStorage.Sort(updateComparer);
+                }
+
+                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage);
+            }
+
+            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates(EntityId entityId)
+            {
+                if (!updatesSorted)
+                {
+                    updatesSorted = true;
+                    updateStorage.Sort(updateComparer);
+                }
+
+                var range = updateStorage.GetEntityRange(entityId);
+                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage, range.FirstIndex,
+                    range.Count);
+            }
+
+            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
+            {
+                if (!authoritySorted)
+                {
+                    authoritySorted = true;
+                    authorityChanges.Sort(authorityComparer);
+                }
+
+                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
+            }
+
+            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
+            {
+                if (!authoritySorted)
+                {
+                    authoritySorted = true;
+                    authorityChanges.Sort(authorityComparer);
+                }
+
+                var range = authorityChanges.GetEntityRange(entityId);
+                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
+            }
+
+            ReceivedMessagesSpan<ComponentEventReceived<MyEvent.Event>> IDiffEventStorage<MyEvent.Event>.GetEvents(EntityId entityId)
+            {
+                if (!myEventSorted)
+                {
+                    myEventEventStorage.Sort(myEventComparer);
+                    myEventSorted = true;
+                }
+
+                var range = myEventEventStorage.GetEntityRange(entityId);
+                return new ReceivedMessagesSpan<ComponentEventReceived<MyEvent.Event>>(
+                    myEventEventStorage, range.FirstIndex, range.Count);
+            }
+
+            ReceivedMessagesSpan<ComponentEventReceived<MyEvent.Event>> IDiffEventStorage<MyEvent.Event>.GetEvents()
+            {
+                if (!myEventSorted)
+                {
+                    myEventEventStorage.Sort(myEventComparer);
+                    myEventSorted = true;
+                }
+
+                return new ReceivedMessagesSpan<ComponentEventReceived<MyEvent.Event>>(myEventEventStorage);
+            }
+
+            void IDiffEventStorage<MyEvent.Event>.AddEvent(ComponentEventReceived<MyEvent.Event> ev)
+            {
+                myEventEventStorage.Add(ev);
+            }
+        }
+    }
+}
+
