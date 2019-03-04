@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Core
 
         public SerializedMessagesToSend()
         {
-            updateParams.Loopback = ComponentUpdateLoopback.None;
+            updateParams.Loopback = ComponentUpdateLoopback.ShortCircuited;
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
