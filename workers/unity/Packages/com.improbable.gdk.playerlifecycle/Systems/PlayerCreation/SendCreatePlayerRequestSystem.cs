@@ -42,16 +42,27 @@ namespace Improbable.Gdk.PlayerLifecycle
             var initEntities = initializationGroup.GetEntityArray();
             for (var i = 0; i < initEntities.Length; ++i)
             {
-                PostUpdateCommands.AddComponent(initEntities[i], new ShouldRequestPlayerTag());
+                if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
+                {
+                    var tag = new ShouldRequestPlayerTag();
+                    PostUpdateCommands.AddSharedComponent(initEntities[i], tag);
+                }
             }
 
             var spawnEntities = playerSpawnGroup.GetEntityArray();
+            var requestTags = playerSpawnGroup.GetSharedComponentDataArray<ShouldRequestPlayerTag>();
             for (var i = 0; i < spawnEntities.Length; ++i)
             {
                 var request = new CreatePlayerRequestType
                 {
-                    Position = new Vector3f(0, 0, 0)
+                    Position = requestTags[i].SpawnPosition,
                 };
+
+                var serializedArguments = requestTags[i].SerializedArguments;
+                if (serializedArguments != null)
+                {
+                    request.SerializedArguments = serializedArguments;
+                }
 
                 var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
@@ -67,7 +78,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    PostUpdateCommands.AddComponent(response.SendingEntity, new ShouldRequestPlayerTag());
+                    PostUpdateCommands.AddSharedComponent(response.SendingEntity, new ShouldRequestPlayerTag());
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {

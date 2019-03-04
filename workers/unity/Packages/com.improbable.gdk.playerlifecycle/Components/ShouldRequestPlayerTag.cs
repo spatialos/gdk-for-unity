@@ -2,7 +2,9 @@
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    public struct ShouldRequestPlayerTag : IComponentData
+    public struct ShouldRequestPlayerTag : ISharedComponentData
     {
+        public Vector3f SpawnPosition;
+        public byte[] SerializedArguments;
     }
 }

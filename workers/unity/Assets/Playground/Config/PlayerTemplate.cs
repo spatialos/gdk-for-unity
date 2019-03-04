@@ -3,13 +3,21 @@ using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.PlayerLifecycle;
 
 namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position,
+            Option<byte[]> playerCreationArguments)
         {
+            if (playerCreationArguments.HasValue)
+            {
+                var test = PlayerLifecycleHelper.DeserializeParams<PlayerCreationParams>(playerCreationArguments.Value);
+                UnityEngine.Debug.Log(test.PlayerName);
+            }
+
             var clientAttribute = $"workerId:{workerId}";
 
             var template = new EntityTemplate();
@@ -25,7 +33,8 @@ namespace Playground
             PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, workerId, clientAttribute,
                 WorkerUtils.UnityGameLogic);
 
-            template.SetReadAccess(WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic, WorkerUtils.AndroidClient, WorkerUtils.iOSClient);
+            template.SetReadAccess(WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic, WorkerUtils.AndroidClient,
+                WorkerUtils.iOSClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
