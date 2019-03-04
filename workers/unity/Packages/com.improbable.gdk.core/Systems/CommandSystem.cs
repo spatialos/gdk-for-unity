@@ -33,10 +33,22 @@ namespace Improbable.Gdk.Core
             return manager.GetRequests();
         }
 
+        public ReceivedMessagesSpan<T> GetRequests<T>(EntityId targetEntityId) where T : struct, IReceivedCommandRequest
+        {
+            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            return manager.GetRequests(targetEntityId);
+        }
+
         public ReceivedMessagesSpan<T> GetResponses<T>() where T : struct, IReceivedCommandResponse
         {
             var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
             return manager.GetResponses();
+        }
+
+        public ReceivedMessagesSpan<T> GetResponse<T>(long requestId) where T : struct, IReceivedCommandResponse
+        {
+            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            return manager.GetResponse(requestId);
         }
 
         protected override void OnCreateManager()

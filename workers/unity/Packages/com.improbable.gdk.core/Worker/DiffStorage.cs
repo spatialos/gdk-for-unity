@@ -66,6 +66,7 @@ namespace Improbable.Gdk.Core
     {
         void AddRequest(T request);
         ReceivedMessagesSpan<T> GetRequests();
+        ReceivedMessagesSpan<T> GetRequests(EntityId targetEntityId);
     }
 
     public interface IDiffCommandResponseStorage<T> : ICommandDiffStorage
@@ -73,5 +74,6 @@ namespace Improbable.Gdk.Core
     {
         void AddResponse(T response);
         ReceivedMessagesSpan<T> GetResponses();
+        ReceivedMessagesSpan<T> GetResponse(long requestId);
     }
 }
