@@ -6,6 +6,7 @@ namespace Improbable.Gdk.Core
     public interface IViewStorage
     {
         Type GetSnapshotType();
+        Type GetUpdateType();
         uint GetComponentId();
 
         bool HasComponent(long entityId);
@@ -17,5 +18,10 @@ namespace Improbable.Gdk.Core
     public interface IViewComponentStorage<T> where T : struct, ISpatialComponentSnapshot
     {
         T GetComponent(long entityId);
+    }
+
+    public interface IViewComponentUpdater<T> where T : struct, ISpatialComponentUpdate
+    {
+        void ApplyUpdate(long entityId, in T update);
     }
 }
