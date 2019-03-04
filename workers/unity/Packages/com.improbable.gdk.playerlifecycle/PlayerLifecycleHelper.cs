@@ -34,9 +34,9 @@ namespace Improbable.Gdk.PlayerLifecycle
                     return memoryStream.ToArray();
                 }
             }
-            catch
+            catch (Exception e)
             {
-                UnityEngine.Debug.LogWarning("Unable to serialize player creation arguments.");
+                UnityEngine.Debug.LogError($"Unable to serialize player creation arguments. {e.Message}");
                 return null;
             }
         }
@@ -53,9 +53,9 @@ namespace Improbable.Gdk.PlayerLifecycle
                     return (T) binaryFormatter.Deserialize(memoryStream);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                UnityEngine.Debug.LogWarning("Unable to deserialize player creation arguments.");
+                UnityEngine.Debug.LogError($"Unable to deserialize player creation arguments. {e.Message}");
                 return default;
             }
         }
