@@ -139,7 +139,6 @@ namespace Improbable.Gdk.Core
 
             foreach (var storage in viewStorages)
             {
-                // Resolve this with an actual diff!
                 storage.ApplyDiff(diff);
             }
         }
