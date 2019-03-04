@@ -54,12 +54,12 @@ namespace Improbable.Gdk.Core
         private static readonly SemaphoreSlim WorkerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
         // Important run in this step as otherwise it can interfere with the the domain unloading logic.
-        private void OnApplicationQuit()
+        protected void OnApplicationQuit()
         {
             Dispose();
         }
 
-        private void OnDestroy()
+        protected void OnDestroy()
         {
             Dispose();
         }
@@ -117,12 +117,14 @@ namespace Improbable.Gdk.Core
 
                 Worker.OnDisconnect += OnDisconnected;
 
-                if (Application.isPlaying)
+                if (!Application.isPlaying)
                 {
-                    HandleWorkerConnectionEstablished();
-                    World.Active = World.Active ?? Worker.World;
-                    ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
+                    Dispose();
                 }
+
+                HandleWorkerConnectionEstablished();
+                World.Active = World.Active ?? Worker.World;
+                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
             }
             catch (Exception e)
             {
