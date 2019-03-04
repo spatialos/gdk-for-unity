@@ -211,9 +211,11 @@ You can regenerate the `default.snapshot` file from the **SpatialOS menu** optio
 
 While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
+If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
 
 ![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
+
+Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## Represent the entity on your workers
 
@@ -381,6 +383,8 @@ Our next step will be to add some game logic to the health pack so that it react
 <%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.
 
 If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
+
+Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## Add health pack logic
 
