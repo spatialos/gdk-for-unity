@@ -19,6 +19,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         private ComponentGroup initializationGroup;
         private ComponentGroup playerSpawnGroup;
 
+        private bool triggerPlayerCreation = false;
+        private Vector3f spawnPosition;
+        private byte[] serializedArguments;
+
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
@@ -31,10 +35,13 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ComponentType.ReadOnly<WorkerEntityTag>(),
                 ComponentType.ReadOnly<OnConnected>()
             );
+        }
 
-            playerSpawnGroup = GetComponentGroup(
-                ComponentType.ReadOnly<CreatePlayerRequestTrigger>()
-            );
+        public void TriggerPlayerCreation(Vector3 spawnPosition = default, byte[] serializedArguments = null)
+        {
+            triggerPlayerCreation = true;
+            this.spawnPosition = Vector3f.FromUnityVector(spawnPosition);
+            this.serializedArguments = serializedArguments;
         }
 
         protected override void OnUpdate()
@@ -44,26 +51,17 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
                 {
-                    var tag = new CreatePlayerRequestTrigger();
-                    if (PlayerLifecycleHelper.SerializeArguments(new PlayerCreationParams("playerName"), out var obj))
-                    {
-                        tag.SerializedArguments = obj;
-                    }
-
-                    PostUpdateCommands.AddSharedComponent(initEntities[i], tag);
+                    TriggerPlayerCreation();
                 }
             }
 
-            var spawnEntities = playerSpawnGroup.GetEntityArray();
-            var requestTags = playerSpawnGroup.GetSharedComponentDataArray<CreatePlayerRequestTrigger>();
-            for (var i = 0; i < spawnEntities.Length; ++i)
+            if (triggerPlayerCreation)
             {
                 var request = new CreatePlayerRequestType
                 {
-                    Position = requestTags[i].SpawnPosition,
+                    Position = spawnPosition
                 };
 
-                var serializedArguments = requestTags[i].SerializedArguments;
                 if (serializedArguments != null)
                 {
                     request.SerializedArguments = serializedArguments;
@@ -72,18 +70,19 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
                 commandSystem.SendCommand(createPlayerRequest);
-                PostUpdateCommands.RemoveComponent<CreatePlayerRequestTrigger>(spawnEntities[i]);
+                triggerPlayerCreation = false;
             }
 
             // Currently this has a race condition where you can receive two entities
             // The fix for this is more sophisticated server side handling of requests
             var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
+
             for (var i = 0; i < responses.Count; i++)
             {
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    PostUpdateCommands.AddSharedComponent(response.SendingEntity, new CreatePlayerRequestTrigger());
+                    TriggerPlayerCreation();
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {
