@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests
 {
     
+    [System.Serializable]
     public struct ExhaustiveMapKeyData
     {
         public global::System.Collections.Generic.Dictionary<BlittableBool,string> Field1;

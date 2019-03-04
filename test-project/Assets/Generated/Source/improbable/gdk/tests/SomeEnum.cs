@@ -4,8 +4,9 @@
 // ===========
 
 namespace Improbable.Gdk.Tests
-{ 
+{
     
+    [System.Serializable]
     public enum SomeEnum : uint
     {
         FIRST_VALUE = 0,

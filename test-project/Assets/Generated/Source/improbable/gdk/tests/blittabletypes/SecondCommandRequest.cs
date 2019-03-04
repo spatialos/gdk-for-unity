@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.BlittableTypes
 {
     
+    [System.Serializable]
     public struct SecondCommandRequest
     {
         public long Field;

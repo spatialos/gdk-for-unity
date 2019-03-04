@@ -3,12 +3,40 @@
 // ===========
 
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
+using Improbable.Worker;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     public partial class NonBlittableComponent
     {
+        public static class FirstEvent
+        {
+            public readonly struct Event : IEvent
+            {
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload Payload;
+
+                public Event(global::Improbable.Gdk.Tests.NonblittableTypes.FirstEventPayload payload)
+                {
+                    Payload = payload;
+                }
+            }
+        }
+
+        public static class SecondEvent
+        {
+            public readonly struct Event : IEvent
+            {
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload Payload;
+
+                public Event(global::Improbable.Gdk.Tests.NonblittableTypes.SecondEventPayload payload)
+                {
+                    Payload = payload;
+                }
+            }
+        }
+
         public static class ReceivedEvents
         {
             public struct FirstEvent : IComponentData
