@@ -265,11 +265,11 @@ The FPS Starter Project contains a health pack prefab named `HealthPickup.prefab
 
 This is because the FPS Starter Project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
 
-<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies.
+<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies. [Creating Prefabs (Unity Documentation)](https://docs.unity3d.com/Manual/CreatingPrefabs.html) explains how to create one.
 
-If you right-click in your project file hierarchy, you'll find an option **Create** > **Prefab**, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
+Freshly created prefabs are initially empty, so you can drag other prefabs or GameObjects onto them to add them to the hierarchy.
 
-If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+It can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
