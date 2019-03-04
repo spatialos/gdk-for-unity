@@ -16,14 +16,13 @@ As you will be launching a cloud deployment, you need to build out the code exec
 3\.  **Your workers have finished building when:** You see the following message in your Unity Editor's Console window: `Completed build for Cloud target`. 
 
 **After the build has successfully finished:** 
-<br/>Your `gdk-for-unity-fps-starter-project/build/assembly` folder should contain:
+<br/>Your `gdk-for-unity-fps-starter-project/build/assembly/worker` folder should contain:
 
 ```text
-  worker
-      ├── SimulatedPlayerCoordinator@Linux.zip
-      ├── UnityClient@Mac.zip
-      ├── UnityClient@Windows.zip
-      ├── UnityGameLogic@Linux.zip
+    ├── SimulatedPlayerCoordinator@Linux.zip
+    ├── UnityClient@Mac.zip
+    ├── UnityClient@Windows.zip
+    ├── UnityGameLogic@Linux.zip
 ```
 
 If your build succeeded you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). If you encountered build errors, check the **Common build errors** section below.
