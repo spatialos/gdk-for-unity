@@ -113,7 +113,7 @@ namespace <#= qualifiedNamespace #>
                 var responseIndex = responseStorage.GetResponseIndex(requestId);
                 if (responseIndex < 0)
                 {
-                    return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, 0, 0);
+                    return ReceivedMessagesSpan<<#= receivedResponseType #>>.Empty();
                 }
 
                 return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, responseIndex, 1);

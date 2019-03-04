@@ -96,8 +96,7 @@ namespace Improbable.Gdk.Core
             var responseIndex = createEntityResponses.GetResponseIndex(requestId);
             if (responseIndex < 0)
             {
-                return new ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>(createEntityResponses, 0,
-                    0);
+                return ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty();
             }
 
             return new ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>(createEntityResponses,
@@ -116,8 +115,7 @@ namespace Improbable.Gdk.Core
             var responseIndex = deleteEntityResponses.GetResponseIndex(requestId);
             if (responseIndex < 0)
             {
-                return new ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>(deleteEntityResponses, 0,
-                    0);
+                return ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty();
             }
 
             return new ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>(deleteEntityResponses,
@@ -136,8 +134,7 @@ namespace Improbable.Gdk.Core
             var responseIndex = reserveEntityIdsResponses.GetResponseIndex(requestId);
             if (responseIndex < 0)
             {
-                return new ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>(
-                    reserveEntityIdsResponses, 0, 0);
+                return ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty();
             }
 
             return new ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>(reserveEntityIdsResponses,
@@ -156,7 +153,7 @@ namespace Improbable.Gdk.Core
             var responseIndex = entityQueryResponses.GetResponseIndex(requestId);
             if (responseIndex < 0)
             {
-                return new ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>(entityQueryResponses, 0, 0);
+                return ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty();
             }
 
             return new ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>(entityQueryResponses,

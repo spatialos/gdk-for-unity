@@ -8,7 +8,12 @@ namespace Improbable.Gdk.Core
 
         private readonly int firstIndex;
 
-        public int Count { get; }
+        public readonly int Count;
+
+        static internal ReceivedMessagesSpan<T> Empty()
+        {
+            return new ReceivedMessagesSpan<T>(null, 0, 0);
+        }
 
         internal ReceivedMessagesSpan(MessageList<T> updates)
         {
