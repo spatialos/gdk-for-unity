@@ -9,6 +9,9 @@ namespace Improbable.Gdk.Tools
 {
     public static class DevAuthTokenUtils
     {
+        private static readonly string JsonDataKey = "json_data";
+        private static readonly string TokenSecretKey = "token_secret";
+
         [MenuItem("SpatialOS/Generate Dev Authentication Token", false, MenuPriorities.GenerateDevAuthToken)]
         private static void Generate()
         {
@@ -30,8 +33,8 @@ namespace Improbable.Gdk.Tools
 
             try
             {
-                if (Json.Deserialize(receivedMessage).TryGetValue("json_data", out var jsonData) &&
-                    ((Dictionary<string, object>) jsonData).TryGetValue("token_secret", out var tokenSecret))
+                if (Json.Deserialize(receivedMessage).TryGetValue(JsonDataKey, out var jsonData) &&
+                    ((Dictionary<string, object>) jsonData).TryGetValue(TokenSecretKey, out var tokenSecret))
                 {
                     devAuthToken = (string) tokenSecret;
                 }

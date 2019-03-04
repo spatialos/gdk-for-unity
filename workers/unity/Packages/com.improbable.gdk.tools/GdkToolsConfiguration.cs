@@ -61,13 +61,10 @@ namespace Improbable.Gdk.Tools
             {
                 errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} cannot be empty.");
             }
-            else
+            else if (!DevAuthTokenDir.Equals("Resources") && !DevAuthTokenDir.EndsWith("/Resources"))
             {
-                if (!DevAuthTokenDir.Equals("Resources") && !DevAuthTokenDir.EndsWith("/Resources"))
-                {
-                    errors.Add(
-                        $"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} must be at root of a Resources folder.");
-                }
+                errors.Add(
+                    $"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} must be at root of a Resources folder.");
             }
 
             if (DevAuthTokenLifetimeDays < 0 || DevAuthTokenLifetimeDays > 90)
