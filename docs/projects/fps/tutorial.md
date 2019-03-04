@@ -148,7 +148,7 @@ For health packs we will do the latter, so that when the game begins there will 
 
 ### Edit snapshot generation
 
-The **SpatialOS menu** option in your Unity Editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
+The **SpatialOS menu** option in your Unity Editor includes an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
 
 Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
