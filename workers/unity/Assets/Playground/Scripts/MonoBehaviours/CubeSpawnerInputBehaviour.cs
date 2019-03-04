@@ -40,7 +40,7 @@ namespace Playground.MonoBehaviours
             switch (response.StatusCode)
             {
                 case StatusCode.Success:
-                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Deleting entity:"));
+                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Deleting entity"));
                     break;
                 case StatusCode.ApplicationError:
                     logDispatcher.HandleLog(LogType.Log, new LogEvent($"Delete refused: {response.Message}"));
