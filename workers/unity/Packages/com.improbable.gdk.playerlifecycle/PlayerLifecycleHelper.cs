@@ -7,7 +7,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
-    public class PlayerLifecycleHelper
+    public static class PlayerLifecycleHelper
     {
         public static void AddPlayerLifecycleComponents(EntityTemplate template,
             string workerId,
@@ -23,7 +23,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(owningComponent, serverAccess);
         }
 
-        public static byte[] SerializeParams<T>(T playerCreationArguments)
+        public static bool SerializeArguments(Object playerCreationArguments, out byte[] serializedArguments)
         {
             try
             {
@@ -31,17 +31,19 @@ namespace Improbable.Gdk.PlayerLifecycle
                 {
                     var binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(memoryStream, playerCreationArguments);
-                    return memoryStream.ToArray();
+                    serializedArguments = memoryStream.ToArray();
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 UnityEngine.Debug.LogError($"Unable to serialize player creation arguments. {e.Message}");
-                return null;
+                serializedArguments = null;
+                return false;
             }
         }
 
-        public static T DeserializeParams<T>(byte[] serializedArguments)
+        public static bool DeserializeArguments<T>(byte[] serializedArguments, out T deserializedArguments)
         {
             try
             {
@@ -50,13 +52,15 @@ namespace Improbable.Gdk.PlayerLifecycle
                     var binaryFormatter = new BinaryFormatter();
                     memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    return (T) binaryFormatter.Deserialize(memoryStream);
+                    deserializedArguments = (T) binaryFormatter.Deserialize(memoryStream);
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 UnityEngine.Debug.LogError($"Unable to deserialize player creation arguments. {e.Message}");
-                return default;
+                deserializedArguments = default;
+                return false;
             }
         }
 

@@ -14,8 +14,8 @@ namespace Playground
         {
             if (playerCreationArguments.HasValue)
             {
-                var test = PlayerLifecycleHelper.DeserializeParams<PlayerCreationParams>(playerCreationArguments.Value);
-                UnityEngine.Debug.Log(test.PlayerName);
+                var deserializationSuccess = PlayerLifecycleHelper.DeserializeArguments<PlayerCreationParams>(
+                    playerCreationArguments.Value, out var deserializedArguments);
             }
 
             var clientAttribute = $"workerId:{workerId}";
