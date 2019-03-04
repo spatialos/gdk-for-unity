@@ -70,7 +70,7 @@ namespace <#= qualifiedNamespace #>
                     return RequestId;
                 }
 
-                EntityId IReceivedCommandRequest.GetTargetEntityId()
+                EntityId IReceivedEntityMessage.GetEntityId()
                 {
                     return EntityId;
                 }

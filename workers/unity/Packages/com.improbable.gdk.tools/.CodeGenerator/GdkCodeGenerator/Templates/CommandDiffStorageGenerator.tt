@@ -8,6 +8,7 @@
 <#= generatedHeader #>
 
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 
@@ -28,6 +29,12 @@ namespace <#= qualifiedNamespace #>
 
             private MessageList<<#= receivedResponseType #>> responseStorage =
                 new MessageList<<#= receivedResponseType #>>();
+
+            private readonly RequestComparer requestComparer = new RequestComparer();
+            private readonly ResponseComparer responseComparer = new ResponseComparer();
+
+            private bool requestsSorted;
+            private bool responsesSorted;
 
             public uint GetComponentId()
             {
@@ -53,6 +60,8 @@ namespace <#= qualifiedNamespace #>
             {
                 requestStorage.Clear();
                 responseStorage.Clear();
+                requestsSorted = false;
+                responsesSorted = false;
             }
 
             public void RemoveRequests(long entityId)
@@ -75,38 +84,55 @@ namespace <#= qualifiedNamespace #>
                 return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage);
             }
 
+            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests(EntityId targetEntityId)
+            {
+                if (!requestsSorted)
+                {
+                    requestStorage.Sort(requestComparer);
+                    requestsSorted = true;
+                }
+
+                var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
+
+                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage, firstIndex, count);
+            }
+
             public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponses()
             {
                 return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage);
             }
 
-            internal bool TryGetResponseReceivedForRequestId(long requestId, out <#= receivedResponseType #> response)
+            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponse(long requestId)
             {
+                if (!responsesSorted)
+                {
+                    responseStorage.Sort(responseComparer);
+                    responsesSorted = true;
+                }
+
                 var responseIndex = responseStorage.GetResponseIndex(requestId);
                 if (responseIndex < 0)
                 {
-                    response = default(<#= receivedResponseType #>);
-                    return false;
+                    return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, 0, 0);
                 }
 
-                response = responseStorage[responseIndex];
-                return true;
+                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, responseIndex, 1);
             }
 
-            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedRequestType #>> messageList)
+            private class RequestComparer : IComparer<<#= receivedRequestType #>>
             {
-                MessageList<<#= receivedRequestType #>> temp = messageList;
-                messageList = requestStorage;
-                requestStorage = temp;
-                requestStorage.Clear();
+                public int Compare(<#= receivedRequestType #> x, <#= receivedRequestType #> y)
+                {
+                    return x.EntityId.Id.CompareTo(y.EntityId.Id);
+                }
             }
 
-            internal void SwapAndClearMessageLists(ref MessageList<<#= receivedResponseType #>> messageList)
+            private class ResponseComparer : IComparer<<#= receivedResponseType #>>
             {
-                MessageList<<#= receivedResponseType #>> temp = messageList;
-                messageList = responseStorage;
-                responseStorage = temp;
-                responseStorage.Clear();
+                public int Compare(<#= receivedResponseType #> x, <#= receivedResponseType #> y)
+                {
+                    return x.RequestId.CompareTo(y.RequestId);
+                }
             }
         }
 

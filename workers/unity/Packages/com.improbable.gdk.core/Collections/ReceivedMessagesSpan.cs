@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Core
         {
             get
             {
-                if (index < 0 || index >= Count)
+                if (index >= Count)
                 {
                     throw new IndexOutOfRangeException();
                 }
