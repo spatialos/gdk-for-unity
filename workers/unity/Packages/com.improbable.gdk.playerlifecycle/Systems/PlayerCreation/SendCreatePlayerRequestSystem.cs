@@ -19,7 +19,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         private ComponentGroup initializationGroup;
         private ComponentGroup playerSpawnGroup;
 
-        private bool triggerPlayerCreation = false;
+        private bool playerCreationRequested;
         private Vector3f spawnPosition;
         private byte[] serializedArguments;
 
@@ -37,25 +37,25 @@ namespace Improbable.Gdk.PlayerLifecycle
             );
         }
 
-        public void TriggerPlayerCreation(Vector3 spawnPosition = default, byte[] serializedArguments = null)
+        public void QueuePlayerCreationRequest(Vector3 spawnPosition = default, byte[] serializedArguments = null)
         {
-            triggerPlayerCreation = true;
+            playerCreationRequested = true;
             this.spawnPosition = Vector3f.FromUnityVector(spawnPosition);
             this.serializedArguments = serializedArguments;
         }
 
         protected override void OnUpdate()
         {
-            var initEntities = initializationGroup.GetEntityArray();
-            for (var i = 0; i < initEntities.Length; ++i)
+            if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
             {
-                if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
+                var initEntities = initializationGroup.GetEntityArray();
+                for (var i = 0; i < initEntities.Length; ++i)
                 {
-                    TriggerPlayerCreation();
+                    QueuePlayerCreationRequest();
                 }
             }
 
-            if (triggerPlayerCreation)
+            if (playerCreationRequested)
             {
                 var request = new CreatePlayerRequestType
                 {
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
 
                 commandSystem.SendCommand(createPlayerRequest);
-                triggerPlayerCreation = false;
+                playerCreationRequested = false;
             }
 
             // Currently this has a race condition where you can receive two entities
@@ -82,7 +82,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    TriggerPlayerCreation();
+                    QueuePlayerCreationRequest();
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {
