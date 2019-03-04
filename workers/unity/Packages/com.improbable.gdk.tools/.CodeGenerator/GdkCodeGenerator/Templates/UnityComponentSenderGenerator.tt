@@ -81,7 +81,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                             }
 <# } #>
 
-                            componentUpdateSystem.SendUpdate(update, entityIdArray[i].EntityId);
+                            componentUpdateSystem.SendUpdate(in update, entityIdArray[i].EntityId);
                             data.MarkDataClean();
                             componentArray[i] = data;
                         }

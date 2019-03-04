@@ -37,8 +37,11 @@ namespace Improbable.Gdk.Core
         private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
+        private readonly UpdateParameters updateParams = new UpdateParameters();
+
         public SerializedMessagesToSend()
         {
+            updateParams.Loopback = ComponentUpdateLoopback.ShortCircuited;
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -112,7 +115,7 @@ namespace Improbable.Gdk.Core
             for (int i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
-                connection.SendComponentUpdate(update.EntityId, update.Update);
+                connection.SendComponentUpdate(update.EntityId, update.Update, updateParams);
             }
 
             for (int i = 0; i < requests.Count; ++i)

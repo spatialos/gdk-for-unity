@@ -16,7 +16,8 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
-        public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>
+        public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
+            IViewComponentUpdater<Update>
         {
             private readonly Dictionary<long, Authority> authorityStates = new Dictionary<long, Authority>();
             private readonly Dictionary<long, Snapshot> componentData = new Dictionary<long, Snapshot>();
@@ -24,6 +25,11 @@ namespace <#= qualifiedNamespace #>
             public Type GetSnapshotType()
             {
                 return typeof(Snapshot);
+            }
+
+            public Type GetUpdateType()
+            {
+                return typeof(Update);
             }
 
             public uint GetComponentId()
@@ -87,7 +93,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
 
-            private void ApplyUpdate(long entityId, in Update update)
+            public void ApplyUpdate(long entityId, in Update update)
             {
                 var data = componentData[entityId];
 <# foreach (var field in fields) {

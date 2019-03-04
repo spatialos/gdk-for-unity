@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core
             authorityLossAcks.Add(new EntityComponent(entityId, componentId));
         }
 
-        public void AddComponentUpdate<T>(T update, long entityId)
+        public void AddComponentUpdate<T>(in T update, long entityId)
             where T : ISpatialComponentUpdate
         {
             var storage = GetComponentDiffStorage(typeof(T));

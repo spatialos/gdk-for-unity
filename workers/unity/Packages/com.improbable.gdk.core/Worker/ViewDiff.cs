@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
-        private Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
+        private readonly Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
             new Dictionary<Type, IComponentDiffStorage>();
 
         private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, Dictionary<uint, IComponentCommandDiffStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, IComponentCommandDiffStorage>>();
 
-        private Dictionary<Type, ICommandDiffStorage> typeToCommandStorage =
+        private readonly Dictionary<Type, ICommandDiffStorage> typeToCommandStorage =
             new Dictionary<Type, ICommandDiffStorage>();
 
         private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();

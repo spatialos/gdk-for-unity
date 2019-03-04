@@ -24,6 +24,7 @@ namespace Improbable.Gdk.Core
                         var instance = (IViewStorage) Activator.CreateInstance(type);
 
                         typeToViewStorage.Add(instance.GetSnapshotType(), instance);
+                        typeToViewStorage.Add(instance.GetUpdateType(), instance);
                         componentIdToViewStorage.Add(instance.GetComponentId(), instance);
 
                         viewStorages.Add(instance);
@@ -32,25 +33,10 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void ApplyDiff(ViewDiff diff)
+        public void UpdateComponent<T>(EntityId entityId, in T update) where T : struct, ISpatialComponentUpdate
         {
-            var entitiesAdded = diff.GetEntitiesAdded();
-            foreach (var entity in entitiesAdded)
-            {
-                entities.Add(entity);
-            }
-
-            var entitiesRemoved = diff.GetEntitiesRemoved();
-            foreach (var entity in entitiesRemoved)
-            {
-                entities.Remove(entity);
-            }
-
-            foreach (var storage in viewStorages)
-            {
-                // Resolve this with an actual diff!
-                storage.ApplyDiff(diff);
-            }
+            var storage = (IViewComponentUpdater<T>) typeToViewStorage[typeof(T)];
+            storage.ApplyUpdate(entityId.Id, in update);
         }
 
         public HashSet<EntityId> GetEntityIds()
@@ -135,6 +121,26 @@ namespace Improbable.Gdk.Core
             }
 
             return componentIdToViewStorage[componentId].GetAuthority(entityId.Id) == Authority.Authoritative;
+        }
+
+        internal void ApplyDiff(ViewDiff diff)
+        {
+            var entitiesAdded = diff.GetEntitiesAdded();
+            foreach (var entity in entitiesAdded)
+            {
+                entities.Add(entity);
+            }
+
+            var entitiesRemoved = diff.GetEntitiesRemoved();
+            foreach (var entity in entitiesRemoved)
+            {
+                entities.Remove(entity);
+            }
+
+            foreach (var storage in viewStorages)
+            {
+                storage.ApplyDiff(diff);
+            }
         }
     }
 }
