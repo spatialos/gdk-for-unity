@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine.Profiling;
@@ -27,24 +26,16 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private void GenerateComponentGroups()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            // Find all ComponentCleanupHandlers
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ComponentCleanupHandler)))
             {
-                // Find all ComponentCleanupHandlers
-                foreach (var type in assembly.GetTypes())
+                var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
+
+                componentCleanups.Add(new ComponentCleanup
                 {
-                    if (!typeof(ComponentCleanupHandler).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    var componentCleanupHandler = (ComponentCleanupHandler) Activator.CreateInstance(type);
-
-                    componentCleanups.Add(new ComponentCleanup
-                    {
-                        Handler = componentCleanupHandler,
-                        ComponentsToCleanGroup = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
-                    });
-                }
+                    Handler = componentCleanupHandler,
+                    ComponentsToCleanGroup = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
+                });
             }
         }
 

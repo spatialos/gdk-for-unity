@@ -25,18 +25,10 @@ namespace Improbable.Gdk.ReactiveComponents
             commandSystem = World.GetExistingManager<CommandSystem>();
             workerSystem = World.GetExistingManager<WorkerSystem>();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IReactiveCommandComponentManager)))
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (!typeof(IReactiveCommandComponentManager).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    var instance = (IReactiveCommandComponentManager) Activator.CreateInstance(type);
-                    managers.Add(instance);
-                }
+                var instance = (IReactiveCommandComponentManager) Activator.CreateInstance(type);
+                managers.Add(instance);
             }
         }
 

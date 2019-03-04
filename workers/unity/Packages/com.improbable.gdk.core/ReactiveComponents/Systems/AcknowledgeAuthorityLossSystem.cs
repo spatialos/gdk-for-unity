@@ -17,36 +17,26 @@ namespace Improbable.Gdk.ReactiveComponents
         private readonly List<ComponentAuthorityLossDetails> authorityLossDetails =
             new List<ComponentAuthorityLossDetails>();
 
-        private WorkerSystem workerSystem;
         private ComponentUpdateSystem updateSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            workerSystem = World.GetExistingManager<WorkerSystem>();
             updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
             GenerateComponentGroups();
         }
 
         private void GenerateComponentGroups()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(AbstractAcknowledgeAuthorityLossHandler)))
             {
-                foreach (var type in assembly.GetTypes())
+                var authorityLossHandler = (AbstractAcknowledgeAuthorityLossHandler) Activator.CreateInstance(type);
+
+                authorityLossDetails.Add(new ComponentAuthorityLossDetails
                 {
-                    if (!typeof(AbstractAcknowledgeAuthorityLossHandler).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    var authorityLossHandler = (AbstractAcknowledgeAuthorityLossHandler) Activator.CreateInstance(type);
-
-                    authorityLossDetails.Add(new ComponentAuthorityLossDetails
-                    {
-                        Handler = authorityLossHandler,
-                        AuthorityLossGroup = GetComponentGroup(authorityLossHandler.Query)
-                    });
-                }
+                    Handler = authorityLossHandler,
+                    AuthorityLossGroup = GetComponentGroup(authorityLossHandler.Query)
+                });
             }
         }
 

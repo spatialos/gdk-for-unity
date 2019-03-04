@@ -15,21 +15,16 @@ namespace Improbable.Gdk.Core
 
         public View()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(IViewStorage));
+            foreach (var type in types)
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (typeof(IViewStorage).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IViewStorage) Activator.CreateInstance(type);
+                var instance = (IViewStorage) Activator.CreateInstance(type);
 
-                        typeToViewStorage.Add(instance.GetSnapshotType(), instance);
-                        typeToViewStorage.Add(instance.GetUpdateType(), instance);
-                        componentIdToViewStorage.Add(instance.GetComponentId(), instance);
+                typeToViewStorage.Add(instance.GetSnapshotType(), instance);
+                typeToViewStorage.Add(instance.GetUpdateType(), instance);
+                componentIdToViewStorage.Add(instance.GetComponentId(), instance);
 
-                        viewStorages.Add(instance);
-                    }
-                }
+                viewStorages.Add(instance);
             }
         }
 

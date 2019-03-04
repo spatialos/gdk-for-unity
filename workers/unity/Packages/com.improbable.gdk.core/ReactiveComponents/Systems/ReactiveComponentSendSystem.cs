@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
@@ -57,7 +55,6 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             componentReplicators.Add(new ComponentReplicator
             {
-                ComponentId = reactiveComponentReplicationHandler.ComponentId,
                 Handler = reactiveComponentReplicationHandler,
                 EventGroup = GetComponentGroup(reactiveComponentReplicationHandler.EventQuery),
                 CommandGroup = GetComponentGroup(reactiveComponentReplicationHandler.CommandQueries),
@@ -67,27 +64,22 @@ namespace Improbable.Gdk.ReactiveComponents
         private void PopulateDefaultComponentReplicators()
         {
             // Find all component specific replicators and create an instance.
-            var componentReplicationTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type =>
-                {
-                    return typeof(IReactiveComponentReplicationHandler).IsAssignableFrom(type)
-                        && !type.IsAbstract
-                        && type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) == null;
-                });
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(IReactiveComponentReplicationHandler));
 
-            foreach (var componentReplicationType in componentReplicationTypes)
+            foreach (var type in types)
             {
-                var componentReplicationHandler =
-                    (IReactiveComponentReplicationHandler) Activator.CreateInstance(componentReplicationType);
+                if (type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) != null)
+                {
+                    continue;
+                }
 
+                var componentReplicationHandler = (IReactiveComponentReplicationHandler) Activator.CreateInstance(type);
                 AddComponentReplicator(componentReplicationHandler);
             }
         }
 
         private struct ComponentReplicator
         {
-            public uint ComponentId;
             public IReactiveComponentReplicationHandler Handler;
             public ComponentGroup EventGroup;
             public ComponentGroup CommandGroup;
