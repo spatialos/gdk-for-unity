@@ -100,6 +100,12 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 
 You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are standard library components that SpatialOS expects. (Note that `Persistence` is another standard library component but this is optional.)
 
+Additionally, add the following line at the top of the file to ensure that the `Pickups` namespace can be resolved:
+
+```csharp
+using Pickups;
+```
+
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
 **Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS [load-balancer (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) when dividing work between workers on a proximity basis.
@@ -160,7 +166,7 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-Additionally, add the following line at the top of the file to ensure that the `Vector3f` type can be resolved:
+Additionally, add the following line at the top of the file to ensure that the `Vector3f` namespace can be resolved:
 
 ```csharp
 using Improbable;
