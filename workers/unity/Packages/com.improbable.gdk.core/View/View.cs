@@ -33,28 +33,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        internal void ApplyDiff(ViewDiff diff)
-        {
-            var entitiesAdded = diff.GetEntitiesAdded();
-            foreach (var entity in entitiesAdded)
-            {
-                entities.Add(entity);
-            }
-
-            var entitiesRemoved = diff.GetEntitiesRemoved();
-            foreach (var entity in entitiesRemoved)
-            {
-                entities.Remove(entity);
-            }
-
-            foreach (var storage in viewStorages)
-            {
-                // Resolve this with an actual diff!
-                storage.ApplyDiff(diff);
-            }
-        }
-
-        internal void UpdateComponent<T>(EntityId entityId, in T update) where T : struct, ISpatialComponentUpdate
+        public void UpdateComponent<T>(EntityId entityId, in T update) where T : struct, ISpatialComponentUpdate
         {
             var storage = (IViewComponentUpdater<T>) typeToViewStorage[typeof(T)];
             storage.ApplyUpdate(entityId.Id, in update);
@@ -142,6 +121,27 @@ namespace Improbable.Gdk.Core
             }
 
             return componentIdToViewStorage[componentId].GetAuthority(entityId.Id) == Authority.Authoritative;
+        }
+
+        internal void ApplyDiff(ViewDiff diff)
+        {
+            var entitiesAdded = diff.GetEntitiesAdded();
+            foreach (var entity in entitiesAdded)
+            {
+                entities.Add(entity);
+            }
+
+            var entitiesRemoved = diff.GetEntitiesRemoved();
+            foreach (var entity in entitiesRemoved)
+            {
+                entities.Remove(entity);
+            }
+
+            foreach (var storage in viewStorages)
+            {
+                // Resolve this with an actual diff!
+                storage.ApplyDiff(diff);
+            }
         }
     }
 }
