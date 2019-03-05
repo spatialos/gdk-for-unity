@@ -53,6 +53,7 @@
 
 - Fixed a bug where running `SpatialOS -> Generate code` would always regenerate code, even if no files had changed.
 - Fixed a bug where building all workers in our sample projects would fail, if you have Android build support installed, but didn't set the path to the Android SDK.
+- Fixed a bug where some prefabs would not be processed correctly, causing NullReferenceExceptions in OnEnable.
 
 ### Internal
 
