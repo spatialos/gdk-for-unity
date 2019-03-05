@@ -67,7 +67,12 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                BuildWorkers(wantedWorkerTypes, buildEnvironment, scriptingBackend);
+                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, scriptingBackend);
+
+                if (!buildsSucceeded)
+                {
+                    throw new BuildFailedException("Not all builds were completed successfully. See the log for more information.");
+                }
             }
             catch (Exception e)
             {
@@ -101,7 +106,7 @@ namespace Improbable.Gdk.BuildSystem
             };
         }
 
-        private static void BuildWorkers(string[] workerTypes, BuildEnvironment buildEnvironment, ScriptingImplementation? scriptingBackend = null)
+        private static bool BuildWorkers(string[] workerTypes, BuildEnvironment buildEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
             var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             var activeBuildTargetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
@@ -126,10 +131,12 @@ namespace Improbable.Gdk.BuildSystem
                         $"Completed build for {buildEnvironment} target.\n"
                         + $"Completed builds for: {completedWorkerTypes}\n"
                         + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
+                    return false;
                 }
                 else
                 {
                     Debug.Log($"Completed build for {buildEnvironment} target.");
+                    return true;
                 }
             }
             catch (Exception e)
