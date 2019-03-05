@@ -57,19 +57,26 @@ namespace Improbable.Gdk.Subscriptions.Editor
                         continue;
                     }
 
+                    var changed = false;
+
                     foreach (var monoBehaviour in prefabObject
                         .GetComponents<MonoBehaviour>()
                         .Where(DoesBehaviourNeedFixing))
                     {
                         monoBehaviour.enabled = false;
+                        changed = true;
                     }
 
-                    PrefabUtility.SaveAsPrefabAsset(prefabObject, prefabPath);
+                    if (changed)
+                    {
+                        PrefabUtility.SaveAsPrefabAsset(prefabObject, prefabPath);
+                    }
+
                     PrefabUtility.UnloadPrefabContents(prefabObject);
                 }
                 catch
                 {
-                    Debug.LogWarning($"Failed to process prefab {prefabPath}");
+                    Debug.LogError($"Failed to process prefab {prefabPath}");
                     throw;
                 }
             }
