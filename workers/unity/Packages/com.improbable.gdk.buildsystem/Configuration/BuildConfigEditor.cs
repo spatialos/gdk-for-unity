@@ -164,6 +164,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                             new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
                                 { tooltip = "Missing build support for one or more build targets." };
                     }
+                    else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(NeedsAndroidSdk) ||
+                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(NeedsAndroidSdk))
+                    {
+                        foldoutState.Icon =
+                            new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
+                                { tooltip = "Ensure you have the Android SDK installed. Inside the Unity Editor, go to Preferences > External Tools to set it up." };
+                    }
                     else
                     {
                         foldoutState.Icon = null;
@@ -829,6 +836,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static bool IsBuildTargetError(BuildTargetConfig t)
         {
             return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled;
+        }
+
+        private static bool NeedsAndroidSdk(BuildTargetConfig t)
+        {
+            return t.Enabled && t.Target == BuildTarget.Android && string.IsNullOrEmpty(EditorPrefs.GetString("AndroidSdkRoot"));
         }
 
         /// <summary>
