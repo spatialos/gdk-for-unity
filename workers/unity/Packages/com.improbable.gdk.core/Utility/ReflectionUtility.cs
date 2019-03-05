@@ -57,27 +57,21 @@ namespace Improbable.Gdk.Core
 
         private static bool TypeMatchesRequirements(Type targetType, Type interfaceType, Type[] attributes)
         {
-            if (!targetType.IsAbstract && interfaceType.IsAssignableFrom(targetType))
+            if (targetType.IsAbstract || !interfaceType.IsAssignableFrom(targetType))
             {
-                // Check all specified attributes are present
-                var hasAttributes = true;
+                return false;
+            }
 
-                foreach (var attribute in attributes)
+            // Check all specified attributes are present
+            foreach (var attribute in attributes)
+            {
+                if (targetType.GetCustomAttribute(attribute, true) == null)
                 {
-                    if (targetType.GetCustomAttribute(attribute, true) == null)
-                    {
-                        hasAttributes = false;
-                        break;
-                    }
-                }
-
-                if (hasAttributes)
-                {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
     }
 }
