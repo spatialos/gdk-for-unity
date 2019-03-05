@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core
             var types = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentReplicationHandler));
             foreach (var type in types)
             {
-                if (type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) != null)
+                if (type.GetCustomAttribute<DisableAutoRegisterAttribute>() != null)
                 {
                     continue;
                 }
