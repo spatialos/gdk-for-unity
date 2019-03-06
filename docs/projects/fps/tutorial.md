@@ -17,10 +17,7 @@ To implement this feature you:
 * Write logic so that health packs grant health to players.
 
 ## Open the FPS Starter Project in your Unity Editor
-
-Most of your interactions with the SpatialOS GDK will be from within your Unity Editor.
-
-To get started, from your Unity Editor's file browser, open the `workers/unity` directory inside the FPS Starter Project.
+1. Launch your Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
 ## Define a new entity type
 
