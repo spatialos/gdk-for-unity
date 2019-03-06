@@ -54,9 +54,10 @@ namespace Playground.MonoBehaviours
         {
             var entityId = response.RequestPayload.EntityId;
 
+            // Log not error as the most common failure cause is that the entity has already been deleted.
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error,
+                logDispatcher.HandleLog(LogType.Log,
                     new LogEvent("Could not delete entity.")
                         .WithField(LoggingUtils.EntityId, entityId)
                         .WithField("Reason", response.Message));

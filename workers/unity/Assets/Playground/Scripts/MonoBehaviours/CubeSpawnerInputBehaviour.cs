@@ -37,9 +37,23 @@ namespace Playground.MonoBehaviours
 
         private void OnDeleteSpawnedCubeResponse(CubeSpawner.DeleteSpawnedCube.ReceivedResponse response)
         {
-            if (response.StatusCode != StatusCode.Success)
+            switch (response.StatusCode)
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                case StatusCode.Success:
+                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Deleting entity"));
+                    break;
+                case StatusCode.ApplicationError:
+                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Delete refused: {response.Message}"));
+                    break;
+                case StatusCode.Timeout:
+                case StatusCode.NotFound:
+                case StatusCode.AuthorityLost:
+                case StatusCode.PermissionDenied:
+                case StatusCode.InternalError:
+                    logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
