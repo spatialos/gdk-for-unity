@@ -4,17 +4,17 @@
 
 <%(TOC)%>
 
-Before starting this tutorial, make sure you have followed the [Get started]({{urlRoot}}/content/get-started/get-started) guide which sets up the FPS Starter Project. This tutorial follows on from the _Get Started_ guide.
+Before starting this tutorial, make sure you have followed the [Get started]({{urlRoot}}/content/get-started/get-started) guide which sets up the FPS Starter Project. This tutorial follows on from that guide.
 
 ## What does the tutorial cover?
 
-As part of this tutorial, you implement a simple health pack pick-up which grants health to players who walk over it. The amount of health granted is fixed and players consume the health pack through use; it then respawns a little later in play.
+You will add health pack pick-ups to the game. These pick-ups grant health to players who walk over them.
 
 To implement this feature you:
 
-* Define a new health pack entity and its data.
-* Add health pack entities to the [snapshot]({{urlRoot}}/content/glossary#snapshot) so they appear in the [SpatialOS world]({{urlRoot}}/content/glossary#spatialos-world).
-* Write pick-up logic to let health packs grant health to players.
+* Define a new [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) called `HealthPickup` and define its [component data]({{urlRoot}}/content/glossary#spatialos-component).
+* Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/content/glossary#snapshot) so they appear in the [SpatialOS world]({{urlRoot}}/content/glossary#spatialos-world) at startup.
+* Write logic so that health packs grant health to players.
 
 ## Open the FPS Starter Project in your Unity Editor
 
