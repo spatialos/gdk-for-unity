@@ -27,24 +27,19 @@ namespace Improbable.Gdk.Core
 
         public CommandMetaData()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(ICommandMetaDataStorage));
+            foreach (var type in types)
             {
-                foreach (var type in assembly.GetTypes())
+                var instance = (ICommandMetaDataStorage) Activator.CreateInstance(type);
+
+                if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
+                    out var commandIdToStorage))
                 {
-                    if (typeof(ICommandMetaDataStorage).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (ICommandMetaDataStorage) Activator.CreateInstance(type);
-
-                        if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
-                            out var commandIdToStorage))
-                        {
-                            commandIdToStorage = new Dictionary<uint, ICommandMetaDataStorage>();
-                            componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
-                        }
-
-                        commandIdToStorage.Add(instance.GetCommandId(), instance);
-                    }
+                    commandIdToStorage = new Dictionary<uint, ICommandMetaDataStorage>();
+                    componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
                 }
+
+                commandIdToStorage.Add(instance.GetCommandId(), instance);
             }
         }
 

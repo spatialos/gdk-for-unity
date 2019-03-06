@@ -72,22 +72,17 @@ namespace Improbable.Gdk.Core
         private void PopulateDefaultComponentReplicators()
         {
             // Find all component specific replicators and create an instance.
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentReplicationHandler));
+            foreach (var type in types)
             {
-                foreach (var type in assembly.GetTypes())
+                if (type.GetCustomAttribute<DisableAutoRegisterAttribute>() != null)
                 {
-                    if (typeof(IComponentReplicationHandler).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        if (type.GetCustomAttribute(typeof(DisableAutoRegisterAttribute)) != null)
-                        {
-                            continue;
-                        }
-
-                        var handler = (IComponentReplicationHandler) Activator.CreateInstance(type);
-
-                        AddComponentReplicator(handler);
-                    }
+                    continue;
                 }
+
+                var handler = (IComponentReplicationHandler) Activator.CreateInstance(type);
+
+                AddComponentReplicator(handler);
             }
         }
 

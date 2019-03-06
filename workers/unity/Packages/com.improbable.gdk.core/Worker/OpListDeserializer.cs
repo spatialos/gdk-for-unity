@@ -17,24 +17,16 @@ namespace Improbable.Gdk.Core
 
         public OpListDeserializer()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffDeserializer)))
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (typeof(IComponentDiffDeserializer).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IComponentDiffDeserializer) Activator.CreateInstance(type);
+                var instance = (IComponentDiffDeserializer) Activator.CreateInstance(type);
+                componentIdToComponentDeserializer.Add(instance.GetComponentId(), instance);
+            }
 
-                        componentIdToComponentDeserializer.Add(instance.GetComponentId(), instance);
-                    }
-
-                    if (typeof(ICommandDiffDeserializer).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (ICommandDiffDeserializer) Activator.CreateInstance(type);
-
-                        commandIdsToCommandDeserializer.Add((instance.GetComponentId(), instance.GetCommandId()), instance);
-                    }
-                }
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandDiffDeserializer)))
+            {
+                var instance = (ICommandDiffDeserializer) Activator.CreateInstance(type);
+                commandIdsToCommandDeserializer.Add((instance.GetComponentId(), instance.GetCommandId()), instance);
             }
         }
 

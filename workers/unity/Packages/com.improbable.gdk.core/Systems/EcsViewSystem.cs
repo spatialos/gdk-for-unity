@@ -56,21 +56,13 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingManager<WorkerSystem>();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IEcsViewManager)))
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (!typeof(IEcsViewManager).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
+                var instance = (IEcsViewManager) Activator.CreateInstance(type);
+                instance.Init(World);
 
-                    var instance = (IEcsViewManager) Activator.CreateInstance(type);
-                    instance.Init(World);
-
-                    componentIdToManager.Add(instance.GetComponentId(), instance);
-                    managers.Add(instance);
-                }
+                componentIdToManager.Add(instance.GetComponentId(), instance);
+                managers.Add(instance);
             }
 
             Enabled = false;

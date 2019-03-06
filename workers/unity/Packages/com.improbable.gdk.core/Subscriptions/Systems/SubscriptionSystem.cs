@@ -56,23 +56,13 @@ namespace Improbable.Gdk.Subscriptions
 
         private void AutoRegisterManagers()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
+                typeof(AutoRegisterSubscriptionManagerAttribute));
+
+            foreach (var type in types)
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (!typeof(SubscriptionManagerBase).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    if (type.GetCustomAttribute<AutoRegisterSubscriptionManagerAttribute>() == null)
-                    {
-                        continue;
-                    }
-
-                    var instance = (SubscriptionManagerBase) Activator.CreateInstance(type, World);
-                    RegisterSubscriptionManager(instance.SubscriptionType, instance);
-                }
+                var instance = (SubscriptionManagerBase) Activator.CreateInstance(type, World);
+                RegisterSubscriptionManager(instance.SubscriptionType, instance);
             }
         }
     }

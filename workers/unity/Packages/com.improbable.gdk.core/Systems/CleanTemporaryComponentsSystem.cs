@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.Entities;
@@ -20,24 +19,17 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            // Find all components with the RemoveAtEndOfTick attribute
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentData),
+                typeof(RemoveAtEndOfTickAttribute)))
             {
-                // Find all components with the RemoveAtEndOfTick attribute
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (type.GetCustomAttribute<RemoveAtEndOfTickAttribute>(false) == null)
-                    {
-                        continue;
-                    }
+                componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
+            }
 
-                    if (!typeof(IComponentData).IsAssignableFrom(type)
-                        && !typeof(ISharedComponentData).IsAssignableFrom(type))
-                    {
-                        continue;
-                    }
-
-                    componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
-                }
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ISharedComponentData),
+                typeof(RemoveAtEndOfTickAttribute)))
+            {
+                componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
             }
         }
 

@@ -42,22 +42,17 @@ namespace Improbable.Gdk.Core
         public SerializedMessagesToSend()
         {
             updateParams.Loopback = ComponentUpdateLoopback.ShortCircuited;
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (typeof(IComponentSerializer).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IComponentSerializer) Activator.CreateInstance(type);
-                        componentSerializers.Add(instance);
-                    }
 
-                    if (typeof(ICommandSerializer).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (ICommandSerializer) Activator.CreateInstance(type);
-                        commandSerializers.Add(instance);
-                    }
-                }
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSerializer)))
+            {
+                var instance = (IComponentSerializer) Activator.CreateInstance(type);
+                componentSerializers.Add(instance);
+            }
+
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSerializer)))
+            {
+                var instance = (ICommandSerializer) Activator.CreateInstance(type);
+                commandSerializers.Add(instance);
             }
 
             // Move the position serializer to the end of the queue so that the updates get sent last

@@ -37,42 +37,40 @@ namespace Improbable.Gdk.Core
 
         public ViewDiff()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var componentStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+
+            foreach (var type in componentStorageTypes)
             {
-                foreach (var type in assembly.GetTypes())
+                var instance = (IComponentDiffStorage) Activator.CreateInstance(type);
+
+                componentStorageList.Add(instance);
+                componentIdToComponentStorage.Add(instance.GetComponentId(), instance);
+
+                typeToComponentStorage.Add(instance.GetUpdateType(), instance);
+                foreach (var eventType in instance.GetEventTypes())
                 {
-                    if (typeof(IComponentDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IComponentDiffStorage) Activator.CreateInstance(type);
-
-                        componentStorageList.Add(instance);
-                        componentIdToComponentStorage.Add(instance.GetComponentId(), instance);
-
-                        typeToComponentStorage.Add(instance.GetUpdateType(), instance);
-                        foreach (var eventType in instance.GetEventTypes())
-                        {
-                            typeToComponentStorage.Add(eventType, instance);
-                        }
-                    }
-
-                    if (typeof(IComponentCommandDiffStorage).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IComponentCommandDiffStorage) Activator.CreateInstance(type);
-
-                        commandStorageList.Add(instance);
-                        if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
-                            out var commandIdToStorage))
-                        {
-                            commandIdToStorage = new Dictionary<uint, IComponentCommandDiffStorage>();
-                            componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
-                        }
-
-                        commandIdToStorage.Add(instance.GetCommandId(), instance);
-
-                        typeToCommandStorage.Add(instance.GetRequestType(), instance);
-                        typeToCommandStorage.Add(instance.GetResponseType(), instance);
-                    }
+                    typeToComponentStorage.Add(eventType, instance);
                 }
+            }
+
+            var commandStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandDiffStorage));
+
+            foreach (var type in commandStorageTypes)
+            {
+                var instance = (IComponentCommandDiffStorage) Activator.CreateInstance(type);
+
+                commandStorageList.Add(instance);
+                if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
+                    out var commandIdToStorage))
+                {
+                    commandIdToStorage = new Dictionary<uint, IComponentCommandDiffStorage>();
+                    componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
+                }
+
+                commandIdToStorage.Add(instance.GetCommandId(), instance);
+
+                typeToCommandStorage.Add(instance.GetRequestType(), instance);
+                typeToCommandStorage.Add(instance.GetResponseType(), instance);
             }
 
             commandStorageList.Add(worldCommandsReceivedStorage);

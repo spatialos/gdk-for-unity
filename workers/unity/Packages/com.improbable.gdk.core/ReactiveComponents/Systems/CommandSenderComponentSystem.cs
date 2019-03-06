@@ -23,21 +23,13 @@ namespace Improbable.Gdk.ReactiveComponents
             workerSystem = World.GetExistingManager<WorkerSystem>();
             entitySystem = World.GetExistingManager<EntitySystem>();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSenderComponentManager)))
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (!typeof(ICommandSenderComponentManager).IsAssignableFrom(type) || type.IsAbstract)
-                    {
-                        continue;
-                    }
+                var instance = (ICommandSenderComponentManager) Activator.CreateInstance(type);
+                managers.Add(instance);
 
-                    var instance = (ICommandSenderComponentManager) Activator.CreateInstance(type);
-                    managers.Add(instance);
-
-                    // Add stuff to the worker entity
-                    instance.AddComponents(workerSystem.WorkerEntity, EntityManager, World);
-                }
+                // Add stuff to the worker entity
+                instance.AddComponents(workerSystem.WorkerEntity, EntityManager, World);
             }
         }
 

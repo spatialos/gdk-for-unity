@@ -17,28 +17,26 @@ namespace Improbable.Gdk.Core
             ComponentsToIds = new Dictionary<Type, uint>();
             SnapshotsToIds = new Dictionary<Type, uint>();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            var dynamicTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IDynamicInvokable));
+            var componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ISpatialComponentData));
+            var snapshotTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ISpatialComponentSnapshot));
+
+            foreach (var type in dynamicTypes)
             {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (typeof(IDynamicInvokable).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (IDynamicInvokable) Activator.CreateInstance(type);
-                        IdsToDynamicInvokers.Add(instance.ComponentId, instance);
-                    }
+                var instance = (IDynamicInvokable) Activator.CreateInstance(type);
+                IdsToDynamicInvokers.Add(instance.ComponentId, instance);
+            }
 
-                    if (typeof(ISpatialComponentData).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (ISpatialComponentData) Activator.CreateInstance(type);
-                        ComponentsToIds.Add(type, instance.ComponentId);
-                    }
+            foreach (var type in componentTypes)
+            {
+                var instance = (ISpatialComponentData) Activator.CreateInstance(type);
+                ComponentsToIds.Add(type, instance.ComponentId);
+            }
 
-                    if (typeof(ISpatialComponentSnapshot).IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var instance = (ISpatialComponentSnapshot) Activator.CreateInstance(type);
-                        SnapshotsToIds.Add(type, instance.ComponentId);
-                    }
-                }
+            foreach (var type in snapshotTypes)
+            {
+                var instance = (ISpatialComponentSnapshot) Activator.CreateInstance(type);
+                SnapshotsToIds.Add(type, instance.ComponentId);
             }
         }
     }
