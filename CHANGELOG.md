@@ -41,7 +41,7 @@
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
 - Added the ability to send arbitrary serialized data in a player creation request.
-    - Replaced `Vector3f` position in `CreatePlayerRequestType` with an `option<bytes>` field for sending arbitrary serialized data.
+    - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
     - Added `SerializeArguments` and `DeserializeArguments<T>` methods to `PlayerLifecycleHelper`.
 - Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
 

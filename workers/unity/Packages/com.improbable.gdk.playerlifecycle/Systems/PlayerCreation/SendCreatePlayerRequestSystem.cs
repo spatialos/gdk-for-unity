@@ -37,15 +37,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         public void RequestPlayerCreation(byte[] serializedArguments = null)
         {
             serializedArgumentsCache = serializedArguments;
-
-            var request = new CreatePlayerRequestType();
-            if (serializedArguments != null)
-            {
-                request.SerializedArguments = serializedArguments;
-            }
-
+            var request = new CreatePlayerRequestType(serializedArguments);
             var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
-
             commandSystem.SendCommand(createPlayerRequest);
         }
 

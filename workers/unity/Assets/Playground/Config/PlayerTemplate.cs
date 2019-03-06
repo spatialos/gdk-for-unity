@@ -8,7 +8,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Option<byte[]> playerCreationArguments)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
         {
             var clientAttribute = $"workerId:{workerId}";
 

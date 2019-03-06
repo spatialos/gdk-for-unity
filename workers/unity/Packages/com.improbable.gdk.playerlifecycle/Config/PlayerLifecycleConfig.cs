@@ -4,7 +4,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 {
     public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
         string clientWorkerId,
-        Option<byte[]> serializedArguments);
+        byte[] serializedArguments);
 
     public static class PlayerLifecycleConfig
     {

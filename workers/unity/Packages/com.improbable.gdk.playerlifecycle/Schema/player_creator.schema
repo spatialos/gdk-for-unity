@@ -3,7 +3,7 @@ import "improbable/vector3.schema";
 
 type CreatePlayerRequestType
 {
-    option<bytes> serialized_arguments = 1;
+    bytes serialized_arguments = 1;
 }
 
 type CreatePlayerResponseType
