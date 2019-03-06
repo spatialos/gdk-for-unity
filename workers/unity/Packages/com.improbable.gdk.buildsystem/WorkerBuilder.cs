@@ -216,7 +216,6 @@ namespace Improbable.Gdk.BuildSystem
 
             if (!WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget])
             {
-<<<<<<< HEAD
                 var config = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
                 var target = config.BuildTargets.First(targetConfig => targetConfig.Target == buildTarget);
 
@@ -227,12 +226,7 @@ namespace Improbable.Gdk.BuildSystem
                 }
 
                 Debug.LogWarning($"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
-
-                return;
-=======
-                Debug.LogWarning($"Skipping {buildTarget} because support is not installed in the Unity Editor.");
                 return false;
->>>>>>> 530b4d5bfa973f6957ee960f8b6fcd0f8ecd32f4
             }
 
             Debug.Log(
