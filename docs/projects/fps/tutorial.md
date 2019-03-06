@@ -671,7 +671,7 @@ The distributed game logic is now in place, and we can test if it is working cor
 
 This is necessary because you have modified the code for the workers. If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.<%(/Expandable)%>
 
-<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This will open a terminal which will notify you when the deployment is up and running.<br>
+<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This opens a terminal which notifies you when the deployment is up and running.<br>
 
 Alternatively you can enter `Ctrl + L` in your Unity Editor.
 
