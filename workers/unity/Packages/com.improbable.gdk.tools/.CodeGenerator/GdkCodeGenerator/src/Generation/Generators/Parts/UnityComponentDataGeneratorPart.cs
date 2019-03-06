@@ -30,5 +30,11 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return GetFieldDetailsList().Any(fieldDetails => fieldDetails.CanBeEmpty);
         }
+
+        private string GetConstructorArgs()
+        {
+            var constructorArgsList = GetFieldDetailsList().Select(fieldDetails => $"{fieldDetails.Type} {fieldDetails.CamelCaseName}");
+            return string.Join(", ", constructorArgsList);
+        }
     }
 }

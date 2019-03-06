@@ -210,6 +210,15 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             public long LongField;
             public float FloatField;
             public double DoubleField;
+
+            public Snapshot(BlittableBool boolField, int intField, long longField, float floatField, double doubleField)
+            {
+                BoolField = boolField;
+                IntField = intField;
+                LongField = longField;
+                FloatField = floatField;
+                DoubleField = doubleField;
+            }
         }
 
         public static class Serialization

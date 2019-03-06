@@ -42,41 +42,46 @@ namespace Improbable.Gdk.Subscriptions.Editor
 
         private static void PreprocessPrefabs()
         {
-            var assetsUpdated = false;
-
             var allPrefabObjectsInResources = AssetDatabase.FindAssets("t:Prefab")
                 .Select(AssetDatabase.GUIDToAssetPath)
-                .Where(assetPath => assetPath.Contains("Resources"))
-                .Select(AssetDatabase.LoadAssetAtPath<GameObject>)
-                .Where(prefabObject => prefabObject != null)
-                .ToArray();
+                .Where(assetPath => assetPath.Contains("Resources")).ToArray();
 
-            foreach (var prefabObject in allPrefabObjectsInResources)
+            AssetDatabase.StartAssetEditing();
+            foreach (var prefabPath in allPrefabObjectsInResources)
             {
-                var prefabWasFixed = false;
-
-                foreach (var monoBehaviour in prefabObject
-                    .GetComponents<MonoBehaviour>()
-                    .Where(DoesBehaviourNeedFixing))
+                try
                 {
-                    assetsUpdated = true;
-                    prefabWasFixed = true;
+                    var prefabObject = PrefabUtility.LoadPrefabContents(prefabPath);
+                    if (prefabObject == null)
+                    {
+                        continue;
+                    }
 
-                    Undo.RecordObject(monoBehaviour, "Disable MonoBehaviours with [Require] fields on prefabs.");
+                    var changed = false;
 
-                    monoBehaviour.enabled = false;
+                    foreach (var monoBehaviour in prefabObject
+                        .GetComponents<MonoBehaviour>()
+                        .Where(DoesBehaviourNeedFixing))
+                    {
+                        monoBehaviour.enabled = false;
+                        changed = true;
+                    }
+
+                    if (changed)
+                    {
+                        PrefabUtility.SaveAsPrefabAsset(prefabObject, prefabPath);
+                    }
+
+                    PrefabUtility.UnloadPrefabContents(prefabObject);
                 }
-
-                if (prefabWasFixed)
+                catch
                 {
-                    EditorUtility.SetDirty(prefabObject);
+                    Debug.LogError($"Failed to process prefab {prefabPath}");
+                    throw;
                 }
             }
 
-            if (assetsUpdated)
-            {
-                AssetDatabase.SaveAssets();
-            }
+            AssetDatabase.StopAssetEditing();
         }
 
         private static bool IsBehaviourEnabledInEditor(Object obj)

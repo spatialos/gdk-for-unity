@@ -395,6 +395,28 @@ namespace Improbable.Gdk.Tests
             public global::Improbable.Gdk.Core.EntityId? Field16;
             public global::Improbable.Gdk.Tests.SomeType? Field17;
             public global::Improbable.Gdk.Tests.SomeEnum? Field18;
+
+            public Snapshot(BlittableBool? field1, float? field2, global::Improbable.Gdk.Core.Option<byte[]> field3, int? field4, long? field5, double? field6, global::Improbable.Gdk.Core.Option<string> field7, uint? field8, ulong? field9, int? field10, long? field11, uint? field12, ulong? field13, int? field14, long? field15, global::Improbable.Gdk.Core.EntityId? field16, global::Improbable.Gdk.Tests.SomeType? field17, global::Improbable.Gdk.Tests.SomeEnum? field18)
+            {
+                Field1 = field1;
+                Field2 = field2;
+                Field3 = field3;
+                Field4 = field4;
+                Field5 = field5;
+                Field6 = field6;
+                Field7 = field7;
+                Field8 = field8;
+                Field9 = field9;
+                Field10 = field10;
+                Field11 = field11;
+                Field12 = field12;
+                Field13 = field13;
+                Field14 = field14;
+                Field15 = field15;
+                Field16 = field16;
+                Field17 = field17;
+                Field18 = field18;
+            }
         }
 
         public static class Serialization

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using Unity.Entities;
@@ -19,6 +21,27 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(clientHeartbeat, clientAccess);
             template.AddComponent(serverHeartbeat, serverAccess);
             template.AddComponent(owningComponent, serverAccess);
+        }
+
+        public static byte[] SerializeArguments(object playerCreationArguments)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(memoryStream, playerCreationArguments);
+                return memoryStream.ToArray();
+            }
+        }
+
+        public static T DeserializeArguments<T>(byte[] serializedArguments)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var binaryFormatter = new BinaryFormatter();
+                memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return (T) binaryFormatter.Deserialize(memoryStream);
+            }
         }
 
         public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
@@ -47,8 +70,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             return worker.Connection.GetWorkerId() == ownerId;
         }
 
-        public static void AddClientSystems(World world)
+        public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true)
         {
+            PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
             world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }

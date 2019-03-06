@@ -17,7 +17,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         private ILogDispatcher logDispatcher;
 
         private ComponentGroup initializationGroup;
-        private ComponentGroup playerSpawnGroup;
+
+        private byte[] serializedArgumentsCache;
 
         protected override void OnCreateManager()
         {
@@ -31,43 +32,38 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ComponentType.ReadOnly<WorkerEntityTag>(),
                 ComponentType.ReadOnly<OnConnected>()
             );
+        }
 
-            playerSpawnGroup = GetComponentGroup(
-                ComponentType.ReadOnly<ShouldRequestPlayerTag>()
-            );
+        public void RequestPlayerCreation(byte[] serializedArguments = null)
+        {
+            serializedArgumentsCache = serializedArguments;
+            var request = new CreatePlayerRequestType(serializedArguments);
+            var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
+            commandSystem.SendCommand(createPlayerRequest);
+        }
+
+        private void RetryCreatePlayerRequest()
+        {
+            RequestPlayerCreation(serializedArgumentsCache);
         }
 
         protected override void OnUpdate()
         {
-            var initEntities = initializationGroup.GetEntityArray();
-            for (var i = 0; i < initEntities.Length; ++i)
+            if (PlayerLifecycleConfig.AutoRequestPlayerCreation && !initializationGroup.IsEmptyIgnoreFilter)
             {
-                PostUpdateCommands.AddComponent(initEntities[i], new ShouldRequestPlayerTag());
-            }
-
-            var spawnEntities = playerSpawnGroup.GetEntityArray();
-            for (var i = 0; i < spawnEntities.Length; ++i)
-            {
-                var request = new CreatePlayerRequestType
-                {
-                    Position = new Vector3f(0, 0, 0)
-                };
-
-                var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
-
-                commandSystem.SendCommand(createPlayerRequest);
-                PostUpdateCommands.RemoveComponent<ShouldRequestPlayerTag>(spawnEntities[i]);
+                RequestPlayerCreation();
             }
 
             // Currently this has a race condition where you can receive two entities
             // The fix for this is more sophisticated server side handling of requests
             var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
+
             for (var i = 0; i < responses.Count; i++)
             {
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    PostUpdateCommands.AddComponent(response.SendingEntity, new ShouldRequestPlayerTag());
+                    RetryCreatePlayerRequest();
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {

@@ -3,12 +3,12 @@ import "improbable/vector3.schema";
 
 type CreatePlayerRequestType
 {
-    improbable.Vector3f position = 1;
+    bytes serialized_arguments = 1;
 }
 
 type CreatePlayerResponseType
 {
-    EntityId created_entity_id = 3;
+    EntityId created_entity_id = 1;
 }
 
 component PlayerCreator
