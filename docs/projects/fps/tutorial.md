@@ -12,31 +12,22 @@ You will add health pack pick-ups to the game. These pick-ups grant health to pl
 
 To implement this feature you:
 
-* Define a new [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) called `HealthPickup` and define its [component data]({{urlRoot}}/content/glossary#spatialos-component).
+* Define a new [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) called `HealthPickup` and define its [component properties]({{urlRoot}}/content/glossary#spatialos-component).
 * Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/content/glossary#snapshot) so they appear in the [SpatialOS world]({{urlRoot}}/content/glossary#spatialos-world) at startup.
 * Write logic so that health packs grant health to players.
 
 ## Open the FPS Starter Project in your Unity Editor
-1. Launch your Unity Editor. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
+1. Launch your Unity Editor.
+1. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-## Define a new entity type
+## Define a new entity
 
-Every SpatialOS entity consists of SpatialOS components, defined in the project's [schema]({{urlRoot}}/content/glossary#schema).
+SpatialOS entities are made up of SpatialOS components, which store properties (data) associated with that entity. Components are defined in your project's [schema]({{urlRoot}}/content/glossary#schema).<br>
+Let's create a new type of entity:
 
-Existing entities in the FPS Starter Project, such as the `Player` entity type, have components for movement, health, shooting and other mechanics. The project is constructed from GDK packages, such as the `SpatialOS GDK Health` package, which you can open from within the Unity project. In many of these packages you will find a `schema` folder, with files like `health.schema`.
-
-### Entity components
-
-We will give your health pack entities two pieces of data by defining it in a new component:
-
-* The amount of health the pack will grant.
-* A flag indicating whether the health pack is active, or has been consumed.
-
-Create a `schema` directory in your project root, if it doesn't already exist. Then create a `pickups` directory within that.
-
-<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file and a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity Editor, and should use your file manager to create your new directory.<%(/Expandable)%>
-
-Within your `schema/pickups/` directory, create a new file called `health_pickup.schema` and paste in the following definition:
+1. Using your file manager, navigate to `gdk-for-unity-fps-starter-project/schema`, then create a `pickups` directory.
+1. Within your `gdk-for-unity-fps-starter-project/schema/pickups/` directory, create a new file called `health_pickup.schema`.
+1. Paste in the following definition and save the file:
 
 ```
 package pickups;
@@ -47,10 +38,12 @@ component HealthPickup {
     uint32 health_value = 2;
 }
 ```
+    This defines a new SpatialOS component called `HealthPickup`, and adds two properties:<br>
+    * `is_active`: A flag indicating whether the health pack is active, or has been consumed.<br>
+    * `health_value`: An integer value, indicating the amount of health the pack will grant to a player.<br>
+    You may also notice the `id` property, this is a [Component ID](https://docs.improbable.io/reference/latest/shared/schema/reference#ids), you can ignore it for now.
 
-This defines a new SpatialOS component called `HealthPickup`, and adds two properties: `is_active` and `health_value`. The component id must be chosen by you, and the only requirement is that it is unique among all other components in the project. Each of the properties has a property number (e.g. `= 1`) associated with it, which is **not** an initial value. It is a number that identifies the order in which these properties will appear within the component.
-
-Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS menu** in your Unity Editor menu bar.
+1. Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS** menu in your Unity Editor.
 
 ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
 
