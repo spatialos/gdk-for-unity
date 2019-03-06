@@ -4,8 +4,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using Unity.Entities;
-using UnityEngine;
-using Object = System.Object;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
