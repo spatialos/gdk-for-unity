@@ -651,6 +651,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 enabled = EditorGUILayout.Toggle("Build", enabled);
 
+                if (!enabled)
+                {
+                    required = false;
+                }
+
                 using (new EditorGUI.DisabledScope(!buildTarget.Enabled))
                 {
                     required = EditorGUILayout.Toggle("Required", required);
