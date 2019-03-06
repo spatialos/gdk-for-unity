@@ -18,8 +18,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private ComponentGroup initializationGroup;
 
-        private bool playerCreationRequested;
-        private byte[] serializedArguments;
+        private byte[] serializedArgumentsCache;
 
         protected override void OnCreateManager()
         {
@@ -35,19 +34,24 @@ namespace Improbable.Gdk.PlayerLifecycle
             );
         }
 
-        public void ResetPlayerCreationArguments()
+        public void RequestPlayerCreation(byte[] serializedArguments = null)
         {
-            serializedArguments = null;
+            serializedArgumentsCache = serializedArguments;
+
+            var request = new CreatePlayerRequestType();
+            if (serializedArguments != null)
+            {
+                request.SerializedArguments = serializedArguments;
+            }
+
+            var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
+
+            commandSystem.SendCommand(createPlayerRequest);
         }
 
-        public void SetPlayerCreationArguments(byte[] serializedArguments)
+        private void RetryCreatePlayerRequest()
         {
-            this.serializedArguments = serializedArguments;
-        }
-
-        public void RequestPlayerCreation()
-        {
-            playerCreationRequested = true;
+            RequestPlayerCreation(serializedArgumentsCache);
         }
 
         protected override void OnUpdate()
@@ -55,20 +59,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             if (PlayerLifecycleConfig.AutoRequestPlayerCreation && !initializationGroup.IsEmptyIgnoreFilter)
             {
                 RequestPlayerCreation();
-            }
-
-            if (playerCreationRequested)
-            {
-                var request = new CreatePlayerRequestType();
-                if (serializedArguments != null)
-                {
-                    request.SerializedArguments = serializedArguments;
-                }
-
-                var createPlayerRequest = new PlayerCreator.CreatePlayer.Request(playerCreatorEntityId, request);
-
-                commandSystem.SendCommand(createPlayerRequest);
-                playerCreationRequested = false;
             }
 
             // Currently this has a race condition where you can receive two entities
@@ -80,7 +70,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    RequestPlayerCreation();
+                    RetryCreatePlayerRequest();
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {

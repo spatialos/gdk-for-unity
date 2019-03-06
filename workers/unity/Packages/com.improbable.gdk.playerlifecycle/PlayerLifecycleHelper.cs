@@ -72,15 +72,10 @@ namespace Improbable.Gdk.PlayerLifecycle
             return worker.Connection.GetWorkerId() == ownerId;
         }
 
-        public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true,
-            Vector3 spawnPosition = default,
-            byte[] serializedArguments = null)
+        public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true)
         {
             PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
-
-            var createPlayerRequestSystem = world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
-            createPlayerRequestSystem.SetPlayerCreationArguments(serializedArguments);
-
+            world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }
 
