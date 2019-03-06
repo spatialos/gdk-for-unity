@@ -17,10 +17,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         private ILogDispatcher logDispatcher;
 
         private ComponentGroup initializationGroup;
-        private ComponentGroup playerSpawnGroup;
 
         private bool playerCreationRequested;
-        private Vector3f spawnPosition;
+        private Vector3 spawnPosition;
         private byte[] serializedArguments;
 
         protected override void OnCreateManager()
@@ -37,11 +36,21 @@ namespace Improbable.Gdk.PlayerLifecycle
             );
         }
 
-        public void QueuePlayerCreationRequest(Vector3 spawnPosition = default, byte[] serializedArguments = null)
+        public void ResetPlayerCreationArguments()
+        {
+            spawnPosition = Vector3.zero;
+            serializedArguments = null;
+        }
+
+        public void SetPlayerCreationArguments(Vector3 spawnPosition, byte[] serializedArguments)
+        {
+            this.spawnPosition = spawnPosition;
+            this.serializedArguments = serializedArguments;
+        }
+
+        public void RequestPlayerCreation()
         {
             playerCreationRequested = true;
-            this.spawnPosition = Vector3f.FromUnityVector(spawnPosition);
-            this.serializedArguments = serializedArguments;
         }
 
         protected override void OnUpdate()
@@ -51,7 +60,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 var initEntities = initializationGroup.GetEntityArray();
                 for (var i = 0; i < initEntities.Length; ++i)
                 {
-                    QueuePlayerCreationRequest();
+                    RequestPlayerCreation();
                 }
             }
 
@@ -59,7 +68,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 var request = new CreatePlayerRequestType
                 {
-                    Position = spawnPosition
+                    Position = Vector3f.FromUnityVector(spawnPosition)
                 };
 
                 if (serializedArguments != null)
@@ -82,7 +91,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ref readonly var response = ref responses[i];
                 if (response.StatusCode == StatusCode.AuthorityLost)
                 {
-                    QueuePlayerCreationRequest();
+                    RequestPlayerCreation();
                 }
                 else if (response.StatusCode != StatusCode.Success)
                 {

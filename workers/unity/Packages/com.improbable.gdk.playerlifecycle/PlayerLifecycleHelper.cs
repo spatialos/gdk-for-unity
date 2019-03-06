@@ -4,6 +4,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using Unity.Entities;
+using UnityEngine;
+using Object = System.Object;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -23,7 +25,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(owningComponent, serverAccess);
         }
 
-        public static bool SerializeArguments(Object playerCreationArguments, out byte[] serializedArguments)
+        public static bool SerializeArguments(object playerCreationArguments, out byte[] serializedArguments)
         {
             try
             {
@@ -43,24 +45,14 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
         }
 
-        public static bool DeserializeArguments<T>(byte[] serializedArguments, out T deserializedArguments)
+        public static T DeserializeArguments<T>(byte[] serializedArguments)
         {
-            try
+            using (var memoryStream = new MemoryStream())
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    var binaryFormatter = new BinaryFormatter();
-                    memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    deserializedArguments = (T) binaryFormatter.Deserialize(memoryStream);
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogError($"Unable to deserialize player creation arguments. {e.Message}");
-                deserializedArguments = default;
-                return false;
+                var binaryFormatter = new BinaryFormatter();
+                memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return (T) binaryFormatter.Deserialize(memoryStream);
             }
         }
 
@@ -90,9 +82,15 @@ namespace Improbable.Gdk.PlayerLifecycle
             return worker.Connection.GetWorkerId() == ownerId;
         }
 
-        public static void AddClientSystems(World world)
+        public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true,
+            Vector3 spawnPosition = default,
+            byte[] serializedArguments = null)
         {
-            world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
+            PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
+
+            var createPlayerRequestSystem = world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
+            createPlayerRequestSystem.SetPlayerCreationArguments(spawnPosition, serializedArguments);
+
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }
 

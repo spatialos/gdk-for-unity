@@ -1,11 +1,6 @@
 package improbable.player_lifecycle;
 import "improbable/vector3.schema";
 
-type PlayerCreationParams
-{
-    string player_name = 1;
-}
-
 type CreatePlayerRequestType
 {
     improbable.Vector3f position = 1;

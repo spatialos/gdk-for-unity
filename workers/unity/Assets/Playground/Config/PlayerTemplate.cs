@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
-using Improbable.PlayerLifecycle;
 
 namespace Playground
 {
@@ -14,8 +14,16 @@ namespace Playground
         {
             if (playerCreationArguments.HasValue)
             {
-                var deserializationSuccess = PlayerLifecycleHelper.DeserializeArguments<PlayerCreationParams>(
-                    playerCreationArguments.Value, out var deserializedArguments);
+                try
+                {
+                    var deserializedArguments = PlayerLifecycleHelper.DeserializeArguments<PlayerCreationParams>(
+                        playerCreationArguments.Value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Unable to deserialize arguments. {e.Message}");
+                    throw;
+                }
             }
 
             var clientAttribute = $"workerId:{workerId}";

@@ -1,0 +1,6 @@
+package playground;
+
+type PlayerCreationParams
+{
+    string player_name = 1;
+}
