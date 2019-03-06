@@ -13,7 +13,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
 
  Building workers for the first time may take a while (about 10 minutes). Why not make yourself a cup of tea or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos) while you wait?
 
-3\.  **Your workers have finished building when:** You see the following message in your Unity Editor's Console window: `Completed build for Cloud target`. 
+3\.  **Your workers have finished building when:** You see the following message in your Unity Editor's Console window: `Completed build for Cloud target`.
 
 **After the build has successfully finished:** 
 <br/>Your `gdk-for-unity-fps-starter-project/build/assembly/worker` folder should contain:
@@ -25,13 +25,11 @@ As you will be launching a cloud deployment, you need to build out the code exec
     ├── UnityGameLogic@Linux.zip
 ```
 
-If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). If you got warnings and build errors in Unity Editor Console window, check the **Common build errors** section below.
+You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage.
+
+If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). If you got build errors in Unity Editor Console window, check the **Common build errors** section below.
 
 <%(#Expandable title="Common build errors")%>
-
-#### You can ignore warnings at this stage
-
-You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage; use the message icons on the right-hand side of the Console window to set it to display only info and error messages so you can see only the relevant messages.
 
 #### You can ignore iOS and Android errors if you're not developing for mobile platforms
 
