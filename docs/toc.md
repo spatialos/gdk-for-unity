@@ -16,7 +16,7 @@
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/content/intro-reference)
     - Concepts and terminology
-        - [SpatialOS concepts (SpatialOS site)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
+        - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
         - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
     - Workflows - MonoBehaviour or ECS
         - [Which workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
