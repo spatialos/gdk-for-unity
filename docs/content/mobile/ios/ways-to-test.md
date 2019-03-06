@@ -18,11 +18,11 @@ For more information, see the following documentation:
 
 ## Unity Remote
 
-With the Unity Remote, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors your Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
+With the Unity Remote app, you don’t have to spend time building and deploying your game, reducing development iteration times. It mirrors your Unity Editor’s Game view on your mobile device, giving you quick feedback on how the game looks on a mobile device. However, it does not provide the full native capabilities of the game running on a device.
 
 For more information, see the following documentation:
 
-  * [The Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
+  * [Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
   * [Connect to a local deployment using Unity Remote]({{urlRoot}}/content/mobile/ios/local-deploy#unity-remote)
 
 ## iOS Simulator

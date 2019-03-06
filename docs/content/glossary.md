@@ -503,6 +503,10 @@ The GDK performs replication in the [Unity ECS world](#unity-ecs-world) via the 
 
 When writing game logic you don't need to worry about synchronisation code. Standard replication handles this automatically.
 
+### Starter project
+
+The GDK has two starter projects, the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) and the [Blank Starter Project]({{urlRoot}}/projects/blank/overview). They provide a solid foundation for you to build an entirely new game on-top of SpatialOS GDK for Unity.
+
 ### Temporary Components
 
 Temporary components are a special type of [Unity ECS components](#unity-ecs-component). By adding the `[RemoveAtEnd]` attribute to an ECS component, the GDK will remove components at the end of an [update](#update-loop).

@@ -36,7 +36,7 @@ We will give your health pack entities two pieces of data by defining it in a ne
 
 Create a `schema` directory in your project root, if it doesn't already exist. Then create a `pickups` directory within that.
 
-<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file and a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity Editor, and should use File Explorer (on Windows) or Finder (on Mac) to create your new directory.<%(/Expandable)%>
+<%(#Expandable title="Where is my 'project root'?")%>Your SpatialOS 'project root' is the top-level directory which also contains your `spatialos.json` configuration file and a directory called `workers` that contains the FPS Unity project. You will not be able to see this directory from within your Unity Editor, and should use your file manager to create your new directory.<%(/Expandable)%>
 
 Within your `schema/pickups/` directory, create a new file called `health_pickup.schema` and paste in the following definition:
 
@@ -169,19 +169,24 @@ This script now creates a health pack entity at position `(5, 0, 0)`, and sets t
 
 ```csharp
 [MenuItem("SpatialOS/Generate FPS Snapshot")]
-private static void GenerateDefaultSnapshot()
+private static void GenerateFpsSnapshot()
 {
-    var snapshot = new Snapshot();
+    var localSnapshot = new Snapshot();
+    var cloudSnapshot = new Snapshot();
 
-    var spawner = FpsEntityTemplates.Spawner();
-    snapshot.AddEntity(spawner);
+    GenerateSnapshot(localSnapshot);
+    GenerateSnapshot(cloudSnapshot);
 
-    var SimulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
-    snapshot.AddEntity(SimulatedPlayerCoordinatorTrigger);
+    // The local snapshot is identical to the cloud snapshot, but also includes a simulated player coordinator
+    // trigger.
+    var simulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
+    localSnapshot.AddEntity(simulatedPlayerCoordinatorTrigger);
 
-    AddHealthPacks(snapshot);
+    AddHealthPacks(localSnapshot);
+    AddHealthPacks(cloudSnapshot);
 
-    SaveSnapshot(snapshot);
+    SaveSnapshot(DefaultSnapshotPath, localSnapshot);
+    SaveSnapshot(CloudSnapshotPath, cloudSnapshot);
 }
 ```
 
