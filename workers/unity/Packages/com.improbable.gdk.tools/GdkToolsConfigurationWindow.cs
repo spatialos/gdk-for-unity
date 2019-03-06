@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Tools
         internal const string RuntimeIpLabel = "Local runtime IP";
         internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
         internal const string DevAuthTokenDirLabel = "Directory to store token in";
-        internal const string DevAuthTokenLifetimeLabel = "Token lifetime";
+        internal const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
 
         private const string CodeGeneratorLabel = "Code generator";
 

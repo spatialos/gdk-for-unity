@@ -50,9 +50,14 @@ namespace Improbable.Gdk.Tools
                 Directory.CreateDirectory(devAuthTokenDir);
             }
 
-            using (var writer = File.CreateText(devAuthTokenFilePath))
+            try
             {
-                writer.WriteLine(devAuthToken);
+                File.WriteAllText(devAuthTokenFilePath, devAuthToken);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Unable to save Dev Auth Token asset. {e.Message}");
+                return;
             }
 
             Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");

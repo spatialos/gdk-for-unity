@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Tools
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
-        public int DevAuthTokenLifetimeHours => DevAuthTokenLifetimeDays * 24;
+        public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
@@ -65,11 +65,6 @@ namespace Improbable.Gdk.Tools
             {
                 errors.Add(
                     $"{GdkToolsConfigurationWindow.DevAuthTokenDirLabel} must be at root of a Resources folder.");
-            }
-
-            if (DevAuthTokenLifetimeDays < 0 || DevAuthTokenLifetimeDays > 90)
-            {
-                errors.Add($"{GdkToolsConfigurationWindow.DevAuthTokenLifetimeLabel} must be between 1 and 90 days.");
             }
 
             return errors;

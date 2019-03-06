@@ -40,7 +40,7 @@
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
-- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the Development Authentication Token.
+- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
 
 ### Changed
 
