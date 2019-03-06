@@ -166,7 +166,7 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-Additionally, add the following line at the top of the file to ensure that the `Vector3f` namespace can be resolved:
+Make sure you add the following line at the top of the file so the code can reference the `Vector3f` namespace:
 
 ```csharp
 using Improbable;
