@@ -202,6 +202,15 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# foreach(var fieldDetails in fieldDetailsList) { #>
             public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>;
 <# } #>
+<# if (fieldDetailsList.Count > 0) { #>
+
+            public Snapshot(<#= GetConstructorArgs() #>)
+            {
+<# foreach(var fieldDetails in fieldDetailsList) { #>
+                <#= fieldDetails.PascalCaseName #> = <#= fieldDetails.CamelCaseName #>;
+<# } #>
+            }
+<# } #>
         }
 
         public static class Serialization

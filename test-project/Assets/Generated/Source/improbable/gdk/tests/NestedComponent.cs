@@ -158,6 +158,11 @@ namespace Improbable.Gdk.Tests
             public uint ComponentId => 20152;
 
             public global::Improbable.Gdk.Tests.TypeName NestedType;
+
+            public Snapshot(global::Improbable.Gdk.Tests.TypeName nestedType)
+            {
+                NestedType = nestedType;
+            }
         }
 
         public static class Serialization
