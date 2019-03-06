@@ -9,23 +9,8 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position,
-            Option<byte[]> playerCreationArguments)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Option<byte[]> playerCreationArguments)
         {
-            if (playerCreationArguments.HasValue)
-            {
-                try
-                {
-                    var deserializedArguments = PlayerLifecycleHelper.DeserializeArguments<PlayerCreationParams>(
-                        playerCreationArguments.Value);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Unable to deserialize arguments. {e.Message}");
-                    throw;
-                }
-            }
-
             var clientAttribute = $"workerId:{workerId}";
 
             var template = new EntityTemplate();

@@ -23,7 +23,6 @@ namespace Playground
 
             // Setup template to use for player on connecting client
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
-            PlayerLifecycleConfig.AutoRequestPlayerCreation = true;
         }
     }
 }

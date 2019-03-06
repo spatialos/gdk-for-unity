@@ -19,7 +19,6 @@ namespace Improbable.Gdk.PlayerLifecycle
         private ComponentGroup initializationGroup;
 
         private bool playerCreationRequested;
-        private Vector3 spawnPosition;
         private byte[] serializedArguments;
 
         protected override void OnCreateManager()
@@ -38,13 +37,11 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         public void ResetPlayerCreationArguments()
         {
-            spawnPosition = Vector3.zero;
             serializedArguments = null;
         }
 
-        public void SetPlayerCreationArguments(Vector3 spawnPosition, byte[] serializedArguments)
+        public void SetPlayerCreationArguments(byte[] serializedArguments)
         {
-            this.spawnPosition = spawnPosition;
             this.serializedArguments = serializedArguments;
         }
 
@@ -55,22 +52,14 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         protected override void OnUpdate()
         {
-            if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
+            if (PlayerLifecycleConfig.AutoRequestPlayerCreation && !initializationGroup.IsEmptyIgnoreFilter)
             {
-                var initEntities = initializationGroup.GetEntityArray();
-                for (var i = 0; i < initEntities.Length; ++i)
-                {
-                    RequestPlayerCreation();
-                }
+                RequestPlayerCreation();
             }
 
             if (playerCreationRequested)
             {
-                var request = new CreatePlayerRequestType
-                {
-                    Position = Vector3f.FromUnityVector(spawnPosition)
-                };
-
+                var request = new CreatePlayerRequestType();
                 if (serializedArguments != null)
                 {
                     request.SerializedArguments = serializedArguments;

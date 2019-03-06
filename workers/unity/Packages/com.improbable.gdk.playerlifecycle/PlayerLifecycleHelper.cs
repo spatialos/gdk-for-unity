@@ -25,23 +25,13 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(owningComponent, serverAccess);
         }
 
-        public static bool SerializeArguments(object playerCreationArguments, out byte[] serializedArguments)
+        public static byte[] SerializeArguments(object playerCreationArguments)
         {
-            try
+            using (var memoryStream = new MemoryStream())
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    var binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(memoryStream, playerCreationArguments);
-                    serializedArguments = memoryStream.ToArray();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogError($"Unable to serialize player creation arguments. {e.Message}");
-                serializedArguments = null;
-                return false;
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(memoryStream, playerCreationArguments);
+                return memoryStream.ToArray();
             }
         }
 
@@ -89,7 +79,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
 
             var createPlayerRequestSystem = world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
-            createPlayerRequestSystem.SetPlayerCreationArguments(spawnPosition, serializedArguments);
+            createPlayerRequestSystem.SetPlayerCreationArguments(serializedArguments);
 
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }

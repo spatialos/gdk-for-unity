@@ -43,7 +43,6 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ref readonly var request = ref requests[i];
                 var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
                     request.CallerWorkerId,
-                    request.Payload.Position,
                     request.Payload.SerializedArguments
                 );
 
