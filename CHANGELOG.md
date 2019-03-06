@@ -40,6 +40,7 @@
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- Added constructors for all generated component snapshot types.
 - Added the ability to send arbitrary serialized data in a player creation request.
     - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
     - Added `SerializeArguments` and `DeserializeArguments<T>` methods to `PlayerLifecycleHelper`.
@@ -50,10 +51,14 @@
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
 - Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
+- Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
+- Building workers will not change the active build target anymore. The build target will be set back to whatever was set before starting the build process.
 
 ### Fixed
 
 - Fixed a bug where running `SpatialOS -> Generate code` would always regenerate code, even if no files had changed.
+- Fixed a bug where building all workers in our sample projects would fail, if you have Android build support installed, but didn't set the path to the Android SDK.
+- Fixed a bug where some prefabs would not be processed correctly, causing NullReferenceExceptions in OnEnable.
 
 ### Internal
 
