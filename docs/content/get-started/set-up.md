@@ -22,7 +22,7 @@ If you have not signed up before, you can do this [here](https://improbable.io/g
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.5</strong></a>**
+**Step 1.** Install **Unity 2018.3.5**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
@@ -35,6 +35,8 @@ Ensure you install this exact version as other Unity versions may not work with 
 > **Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
 > **Mac Build Support** if you want to share your game with end-users on a Mac.<br/>
 > Unity gives you Windows build support by default.
+
+You can download **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.5</strong></a>** from the Unity download archive.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -88,7 +90,7 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.5</strong></a>**
+**Step 1.** Install **Unity 2018.3.5**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
@@ -101,6 +103,8 @@ Ensure you install this exact version as other Unity versions may not work with 
 > **Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
 > **Windows Build Support** if you want to share your game with end-users on a Windows PC.<br/>
 > Unity gives you Mac build support by default.
+
+You can download **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.5</strong></a>** from the Unity download archive.
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 

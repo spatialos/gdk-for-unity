@@ -4,7 +4,7 @@ Back in your SpatialOS [Console](https://console.improbable.io/projects), you sh
 
 <img src="{{assetRoot}}assets/overview-page.png" style="margin: 0 auto; width: 100%; display: block;" />
 
-Hit the **Play** button on the left, and then launch (you can skip Step 1 - the SpatialOS Launcher was previously installed during setup). The SpatialOS Launcher will download the game client for this deployment and launch it.
+Select the **Launch** button on the left, and then select **Launch** (you can skip Step 1 - the SpatialOS Launcher was previously installed during setup). The SpatialOS Launcher will download the game client for this deployment and launch it.
 
 <img src="{{assetRoot}}assets/launch.png" style="margin: 0 auto; display: block;" />
 

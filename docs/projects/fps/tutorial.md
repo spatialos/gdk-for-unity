@@ -100,6 +100,12 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 
 You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are standard library components that SpatialOS expects. (Note that `Persistence` is another standard library component but this is optional.)
 
+**Note:** You need to ensure the code can reference the `Pickups` namespace; add this to the top of the file, as show below:
+
+```csharp
+using Pickups;
+```
+
 <%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
 
 **Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS [load-balancer (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) when dividing work between workers on a proximity basis.
@@ -148,7 +154,7 @@ For health packs we will do the latter, so that when the game begins there will 
 
 ### Edit snapshot generation
 
-The **SpatialOS menu** option in your Unity Editor include an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
+The **SpatialOS menu** option in your Unity Editor includes an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
 
 Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
 
@@ -160,13 +166,13 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-Additionally, add the following line at the top of the file to ensure that the `Vector3f` type can be resolved:
+Make sure you add the following line at the top of the file so the code can reference the `Vector3f` namespace:
 
 ```csharp
 using Improbable;
 ```
 
-This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateDefaultSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
+This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateFpsSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
 
 ```csharp
 [MenuItem("SpatialOS/Generate FPS Snapshot")]
@@ -205,9 +211,11 @@ You can regenerate the `default.snapshot` file from the **SpatialOS menu** optio
 
 While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-If you launch a local deployment (`Ctrl + L` in Unity), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
+If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
 
 ![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
+
+Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## Represent the entity on your workers
 
@@ -259,11 +267,11 @@ The FPS Starter Project contains a health pack prefab named `HealthPickup.prefab
 
 This is because the FPS Starter Project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
 
-<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies.
+<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies. [Creating Prefabs (Unity Documentation)](https://docs.unity3d.com/Manual/CreatingPrefabs.html) explains how to create one.
 
-If you right-click in your project file hierarchy, you'll find an option **Create** > **Prefab**, which will create for prefab at that file location and allow you to rename it. This prefab is initially empty, so you can drag other prefabs or GameObjects onto it to add them to the hierarchy.
+Freshly created prefabs are initially empty, so you can drag other prefabs or GameObjects onto them to add them to the hierarchy.
 
-If you are using Unity 2018 and earlier then it can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+It can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
 
 When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
 
@@ -339,7 +347,7 @@ cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
 
 When you wrote the schema for the `HealthPickup` component you included a bool property called `is_active`, and code generation has created the `IsActive` member within the reader's `Data` object. We'll cover updating component property values later in this tutorial.
 
-Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer. Make sure you drag the child GameObject's mesh renderer to this field in the Unity Inspector panel to set the reference.
+Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer.
 
 The client-side representation of the health pack entity is now complete! Next we will test the game so far and make sure we are visualising the health packs correctly.
 
@@ -376,6 +384,8 @@ Our next step will be to add some game logic to the health pack so that it react
 
 If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
 
+Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
+
 ## Add health pack logic
 
 If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
@@ -392,7 +402,7 @@ To do this we will need to create a server-side representation of the health pac
 
 In the FPS Starter Project the server-side worker is called `UnityGameLogic`.
 
-Create a copy of `Assets/Fps/Prefabs/HealthPickup.prefab` in the `Assets/Resources/Prefabs/UnityGameLogic/` folder. Because this prefab will only be used for instantiating server-side game objects, the visual components are not needed, so feel free to remove the child renderers. Respectively, the `Box Collider` is not needed for client-side workers, so you can remove that from `Assets/Resources/Prefabs/UnityClient/HealthPickup.prefab` if you wish. Make sure you keep it in the `UnityGameLogic` copy of the prefab as we are about to use it to track player collisions with the health pack.
+Create a copy of `Assets/Fps/Prefabs/HealthPickup.prefab` in the `Assets/Fps/Resources/Prefabs/UnityGameLogic/` folder.
 
 Then, add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
 
@@ -624,7 +634,7 @@ namespace Fps
 
         private IEnumerator RespawnCubeRoutine()
         {
-            yield return new WaitForSeconds(HealthPickupSettings.HealthPickupRespawnTimeSecs);
+            yield return new WaitForSeconds(15f);
             SetIsActive(true);
         }
     }
@@ -657,11 +667,13 @@ The distributed game logic is now in place, and we can test if it is working cor
 ![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
 <%(/Expandable)%>
 
-<%(#Expandable title="2. Build your workers.")%>From the **SpatialOS** menu, select **Build UnityClient for local**.
+<%(#Expandable title="2. Build your workers.")%>Select **SpatialOS** > **Build For Local** > **UnityClient**.
 
 This is necessary because you have modified the code for the workers. If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.<%(/Expandable)%>
 
-<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This will open a terminal which will notify you when the deployment is up and running.
+<%(#Expandable title="3. Launch a local deployment.")%>From the **SpatialOS** menu, select **Local launch**. This opens a terminal which notifies you when the deployment is up and running.<br>
+
+Alternatively you can enter `Ctrl + L` in your Unity Editor.
 
 It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
 
