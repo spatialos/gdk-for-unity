@@ -1,7 +1,6 @@
 ﻿using Improbable.Gdk.Core;
 using Improbable.Transform;
 using Improbable.Worker.CInterop;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -18,55 +17,80 @@ using UnityEngine;
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     [UpdateBefore(typeof(ResetForAuthorityGainedSystem))]
     public class SetKinematicFromAuthoritySystem : ComponentSystem
     {
-        private struct NewEntityData
+        private ComponentUpdateSystem updateSystem;
+
+        private ComponentGroup newEntityGroup;
+        private ComponentGroup authChangeGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public ComponentArray<Rigidbody> Rigidbody;
+            base.OnCreateManager();
 
-            // If authority is not gained on the first tick there will be no auth changed component
-            public SubtractiveComponent<Authoritative<TransformInternal.Component>> DenotesNotAuthoritative;
-            public ComponentDataArray<KinematicStateWhenAuth> KinematicStateWhenAuth;
-            [ReadOnly] public ComponentDataArray<NewlyAddedSpatialOSEntity> DenotesNewEntity;
-            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
+            newEntityGroup = GetComponentGroup(
+                ComponentType.Create<KinematicStateWhenAuth>(),
+                ComponentType.ReadOnly<Rigidbody>(),
+                ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+
+            authChangeGroup = GetComponentGroup(
+                ComponentType.Create<KinematicStateWhenAuth>(),
+                ComponentType.ReadOnly<Rigidbody>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>());
         }
-
-        private struct AuthChangeData
-        {
-            public readonly int Length;
-            public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<KinematicStateWhenAuth> KinematicStateWhenAuth;
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<TransformInternal.Component>> TransformAuthority;
-            [ReadOnly] public ComponentDataArray<ManageKinematicOnAuthorityChangeTag> DenotesShouldManageRigidbody;
-        }
-
-        [Inject] private AuthChangeData authChangeData;
-        [Inject] private NewEntityData newEntityData;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < newEntityData.Length; ++i)
+            UpdateNewEntityGroup();
+            UpdateAuthChangeGroup();
+        }
+
+        private void UpdateNewEntityGroup()
+        {
+            newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            var rigidbodyArray = newEntityGroup.GetComponentArray<Rigidbody>();
+            var kinematicStateWhenAuthArray = newEntityGroup.GetComponentDataArray<KinematicStateWhenAuth>();
+
+            for (int i = 0; i < rigidbodyArray.Length; ++i)
             {
-                var rigidbody = authChangeData.Rigidbody[i];
-                newEntityData.KinematicStateWhenAuth[i] = new KinematicStateWhenAuth
+                var rigidbody = rigidbodyArray[i];
+                kinematicStateWhenAuthArray[i] = new KinematicStateWhenAuth
                 {
                     KinematicWhenAuthoritative = rigidbody.isKinematic
                 };
                 rigidbody.isKinematic = true;
             }
+        }
 
-            for (int i = 0; i < authChangeData.Length; ++i)
+        private void UpdateAuthChangeGroup()
+        {
+            var rigidbodyArray = authChangeGroup.GetComponentArray<Rigidbody>();
+            var kinematicStateWhenAuthArray = authChangeGroup.GetComponentDataArray<KinematicStateWhenAuth>();
+            var spatialEntityIdArray = authChangeGroup.GetComponentDataArray<SpatialEntityId>();
+
+            for (int i = 0; i < rigidbodyArray.Length; ++i)
             {
-                var rigidbody = authChangeData.Rigidbody[i];
-                var changes = authChangeData.TransformAuthority[i].Changes;
+                var rigidbody = rigidbodyArray[i];
+                var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityIdArray[i].EntityId,
+                    TransformInternal.ComponentId);
+                if (changes.Count == 0)
+                {
+                    continue;
+                }
+
                 var auth = changes[changes.Count - 1];
-                switch (auth)
+                switch (auth.Authority)
                 {
                     case Authority.NotAuthoritative:
-                        authChangeData.KinematicStateWhenAuth[i] = new KinematicStateWhenAuth
+                        kinematicStateWhenAuthArray[i] = new KinematicStateWhenAuth
                         {
                             KinematicWhenAuthoritative = rigidbody.isKinematic
                         };
@@ -74,7 +98,7 @@ namespace Improbable.Gdk.TransformSynchronization
                         break;
                     case Authority.Authoritative:
                     case Authority.AuthorityLossImminent:
-                        rigidbody.isKinematic = authChangeData.KinematicStateWhenAuth[i].KinematicWhenAuthoritative;
+                        rigidbody.isKinematic = kinematicStateWhenAuthArray[i].KinematicWhenAuthoritative;
                         break;
                 }
             }

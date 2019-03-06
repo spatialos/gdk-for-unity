@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests
 {
     
+    [System.Serializable]
     public struct TypeName
     {
         public global::Improbable.Gdk.Tests.TypeName.Other OtherType;
@@ -37,6 +38,7 @@ namespace Improbable.Gdk.Tests
         }
     
         
+        [System.Serializable]
         public struct Other
         {
             public global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName SameName;
@@ -65,6 +67,7 @@ namespace Improbable.Gdk.Tests
             }
         
             
+            [System.Serializable]
             public struct NestedTypeName
             {
                 public global::Improbable.Gdk.Tests.TypeName.Other.NestedTypeName.Other0 OtherZero;
@@ -101,6 +104,7 @@ namespace Improbable.Gdk.Tests
                 }
             
                 
+                [System.Serializable]
                 public struct Other0
                 {
                     public int Foo;
@@ -131,6 +135,7 @@ namespace Improbable.Gdk.Tests
                 
             
                 
+                [System.Serializable]
                 public enum NestedEnum : uint
                 {
                     enum_value = 1,

@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     
+    [System.Serializable]
     public struct FirstCommandResponse
     {
         public string Response;

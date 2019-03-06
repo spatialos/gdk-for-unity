@@ -1,7 +1,9 @@
+using System;
 using Improbable.Common;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Worker.CInterop;
+using Improbable.Gdk.Subscriptions;
+using Unity.Entities;
 using UnityEngine;
 
 #region Diagnostic control
@@ -15,48 +17,48 @@ namespace Playground.MonoBehaviours
 {
     public class CubeSpawnerInputBehaviour : MonoBehaviour
     {
-        [Require] private PlayerInput.Requirable.Writer playerInputWriter;
-        [Require] private CubeSpawner.Requirable.Reader cubeSpawnerReader;
-        [Require] private CubeSpawner.Requirable.CommandRequestSender cubeSpawnerCommandSender;
-        [Require] private CubeSpawner.Requirable.CommandResponseHandler cubeSpawnerCommandResponseHandler;
+        [Require] private PlayerInputWriter playerInputWriter;
+        [Require] private CubeSpawnerReader cubeSpawnerReader;
+        [Require] private CubeSpawnerCommandSender cubeSpawnerCommandSender;
 
-        private ILogDispatcher logDispatcher;
-        private EntityId ownEntityId;
+        [Require] private EntityId entityId;
+        [Require] private World world;
 
-        private void OnEnable()
-        {
-            var spatialOSComponent = GetComponent<SpatialOSComponent>();
-            logDispatcher = spatialOSComponent.Worker.LogDispatcher;
-            ownEntityId = spatialOSComponent.SpatialEntityId;
-
-            cubeSpawnerCommandResponseHandler.OnSpawnCubeResponse += OnSpawnCubeResponse;
-            cubeSpawnerCommandResponseHandler.OnDeleteSpawnedCubeResponse += OnDeleteSpawnedCubeResponse;
-        }
+        [Require] private ILogDispatcher logDispatcher;
 
         private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
         {
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
+                throw new Exception("Test Exception");
             }
         }
 
         private void OnDeleteSpawnedCubeResponse(CubeSpawner.DeleteSpawnedCube.ReceivedResponse response)
         {
-            if (response.StatusCode != StatusCode.Success)
+            switch (response.StatusCode)
             {
-                logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                case StatusCode.Success:
+                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Deleting entity"));
+                    break;
+                case StatusCode.ApplicationError:
+                    logDispatcher.HandleLog(LogType.Log, new LogEvent($"Delete refused: {response.Message}"));
+                    break;
+                case StatusCode.Timeout:
+                case StatusCode.NotFound:
+                case StatusCode.AuthorityLost:
+                case StatusCode.PermissionDenied:
+                case StatusCode.InternalError:
+                    logDispatcher.HandleLog(LogType.Error, new LogEvent($"Delete error: {response.Message}"));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private void Update()
         {
-            if (playerInputWriter.Authority != Authority.Authoritative)
-            {
-                // Only send commands if we're the player with input
-                return;
-            }
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SendSpawnCubeCommand();
@@ -70,7 +72,8 @@ namespace Playground.MonoBehaviours
 
         private void SendSpawnCubeCommand()
         {
-            cubeSpawnerCommandSender.SendSpawnCubeRequest(ownEntityId, new Empty());
+            var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
+            cubeSpawnerCommandSender.SendSpawnCubeCommand(request, OnSpawnCubeResponse);
         }
 
         private void SendDeleteCubeCommand()
@@ -83,10 +86,11 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            cubeSpawnerCommandSender.SendDeleteSpawnedCubeRequest(ownEntityId, new DeleteCubeRequest
+            var request = new CubeSpawner.DeleteSpawnedCube.Request(entityId, new DeleteCubeRequest
             {
                 CubeEntityId = spawnedCubes[0]
             });
+            cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request, OnDeleteSpawnedCubeResponse);
         }
     }
 }

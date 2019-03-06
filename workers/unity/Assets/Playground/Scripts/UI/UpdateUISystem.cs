@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;

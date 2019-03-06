@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -16,6 +18,15 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly ILogDispatcher logger;
 
+        private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
+
+        private readonly Type[] componentsToAdd =
+        {
+            typeof(UnityEngine.Transform),
+            typeof(Rigidbody),
+            typeof(MeshRenderer)
+        };
+
         public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
         {
             this.workerType = workerType;
@@ -23,18 +34,18 @@ namespace Improbable.Gdk.GameObjectCreation
             this.logger = logger;
         }
 
-        public GameObject OnEntityCreated(SpatialOSEntity entity)
+        public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
         {
             if (!entity.HasComponent<Metadata.Component>())
             {
-                return null;
+                return;
             }
 
             var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
             if (!entity.HasComponent<Position.Component>())
             {
                 cachedPrefabs[prefabName] = null;
-                return null;
+                return;
             }
 
             var spatialOSPosition = entity.GetComponent<Position.Component>();
@@ -56,20 +67,25 @@ namespace Improbable.Gdk.GameObjectCreation
 
             if (prefab == null)
             {
-                return null;
+                return;
             }
 
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
             gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
-            return gameObject;
+
+            entityIdToGameObject.Add(entity.SpatialOSEntityId, gameObject);
+            linker.LinkGameObjectToSpatialOSEntity(entity.SpatialOSEntityId, gameObject, componentsToAdd);
         }
 
-        public void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)
+        public void OnEntityRemoved(EntityId entityId)
         {
-            if (linkedGameObject != null)
+            if (!entityIdToGameObject.TryGetValue(entityId, out var go))
             {
-                UnityObjectDestroyer.Destroy(linkedGameObject);
+                return;
             }
+
+            Object.Destroy(go);
+            entityIdToGameObject.Remove(entityId);
         }
     }
 }

@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {
@@ -12,98 +13,103 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
     {
         public partial class FirstCommand
         {
-            /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
-            /// </summary>
-            public struct Request
+            public struct Request : ICommandRequest
             {
-                public EntityId TargetEntityId { get; internal set; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload { get; internal set; }
-                public uint? TimeoutMillis { get; internal set; }
-                public bool AllowShortCircuiting { get; internal set; }
-                public System.Object Context { get; internal set; }
-                public long RequestId { get; internal set; }
-            }
+                public EntityId TargetEntityId;
+                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload;
+                public uint? TimeoutMillis;
+                public bool AllowShortCircuiting;
+                public object Context;
 
-            public static Request CreateRequest(EntityId targetEntityId,
-                global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request,
-                uint? timeoutMillis = null,
-                bool allowShortCircuiting = false,
-                System.Object context = null)
-            {
-                return new Request
+                public Request(
+                    EntityId targetEntityId,
+                    global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request,
+                    uint? timeoutMillis = null,
+                    bool allowShortCircuiting = false,
+                    object context = null)
                 {
-                    TargetEntityId = targetEntityId,
-                    Payload = request,
-                    TimeoutMillis = timeoutMillis,
-                    AllowShortCircuiting = allowShortCircuiting,
-                    Context = context,
-                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
-                };
+                    TargetEntityId = targetEntityId;
+                    Payload = request;
+                    TimeoutMillis = timeoutMillis;
+                    AllowShortCircuiting = allowShortCircuiting;
+                    Context = context;
+                }
             }
 
-            public struct ReceivedRequest
-            {
-                public long RequestId { get; }
-                public string CallerWorkerId { get; }
-                public List<string> CallerAttributeSet { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload { get; }
 
-                public ReceivedRequest(long requestId,
+            public readonly struct ReceivedRequest : IReceivedCommandRequest
+            {
+                public readonly EntityId EntityId;
+                public readonly long RequestId;
+                public readonly string CallerWorkerId;
+                public readonly List<string> CallerAttributeSet;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest Payload;
+
+                public ReceivedRequest(
+                    EntityId entityId,
+                    long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request)
                 {
+                    EntityId = entityId;
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
                     Payload = request;
                 }
+
+                long IReceivedCommandRequest.GetRequestId()
+                {
+                    return RequestId;
+                }
+
+                EntityId IReceivedEntityMessage.GetEntityId()
+                {
+                    return EntityId;
+                }
             }
 
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
-            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
+            ///     A Response will be considered a failure if FailureMessage is not null;
             /// </summary>
-            public struct Response
+            // todo Should consider making this a union of a failure and a response
+            // todo consider making this readonly
+            public struct Response : ICommandResponse
             {
-                public long RequestId { get; internal set; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload { get; internal set; }
-                public string FailureMessage { get; internal set; }
-            }
+                public long RequestId;
+                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? Payload;
+                public string FailureMessage;
 
-            public static Response CreateResponse(ReceivedRequest req, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse payload)
-            {
-                return new Response
+                public Response(long requestId, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse payload)
                 {
-                    RequestId = req.RequestId,
-                    Payload = payload,
-                    FailureMessage = null,
-                };
-            }
+                    RequestId = requestId;
+                    Payload = payload;
+                    FailureMessage = null;
+                }
 
-            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
-            {
-                return new Response
+                public Response(long requestId, string failureMessage)
                 {
-                    RequestId = req.RequestId,
-                    Payload = null,
-                    FailureMessage = failureMessage,
-                };
+                    RequestId = requestId;
+                    Payload = null;
+                    FailureMessage = failureMessage;
+                }
             }
 
-            public struct ReceivedResponse
+            public readonly struct ReceivedResponse : IReceivedCommandResponse
             {
-                public EntityId EntityId { get; }
-                public string Message { get; }
-                public StatusCode StatusCode { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload { get; }
-                public System.Object Context { get; }
-                public long RequestId { get; }
+                public readonly Unity.Entities.Entity SendingEntity;
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload;
+                public readonly System.Object Context;
+                public readonly long RequestId;
 
-                public ReceivedResponse(EntityId entityId,
+                public ReceivedResponse(
+                    Unity.Entities.Entity sendingEntity,
+                    EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response,
@@ -111,6 +117,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     System.Object context,
                     long requestId)
                 {
+                    SendingEntity = sendingEntity;
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
@@ -119,102 +126,135 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     Context = context;
                     RequestId = requestId;
                 }
+
+                long IReceivedCommandResponse.GetRequestId()
+                {
+                    return RequestId;
+                }
+            }
+
+            public readonly struct RawReceivedResponse : IRawReceivedCommandResponse
+            {
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload;
+                public readonly long RequestId;
+
+                public RawReceivedResponse(
+                    EntityId entityId,
+                    string message,
+                    StatusCode statusCode,
+                    global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response,
+                    long requestId)
+                {
+                    EntityId = entityId;
+                    Message = message;
+                    StatusCode = statusCode;
+                    ResponsePayload = response;
+                    RequestId = requestId;
+                }
             }
         }
         public partial class SecondCommand
         {
-            /// <summary>
-            ///     Please do not use the default constructor. Use CreateRequest instead.
-            ///     Using CreateRequest will ensure a correctly formed structure.
-            /// </summary>
-            public struct Request
+            public struct Request : ICommandRequest
             {
-                public EntityId TargetEntityId { get; internal set; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload { get; internal set; }
-                public uint? TimeoutMillis { get; internal set; }
-                public bool AllowShortCircuiting { get; internal set; }
-                public System.Object Context { get; internal set; }
-                public long RequestId { get; internal set; }
-            }
+                public EntityId TargetEntityId;
+                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload;
+                public uint? TimeoutMillis;
+                public bool AllowShortCircuiting;
+                public object Context;
 
-            public static Request CreateRequest(EntityId targetEntityId,
-                global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request,
-                uint? timeoutMillis = null,
-                bool allowShortCircuiting = false,
-                System.Object context = null)
-            {
-                return new Request
+                public Request(
+                    EntityId targetEntityId,
+                    global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request,
+                    uint? timeoutMillis = null,
+                    bool allowShortCircuiting = false,
+                    object context = null)
                 {
-                    TargetEntityId = targetEntityId,
-                    Payload = request,
-                    TimeoutMillis = timeoutMillis,
-                    AllowShortCircuiting = allowShortCircuiting,
-                    Context = context,
-                    RequestId = global::Improbable.Gdk.Core.CommandRequestIdGenerator.GetNext(),
-                };
+                    TargetEntityId = targetEntityId;
+                    Payload = request;
+                    TimeoutMillis = timeoutMillis;
+                    AllowShortCircuiting = allowShortCircuiting;
+                    Context = context;
+                }
             }
 
-            public struct ReceivedRequest
-            {
-                public long RequestId { get; }
-                public string CallerWorkerId { get; }
-                public List<string> CallerAttributeSet { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload { get; }
 
-                public ReceivedRequest(long requestId,
+            public readonly struct ReceivedRequest : IReceivedCommandRequest
+            {
+                public readonly EntityId EntityId;
+                public readonly long RequestId;
+                public readonly string CallerWorkerId;
+                public readonly List<string> CallerAttributeSet;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest Payload;
+
+                public ReceivedRequest(
+                    EntityId entityId,
+                    long requestId,
                     string callerWorkerId,
                     List<string> callerAttributeSet,
                     global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request)
                 {
+                    EntityId = entityId;
                     RequestId = requestId;
                     CallerWorkerId = callerWorkerId;
                     CallerAttributeSet = callerAttributeSet;
                     Payload = request;
                 }
+
+                long IReceivedCommandRequest.GetRequestId()
+                {
+                    return RequestId;
+                }
+
+                EntityId IReceivedEntityMessage.GetEntityId()
+                {
+                    return EntityId;
+                }
             }
 
             /// <summary>
-            ///     Please do not use the default constructor. Use CreateResponse or CreateFailure instead.
-            ///     Using CreateResponse or CreateFailure will ensure a correctly formed structure.
+            ///     A Response will be considered a failure if FailureMessage is not null;
             /// </summary>
-            public struct Response
+            // todo Should consider making this a union of a failure and a response
+            // todo consider making this readonly
+            public struct Response : ICommandResponse
             {
-                public long RequestId { get; internal set; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload { get; internal set; }
-                public string FailureMessage { get; internal set; }
-            }
+                public long RequestId;
+                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? Payload;
+                public string FailureMessage;
 
-            public static Response CreateResponse(ReceivedRequest req, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse payload)
-            {
-                return new Response
+                public Response(long requestId, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse payload)
                 {
-                    RequestId = req.RequestId,
-                    Payload = payload,
-                    FailureMessage = null,
-                };
-            }
+                    RequestId = requestId;
+                    Payload = payload;
+                    FailureMessage = null;
+                }
 
-            public static Response CreateResponseFailure(ReceivedRequest req, string failureMessage)
-            {
-                return new Response
+                public Response(long requestId, string failureMessage)
                 {
-                    RequestId = req.RequestId,
-                    Payload = null,
-                    FailureMessage = failureMessage,
-                };
+                    RequestId = requestId;
+                    Payload = null;
+                    FailureMessage = failureMessage;
+                }
             }
 
-            public struct ReceivedResponse
+            public readonly struct ReceivedResponse : IReceivedCommandResponse
             {
-                public EntityId EntityId { get; }
-                public string Message { get; }
-                public StatusCode StatusCode { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload { get; }
-                public global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload { get; }
-                public System.Object Context { get; }
-                public long RequestId { get; }
+                public readonly Unity.Entities.Entity SendingEntity;
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload;
+                public readonly System.Object Context;
+                public readonly long RequestId;
 
-                public ReceivedResponse(EntityId entityId,
+                public ReceivedResponse(
+                    Unity.Entities.Entity sendingEntity,
+                    EntityId entityId,
                     string message,
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response,
@@ -222,12 +262,41 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     System.Object context,
                     long requestId)
                 {
+                    SendingEntity = sendingEntity;
                     EntityId = entityId;
                     Message = message;
                     StatusCode = statusCode;
                     ResponsePayload = response;
                     RequestPayload = request;
                     Context = context;
+                    RequestId = requestId;
+                }
+
+                long IReceivedCommandResponse.GetRequestId()
+                {
+                    return RequestId;
+                }
+            }
+
+            public readonly struct RawReceivedResponse : IRawReceivedCommandResponse
+            {
+                public readonly EntityId EntityId;
+                public readonly string Message;
+                public readonly StatusCode StatusCode;
+                public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload;
+                public readonly long RequestId;
+
+                public RawReceivedResponse(
+                    EntityId entityId,
+                    string message,
+                    StatusCode statusCode,
+                    global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response,
+                    long requestId)
+                {
+                    EntityId = entityId;
+                    Message = message;
+                    StatusCode = statusCode;
+                    ResponsePayload = response;
                     RequestId = requestId;
                 }
             }

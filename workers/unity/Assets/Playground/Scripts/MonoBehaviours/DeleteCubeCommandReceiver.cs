@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -17,51 +17,47 @@ namespace Playground.MonoBehaviours
 {
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
-        [Require] private CubeSpawner.Requirable.Writer cubeSpawnerWriter;
-        [Require] private CubeSpawner.Requirable.CommandRequestHandler cubeSpawnerCommandRequestHandler;
-        [Require] private WorldCommands.Requirable.WorldCommandRequestSender worldCommandRequestSender;
-        [Require] private WorldCommands.Requirable.WorldCommandResponseHandler worldCommandResponseHandler;
+        [Require] private CubeSpawnerWriter cubeSpawnerWriter;
+        [Require] private CubeSpawnerCommandReceiver cubeSpawnerReceiver;
+        [Require] private WorldCommandSender worldCommandSender;
 
-        private ILogDispatcher logDispatcher;
+        [Require] private ILogDispatcher logDispatcher;
 
         public void OnEnable()
         {
-            logDispatcher = GetComponent<SpatialOSComponent>().Worker.LogDispatcher;
-            cubeSpawnerCommandRequestHandler.OnDeleteSpawnedCubeRequest += OnDeleteSpawnedCubeRequest;
-            worldCommandResponseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
+            cubeSpawnerReceiver.OnDeleteSpawnedCubeRequestReceived += OnDeleteSpawnedCubeRequest;
         }
 
-        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.RequestResponder requestResponder)
+        private void OnDeleteSpawnedCubeRequest(CubeSpawner.DeleteSpawnedCube.ReceivedRequest receivedRequest)
         {
-            var entityId = requestResponder.Request.Payload.CubeEntityId;
+            var entityId = receivedRequest.Payload.CubeEntityId;
             var spawnedCubes = cubeSpawnerWriter.Data.SpawnedCubes;
 
             if (!spawnedCubes.Contains(entityId))
             {
-                requestResponder.SendResponseFailure($"Requested entity id {entityId} not found in list.");
+                cubeSpawnerReceiver.SendDeleteSpawnedCubeResponse(
+                    new CubeSpawner.DeleteSpawnedCube.Response(receivedRequest.RequestId,
+                        $"Requested entity id {entityId} not found in list."));
             }
             else
             {
-                requestResponder.SendResponse(new Empty());
+                cubeSpawnerReceiver.SendDeleteSpawnedCubeResponse(
+                    new CubeSpawner.DeleteSpawnedCube.Response(receivedRequest.RequestId, new Empty()));
             }
 
-            worldCommandRequestSender.DeleteEntity(entityId, context: this);
+            worldCommandSender.SendDeleteEntityCommand(new WorldCommands.DeleteEntity.Request(entityId),
+                OnDeleteEntityResponse);
         }
 
 
         private void OnDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
-            if (!ReferenceEquals(this, response.Context))
-            {
-                // This response was not for a command from this behaviour.
-                return;
-            }
-
             var entityId = response.RequestPayload.EntityId;
 
+            // Log not error as the most common failure cause is that the entity has already been deleted.
             if (response.StatusCode != StatusCode.Success)
             {
-                logDispatcher.HandleLog(LogType.Error,
+                logDispatcher.HandleLog(LogType.Log,
                     new LogEvent("Could not delete entity.")
                         .WithField(LoggingUtils.EntityId, entityId)
                         .WithField("Reason", response.Message));
@@ -79,7 +75,7 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            cubeSpawnerWriter.Send(new CubeSpawner.Update
+            cubeSpawnerWriter.SendUpdate(new CubeSpawner.Update
             {
                 SpawnedCubes = spawnedCubesCopy
             });

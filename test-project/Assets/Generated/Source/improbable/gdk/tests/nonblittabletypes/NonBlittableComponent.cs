@@ -99,7 +99,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(1002));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -216,6 +216,47 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             }
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 1002;
@@ -378,6 +419,109 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                             updateObj.AddClearedField(9);
                         }
                         
+                }
+            }
+
+            public static void SerializeUpdate(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                {
+                    if (update.BoolField.HasValue)
+                    {
+                        var field = update.BoolField.Value;
+                        obj.AddBool(1, field);
+                        
+                    }
+                }
+                {
+                    if (update.IntField.HasValue)
+                    {
+                        var field = update.IntField.Value;
+                        obj.AddInt32(2, field);
+                        
+                    }
+                }
+                {
+                    if (update.LongField.HasValue)
+                    {
+                        var field = update.LongField.Value;
+                        obj.AddInt64(3, field);
+                        
+                    }
+                }
+                {
+                    if (update.FloatField.HasValue)
+                    {
+                        var field = update.FloatField.Value;
+                        obj.AddFloat(4, field);
+                        
+                    }
+                }
+                {
+                    if (update.DoubleField.HasValue)
+                    {
+                        var field = update.DoubleField.Value;
+                        obj.AddDouble(5, field);
+                        
+                    }
+                }
+                {
+                    if (update.StringField.HasValue)
+                    {
+                        var field = update.StringField.Value;
+                        obj.AddString(6, field);
+                        
+                    }
+                }
+                {
+                    if (update.OptionalField.HasValue)
+                    {
+                        var field = update.OptionalField.Value;
+                        if (field.HasValue)
+                        {
+                            obj.AddInt32(7, field.Value);
+                        }
+                        
+                        if (!field.HasValue)
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.ListField.HasValue)
+                    {
+                        var field = update.ListField.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddInt32(8, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.MapField.HasValue)
+                    {
+                        var field = update.MapField.Value;
+                        foreach (var keyValuePair in field)
+                        {
+                            var mapObj = obj.AddObject(9);
+                            mapObj.AddInt32(1, keyValuePair.Key);
+                            mapObj.AddString(2, keyValuePair.Value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
+                    }
                 }
             }
 
@@ -610,7 +754,75 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update();
+                var obj = data.GetFields();
+
+                {
+                    var value = obj.GetBool(1);
+                    update.BoolField = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt32(2);
+                    update.IntField = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                {
+                    var value = obj.GetInt64(3);
+                    update.LongField = new global::Improbable.Gdk.Core.Option<long>(value);
+                    
+                }
+                {
+                    var value = obj.GetFloat(4);
+                    update.FloatField = new global::Improbable.Gdk.Core.Option<float>(value);
+                    
+                }
+                {
+                    var value = obj.GetDouble(5);
+                    update.DoubleField = new global::Improbable.Gdk.Core.Option<double>(value);
+                    
+                }
+                {
+                    var value = obj.GetString(6);
+                    update.StringField = new global::Improbable.Gdk.Core.Option<string>(value);
+                    
+                }
+                {
+                    if (obj.GetInt32Count(7) == 1)
+                    {
+                        var value = obj.GetInt32(7);
+                        update.OptionalField = new global::Improbable.Gdk.Core.Option<int?>(new int?(value));
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt32Count(8);
+                    update.ListField = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt32(8, (uint) i);
+                        update.ListField.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(9);
+                    update.MapField = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<int,string>>(new global::System.Collections.Generic.Dictionary<int,string>());
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(9, (uint) i);
+                        var key = mapObj.GetInt32(1);
+                        var value = mapObj.GetString(2);
+                        update.MapField.Value.Add(key, value);
+                    }
+                    
+                }
+                return update;
+            }
+
+            public static Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot();
 
@@ -796,6 +1008,129 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     
                 }
             }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+                var clearedFields = updateObj.GetClearedFields();
+
+                {
+                    if (obj.GetBoolCount(1) == 1)
+                    {
+                        var value = obj.GetBool(1);
+                        snapshot.BoolField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt32Count(2) == 1)
+                    {
+                        var value = obj.GetInt32(2);
+                        snapshot.IntField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetInt64Count(3) == 1)
+                    {
+                        var value = obj.GetInt64(3);
+                        snapshot.LongField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetFloatCount(4) == 1)
+                    {
+                        var value = obj.GetFloat(4);
+                        snapshot.FloatField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetDoubleCount(5) == 1)
+                    {
+                        var value = obj.GetDouble(5);
+                        snapshot.DoubleField = value;
+                    }
+                    
+                }
+                {
+                    if (obj.GetStringCount(6) == 1)
+                    {
+                        var value = obj.GetString(6);
+                        snapshot.StringField = value;
+                    }
+                    
+                }
+                {
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 7;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (isCleared)
+                    {
+                        snapshot.OptionalField = new int?();
+                    }
+                    else if (obj.GetInt32Count(7) == 1)
+                    {
+                        var value = obj.GetInt32(7);
+                        snapshot.OptionalField = new int?(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt32Count(8);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 8;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.ListField.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt32(8, (uint) i);
+                        snapshot.ListField.Add(value);
+                    }
+                    
+                }
+                {
+                    var mapSize = obj.GetObjectCount(9);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 9;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (mapSize > 0 || isCleared)
+                    {
+                        snapshot.MapField.Clear();
+                    }
+                    for (var i = 0; i < mapSize; i++)
+                    {
+                        var mapObj = obj.IndexObject(9, (uint) i);
+                        var key = mapObj.GetInt32(1);
+                        var value = mapObj.GetString(2);
+                        snapshot.MapField.Add(key, value);
+                    }
+                    
+                }
+            }
         }
 
         public struct Update : ISpatialComponentUpdate
@@ -848,7 +1183,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -856,7 +1191,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -870,14 +1205,34 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+                update.BoolField = new Option<BlittableBool>(snapshot.BoolField);
+                update.IntField = new Option<int>(snapshot.IntField);
+                update.LongField = new Option<long>(snapshot.LongField);
+                update.FloatField = new Option<float>(snapshot.FloatField);
+                update.DoubleField = new Option<double>(snapshot.DoubleField);
+                update.StringField = new Option<string>(snapshot.StringField);
+                update.OptionalField = new Option<int?>(snapshot.OptionalField);
+                update.ListField = new Option<global::System.Collections.Generic.List<int>>(snapshot.ListField);
+                update.MapField = new Option<global::System.Collections.Generic.Dictionary<int,string>>(snapshot.MapField);
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(NonBlittableComponent.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(NonBlittableComponent.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

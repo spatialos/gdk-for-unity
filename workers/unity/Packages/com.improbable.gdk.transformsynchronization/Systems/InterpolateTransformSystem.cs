@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,10 +7,7 @@ using Quaternion = UnityEngine.Quaternion;
 
 #region Diagnostic control
 
-#pragma warning disable 649
 #pragma warning disable 169
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
 // ReSharper disable ClassNeverInstantiated.Global
 
 #endregion
@@ -23,26 +19,39 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InterpolateTransformSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public BufferArray<BufferedTransform> TransformBuffer;
-            public ComponentDataArray<DeferredUpdateTransform> LastTransformValue;
-            [ReadOnly] public SharedComponentDataArray<InterpolationConfig> Config;
-            [ReadOnly] public ComponentDataArray<TransformInternal.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<TransformInternal.Component> CurrentTransform;
-            [ReadOnly] public ComponentDataArray<NotAuthoritative<TransformInternal.Component>> DenotesNotAuthoritative;
-        }
+        private ComponentUpdateSystem updateSystem;
+        private ComponentGroup interpolationGroup;
 
-        [Inject] private Data data;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
+            interpolationGroup = GetComponentGroup(
+                ComponentType.Create<BufferedTransform>(),
+                ComponentType.Create<DeferredUpdateTransform>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<InterpolationConfig>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; ++i)
+            interpolationGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            var interpolationConfigArray = interpolationGroup.GetSharedComponentDataArray<InterpolationConfig>();
+            var bufferedTransformArray = interpolationGroup.GetBufferArray<BufferedTransform>();
+            var spatialEntityIdArray = interpolationGroup.GetComponentDataArray<SpatialEntityId>();
+            var transformComponentArray = interpolationGroup.GetComponentDataArray<TransformInternal.Component>();
+            var lastTransformArray = interpolationGroup.GetComponentDataArray<DeferredUpdateTransform>();
+
+            for (int i = 0; i < transformComponentArray.Length; ++i)
             {
-                var config = data.Config[i];
-                var transformBuffer = data.TransformBuffer[i];
-                var lastTransformApplied = data.LastTransformValue[i].Transform;
+                var config = interpolationConfigArray[i];
+                var transformBuffer = bufferedTransformArray[i];
+                var lastTransformApplied = lastTransformArray[i].Transform;
 
                 if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                 {
@@ -51,20 +60,20 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 if (transformBuffer.Length == 0)
                 {
-                    var currentTransformComponent = data.CurrentTransform[i];
+                    var currentTransformComponent = transformComponentArray[i];
                     if (currentTransformComponent.PhysicsTick <= lastTransformApplied.PhysicsTick)
                     {
                         continue;
                     }
 
-                    data.LastTransformValue[i] = new DeferredUpdateTransform
+                    lastTransformArray[i] = new DeferredUpdateTransform
                     {
                         Transform = currentTransformComponent
                     };
 
                     var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
-                    var ticksToFill = math.max((uint) config.TargetBufferSize, 1);
+                    uint ticksToFill = math.max((uint) config.TargetBufferSize, 1);
 
                     if (ticksToFill > 1)
                     {
@@ -84,10 +93,15 @@ namespace Improbable.Gdk.TransformSynchronization
                     continue;
                 }
 
-                foreach (var update in data.Updates[i].Updates)
+                var updates =
+                    updateSystem
+                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(spatialEntityIdArray[i].EntityId);
+
+                for (int j = 0; j < updates.Count; ++j)
                 {
+                    var update = updates[j].Update;
                     UpdateLastTransform(ref lastTransformApplied, update);
-                    data.LastTransformValue[i] = new DeferredUpdateTransform
+                    lastTransformArray[i] = new DeferredUpdateTransform
                     {
                         Transform = lastTransformApplied
                     };
@@ -100,30 +114,28 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
 
                     var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
-                    var lastTickId = transformToInterpolateFrom.PhysicsTick;
+                    uint lastTickId = transformToInterpolateFrom.PhysicsTick;
 
-                    if (transformToInterpolateTo.PhysicsTick <= lastTickId)
+                    // This could go backwards if authority changes quickly between two workers with different loads
+                    if (lastTickId >= transformToInterpolateTo.PhysicsTick)
                     {
                         continue;
                     }
 
-                    var remoteTickDifference = (int) (transformToInterpolateTo.PhysicsTick - lastTickId);
-                    var bufferedTransforms = new NativeArray<BufferedTransform>(remoteTickDifference, Allocator.Temp,
-                        NativeArrayOptions.UninitializedMemory);
-                    for (var j = 0; j < remoteTickDifference - 1; ++j)
+                    uint ticksToFill = math.max(transformToInterpolateTo.PhysicsTick - lastTickId, 1);
+
+                    for (uint k = 0; k < ticksToFill - 1; ++k)
                     {
-                        bufferedTransforms[j] = InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
-                            (uint) j + 1);
+                        transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
+                            k + 1));
                     }
 
-                    bufferedTransforms[remoteTickDifference - 1] = transformToInterpolateTo;
-                    transformBuffer.AddRange(bufferedTransforms);
-                    bufferedTransforms.Dispose();
+                    transformBuffer.Add(transformToInterpolateTo);
                 }
             }
         }
 
-        private void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        private static void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {
@@ -176,7 +188,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private static BufferedTransform InterpolateValues(BufferedTransform first, BufferedTransform second,
             uint ticksAfterFirst)
         {
-            var t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
+            float t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
             return new BufferedTransform
             {
                 Position = Vector3.Lerp(first.Position, second.Position, t),

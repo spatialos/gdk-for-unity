@@ -12,24 +12,32 @@ namespace Improbable.Gdk.Core
     [DisableAutoCreation]
     public class WorkerSystem : ComponentSystem
     {
-        public readonly Connection Connection;
-        public readonly ILogDispatcher LogDispatcher;
-        public readonly string WorkerType;
-        public readonly Vector3 Origin;
-
         /// <summary>
         ///     An ECS entity that represents the Worker.
         /// </summary>
         public Entity WorkerEntity;
 
+        public readonly Connection Connection;
+        public readonly ILogDispatcher LogDispatcher;
+        public readonly string WorkerType;
+        public readonly Vector3 Origin;
+
+        internal readonly MessagesToSend MessagesToSend = new MessagesToSend();
+
+        internal readonly View View = new View();
+        internal readonly IConnectionHandler ConnectionHandler;
+
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
-        public WorkerSystem(Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
+        internal ViewDiff Diff;
+
+        public WorkerSystem(IConnectionHandler connectionHandler, Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
         {
             Connection = connection;
             LogDispatcher = logDispatcher;
             WorkerType = workerType;
             Origin = origin;
+            ConnectionHandler = connectionHandler;
         }
 
         /// <summary>
@@ -56,6 +64,27 @@ namespace Improbable.Gdk.Core
         public bool HasEntity(EntityId entityId)
         {
             return EntityIdToEntity.ContainsKey(entityId);
+        }
+
+        public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
+        {
+            MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+        }
+
+        public void SendMetrics(Metrics metrics)
+        {
+            MessagesToSend.AddMetrics(metrics);
+        }
+
+        internal void GetMessages()
+        {
+            Diff = ConnectionHandler.GetMessagesReceived();
+        }
+
+        internal void SendMessages()
+        {
+            ConnectionHandler.PushMessagesToSend(MessagesToSend);
+            MessagesToSend.Clear();
         }
 
         protected override void OnCreateManager()

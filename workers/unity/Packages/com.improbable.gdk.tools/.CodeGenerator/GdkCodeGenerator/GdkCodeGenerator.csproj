@@ -28,21 +28,29 @@
     <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <T4Files Include="Templates\ViewStorageGenerator.tt" />
+    <T4Files Include="Templates\CommandDiffDeserializerGenerator.tt" />
+    <T4Files Include="Templates\CommandDiffStorageGenerator.tt" />
+    <T4Files Include="Templates\CommandMetaDataStorageGenerator.tt" />
+    <T4Files Include="Templates\ComponentDiffDeserializerGenerator.tt" />
+    <T4Files Include="Templates\ComponentDiffStorageGenerator.tt" />
+    <T4Files Include="Templates\ReactiveCommandComponentGenerator.tt" />
+    <T4Files Include="Templates\ReactiveComponentGenerator.tt" />
     <T4Files Include="Templates\UnityCommandPayloadGenerator.tt" />
-    <T4Files Include="Templates\UnityComponentConversionGenerator.tt" />
+    <T4Files Include="Templates\UnityReactiveComponentHandlersGenerator.tt" />
     <T4Files Include="Templates\UnityComponentDataGenerator.tt" />
+    <T4Files Include="Templates\UnityComponentReaderWriterGenerator.tt" />
+    <T4Files Include="Templates\UnityComponentSenderGenerator.tt" />
+    <T4Files Include="Templates\UnityEcsViewManagerGenerator.tt" />
     <T4Files Include="Templates\UnityEnumGenerator.tt" />
     <T4Files Include="Templates\UnityEnumContent.tt" />
     <T4Files Include="Templates\UnityEventGenerator.tt" />
-    <T4Files Include="Templates\UnityGameObjectComponentDispatcherGenerator.tt" />
-    <T4Files Include="Templates\UnityGameObjectCommandHandlersGenerator.tt" />
-    <T4Files Include="Templates\UnityReaderWriterGenerator.tt" />
     <T4Files Include="Templates\UnityTypeGenerator.tt" />
     <T4Files Include="Templates\UnityTypeContent.tt" />
     <T4Files Include="Templates\UnityReferenceTypeProviderGenerator.tt" />
     <T4Files Include="Templates\UnityReferenceTypeProviderContent.tt" />
     <T4Files Include="Templates\UnityCommandComponentsGenerator.tt" />
-    <T4Files Include="Templates\UnityCommandStorageGenerator.tt" />
+    <T4Files Include="Templates\UnityCommandSenderReceiverGenerator.tt" />
     <T4Files Include="Templates\UnityWorkerMenuGenerator.tt" />
     <T4Files Include="Templates\BuildSystemAssemblyGenerator.tt" />
   </ItemGroup>

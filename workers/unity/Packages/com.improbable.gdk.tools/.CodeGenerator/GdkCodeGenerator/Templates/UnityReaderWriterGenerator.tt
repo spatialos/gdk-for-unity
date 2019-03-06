@@ -6,7 +6,6 @@
     var componentDetails = GetComponentDetails();
     var fieldDetailsList = GetFieldDetailsList();
     var eventDetailsList = GetEventDetailsList();
-    var commandDetailsList = GetCommandDetailsList();
     var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
@@ -27,7 +26,7 @@ namespace <#= qualifiedNamespace #>
             [InjectableId(InjectableType.ReaderWriter, <#= componentDetails.ComponentId #>)]
             internal class ReaderWriterCreator : IInjectableCreator
             {
-                public IInjectable CreateInjectable(Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
+                public IInjectable CreateInjectable(World world, Entity entity, EntityManager entityManager, ILogDispatcher logDispatcher)
                 {
                     return new ReaderWriterImpl(entity, entityManager, logDispatcher);
                 }

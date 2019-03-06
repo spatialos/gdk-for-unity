@@ -15,6 +15,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
+#pragma warning disable 649       
             private struct PreparationData
             {
                 public readonly int Length;
@@ -30,6 +31,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             }
 
             [Inject] private PreparationData testDataToPrepare;
+#pragma warning restore 649          
 
             public void TestInjection(World world)
             {

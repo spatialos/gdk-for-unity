@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Core
     ///     A  snapshot of a SpatialOS entity, containing the result of a entity query.
     /// </summary>
     /// <remarks>
-    ///     This copies entity components from <see cref="Improbable.Worker.CInterop.Entity"/> for long term storage.
+    ///     This copies entity components from <see cref="Improbable.Worker.CInterop.Entity" /> for long term storage.
     ///     This may only be a partial snapshot of an entity.
     ///     The components present depend on the component filter used when making the entity query.
     /// </remarks>
@@ -17,26 +17,25 @@ namespace Improbable.Gdk.Core
         private struct ComponentDataHandler : DynamicSnapshot.ISnapshotHandler
         {
             public Entity EntitySnapshot;
-            public World World;
             public Dictionary<uint, ISpatialComponentSnapshot> Components;
 
-            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : ISpatialComponentSnapshot
+            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot,
+                DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : struct, ISpatialComponentSnapshot
             {
                 var schemaObject = EntitySnapshot.Get(componentId).Value;
-                Components.Add(componentId, deserializeSnapshot(schemaObject, World));
+                Components.Add(componentId, deserializeSnapshot(schemaObject));
             }
         }
 
         private readonly Dictionary<uint, ISpatialComponentSnapshot> components;
 
-        internal EntityQuerySnapshot(Entity entitySnapshot, World world)
+        internal EntityQuerySnapshot(Entity entitySnapshot)
         {
             components = new Dictionary<uint, ISpatialComponentSnapshot>();
 
             var componentDataHandler = new ComponentDataHandler
             {
                 EntitySnapshot = entitySnapshot,
-                World = world,
                 Components = components,
             };
 

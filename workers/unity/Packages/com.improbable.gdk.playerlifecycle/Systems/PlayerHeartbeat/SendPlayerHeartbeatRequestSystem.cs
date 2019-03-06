@@ -1,8 +1,7 @@
-using System;
 using Improbable.Common;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.PlayerLifecycle;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -23,25 +22,20 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private float timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
         private ComponentGroup group;
+        private CommandSystem commandSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            var query = new EntityArchetypeQuery
-            {
-                All = new[]
-                {
-                    ComponentType.Create<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat>(),
-                    ComponentType.ReadOnly<Authoritative<PlayerHeartbeatServer.Component>>(),
-                    ComponentType.ReadOnly<HeartbeatData>(),
-                    ComponentType.ReadOnly<SpatialEntityId>(),
-                },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
-            };
+            group = GetComponentGroup(
+                ComponentType.ReadOnly<PlayerHeartbeatServer.ComponentAuthority>(),
+                ComponentType.Create<HeartbeatData>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            );
+            group.SetFilter(new PlayerHeartbeatServer.ComponentAuthority(true));
 
-            group = GetComponentGroup(query);
+            commandSystem = World.GetExistingManager<CommandSystem>();
         }
 
         protected override void OnUpdate()
@@ -52,25 +46,13 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
 
             timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
+            var spatialIDData = group.GetComponentDataArray<SpatialEntityId>();
 
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
-
-            var senderType = GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandSenders.PlayerHeartbeat>();
-            var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
-
-            foreach (var chunk in chunkArray)
+            for (var i = 0; i < spatialIDData.Length; i++)
             {
-                var requestSenders = chunk.GetNativeArray(senderType);
-                var spatialIds = chunk.GetNativeArray(spatialIdType);
-
-                for (var i = 0; i < requestSenders.Length; i++)
-                {
-                    requestSenders[i].RequestsToSend
-                        .Add(PlayerHeartbeatClient.PlayerHeartbeat.CreateRequest(spatialIds[i].EntityId, new Empty()));
-                }
+                commandSystem.SendCommand(
+                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIDData[i].EntityId, new Empty()));
             }
-
-            chunkArray.Dispose();
         }
     }
 }

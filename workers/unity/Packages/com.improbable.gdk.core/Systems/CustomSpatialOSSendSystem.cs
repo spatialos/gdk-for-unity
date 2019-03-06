@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
 
         protected WorkerSystem WorkerSystem;
 
-        private SpatialOSSendSystem spatialOSSendSystem;
+        private ComponentSendSystem componentSendSystem;
 
         protected override void OnCreateManager()
         {
@@ -29,11 +29,11 @@ namespace Improbable.Gdk.Core
 
             WorkerSystem = World.GetExistingManager<WorkerSystem>();
 
-            spatialOSSendSystem = World.GetOrCreateManager<SpatialOSSendSystem>();
+            componentSendSystem = World.GetOrCreateManager<ComponentSendSystem>();
 
             var component = new T();
 
-            if (!spatialOSSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
+            if (!componentSendSystem.TryRegisterCustomReplicationSystem(component.ComponentId))
             {
                 WorkerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(CustomReplicationSystemAlreadyExists)
                     .WithField(LoggingUtils.LoggerName, LoggerName)

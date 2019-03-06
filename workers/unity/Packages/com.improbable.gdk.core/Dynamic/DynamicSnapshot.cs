@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
 {
     public static class DynamicSnapshot
     {
-        public delegate T SnapshotDeserializer<out T>(ComponentData update, World world) where T : ISpatialComponentSnapshot;
+        public delegate T SnapshotDeserializer<out T>(ComponentData update) where T : ISpatialComponentSnapshot;
 
         public delegate void SnapshotSerializer<T>(T snapshot, ComponentData data) where T : ISpatialComponentSnapshot;
 
@@ -15,10 +15,10 @@ namespace Improbable.Gdk.Core
             void Accept<T>(uint componentId,
                 SnapshotDeserializer<T> deserializeSnapshot,
                 SnapshotSerializer<T> serializeSnapshot)
-                where T : ISpatialComponentSnapshot;
+                where T : struct, ISpatialComponentSnapshot;
         }
 
-        internal static void ForEachSnapshotComponent(ISnapshotHandler snapshotHandler)
+        public static void ForEachSnapshotComponent(ISnapshotHandler snapshotHandler)
         {
             foreach (var component in ComponentDatabase.IdsToDynamicInvokers.Values)
             {
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        internal static void ForSnapshotComponent(uint componentId, ISnapshotHandler handler)
+        public static void ForSnapshotComponent(uint componentId, ISnapshotHandler handler)
         {
             if (!ComponentDatabase.IdsToDynamicInvokers.TryGetValue(componentId, out var component))
             {
@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Core
             component.InvokeSnapshotHandler(handler);
         }
 
-        internal static uint GetSnapshotComponentId<T>() where T : ISpatialComponentSnapshot
+        public static uint GetSnapshotComponentId<T>() where T : ISpatialComponentSnapshot
         {
             if (!ComponentDatabase.SnapshotsToIds.TryGetValue(typeof(T), out var id))
             {

@@ -1,11 +1,11 @@
-using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.PlayerLifecycle;
 using Improbable.Worker.CInterop;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -13,89 +13,76 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandlePlayerHeartbeatResponseSystem : ComponentSystem
     {
-        private ComponentGroup group;
+        private ILogDispatcher logger;
+        private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
 
-        [Inject] private WorkerSystem worker;
+        private readonly Dictionary<(EntityId, Entity), bool> respondedCache =
+            new Dictionary<(EntityId, Entity), bool>();
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            var query = new EntityArchetypeQuery
-            {
-                All = new[]
-                {
-                    ComponentType.Create<HeartbeatData>(),
-                    ComponentType.Create<WorldCommands.DeleteEntity.CommandSender>(),
-                    ComponentType.ReadOnly<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(),
-                    ComponentType.ReadOnly<SpatialEntityId>(),
-                },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
-            };
-
-            group = GetComponentGroup(query);
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            logger = workerSystem.LogDispatcher;
         }
 
         protected override void OnUpdate()
         {
-            var heartbeatType = GetArchetypeChunkComponentType<HeartbeatData>();
-            var entityDeleterType = GetArchetypeChunkComponentType<WorldCommands.DeleteEntity.CommandSender>();
-            var responsesType =
-                GetArchetypeChunkComponentType<PlayerHeartbeatClient.CommandResponses.PlayerHeartbeat>(true);
-            var spatialIdType = GetArchetypeChunkComponentType<SpatialEntityId>(true);
-
-            var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
-
-            foreach (var chunk in chunkArray)
+            var responses = commandSystem.GetResponses<PlayerHeartbeatClient.PlayerHeartbeat.ReceivedResponse>();
+            if (responses.Count == 0)
             {
-                var heartbeats = chunk.GetNativeArray(heartbeatType);
-                var responses = chunk.GetNativeArray(responsesType);
-                var deleteRequesters = chunk.GetNativeArray(entityDeleterType);
-                var spatialIds = chunk.GetNativeArray(spatialIdType);
-
-                for (var i = 0; i < responses.Length; i++)
-                {
-                    var heartbeatData = heartbeats[i];
-
-                    var responded = false;
-                    foreach (var response in responses[i].Responses)
-                    {
-                        if (response.StatusCode == StatusCode.Success)
-                        {
-                            responded = true;
-                            break;
-                        }
-                    }
-
-                    if (responded)
-                    {
-                        heartbeatData.NumFailedHeartbeats = 0;
-                    }
-                    else
-                    {
-                        heartbeatData.NumFailedHeartbeats += 1;
-
-                        if (heartbeatData.NumFailedHeartbeats >= PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
-                        {
-                            var entityId = spatialIds[i].EntityId;
-                            deleteRequesters[i].RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
-                            (
-                                entityId
-                            ));
-
-                            worker.LogDispatcher.HandleLog(LogType.Log,
-                                new LogEvent(
-                                        $"A client failed to respond to too many heartbeats. Deleting their player.")
-                                    .WithField("EntityID", entityId));
-                        }
-                    }
-
-                    heartbeats[i] = heartbeatData;
-                }
+                return;
             }
 
-            chunkArray.Dispose();
+            var heartbeats = GetComponentDataFromEntity<HeartbeatData>();
+
+            // Concatenate command responses
+            for (var i = 0; i < responses.Count; i++)
+            {
+                ref readonly var response = ref responses[i];
+                var spatialId = response.EntityId;
+                if (!workerSystem.TryGetEntity(spatialId, out var entity) || !heartbeats.Exists(entity))
+                {
+                    continue;
+                }
+
+                var key = (spatialId, entity);
+                respondedCache.TryGetValue(key, out var responded);
+                respondedCache[key] = responded | (response.StatusCode == StatusCode.Success);
+            }
+
+            foreach (var response in respondedCache)
+            {
+                var spatialId = response.Key.Item1;
+                var entity = response.Key.Item2;
+                var heartbeatData = heartbeats[entity];
+
+                if (response.Value == true)
+                {
+                    heartbeatData.NumFailedHeartbeats = 0;
+                }
+                else
+                {
+                    heartbeatData.NumFailedHeartbeats += 1;
+
+                    if (heartbeatData.NumFailedHeartbeats >= PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats)
+                    {
+                        commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(spatialId));
+
+                        logger.HandleLog(LogType.Log,
+                            new LogEvent(
+                                    $"A client failed to respond to too many heartbeats. Deleting their player.")
+                                .WithField("EntityID", spatialId));
+                    }
+                }
+
+                heartbeats[entity] = heartbeatData;
+            }
+
+            respondedCache.Clear();
         }
     }
 }

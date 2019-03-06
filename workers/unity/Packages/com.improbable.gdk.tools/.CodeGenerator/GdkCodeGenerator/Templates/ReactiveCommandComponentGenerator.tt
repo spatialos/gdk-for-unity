@@ -1,0 +1,163 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var componentDetails = GetComponentDetails();
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using System;
+using System.Collections.Generic;
+using Unity.Entities;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.ReactiveComponents;
+using Improbable.Worker.CInterop;
+using Entity = Unity.Entities.Entity;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# foreach (var command in commandDetailsList) {
+        var requestType = command.CommandName + ".Request";
+        var receivedRequestType = command.CommandName + ".ReceivedRequest";
+        var responseType = command.CommandName + ".Response";
+        var receivedResponseType = command.CommandName + ".ReceivedResponse";
+
+        var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{command.CommandName}";
+        var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{command.CommandName}";
+#>
+        public class <#= command.CommandName #>ReactiveCommandComponentManager : IReactiveCommandComponentManager
+        {
+            public void PopulateReactiveCommandComponents(CommandSystem commandSystem, EntityManager entityManager, WorkerSystem workerSystem, World world)
+            {
+                var receivedRequests = commandSystem.GetRequests<<#= receivedRequestType #>>();
+                // todo Not efficient if it keeps jumping all over entities but don't care right now
+                for (int i = 0; i < receivedRequests.Count; ++i)
+                {
+                    if (!workerSystem.TryGetEntity(receivedRequests[i].EntityId, out var entity))
+                    {
+                        continue;
+                    }
+
+                    List<<#= receivedRequestType #>> requests;
+                    if (entityManager.HasComponent<<#= commandRequestBufferType #>>(entity))
+                    {
+                        requests = entityManager.GetComponentData<<#= commandRequestBufferType #>>(entity).Requests;
+                    }
+                    else
+                    {
+                        var data = new <#= commandRequestBufferType #>
+                        {
+                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Allocate(world)
+                        };
+                        data.Requests = new List<<#= receivedRequestType #>>();
+                        requests = data.Requests;
+                        entityManager.AddComponentData(entity, data);
+                    }
+
+                    requests.Add(receivedRequests[i]);
+                }
+
+
+                var receivedResponses = commandSystem.GetResponses<<#= receivedResponseType #>>();
+                // todo Not efficient if it keeps jumping all over entities but don't care right now
+                for (int i = 0; i < receivedResponses.Count; ++i)
+                {
+                    ref readonly var response = ref receivedResponses[i];
+
+                    if (response.SendingEntity == Unity.Entities.Entity.Null || !entityManager.Exists(response.SendingEntity))
+                    {
+                        continue;
+                    }
+
+                    List<<#= receivedResponseType #>> responses;
+                    if (entityManager.HasComponent<<#= commandResponseBufferType #>>(response.SendingEntity))
+                    {
+                        responses = entityManager.GetComponentData<<#= commandResponseBufferType #>>(response.SendingEntity).Responses;
+                    }
+                    else
+                    {
+                        var data = new <#= commandResponseBufferType #>
+                        {
+                            CommandListHandle = ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Allocate(world)
+                        };
+                        data.Responses = new List<<#= receivedResponseType #>>();
+                        responses = data.Responses;
+                        entityManager.AddComponentData(response.SendingEntity, data);
+                    }
+
+                    responses.Add(response);
+                }
+            }
+
+            public void Clean(World world)
+            {
+                ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.CleanDataInWorld(world);
+                ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.CleanDataInWorld(world);
+            }
+        }
+
+        public class <#= command.CommandName #>CommandSenderComponentManager : ICommandSenderComponentManager
+        {
+            private Dictionary<EntityId, (uint Sender, uint Responder)> entityIdToAllocatedHandles =
+                new Dictionary<EntityId, (uint Sender, uint Responder)>();
+
+            public void AddComponents(Entity entity, EntityManager entityManager, World world)
+            {
+                // todo error message if not the worker entity or spatial entity
+                EntityId entityId = entityManager.HasComponent<SpatialEntityId>(entity)
+                    ? entityManager.GetComponentData<SpatialEntityId>(entity).EntityId
+                    : new EntityId(0);
+
+                var commandSender = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= command.CommandName #>();
+                commandSender.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Allocate(world);
+                commandSender.RequestsToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Request>();
+
+                entityManager.AddComponentData(entity, commandSender);
+
+                var commandResponder = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= command.CommandName #>();
+                commandResponder.CommandListHandle =
+                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Allocate(world);
+                commandResponder.ResponsesToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Response>();
+
+                entityManager.AddComponentData(entity, commandResponder);
+
+                entityIdToAllocatedHandles.Add(entityId, (commandSender.CommandListHandle, commandResponder.CommandListHandle));
+            }
+
+            public void RemoveComponents(EntityId entityId, EntityManager entityManager, World world)
+            {
+                var workerSystem = world.GetExistingManager<WorkerSystem>();
+
+                workerSystem.TryGetEntity(entityId, out var entity);
+
+                if (entity != Entity.Null)
+                {
+                    entityManager.RemoveComponent<CommandSenders.<#= command.CommandName #>>(entity);
+                    entityManager.RemoveComponent<CommandResponders.<#= command.CommandName #>>(entity);
+                }
+
+                if (!entityIdToAllocatedHandles.TryGetValue(entityId, out var handles))
+                {
+                    throw new ArgumentException("Command components not added to entity");
+                }
+
+                entityIdToAllocatedHandles.Remove(entityId);
+
+                ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Free(handles.Sender);
+                ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Free(handles.Responder);
+            }
+
+            public void Clean(World world)
+            {
+                ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.CleanDataInWorld(world);
+                ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.CleanDataInWorld(world);
+            }
+        }
+
+<# } #>
+    }
+}

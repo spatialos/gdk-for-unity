@@ -1,5 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
 
@@ -31,8 +32,6 @@ namespace Improbable.Gdk.GameObjectCreation
                 throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
             }
 
-            var entityManager = world.GetOrCreateManager<EntityManager>();
-
             if (world.GetExistingManager<GameObjectInitializationSystem>() != null)
             {
                 workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
@@ -41,21 +40,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return;
             }
 
-            world.CreateManager<GameObjectInitializationSystem>(creator);
-
-            if (workerGameObject != null)
-            {
-                if (!entityManager.HasComponent<OnConnected>(workerSystem.WorkerEntity))
-                {
-                    workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent("You cannot set the Worker " +
-                            "GameObject once the World has already started running")
-                        .WithField(LoggingUtils.LoggerName, nameof(GameObjectCreationHelper)));
-                }
-                else
-                {
-                    world.CreateManager<WorkerEntityGameObjectLinkerSystem>(workerGameObject);
-                }
-            }
+            world.CreateManager<GameObjectInitializationSystem>(creator, workerGameObject);
         }
     }
 }

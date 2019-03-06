@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
+using Improbable.Gdk.Subscriptions;
 using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 
 namespace Improbable.Gdk.Core
@@ -244,14 +246,26 @@ namespace Improbable.Gdk.Core
 
         private void AddCoreSystems()
         {
-            World.CreateManager<WorkerSystem>(Connection, LogDispatcher, WorkerType, Origin);
-            World.GetOrCreateManager<SpatialOSSendSystem>();
+            var connectionHandler = new SpatialOSConnectionHandler(Connection);
+            World.CreateManager<WorkerSystem>(connectionHandler, Connection, LogDispatcher, WorkerType, Origin);
+            World.GetOrCreateManager<CommandSystem>();
+            World.GetOrCreateManager<ComponentUpdateSystem>();
+            World.GetOrCreateManager<EntitySystem>();
+            World.GetOrCreateManager<ComponentSendSystem>();
             World.GetOrCreateManager<SpatialOSReceiveSystem>();
-            World.GetOrCreateManager<CleanReactiveComponentsSystem>();
-            World.GetOrCreateManager<WorldCommandsCleanSystem>();
-            World.GetOrCreateManager<WorldCommandsSendSystem>();
-            World.GetOrCreateManager<CommandRequestTrackerSystem>();
-            World.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
+            World.GetOrCreateManager<SpatialOSSendSystem>();
+            World.GetOrCreateManager<EcsViewSystem>();
+            World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
+
+            // Subscriptions systems
+            World.GetOrCreateManager<CommandCallbackSystem>();
+            World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
+            World.GetOrCreateManager<ComponentCallbackSystem>();
+            World.GetOrCreateManager<RequireLifecycleSystem>();
+            World.GetOrCreateManager<SubscriptionSystem>();
+
+            // Reactive components
+            ReactiveComponentsHelper.AddCommonSystems(World);
         }
 
         public void Dispose()

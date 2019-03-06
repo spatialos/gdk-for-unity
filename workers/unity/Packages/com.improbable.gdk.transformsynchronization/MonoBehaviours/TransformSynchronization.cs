@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Subscriptions;
 using Improbable.Transform;
 using Improbable.Worker.CInterop;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     public class TransformSynchronization : MonoBehaviour
     {
-        [Require] private TransformInternal.Requirable.Reader transformReader;
+#pragma warning disable 649
+        [Require] private TransformInternalReader transformReader;
+        [Require] private Entity entity;
+        [Require] private World world;
+#pragma warning restore 649
 
         public List<TransformSynchronizationReceiveStrategy> ReceiveStrategies;
         public List<TransformSynchronizationSendStrategy> SendStrategies;
 
         public bool SetKinematicWhenNotAuthoritative = true;
 
-        private SpatialOSComponent spatialOSComponent;
         private EntityManager entityManager;
 
         private bool initialised;
@@ -28,28 +33,20 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             get
             {
-                if (enabled == false)
+                if (!initialised || enabled == false)
                 {
                     return 0;
                 }
 
-                var manager = spatialOSComponent.World.GetOrCreateManager<EntityManager>();
-                if (!initialised)
-                {
-                    initialised = manager.HasComponent<TransformToSet>(spatialOSComponent.Entity);
-                    if (!initialised)
-                    {
-                        return 0;
-                    }
-                }
+                var manager = world.GetOrCreateManager<EntityManager>();
 
                 if (transformReader.Authority != Authority.NotAuthoritative)
                 {
-                    return manager.GetComponentData<TicksSinceLastTransformUpdate>(spatialOSComponent.Entity)
+                    return manager.GetComponentData<TicksSinceLastTransformUpdate>(entity)
                         .NumberOfTicks + transformReader.Data.PhysicsTick;
                 }
 
-                return manager.GetComponentData<TransformToSet>(spatialOSComponent.Entity).ApproximateRemoteTick;
+                return manager.GetComponentData<TransformToSet>(entity).ApproximateRemoteTick;
             }
         }
 
@@ -61,16 +58,21 @@ namespace Improbable.Gdk.TransformSynchronization
                     $"on {gameObject.name} must be provided a transform receive strategy");
             }
 
-            spatialOSComponent = GetComponent<SpatialOSComponent>();
-            if (spatialOSComponent == null)
+            entityManager = world.GetOrCreateManager<EntityManager>();
+
+            StartCoroutine(DelayedApply());
+        }
+
+        private IEnumerator DelayedApply()
+        {
+            yield return null;
+            if (initialised)
             {
-                throw new InvalidOperationException($"{nameof(TransformSynchronization)} " +
-                    $" on should only be added to a GameObject linked to a SpatialOS entity");
+                yield break;
             }
 
-            entityManager = spatialOSComponent.World.GetOrCreateManager<EntityManager>();
-
             ApplyStrategies();
+            initialised = true;
         }
 
         private void OnDisable()
@@ -84,7 +86,8 @@ namespace Improbable.Gdk.TransformSynchronization
 
             if (SetKinematicWhenNotAuthoritative)
             {
-                commandBuffer.AddComponent(spatialOSComponent.Entity, new ManageKinematicOnAuthorityChangeTag());
+                commandBuffer.AddComponent(entity, new ManageKinematicOnAuthorityChangeTag());
+                commandBuffer.AddComponent(entity, new KinematicStateWhenAuth());
             }
 
             ApplyReceiveStrategies(commandBuffer);
@@ -99,12 +102,12 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in ReceiveStrategies)
             {
-                if (strategy.WorkerType != spatialOSComponent.Worker.WorkerType)
+                if (strategy.WorkerType != world.GetExistingManager<WorkerSystem>().WorkerType)
                 {
                     continue;
                 }
 
-                strategy.Apply(spatialOSComponent.Entity, spatialOSComponent.World, commandBuffer);
+                strategy.Apply(entity, world, commandBuffer);
             }
         }
 
@@ -119,24 +122,24 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in SendStrategies)
             {
-                if (strategy.WorkerType != spatialOSComponent.Worker.WorkerType)
+                if (strategy.WorkerType != world.GetExistingManager<WorkerSystem>().WorkerType)
                 {
                     continue;
                 }
 
-                strategy.Apply(spatialOSComponent.Entity, spatialOSComponent.World, commandBuffer);
+                strategy.Apply(entity, world, commandBuffer);
             }
         }
 
         private void AddCommonReceiveComponents(EntityCommandBuffer commandBuffer)
         {
-            commandBuffer.AddComponent(spatialOSComponent.Entity, new SetTransformToGameObjectTag());
+            commandBuffer.AddComponent(entity, new SetTransformToGameObjectTag());
 
             var transformComponent = transformReader.Data;
 
             var defaultToSet = new TransformToSet
             {
-                Position = transformComponent.Location.ToUnityVector3() + spatialOSComponent.Worker.Origin,
+                Position = transformComponent.Location.ToUnityVector3() + world.GetExistingManager<WorkerSystem>().Origin,
                 Velocity = transformComponent.Velocity.ToUnityVector3(),
                 Orientation = transformComponent.Rotation.ToUnityQuaternion(),
                 ApproximateRemoteTick = 0
@@ -147,20 +150,20 @@ namespace Improbable.Gdk.TransformSynchronization
                 Transform = transformComponent
             };
 
-            commandBuffer.AddComponent(spatialOSComponent.Entity, defaultToSet);
-            commandBuffer.AddComponent(spatialOSComponent.Entity, previousTransform);
-            commandBuffer.AddBuffer<BufferedTransform>(spatialOSComponent.Entity);
+            commandBuffer.AddComponent(entity, defaultToSet);
+            commandBuffer.AddComponent(entity, previousTransform);
+            commandBuffer.AddBuffer<BufferedTransform>(entity);
         }
 
         private void AddCommonSendComponents(EntityCommandBuffer commandBuffer)
         {
-            commandBuffer.AddComponent(spatialOSComponent.Entity, new GetTransformFromGameObjectTag());
+            commandBuffer.AddComponent(entity, new GetTransformFromGameObjectTag());
 
             var transformComponent = transformReader.Data;
 
             var defaultToSend = new TransformToSend
             {
-                Position = transformComponent.Location.ToUnityVector3() - spatialOSComponent.Worker.Origin,
+                Position = transformComponent.Location.ToUnityVector3() - world.GetExistingManager<WorkerSystem>().Origin,
                 Velocity = transformComponent.Velocity.ToUnityVector3(),
                 Orientation = transformComponent.Rotation.ToUnityQuaternion()
             };
@@ -177,7 +180,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 Transform = transformComponent
             };
 
-            var position = entityManager.GetComponentData<Position.Component>(spatialOSComponent.Entity);
+            var position = entityManager.GetComponentData<Position.Component>(entity);
             var lastPosition = new LastPositionSentData
             {
                 // could set this to the max time if we want to immediately send something
@@ -185,10 +188,10 @@ namespace Improbable.Gdk.TransformSynchronization
                 Position = position
             };
 
-            commandBuffer.AddComponent(spatialOSComponent.Entity, defaultToSend);
-            commandBuffer.AddComponent(spatialOSComponent.Entity, ticksSinceLastUpdate);
-            commandBuffer.AddComponent(spatialOSComponent.Entity, lastPosition);
-            commandBuffer.AddComponent(spatialOSComponent.Entity, lastTransform);
+            commandBuffer.AddComponent(entity, defaultToSend);
+            commandBuffer.AddComponent(entity, ticksSinceLastUpdate);
+            commandBuffer.AddComponent(entity, lastPosition);
+            commandBuffer.AddComponent(entity, lastTransform);
         }
     }
 }

@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -11,46 +10,58 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class RateLimitedTransformSendSystem : ComponentSystem
     {
-        private struct Data
+        private WorkerSystem worker;
+        private TickRateEstimationSystem tickRate;
+        private ComponentGroup transformGroup;
+
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public ComponentDataArray<TransformInternal.Component> TransformComponent;
-            public ComponentDataArray<TicksSinceLastTransformUpdate> TicksSinceLastUpdate;
-            public ComponentDataArray<LastTransformSentData> LastTransformSent;
-            [ReadOnly] public ComponentDataArray<TransformToSend> TransformToSend;
-            [ReadOnly] public SharedComponentDataArray<RateLimitedSendConfig> RateLimitedConfig;
+            base.OnCreateManager();
 
-            [ReadOnly] public ComponentDataArray<Authoritative<TransformInternal.Component>> DenotesAuthoritative;
+            worker = World.GetExistingManager<WorkerSystem>();
+            tickRate = World.GetExistingManager<TickRateEstimationSystem>();
+
+            transformGroup = GetComponentGroup(
+                ComponentType.Create<LastTransformSentData>(),
+                ComponentType.Create<TransformInternal.Component>(),
+                ComponentType.Create<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadOnly<TransformToSend>(),
+                ComponentType.ReadOnly<RateLimitedSendConfig>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
         }
-
-        [Inject] private Data data;
-        [Inject] private WorkerSystem worker;
-        [Inject] private TickRateEstimationSystem tickRate;
 
         protected override void OnUpdate()
         {
-            for (int i = 0; i < data.Length; ++i)
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            var rateLimitedConfigArray = transformGroup.GetSharedComponentDataArray<RateLimitedSendConfig>();
+            var transformArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
+            var transformToSendArray = transformGroup.GetComponentDataArray<TransformToSend>();
+            var lastTransformSentArray = transformGroup.GetComponentDataArray<LastTransformSentData>();
+            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
+
+            for (int i = 0; i < transformArray.Length; ++i)
             {
-                var lastTransformSent = data.LastTransformSent[i];
+                var lastTransformSent = lastTransformSentArray[i];
                 lastTransformSent.TimeSinceLastUpdate += Time.deltaTime;
-                data.LastTransformSent[i] = lastTransformSent;
+                lastTransformSentArray[i] = lastTransformSent;
 
                 if (lastTransformSent.TimeSinceLastUpdate <
-                    1.0f / data.RateLimitedConfig[i].MaxTransformUpdateRateHz)
+                    1.0f / rateLimitedConfigArray[i].MaxTransformUpdateRateHz)
                 {
                     continue;
                 }
 
-                var transform = data.TransformComponent[i];
+                var transform = transformArray[i];
 
-                var transformToSend = data.TransformToSend[i];
+                var transformToSend = transformToSendArray[i];
 
                 var currentTransform = new TransformInternal.Component
                 {
                     Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
                     Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
                     Velocity = transformToSend.Velocity.ToImprobableVelocity(),
-                    PhysicsTick = transform.PhysicsTick + data.TicksSinceLastUpdate[i].NumberOfTicks,
+                    PhysicsTick = transform.PhysicsTick + ticksSinceLastUpdateArray[i].NumberOfTicks,
                     TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
                 };
 
@@ -62,11 +73,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 lastTransformSent.TimeSinceLastUpdate = 0.0f;
                 lastTransformSent.Transform = transform;
-                data.LastTransformSent[i] = lastTransformSent;
+                lastTransformSentArray[i] = lastTransformSent;
 
-                data.TransformComponent[i] = currentTransform;
+                transformArray[i] = currentTransform;
 
-                data.TicksSinceLastUpdate[i] = new TicksSinceLastTransformUpdate
+                ticksSinceLastUpdateArray[i] = new TicksSinceLastTransformUpdate
                 {
                     NumberOfTicks = 0
                 };

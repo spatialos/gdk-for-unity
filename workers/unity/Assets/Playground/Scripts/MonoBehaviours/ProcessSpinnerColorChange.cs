@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using Improbable.Common;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
 namespace Playground.MonoBehaviours
 {
     public class ProcessSpinnerColorChange : MonoBehaviour
     {
-        [Require] private Collisions.Requirable.Reader collisionsReader;
-        [Require] private SpinnerColor.Requirable.Reader colorReader;
+#pragma warning disable 649
+        [Require] private CollisionsReader collisionsReader;
+        [Require] private SpinnerColorReader colorReader;
+#pragma warning restore 649
 
         private float collideTime;
         private bool flashing;
@@ -30,8 +32,8 @@ namespace Playground.MonoBehaviours
 
         private void OnEnable()
         {
-            collisionsReader.OnPlayerCollided += HandleCollisionEvent;
-            colorReader.ColorUpdated += HandleColorChange;
+            collisionsReader.OnPlayerCollidedEvent += HandleCollisionEvent;
+            colorReader.OnColorUpdate += HandleColorChange;
         }
 
         private void Awake()

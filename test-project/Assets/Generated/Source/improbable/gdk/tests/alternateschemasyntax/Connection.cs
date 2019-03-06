@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(1105));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -112,6 +112,47 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             }
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 1105;
@@ -137,6 +178,18 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                         obj.AddInt32(1, component.Value);
                     }
 
+                }
+            }
+
+            public static void SerializeUpdate(Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                {
+                    if (update.Value.HasValue)
+                    {
+                        var field = update.Value.Value;
+                        obj.AddInt32(1, field);
+                    }
                 }
             }
 
@@ -173,7 +226,20 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Update();
+                var obj = data.GetFields();
+
+                {
+                    var value = obj.GetInt32(1);
+                    update.Value = new global::Improbable.Gdk.Core.Option<int>(value);
+                    
+                }
+                return update;
+            }
+
+            public static Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot();
 
@@ -193,6 +259,20 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     {
                         var value = obj.GetInt32(1);
                         component.Value = value;
+                    }
+                    
+                }
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+                {
+                    if (obj.GetInt32Count(1) == 1)
+                    {
+                        var value = obj.GetInt32(1);
+                        snapshot.Value = value;
                     }
                     
                 }
@@ -241,7 +321,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -249,7 +329,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -263,14 +343,26 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+                update.Value = new Option<int>(snapshot.Value);
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(Connection.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(Connection.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

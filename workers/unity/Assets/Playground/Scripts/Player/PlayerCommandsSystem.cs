@@ -1,7 +1,7 @@
 using System;
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
@@ -79,7 +79,7 @@ namespace Playground
             var sender = playerData.Sender[0];
             var playerId = playerData.SpatialEntity[0].EntityId;
 
-            var component = rigidBody.gameObject.GetComponent<SpatialOSComponent>();
+            var component = rigidBody.gameObject.GetComponent<LaunchableBehaviour>();
 
             if (component == null || !EntityManager.HasComponent(component.Entity, typeof(Launchable.Component)))
             {
@@ -89,8 +89,8 @@ namespace Playground
             var impactPoint = Vector3f.FromUnityVector(info.point);
             var launchDirection = Vector3f.FromUnityVector(ray.direction);
 
-            sender.RequestsToSend.Add(Launcher.LaunchEntity.CreateRequest(playerId,
-                new LaunchCommandRequest(component.SpatialEntityId, impactPoint, launchDirection,
+            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
+                new LaunchCommandRequest(component.EntityId, impactPoint, launchDirection,
                     command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
                     playerId
                 )));

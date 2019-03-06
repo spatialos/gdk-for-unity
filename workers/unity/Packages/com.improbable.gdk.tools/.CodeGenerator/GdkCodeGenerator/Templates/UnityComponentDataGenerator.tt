@@ -115,7 +115,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(<#= componentDetails.ComponentId #>));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -154,6 +154,47 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
@@ -189,6 +230,24 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# if (ShouldGenerateClearedFieldsSet()) { #>
                     <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 6) #>
 <# } #>
+                }
+<# } #>
+            }
+
+            public static void SerializeUpdate(<#= componentNamespace #>.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+<# for (var i = 0; i < fieldDetailsList.Count; i++) {
+var fieldDetails = fieldDetailsList[i]; #>
+                {
+                    if (update.<#= fieldDetails.PascalCaseName #>.HasValue)
+                    {
+                        var field = update.<#= fieldDetails.PascalCaseName #>.Value;
+                        <#= fieldDetails.GetSerializationString("field", "obj", 6) #>
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                        <#= fieldDetails.GetTrySetClearedFieldString("field", "updateObj", 6) #>
+<# } #>
+                    }
                 }
 <# } #>
             }
@@ -235,7 +294,20 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return update;
             }
 
-            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static <#= componentNamespace #>.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new <#= componentNamespace #>.Update();
+                var obj = data.GetFields();
+
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetDeserializeDataIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+<# } #>
+                return update;
+            }
+
+            public static <#= componentNamespace #>.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new <#= componentNamespace #>.Snapshot();
 
@@ -259,6 +331,21 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
                 {
                     <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
+                }
+<# } #>
+            }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref <#= componentNamespace #>.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+<# if (ShouldGenerateClearedFieldsSet()) { #>
+                var clearedFields = updateObj.GetClearedFields();
+
+<# } #>
+<# foreach (var fieldDetails in fieldDetailsList) { #>
+                {
+                    <#= fieldDetails.GetDeserializeUpdateString("snapshot." + fieldDetails.PascalCaseName, "obj", 5) #>
                 }
 <# } #>
             }
@@ -308,7 +395,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -316,7 +403,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -330,14 +417,28 @@ var fieldDetails = fieldDetailsList[i]; #>
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+<# foreach (var field in fieldDetailsList) { #>
+                update.<#= field.PascalCaseName #> = new Option<<#= field.Type #>>(snapshot.<#= field.PascalCaseName #>);
+<# } #>
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(<#= componentDetails.ComponentName  #>.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

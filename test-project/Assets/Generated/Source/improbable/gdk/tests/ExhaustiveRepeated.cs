@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests
             {
                 var componentDataSchema = new ComponentData(new SchemaComponentData(197717));
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 
                 componentDataSchema.SchemaData?.Destroy();
                 componentDataSchema.SchemaData = null;
@@ -332,6 +332,47 @@ namespace Improbable.Gdk.Tests
             }
         }
 
+        public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
+        {
+            public bool HasAuthority;
+
+            public ComponentAuthority(bool hasAuthority)
+            {
+                HasAuthority = hasAuthority;
+            }
+
+            // todo think about whether any of this is necessary
+            // Unity does a bitwise equality check so this is just for users reading the struct
+            public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
+            public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
+
+            public bool Equals(ComponentAuthority other)
+            {
+                return this == other;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ComponentAuthority auth && this == auth;
+            }
+
+            public override int GetHashCode()
+            {
+                return HasAuthority.GetHashCode();
+            }
+
+            public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
+            {
+                return a.HasAuthority == b.HasAuthority;
+            }
+
+            public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
+            {
+                return !(a == b);
+            }
+        }
+
+        [System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 197717;
@@ -778,6 +819,299 @@ namespace Improbable.Gdk.Tests
                             updateObj.AddClearedField(18);
                         }
                         
+                }
+            }
+
+            public static void SerializeUpdate(Improbable.Gdk.Tests.ExhaustiveRepeated.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                {
+                    if (update.Field1.HasValue)
+                    {
+                        var field = update.Field1.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddBool(1, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(1);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field2.HasValue)
+                    {
+                        var field = update.Field2.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddFloat(2, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(2);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field3.HasValue)
+                    {
+                        var field = update.Field3.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddBytes(3, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(3);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field4.HasValue)
+                    {
+                        var field = update.Field4.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddInt32(4, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(4);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field5.HasValue)
+                    {
+                        var field = update.Field5.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddInt64(5, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(5);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field6.HasValue)
+                    {
+                        var field = update.Field6.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddDouble(6, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(6);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field7.HasValue)
+                    {
+                        var field = update.Field7.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddString(7, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(7);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field8.HasValue)
+                    {
+                        var field = update.Field8.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddUint32(8, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(8);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field9.HasValue)
+                    {
+                        var field = update.Field9.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddUint64(9, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(9);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field10.HasValue)
+                    {
+                        var field = update.Field10.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddSint32(10, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(10);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field11.HasValue)
+                    {
+                        var field = update.Field11.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddSint64(11, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(11);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field12.HasValue)
+                    {
+                        var field = update.Field12.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddFixed32(12, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(12);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field13.HasValue)
+                    {
+                        var field = update.Field13.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddFixed64(13, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(13);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field14.HasValue)
+                    {
+                        var field = update.Field14.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddSfixed32(14, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(14);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field15.HasValue)
+                    {
+                        var field = update.Field15.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddSfixed64(15, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(15);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field16.HasValue)
+                    {
+                        var field = update.Field16.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddEntityId(16, value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(16);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field17.HasValue)
+                    {
+                        var field = update.Field17.Value;
+                        foreach (var value in field)
+                        {
+                            global::Improbable.Gdk.Tests.SomeType.Serialization.Serialize(value, obj.AddObject(17));
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(17);
+                        }
+                        
+                    }
+                }
+                {
+                    if (update.Field18.HasValue)
+                    {
+                        var field = update.Field18.Value;
+                        foreach (var value in field)
+                        {
+                            obj.AddEnum(18, (uint) value);
+                        }
+                        
+                        if (field.Count == 0)
+                        {
+                            updateObj.AddClearedField(18);
+                        }
+                        
+                    }
                 }
             }
 
@@ -1522,7 +1856,195 @@ namespace Improbable.Gdk.Tests
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static Improbable.Gdk.Tests.ExhaustiveRepeated.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            {
+                var update = new Improbable.Gdk.Tests.ExhaustiveRepeated.Update();
+                var obj = data.GetFields();
+
+                {
+                    var listSize = obj.GetBoolCount(1);
+                    update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<BlittableBool>>(new global::System.Collections.Generic.List<BlittableBool>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBool(1, (uint) i);
+                        update.Field1.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFloatCount(2);
+                    update.Field2 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<float>>(new global::System.Collections.Generic.List<float>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFloat(2, (uint) i);
+                        update.Field2.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetBytesCount(3);
+                    update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<byte[]>>(new global::System.Collections.Generic.List<byte[]>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBytes(3, (uint) i);
+                        update.Field3.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt32Count(4);
+                    update.Field4 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt32(4, (uint) i);
+                        update.Field4.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt64Count(5);
+                    update.Field5 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt64(5, (uint) i);
+                        update.Field5.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetDoubleCount(6);
+                    update.Field6 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<double>>(new global::System.Collections.Generic.List<double>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexDouble(6, (uint) i);
+                        update.Field6.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetStringCount(7);
+                    update.Field7 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<string>>(new global::System.Collections.Generic.List<string>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexString(7, (uint) i);
+                        update.Field7.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint32Count(8);
+                    update.Field8 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint32(8, (uint) i);
+                        update.Field8.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint64Count(9);
+                    update.Field9 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint64(9, (uint) i);
+                        update.Field9.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint32Count(10);
+                    update.Field10 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint32(10, (uint) i);
+                        update.Field10.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint64Count(11);
+                    update.Field11 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint64(11, (uint) i);
+                        update.Field11.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed32Count(12);
+                    update.Field12 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<uint>>(new global::System.Collections.Generic.List<uint>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed32(12, (uint) i);
+                        update.Field12.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed64Count(13);
+                    update.Field13 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<ulong>>(new global::System.Collections.Generic.List<ulong>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed64(13, (uint) i);
+                        update.Field13.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed32Count(14);
+                    update.Field14 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<int>>(new global::System.Collections.Generic.List<int>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed32(14, (uint) i);
+                        update.Field14.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed64Count(15);
+                    update.Field15 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<long>>(new global::System.Collections.Generic.List<long>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed64(15, (uint) i);
+                        update.Field15.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetEntityIdCount(16);
+                    update.Field16 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexEntityIdStruct(16, (uint) i);
+                        update.Field16.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetObjectCount(17);
+                    update.Field17 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i));
+                        update.Field17.Value.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetEnumCount(18);
+                    update.Field18 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>());
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i);
+                        update.Field18.Value.Add(value);
+                    }
+                    
+                }
+                return update;
+            }
+
+            public static Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var component = new Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot();
 
@@ -2130,6 +2652,410 @@ namespace Improbable.Gdk.Tests
                     
                 }
             }
+
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot snapshot)
+            {
+                var obj = updateObj.GetFields();
+
+                var clearedFields = updateObj.GetClearedFields();
+
+                {
+                    var listSize = obj.GetBoolCount(1);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 1;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field1.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBool(1, (uint) i);
+                        snapshot.Field1.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFloatCount(2);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 2;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field2.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFloat(2, (uint) i);
+                        snapshot.Field2.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetBytesCount(3);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 3;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field3.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexBytes(3, (uint) i);
+                        snapshot.Field3.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt32Count(4);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 4;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field4.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt32(4, (uint) i);
+                        snapshot.Field4.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetInt64Count(5);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 5;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field5.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexInt64(5, (uint) i);
+                        snapshot.Field5.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetDoubleCount(6);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 6;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field6.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexDouble(6, (uint) i);
+                        snapshot.Field6.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetStringCount(7);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 7;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field7.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexString(7, (uint) i);
+                        snapshot.Field7.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint32Count(8);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 8;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field8.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint32(8, (uint) i);
+                        snapshot.Field8.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetUint64Count(9);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 9;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field9.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexUint64(9, (uint) i);
+                        snapshot.Field9.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint32Count(10);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 10;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field10.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint32(10, (uint) i);
+                        snapshot.Field10.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSint64Count(11);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 11;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field11.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSint64(11, (uint) i);
+                        snapshot.Field11.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed32Count(12);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 12;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field12.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed32(12, (uint) i);
+                        snapshot.Field12.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetFixed64Count(13);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 13;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field13.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexFixed64(13, (uint) i);
+                        snapshot.Field13.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed32Count(14);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 14;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field14.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed32(14, (uint) i);
+                        snapshot.Field14.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetSfixed64Count(15);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 15;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field15.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexSfixed64(15, (uint) i);
+                        snapshot.Field15.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetEntityIdCount(16);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 16;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field16.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = obj.IndexEntityIdStruct(16, (uint) i);
+                        snapshot.Field16.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetObjectCount(17);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 17;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field17.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = global::Improbable.Gdk.Tests.SomeType.Serialization.Deserialize(obj.IndexObject(17, (uint) i));
+                        snapshot.Field17.Add(value);
+                    }
+                    
+                }
+                {
+                    var listSize = obj.GetEnumCount(18);
+                    bool isCleared = false;
+                    foreach (var fieldIndex in clearedFields)
+                    {
+                        isCleared = fieldIndex == 18;
+                        if (isCleared)
+                        {
+                            break;
+                        }
+                    }
+                    if (listSize > 0 || isCleared)
+                    {
+                        snapshot.Field18.Clear();
+                    }
+                    for (var i = 0; i < listSize; i++)
+                    {
+                        var value = (global::Improbable.Gdk.Tests.SomeEnum) obj.IndexEnum(18, (uint) i);
+                        snapshot.Field18.Add(value);
+                    }
+                    
+                }
+            }
         }
 
         public struct Update : ISpatialComponentUpdate
@@ -2191,7 +3117,7 @@ namespace Improbable.Gdk.Tests
                 return Serialization.DeserializeUpdate(schemaDataOpt.Value);
             }
 
-            private static Snapshot DeserializeSnapshot(ComponentData snapshot, World world)
+            private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
                 var schemaDataOpt = snapshot.SchemaData;
                 if (!schemaDataOpt.HasValue)
@@ -2199,7 +3125,7 @@ namespace Improbable.Gdk.Tests
                     throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
                 }
 
-                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields(), world);
+                return Serialization.DeserializeSnapshot(schemaDataOpt.Value.GetFields());
             }
 
             private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
@@ -2213,14 +3139,43 @@ namespace Improbable.Gdk.Tests
                 Serialization.SerializeSnapshot(snapshot, data.SchemaData.Value.GetFields());
             }
 
+            private static Update SnapshotToUpdate(in Snapshot snapshot)
+            {
+                var update = new Update();
+                update.Field1 = new Option<global::System.Collections.Generic.List<BlittableBool>>(snapshot.Field1);
+                update.Field2 = new Option<global::System.Collections.Generic.List<float>>(snapshot.Field2);
+                update.Field3 = new Option<global::System.Collections.Generic.List<byte[]>>(snapshot.Field3);
+                update.Field4 = new Option<global::System.Collections.Generic.List<int>>(snapshot.Field4);
+                update.Field5 = new Option<global::System.Collections.Generic.List<long>>(snapshot.Field5);
+                update.Field6 = new Option<global::System.Collections.Generic.List<double>>(snapshot.Field6);
+                update.Field7 = new Option<global::System.Collections.Generic.List<string>>(snapshot.Field7);
+                update.Field8 = new Option<global::System.Collections.Generic.List<uint>>(snapshot.Field8);
+                update.Field9 = new Option<global::System.Collections.Generic.List<ulong>>(snapshot.Field9);
+                update.Field10 = new Option<global::System.Collections.Generic.List<int>>(snapshot.Field10);
+                update.Field11 = new Option<global::System.Collections.Generic.List<long>>(snapshot.Field11);
+                update.Field12 = new Option<global::System.Collections.Generic.List<uint>>(snapshot.Field12);
+                update.Field13 = new Option<global::System.Collections.Generic.List<ulong>>(snapshot.Field13);
+                update.Field14 = new Option<global::System.Collections.Generic.List<int>>(snapshot.Field14);
+                update.Field15 = new Option<global::System.Collections.Generic.List<long>>(snapshot.Field15);
+                update.Field16 = new Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId>>(snapshot.Field16);
+                update.Field17 = new Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType>>(snapshot.Field17);
+                update.Field18 = new Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>>(snapshot.Field18);
+                return update;
+            }
+
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(ExhaustiveRepeated.ComponentId, DeserializeData, DeserializeUpdate);
+                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
             }
 
             public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
             {
-                handler.Accept<Snapshot>(ExhaustiveRepeated.ComponentId, DeserializeSnapshot, SerializeSnapshot);
+                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
+            }
+
+            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
+            {
+                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
             }
         }
     }

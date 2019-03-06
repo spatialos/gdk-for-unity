@@ -26,7 +26,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 Any = Array.Empty<ComponentType>(),
                 None = new[]
                 {
-                    ComponentType.Subtractive<HeartbeatData>(),
+                    ComponentType.Create<HeartbeatData>(),
                 },
             };
 
