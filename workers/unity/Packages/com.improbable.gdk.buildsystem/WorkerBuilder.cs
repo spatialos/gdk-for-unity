@@ -193,7 +193,7 @@ namespace Improbable.Gdk.BuildSystem
                 if (target.Required)
                 {
                     throw new BuildFailedException(
-                        $"Build failed for {workerType}. Cannot build for {buildTarget} because build support is not installed in the Unity Editor.");
+                        $"Build failed for {workerType}. Cannot build for required {buildTarget} because build support is not installed in the Unity Editor.");
                 }
 
                 Debug.LogWarning($"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");

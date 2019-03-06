@@ -25,7 +25,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public bool Enabled;
 
         /// <summary>
-        /// Is this build target required
+        /// Is this build target required?
+        /// If a required target cannot be built, it will be treated as a failure.
         /// </summary>
         public bool Required;
 

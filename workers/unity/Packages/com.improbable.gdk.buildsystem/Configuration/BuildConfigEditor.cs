@@ -156,12 +156,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 if (foldoutState.Content == null || invalidateCachedContent > 0)
                 {
-                    if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(IsBuildTargetError) ||
-                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(IsBuildTargetError)
-                    )
+                    var buildStateIcon = GetBuildConfigurationStateIcon(configurationForWorker);
+                    if (buildStateIcon != null)
                     {
                         foldoutState.Icon =
-                            new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
+                            new GUIContent(EditorGUIUtility.IconContent(buildStateIcon))
                                 { tooltip = "Missing build support for one or more build targets." };
                     }
                     else
@@ -564,6 +563,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
                             { tooltip = "Missing build support for one or more build targets." };
                 }
+                else if (environmentConfiguration.BuildTargets.Any(IsBuildTargetWarning))
+                {
+                    foldoutState.Icon =
+                        new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInWarningIcon))
+                            { tooltip = "Missing build support for one or more build targets." };
+                }
                 else
                 {
                     foldoutState.Icon = null;
@@ -600,9 +605,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private GUIContent GetBuildTargetGuiContents(BuildTargetConfig c)
         {
-            return IsBuildTargetError(c)
-                ? style.BuildErrorIcons[c.Target]
-                : style.BuildTargetText[c.Target];
+            if (IsBuildTargetError(c))
+            {
+                return style.BuildErrorIcons[c.Target];
+            }
+
+            if (IsBuildTargetWarning(c))
+            {
+                return style.BuildWarningIcons[c.Target];
+            }
+
+            return style.BuildTargetText[c.Target];
         }
 
         private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
@@ -672,7 +685,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     EditorGUILayout.HelpBox(
                         $"Your Unity Editor is missing build support for {buildTarget.Target.ToString()}.\n" +
                         "Please add the missing build support options to your Unity Editor",
-                        buildTarget.Enabled ? MessageType.Error : MessageType.Warning);
+                        buildTarget.Required ? MessageType.Error : MessageType.Warning);
                 }
 
                 if (check.changed)
@@ -829,10 +842,37 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             invalidateCachedContent++;
         }
 
-        private static bool IsBuildTargetError(BuildTargetConfig t)
+        private static bool IsBuildTargetWarning(BuildTargetConfig t)
         {
             return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled;
         }
+
+        private static bool IsBuildTargetError(BuildTargetConfig t)
+        {
+            return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Required;
+        }
+
+        private static string GetBuildConfigurationStateIcon(WorkerBuildConfiguration configuration)
+        {
+            var isWarning = configuration.CloudBuildConfig.BuildTargets.Any(IsBuildTargetWarning) ||
+                configuration.LocalBuildConfig.BuildTargets.Any(IsBuildTargetWarning);
+
+            var isError = configuration.CloudBuildConfig.BuildTargets.Any(IsBuildTargetError) ||
+                configuration.LocalBuildConfig.BuildTargets.Any(IsBuildTargetError);
+
+            if (isError)
+            {
+                return BuildConfigEditorStyle.BuiltInErrorIcon;
+            }
+
+            if (isWarning)
+            {
+                return BuildConfigEditorStyle.BuiltInWarningIcon;
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         /// Unity's GUIUtility.GetStateObject changes based on the structure of the GUI, for example when expanding or collapsing foldouts.
