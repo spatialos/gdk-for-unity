@@ -45,7 +45,7 @@ The guide on [how to build your game]({{urlRoot}}/content/build) explains this p
 
 ### Checking out
 
-Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [(SpatialOS documentation) chunk](https://docs.improbable.io/reference/latest/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
+Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [chunk](https://docs.improbable.io/reference/latest/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
 
 * The worker has a local representation of every [SpatialOS entity](#spatialos-entity) in that chunk
 * The SpatialOS Runtime sends updates about those entities to the worker

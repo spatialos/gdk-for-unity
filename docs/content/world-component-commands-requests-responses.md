@@ -123,7 +123,7 @@ Stores the received command response to enable you to handle it appropriately.
 |-------------------|----------|--------------------------------------|
 | RequestId | `long` | The request ID of the original `Request` this response is reacting to. |
 | EntityId | `EntityId` | The ID of the SpatialOS entity from where the command originated from. |
-| StatusCode | [StatusCode](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#fields-4)(SpatialOS documentation) | A status code describing the outcome. |
+| StatusCode | [StatusCode](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#fields-4) | A status code describing the outcome. |
 | RequestPayload | `TRequest` | The data of the original command request. Its type `TRequest` is the argument type of the command as defined in schema. |
 | ResponsePayload | `TResponse` | If the command succeeded, this stores the data of the command response. Otherwise it is `null`. The type `TResponse` is the return type of the command as defined in schema. |
 | Message | `string` |The associated error message, if the command failed. Otherwise `null`. |

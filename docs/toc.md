@@ -1,5 +1,5 @@
 - <h3>SpatialOS GDK for Unity</h3>
-    - [Welcome]({{urlRoot}}/welcome)
+    - [Welcome]({{urlRoot}}/index)
     - Get started
         - [Introduction]({{urlRoot}}/content/get-started/get-started)
         - [1 - Set up]({{urlRoot}}/content/get-started/set-up)
