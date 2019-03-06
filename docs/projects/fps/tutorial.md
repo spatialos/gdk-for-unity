@@ -100,7 +100,7 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 
 You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are standard library components that SpatialOS expects. (Note that `Persistence` is another standard library component but this is optional.)
 
-Additionally, add the following line at the top of the file to ensure that the `Pickups` namespace can be resolved:
+**Note:** You need to ensure the code can reference the `Pickups` namespace; add this to the top of the file, as show below:
 
 ```csharp
 using Pickups;
