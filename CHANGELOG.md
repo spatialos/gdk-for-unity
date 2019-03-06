@@ -7,8 +7,8 @@
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
 - The `Require` attribute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
-- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. 
-- The Reader callback events' names have changed. 
+- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`.
+- The Reader callback events' names have changed.
     - `On{EVENT_NAME}` is now `On{EVENT_NAME}Event`.
     - `{FIELD_NAME}Updated` is now `On{FIELD_NAME}Update`.
 - The generated Writers have been renamed, previously they were called. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
@@ -34,12 +34,16 @@
 ### Added
 
 - All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
-    - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
+    - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`.
 - Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
 - Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
+    - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
+    - `InterestQuery` enables simpler construction of interest queries.
+    - `Constraint` contains static methods to easily create constraints for an interest query.
 
 ### Changed
 
@@ -80,12 +84,6 @@
 - Fixed a bug where launching on Android from the Unity Editor would break if you have spaces in your project path.
 - Fixed a bug where a Unity package with no dependencies field in its `package.json` would cause code generation to throw exceptions.
 - Fixed a bug where protocol logging would crash Linux workers.
-
-### Added
-- Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
-    - `Improbable.Gdk.QueryBasedInterestHelper.InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
-    - `Improbable.Gdk.QueryBasedInterestHelper.InterestQuery` enables simpler construction of interest queries.
-    - `Improbable.Gdk.QueryBasedInterestHelper.Constraint` contains static methods to easily create constraints for an interest query.
 
 ## `0.1.4` - 2019-01-28
 
