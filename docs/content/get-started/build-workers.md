@@ -25,7 +25,7 @@ As you will be launching a cloud deployment, you need to build out the code exec
     ├── UnityGameLogic@Linux.zip
 ```
 
-If your build succeeded you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). If you encountered build errors, check the **Common build errors** section below.
+If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). If you got warnings and build errors in Unity Editor Console window, check the **Common build errors** section below.
 
 <%(#Expandable title="Common build errors")%>
 
