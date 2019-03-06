@@ -163,6 +163,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                             new GUIContent(EditorGUIUtility.IconContent(buildStateIcon))
                                 { tooltip = "Missing build support for one or more build targets." };
                     }
+                    else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(NeedsAndroidSdk) ||
+                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(NeedsAndroidSdk))
+                    {
+                        foldoutState.Icon =
+                            new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
+                                { tooltip = "Missing Android SDK installation. Go to Preferences > External Tools to set it up." };
+                    }
                     else
                     {
                         foldoutState.Icon = null;
@@ -878,6 +885,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             return null;
         }
 
+
+        private static bool NeedsAndroidSdk(BuildTargetConfig t)
+        {
+            return t.Enabled && t.Target == BuildTarget.Android && string.IsNullOrEmpty(EditorPrefs.GetString("AndroidSdkRoot"));
+        }
 
         /// <summary>
         /// Unity's GUIUtility.GetStateObject changes based on the structure of the GUI, for example when expanding or collapsing foldouts.

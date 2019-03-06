@@ -67,21 +67,12 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                LocalLaunch.BuildConfig();
+                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, scriptingBackend);
 
-                var workerResults = new Dictionary<string, bool>();
-                foreach (var wantedWorkerType in wantedWorkerTypes)
+                if (!buildsSucceeded)
                 {
-                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
-                    workerResults[wantedWorkerType] = result;
+                    throw new BuildFailedException("Not all builds were completed successfully. See the log for more information.");
                 }
-
-                var missingWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => workerResults[k]));
-                var completedWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => !workerResults[k]));
-                Debug.LogWarning(
-                    $"Completed build for {buildEnvironment} target.\n"
-                    + $"Completed builds for: {completedWorkerTypes}\n"
-                    + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
             }
             catch (Exception e)
             {
@@ -102,14 +93,7 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
-                    LocalLaunch.BuildConfig();
-
-                    foreach (var workerType in workerTypes)
-                    {
-                        BuildWorkerForEnvironment(workerType, environment);
-                    }
-
-                    Debug.LogFormat("Completed build for {0} target", environment);
+                    BuildWorkers(workerTypes, environment);
                 }
                 catch (Exception)
                 {
@@ -122,7 +106,50 @@ namespace Improbable.Gdk.BuildSystem
             };
         }
 
-        internal static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
+        private static bool BuildWorkers(string[] workerTypes, BuildEnvironment buildEnvironment, ScriptingImplementation? scriptingBackend = null)
+        {
+            var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            var activeBuildTargetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
+
+            try
+            {
+                LocalLaunch.BuildConfig();
+
+                var workerResults = new Dictionary<string, bool>();
+                foreach (var wantedWorkerType in workerTypes)
+                {
+                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    workerResults[wantedWorkerType] = result;
+                }
+
+                var missingWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => !workerResults[k]));
+                var completedWorkerTypes = string.Join(" ", workerResults.Keys.Where(k => workerResults[k]));
+
+                if (missingWorkerTypes.Length > 0)
+                {
+                    Debug.LogWarning(
+                        $"Completed build for {buildEnvironment} target.\n"
+                        + $"Completed builds for: {completedWorkerTypes}\n"
+                        + $"Skipped builds for: {missingWorkerTypes}. See above for more information.");
+                    return false;
+                }
+                else
+                {
+                    Debug.Log($"Completed build for {buildEnvironment} target.");
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new BuildFailedException(e);
+            }
+            finally
+            {
+                EditorUserBuildSettings.SwitchActiveBuildTarget(activeBuildTargetGroup, activeBuildTarget);
+            }
+        }
+
+        private static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
@@ -140,6 +167,8 @@ namespace Improbable.Gdk.BuildSystem
                 Directory.CreateDirectory(PlayerBuildDirectory);
             }
 
+            var hasBuildSucceeded = true;
+
             foreach (var config in enabledTargets)
             {
                 var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(config.Target);
@@ -152,7 +181,7 @@ namespace Improbable.Gdk.BuildSystem
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
 
-                    BuildWorkerForTarget(workerType, config.Target, config.Options, targetEnvironment);
+                    hasBuildSucceeded &= BuildWorkerForTarget(workerType, config.Target, config.Options, targetEnvironment);
                 }
                 catch (Exception e)
                 {
@@ -164,7 +193,7 @@ namespace Improbable.Gdk.BuildSystem
                 }
             }
 
-            return true;
+            return hasBuildSucceeded;
         }
 
         public static void Clean()
@@ -180,13 +209,14 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        private static void BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
+        private static bool BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
             BuildOptions buildOptions, BuildEnvironment targetEnvironment)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
 
             if (!WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget])
             {
+<<<<<<< HEAD
                 var config = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
                 var target = config.BuildTargets.First(targetConfig => targetConfig.Target == buildTarget);
 
@@ -199,6 +229,10 @@ namespace Improbable.Gdk.BuildSystem
                 Debug.LogWarning($"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
 
                 return;
+=======
+                Debug.LogWarning($"Skipping {buildTarget} because support is not installed in the Unity Editor.");
+                return false;
+>>>>>>> 530b4d5bfa973f6957ee960f8b6fcd0f8ecd32f4
             }
 
             Debug.Log(
@@ -219,18 +253,26 @@ namespace Improbable.Gdk.BuildSystem
             var result = BuildPipeline.BuildPlayer(buildPlayerOptions);
             if (result.summary.result != BuildResult.Succeeded)
             {
+                if (buildTarget == BuildTarget.Android && string.IsNullOrEmpty(EditorPrefs.GetString("AndroidSdkRoot")))
+                {
+                    Debug.LogWarning($"Unable to build worker {workerType} for platform Android. " +
+                        $"Ensure you have the Android SDK set inside the Unity Editor Preferences.");
+                    return false;
+                }
+
                 throw new BuildFailedException($"Build failed for {workerType}");
             }
 
             if (buildTarget == BuildTarget.Android || buildTarget == BuildTarget.iOS)
             {
                 // Mobile clients can only be run locally, no need to package them
-                return;
+                return true;
             }
 
             var zipPath = Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName);
             var basePath = Path.Combine(EditorPaths.BuildScratchDirectory, workerBuildData.PackageName);
             Zip(zipPath, basePath, targetEnvironment == BuildEnvironment.Cloud);
+            return true;
         }
 
         private static void Zip(string zipAbsolutePath, string basePath, bool useCompression)
