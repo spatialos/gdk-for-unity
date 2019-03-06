@@ -169,7 +169,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     {
                         foldoutState.Icon =
                             new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
-                                { tooltip = "Ensure you have the Android SDK installed. Inside the Unity Editor, go to Preferences > External Tools to set it up." };
+                                { tooltip = "Missing Android SDK installation. Go to Preferences > External Tools to set it up." };
                     }
                     else
                     {
