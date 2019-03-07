@@ -85,7 +85,7 @@ public class SendSpawnCubeRequestSystem : ComponentSystem
             var requestSender = data.SpawnCubeSenders[i];
             var targetEntityId = data.EntityIds[i];
             // create the request you want to send
-            var request = CubeSpawner.SpawnCube.CreateRequest
+            var request = new CubeSpawner.SpawnCube.Request
             (
                 targetEntityId,
                 new Empty()
@@ -130,9 +130,9 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
                 // handle each SpawnCube request you received
                 // ...
                 // create a SpawnCube response
-                var spawnCubeResponse = CubeSpawner.SpawnCube.CreateResponse
+                var spawnCubeResponse = new CubeSpawner.SpawnCube.Response
                 (
-                    spawnCubeRequest,
+                    spawnCubeRequest.RequestId,
                     new Empty()
                 );
 
