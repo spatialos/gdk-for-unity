@@ -41,12 +41,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private readonly Dictionary<int, object> stateObjects = new Dictionary<int, object>();
 
         private static string[] allWorkers;
-        
+
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
 
         public void Awake()
         {
-            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };            
+            Undo.undoRedoPerformed += () => { invalidateCachedContent++; };
         }
 
         public override void OnInspectorGUI()
@@ -156,12 +156,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 if (foldoutState.Content == null || invalidateCachedContent > 0)
                 {
-                    if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(IsBuildTargetError) ||
-                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(IsBuildTargetError)
-                    )
+                    var buildStateIcon = GetBuildConfigurationStateIcon(configurationForWorker);
+                    if (buildStateIcon != null)
                     {
                         foldoutState.Icon =
-                            new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
+                            new GUIContent(EditorGUIUtility.IconContent(buildStateIcon))
                                 { tooltip = "Missing build support for one or more build targets." };
                     }
                     else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(NeedsAndroidSdk) ||
@@ -571,6 +570,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
                             { tooltip = "Missing build support for one or more build targets." };
                 }
+                else if (environmentConfiguration.BuildTargets.Any(IsBuildTargetWarning))
+                {
+                    foldoutState.Icon =
+                        new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInWarningIcon))
+                            { tooltip = "Missing build support for one or more build targets." };
+                }
                 else
                 {
                     foldoutState.Icon = null;
@@ -607,9 +612,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private GUIContent GetBuildTargetGuiContents(BuildTargetConfig c)
         {
-            return IsBuildTargetError(c)
-                ? style.BuildErrorIcons[c.Target]
-                : style.BuildTargetText[c.Target];
+            if (IsBuildTargetError(c))
+            {
+                return style.BuildErrorIcons[c.Target];
+            }
+
+            if (IsBuildTargetWarning(c))
+            {
+                return style.BuildWarningIcons[c.Target];
+            }
+
+            return style.BuildTargetText[c.Target];
         }
 
         private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
@@ -635,6 +648,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             var options = buildTarget.Options;
             var enabled = buildTarget.Enabled;
+            var required = buildTarget.Required;
 
             using (var check = new EditorGUI.ChangeCheckScope())
             using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
@@ -644,8 +658,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 enabled = EditorGUILayout.Toggle("Build", enabled);
 
+                if (!enabled)
+                {
+                    required = false;
+                }
+
                 using (new EditorGUI.DisabledScope(!buildTarget.Enabled))
                 {
+                    required = EditorGUILayout.Toggle("Required", required);
+
                     switch (buildTarget.Target)
                     {
                         case BuildTarget.StandaloneOSX:
@@ -676,7 +697,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     EditorGUILayout.HelpBox(
                         $"Your Unity Editor is missing build support for {buildTarget.Target.ToString()}.\n" +
                         "Please add the missing build support options to your Unity Editor",
-                        buildTarget.Enabled ? MessageType.Error : MessageType.Warning);
+                        buildTarget.Required ? MessageType.Error : MessageType.Warning);
                 }
 
                 if (check.changed)
@@ -684,7 +705,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     RecordUndo("Worker build options");
 
                     env.BuildTargets[selectedBuildTarget.Index] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled);
+                        new BuildTargetConfig(buildTarget.Target, options, enabled, required);
 
                     selectedBuildTarget.Choices = null;
                 }
@@ -833,10 +854,37 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             invalidateCachedContent++;
         }
 
-        private static bool IsBuildTargetError(BuildTargetConfig t)
+        private static bool IsBuildTargetWarning(BuildTargetConfig t)
         {
             return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled;
         }
+
+        private static bool IsBuildTargetError(BuildTargetConfig t)
+        {
+            return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Required;
+        }
+
+        private static string GetBuildConfigurationStateIcon(WorkerBuildConfiguration configuration)
+        {
+            var isWarning = configuration.CloudBuildConfig.BuildTargets.Any(IsBuildTargetWarning) ||
+                configuration.LocalBuildConfig.BuildTargets.Any(IsBuildTargetWarning);
+
+            var isError = configuration.CloudBuildConfig.BuildTargets.Any(IsBuildTargetError) ||
+                configuration.LocalBuildConfig.BuildTargets.Any(IsBuildTargetError);
+
+            if (isError)
+            {
+                return BuildConfigEditorStyle.BuiltInErrorIcon;
+            }
+
+            if (isWarning)
+            {
+                return BuildConfigEditorStyle.BuiltInWarningIcon;
+            }
+
+            return null;
+        }
+
 
         private static bool NeedsAndroidSdk(BuildTargetConfig t)
         {
