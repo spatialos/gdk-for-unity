@@ -50,7 +50,7 @@ component HealthPickup {
     ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
 
     Code generation creates C# helper classes based on the components and properties defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang) snippet above. It therefore must be run in order to make use of your newly defined `HealthPickup` component within your game logic.<br>
-    
+
     **Note:** When writing schema files, your properties must use snake case (for example, "health_value"), but the code generation process will create the helper classes in PascalCase (for example, "HealthValue").
 
 <%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
@@ -63,16 +63,17 @@ If you are worried your generated code is in a bad state (such as having helper 
 <%(#Expandable title="Where is the generated code?")%>The generated classes for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the Scenes when you use a component. Note that you don’t need to understand the generated code in order to follow this tutorial.
 <%(/Expandable)%>
 
-### Entity templates
+### Define a new SpatialOS entity
 
-Health pickups are a new type of entity, and we must next define which components should be instantiated each time a new 'health pickup' entity is created.
+Now that we've defined and generated the `HealthPickup` component and its properties, let's deifine the `HealthPickup` entity we're going to attach that component to.
 
-As is typical for SpatialOS GDK projects, the FPS Starter Project contains a C# file that declares a function for each type of entity. This function defines what components are used to construct an entity. The object it returns is an [Entity Template]({{urlRoot}}/content/entity-templates). Extending an existing entity type is as easy as adding additional components while the entity type is being constructed.
+All SpatialOS GDK projects contain a C# file that, once for each type of entity in the project, declares a function that defines which components should be instantiated when a new type of that entity is added to a [SpatialOS World]({{urlRoot}}/content/glossary#spatialos-world). The object that these functions return is an [entity template]({{urlRoot}}/content/entity-templates).
 
-You can find this file in your Unity project: `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs`.
+`HealthPickup` is a new type of entity, so we must create a new entity template. To do this, we'll need to add a new function within the `FpsEntityTemplates` class:
 
-To define an entirely new entity type we will need to add a new function within the `FpsEntityTemplates` class:
-
+1. In your Unity Editor, locate `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs` and open it in your code editor.
+1. Ensure your code can reference the `Pickups` namespace by adding `using Pickups;` to the top of the file.
+1. Define `HealthPickup`, an entirely new type of entity, by adding this new function within the `FpsEntityTemplates` class:
 ```csharp
 public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 {
@@ -92,39 +93,14 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 }
 ```
 
-You may notice that `Position` and `Metadata` appear in the entity template of _every_ entity type. This is because these are standard library components that SpatialOS expects. (Note that `Persistence` is another standard library component but this is optional.)
+Let's break down what the above snippet does:<br>
 
-**Note:** You need to ensure the code can reference the `Pickups` namespace; add this to the top of the file, as show below:
-
-```csharp
-using Pickups;
-```
-
-<%(#Expandable title="What are the 'well-known components' (Position, Metadata, Persistence) used for?")%>The SpatialOS 'well-known components' are for information that are almost always necessary on each entity.
-
-**Position** is the canonical world position of the entity which, most importantly, is used by the SpatialOS [load-balancer (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) when dividing work between workers on a proximity basis.
-
-**Metadata** is an identifier of the type of entity. The SpatialOS GDK for Unity uses `Metadata` for matching to a Unity prefab name within your project.
-
-**Persistence** indicates whether the entity can be saved out to snapshots.<%(/Expandable)%>
-
-#### Add components
-
-From your `HealthComponent`, the GDK has generated a `Pickups.HealthPickup.Snapshot` struct.
-
-To add an instance of this struct to the `HealthPickup` entity use the line: `.AddComponent(healthPickupComponent, gameLogic)`.
-
-#### Set permissions (ACLs)
-
-[Access Control Lists]({{urlRoot}}/content/glossary#access-control-list-acl) are how SpatialOS specifies which workers have permission to read-from or write-to the values of certain components. There may be data which you want to be kept private to server-side workers (because clients might use that knowledge to cheat!). Some components should definitely restrict their write-access to specific workers (e.g. a particular player's client) or to server-side workers only, to prevent exploits. For example, in an RPG a player should probably not be able to update the amount of gold they are carrying (at least, not without the server-side validating they aren't cheating!).
-
-In the EntityTemplate syntax, the `.SetReadAccess(gameLogic, WorkerUtils.UnityClient)` function call stated that all worker types should be able to read the data for this entity.
-
-For each of the other components, such as your newly added `HealthPickup` component, the worker type which is given write-access is specified as a second argument to the component-adding function, e.g. `WorkerUtils.UnityGameLogic`. This is simply a string which identifies which worker type should be granted the relevant permission.
-
-The `EntityTemplate` also provides methods for manipulating the `ACL` of an entity without adding a snapshot. For example, `.SetComponentWriteAccess(EntityAcl.Id, gameLogic)` sets the write access for the `EntityAcl` component.
-
-For this project, `UnityGameLogic` indicates that the `UnityGameLogic` worker is the one that handles server-side game logic. The identifier `WorkerUtils.UnityClient` would indicate that all clients are granted the relevant permission, but in this case we don't want clients to be able to alter how much health is granted to players by a health pack, so we pass `WorkerUtils.UnityGameLogic` as the second parameter when adding the `healthPickupComponent`.
+ * The struct `Pickups.HealthPickup.Snapshot` was generated from the `HealthPickup` component you previously defined in schemalang.<br>
+ * The line `entityTemplate.AddComponent(healthPickupComponent, gameLogic);` adds an instance of this struct to the `HealthPickup` entity.<br>
+ * The line `entityTemplate.SetReadAccess(gameLogic, WorkerUtils.UnityClient);` states that both [server-workers]({{urlRoot}}/content/glossary#server-worker) (`gameLogic`) and [client-workers]({{urlRoot}}/content/glossary#client-worker) (`UnityClient`) have [read access]({{urlRoot}}/content/glossary#read-access) to this entity (that they can see health packs).
+ * The line `entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, gameLogic);` states that only the server-worker has [write access]({{urlRoot}}/content/glossary#write-access) to the `healthPickupComponent`.<br>
+We state this because we don't want clients to be able to alter how much health is in a health pack, that would be cheating.
+ * You may also notice `Position`, `Metadata` and `Persistence`, these are [standard library](https://docs.improbable.io/reference/13.6/shared/schema/standard-schema-library) components that you can ignore for now.
 
 <%(#Expandable title="How would you give only a specific client write-access for a component?")%>Some component data should be editable/updateable by the player's client, but not by the clients of any other players. In the FPS Starter Project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write access over a number of components: `clientMovement`, `clientRotation`, `clientHeartbeat` etc.
 
@@ -137,12 +113,12 @@ The information that specifies exactly _which_ client should be granted permissi
 To find out about how to do this, read up about [worker attribute sets](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 <%(/Expandable)%>
 
-## Add entities to the world
+## Add your new entities to the snapshot
 
-Once an entity template function exists you have a way of constructing the _template_ of an entity. You now have a couple of ways of adding a health pack entity to the world:
+In this section we’re going to add health pack entities to the SpatialOS world. There are two ways to do this:
 
 * At runtime, by passing an `EntityTemplate` object to an entity creation function.
-* At start-time, by adding an entity instance to the [Snapshot]({{urlRoot}}/content/glossary#snapshot) so it is already in the world when the game begins.
+* At start-up, by adding health pack entities to the [Snapshot]({{urlRoot}}/content/glossary#snapshot), so they are already in the world when the game begins.
 
 For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
 
