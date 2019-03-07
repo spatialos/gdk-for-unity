@@ -66,4 +66,3 @@ test-project/Assets/.Schema/from_gdk_packages
 !test-project/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
 .shared-ci/
-

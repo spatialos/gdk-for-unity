@@ -21,6 +21,12 @@ namespace Improbable.Gdk.Tools
         public static string CoreSdkVersion { get; }
 
         /// <summary>
+        ///     The absolute path to the root folder of the SpatialOS project.
+        /// </summary>
+        public static readonly string
+            SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
+
+        /// <summary>
         ///     The absolute path to the `spatial` binary, or the empty string if it doesn't exist.
         /// </summary>
         public static string SpatialBinary => DiscoverLocation("spatial");

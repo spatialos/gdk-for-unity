@@ -7,8 +7,8 @@
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
 - The `Require` attribute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
-- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`. 
-- The Reader callback events' names have changed. 
+- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`.
+- The Reader callback events' names have changed.
     - `On{EVENT_NAME}` is now `On{EVENT_NAME}Event`.
     - `{FIELD_NAME}Updated` is now `On{FIELD_NAME}Update`.
 - The generated Writers have been renamed, previously they were called. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
@@ -34,12 +34,18 @@
 ### Added
 
 - All generated schema types, enums, and types which implement `ISpatialComponentSnapshot` are now marked as `Serializable`.
-    - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`. 
+    - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`.
 - Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
 - Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- Added constructors for all generated component snapshot types.
+- Added the ability to send arbitrary serialized data in a player creation request.
+    - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
+    - Added `SerializeArguments` and `DeserializeArguments<T>` methods to `PlayerLifecycleHelper`.
+- Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
+- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
 - Added the ability to mark a build target as `Required` which will cause builds to fail in the Editor if the prerequisite build support is not installed.
 
 ### Changed

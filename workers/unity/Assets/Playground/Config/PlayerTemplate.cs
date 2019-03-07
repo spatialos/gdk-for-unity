@@ -8,7 +8,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
         {
             var clientAttribute = $"workerId:{workerId}";
 
@@ -25,7 +25,8 @@ namespace Playground
             PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, workerId, clientAttribute,
                 WorkerUtils.UnityGameLogic);
 
-            template.SetReadAccess(WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic, WorkerUtils.AndroidClient, WorkerUtils.iOSClient);
+            template.SetReadAccess(WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic, WorkerUtils.AndroidClient,
+                WorkerUtils.iOSClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
