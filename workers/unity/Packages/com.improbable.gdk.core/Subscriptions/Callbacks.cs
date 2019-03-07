@@ -3,148 +3,107 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
-    {
-        public int Compare(T x, T y)
-        {
-            return y.CompareTo(x);
-        }
-    }
-
-    // We need to avoid changing the underlying map while iterating over it. For example, if a
-    // callback removes itself, a call to InvokeAll iterates over the map to invoke each callback.
-    // This then indirectly invokes Remove, which makes the iteration crash.
-    //
-    // A simple solution to this problem would be to copy the map for each iteration, but this
-    // allocates a significant amount of memory each time. Instead, we fix this issue by postponing
-    // changes to the map until the end of the top-level call to this object. In the mentioned
-    // example, when InvokeAll indirectly calls Remove, the removal is not done immediately, but
-    // postponed to the end of the (top-level) InvokeAll call.
-    //
-    // The current callbacks are those in the map, plus toAdd, minus toRemove. The changes are
-    // merged via the UpdateGuard.
     internal class Callbacks<T>
     {
-        private SortedDictionary<ulong, Action<T>> map = new SortedDictionary<ulong, Action<T>>();
+        private List<WrappedCallback<T>> callbacks = new List<WrappedCallback<T>>();
+        private HashSet<ulong> currentKeys = new HashSet<ulong>();
 
-        private SortedDictionary<ulong, Action<T>> mapReversed =
-            new SortedDictionary<ulong, Action<T>>(new DescendingComparer<ulong>());
+        // These can be lists as we expect the number of callbacks added/removed during invocation of other callbacks
+        // to be low.
+        private List<ulong> toRemove = new List<ulong>();
+        private List<WrappedCallback<T>> toAdd = new List<WrappedCallback<T>>();
 
-        private SortedDictionary<ulong, Action<T>> toAdd = new SortedDictionary<ulong, Action<T>>();
-        private SortedDictionary<ulong, uint> toRemove = new SortedDictionary<ulong, uint>();
-
-        // Current call level with 0 for the top-level call.
-        private int callDepth = 0;
+        private bool isInInvoke = false;
 
         public void Add(ulong key, Action<T> callback)
         {
-            try
+            if (isInInvoke)
             {
-                EnterUpdateGuard();
-                toAdd.Add(key, callback);
-                toRemove.Remove(key);
+                toAdd.Add(new WrappedCallback<T>(key, callback));
+                return;
             }
-            finally
-            {
-                ExitUpdateGuard();
-            }
+
+            callbacks.Add(new WrappedCallback<T>(key, callback));
+            currentKeys.Add(key);
         }
 
         public bool Remove(ulong key)
         {
-            try
+            if (!currentKeys.Contains(key))
             {
-                EnterUpdateGuard();
-
-                var isInMap = map.ContainsKey(key);
-                var hadPendingAdd = toAdd.Remove(key);
-
-                if (isInMap)
-                {
-                    var createdPendingRemove = !toRemove.ContainsKey(key);
-                    toRemove.Add(key, /* ignored */ 0);
-                    return createdPendingRemove;
-                }
-                else
-                {
-                    return hadPendingAdd;
-                }
+                return false;
             }
-            finally
+
+            if (isInInvoke)
             {
-                ExitUpdateGuard();
+                if (toRemove.Contains(key))
+                {
+                    return false;
+                }
+
+                toRemove.Add(key);
+                return true;
             }
+
+            currentKeys.Remove(key);
+            return callbacks.RemoveAll(callback => callback.Key == key) == 1;
         }
 
         public void InvokeAll(T op)
         {
-            try
+            isInInvoke = true;
+
+            for (int i = 0; i < callbacks.Count; i++)
             {
-                EnterUpdateGuard();
-                foreach (var pair in map)
-                {
-                    pair.Value(op);
-                }
+                callbacks[i].Action(op);
             }
-            finally
-            {
-                ExitUpdateGuard();
-            }
+
+            isInInvoke = false;
+
+            FlushDefferedOperations();
         }
 
         public void InvokeAllReverse(T op)
         {
-            try
+            isInInvoke = true;
+
+            for (int i = callbacks.Count - 1; i >= 0; i--)
             {
-                EnterUpdateGuard();
-                foreach (var pair in mapReversed)
-                {
-                    pair.Value(op);
-                }
+                callbacks[i].Action(op);
             }
-            finally
-            {
-                ExitUpdateGuard();
-            }
+
+            isInInvoke = false;
+
+            FlushDefferedOperations();
         }
 
-        /// <summary>
-        ///     Merge toAdd and toRemove with map.
-        /// </summary>
-        private void UpdateCallbacks()
+        private void FlushDefferedOperations()
         {
-            foreach (var node in toAdd)
+            callbacks.RemoveAll(callback => toRemove.Contains(callback.Key));
+
+            foreach (var key in toRemove)
             {
-                map.Add(node.Key, node.Value);
-                mapReversed.Add(node.Key, node.Value);
+                currentKeys.Remove(key);
             }
 
-            toAdd.Clear();
-            foreach (var node in toRemove)
+            foreach (var callback in toAdd)
             {
-                map.Remove(node.Key);
-                mapReversed.Remove(node.Key);
+                callbacks.Add(callback);
             }
 
             toRemove.Clear();
+            toAdd.Clear();
         }
 
-        /// <summary>
-        ///     Registers that a call is entered to update the state of the map accordingly.
-        /// </summary>
-        private void EnterUpdateGuard()
+        private struct WrappedCallback<T>
         {
-            ++callDepth;
-        }
+            public ulong Key;
+            public Action<T> Action;
 
-        /// <summary>
-        ///     Registers that a call is exited to update the state of the map accordingly.
-        /// </summary>
-        private void ExitUpdateGuard()
-        {
-            if (--callDepth == 0)
+            public WrappedCallback(ulong key, Action<T> action)
             {
-                UpdateCallbacks();
+                Key = key;
+                Action = action;
             }
         }
     }
