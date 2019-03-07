@@ -10,6 +10,16 @@
 
 ## How authority is represented in Unity's ECS
 
+### Authority shared components
+
+For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a _ECS shared component_ (an ECS `ISharedComponentData`) to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
+
+This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
+
+> Note that this component does not contain information about `AuthorityLossImminent` notifications. To listen to these, see [Authority reactive components](#authority-reactive-components) below.
+
+### Authority reactive components
+
 For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a corresponding _ECS component tag_ (an ECS `IComponentData` component with no fields) to the ECS entity. We call these "authority tags".
 
 The authority tags in the GDK are (where `T` is a [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component)):
