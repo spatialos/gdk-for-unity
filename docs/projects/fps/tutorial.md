@@ -10,7 +10,7 @@ Before starting this tutorial, make sure you have followed the [Get started]({{u
 
 You will add health pack pick-ups to the game. These pick-ups grant health to players who walk over them.
 
-To implement this feature you:
+To implement this feature you will:
 
 * Define a new [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) called `HealthPickup` and define its [component properties]({{urlRoot}}/content/glossary#spatialos-component).
 * Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/content/glossary#snapshot) so they appear in the [SpatialOS world]({{urlRoot}}/content/glossary#spatialos-world) at startup.
@@ -20,13 +20,15 @@ To implement this feature you:
 1. Launch your Unity Editor.
 1. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-## Define a new entity
+## Define a new SpatialOS entity
 
-SpatialOS entities are made up of SpatialOS components, which store properties (data) associated with that entity. Components are defined in your project's [schema]({{urlRoot}}/content/glossary#schema).<br>
-Let's create a new type of entity:
+In this section we're going to define a new [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) called `HealthPickup`. SpatialOS entities are made up of SpatialOS components, which store the properties associated with that entity. Components are defined in your project's [schema]({{urlRoot}}/content/glossary#schema).<br>
+
+### Define a new SpatialOS component
+The first step in defining a new SpatialOS entity is defining its components and their properties. Let's do that now:
 
 1. Using your file manager, navigate to `gdk-for-unity-fps-starter-project/schema`, then create a `pickups` directory.
-1. Within your `gdk-for-unity-fps-starter-project/schema/pickups/` directory, create a new file called `health_pickup.schema`.
+1. Inside the `gdk-for-unity-fps-starter-project/schema/pickups/` directory, use a text editor of your choice to create a new file called `health_pickup.schema`.
 1. Paste in the following definition and save the file:
 
 ```
@@ -45,9 +47,11 @@ component HealthPickup {
 
 1. Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS** menu in your Unity Editor.
 
-![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
+    ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
 
-Code generation creates C# helper classes to allow you to make use of your `schema` within your game's code. It therefore must be run in order to make used of your newly defined `HealthPickup` component within your game logic. It's worth noting that when writing schema files, your properties must use snake case (e.g. "health_value"), and the code generation process will create the helper classes with PascalCase (i.e. "HealthValue").
+    Code generation creates C# helper classes based on the components and properties defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang) snippet above. It therefore must be run in order to make use of your newly defined `HealthPickup` component within your game logic.<br>
+    
+    **Note:** When writing schema files, your properties must use snake case (for example, "health_value"), but the code generation process will create the helper classes in PascalCase (for example, "HealthValue").
 
 <%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
 
