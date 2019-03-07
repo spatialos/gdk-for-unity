@@ -29,37 +29,30 @@ The following code snippet shows an example of how to create an entity inside a 
 ```csharp
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
 public class EntityCreationBehaviour : MonoBehaviour
 {
-    [Require] private WorldCommands.Requirable.WorldCommandRequestSender commandSender;
-    [Require] private WorldCommands.Requirable.WorldCommandResponseHandler responseHandler;
-
-    void OnEnable()
-    {
-        // Register callback for listening to any incoming create entity command responses for this entity
-        responseHandler.OnCreateEntityResponse += OnCreateEntityResponse;
-    }
+    [Require] private WorldCommandsSender commandSender;
 
     public void CreateExampleEntity()
     {
         var entityTemplate = new EntityTemplate();
 
         entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
-        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "MyPrefab" }, "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot("MyPrefab"), "UnityGameLogic");
         entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
         entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
         entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
 
         // send create entity command request without reserving an entity id
         // The SpatialOS Runtime will automatically assign a SpatialOS entity id to the newly created entity
-        commandSender.CreateEntity(entityTemplate);
+        commandSender.SendCreateEntityCommand(new WorldCommands.CreateEntity.Request(entityTemplate), OnCreateEntityResponse);
     }
 
-    void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
+    private void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
     {
         if (response.StatusCode == StatusCode.Success)
         {
@@ -94,22 +87,13 @@ using UnityEngine;
 
 public class MultipleEntityCreationBehaviour : MonoBehaviour
 {
-    [Require] private WorldCommands.Requirable.WorldCommandRequestSender commandSender;
-    [Require] private WorldCommands.Requirable.WorldCommandResponseHandler responseHandler;
-
-    void OnEnable()
-    {
-        // Register callback for listening to any incoming reserve entity command responses for this entity.
-        responseHandler.OnReserveEntityIdsResponse += OnReserveEntityIdsResponse;
-        // Register callback for listening to any incoming create entity command responses for this entity.
-        responseHandler.OnCreateEntityResponse += OnCreateEntityResponse;
-    }
+    [Require] private WorldCommandsSender commandSender;
 
     public void CreateManyExampleEntities(uint numberOfEntitiesToCreate)
     {
         // Send reserve entities command request.
         // The response will be handled in the OnReserveEntityResponse method below.
-        commandSender.ReserveEntityIds(numberOfEntitiesToCreate);
+        commandSender.SendReserveEntityIdsCommand(new WorldCommands.ReserveEntityIds.Request(numberOfEntitiesToCreate), OnReserveEntityIdsResponse);
     }
 
     private void OnReserveEntityIdsResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
@@ -127,12 +111,12 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
         }
     }
 
-    public void CreateReservedEntities(EntityId firstEntityId, int numberOfReservedEntityIds)
+    private void CreateReservedEntities(EntityId firstEntityId, int numberOfReservedEntityIds)
     {
         var entityTemplate = new EntityTemplate();
 
         entityTemplate.AddComponent(new Position.Snapshot(), "UnityGameLogic");
-        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "MyPrefab" }, "UnityGameLogic");
+        entityTemplate.AddComponent(new Metadata.Snapshot("MyPrefab"), "UnityGameLogic");
         entityTemplate.AddComponent(new ExampleComponent.Snapshot(), "UnityGameLogic");
         entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
         entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
@@ -140,11 +124,11 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
 
         for (var i = 0; i < numberOfReservedEntityIds; ++i)
         {
-            commandSender.CreateEntity(entityTemplate, entityIdToCreate);
+            commandSender.SendCreateEntityCommand(new WorldCommands.CreateEntity.Request(entityTemplate), OnCreateEntityResponse);
         }
     }
 
-    void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
+    private void OnCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
     {
         if (response.StatusCode == StatusCode.Success)
         {
@@ -177,29 +161,15 @@ using UnityEngine;
 
 public class EntityDeletionBehaviour : MonoBehaviour
 {
-    [Require] WorldCommands.Requirable.WorldCommandRequestSender commandSender;
-    [Require] WorldCommands.Requirable.WorldCommandResponseHandler responseHandler;
+    [Require] private WorldCommandsSender commandSender;
 
-    private void OnEnable()
-    {
-        // Register callback for listening to any incoming delete entity command responses for this entity
-        responseHandler.OnDeleteEntityResponse += OnDeleteEntityResponse;
-    }
 
     public void Update()
     {
-        if(WantToDeleteAnEntity())
+        if (WantToDeleteAnEntity())
         {
             var entityId = GetSomeEntityId();
-            commandSender.DeleteEntity(entityId);
-        }
-    }
-
-    private void DeleteEntity(EntityId entityId)
-    {
-        if (commandSender != null)
-        {
-            commandSender.DeleteEntity(entityId);
+            commandSender.SendDeleteEntityCommand(new WorldCommands.DeleteEntity.Request(entityId), OnDeleteEntityResponse);
         }
     }
 
@@ -220,7 +190,5 @@ public class EntityDeletionBehaviour : MonoBehaviour
 #### Getting SpatialOS entity IDs to use for deletion
 You can get the `EntityId` for an entity using these methods:
 
-* To get the `EntityId` for the current GameObject, use `GetComponent<[SpatialOSComponent](link to spatialoscomp docs)>().SpatialEntityId`
-* To get the `EntityId` for a different GameObject, use `SpatialOSComponent.TryGetSpatialOSEntityIdForGameObject(GameObject linkedGameObject, out EntityId entityId)`
-
-> Using `SpatialOSComponent.TryGetSpatialOSEntityIdForGameObject` to access the SpatialOS entity id of another linked GameObject ensures that you receive the correct SpatialOS entity ID.
+* To get the `EntityId` for the current GameObject, use `[Require] private EntityId entityId`.
+* To get the `EntityId` for a different GameObject, use `linkGameObject.GetComponent<LinkedEntityComponent>().EntityId`.
