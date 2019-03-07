@@ -4,6 +4,7 @@
 [//]: # (TODO - Add links as noted - doc 35)
 [//]: # (TODO - ongoing updates in this doc https://docs.google.com/document/d/1fX6CP1OGBx281dAQmsNpp7bfnnXUmnyLwHCWOx3wz8E/edit#)
 
+<%(TOC)%>
 # Transform Synchronization Feature Module
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

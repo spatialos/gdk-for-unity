@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Receiving entity updates from SpatialOS: reactive components
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

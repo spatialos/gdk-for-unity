@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 36)
 [//]: # (TODO - technical writer review)
 
+<%(TOC)%>
 # Player Lifecycle Feature Module
 _This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

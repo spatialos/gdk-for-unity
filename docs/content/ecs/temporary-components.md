@@ -4,6 +4,7 @@
 [//]: # (Questions to deal with: need to describe what a tick is. Needs to link to a doc on system execution order. Needs to link to docs describing the existing components which use this)
 [//]: # (1. Editorial review - JIRA TICKET: UTY-628)
 
+<%(TOC)%>
 # Temporary components
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 4)
 [//]: # (TODO - Tech writer pass)
 
+<%(TOC)%>
 # ECS entity contracts
   _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

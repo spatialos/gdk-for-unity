@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Get started: 2 - Build your workers
 
 As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers]({{urlRoot}}/content/glossary#worker).

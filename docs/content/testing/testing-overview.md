@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Test overview
 
 We use tests to validate functionality and to ensure that the SpatialOS GDK for Unity (GDK) and the framework as a whole are resilient under different conditions.
