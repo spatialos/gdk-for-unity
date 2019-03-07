@@ -87,7 +87,7 @@ For the SpatialOS entity that the event was sent on, the GDK attaches a `Compone
 
 Given the same schema as above, `change_color` events are stored in a list of `ColorData`s on a `CubeColor.ReceivedEvents.ChangeColor` component.
 
-Here's an example of receiving an event so the worker instance can respond to it:
+Here's an example of receiving an event so the worker instance can handle it:
 
 ```csharp
 public class ChangeColorEventReceiveSystem : ComponentSystem
@@ -95,7 +95,7 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
     public struct Data
     {
         public readonly int Length;
-        public ComponentArray<CubeColor.ReceivedEvents.ChangeColor> ChangeColorEvents;
+        public ComponentDataArray<CubeColor.ReceivedEvents.ChangeColor> ChangeColorEvents;
     }
 
     [Inject] Data data;
