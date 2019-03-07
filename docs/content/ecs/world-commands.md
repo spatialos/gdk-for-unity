@@ -49,7 +49,7 @@ public class CreateCreatureSystem : ComponentSystem
             var entity = CreatureTemplate.CreateCreatureEntityTemplate(
                 new Coordinates(0, 0, 0));
 
-            requestSender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
+            requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
             (
                 entity
             ));
@@ -91,7 +91,7 @@ public class DeleteCreatureSystem : ComponentSystem
             var requestSender = data.DeleteEntitySender[i];
             var entityId = data.SpatialEntityIds[i].EntityId;
 
-            requestSender.RequestsToSend.Add(WorldCommands.DeleteEntity.CreateRequest
+            requestSender.RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
             (
                 entityId
             ));
