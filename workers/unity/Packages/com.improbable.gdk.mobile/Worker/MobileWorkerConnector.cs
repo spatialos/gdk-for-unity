@@ -21,16 +21,10 @@ namespace Improbable.Gdk.Mobile
                     UseExternalIp = true,
                     Kcp = new KcpNetworkParameters
                     {
-                        EarlyRetransmission = true,
-                        NonConcessionalFlowControl = true,
-                        FastRetransmission = true,
-                        UpdateIntervalMillis = 10,
-                        WindowSize = 1000,
-                        MinRtoMillis = 10,
                         Heartbeat = new HeartbeatParameters()
                         {
                             IntervalMillis = 5000,
-                            TimeoutMillis = 10000,
+                            TimeoutMillis = 10000
                         }
                     }
                 },

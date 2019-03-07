@@ -50,6 +50,7 @@
 
 ### Changed
 
+- Upgraded the Worker SDK version to `13.6.2`.
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
 - Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
@@ -75,6 +76,7 @@
     - This now backs the `Require` API in Monobehaviours
 - Low level APIs have been changed significantly.
 - Added a View separate from the Unity ECS.
+- Removed unnecessary `KcpNetworkParameters` overrides in `MobileWorkerConnector` where it matched the default values.
 
 ## `0.1.5` - 2019-02-18
 
