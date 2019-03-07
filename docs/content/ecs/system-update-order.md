@@ -29,15 +29,11 @@ The groups are executed in the following order:
 * `SpatialOSReceiveGroup` - This group contains all of the systems related to receiving and handling data from SpatialOS.
   * `InternalSpatialOSReceiveGroup` - This is used by the `SpatialOSReceiveSystem`. **(Internal use only)**
   * `GameObjectInitializationGroup` - This group contains all systems used to link GameObjects to SpatialOS entities.
+  * `RequireLifecycleGroup` - This group contains all systems used to inject objects that were marked with `[Require]` in Monobehaviours.
 * `SpatialOSUpdateGroup` - Most systems which use SpatialOS components should run in this group.
 * `SpatialOSSendGroup` - This group contains all systems related to sending data to SpatialOS .
   * `InternalSpatialOSSendGroup` - This group is used by the `SpatialOSSendSystem` to handle sending all replicated components to SpatialOS. **(Internal use only)**
-  * `CustomSpatialOSSendGroup` -  This group contains all systems running custom replication logic. If you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system), add your system to this group.
   * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/content/ecs/reactive-components) and [temporary components]({{urlRoot}}/content/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
-
-Here's a diagram of the update order:
-
-![Update order]({{assetRoot}}assets/update-order.png)
 
 ## Update vs FixedUpdate
 
