@@ -45,6 +45,7 @@
     - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
     - Added `SerializeArguments` and `DeserializeArguments<T>` methods to `PlayerLifecycleHelper`.
 - Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
+- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
 
 ### Changed
 

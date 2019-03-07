@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ namespace Improbable.Gdk.Tools
         internal const string CodegenOutputDirLabel = "Code generator output";
         internal const string SchemaSourceDirsLabel = "Schema sources";
         internal const string RuntimeIpLabel = "Local runtime IP";
+        internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
+        internal const string DevAuthTokenDirLabel = "Directory to store token in";
+        internal const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
 
         private const string CodeGeneratorLabel = "Code generator";
 
@@ -40,7 +44,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            titleContent = new GUIContent("GDK Tools");           
+            titleContent = new GUIContent("GDK Tools");
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
@@ -102,7 +106,7 @@ namespace Improbable.Gdk.Tools
             GUILayout.Label(CodeGeneratorLabel, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
-            using(new EditorGUIUtility.IconSizeScope(new Vector2(12,12)))
+            using (new EditorGUIUtility.IconSizeScope(new Vector2(12, 12)))
             using (new EditorGUI.IndentLevelScope())
             {
                 toolsConfig.CodegenOutputDir =
@@ -137,8 +141,18 @@ namespace Improbable.Gdk.Tools
                 }
 
                 GUILayout.Label(RuntimeIpLabel, EditorStyles.boldLabel);
-                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);                    
+                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);
 
+                GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
+
+                GUILayout.Label(DevAuthTokenDirLabel, EditorStyles.label);
+                toolsConfig.DevAuthTokenDir = GUILayout.TextField(toolsConfig.DevAuthTokenDir);
+
+                GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
+
+                GUILayout.Label(DevAuthTokenLifetimeLabel, EditorStyles.label);
+                toolsConfig.DevAuthTokenLifetimeDays =
+                    EditorGUILayout.IntSlider(toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
             }
         }
     }

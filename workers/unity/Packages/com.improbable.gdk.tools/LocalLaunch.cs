@@ -13,14 +13,11 @@ namespace Improbable.Gdk.Tools
     {
         private const string InspectorUrl = "http://localhost:21000/inspector";
 
-        private static readonly string
-            SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
+        private static readonly string DefaultLogFileName
+            = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "logs", "*unityclient.log"));
 
         private static readonly string
-            DefaultLogFileName = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "*unityclient.log"));
-
-        private static readonly string
-            BuildPath = Path.GetFullPath(Path.Combine(SpatialProjectRootDir, "build", "assembly", "worker"));
+            BuildPath = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "build", "assembly", "worker"));
 
         private static readonly string ClientConfigFilename = "spatialos.UnityClient.worker.json";
 
@@ -65,7 +62,7 @@ namespace Improbable.Gdk.Tools
                 RedirectedProcess
                     .Command(Common.SpatialBinary)
                     .WithArgs("build", "build-config", "--json_output")
-                    .InDirectory(SpatialProjectRootDir)
+                    .InDirectory(Common.SpatialProjectRootDir)
                     .Run();
             }
         }
@@ -81,7 +78,7 @@ namespace Improbable.Gdk.Tools
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
                                      activate
-                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                     do script ""cd {Common.SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
                                      end tell'";
                 unityClientZipName = "UnityClient@Mac.zip";
             }
@@ -90,7 +87,7 @@ namespace Improbable.Gdk.Tools
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
-                WorkingDirectory = SpatialProjectRootDir
+                WorkingDirectory = Common.SpatialProjectRootDir
             };
 
             var process = Process.Start(processInfo);
@@ -145,7 +142,7 @@ namespace Improbable.Gdk.Tools
         {
             try
             {
-                var logConfigPath = Path.Combine(SpatialProjectRootDir, "workers", "unity");
+                var logConfigPath = Path.Combine(Common.SpatialProjectRootDir, "workers", "unity");
                 var configFileJson = File.ReadAllText(Path.Combine(logConfigPath, ClientConfigFilename));
                 var configFileJsonDeserialized = Json.Deserialize(configFileJson);
                 var currentOS = Application.platform == RuntimePlatform.OSXEditor ? "macos" : "windows";
@@ -220,7 +217,7 @@ namespace Improbable.Gdk.Tools
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
                                      activate
-                                     do script ""cd {SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                     do script ""cd {Common.SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
                                      end tell'";
             }
 
@@ -228,7 +225,7 @@ namespace Improbable.Gdk.Tools
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
-                WorkingDirectory = SpatialProjectRootDir
+                WorkingDirectory = Common.SpatialProjectRootDir
             };
 
             var process = Process.Start(processInfo);
@@ -248,7 +245,7 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                var logPath = Path.Combine(SpatialProjectRootDir, "logs");
+                var logPath = Path.Combine(Common.SpatialProjectRootDir, "logs");
                 var latestLogFile = Directory.GetFiles(logPath, "spatial_*.log")
                     .Select(f => new FileInfo(f))
                     .OrderBy(f => f.LastWriteTimeUtc).LastOrDefault();
