@@ -69,11 +69,13 @@ public class ChangeComponentFieldSystem : ComponentSystem
 ```
 
 ## Updates
+
 When a component update is received this will be added as a [reactive component]({{urlRoot}}/content/ecs/reactive-components).
 
 ## Generation details
 
 ### Primitive types
+
 Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
 | Schemalang type                | SpatialOS GDK type      |
@@ -86,11 +88,12 @@ Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for
 | `bool`                         | `BlittableBool`         |
 | `string`                       | `string`                |
 | `bytes`                        | `byte[]`                |
-| `EntityId`                     | `long`                  |
+| `EntityId`                     | `EntityId`              |
 
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable.
 
 ### Collections
+
 Schemalang has 3 collection types:
 
 | Schemalang collection | SpatialOS GDK collection                          |
@@ -102,7 +105,8 @@ Schemalang has 3 collection types:
 Note that the GDK does not use `Improbable.Collections` in Unity ECS component generation.
 
 ### Custom types
-For every custom data type in schema a `struct` will be generated.
+
+A `struct` is generated for every custom data type in schema. The generated struct has the [`[System.Serializable]` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
 
 **Schemalang**:
 
@@ -115,6 +119,7 @@ type SomeData {
 **Generated C#**:
 
 ```	csharp
+[System.Serializable]
 public struct SomeData
 {
   public int Value;
@@ -122,7 +127,7 @@ public struct SomeData
 ```
 
 ### Enums
-For every schemalang enum, a C# enum will be generated.
+A C# enum is generated for every schemalang enum. The generated enum has the [`[System.Serializable]` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
 
 **Schemalang**:
 
