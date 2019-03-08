@@ -145,21 +145,16 @@ In your own game may want to consider moving default values (such as health pack
 
 ### Update the snapshot
 
-Snapshot files are found in your project root directory, in a directory named `snapshots`. The FPS Starter Project includes a snapshot called `default.snapshot`.
+All SpatialOS GDK projects contain a directory named `snapshots` in the root of the project. If you have updated the snapshot generation script `SnapshotMenu.cs`, as we did in the step above, or if you've altered components in an entity template, then your snapshot will be out of date, and must be regenerated.
 
-If you have updated the snapshot generation function (as you just did in the step above), or if you've altered which components are specified in one of your entity templates, then your snapshot will be out of date. The snapshot is a big collection of entities, and all their individual component values, so any change to these and the snapshot file must be regenerated.
-
-You can regenerate the `default.snapshot` file from the **SpatialOS menu** option in your Unity Editor, by running **"Generate FPS Snapshot"**.
+1. Regenerate the `default.snapshot` file from the **SpatialOS** menu in your Unity Editor, by running **"Generate FPS Snapshot"**.
+1. If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in a game client yet - we'll impement this in the next section.
+![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
+1. Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
 While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
-
-If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in-game yet - this is the next step.
-
-![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
-
-Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## Represent the entity on your workers
 
