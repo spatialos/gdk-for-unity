@@ -63,7 +63,7 @@ If you are worried your generated code is in a bad state (such as having helper 
 
 Now that we've defined and generated the `HealthPickup` component and its properties, let's deifine the `HealthPickup` entity we're going to attach that component to.
 
-All SpatialOS GDK projects contain a C# file that, once for each type of entity in the project, declares a function that defines which components should be instantiated when a new type of that entity is added to a [SpatialOS World]({{urlRoot}}/content/glossary#spatialos-world). The object that these functions return is an [entity template]({{urlRoot}}/content/entity-templates).
+All SpatialOS GDK projects contain a C# file that, once for each type of entity in your project, declares a function that defines which components should be instantiated when a new type of that entity is added to a [SpatialOS World]({{urlRoot}}/content/glossary#spatialos-world). The object that these functions return is an [entity template]({{urlRoot}}/content/entity-templates).
 
 `HealthPickup` is a new type of entity, so we must create a new entity template. To do this, we'll need to add a new function within the `FpsEntityTemplates` class:
 
@@ -94,7 +94,7 @@ Let's break down what the above snippet does:<br>
  * The struct `Pickups.HealthPickup.Snapshot` was generated from the `HealthPickup` component you previously defined in schemalang.<br>
  * The line `entityTemplate.AddComponent(healthPickupComponent, gameLogic);` adds an instance of this struct to the `HealthPickup` entity.<br>
  * The line `entityTemplate.SetReadAccess(gameLogic, WorkerUtils.UnityClient);` states that both [server-workers]({{urlRoot}}/content/glossary#server-worker) (`gameLogic`) and [client-workers]({{urlRoot}}/content/glossary#client-worker) (`UnityClient`) have [read access]({{urlRoot}}/content/glossary#read-access) to this entity (that they can see health packs).
- * The line `entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, gameLogic);` states that only the server-worker has [write access]({{urlRoot}}/content/glossary#write-access) to the `healthPickupComponent`.<br>
+ * The line `entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, gameLogic);` states that only server-workers have [write access]({{urlRoot}}/content/glossary#write-access) to the `healthPickupComponent`.<br>
 We state this because we don't want clients to be able to alter how much health is in a health pack, that would be cheating.
  * You may also notice `Position`, `Metadata` and `Persistence`, these are [standard library](https://docs.improbable.io/reference/13.6/shared/schema/standard-schema-library) components that you can ignore for now.
 
@@ -118,11 +118,13 @@ In this section we’re going to add health pack entities to the SpatialOS world
 
 For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
 
-### Edit snapshot generation
+### Edit the snapshot generation script.
 
-The **SpatialOS menu** option in your Unity Editor includes an item **"Generate FPS Snapshot"**. This runs the script `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`, which you can find from within your Unity Editor. We will now modify the snapshot generation logic to add a `HealthPack` entity to our snapshot.
+The **SpatialOS** menu in your Unity Editor contains a **"Generate FPS Snapshot"** option. This option runs `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`. We will now modify this script to add `HealthPack` entities to our snapshot:<br><br>
 
-Within the `SnapshotMenu` class, add a new method that will contain logic for adding health pack entities to the snapshot object:
+1. In your Unity Editor, locate `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs` and open it in your code editor.
+1. Ensure your code can reference the `Vector3f` namespace by adding `using Improbable;` to the top of the file.
+1. The function below contains logic for adding health pack entities to the snapshot object, and sets the amount of health the packs restore to `100`. Paste it inside the `SnapshotMenu` class.
 
 ```csharp
 private static void AddHealthPacks(Snapshot snapshot)
@@ -130,40 +132,16 @@ private static void AddHealthPacks(Snapshot snapshot)
     var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(5, 0, 0), 100);
     snapshot.AddEntity(healthPack);
 }
-```
+    ```
 
-Make sure you add the following line at the top of the file so the code can reference the `Vector3f` namespace:
-
-```csharp
-using Improbable;
-```
-
-This script now creates a health pack entity at position `(5, 0, 0)`, and sets the amount of health it will restore to 100. Don't forget to call your new function from within `GenerateFpsSnapshot()` (and pass it the `snapshot` object) or else it won't be run during snapshot generation!
+1. Call your new function by pasting the below snippet inside the `GenerateFpsSnapshot()`. Be sure to paste this above the `SaveSnapshot` lines, so that it's run during snapshot generation.
 
 ```csharp
-[MenuItem("SpatialOS/Generate FPS Snapshot")]
-private static void GenerateFpsSnapshot()
-{
-    var localSnapshot = new Snapshot();
-    var cloudSnapshot = new Snapshot();
-
-    GenerateSnapshot(localSnapshot);
-    GenerateSnapshot(cloudSnapshot);
-
-    // The local snapshot is identical to the cloud snapshot, but also includes a simulated player coordinator
-    // trigger.
-    var simulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
-    localSnapshot.AddEntity(simulatedPlayerCoordinatorTrigger);
-
     AddHealthPacks(localSnapshot);
     AddHealthPacks(cloudSnapshot);
-
-    SaveSnapshot(DefaultSnapshotPath, localSnapshot);
-    SaveSnapshot(CloudSnapshotPath, cloudSnapshot);
-}
 ```
 
-You may want to consider separating default values (such as health pack positions, and health values) into a settings file. But for now, we will keep this example simple.
+In your own game may want to consider moving default values (such as health pack positions, and health values) into a settings file. But for now, we will keep this example simple.
 
 ### Update the snapshot
 
