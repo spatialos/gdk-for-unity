@@ -28,42 +28,49 @@ namespace Improbable.TextTemplating
 
         public override bool Execute()
         {
-            if (this.InputFiles.Length < 1)
+            if (InputFiles.Length < 1)
             {
-                this.Log.LogMessage(MessageImportance.Normal,
-                    "No template files were specified in the InputFiles parameter.", new object[0]);
-                return true;
+                Log.LogError("No template files were specified in the InputFiles parameter.");
+                return false;
             }
 
-            string str = Path.Combine(this.ProjectDirectory.ItemSpec, "Generated");
-            this.Log.LogMessage(MessageImportance.Normal, "Generated files will be output to directory: {0}",
-                (object) str);
-            if (Directory.Exists(str))
-                Directory.Delete(str, true);
-            Directory.CreateDirectory(str);
-            List<string> source = new List<string>();
-            foreach (ITaskItem inputFile in this.InputFiles)
+            string generatedPath = Path.Combine(ProjectDirectory.ItemSpec, "Generated");
+            Log.LogMessage(MessageImportance.Normal, "Generated files will be output to directory: {0}", generatedPath);
+
+            if (Directory.Exists(generatedPath))
             {
-                string itemSpec = inputFile.ItemSpec;
-                string withoutExtension = Path.GetFileNameWithoutExtension(itemSpec);
-                string path2 = withoutExtension + ".cs";
-                string outputFile = Path.Combine(str, path2);
-                TemplateGenerator templateGenerator = new TemplateGenerator();
-                Encoding utF8 = Encoding.UTF8;
-                templateGenerator.Imports.AddRange((IEnumerable<string>) this.Imports);
-                string language;
-                string[] references;
-                templateGenerator.PreprocessTemplate(itemSpec, withoutExtension, this.ClassNameSpace, outputFile, utF8,
-                    out language, out references);
+                Directory.Delete(generatedPath, true);
+            }
+
+            Directory.CreateDirectory(generatedPath);
+
+            var source = new List<string>();
+            var failed = false;
+            foreach (ITaskItem inputFile in InputFiles)
+            {
+                var itemSpec = inputFile.ItemSpec;
+                var withoutExtension = Path.GetFileNameWithoutExtension(itemSpec);
+                var path2 = $"{withoutExtension}.cs";
+                var outputFile = Path.Combine(generatedPath, path2);
+                var templateGenerator = new TemplateGenerator();
+                templateGenerator.Imports.AddRange(Imports);
+
+                templateGenerator.PreprocessTemplate(itemSpec, withoutExtension, ClassNameSpace, outputFile, Encoding.UTF8,
+                    out var language, out var references);
+
+                failed |= templateGenerator.Errors.HasErrors;
+
                 source.Add(outputFile);
-                this.Log.LogMessage(MessageImportance.Normal, "Transformed template {0} into generator: {1}",
-                    (object) Path.GetFileName(itemSpec), (object) path2);
+                Log.LogMessage(MessageImportance.Normal, "Transformed template {0} into generator: {1}",
+                    Path.GetFileName(itemSpec), path2);
             }
 
-            this.OutputFiles = (ITaskItem[]) source
-                .Select<string, TaskItem>((Func<string, TaskItem>) (name => new TaskItem(name))).ToArray<TaskItem>();
-            this.Log.LogMessage(MessageImportance.Normal, "Finished transforming template files.", new object[0]);
-            return true;
+            OutputFiles = source
+                .Select<string, TaskItem>(name => new TaskItem(name))
+                .ToArray<TaskItem>();
+
+            Log.LogMessage(MessageImportance.Normal, "Finished transforming template files.");
+            return !failed;
         }
     }
 }

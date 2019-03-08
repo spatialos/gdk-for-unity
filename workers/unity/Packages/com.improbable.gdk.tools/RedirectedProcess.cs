@@ -21,27 +21,27 @@ namespace Improbable.Gdk.Tools
     public enum OutputRedirectBehaviour
     {
         /// <summary>
-        ///   <para>No redirected output, only custom outputProcessors are used</para>
+        ///     <para>No redirected output, only custom outputProcessors are used</para>
         /// </summary>
         None = 0,
 
         /// <summary>
-        ///   <para>Standard output is immediately redirected to Debug.Log</para>
+        ///     <para>Standard output is immediately redirected to Debug.Log</para>
         /// </summary>
         RedirectStdOut = 1,
 
         /// <summary>
-        ///   <para>Error output is immediately redirected to Debug.LogError</para>
+        ///     <para>Error output is immediately redirected to Debug.LogError</para>
         /// </summary>
         RedirectStdErr = 2,
 
         /// <summary>
-        ///   <para>All output is accumulated and then redirected to Debug.Log after the process has finished</para>
+        ///     <para>All output is accumulated and then redirected to Debug.Log after the process has finished</para>
         /// </summary>
         RedirectAccumulatedOutput = 4,
 
         /// <summary>
-        ///   <para>If set will process contained `spatial` output and extract it's messages from JSON</para>
+        ///     <para>If set will process contained `spatial` output and extract it's messages from JSON</para>
         /// </summary>
         ProcessSpatialOutput = 8,
     }
@@ -135,16 +135,14 @@ namespace Improbable.Gdk.Tools
                 WorkingDirectory = workingDirectory
             };
 
-            using (var process = Process.Start(info))
+            using (var process = new Process())
             {
-                if (process == null)
-                {
-                    throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}\nIs the .NET Core SDK installed?");
-                }
+                process.StartInfo = info;
+
 
                 StringBuilder outputLog = null;
-                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) != OutputRedirectBehaviour.None)
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) !=
+                    OutputRedirectBehaviour.None)
                 {
                     outputLog = new StringBuilder();
                 }
@@ -162,7 +160,8 @@ namespace Improbable.Gdk.Tools
                         outputString = ProcessSpatialOutput(outputString);
                     }
 
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdOut) != OutputRedirectBehaviour.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdOut) !=
+                        OutputRedirectBehaviour.None)
                     {
                         Debug.Log(outputString);
                     }
@@ -177,9 +176,17 @@ namespace Improbable.Gdk.Tools
 
                     foreach (var outputProcessor in outputProcessors)
                     {
-                        outputProcessor(outputString);
+                        try
+                        {
+                            outputProcessor.Invoke(outputString);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
                     }
                 };
+
                 process.ErrorDataReceived += (sender, args) =>
                 {
                     var errorString = args.Data;
@@ -193,7 +200,8 @@ namespace Improbable.Gdk.Tools
                         errorString = ProcessSpatialOutput(errorString);
                     }
 
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) != OutputRedirectBehaviour.None)
+                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) !=
+                        OutputRedirectBehaviour.None)
                     {
                         Debug.LogError(errorString);
                     }
@@ -208,11 +216,25 @@ namespace Improbable.Gdk.Tools
 
                     foreach (var errorProcessor in errorProcessors)
                     {
-                        errorProcessor(errorString);
+                        try
+                        {
+                            errorProcessor.Invoke(errorString);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
                     }
                 };
 
                 process.EnableRaisingEvents = true;
+
+                if (!process.Start())
+                {
+                    throw new Exception(
+                        $"Failed to run {info.FileName} {info.Arguments}");
+                }
+
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
