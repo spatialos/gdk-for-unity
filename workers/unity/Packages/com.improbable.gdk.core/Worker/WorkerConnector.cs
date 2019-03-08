@@ -263,10 +263,10 @@ namespace Improbable.Gdk.Core
                 throw new AuthenticationFailedException("Did not receive a player identity token.");
             }
 
-            if (result.Value.Status != ConnectionStatusCode.Success)
+            if (result.Value.Status.Code != ConnectionStatusCode.Success)
             {
                 throw new AuthenticationFailedException("Failed to retrieve a player identity token.\n" +
-                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
+                    $"error code: {result.Value.Status.Code}\nerror message: {result.Value.Status.Detail}");
             }
 
             return result.Value.PlayerIdentityToken;
@@ -298,10 +298,10 @@ namespace Improbable.Gdk.Core
                 throw new AuthenticationFailedException("Did not receive any login tokens back.");
             }
 
-            if (result.Value.Status != ConnectionStatusCode.Success)
+            if (result.Value.Status.Code != ConnectionStatusCode.Success)
             {
                 throw new AuthenticationFailedException("Failed to retrieve any login tokens.\n" +
-                    $"error code: {result.Value.Status}\nerror message: {result.Value.Error}");
+                    $"error code: {result.Value.Status.Code}\nerror message: {result.Value.Status.Detail}");
             }
 
             return result.Value.LoginTokens;
