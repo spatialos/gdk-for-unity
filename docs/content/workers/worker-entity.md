@@ -16,9 +16,6 @@ The worker’s worker entity performs certain tasks:
      * `OnConnected`: the worker just connected to the SpatialOS Runtime.
      * `OnDisconnected`: the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
-
-
-
 ## How to run logic when the worker has just connected
 
 You can use the worker to check in an ECS system to see whether the worker just
@@ -50,6 +47,7 @@ public class HandleConnectSystem : ComponentSystem
 ```
 
 ## How to run logic when the worker has just disconnected
+
 You can use the worker to check in an ECS system to see whether the worker just disconnected. This allows you to handle any clean-up logic necessary.
 
 **Example**
@@ -79,6 +77,7 @@ public class HandleDisconnectSystem : ComponentSystem
 ```
 
 ## How to send a command using the worker entity
+
 The worker entity has all [command sender components]({{urlRoot}}/content/ecs/commands) attached to it.
 By filtering for these components, you are able to send commands even if you don't have any [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity) which is [checked out]({{urlRoot}}/content/glossary#checking-out).
 
@@ -98,7 +97,7 @@ public class CreateCreatureSystem : ComponentSystem
     {
         var requestSender = data.CreateEntitySender[0];
         var entity = CreatureTemplate.CreateCreatureEntityTemplate(new Coordinates(0, 0, 0));
-        requestSender.RequestsToSend.Add(WorldCommands.CreateEntity.CreateRequest
+        requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
         (
             entity
         ));

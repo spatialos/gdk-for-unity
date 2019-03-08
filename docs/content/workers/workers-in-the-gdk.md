@@ -29,6 +29,7 @@ You add definitions of the systems inside your worker using the worker API `work
 
 
 ## Further information
+
 To learn about a workers’ connection to the SpatialOS Runtime, see:
 
   * [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos)
@@ -37,8 +38,6 @@ To learn more about how to create and use workers in the GDK, please see the fol
 
   * MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
   * ECS workflow - [worker entity]({{urlRoot}}/content/workers/worker-entity)
-  * [API - worker]({{urlRoot}}/content/workers/api-worker)
-  * [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
 
 ## Example implementation
 
