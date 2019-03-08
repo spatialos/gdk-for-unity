@@ -132,10 +132,9 @@ private static void AddHealthPacks(Snapshot snapshot)
     var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(5, 0, 0), 100);
     snapshot.AddEntity(healthPack);
 }
-    ```
+```
 
 1. Call your new function by pasting the below snippet inside the `GenerateFpsSnapshot()`. Be sure to paste this above the `SaveSnapshot` lines, so that it's run during snapshot generation.
-
 ```csharp
     AddHealthPacks(localSnapshot);
     AddHealthPacks(cloudSnapshot);
@@ -148,33 +147,32 @@ In your own game may want to consider moving default values (such as health pack
 All SpatialOS GDK projects contain a directory named `snapshots` in the root of the project. If you have updated the snapshot generation script `SnapshotMenu.cs`, as we did in the step above, or if you've altered components in an entity template, then your snapshot will be out of date, and must be regenerated.
 
 1. Regenerate the `default.snapshot` file from the **SpatialOS** menu in your Unity Editor, by running **"Generate FPS Snapshot"**.
-1. If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the world view of the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector). You won't see the pickup in a game client yet - we'll impement this in the next section.
-![World view in the Inspector showing the HealthPickup entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
+1. If you launch a local deployment (`Ctrl + L` in your Unity Editor), you should be able to see one `HealthPickup` entity in the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector).<br>
+![World view in the Inspector showing the `HealthPickup` entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)<br>
+If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server-workers. We'll do this in the next section.
 1. Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
 While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-## Represent the entity on your workers
+## Represent your new entity on your workers
 
-If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server workers.
-
-SpatialOS will manage which subset of the world's entities each worker knows about, and provide them with the corresponding component data. You must define what the worker will do when it finds out about an entity it isn't currently tracking. Fortunately the SpatialOS GDK for Unity provides some great tools for exactly that!
+In this section we’re going to decide how to represent the `HealthPickup` entity in our client-workers and server-workers, and implement this.
 
 ### Plan your entity representations
 
-First we must think about how each of the workers will want to represent the entity, so let's return to how we want our game mechanic to play out:
+First we must think about how each of the workers should represent the entity, so let's quickly review how we want this game mechanic to play out:
 
-* Players should see a hovering health pack.
-* When a player runs through the health pack it is consumed and "disappears", leaving just a marker on the ground.
-* A health pack should only be consumed if the player has taken damage.
+* Players should see a health pack hovering just above the ground.
+* When a player collides with the health pack. it is consumed and disappears.
+* A health pack should only be consumed if the player is not already at full health.
 * Consumed health packs re-appear after a cool-down, and are ready for use again.
 
 We can neatly separate this logic between the client-side and server-side representations:
 
-* The `UnityClient` worker should display a visual representation for each health pack, based on whether the health pack is currently "active".
-* The `UnityGameLogic` worker should react to collisions with players, check whether they are injured, and consume the health pack if they are.
+* The `UnityClient` client-worker should display a visual representation for each health pack in the world. It should only display health packs that are currently "active".
+* The `UnityGameLogic` server-worker should, when a player collides with a health pack, check whether that player is injured and allows the player to consume the health pack if they are.
 
 ### Create GameObject representations
 
