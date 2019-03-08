@@ -98,7 +98,7 @@ When you want to delete a GameObject that represents a SpatialOS entity, send a 
 ## Problems
 
 <br/>
-#### <li> <b> A Reader/Writer or CommandSender/Handler in my code is null </b>
+#### <li> <b> A Reader/Writer or CommandSender/Receiver in my code is null </b>
 
 **Causes and fixes**<br/>
 
@@ -106,7 +106,7 @@ This can be caused by multiple problems. Follow the checklist below to discover 
 
   * Ensure that your field is declared in a [MonoBehaviour]({{urlRoot}}/content/glossary#monobehaviour). They are not supported in ECS systems.
   * Ensure that the field is decorated with a `[Require]` attribute (see [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)).
-   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this by examining whether a [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) MonoBehaviour is added to your GameObject when you run your game.
+   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
 [comment]: <> "TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
   * Ensure that you only access Requirables in a MonoBehaviour while the MonoBehaviour is enabled. Requirables are supposed to be null while the MonoBehaviour is disabled. Note that certain Unity event methods like `OnTriggerEnter` or `OnCollisionEnter` may be invoked, even if a MonoBehaviour is disabled.
 [comment]: <> "TODO: make this fix clearer - what is meant by "Requireables" - we haven't defined this. JIRA: https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
@@ -119,7 +119,7 @@ This can be caused by multiple problems. Follow the checklist below to discover 
 This can be caused by multiple problems. Follow the checklist below to discover the cause and fix:
 
   * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker]({{urlRoot}}/content/glossary#worker).
-   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this be examining whether a `SpatialOSComponent` MonoBehaviour was added to your GameObject when you run your game.
+   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
   * Ensure that the [requirements]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector]({{urlRoot}}/content/glossary#inspector). In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
 
 <br/>
