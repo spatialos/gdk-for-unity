@@ -42,7 +42,7 @@ This triggers the following actions:
   
   > This only happens the first time you open the project or if the required libraries change.
 
-  * Unity [generates code]({{urlRoot}}/content/code-generator) from the [schema]({{urlRoot}}/content/glossary#schema) files defines in your SpatialOS project.
+  * Unity generates code from the [schema]({{urlRoot}}/content/glossary#schema) files defines in your SpatialOS project.
 
   > This only happens, if Unity detects any changes in the schema files since the last time it generated the code.
 

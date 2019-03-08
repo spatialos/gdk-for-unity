@@ -17,7 +17,7 @@ The Core Module contains multiple packages (or "assemblies") that you need to us
 This provides the basic implementation to use SpatialOS natively in Unity.
 
 * `Improbable.Gdk.Tools`<br/>
- This contains the [Code Generator]({{urlRoot}}/content/code-generator) which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/content/glossary#schema).)
+ This contains the code generator which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/content/glossary#schema).)
 
 * `Improbable.Gdk.TestUtils` <br/>
 This provides both a testing framework, which you can use to test any other module and a test which you can use to validate the state of the overall project.

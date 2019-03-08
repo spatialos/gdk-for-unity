@@ -12,7 +12,7 @@ To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/con
 
 It’s the workers (both server-workers and client-workers) which create a connection between your game and the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your worker types as part of your game development. Then, when your game runs, it creates worker instances which connect to the SpatialOS Runtime.  During their creation, worker instances attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker instance fails.
 
-If you are using the [MonoBehaviour workflow or the ECS workflow]{{urlRoot}}/content/intro-workflows-spatialos-entities), you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) or the [Worker API]({{urlRoot}}/content/workers/api-worker) to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
+If you are using the [MonoBehaviour workflow or the ECS workflow]{{urlRoot}}/content/intro-workflows-spatialos-entities), you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) or the `Worker` to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 
 
 ## Which connection flow to use
@@ -60,7 +60,6 @@ Use this object for:
   * Accessing the ID of the worker.
   * Accessing the [worker flags]({{urlRoot}}/content/glossary#worker-flags).
   * accessing the used [worker attribute]({{urlRoot}}/content/glossary#worker-attribute).
-  * Sending and receiving component updates and messages to and from the SpatialOS Runtime. (Note that this is done internally by the GDK so you shouldn't need to do it unless you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system).
 
 ## Protocol logging
 You can use protocol logging to log additional data to the data your worker sends and receives while connected to the SpatialOS Runtime.

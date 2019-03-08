@@ -11,7 +11,7 @@ Before reading this document, make sure you are familiar with
 
 You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
 By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
-This is enabled by [code-generating]({{urlRoot}}/content/code-generator) the following types:
+This is enabled by code-generating the following types:
 
  * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers) - For accessing the component data of the SpatialOS entity.
  * [Sending and Receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands) - For sending and receiving commands.
