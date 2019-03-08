@@ -178,9 +178,9 @@ The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlR
 
 <%(#Expandable title="How does the GDK pair SpatialOS entities with Unity prefabs?")%>
 
-Client-side entity prefabs are stored in `Assets/Fps/Resources/Prefabs/UnityClient`, while server-side ones are located at `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
-
-The FPS Starter Project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.<%(/Expandable)%>
+The FPS Starter Project uses the [GDK GameObject Creation](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation) package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
+<br><br>
+Client-side entity prefabs are stored in `Assets/Fps/Resources/Prefabs/UnityClient`, while server-side ones are located at `Assets/Fps/Resources/Prefabs/UnityGameLogic`.<%(/Expandable)%>
 
 <%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `Assets/Fps/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
@@ -198,21 +198,9 @@ Authority is a tricky topic with SpatialOS, particularly as write-access is actu
 
 ##### Create a UnityClient entity prefab
 
-The FPS Starter Project contains a health pack prefab named `HealthPickup.prefab` in the folder: `Assets/Fps/Prefabs/`. Have a look at it and create a copy in the `Assets/Fps/Resources/Prefabs/UnityClient/` folder.
-
-<%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
-
-This is because the FPS Starter Project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
-
-<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies. [Creating Prefabs (Unity Documentation)](https://docs.unity3d.com/Manual/CreatingPrefabs.html) explains how to create one.
-
-Freshly created prefabs are initially empty, so you can drag other prefabs or GameObjects onto them to add them to the hierarchy.
-
-It can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
-
-When creating entity prefabs it is usually a great idea to create a root GameObject which will contain your SpatialOS components and behaviours, with art assets added as children (which will also help with disabling inactive health packs later!).
-
-Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
+1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
+1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityClient/`.
+1. Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
 
 ```csharp
 using Improbable.Gdk.GameObjectRepresentation;
@@ -248,9 +236,19 @@ namespace Fps
 }
 ```
 
+<%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
+
+This is because the FPS Starter Project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
+
+<%(#Expandable title="What's the best way to create a prefab?")%>Prefabs are the Unity Engine approach for creating templates of GameObject hierarchies. [Creating Prefabs (Unity Documentation)](https://docs.unity3d.com/Manual/CreatingPrefabs.html) explains how to create one.
+
+Freshly created prefabs are initially empty, so you can drag other prefabs or GameObjects onto them to add them to the hierarchy.
+
+It can often be easiest to drag prefabs into a Scene to edit them - just remember to apply your change (in the Unity Inspector panel) and delete them from the Scene when you are done editing! In upcoming versions of Unity Engine you will be able to make use of [prefab mode](https://blogs.unity3d.com/2018/06/20/introducing-new-prefab-workflows/) for this task.<%(/Expandable)%>
+
 <%(#Expandable title="Wait! Why aren't we removing the callback when the script is disabled?")%>The GDK automatically clears event handlers when a script is disabled, therefore you do not need to manually remove the `OnHealthPickupComponentUpdated` callback.<%(/Expandable)%>
 
-This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK, which we can look at more closely.
+This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK though, let's break those down:
 
 ```csharp
 [WorkerType(WorkerUtils.UnityClient)]
