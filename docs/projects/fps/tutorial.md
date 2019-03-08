@@ -45,13 +45,9 @@ component HealthPickup {
     * `health_value`: An integer value, indicating the amount of health the pack will grant to a player.<br>
     You may also notice the `id` property, this is a [Component ID](https://docs.improbable.io/reference/latest/shared/schema/reference#ids), you can ignore it for now.
 
-1. Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS** menu in your Unity Editor.
-
-    ![Generate code menu bar option]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-codegen.png)
-
-    Code generation creates C# helper classes based on the components and properties defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang) snippet above. It therefore must be run in order to make use of your newly defined `HealthPickup` component within your game logic.<br>
-
-    **Note:** When writing schema files, your properties must use snake case (for example, "health_value"), but the code generation process will create the helper classes in PascalCase (for example, "HealthValue").
+1. Any time you modify your `schema` files you **must** then run code generation. To do this, select **Generate code** from the **SpatialOS** menu in your Unity Editor.<br><br>
+Code generation creates C# helper classes based on the components and properties defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang) snippet above. It therefore must be run in order to make use of your newly defined `HealthPickup` component within your game logic.<br>
+**Note:** When writing schema files, your properties must use snake case (for example, "health_value"), but the code generation process will create the helper classes in PascalCase (for example, "HealthValue").
 
 <%(#Expandable title="What happens if I don't run code generation?")%>If you do not run code generation after modifying your `schema` files (which includes adding, removing or editing existing `.schema` files) then the associated C# helper classes will not be generated. This will mean that your C# interface to the data model of your game will not match your the structures defined in your `schema`. This can be very confusing!
 
