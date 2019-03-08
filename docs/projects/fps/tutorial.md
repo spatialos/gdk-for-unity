@@ -174,13 +174,13 @@ We can neatly separate this logic between the client-side and server-side repres
 * The `UnityClient` client-worker should display a visual representation for each health pack in the world. It should only display health packs that are currently "active".
 * The `UnityGameLogic` server-worker should, when a player collides with a health pack, check whether that player is injured and allows the player to consume the health pack if they are.
 
-### Create GameObject representations
+The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
 
-The FPS Starter Project uses the SpatialOS GDK's MonoBehaviour workflow, which is the familiar way of working with Unity. (Note that the GDK offers both a [MonoBehaviour and ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).)
+<%(#Expandable title="How does the GDK pair SpatialOS entities with Unity prefabs?")%>
 
-In the MonoBehaviour workflow you can associate a Unity prefab with your entity type, with separate prefabs for your `UnityClient` and `UnityGameLogic` workers. All entity prefabs should be added to `Assets/Fps/Resources/Prefabs/UnityClient` and `Assets/Fps/Resources/Prefabs/UnityGameLogic` respectively.
+Client-side entity prefabs are stored in `Assets/Fps/Resources/Prefabs/UnityClient`, while server-side ones are located at `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
 
-The FPS Starter Project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
+The FPS Starter Project uses the "GDK GameObject Creation" package which handles the instantiation of GameObjects to represent SpatialOS entities. This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.<%(/Expandable)%>
 
 <%(#Expandable title="What are the 'Authoritative' and 'NonAuthoritative' sub-folders for?")%>The `Assets/Fps/Resources/Prefabs/UnityClient/` folder contains two sub-folders, `Authoritative` and `NonAuthoritative`, and _both_ of them contain a `Player` prefab!
 
