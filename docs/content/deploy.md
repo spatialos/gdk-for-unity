@@ -41,6 +41,7 @@ You are allocated an empty SpatialOS project in the cloud when you sign up to Sp
 1. Change the `name` field so it matches the name of your SpatialOS project. You can find this in the SpatialOS [Console](https://console.improbable.io). It’ll be something like `beta_someword_anotherword_000`.
 
 ### Build and upload the game assembly
+
 The assembly includes executable files for the client-workers and server-workers, as well as the assets both types of workers use. (The assets might be the models and textures that the client-servers - that is, the game executable code - use to visualise the game.)
 
   1. To build an assembly; in your Unity Editor, select **SpatialOS** > **Build all workers for cloud**.
@@ -49,6 +50,7 @@ The assembly includes executable files for the client-workers and server-workers
   > **It’s finished uploading when:** You see a successful upload report printed in your terminal output, and your automatically opens [https://console.improbable.io](https://console.improbable.io) displaying the deployment.
 
 ### Launch a cloud deployment
+
 1. Launch a cloud deployment
 
    * In the same terminal window, run `spatial cloud launch <assembly name> cloud_launch.json <deployment name> --snapshot=snapshots/default.snapshot`
