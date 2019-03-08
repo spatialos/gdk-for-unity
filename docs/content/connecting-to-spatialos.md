@@ -5,7 +5,7 @@
 
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all [SpatialOS entities](({{urlRoot}}/content/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary#spatialos-component).
+The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary#spatialos-component).
 To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary#worker). You can set up many different types of workers but the two main types are  [server-workers]({{urlRoot}}/content/glossary#server-worker) and [client-workers]({{urlRoot}}/content/glossary#client-worker).
 
 (To find out more about workers in the GDK, see the introduction to [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk).)
@@ -21,6 +21,7 @@ We provide two types of connection flow, depending on what kind of worker and wh
 In all cases, your worker contains a reference to a `Connection` object after successfully connecting to the SpatialOS Runtime.
 
 ### Receptionist service connection flow
+
 Use the Receptionist service connection flow in the following cases:
 
   * Connecting a server-worker or a client-worker instance to a local deployment.
@@ -38,18 +39,21 @@ From SpatialOS v13.5, there are two versions of the Locator connection. The new 
 
 
 ### v10.4+ Locator connection flow (stable version)
+
 Use this Locator service connection flow for:
 
  * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
 
 
 ### New v13.5+ Locator connection flow (alpha version)
+
 Use this Locator service connection flow for:
 
 * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
 * Connecting a client-worker instance to a cloud deployment from your Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
 
 ## When to use the `Connection` object
+
 Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 Use this object for:
 
