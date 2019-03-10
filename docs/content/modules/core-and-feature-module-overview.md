@@ -36,8 +36,8 @@ To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It 
 
 The module consists of:
 
-* `PlayerLifecycleHelper.AddClientSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker.<br/>
+* `PlayerLifecycleHelper.AddClientSystems(world, autoRequestPlayerCreation)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker. It also provides the option to disable automatic player creation when the worker connects to SpatialOS.<br/>
 Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
 
 * `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
@@ -47,6 +47,14 @@ Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-t
 * `AddPlayerLifecycleComponents(entityTemplate, workerId, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
+
+* `byte[] SerializeArguments(object playerCreationArguments)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+Call this to serialize arbitrary data into a byte array that can be passed into a player creation request.<br/>
+Call this when you manually request player creation.
+
+* `T DeserializeArguments<T>(byte[] serializedArguments)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+Call this to deserialize the byte array that was passed into a player creation request.<br/>
+Call this when you want to make use of the deserialized arguments in an [entity template]({{urlRoot}}/content/entity-templates).
 
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/content/modules/player-lifecycle-feature-module) documentation.
 
