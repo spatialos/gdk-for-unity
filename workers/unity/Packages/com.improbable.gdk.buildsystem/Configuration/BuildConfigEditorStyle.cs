@@ -14,7 +14,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal readonly GUIContent AddSceneButtonContents = new GUIContent(string.Empty, "Add Scene");
         internal readonly GUIContent RemoveSceneButtonContents = new GUIContent(string.Empty, "Remove Scene");
+
         internal const string BuiltInErrorIcon = "console.erroricon.sml";
+        internal const string BuiltInWarningIcon = "console.warnicon.sml";
 
         internal readonly string[] CompressionOptions = { "Default", "LZ4", "LZ4HC" };
 
@@ -27,6 +29,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         internal readonly Dictionary<BuildTarget, GUIContent> BuildErrorIcons =
             new Dictionary<BuildTarget, GUIContent>();
 
+        internal readonly Dictionary<BuildTarget, GUIContent> BuildWarningIcons =
+            new Dictionary<BuildTarget, GUIContent>();
+
         private void BuildTargetToContent(BuildTarget target, string iconName, string label)
         {
             var icon = new GUIContent(EditorGUIUtility.IconContent(iconName)) { text = label, tooltip = label };
@@ -34,6 +39,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             icon = new GUIContent(EditorGUIUtility.IconContent(BuiltInErrorIcon)) { text = label, tooltip = label };
             BuildErrorIcons[target] = icon;
+
+            icon = new GUIContent(EditorGUIUtility.IconContent(BuiltInWarningIcon)) { text = label, tooltip = label };
+            BuildWarningIcons[target] = icon;
 
             BuildTargetText[target] = new GUIContent(label);
         }

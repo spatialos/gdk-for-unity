@@ -395,6 +395,28 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> Field16;
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> Field17;
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> Field18;
+
+            public Snapshot(global::System.Collections.Generic.List<BlittableBool> field1, global::System.Collections.Generic.List<float> field2, global::System.Collections.Generic.List<byte[]> field3, global::System.Collections.Generic.List<int> field4, global::System.Collections.Generic.List<long> field5, global::System.Collections.Generic.List<double> field6, global::System.Collections.Generic.List<string> field7, global::System.Collections.Generic.List<uint> field8, global::System.Collections.Generic.List<ulong> field9, global::System.Collections.Generic.List<int> field10, global::System.Collections.Generic.List<long> field11, global::System.Collections.Generic.List<uint> field12, global::System.Collections.Generic.List<ulong> field13, global::System.Collections.Generic.List<int> field14, global::System.Collections.Generic.List<long> field15, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> field18)
+            {
+                Field1 = field1;
+                Field2 = field2;
+                Field3 = field3;
+                Field4 = field4;
+                Field5 = field5;
+                Field6 = field6;
+                Field7 = field7;
+                Field8 = field8;
+                Field9 = field9;
+                Field10 = field10;
+                Field11 = field11;
+                Field12 = field12;
+                Field13 = field13;
+                Field14 = field14;
+                Field15 = field15;
+                Field16 = field16;
+                Field17 = field17;
+                Field18 = field18;
+            }
         }
 
         public static class Serialization

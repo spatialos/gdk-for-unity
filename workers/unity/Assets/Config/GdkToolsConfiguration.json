@@ -4,5 +4,7 @@
         "../../schema"
     ],
     "CodegenOutputDir": "Assets/Generated/Source",
-    "RuntimeIp": ""
+    "RuntimeIp": "",
+    "DevAuthTokenDir": "Resources",
+    "DevAuthTokenLifetimeDays": 30
 }

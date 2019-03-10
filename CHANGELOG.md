@@ -40,6 +40,13 @@
     - This component contains a single bool which denotes whether you have authority over that component.
     - It will not tell you about soft-handover (`AuthorityLossImminent`).
 - You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- Added constructors for all generated component snapshot types.
+- Added the ability to send arbitrary serialized data in a player creation request.
+    - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
+    - Added `SerializeArguments` and `DeserializeArguments<T>` methods to `PlayerLifecycleHelper`.
+- Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
+- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
+- Added the ability to mark a build target as `Required` which will cause builds to fail in the Editor if the prerequisite build support is not installed.
 - Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
     - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
     - `InterestQuery` enables simpler construction of interest queries.
@@ -47,6 +54,7 @@
 
 ### Changed
 
+- Upgraded the Worker SDK version to `13.6.2`.
 - Improved the UX of the BuildConfiguration inspector.
 - Improved the UX of the GDK Tools Configuration window.
 - Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
@@ -57,6 +65,7 @@
 
 - Fixed a bug where running `SpatialOS -> Generate code` would always regenerate code, even if no files had changed.
 - Fixed a bug where building all workers in our sample projects would fail, if you have Android build support installed, but didn't set the path to the Android SDK.
+- Fixed a bug where some prefabs would not be processed correctly, causing NullReferenceExceptions in OnEnable.
 
 ### Internal
 
@@ -71,6 +80,7 @@
     - This now backs the `Require` API in Monobehaviours
 - Low level APIs have been changed significantly.
 - Added a View separate from the Unity ECS.
+- Removed unnecessary `KcpNetworkParameters` overrides in `MobileWorkerConnector` where it matched the default values.
 
 ## `0.1.5` - 2019-02-18
 

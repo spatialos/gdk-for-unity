@@ -8,7 +8,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
         {
             var clientAttribute = $"workerId:{workerId}";
 

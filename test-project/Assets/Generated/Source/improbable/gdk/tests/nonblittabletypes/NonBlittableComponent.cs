@@ -270,6 +270,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public int? OptionalField;
             public global::System.Collections.Generic.List<int> ListField;
             public global::System.Collections.Generic.Dictionary<int,string> MapField;
+
+            public Snapshot(BlittableBool boolField, int intField, long longField, float floatField, double doubleField, string stringField, int? optionalField, global::System.Collections.Generic.List<int> listField, global::System.Collections.Generic.Dictionary<int,string> mapField)
+            {
+                BoolField = boolField;
+                IntField = intField;
+                LongField = longField;
+                FloatField = floatField;
+                DoubleField = doubleField;
+                StringField = stringField;
+                OptionalField = optionalField;
+                ListField = listField;
+                MapField = mapField;
+            }
         }
 
         public static class Serialization

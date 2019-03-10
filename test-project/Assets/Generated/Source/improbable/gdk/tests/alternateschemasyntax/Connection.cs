@@ -158,6 +158,11 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             public uint ComponentId => 1105;
 
             public int Value;
+
+            public Snapshot(int value)
+            {
+                Value = value;
+            }
         }
 
         public static class Serialization

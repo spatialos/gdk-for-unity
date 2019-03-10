@@ -24,6 +24,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// </summary>
         public bool Enabled;
 
+        /// <summary>
+        /// Is this build target required?
+        /// If a required target cannot be built, it will be treated as a failure.
+        /// </summary>
+        public bool Required;
+
         internal string Label
         {
             get
@@ -51,11 +57,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         ///     Creates a new instance of a build target and its options.
         /// </summary>
-        public BuildTargetConfig(BuildTarget target, BuildOptions options, bool enabled)
+        public BuildTargetConfig(BuildTarget target, BuildOptions options, bool enabled, bool required)
         {
             Enabled = enabled;
+            Required = required;
             Target = target;
-            Options = options;            
+            Options = options;
         }
     }
 }
