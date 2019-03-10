@@ -26,7 +26,7 @@ When a SpatialOS entity is [checked out]({{urlRoot}}/content/glossary#checking-o
 
 ### How to send a component update
 
-To send a component update, set the component to the value to be sent. A component update is constructed and sent at the end of the current update loop.
+To send a component update, change the value of at least one field of the component . A component update is constructed and sent at the end of the current update loop.
 
 ```csharp
 public class SendHealthUpdateSystem : ComponentSystem
@@ -53,9 +53,9 @@ public class SendHealthUpdateSystem : ComponentSystem
 
 #### Component update edge case
 
-There is one edge case that you need to be careful about which is a result of how component changes are tracked and [C# reference type](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) semantics.
+There is one edge case that you need to be careful about: this is a result of how component changes are tracked and [C# reference type](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) semantics.
 
-Simply adding or removing elements to a `List<T>` or a `Dictionary<K, V>` field in a component is not sufficient to trigger a component update. Instead, you need to set the field back to itself to trigger the update. This applies to `List<T>` and `Dictionary<K, V>` fields within types as well.
+Simply adding or removing elements to a `List<T>` or a `Dictionary<K, V>` field in a component is not sufficient to trigger a component update. Instead, you need to set the field back to itself to trigger the update, as shown in the example below. This applies to `List<T>` and `Dictionary<K, V>` fields within types as well.
 
 Given the following schema:
 

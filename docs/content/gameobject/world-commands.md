@@ -36,9 +36,9 @@ We provide the following type for sending and receiving world commands:
 
   * `WorldCommandSender`
 
-> We do not provide a `WorldCommandReceiver` as the command will be directly handled by the SpatialOS Runtime.
+> We do not provide a `WorldCommandReceiver` as the SpatialOS Runtime directly handles the command.
 
-The `WorldCommandSender` can be injected without any condition. A MonoBehaviour that requires only these will be enabled as soon as the associated GameObject is created.
+The `WorldCommandSender` can be injected without any condition. A MonoBehaviour that requires only this will be enabled as soon as the associated GameObject is created.
 
 If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities) document.
 
@@ -61,8 +61,9 @@ Parameters:
 Like other commands, a `CreateEntity` command response can time out, but the entity might still be created. As we do not know which ID was used by the SpatialOS Runtime to create this entity, the worker needs to retry the `CreateEntity` command request. This might lead to creating multiple entities as a new entity ID will be used by the SpatialOS Runtime, if the previous `CreateEntity` command did succeed.
 To avoid this, the worker can reserve an entity ID before sending the `CreateEntity` command request. Depending on the command response, you should do the following:
 
-  * The command succeeded: The entity got successfully created
-  * The command failed with the status code `ApplicationError` and the following message: “'Entity reservation failed. The entity with Id <{id}> could not be found. The reservation might have expired or never existed”. If you have used the entity ID that you received from the `ReserveEntityIds` command response for sending the `CreateEntity` commands, then your entity has already been created and you don’t need to retry it anymore.
+  * The command succeeded: The entity got successfully created.
+  * The command failed with the status code `ApplicationError` and the following message: `Entity reservation failed. The entity with Id <{id}> could not be found. The reservation might have expired or never existed`. 
+  <br/>If you have used the entity ID that you received from the `ReserveEntityIds` command response for sending the `CreateEntity` commands, then your entity has already been created and you don’t need to retry it anymore.
   * The command timed out or another error appeared: retry the command.
 [//]: # (TODO - link to status codes for error messages.)
 

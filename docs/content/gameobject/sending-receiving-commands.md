@@ -69,7 +69,7 @@ The GDK generates the following classes in the `Playground` namespace:
 
 #### How to send command requests
 
-The following code snippet provides an examples on how to send a command request and register a callback for the response.
+The following code snippet provides an example on how to send a command request and register a callback for the response.
 This example MonoBehaviour would be enabled on any worker containing the corresponding GameObject.
 
 ```csharp
@@ -145,7 +145,7 @@ public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 
 #### CommandSender
 
-The `CommandSender` is used to send command requests, it provides two method per command it is responsible for:
+The `CommandSender` is used to send command requests, it provides two methods per command. They are responsible for:
 
 ```csharp
 void Send{name of command}Command(EntityId targetEntityId, TPayload payload, Action<ReceivedResponse> callback = null);

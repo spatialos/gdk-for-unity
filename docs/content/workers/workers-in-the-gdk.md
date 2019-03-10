@@ -25,7 +25,7 @@ When it connects, the worker creates an ECS world to keep track of all SpatialOS
 
 This means that, along with a SpatialOS game world and SpatialOS entities, there is an ECS world with ECS entities. However, while the SpatialOS world is game-wide and represents all SpatialOS entities, the ECS world is much narrower; it’s worker-specific and represents only the ECS entities which are currently in a [worker’s view]({{urlRoot}}/content/glossary#worker-s-view).   Of course, this means that you have as many ECS worlds in your game as you have workers.
 
-You add definitions of the systems inside your worker using `worker.World.GetOrCreateManager<YourSystem>()`.
+You add the systems to the ECS world using `worker.World.GetOrCreateManager<YourSystem>()`.
 
 
 ## Further information

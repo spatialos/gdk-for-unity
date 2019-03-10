@@ -12,7 +12,7 @@
 
 ### Authority shared components
 
-For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) attached to a SpatialOS entity, the SpatialOS GDK for Unity (GDK) attaches a _ECS shared component_ (an ECS `ISharedComponentData`) to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
+For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) attached to a SpatialOS entity, the GDK attaches an _ECS shared component_ (an ECS `ISharedComponentData`) to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
 
 This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
 

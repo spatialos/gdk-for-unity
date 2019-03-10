@@ -42,7 +42,7 @@ one field with a `[Require]` attribute. It ensures that these MonoBehaviours are
   * all Prefabs stored inside the `Resources` folder of your Unity project
   * all MonoBehaviours on instantiated GameObjects that have at least one requirement not fulfilled during runtime
 
-Whenever a MonoBehaviour is disabled, all fields decorated with the `[Require]` attribute are `null` and you can not use them as soon as `OnDisable` is called on that MonoBehaviour.
+Whenever a MonoBehaviour is disabled, all fields decorated with the `[Require]` attribute are `null` and you cannot use them as soon as `OnDisable` is called on that MonoBehaviour.
 
 > `OnTriggerEnter()` and `OnCollisionEnter()` might be called even if the MonoBehaviour is disabled. You need to check whether your required types are available, if you want to use them in these methods. You can verify a field’s availability by checking if that field is equal to null or not. If it is not null, it is safe to use.
 

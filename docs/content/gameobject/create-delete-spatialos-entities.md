@@ -191,4 +191,4 @@ public class EntityDeletionBehaviour : MonoBehaviour
 You can get the `EntityId` for an entity using these methods:
 
 * To get the `EntityId` for the current GameObject, use `[Require] private EntityId entityId`.
-* To get the `EntityId` for a different GameObject, use `linkGameObject.GetComponent<LinkedEntityComponent>().EntityId`.
+* To get the `EntityId` for a different GameObject, use `otherGameObject.GetComponent<LinkedEntityComponent>().EntityId`.

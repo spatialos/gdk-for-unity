@@ -90,7 +90,7 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 ### Connection
 
-Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the `Improbable.Gdk.Core.Worker` class. See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) for more information.
+Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established using the `Improbable.Gdk.Core.Worker` class. See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) for more information.
 
 > Related:
 > 
