@@ -13,7 +13,7 @@ Before reading this document, make sure you are familiar with:
 
 The Player lifecycle module is a feature module providing you with a simple player spawning and player lifecycle management implementation.
 
-### How to enable this module
+## How to enable this module
 
 To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector).
 After your worker has been created, you need to use the following code snippet:
@@ -26,7 +26,7 @@ The Player lifecycle module provides a `PlayerLifecycleConfig` configuration cla
 
 Calling `PlayerLifecycleHelper.AddClientSystems(Worker.World, false)` sets this value to false, in which case you must manually initiate player creation.
 
-### How to spawn a player entity
+## How to spawn a player entity
 
 To spawn a [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) representing
 a player, you need to:
@@ -39,7 +39,7 @@ a player, you need to:
 
 If `AutoRequestPlayerCreation` is set to false you must manually initiate player creation, as described in Step 3.
 
-#### 1. Define the player entity template
+##### 1. Define the player entity template
 
 The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/content/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
 
@@ -72,7 +72,7 @@ public static class PlayerTemplate
 }
 ```
 
-#### 2. Specify an entity template for player creation
+##### 2. Specify an entity template for player creation
 
 The `PlayerLifecycleConfig` configuration class needs to be configured to use the player entity template.
 This can be done by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
@@ -102,7 +102,7 @@ public static class OneTimeInitialization
 }
 ```
 
-#### 3. (Optional) Manually request player creation
+##### 3. (Optional) Manually request player creation
 
 If `AutoRequestPlayerCreation` is set to false, you must manually call `RequestPlayerCreation` in the `SendCreatePlayerRequestSystem`:
 ```csharp
@@ -110,12 +110,12 @@ var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSyste
 playerCreationSystem.RequestPlayerCreation();
 ```
 
-### How to pass arbitrary data into a player creation request
+## How to pass arbitrary data into a player creation request
 
-#### 1. Set AutoRequestPlayerCreation to false
+##### 1. Set AutoRequestPlayerCreation to false
 First, ensure that `AutoRequestPlayerCreation` is set to false.
 
-#### 2. Serialize before calling RequestPlayerCreation
+##### 2. Serialize before calling RequestPlayerCreation
 Then, ensure that it is serialized into a byte array before calling `RequestPlayerCreation`:
 ```csharp
 var myArguments = new SampleArgumentsObject { PlayerName = "playerName", SpawnPosition = new Coordinates(42, 0, 69)) };
@@ -123,7 +123,7 @@ var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSyste
 var serializedArguments = PlayerLifecycleHelper.SerializeArguments(myArguments);
 playerCreationSystem.RequestPlayerCreation(serializedArguments);
 ```
-#### 3. Deserialize into the same type you originally serialized from
+##### 3. Deserialize into the same type you originally serialized from
 And lastly, ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
 ```csharp
 public static class PlayerTemplate
@@ -148,6 +148,6 @@ public static class PlayerTemplate
 }
 ```
 
-### When is a player entity deleted?
+## When is a player entity deleted?
 
 To ensure that player entities of disconnected client-workers get deleted correctly, the server-workers responsible to manage the player lifecycle sends a `PlayerHeartBeat` [command]({{urlRoot}}/content/world-component-commands-requests-responses) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker sends a request to the SpatialOS Runtime to delete this entity.
