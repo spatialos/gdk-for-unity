@@ -44,6 +44,7 @@ steps:
     <<: *common
     artifact_paths:
       - logs/**/*
+      - workers/unity/build/worker/AndroidClient@Android*
     env:
       WORKER_TYPE: "AndroidClient"
       BUILD_TARGET: "local"
