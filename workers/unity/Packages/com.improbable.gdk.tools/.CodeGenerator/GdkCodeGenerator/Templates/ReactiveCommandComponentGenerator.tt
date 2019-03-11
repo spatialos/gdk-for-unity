@@ -7,6 +7,7 @@
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -161,3 +162,4 @@ namespace <#= qualifiedNamespace #>
 <# } #>
     }
 }
+#endif

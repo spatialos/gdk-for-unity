@@ -16,27 +16,25 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class ProcessScoresSystem : ComponentSystem
     {
-        private struct ScoringData
-        {
-            public readonly int Length;
-            public ComponentDataArray<Score.Component> Score;
-
-            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.IncreaseScore> CommandRequests;
-        }
-
-        [Inject] private ScoringData scoringData;
+        [Inject] private CommandSystem commandSystem;
+        [Inject] private WorkerSystem workerSystem;
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < scoringData.Length; i++)
+            var requests = commandSystem.GetRequests<Launcher.IncreaseScore.ReceivedRequest>();
+            var scoreComponents = GetComponentDataFromEntity<Score.Component>();
+
+            for (var i = 0; i < requests.Count; i++)
             {
-                var playerScore = scoringData.Score[i];
-                foreach (var request in scoringData.CommandRequests[i].Requests)
+                var request = requests[i];
+                if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
                 {
-                    playerScore.Score += request.Payload.Amount;
+                    continue;
                 }
 
-                scoringData.Score[i] = playerScore;
+                var component = scoreComponents[entity];
+                component.Score += request.Payload.Amount;
+                scoreComponents[entity] = component;
             }
         }
     }

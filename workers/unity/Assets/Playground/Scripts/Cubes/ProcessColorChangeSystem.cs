@@ -18,14 +18,8 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessColorChangeSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<CubeColor.ReceivedEvents.ChangeColor> EventUpdate;
-            public ComponentArray<MeshRenderer> Renderers;
-        }
-
-        [Inject] private Data data;
+        [Inject] private ComponentUpdateSystem updateSystem;
+        [Inject] private WorkerSystem workerSystem;
 
         private Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
 
@@ -37,13 +31,22 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
-            {
-                var colorChangeEvents = data.EventUpdate[i];
-                var renderer = data.Renderers[i];
+            var changeColorEvents = updateSystem.GetEventsReceived<CubeColor.ChangeColor.Event>();
 
-                var lastEvent = colorChangeEvents.Events[colorChangeEvents.Events.Count - 1];
-                renderer.SetPropertyBlock(materialPropertyBlocks[lastEvent.Color]);
+            for (var i = 0; i < changeColorEvents.Count; i++)
+            {
+                var colorEvent = changeColorEvents[i];
+                if (!workerSystem.TryGetEntity(colorEvent.EntityId, out var entity))
+                {
+                    continue;
+                }
+
+                if (EntityManager.HasComponent<MeshRenderer>(entity))
+                {
+                    var renderer = EntityManager.GetComponentObject<MeshRenderer>(entity);
+                    var eventColor = colorEvent.Event.Payload.Color;
+                    renderer.SetPropertyBlock(materialPropertyBlocks[eventColor]);
+                }
             }
         }
     }

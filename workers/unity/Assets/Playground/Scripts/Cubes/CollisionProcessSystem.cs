@@ -29,33 +29,39 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class CollisionProcessSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public EntityArray Entities;
-
-            // Gets updated through PostUpdate
-            [ReadOnly] public ComponentDataArray<Launchable.Component> Launchable;
-            [ReadOnly] public ComponentDataArray<CollisionComponent> Collision;
-            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
-            [ReadOnly] public ComponentDataArray<Authoritative<Launchable.Component>> DenotesAuthority;
-        }
-
-        [Inject] private Data data;
-
         private static readonly EntityId InvalidEntityId = new EntityId(0);
+
+        private ComponentGroup collisionGroup;
+
+        [Inject] private CommandSystem commandSystem;
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            collisionGroup = GetComponentGroup(
+                ComponentType.ReadOnly<Launchable.Component>(),
+                ComponentType.ReadOnly<Launchable.ComponentAuthority>(),
+                ComponentType.ReadOnly<CollisionComponent>()
+            );
+            collisionGroup.SetFilter(new Launchable.ComponentAuthority(true));
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            var entities = collisionGroup.GetEntityArray();
+            var launchableData = collisionGroup.GetComponentDataArray<Launchable.Component>();
+            var collisionData = collisionGroup.GetComponentDataArray<CollisionComponent>();
+            var launchableForEntity = GetComponentDataFromEntity<Launchable.Component>(true);
+
+            for (var i = 0; i < entities.Length; i++)
             {
                 // Handle all the different possible outcomes of the collision.
                 // This requires looking at their most recent launchers.
-                var launchable = data.Launchable[i];
-                var collision = data.Collision[i];
-                var sender = data.Sender[i];
+                var launchable = launchableData[i];
+                var collision = collisionData[i];
 
-                var otherLaunchable = EntityManager.GetComponentData<Launchable.Component>(collision.OtherEntity);
+                var otherLaunchable = launchableForEntity[collision.OtherEntity];
                 var ourOwner = launchable.MostRecentLauncher;
                 var otherOwner = otherLaunchable.MostRecentLauncher;
 
@@ -63,18 +69,20 @@ namespace Playground
                 {
                     if (ourOwner.IsValid())
                     {
-                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
-                            ourOwner, new ScoreIncreaseRequest(1)));
-                        data.Sender[i] = sender;
+                        var request = new Launcher.IncreaseScore.Request(
+                            ourOwner, new ScoreIncreaseRequest(1));
+
+                        commandSystem.SendCommand(request, entities[i]);
                     }
                 }
                 else if (otherOwner.IsValid())
                 {
                     if (!ourOwner.IsValid())
                     {
-                        sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(otherOwner,
-                            new ScoreIncreaseRequest(1)));
-                        data.Sender[i] = sender;
+                        var request = new Launcher.IncreaseScore.Request(otherOwner,
+                            new ScoreIncreaseRequest(1));
+
+                        commandSystem.SendCommand(request, entities[i]);
 
                         launchable.MostRecentLauncher = otherOwner;
                     }
@@ -83,7 +91,7 @@ namespace Playground
                         launchable.MostRecentLauncher = InvalidEntityId;
                     }
 
-                    PostUpdateCommands.SetComponent(data.Entities[i], launchable);
+                    PostUpdateCommands.SetComponent(entities[i], launchable);
                 }
             }
         }
