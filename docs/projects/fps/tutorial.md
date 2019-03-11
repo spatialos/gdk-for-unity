@@ -156,13 +156,9 @@ If we were to test the game at this point, the health pack entity would appear i
 
 While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!<%(/Expandable)%>
 
-## Represent your new entity on your workers
+## Plan your entity representations
 
-In this section we’re going to decide how to represent the `HealthPickup` entity in our client-workers and server-workers, and implement this.
-
-### Plan your entity representations
-
-First we must think about how each of the workers should represent the entity, so let's quickly review how we want this game mechanic to play out:
+In this section we’re going to decide how to represent the `HealthPickup` entity in our client-workers and in our server-workers. First we must think about how each of the workers should represent the entity, so let's quickly review how we want this game mechanic to play out:
 
 * Players should see a health pack hovering just above the ground.
 * When a player collides with the health pack. it is consumed and disappears.
@@ -172,7 +168,7 @@ First we must think about how each of the workers should represent the entity, s
 We can neatly separate this logic between the client-side and server-side representations:
 
 * The `UnityClient` client-worker should display a visual representation for each health pack in the world. It should only display health packs that are currently "active".
-* The `UnityGameLogic` server-worker should, when a player collides with a health pack, check whether that player is injured and allows the player to consume the health pack if they are.
+* The `UnityGameLogic` server-worker should, when a player collides with an active health pack, check whether that player is injured and allow the player to consume the health pack if they are.
 
 The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
 
@@ -196,7 +192,12 @@ The `Player` entity has a special relationship with the `UnityClient` instance t
 
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority]({{urlRoot}}/content/glossary#authority).<%(/Expandable)%>
 
-### Create a UnityClient entity prefab
+## Implement client-side entity representation
+
+The client-side logic we want to capture for this game mechanic is:
+
+* Visualise active health packs hovering just above the ground.
+* Do not visualise inactive health packs.
 
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityClient`.
@@ -267,7 +268,7 @@ It can often be easiest to drag prefabs into a Scene to edit them - just remembe
 
 <%(#Expandable title="Wait! Why aren't we removing the callback when the script is disabled?")%>The GDK automatically clears event handlers when a script is disabled, therefore you do not need to manually remove the `OnHealthPickupComponentUpdated` callback.<%(/Expandable)%>
 
-## Test your changes
+### Test your changes
 
 1. In your Unity Editor, launch a local deployment of your game by selecting **SpatialOS** > **"Local launch"** or using the shortcut `Ctrl + L`.
 1. Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in `Assets/Fps/Scene`.
@@ -284,25 +285,21 @@ It can often be easiest to drag prefabs into a Scene to edit them - just remembe
 
 If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
 
-## Add health pack logic
-
-If we were to test the game at this point we would now see the health pack entity in-game, but we've not yet given it the consumption behaviour.
+## Implement server-side entity representation
 
 The server-side logic we want to capture for this game mechanic is:
 
-* Tracking player collisions with the health pack.
-* Checking the pre-conditions: player must be injured, health pack must be active.
-* Granting health to a player when the conditions are met.
+* Detect player collisions with the health pack.
+* Check two conditions:
+    * The player must be injured
+    * The health pack must be active.
+* Grant health to the player when both conditions are met.
 
 To do this we will need to create a server-side representation of the health pack, and add a script to the health pack which can both read its own component data (to check if the health pack is active) as well as that of the player entity (to check if it is injured). After that, if conditions are met, it then must also be able to _update_ its own component data (to set itself to "inactive"), and that of the player entity (to grant it health).
 
-### Create a UnityGameLogic entity prefab
-
-In the FPS Starter Project the server-side worker is called `UnityGameLogic`.
-
-Create a copy of `Assets/Fps/Prefabs/HealthPickup.prefab` in the `Assets/Fps/Resources/Prefabs/UnityGameLogic/` folder.
-
-Then, add a script component to your new prefab called `HealthPickupServerBehaviour` and replace its contents with the following code snippet which contains a couple of pieces of code we still need to write:
+1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
+1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
+1. Add a new script component to the root of your new prefab called `HealthPickupServerBehaviour`, and replace its contents with the following code snippet:
 
 ```csharp
 using System.Collections;
@@ -367,9 +364,9 @@ namespace Fps
 }
 ```
 
-This code snippet contains two comments that are placeholders for code which we will now write.
-
-The first placeholder is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
+1. `// Replace this comment with your code for updating the health pack component's "active" property.`<br>
+Replace this comment with 
+This is the  first placeholder comment.  is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access).<%(/Expandable)%>
 
