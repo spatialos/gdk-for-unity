@@ -7,9 +7,14 @@ namespace Improbable.Gdk.Core
 {
     public class ViewDiff
     {
+        public string DisconnectMessage;
+
         public bool Disconnected { get; private set; }
 
-        public string DisconnectMessage;
+        public bool InCriticalSection { get; private set; }
+
+        private static List<Type> componentStorageTypes;
+        private static List<Type> commandStorageTypes;
 
         private readonly HashSet<EntityId> entitiesAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
@@ -37,7 +42,15 @@ namespace Improbable.Gdk.Core
 
         public ViewDiff()
         {
-            var componentStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+            if (componentStorageTypes == null)
+            {
+                componentStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+            }
+
+            if (commandStorageTypes == null)
+            {
+                commandStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandDiffStorage));
+            }
 
             foreach (var type in componentStorageTypes)
             {
@@ -52,8 +65,6 @@ namespace Improbable.Gdk.Core
                     typeToComponentStorage.Add(eventType, instance);
                 }
             }
-
-            var commandStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandDiffStorage));
 
             foreach (var type in commandStorageTypes)
             {
@@ -96,6 +107,9 @@ namespace Improbable.Gdk.Core
             entitiesRemoved.Clear();
             logsReceived.Clear();
             metricsReceived = null;
+            InCriticalSection = false;
+            Disconnected = false;
+            DisconnectMessage = null;
         }
 
         public void AddEntity(long entityId)
@@ -262,6 +276,11 @@ namespace Improbable.Gdk.Core
         {
             Disconnected = true;
             DisconnectMessage = message;
+        }
+
+        public void SetCriticalSection(bool inCriticalSection)
+        {
+            InCriticalSection = inCriticalSection;
         }
 
         internal Metrics GetMetrics()

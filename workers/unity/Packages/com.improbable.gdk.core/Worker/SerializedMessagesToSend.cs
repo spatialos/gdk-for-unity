@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
         private const uint PositionComponentId = 54;
 
         private static readonly UpdateParameters UpdateParams = new UpdateParameters
-            { Loopback = ComponentUpdateLoopback.None };
+            { Loopback = ComponentUpdateLoopback.ShortCircuited };
 
         private static List<Type> componentTypes;
         private static List<Type> commandTypes;
