@@ -109,22 +109,22 @@ The information that specifies exactly _which_ client should be granted permissi
 To find out about how to do this, read up about [worker attribute sets](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 <%(/Expandable)%>
 
-## Add your new entities to the snapshot
+## Add your new entity to the snapshot
 
-In this section we’re going to add health pack entities to the SpatialOS world. There are two ways to do this:
+In this section we’re going to add a health pack entity to the SpatialOS world. There are two ways to do this:
 
 * At runtime, by passing an `EntityTemplate` object to an entity creation function.
-* At start-up, by adding health pack entities to the [Snapshot]({{urlRoot}}/content/glossary#snapshot), so they are already in the world when the game begins.
+* At start-up, by adding a health pack entity to the [Snapshot]({{urlRoot}}/content/glossary#snapshot), so it's already in the world when the game begins.
 
-For health packs we will do the latter, so that when the game begins there will already be health packs in pre-defined locations.
+We will do the latter, so that when the game begins there will already be a health pack in a pre-defined location.
 
 ### Edit the snapshot generation script.
 
-The **SpatialOS** menu in your Unity Editor contains a **"Generate FPS Snapshot"** option. This option runs `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`. We will now modify this script to add `HealthPack` entities to our snapshot:<br><br>
+The **SpatialOS** menu in your Unity Editor contains a **"Generate FPS Snapshot"** option. This option runs `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs`. We will now modify this script to add a `HealthPack` entity to our snapshot:<br><br>
 
 1. In your Unity Editor, locate `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs` and open it in your code editor.
 1. Ensure your code can reference the `Vector3f` namespace by adding `using Improbable;` to the top of the file.
-1. The function below contains logic for adding health pack entities to the snapshot object, and sets the amount of health the packs restore to `100`. Paste it inside the `SnapshotMenu` class.
+1. The function below contains logic for adding a health pack entity to the snapshot object, and sets the amount of health the packs restore to `100`. Paste it inside the `SnapshotMenu` class.
 
 ```csharp
 private static void AddHealthPacks(Snapshot snapshot)
@@ -196,7 +196,7 @@ The `Player` entity has a special relationship with the `UnityClient` instance t
 
 Authority is a tricky topic with SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority]({{urlRoot}}/content/glossary#authority).<%(/Expandable)%>
 
-##### Create a UnityClient entity prefab
+### Create a UnityClient entity prefab
 
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityClient`.
@@ -269,32 +269,20 @@ It can often be easiest to drag prefabs into a Scene to edit them - just remembe
 
 ## Test your changes
 
-Our aim is for health packs to appear and restore lost health to players. So what have we accomplished so far?
-
-* You defined the schema for your health packs: a new component containing properties for how much health it will grant and whether it's ready to do so.
-* You created an entity template function which provides a central definition of a particular entity type and can create `Entity` objects.
-* You added an instance of the health pack entity type to the snapshot so it will be present in the world when the game begins.
-* You associated a local representation with your new SpatialOS entity so that Unity will know how to visually represent any health pack it encounters.
-
-You can launch a local deployment of your updated game world from the **SpatialOS menu** within your Unity Editor by selecting **"Local launch"** (`Ctrl + L`). This will open a terminal that should tell you when the world is ready.
-
-Once the world is ready you can:
-
-* View all entities in the inspector from your browser: http://localhost:21000/inspector/
-* Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in **Assets** > **Fps** > **Scene**.
-* Press Play in your Unity Editor to play the game.
-
-![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
-
-You'll know it's worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. But currently it just sits there, inert. If you walk into it, nothing happens. Let's fix that!
-
-Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
+1. In your Unity Editor, launch a local deployment of your game by selecting **SpatialOS** > **"Local launch"** or using the shortcut `Ctrl + L`.
+1. Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in `Assets/Fps/Scene`.
+1. Press Play in your Unity Editor to play the game.
+    
+    ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
+    
+    You'll know that your previous changes have worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when    running around in-game. Currently it just sits there, inert. If you walk into it, nothing happens. Let's fix that!
+    
+    Our next step will be to add some game logic to the health pack so that it reacts to player collisions and grants them health.
+1. Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 <%(#Expandable title="How does the Inspector decide the entity name?")%>In your entity template function the compulsory `Metadata` component required a string as a parameter, and we gave it "HealthPickup", but could have used any string. The metadata is intended to be a friendly identifier for the entity type, and as such is used by the Inspector to label your entity.
 
 If you are using the SpatialOS GDK's MonoBehaviour workflow then the `Metadata` string must match the name of the entity prefab that will represent it.<%(/Expandable)%>
-
-Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
 
 ## Add health pack logic
 
