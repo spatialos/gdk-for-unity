@@ -199,7 +199,7 @@ Authority is a tricky topic with SpatialOS, particularly as write-access is actu
 ##### Create a UnityClient entity prefab
 
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
-1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityClient/`.
+1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityClient`.
 1. Add a new script component to the root of your `HealthPickup` prefab, name it `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
 
 ```csharp
@@ -236,6 +236,25 @@ namespace Fps
 }
 ```
 
+This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK though, let's break those down:
+
+* `using Pickups;`<br>
+The class `HealthPickupClientVisibility` relies upon the `is_active` property that we [previously](#define-a-new-spatialos-component) defined as a property of the `HealthPickup` component. For this reason the package `Pickups`, that we declared in the `health_pickup.schema` file, appears in a `using` statement at the top of the script.
+
+* `[WorkerType(WorkerUtils.UnityClient)]`<br>
+This `WorkerType` annotation decorates the class `HealthPickupClientVisibility`. It tells SpatialOS to **only** enable this class on `UnityClient` client-workers, ensuring that it will never run on your server-workers.
+
+* `[Require] private HealthPickup.Requirable.Reader healthPickupReader;`<br>
+This is an instruction to the client-worker running the `HealthPickupClientVisibility` class. It tells the client-worker to **only** enable this script on entities that have a `HealthPickup` component and the client-worker has read-access to.
+
+* `cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;` uses the `is_active` bool and that we [previously](#define-a-new-spatialos-component) defined to determine if the visual client-side representation of the health pack entity should appear in the game world.
+
+<%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
+
+The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
+
+You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
+
 <%(#Expandable title="Can I name the prefab something else?")%>Your choice of prefab name can be anything, but **must** match the string you used for the entity's `Metadata` component when you wrote the entity template function for this entity.
 
 This is because the FPS Starter Project uses the GDK GameObject Creation package as part of the MonoBehaviour workflow. To find out more you can read up about the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities).<%(/Expandable)%>
@@ -248,53 +267,9 @@ It can often be easiest to drag prefabs into a Scene to edit them - just remembe
 
 <%(#Expandable title="Wait! Why aren't we removing the callback when the script is disabled?")%>The GDK automatically clears event handlers when a script is disabled, therefore you do not need to manually remove the `OnHealthPickupComponentUpdated` callback.<%(/Expandable)%>
 
-This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few annotations which are specific to the SpatialOS GDK though, let's break those down:
-
-```csharp
-[WorkerType(WorkerUtils.UnityClient)]
-```
-
-This annotation decorating the class indicates the `WorkerType` of the script (in this case, `UnityClient`). This provides information for SpatialOS when it is building out your separate workers: a script with the client annotation should never be enabled on a `UnityGameLogic` worker. You can use these `WorkerType` annotations to control where your code runs. If a script should exist and be able to run on both client-side and server-side workers then this annotation can be omitted.
-
-This `HealthPickupClientVisibility` script is going to rely on the `is_active` property of your new `HealthPickup` component, so the package declared in the `health_pickup.schema` file appears in a `using` statement at the top of the script:
-
-```csharp
-using Pickups;
-```
-
-This namespace is part of the helper classes that the code generation phase created from your schema.
-
-To make use of component data, either to read from it or write to it, we can use SpatialOS GDK syntax to inject the component into the script.
-
-```csharp
-[Require] private HealthPickup.Requirable.Reader healthPickupReader;
-```
-
-The worker on which the code is running interprets this statement as an instruction to enable this script component on a particular entity's associated GameObject, but only if that entity has a `HealthPickup` component and the worker has read-access to that component. Read-access is rarely limited, but the same syntax can be used with `Writer` instead of `Reader`, which would make the requirement even stricter. With a `Writer`, the script would only be enabled on the single worker that has write-access to the `HealthPickup` component on that entity.
-
-These `[Require]` attributes are another powerful way to control where your code is executed. For the purpose of this script we only need to _read_ the health pack's data when deciding how to visualise it, so only a `Reader` is necessary.
-
-You can see a use of the `HealthPickup` component's data in the `UpdateVisibility()` function:
-
-```csharp
-cubeMeshRenderer.enabled = healthPickupReader.Data.IsActive;
-```
-
-When you wrote the schema for the `HealthPickup` component you included a bool property called `is_active`, and code generation has created the `IsActive` member within the reader's `Data` object. We'll cover updating component property values later in this tutorial.
-
-Setting the `cubeMeshRenderer.enabled` according to whether the health pack is "active" or not only works if `cubeMeshRender` correctly references the mesh renderer.
-
-The client-side representation of the health pack entity is now complete! Next we will test the game so far and make sure we are visualising the health packs correctly.
-
-<%(#Expandable title="Are entities always represented by GameObjects?")%>No, exactly how entities are represented on each of your workers is up to you.
-
-The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) represents them as a grouping of Unity ECS components. If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
-
-You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.<%(/Expandable)%>
-
 ## Test your changes
 
-Our aim is to have health packs which restore lost health to players. So what have we accomplished so far?
+Our aim is for health packs to appear and restore lost health to players. So what have we accomplished so far?
 
 * You defined the schema for your health packs: a new component containing properties for how much health it will grant and whether it's ready to do so.
 * You created an entity template function which provides a central definition of a particular entity type and can create `Entity` objects.
