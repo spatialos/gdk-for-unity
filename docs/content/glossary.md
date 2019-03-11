@@ -311,7 +311,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Also referred to as "synchronization".
 
-Replication is the process by which all workers in the [SpatialOS world](#spatialos-world) maintain a consistent model of that world. It can be achieved by either [standard](#standard-replication).
+Replication is the process by which all workers in the [SpatialOS world](#spatialos-world) maintain a consistent model of that world. It can be achieved using [standard replication](#standard-replication).
 
 ### Server-worker
 

@@ -16,7 +16,7 @@ For every [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component
 
 This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
 
-> Note that this component does not contain information about `AuthorityLossImminent` notifications. To listen to these, see [Authority reactive components](#authority-reactive-components) below.
+> Note that this component does not contain information about `AuthorityLossImminent` notifications. For information on how a worker instance gets notified about these, see [Authority reactive components](#authority-reactive-components) below.
 
 ### Authority reactive components
 

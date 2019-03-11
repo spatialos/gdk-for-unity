@@ -23,6 +23,6 @@ To represent a worker as a GameObject:
   *  If you are using the default implementation of `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, YourWorkerGameObject)` if you use the default implementation.
   * GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, new YourEntityGameObjectCreator(), YourWorkerGameObject) if you customized the `IEntityGameObjectCreator` where `YourWorkerGameObject` is the GameObject that should represent your worker.
 1.  When your game runs,  the Creation Feature Module attaches a GameObject component called `LinkedEntityComponent` to the GameObject representing the SpatialOS entity.</br>
-  * Note that the `SpatialEntityId` field of the `LinkedEntityComponent` is set to 0.</br>
+  * Note that the `SpatialEntityId` field of the `LinkedEntityComponent` is set to 0. This is an invalid SpatialOS Entity ID.</br>
 
 > The GameObject representing your worker is not automatically destroyed when you disconnect from SpatialOS.
