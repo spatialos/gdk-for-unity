@@ -1,0 +1,292 @@
+
+# WorldCommandMetaDataStorage Class
+<sup>
+Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
+GDK package: Core<br/>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L11">Source</a>
+<style>
+a code {
+                    padding: 0em 0.25em!important;
+}
+code {
+                    background-color: #ffffff!important;
+}
+</style>
+</sup>
+<nav id="pageToc" class="page-toc"><ul><li><a href="#methods">Methods</a>
+</ul></nav>
+
+
+
+</p>
+
+<b>Inheritance</b>
+
+<code><a href="{{urlRoot}}/api/core/i-command-meta-data-storage">Improbable.Gdk.Core.ICommandMetaDataStorage</a></code>
+<code><a href="{{urlRoot}}/api/core/i-command-payload-storage">Improbable.Gdk.Core.ICommandPayloadStorage&lt;WorldCommands.CreateEntity.Request&gt;</a></code>
+<code><a href="{{urlRoot}}/api/core/i-command-payload-storage">Improbable.Gdk.Core.ICommandPayloadStorage&lt;WorldCommands.DeleteEntity.Request&gt;</a></code>
+<code><a href="{{urlRoot}}/api/core/i-command-payload-storage">Improbable.Gdk.Core.ICommandPayloadStorage&lt;WorldCommands.ReserveEntityIds.Request&gt;</a></code>
+<code><a href="{{urlRoot}}/api/core/i-command-payload-storage">Improbable.Gdk.Core.ICommandPayloadStorage&lt;WorldCommands.EntityQuery.Request&gt;</a></code>
+
+
+
+
+
+
+
+
+
+
+
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Methods
+
+
+</p>
+
+
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetComponentId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L28">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>uint GetComponentId()</code></p>
+
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetCommandId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L33">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>uint GetCommandId()</code></p>
+
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>RemoveMetaData</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L38">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void RemoveMetaData(uint internalRequestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>uint internalRequestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>AddRequestId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L53">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void AddRequestId(uint internalRequestId, long requestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>uint internalRequestId</code> : </li>
+<li><code>long requestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetRequestId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L58">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>long GetRequestId(uint internalRequestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>uint internalRequestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L63">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void AddRequest(<a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/create-entity/request">WorldCommands.CreateEntity.Request</a>&gt; context, long requestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/create-entity/request">WorldCommands.CreateEntity.Request</a>&gt; context</code> : </li>
+<li><code>long requestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L68">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void AddRequest(<a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/delete-entity/request">WorldCommands.DeleteEntity.Request</a>&gt; context, long requestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/delete-entity/request">WorldCommands.DeleteEntity.Request</a>&gt; context</code> : </li>
+<li><code>long requestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L73">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void AddRequest(<a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids/request">WorldCommands.ReserveEntityIds.Request</a>&gt; context, long requestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids/request">WorldCommands.ReserveEntityIds.Request</a>&gt; context</code> : </li>
+<li><code>long requestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/develop/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/WorldCommandMetaDataStorage.cs/#L78">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void AddRequest(<a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/entity-query/request">WorldCommands.EntityQuery.Request</a>&gt; context, long requestId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;<a href="{{urlRoot}}/api/core/commands/world-commands/entity-query/request">WorldCommands.EntityQuery.Request</a>&gt; context</code> : </li>
+<li><code>long requestId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+
+
+
