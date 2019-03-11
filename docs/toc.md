@@ -96,6 +96,7 @@
         - [Write a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
     - [Troubleshooting]({{urlRoot}}/content/troubleshooting)
     - [Known issues]({{urlRoot}}/known-issues)
+<%(Include file="api/.toc/toc.md")%>
 - <h3>Get involved</h3>
     - Contributing to the GDK
         - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
