@@ -42,24 +42,20 @@ namespace <#= qualifiedNamespace #>
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void AddRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(uint internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
 
-            public void AddRequest(CommandContext<<#= command.FqnRequestType #>> context, long requestId)
+            public void AddRequest(in CommandContext<<#= command.FqnRequestType #>> context)
             {
-                requestIdToRequest[requestId] = context;
+                requestIdToRequest[context.RequestId] = context;
             }
 
-            public long GetRequestId(uint internalRequestId)
+            public CommandContext<<#= command.FqnRequestType #>> GetPayload(uint internalRequestId)
             {
-                return internalRequestIdToRequestId[internalRequestId];
-            }
-
-            public CommandContext<<#= command.FqnRequestType #>> GetPayload(long requestId)
-            {
-                return requestIdToRequest[requestId];
+                var id = internalRequestIdToRequestId[internalRequestId];
+                return requestIdToRequest[id];
             }
         }
 
