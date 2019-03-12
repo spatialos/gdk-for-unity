@@ -410,119 +410,14 @@ When sent to SpatialOS, the `HealthPickup.Update` object updates the `HealthPick
 * `private void HandleCollisionWithPlayer(GameObject player)`<br>
 This function will be called any time a player walks through a health pack. It handles cross-worker interaction using [commands](https://docs.improbable.io/reference/latest/shared/glossary#command). When you send a command it acts as a request, which SpatialOS delivers to the single worker that has write-access for the component that the command is intended for.<br>
 Cross-worker interactions can be necessary when your game has multiple `UnityGameLogic` server-workers, because the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access to the `Player` entity who has collided with that health pack.<br>
+* `private IEnumerator RespawnCubeRoutine()`<br>
+This coroutine re-activates consumed health packs after a cool-down period. It starts at the end of the `HandleCollisionWithPlayer` function as well as in `OnEnable` for any health pack entities which are inactive. Running coroutines are stopped in `OnDisable`.
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access).<%(/Expandable)%>
 
 <%(#Expandable title="How are clients prevented from sending health-giving commands?")%>They're not - any worker can send a command. However, only the worker which has write access to the component holding a command is allowed to handle it. Each command request contains information about the caller of the command which could be used to enforce restrictions. Have a look at `ServerHealthModifierSystem.cs` in the Health feature module.<%(/Expandable)%>
 
 <%(#Expandable title="Could you put the collision logic on the 'Player' instead?")%>Yes, and that would actually be better in some ways. If the collision with a health pickup is detected by the player, the command to update health can be replaced with a component update. This is a major simplification and should also have better performance. As a rule of thumb, always prefer component updates over commands. We have introduced you to commands so that you know their power, but it is your responsibility to use them wisely.<%(/Expandable)%>
-
-### Respawn health packs
-
-Our health packs use the `IsActive` property to indicate whether they can be visualised (and whether they will grant health on collision). One final feature we will add is a co-routine to re-activate consumed health packs after a cool-down period.
-
-In your `HealthPickupServerBehaviour` class, define a coroutine function that looks something like this:
-
-```csharp
-private IEnumerator RespawnCubeRoutine()
-{
-    yield return new WaitForSeconds(15f);
-    SetIsActive(true);
-}
-```
-
-Your coroutine should be started at the end of the `HandleCollisionWithPlayer` function. You should also start the coroutine in `OnEnable` for any health pack entities which are inactive (`IsActive` equal to `false`) to begin with. Running coroutines should also be stopped in `OnDisable`.
-
-<%(#Expandable title="Expand for completed `HealthPickupServerBehaviour` snippet.")%>
-```csharp
-using System.Collections;
-using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
-using Improbable.Gdk.Health;
-using Pickups;
-using UnityEngine;
-
-namespace Fps
-{
-    [WorkerType(WorkerUtils.UnityGameLogic)]
-    public class HealthPickupServerBehaviour : MonoBehaviour
-    {
-        [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
-        [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
-
-        private Coroutine respawnCoroutine;
-
-        private void OnEnable()
-        {
-            // If the pickup is inactive on initial checkout - turn off collisions and start the respawning process.
-            if (!healthPickupWriter.Data.IsActive)
-            {
-                respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (respawnCoroutine != null)
-            {
-                StopCoroutine(respawnCoroutine);
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            // OnTriggerEnter is fired regardless of whether the MonoBehaviour is enabled/disabled.
-            if (healthPickupWriter == null)
-            {
-                return;
-            }
-
-            if (!other.CompareTag("Player"))
-            {
-                return;
-            }
-
-            HandleCollisionWithPlayer(other.gameObject);
-        }
-
-        private void SetIsActive(bool isActive)
-        {
-            healthPickupWriter?.Send(new HealthPickup.Update
-                {
-                    IsActive = new Option<BlittableBool>(isActive)
-                });
-        }
-
-        private void HandleCollisionWithPlayer(GameObject player)
-        {
-            var playerSpatialOsComponent = player.GetComponent<SpatialOSComponent>();
-
-            if (playerSpatialOsComponent == null)
-            {
-                return;
-            }
-
-            healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
-            {
-                Amount = healthPickupWriter.Data.HealthValue
-            });
-
-            // Toggle health pack to its "consumed" state
-            SetIsActive(false);
-
-            // Begin cool-down period before re-activating health pack
-            respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
-        }
-
-        private IEnumerator RespawnCubeRoutine()
-        {
-            yield return new WaitForSeconds(15f);
-            SetIsActive(true);
-        }
-    }
-}
-```
-<%(/Expandable)%>
 
 <%(#Expandable title="Why would IsActive be false in OnEnable()?")%>In a large game, where there are multiple workers of each type (such as multiple `UnityGameLogic` workers), it is the SpatialOS load-balancer that decides how to divide write-access for components between the available workers. At run-time the load-balancer will dynamically adjust these authorities to provide the best performance.
 
@@ -536,11 +431,13 @@ The newly authoritative worker will not know how long the cool-down had already 
 
 ### Optional: Ignore healthy players
 
+This section is intended to reinforce what you've learned but is entirely optional. If you don't want to implement this, you can move onto the [next section](#test-your-changes-in-a-local-deployment).
+
 The `HandleCollisionWithPlayer` function in your `HealthPickupServerBehaviour.cs` script currently attempts to heal any colliding player. If the player is already on full health we might want to ignore them so that the health pack is not consumed and the health modifier command is never sent.
 
-At the beginning of the `HandleCollisionWithPlayer` function you could add an if-statement which reads the player's current health from a Monobehaviour (that you will need to write) and returns early if their health is at the maximum. In the code that handles incoming `ModifyHealthRequest` commands the player's health is clamped to the value of the `Health` component's `max_health` property, but it's preferable to avoid sending the request if we know it will be denied anyway.
+1. At the beginning of the `HandleCollisionWithPlayer` function add an if-statement which reads the player's current health from a Monobehaviour (that you will need to write yourself) and returns early if their health is at the maximum.
 
-## Test health pick-ups locally
+## Test your changes in a local deployment
 
 The distributed game logic is now in place, and we can test if it is working correctly. To test this feature, you can follow these steps:
 
