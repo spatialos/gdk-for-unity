@@ -291,11 +291,17 @@ The server-side logic we want to capture for this game mechanic is:
 
 * Detect player collisions with the health pack.
 * Check two conditions:
-    * The player must be injured
+    * The player must be injured.
     * The health pack must be active.
 * Grant health to the player when both conditions are met.
 
-To do this we will need to create a server-side representation of the health pack, and add a script to the health pack which can both read its own component data (to check if the health pack is active) as well as that of the player entity (to check if it is injured). After that, if conditions are met, it then must also be able to _update_ its own component data (to set itself to "inactive"), and that of the player entity (to grant it health).
+To achieve this we need to:
+
+* Create a server-side representation of the health pack.
+* Add a script to the health pack which can:
+    * Read its own component data (to check if the health pack is active).
+    * Read the component data of player entities (to check if they are injured).
+    * Write to its own component data (to set itself to "inactive"), and to the player's (to grant them health).
 
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
@@ -317,17 +323,28 @@ namespace Fps
         [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
         [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
 
+        private Coroutine respawnCoroutine;
+
         private void OnEnable()
         {
+            // If the pickup is inactive on initial checkout - turn off collisions and start the respawning process.
+            if (!healthPickupWriter.Data.IsActive)
+            {
+                respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+            }
         }
 
         private void OnDisable()
         {
+            if (respawnCoroutine != null)
+            {
+                StopCoroutine(respawnCoroutine);
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            // OnTriggerEnter is fired regardless of whether the MonoBehaviour is enabled or disabled.
+            // OnTriggerEnter is fired regardless of whether the MonoBehaviour is enabled/disabled.
             if (healthPickupWriter == null)
             {
                 return;
@@ -335,7 +352,7 @@ namespace Fps
 
             if (!other.CompareTag("Player"))
             {
-            	return;
+                return;
             }
 
             HandleCollisionWithPlayer(other.gameObject);
@@ -343,7 +360,10 @@ namespace Fps
 
         private void SetIsActive(bool isActive)
         {
-            // Replace this comment with your code for updating the health pack component's "active" property.
+            healthPickupWriter?.Send(new HealthPickup.Update
+                {
+                    IsActive = new Option<BlittableBool>(isActive)
+                });
         }
 
         private void HandleCollisionWithPlayer(GameObject player)
@@ -355,76 +375,43 @@ namespace Fps
                 return;
             }
 
-            // Replace this comment with your code for notifying the Player entity that it will receive health.
+            healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
+            {
+                Amount = healthPickupWriter.Data.HealthValue
+            });
 
-            // Toggle health pack to its "consumed" state.
+            // Toggle health pack to its "consumed" state
             SetIsActive(false);
+
+            // Begin cool-down period before re-activating health pack
+            respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+        }
+
+        private IEnumerator RespawnCubeRoutine()
+        {
+            yield return new WaitForSeconds(15f);
+            SetIsActive(true);
         }
     }
 }
 ```
+Let’s break down what the above snippet does:
 
-1. `// Replace this comment with your code for updating the health pack component's "active" property.`<br>
-Replace this comment with 
-This is the  first placeholder comment.  is in a function called `SetIsActive`. `IsActive` is the name of the bool property in the `HealthPickup` component you created, and we want this function to perform a **component update**, setting the value of `IsActive` to a given value. We want this update to be synchronized across all workers - updating the true state of that entity - and that can only be done by the single worker that has write-access.
+* `[WorkerType(WorkerUtils.UnityGameLogic)]`<br>
+This `WorkerType` annotation decorates the class `HealthPickupServerBehaviour`. It tells SpatialOS to **only** enable this class on `UnityGameLogic` server-workers, ensuring that it will never run on your client-workers.
+* `[Require] private HealthPickup.Requirable.Writer healthPickupWriter;`<br>
+This is an instruction to the server-worker running the `HealthPickupServerBehaviour` class. It tells the server-worker to **only** enable this script on the worker with write-access to the `HealthPickup` component.
+* `private void OnTriggerEnter(Collider other)`<br>
+Most functions will **only** be called if the script component's `enabled` property is true, but `OnTriggerEnter` is called even when this is false. It is unusual in this sense. For this reason, scripts which use `OnTriggerEnter` **must** check whether the `Writer` is null (indicating a lack of authority) before using functions on the writer.
+* `private void SetIsActive(bool isActive)`<br>
+This function performs a component update. It sets the value of `IsActive`, the compoment property we [defined earlier](#define-a-new-spatialos-component), to a given value.
+* `healthPickupWriter?.Send(new HealthPickup.Update`<br>
+When sent to SpatialOS, the `HealthPickup.Update` object updates the `HealthPickup` component.
+* `private void HandleCollisionWithPlayer(GameObject player)`<br>
+This function will be called any time a player walks through a health pack. It handles cross-worker interaction using [commands](https://docs.improbable.io/reference/latest/shared/glossary#command). When you send a command it acts as a request, which SpatialOS delivers to the single worker that has write-access for the component that the command is intended for.<br>
+Cross-worker interactions can be necessary when your game has multiple `UnityGameLogic` server-workers, because the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access to the `Player` entity who has collided with that health pack.<br>
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access).<%(/Expandable)%>
-
-To make sure this script is only enabled on the worker with write-access it already has a statement at the top of the class which "requires" a `Writer`:
-
-```csharp
-[Require] private HealthPickup.Requirable.Writer healthPickupWriter;
-```
-
-A `Writer` can also be used to _read_ component data from its respective component (in this case, `HealthPickup`), but it provides an API for updating the values of properties too.
-
-Unity Engine's `OnTriggerEnter` function is a special-case when a script is disabled. Other functions will only be called if the script component's `enabled` property is true, but `OnTriggerEnter` will be called even if it is false. This means it is an exception to the normal behaviour of the `[Require]` syntax. Because of this, scripts which use `OnTriggerEnter` **must** check whether the `Writer` is null (indicating a lack of authority) before using functions on the writer.
-
-To update the `HealthPickup` component we must construct a `HealthPickup.Update` object, and **send** it to SpatialOS. You can replace the comment in the `SetIsActive` with the following snippet to handle creating and sending this update:
-
-```csharp
-healthPickupWriter?.Send(new HealthPickup.Update
-{
-    IsActive = new Option<BlittableBool>(isActive)
-});
-```
-
-There is one more comment we must replace with code before our logic will work, which is found in the `HandleCollisionWithPlayer` function. The `Player` entity prefab has already been given a "Player" tag, so this function will be called any time a player walks through a health pack.
-
-### Cross-worker interaction using commands
-
-Our `HandleCollisionWithPlayer` function will run on a `UnityGameLogic` worker (because of the `[WorkerType(WorkerUtils.UnityGameLogic)]` annotation). That worker executes the code on behalf of each `HealthPack` entity for which is has `HealthPickup` component write-access (because of the `Writer` requirement). If your game has multiple `UnityGameLogic` workers then the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access for the `Player` entity who has tried to pick up the health pack.
-
-If we want a `HealthPack` entity's script to update the `Player` entity's current health we must notify the responsible worker and _request_ the update. SpatialOS allows you to do this with [commands](https://docs.improbable.io/reference/latest/shared/glossary#command), which are defined in **schema**.
-
-The `Player` entity already has a `Health` component which defines both a property representing current health and a **command** called `modify_health`. The definition of that command in `health.schema` is:
-
-```
-command improbable.common.Empty modify_health(HealthModifier);
-```
-
-This command definition states that a `HealthModifier` object must be passed as an argument with the command request. `HealthModifier` is a type that is also defined in `health.schema`, which simply bundles a few properties together.
-
-When you send a command it acts as a request which SpatialOS will deliver to the single worker that has write-access for the component in which the command is defined. If that worker has handling logic for that type of command then it will be triggered, and many commands also return a response. A command response can provide information generated as a result of the request, or can be used to indicate whether the request was accepted or not.
-
-For this command the return type is specified as `improbable.common.Empty`, as we don't want to return any information to the sender.
-
-In your `HandleCollisionWithPlayer` function, you can replace the placeholder comment with the following code snippet:
-
-```csharp
-healthCommandRequestSender.SendModifyHealthRequest(playerSpatialOsComponent.SpatialEntityId, new HealthModifier
-{
-    Amount = healthPickupWriter.Data.HealthValue
-});
-```
-
-The top of the `HealthPickupServerBehaviour` class has a `[Require]` statement for `HealthComponent.Requireable.CommandRequestSender` which, appropriately enough, is necessary for sending commands that are defined in the `Health` component. Even though the `Health` component belongs to the `Player` entity, and this script is on the `HealthPickup` entity, this statement is still required.
-
-Command request sender objects are automatically generated for you during code generation, based on your schema, and it provides a "send" function for each of the component's commands. Just by defining your commands in schema and running code generation all of these helper classes are generated ready for you to use.
-
-The code snippet calls `SendModifyHealthRequest`, specifies the entity id of the recipient entity (in this case the player entity), and constructs a `HealthModifier` object with the appropriate data. In our case the amount of health we wish to grant is based on the `HealthPickup` entity's `HealthValue` property, so we retrieve the value from `healthPickupWriter.Data.HealthValue`.
-
-The `ModifyHealth` command is already used by the FPS Starter Project for applying damage as part of the shooting game mechanics. As this is the case we don't need to write any _additional_ logic for applying the health increase.
 
 <%(#Expandable title="How are clients prevented from sending health-giving commands?")%>They're not - any worker can send a command. However, only the worker which has write access to the component holding a command is allowed to handle it. Each command request contains information about the caller of the command which could be used to enforce restrictions. Have a look at `ServerHealthModifierSystem.cs` in the Health feature module.<%(/Expandable)%>
 
