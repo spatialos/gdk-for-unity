@@ -47,6 +47,10 @@ DOCS_BRANCH="docs/api-docs-${TAG}"
 git clone "${CLONE_URL}" "${DOCS_DIR}"
 pushd "${DOCS_DIR}"
     git checkout docs/improbadoc-conversion
+    if [ -n $(git show-ref origin/${DOCS_BRANCH}) ]; then
+        echo "Docs branch ${DOCS_BRANCH} already exists"
+        exit 1
+    fi
     git checkout -b "${DOCS_BRANCH}"
 popd
 
