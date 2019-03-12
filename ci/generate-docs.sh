@@ -21,20 +21,18 @@ trap cleanUp EXIT
 
 cd "$(dirname "$0")/../"
 
-ci/bootstrap.sh
-
-# TODO: Remove when merged or moved to other repo.
-pushd .shared-ci
-    git checkout feature/api-docs-generator
-popd
-
 # Make a copy of this repo and the docs repo.
 CLONE_URL="git@github.com:spatialos/gdk-for-unity.git"
+DOCGEN_CLONE_URL="git@github.com:improbable/gdk-for-unity-docgen.git"
 
 CURRENT_DIR=$(pwd)
 TMP_DIR=$(mktemp -d)
+DOCGEN_DIR="${TMP_DIR}/docgen"
 CODE_DIR="${TMP_DIR}/code"
 DOCS_DIR="${TMP_DIR}/docs"
+
+# Clone docgen repo.
+git clone "${DOCGEN_CLONE_URL}" "${DOCGEN_DIR}"
 
 # Clone and checkout correct code tag.
 git clone "${CLONE_URL}" "${CODE_DIR}"
@@ -47,7 +45,7 @@ DOCS_BRANCH="docs/api-docs-${TAG}"
 git clone "${CLONE_URL}" "${DOCS_DIR}"
 pushd "${DOCS_DIR}"
     git checkout docs/improbadoc-conversion
-    if [ -n $(git show-ref origin/${DOCS_BRANCH}) ]; then
+    if [ -n "$(git show-ref origin/${DOCS_BRANCH})" ]; then
         echo "Docs branch ${DOCS_BRANCH} already exists"
         exit 1
     fi
@@ -55,7 +53,7 @@ pushd "${DOCS_DIR}"
 popd
 
 # Generate API docs
-dotnet run -p .shared-ci/tools/Docgen/Docgen.csproj -- \
+dotnet run -p "${DOCGEN_DIR}/Docgen/Docgen.csproj" -- \
     --target-directory="${CODE_DIR}/workers/unity/Packages/" \
     --target-namespace="Improbable.Gdk" \
     --output-directory="${DOCS_DIR}/docs/api" \
