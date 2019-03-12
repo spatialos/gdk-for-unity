@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Improbable.Gdk.PlayerLifecycle
 {
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class SendCreatePlayerRequestSystem : ComponentSystem
     {
