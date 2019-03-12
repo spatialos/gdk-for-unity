@@ -8,22 +8,25 @@ namespace Improbable.Gdk.Core
     /// <remarks>
     ///     This is required because bool is not blittable by default.
     /// </remarks>
-    /// <typeparam name="T">The contained type in the Option.</typeparam>
-    public struct Option<T> : IEquatable<Option<T>>
+    /// <typeparam name="T">The contained type in the Option. This can be either a value type or a reference type.</typeparam>
+    public readonly struct Option<T> : IEquatable<Option<T>>
     {
         public static readonly Option<T> Empty = new Option<T>();
+
+        // Use bool as the backing field would cause this to not be compatible with the Unity ECS.
+        private readonly byte hasValue;
 
         /// <summary>
         ///     True if the Option contains a value, false if not.
         /// </summary>
-        public BlittableBool HasValue { get; }
+        public bool HasValue => hasValue != 0;
 
         private readonly T value;
 
         /// <summary>
         ///     Returns the value contained inside the Option.
         /// </summary>
-        /// <exception cref="CalledValueOnEmptyOptionException">
+        /// <exception cref="EmptyOptionException">
         ///    Thrown if the Option is empty.
         /// </exception>
         public T Value
@@ -32,7 +35,7 @@ namespace Improbable.Gdk.Core
             {
                 if (!HasValue)
                 {
-                    throw new CalledValueOnEmptyOptionException("Called Value on empty Option.");
+                    throw new EmptyOptionException("Called Value on empty Option.");
                 }
 
                 return value;
@@ -45,17 +48,9 @@ namespace Improbable.Gdk.Core
         /// <param name="value">
         ///    The value to be contained in the option
         /// </param>
-        /// <exception cref="CreatedOptionWithNullPayloadException">
-        ///    Thrown if the value parameter is null.
-        /// </exception>
         public Option(T value)
         {
-            if (!typeof(T).IsValueType && value == null)
-            {
-                throw new CreatedOptionWithNullPayloadException("Options may not have null payloads.");
-            }
-
-            HasValue = true;
+            hasValue = 1;
             this.value = value;
         }
 
@@ -147,22 +142,11 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Represents an error that occurs when an Option is created with an invalid initial state.
-    /// </summary>
-    public class CreatedOptionWithNullPayloadException : Exception
-    {
-        public CreatedOptionWithNullPayloadException(string message)
-            : base(message)
-        {
-        }
-    }
-
-    /// <summary>
     ///     Represents an error when an Option's contained value is attempted to be accessed when the option is empty.
     /// </summary>
-    public class CalledValueOnEmptyOptionException : Exception
+    public class EmptyOptionException : Exception
     {
-        public CalledValueOnEmptyOptionException(string message)
+        public EmptyOptionException(string message)
             : base(message)
         {
         }

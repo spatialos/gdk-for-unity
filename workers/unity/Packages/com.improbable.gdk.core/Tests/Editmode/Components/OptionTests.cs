@@ -6,17 +6,10 @@ namespace Improbable.Gdk.Core.EditmodeTests
     public class OptionTests
     {
         [Test]
-        public void Parameterless_constructor_creates_empty_option_for_value_types()
+        public void Parameterless_constructor_creates_empty_option()
         {
             var option = new Option<bool>();
-            Assert.AreEqual(false, (bool) option.HasValue);
-        }
-
-        [Test]
-        public void Parameterless_constructor_creates_empty_option_for_reference_types()
-        {
-            var option = new Option<string>();
-            Assert.AreEqual(false, (bool) option.HasValue);
+            Assert.AreEqual(false, option.HasValue);
         }
 
         [Test]
@@ -24,7 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             const bool payload = true;
             var option = new Option<bool>(payload);
-            Assert.AreEqual(true, (bool) option.HasValue);
+            Assert.AreEqual(true, option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
@@ -33,50 +26,34 @@ namespace Improbable.Gdk.Core.EditmodeTests
         {
             const string payload = "";
             var option = new Option<string>(payload);
-            Assert.AreEqual(true, (bool) option.HasValue);
+            Assert.AreEqual(true, option.HasValue);
             Assert.AreEqual(payload, option.Value);
         }
 
         [Test]
-        public void Option_empty_returns_an_empty_option_for_value_types()
+        public void Option_empty_returns_an_empty_option()
         {
             var emptyOption = Option<bool>.Empty;
             Assert.AreEqual(new Option<bool>(), emptyOption);
         }
 
         [Test]
-        public void Option_empty_returns_an_empty_option_for_reference_types()
+        public void Reading_value_of_empty_option_throws()
         {
-            var emptyOption = Option<string>.Empty;
-            Assert.AreEqual(new Option<string>(), emptyOption);
-        }
-
-        [Test]
-        public void Creating_option_with_null_payload_throws()
-        {
-            Assert.Throws<CreatedOptionWithNullPayloadException>(() =>
+            var option = new Option<int>();
+            Assert.Throws<EmptyOptionException>(() =>
             {
-                var _ = new Option<string>(null);
-            });
-        }
-
-        [Test]
-        public void Reading_value_of_empty_option_throws_for_value_types()
-        {
-            var option = new Option<bool>();
-            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
-            {
-                var _ = option.Value;
+                var unused = option.Value;
             });
         }
 
         [Test]
         public void Reading_value_of_empty_option_throws_for_reference_types()
         {
-            var option = new Option<string>();
-            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
+            var option = new Option<int>();
+            Assert.Throws<EmptyOptionException>(() =>
             {
-                var _ = option.Value;
+                var unused = option.Value;
             });
         }
 
@@ -179,9 +156,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
         public void Implicit_conversion_to_payload_type_using_empty_option_throws()
         {
             var option = new Option<bool>();
-            Assert.Throws<CalledValueOnEmptyOptionException>(() =>
+            Assert.Throws<EmptyOptionException>(() =>
             {
-                var _ = option.Value;
+                bool unused = option;
             });
         }
     }
