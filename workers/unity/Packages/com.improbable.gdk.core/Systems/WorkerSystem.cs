@@ -94,7 +94,6 @@ namespace Improbable.Gdk.Core
             base.OnCreateManager();
             var entityManager = World.GetOrCreateManager<EntityManager>();
             WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
-            Debug.Log("WORKER ENTITY CREATED");
             Enabled = false;
         }
 
