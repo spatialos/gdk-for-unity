@@ -67,12 +67,6 @@ namespace Improbable.Gdk.Tests
                     componentData[entity.Id] = new Snapshot();
                 }
 
-                foreach (var entity in storage.GetComponentsRemoved())
-                {
-                    authorityStates.Remove(entity.Id);
-                    componentData.Remove(entity.Id);
-                }
-
                 var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
                 for (var i = 0; i < updates.Count; i++)
                 {
@@ -85,6 +79,13 @@ namespace Improbable.Gdk.Tests
                 {
                     var authorityChange = authorityChanges[i];
                     authorityStates[authorityChange.EntityId.Id] = authorityChange.Authority;
+                }
+
+                // TODO: When loopbacks are properly handled, this should be done before updates are applied.
+                foreach (var entity in storage.GetComponentsRemoved())
+                {
+                    authorityStates.Remove(entity.Id);
+                    componentData.Remove(entity.Id);
                 }
             }
 
