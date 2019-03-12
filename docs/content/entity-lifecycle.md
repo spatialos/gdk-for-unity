@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 21)
 [//]: # (TODO - technical author pass)
+<%(TOC)%>
 # SpatialOS entities: update entity lifecycle
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
@@ -19,7 +20,7 @@ The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a p
 
 ## What happens when an entity leaves your view
 
-When an entity moves out of your worker's [checkout region](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing) (SpatialOS documentation), the SpatialOS runtime sends a set of operations to your worker to represent that change. For a single entity, your worker receives a set of messages:
+When an entity moves out of your worker's [checkout region](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing), the SpatialOS runtime sends a set of operations to your worker to represent that change. For a single entity, your worker receives a set of messages:
 
 - (Optionally) A message stating that your worker has been undelegated authority over a SpatialOS component.
 - A message stating that a SpatialOS component has been removed from your view for each SpatialOS component your worker has interest in.

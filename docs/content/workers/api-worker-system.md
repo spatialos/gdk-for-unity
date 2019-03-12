@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 15.2)
 
+<%(TOC)%>
 #  Workers: API - Worker system
 
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._

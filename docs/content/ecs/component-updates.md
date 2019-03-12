@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 33)
 [//]: # (TODO - Tech writer review)
 
+<%(TOC)%>
 #  Component updates
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 

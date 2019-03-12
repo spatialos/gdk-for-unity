@@ -1,118 +1,111 @@
-- <h3> SpatialOS GDK for Unity</h3>
-- <h3> [ - Welcome]({{urlRoot}}/welcome)</h3>
-- <h3> + Get started</h3>
-    - [Introduction]({{urlRoot}}/content/get-started/get-started)
-    - [1 - Set up]({{urlRoot}}/content/get-started/set-up)
-    - [2 - Build your workers]({{urlRoot}}/content/get-started/build-workers)
-    - [3 - Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
-    - [4 - Get playing]({{urlRoot}}/content/get-started/get-playing.md)
-    - [5 - View your game world]({{urlRoot}}/content/get-started/view-game-world)   
-- <h3> [ - Add your first feature]({{urlRoot}}/projects/fps/tutorial)</h3>
-
-***
-- <h3> Starter projects</h3>
-- <h3> + FPS Starter Project</h3>
-    - [Overview]({{urlRoot}}/projects/fps/overview)</h3>
+- <h3>SpatialOS GDK for Unity</h3>
+    - [Welcome]({{urlRoot}}/index)
+    - Get started
+        - [Introduction]({{urlRoot}}/content/get-started/get-started)
+        - [1 - Set up]({{urlRoot}}/content/get-started/set-up)
+        - [2 - Build your workers]({{urlRoot}}/content/get-started/build-workers)
+        - [3 - Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
+        - [4 - Get playing]({{urlRoot}}/content/get-started/get-playing.md)
+        - [5 - View your game world]({{urlRoot}}/content/get-started/view-game-world)   
     - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
-- <h3> [ - Blank Starter Project]({{urlRoot}}/projects/blank/overview)</h3>
-
-***
-- <h3> Reference</h3>
-- <h3> [ - Overview]({{urlRoot}}/content/intro-reference)</h3>
-- <h3> + Concepts and terminology</h3>
-    - [SpatialOS concepts (SpatialOS site)](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
-    - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
-- <h3> + Workflows</h3>
-    - [Monobehaviour or ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
-- <h3> + Modules</h3>
-    - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
-    - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
-    - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
-- <h3> + Create a new project</h3>
-    - [Get the dependencies]({{urlRoot}}/setup-and-installing)
-    - [Add the GDK to your project]({{urlRoot}}/content/set-up-new-project)
-    - [Build your workers]({{urlRoot}}/content/build)
-    - [Deploy your game]({{urlRoot}}/content/deploy)
-- <h3> + GDK concepts</h3>
-    - Workers
-        - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-        - [Connect to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
-        - [API - worker]({{urlRoot}}/content/workers/api-worker)
-        - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
-    - SpatialOS entities
-        - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
-        - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
-    - Commands
-        - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
-- <h3> + Tools </h3>
-    - [Snapshots]({{urlRoot}}/content/snapshots)
-    - Code generation
-        - [The code generator]({{urlRoot}}/content/code-generator)
-        - [ECS component generation]({{urlRoot}}/content/ecs/component-generation)
-    - [Logs]({{urlRoot}}/content/ecs/logging)
-- <h3> + MonoBehaviour workflow</h3>
-    - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
-    - Create workers
-        - [WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
-        - [API - WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector)
-    - Link to GameObjects
-        - [SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
-        - [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
-    - MonoBehaviours with SpatialOS
-        - [Interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
-        - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
-        - [Readers and writers]({{urlRoot}}/content/gameobject/readers-writers)
-        - [Readers and writers: SpatialOS component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
-        - [Readers and writers: Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
-        - [Commands: SpatialOS component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
-        - [Commands: World commands]({{urlRoot}}/content/gameobject/world-commands)
-    - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
-- <h3> + ECS workflow</h3>
-    - [Which workflow?]({{urlRoot}}/content/intro-workflows-spatialos-entities)
-    - [System update order]({{urlRoot}}/content/ecs/system-update-order)
-    - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
-    - ECS interaction with SpatialOS
-        - [ECS component updates]({{urlRoot}}/content/ecs/component-updates)
-        - [Send and receive events]({{urlRoot}}/content/ecs/events)
-        - [Commands: SpatialOS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
-        - [Commands: World commands]({{urlRoot}}/content/ecs/world-commands)
-        - [Reactive components: Receive updates from SpatialOS]({{urlRoot}}/content/ecs/reactive-components)
-        - [Authority]({{urlRoot}}/content/ecs/authority)
-    - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
-    - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
-    - [Custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
-- <h3> + Mobile support</h3>
-    - [Overview]({{urlRoot}}/content/mobile/overview)
-    - Android support
-        - [Set up Android support]({{urlRoot}}/content/mobile/android/setup)
-        - [Ways to  test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
-        - [Connect to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
-        - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/android/cloud-deploy)
-    - iOS support
-        - [Set up iOS support]({{urlRoot}}/content/mobile/ios/setup)
-        - [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
-        - [Connect to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
-        - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
-- <h3> + Tests</h3>
-    - [Test overview]({{urlRoot}}/content/testing/testing-overview)
-    - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
-    - [Test guidelines]({{urlRoot}}/content/testing/testing-guidelines)
-    - [Test GDK systems]({{urlRoot}}/content/testing/testing-systems)
-    - [Write a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
-- <h3>[- Troubleshooting]({{urlRoot}}/content/troubleshooting)</h3>
-- <h3>[- Known issues]({{urlRoot}}/known-issues)</h3>
-
- ***
+- <h3>Starter projects</h3>
+    - FPS Starter Project
+        - [Overview]({{urlRoot}}/projects/fps/overview)
+        - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
+    - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)
+- <h3>Reference</h3>
+    - [Overview]({{urlRoot}}/content/intro-reference)
+    - Concepts and terminology
+        - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
+        - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
+    - Workflows - MonoBehaviour or ECS
+        - [Which workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
+        - MonoBehaviour workflow
+            - Create workers
+                - [WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
+                - [API - WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector)
+            - Link to GameObjects
+                - [SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
+                - [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
+            - MonoBehaviours with SpatialOS
+                - [Interact with SpatialOS using MonoBehaviours]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
+                - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
+                - [Readers and writers]({{urlRoot}}/content/gameobject/readers-writers)
+                - [Readers and writers: SpatialOS component data]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
+                - [Readers and writers: Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
+                - [Commands: SpatialOS component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+                - [Commands: World commands]({{urlRoot}}/content/gameobject/world-commands)
+            - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
+        - ECS workflow
+            - [System update order]({{urlRoot}}/content/ecs/system-update-order)
+            - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
+            - ECS interaction with SpatialOS
+                - [Create and delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
+                - [ECS component updates]({{urlRoot}}/content/ecs/component-updates)
+                - [Send and receive events]({{urlRoot}}/content/ecs/events)
+                - [Commands: SpatialOS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
+                - [Commands: World commands]({{urlRoot}}/content/ecs/world-commands)
+                - [Reactive components: Receive updates from SpatialOS]({{urlRoot}}/content/ecs/reactive-components)
+                - [Authority]({{urlRoot}}/content/ecs/authority)
+            - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
+            - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
+            - [Custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
+    - Modules
+        - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+        - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
+        - [Player Lifecycle Feature Module]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
+    - Create a new project
+        - [Get the dependencies]({{urlRoot}}/setup-and-installing)
+        - [Add the GDK to your project]({{urlRoot}}/content/set-up-new-project)
+        - [Build your workers]({{urlRoot}}/content/build)
+        - [Deploy your game]({{urlRoot}}/content/deploy)
+    - GDK concepts
+        - Workers
+            - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
+            - [Connect to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
+            - [API - worker]({{urlRoot}}/content/workers/api-worker)
+            - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
+        - SpatialOS entities
+            - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
+            - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
+        - Commands
+            - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+    - Tools
+        - [Snapshots]({{urlRoot}}/content/snapshots)
+        - Code generation
+            - [The code generator]({{urlRoot}}/content/code-generator)
+            - [ECS component generation]({{urlRoot}}/content/ecs/component-generation)
+        - [Logs]({{urlRoot}}/content/ecs/logging)
+    - Mobile support
+        - [Overview]({{urlRoot}}/content/mobile/overview)
+        - Android support
+            - [Set up Android support]({{urlRoot}}/content/mobile/android/setup)
+            - [Ways to  test your Android client]({{urlRoot}}/content/mobile/android/ways-to-test)
+            - [Connect to a local deployment]({{urlRoot}}/content/mobile/android/local-deploy)
+            - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/android/cloud-deploy)
+        - iOS support
+            - [Set up iOS support]({{urlRoot}}/content/mobile/ios/setup)
+            - [Ways to test your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
+            - [Connect to a local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
+            - [Connect to a cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
+    - Tests
+        - [Test overview]({{urlRoot}}/content/testing/testing-overview)
+        - [How to run tests]({{urlRoot}}/content/testing/how-to-run-tests)
+        - [Test guidelines]({{urlRoot}}/content/testing/testing-guidelines)
+        - [Test GDK systems]({{urlRoot}}/content/testing/testing-systems)
+        - [Write a new test]({{urlRoot}}/content/testing/writing-a-new-unit-test)
+    - [Troubleshooting]({{urlRoot}}/content/troubleshooting)
+    - [Known issues]({{urlRoot}}/known-issues)
 - <h3>Get involved</h3>
-- <h3> + Contributing to the GDK</h3>
-    - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
-    - Visit our GitHub:
-        - [Issue log](https://github.com/spatialos/UnityGDK/issues)
-        - [Contribution policy]({{urlRoot}}/contributing)
-- <h3> + GDK Community</h3>
-    - Check out:
-        - [Discord](https://discord.gg/SCZTCYm)
-        - [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
-        - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
-- <h3> + Development roadmap</h3>
-    - [View roadmap on GitHub](https://github.com/spatialos/gdk-for-unity/projects/1)
+    - Contributing to the GDK
+        - [Coding standards]({{urlRoot}}/contributions/unity-gdk-coding-standards)
+        - Visit our GitHub:
+            - [Issue log](https://github.com/spatialos/UnityGDK/issues)
+            - [Contribution policy]({{urlRoot}}/contributing)
+    - GDK Community
+        - Check out:
+            - [Discord](https://discord.gg/SCZTCYm)
+            - [Forums](https://forums.improbable.io/latest?tags=unity-gdk)
+            - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
+    - Development roadmap
+        - [View roadmap on GitHub](https://github.com/spatialos/gdk-for-unity/projects/1)

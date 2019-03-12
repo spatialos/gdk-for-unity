@@ -2,6 +2,7 @@
 [//]: # (TODO - technical author pass)
 [//]: # (TODO - split into Commands intro doc + API doc)
 [//]: # (TODO - Update the ECS Commands doc to refer to this for relevant info. It doesn’t seem to have much of this duplicated, so IMO this is just a matter of removing 2 sentences of details about the request/response types and adding 1 sentence with a link here. Could do a straightforward PR once this doc is in.)
+<%(TOC)%>
 # Commands: World and component command requests and responses
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
@@ -59,7 +60,7 @@ Parameters:
 
   * `EntityId entityId` - The ID of the SpatialOS entity that you want to send the command to.
   * `TRequest payload` - This is the data which is sent to the worker with [write access]({{urlRoot}}/content/glossary#authority) with your command. The type `TRequest` of this payload depends on what you defined in your schema as the payload.
-  * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is `null` by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction) (SpatialOS documentation).
+  * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is `null` by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction).
   * `bool allowShortCircuiting` - Optional.
 A boolean specifying whether or not a command which is sent to the same worker can be handled without going through the SpatialOS Runtime. The default is `false`.   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response. The default is `null`.
 
@@ -122,7 +123,7 @@ Stores the received command response to enable you to handle it appropriately.
 |-------------------|----------|--------------------------------------|
 | RequestId | `long` | The request ID of the original `Request` this response is reacting to. |
 | EntityId | `EntityId` | The ID of the SpatialOS entity from where the command originated from. |
-| StatusCode | [StatusCode](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#fields-4)(SpatialOS documentation) | A status code describing the outcome. |
+| StatusCode | [StatusCode](https://docs.improbable.io/reference/latest/csharpsdk/api-reference#fields-4) | A status code describing the outcome. |
 | RequestPayload | `TRequest` | The data of the original command request. Its type `TRequest` is the argument type of the command as defined in schema. |
 | ResponsePayload | `TResponse` | If the command succeeded, this stores the data of the command response. Otherwise it is `null`. The type `TResponse` is the return type of the command as defined in schema. |
 | Message | `string` |The associated error message, if the command failed. Otherwise `null`. |

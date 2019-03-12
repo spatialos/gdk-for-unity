@@ -1,8 +1,7 @@
+<%(TOC)%>
 # Add your first feature: A Health Pick-up tutorial for the FPS Starter Project 
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
-
-<%(TOC)%>
 
 Before starting this tutorial, make sure you have followed the [Get started]({{urlRoot}}/content/get-started/get-started) guide which sets up the FPS Starter Project. This tutorial follows on from that guide.
 

@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Welcome to the SpatialOS GDK for Unity
 
 With the SpatialOS Game Development Kit (GDK) for Unity, you can quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
@@ -14,7 +15,7 @@ The GDK is composed of three layers:
 
 ## What next?
 
-**Looking for a little more inspiration before jumping in?**
+### Looking for a little more inspiration before jumping in?
 
 * Check out our **blogs** on **<a href="https://improbable.io/games/blog/category/featured-games" data-track-link="Featured Games Clicked|product=Docs" target="_blank">SpatialOS games</a>** currently in development and the **<a href="https://improbable.io/games/blog/category/game-design" data-track-link="Game Design Clicked|product=Docs" target="_blank">game design</a>** opportunities and challenges associated with working with SpatialOS. 
 <br/>
@@ -27,9 +28,9 @@ The GDK is composed of three layers:
 <br/> **Read the [SpatialOS concept docs](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)** on the SpatialOS documentation website (5 minute read).
 <br/>
 <br/>
-Find out what's involved in getting started with our [Getting started with SpatialOS for Unity walk-through youtube video](https://www.youtube.com/watch?v=6PNDBYtIimw), based on our [Get Started guide]({{urlRoot}}/content/get-started/get-started) (15-minute watch).
+Find out what's involved in getting started with our [Get started with SpatialOS for Unity walk-through youtube video](https://www.youtube.com/watch?v=6PNDBYtIimw), based on our [Get Started guide]({{urlRoot}}/content/get-started/get-started) (15-minute watch).
 
-**Ready to get going?**
+### Ready to get going?
 
 * If you’re ready to get started, the _Get started_  guide takes you through setting up the GDK and launching the  FPS Starter Project. (Note that the GDK is aimed at users comfortable with programming in Unity.) <br/>
 **[Get started]({{urlRoot}}/content/get-started/get-started) with the SpatialOS GDK for Unity.**

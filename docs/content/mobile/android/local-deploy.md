@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Connect to a local deployment
 
 This page explains how to connect an Android client to a local deployment of SpatialOS. You can do this from inside your [Unity Editor](#in-editor), using the [Unity Remote](#unity-remote) app, using an [Android Emulator](#android-emulator) or using your own [Android device](#android-device).

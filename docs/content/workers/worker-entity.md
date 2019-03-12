@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 15.2a)
 [//]: # (TODO: Move to the ecs folder)
 
+<%(TOC)%>
 # Workers: Worker entity
 _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
@@ -10,7 +11,7 @@ Each of the workers in your project must have exactly one [ECS entity]({{urlRoot
 
 The worker’s worker entity performs certain tasks:
 
-  * send and receive [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
+  * send and receive [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
   * register changes to the state of the Runtime connection (that is whether the worker is connected to the [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) or not) by filtering for the following [temporary components]({{urlRoot}}/content/ecs/temporary-components):
      * `OnConnected`: the worker just connected to the SpatialOS Runtime.
      * `OnDisconnected`: the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.

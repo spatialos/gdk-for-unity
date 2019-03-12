@@ -1,6 +1,7 @@
 [//]: # (Doc of docs reference 7)
 [//]: # (TODO - Tech writer pass)
 
+<%(TOC)%>
 # How to send and receive events
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 

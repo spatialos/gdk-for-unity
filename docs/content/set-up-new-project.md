@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Add the GDK to your project
 
 Follow the [Setup and installation guide]({{urlRoot}}/setup-and-installing) to make sure you have everything installed.

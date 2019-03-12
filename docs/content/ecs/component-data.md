@@ -1,7 +1,8 @@
+<%(TOC)%>
 # Components and component updates
 _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang docs (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang docs](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
 > Note that code generation runs when you open your Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
 
@@ -10,7 +11,7 @@ The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to
 A `struct`, which implements `Unity.Entities.IComponentData` and `Improbable.Gdk.Core.ISpatialComponentData`,
 is generated for each SpatialOS component.
 
-The generation process names each of these structs according to the relevant schemalang component name, `[schemalang_name].Component`. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#commands) or [events (SpatialOS documentation)](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
+The generation process names each of these structs according to the relevant schemalang component name, `[schemalang_name].Component`. The structs only contain the schema data fields. They do *not* contain any fields or methods relating to [commands](https://docs.improbable.io/reference/latest/shared/glossary#commands) or [events](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
 
 For example:
 

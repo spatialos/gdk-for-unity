@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Setting up iOS support for the GDK
 
 ## Get the dependencies for developing iOS games

@@ -3,6 +3,7 @@
 [//]: # (TODO - explain what “handling the response based on the information contained in this object” means - see note below.)
 [//]: # (TODO - link to status codes for error messages - see note below.)
 
+<%(TOC)%>
 # World commands
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
@@ -53,7 +54,7 @@ Parameters:
 
   * `Improbable.Gdk.Core.EntityTemplate entityTemplate`: The [template]({{urlRoot}}/content/entity-templates) of the entity that you want to create.
   * `EntityId entityId`: Optional. The ID that the new entity should have, if you [reserved one](#reserveentityids).
-  * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the lower-level [Worker SDK (SpatialOS documentation)](https://docs.improbable.io/reference/latest/cppsdk/introduction) is used.
+  * `uint timeoutMillis`: Optional. Specifies the amount of time in milliseconds to wait before the command fails with a timeout status. If not specified, the default of 5 seconds of the lower-level [Worker SDK](https://docs.improbable.io/reference/latest/cppsdk/introduction) is used.
   * `object context`: Optional. An arbitrary object you can associate with the command. You get this object back along with the response. This is useful when handling the response based on the information contained in this object.
 [//]: # (TODO - explain what “handling the response based on the information contained in this object” means)
 

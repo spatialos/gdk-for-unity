@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Test guidelines
 
 This document provides guidelines on testing your Unity project contained within the SpatialOS GDK for Unity (GDK).

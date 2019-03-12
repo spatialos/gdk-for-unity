@@ -1,5 +1,6 @@
 [//]: # (Doc of docs reference 15.a)
 [//]: # (TODO - find out whether WorkerSystem is ECS and how it fits into a generic workflow.)
+<%(TOC)%>
 # Workers: API - Worker
 
 _This document relates to both [MonoBehaviour and  ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)_

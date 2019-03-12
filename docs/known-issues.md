@@ -1,3 +1,4 @@
+<%(TOC)%>
 # SpatialOS GDK for Unity known issues
 
 

@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Get started: Introduction
 
 Get started with SpatialOS for Unity by launching a cloud deployment of our FPS Starter Project. This introduces you to the workflows and tooling you use with SpatialOS and Unity, allowing you to run your game at scale, with up to 200 simulated player-clients running in the cloud.
