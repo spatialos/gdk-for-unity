@@ -133,7 +133,7 @@ private static void AddHealthPacks(Snapshot snapshot)
 }
 ```
 
-1. Call your new function by pasting the below snippet inside the `GenerateFpsSnapshot()`. Be sure to paste this above the `SaveSnapshot` lines, so that it's run during snapshot generation.
+1. Call your new function by pasting the below snippet inside `GenerateFpsSnapshot()`. Be sure to paste this **below** the `GenerateSnapshot` lines and **above** the `SaveSnapshot` lines, so that it's run during snapshot generation.
 ```csharp
     AddHealthPacks(localSnapshot);
     AddHealthPacks(cloudSnapshot);
