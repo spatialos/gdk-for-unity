@@ -201,7 +201,7 @@ The client-side logic we want to capture for this game mechanic is:
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 1. Select this prefab and press **Ctrl+D** to duplicate it.
 1. Move this duplicated prefab to `Assets/Fps/Resources/Prefabs/UnityClient`.
-1. Rename the duplicated prefab to `HealthPickup` (the process of duplication will have appended an unnecessary `-1` to the file name).
+1. Rename the duplicated prefab to `HealthPickup` (the process of duplication will have appended an unnecessary ` 1` to the file name).
 1. Select the duplicated prefab to open it.
 1. Still in your Unity Editor, add a new script component to the root of your duplicated `HealthPickup` prefab by selecting **Add Component** > **New Script** in the Inspector window.
 1. Name this script `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
@@ -307,8 +307,12 @@ To achieve this we need to:
     * Write to its own component data (to set itself to "inactive"), and to the player's (to grant them health).
 
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
-1. Create a copy of this prefab and place it in `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
-1. Add a new script component to the root of your new prefab called `HealthPickupServerBehaviour`, and replace its contents with the following code snippet:
+1. Select this prefab and press **Ctrl+D** to duplicate it.
+1. Move this duplicated prefab to `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
+1. Rename the duplicated prefab to `HealthPickup` (the process of duplication will have appended an unnecessary ` 1` to the file name).
+1. Select the duplicated prefab to open it.
+1. Still in your Unity Editor, add a new script component to the root of your duplicated `HealthPickup` prefab by selecting **Add Component** > **New Script** in the Inspector window.
+1. Name this script `HealthPickupServerBehaviour`, and replace its contents with the following code snippet:
 
 ```csharp
 using System.Collections;
@@ -459,11 +463,11 @@ Alternatively you can enter `Ctrl + L` in your Unity Editor.
 
 It also provides a convenient link for the local SpatialOS Inspector.<%(/Expandable)%>
 
-<%(#Expandable title="4. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, select **Launch standalone client**.
+<%(#Expandable title="4. Launch a client in-editor.")%>With the `FPS-Development` Scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
+
+<%(#Expandable title="5. Launch a built-out `UnityClient` worker.")%>From the **SpatialOS** menu, select **Launch standalone client**.
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed  a "Build UnityClient for local" as in step 1.<%(/Expandable)%>
-
-<%(#Expandable title="5. Launch a second client in-editor.")%>With the `FPS-Development` Scene open in your Unity Editor, select the Unity `Play` button.<%(/Expandable)%>
 
 <%(#Expandable title="6. Use one client to shoot the other.")%>To see the effects of a health pack restoring a player's health it's a good idea to damage them first. Particularly if you made the optional changes to enforce the maximum health for players, you'll want to confirm that the health pack isn't disappearing without performing its health-giving duty.
 
