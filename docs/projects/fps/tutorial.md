@@ -201,6 +201,7 @@ The client-side logic we want to capture for this game mechanic is:
 1. In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 1. Select this prefab and press **Ctrl+D** to duplicate it.
 1. Move this duplicated prefab to `Assets/Fps/Resources/Prefabs/UnityClient`.
+1. Rename the duplicated prefab to `HealthPickup` (the process of duplication will have appended an unnecessary `-1` to the file name).
 1. Select the duplicated prefab to open it.
 1. Still in your Unity Editor, add a new script component to the root of your duplicated `HealthPickup` prefab by selecting **Add Component** > **New Script** in the Inspector window.
 1. Name this script `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
