@@ -374,7 +374,7 @@ namespace Fps
                 return;
             }
 
-            healthCommandRequestSender.SendModifyHealthRequest(spatialOsComponent.SpatialEntityId, new HealthModifier
+            healthCommandRequestSender.SendModifyHealthRequest(playerSpatialOsComponent.SpatialEntityId, new HealthModifier
             {
                 Amount = healthPickupWriter.Data.HealthValue
             });
