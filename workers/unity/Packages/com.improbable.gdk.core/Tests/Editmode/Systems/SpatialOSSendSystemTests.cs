@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         internal const uint TestComponentId = 1;
 
         private const string TestWorkerType = "TestWorker";
+        private const string TestWorkerId = "TestWorkerId";
         private const uint UnknownComponentId = 0;
 
         private World world;
@@ -26,7 +27,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             world = new World("test-world");
             logDispatcher = new TestLogDispatcher();
-            world.CreateSystem<WorkerSystem>(new MockConnectionHandler(), null, logDispatcher, TestWorkerType, Vector3.zero);
+            world.CreateSystem<WorkerSystem>(new MockConnectionHandler(), TestWorkerId, logDispatcher, TestWorkerType, Vector3.zero);
 
             sendSystem = world.GetOrCreateSystem<ComponentSendSystem>();
 
