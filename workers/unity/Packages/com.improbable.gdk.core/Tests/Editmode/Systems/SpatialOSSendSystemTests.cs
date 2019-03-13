@@ -2,6 +2,7 @@
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -66,7 +67,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             None = Array.Empty<ComponentType>(),
         };
 
-        public void SendUpdates(ComponentGroup replicationGroup, ComponentSystemBase system,
+        public void SendUpdates(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             EntityManager entityManager, ComponentUpdateSystem componentUpdateSystem)
         {
             throw new NotImplementedException();

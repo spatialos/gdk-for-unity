@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core.CodegenAdapters;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
@@ -18,6 +21,7 @@ namespace Improbable.Gdk.Core
     public class ComponentSendSystem : ComponentSystem
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
+        private NativeArray<ArchetypeChunk>[] chunkArrayCache;
 
         private IConnectionHandler connection;
 
@@ -28,6 +32,7 @@ namespace Improbable.Gdk.Core
             connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
+            chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count];
         }
 
         public bool TryRegisterCustomReplicationSystem(uint componentId)
@@ -51,11 +56,29 @@ namespace Improbable.Gdk.Core
 
             var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
-            foreach (var replicator in componentReplicators)
+            Profiler.BeginSample("GatherChunks");
+            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Temp);
+            for (var i = 0; i < componentReplicators.Count; i++)
             {
+                var replicator = componentReplicators[i];
+                chunkArrayCache[i] = replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
+                gatheringJobs[i] = jobHandle;
+            }
+
+            JobHandle.CompleteAll(gatheringJobs);
+            gatheringJobs.Dispose();
+            Profiler.EndSample();
+
+            for (var i = 0; i < componentReplicators.Count; i++)
+            {
+                var replicator = componentReplicators[i];
+                var chunkArray = chunkArrayCache[i];
+
                 Profiler.BeginSample("ExecuteReplication");
-                replicator.Handler.SendUpdates(replicator.Group, this, EntityManager, componentUpdateSystem);
+                replicator.Handler.SendUpdates(chunkArray, this, EntityManager, componentUpdateSystem);
                 Profiler.EndSample();
+
+                chunkArray.Dispose();
             }
         }
 

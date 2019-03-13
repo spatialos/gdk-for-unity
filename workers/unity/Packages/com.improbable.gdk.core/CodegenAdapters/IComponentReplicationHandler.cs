@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core.CodegenAdapters
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
         uint ComponentId { get; }
         EntityArchetypeQuery ComponentUpdateQuery { get; }
 
-        void SendUpdates(ComponentGroup replicationGroup, ComponentSystemBase system,
+        void SendUpdates(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             EntityManager entityManager, ComponentUpdateSystem componentUpdateSystem);
     }
 }
