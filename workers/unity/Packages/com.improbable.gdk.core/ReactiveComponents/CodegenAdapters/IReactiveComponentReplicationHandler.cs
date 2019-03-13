@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -9,9 +10,9 @@ namespace Improbable.Gdk.ReactiveComponents
         EntityArchetypeQuery EventQuery { get; }
         EntityArchetypeQuery[] CommandQueries { get; }
 
-        void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system,
+        void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             ComponentUpdateSystem componentUpdateSystem);
 
-        void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem);
+        void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem);
     }
 }
