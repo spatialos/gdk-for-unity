@@ -28,25 +28,18 @@ namespace Improbable.Gdk.ReactiveComponents
             None = Array.Empty<ComponentType>(),
         };
 
-        private IConnectionHandler connection;
         private CommandSystem commandSystem;
         private ComponentGroup group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
             commandSystem = World.GetExistingManager<CommandSystem>();
             group = GetComponentGroup(worldCommandSendersQuery);
         }
 
         protected override void OnUpdate()
         {
-            if (!connection.IsConnected())
-            {
-                return;
-            }
-
             var entityType = GetArchetypeChunkEntityType();
 
             var createEntityType = GetArchetypeChunkComponentType<WorldCommands.CreateEntity.CommandSender>();

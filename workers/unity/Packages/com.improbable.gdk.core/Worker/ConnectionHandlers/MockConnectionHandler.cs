@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -54,6 +55,16 @@ namespace Improbable.Gdk.Core
         // TODO: Commands
 
         #region IConnectionHandler implementation
+
+        public string GetWorkerId()
+        {
+            return "lolwhat";
+        }
+
+        public List<string> GetWorkerAttributes()
+        {
+            return new List<string> { "attribute_the_first", "attribute_the_second" };
+        }
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {

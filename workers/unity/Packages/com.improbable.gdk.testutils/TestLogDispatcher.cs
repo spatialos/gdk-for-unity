@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ namespace Improbable.Gdk.TestUtils
     {
         private ExpectingScope currentExpectingScope;
 
-        public Connection Connection { get; set; }
+        public Core.Worker Worker { get; set; }
         public string WorkerType { get; set; }
 
         public void HandleLog(LogType type, LogEvent logEvent)

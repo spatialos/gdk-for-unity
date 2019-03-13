@@ -21,13 +21,9 @@ namespace Improbable.Gdk.ReactiveComponents
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
 
-        private IConnectionHandler connection;
-
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
@@ -35,11 +31,6 @@ namespace Improbable.Gdk.ReactiveComponents
 
         protected override void OnUpdate()
         {
-            if (!connection.IsConnected())
-            {
-                return;
-            }
-
             Profiler.BeginSample("GatherChunks");
             var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Temp);
             for (var i = 0; i < componentReplicators.Count; i++)

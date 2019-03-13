@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -23,6 +24,16 @@ namespace Improbable.Gdk.Core
         public bool IsConnected()
         {
             return connection.GetConnectionStatusCode() == ConnectionStatusCode.Success;
+        }
+
+        public string GetWorkerId()
+        {
+            return connection.GetWorkerId();
+        }
+
+        public List<string> GetWorkerAttributes()
+        {
+            return connection.GetWorkerAttributes();
         }
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)

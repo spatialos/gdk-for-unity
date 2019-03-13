@@ -15,8 +15,6 @@ namespace Improbable.Gdk.Core
         private EcsViewSystem ecsViewSystem;
         private EntitySystem entitySystem;
 
-        private View view;
-
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
@@ -24,8 +22,6 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingManager<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateManager<EcsViewSystem>();
             entitySystem = World.GetOrCreateManager<EntitySystem>();
-
-            view = worker.View;
         }
 
         protected override void OnUpdate()
@@ -38,7 +34,6 @@ namespace Improbable.Gdk.Core
 
                 ecsViewSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
-                view.ApplyDiff(diff);
             }
             catch (Exception e)
             {

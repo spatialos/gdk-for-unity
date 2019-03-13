@@ -23,51 +23,31 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(owningComponent, serverAccess);
         }
 
-        public static byte[] SerializeArguments(object playerCreationArguments)
+        public static bool IsOwningWorker(EntityId entityId, World workerWorld)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memoryStream, playerCreationArguments);
-                return memoryStream.ToArray();
-            }
-        }
-
-        public static T DeserializeArguments<T>(byte[] serializedArguments)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                var binaryFormatter = new BinaryFormatter();
-                memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                return (T) binaryFormatter.Deserialize(memoryStream);
-            }
-        }
-
-        public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
-        {
-            var entityManager = workerWorld.GetOrCreateManager<EntityManager>();
             var worker = workerWorld.GetExistingManager<WorkerSystem>();
+            var updateSystem = workerWorld.GetExistingManager<ComponentUpdateSystem>();
+            var entitySystem = workerWorld.GetExistingManager<EntitySystem>();
 
             if (worker == null)
             {
                 throw new InvalidOperationException("Provided World does not have an associated worker");
             }
 
-            if (!worker.TryGetEntity(entityId.EntityId, out var entity))
+            if (entitySystem.GetEntitiesInView().Contains(entityId))
             {
                 throw new InvalidOperationException(
-                    $"Entity with SpatialOS Entity ID {entityId.EntityId.Id} is not in this worker's view");
+                    $"Entity with SpatialOS Entity ID {entityId.Id} is not in this worker's view");
             }
 
-            if (!entityManager.HasComponent<OwningWorker.Component>(entity))
+            if (!updateSystem.HasComponent(OwningWorker.ComponentId, entityId))
             {
                 return false;
             }
 
-            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerId;
 
-            return worker.Connection.GetWorkerId() == ownerId;
+            var ownerId = updateSystem.GetComponent<OwningWorker.Snapshot>(entityId).WorkerId;
+            return worker.WorkerId == ownerId;
         }
 
         public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true)

@@ -15,6 +15,7 @@ namespace Improbable.Gdk.Core
         private bool inHandleLog;
 
         public Connection Connection { get; set; }
+        public Worker Worker { get; set; }
         public string WorkerType { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
@@ -48,7 +49,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Worker?.SendLogMessage($"{message}\n{stackTrace}", Connection.GetWorkerId(), LogLevel.Error, null);
             }
         }
 

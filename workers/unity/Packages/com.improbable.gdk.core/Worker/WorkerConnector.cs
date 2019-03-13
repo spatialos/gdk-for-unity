@@ -16,8 +16,6 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public abstract class WorkerConnector : MonoBehaviour, IDisposable
     {
-        private delegate Task<Worker> ConnectionDelegate();
-
         /// <summary>
         ///     The number of connection attempts before giving up.
         /// </summary>
@@ -29,7 +27,7 @@ namespace Improbable.Gdk.Core
         /// <remarks>
         ///    Only safe to access after the connection has succeeded.
         /// </remarks>
-        public Worker Worker;
+        public WorkerInWorld Worker;
 
         [SerializeField] protected string DevelopmentAuthToken;
 
@@ -88,32 +86,27 @@ namespace Improbable.Gdk.Core
                 }
 
                 var origin = transform.position;
-                ConnectionDelegate connectionDelegate;
                 var chosenService = GetConnectionService();
                 var connectionParameters = GetConnectionParameters(workerType, chosenService);
+                SpatialOSConnectionHandlerBuilder connectionHandlerBuilder = new SpatialOSConnectionHandlerBuilder();
+                connectionHandlerBuilder.SetConnectionParameters(connectionParameters)
+                    .SetThreadingMode(SpatialOSConnectionHandlerBuilder.ThreadingMode.SingleThreaded);
                 switch (chosenService)
                 {
                     case ConnectionService.Receptionist:
-                        connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
+                        connectionHandlerBuilder.SetConfig(GetReceptionistConfig(workerType));
                         break;
                     case ConnectionService.Locator:
-                        connectionDelegate = async () =>
-                            await Worker
-                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
+                        connectionHandlerBuilder.SetConfig(GetLocatorConfig());
                         break;
                     case ConnectionService.AlphaLocator:
-                        connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
+                        connectionHandlerBuilder.SetConfig(GetAlphaLocatorConfig(workerType));
                         break;
                     default:
                         throw new Exception("No valid connection flow type selected");
                 }
 
-                Worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
+                Worker = await ConnectWithRetries(connectionHandlerBuilder, MaxConnectionAttempts, logger, workerType, origin);
 
                 Worker.OnDisconnect += OnDisconnected;
 
@@ -315,15 +308,15 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int maxAttempts,
-            ILogDispatcher logger, string workerType)
+        private static async Task<WorkerInWorld> ConnectWithRetries(IConnectionHandlerBuilder connectionHandlerBuilder, int maxAttempts,
+            ILogDispatcher logger, string workerType, Vector3 origin)
         {
             var remainingAttempts = maxAttempts;
             while (remainingAttempts > 0)
             {
                 try
                 {
-                    return await connectionDelegate();
+                    return await WorkerInWorld.CreateWorkerInWorldAsync(connectionHandlerBuilder, workerType, logger, origin);
                 }
                 catch (ConnectionFailedException e)
                 {
