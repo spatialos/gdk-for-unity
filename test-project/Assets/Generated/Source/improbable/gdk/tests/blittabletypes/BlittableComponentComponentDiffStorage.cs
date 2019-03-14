@@ -20,9 +20,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             private List<EntityId> componentsAdded = new List<EntityId>();
             private List<EntityId> componentsRemoved = new List<EntityId>();
 
-            private bool authoritySorted;
-            private bool updatesSorted;
-
             private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
             private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
@@ -44,17 +41,11 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             private MessageList<ComponentEventReceived<FirstEvent.Event>> firstEventEventStorage =
                 new MessageList<ComponentEventReceived<FirstEvent.Event>>();
 
-            // todo consider putting this in the list type
-            private bool firstEventSorted;
-
             private readonly EventComparer<FirstEvent.Event> firstEventComparer =
                 new EventComparer<FirstEvent.Event>();
 
             private MessageList<ComponentEventReceived<SecondEvent.Event>> secondEventEventStorage =
                 new MessageList<ComponentEventReceived<SecondEvent.Event>>();
-
-            // todo consider putting this in the list type
-            private bool secondEventSorted;
 
             private readonly EventComparer<SecondEvent.Event> secondEventComparer =
                 new EventComparer<SecondEvent.Event>();
@@ -86,14 +77,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 componentsAdded.Clear();
                 componentsRemoved.Clear();
 
-                authoritySorted = false;
-                updatesSorted = false;
-
                 firstEventEventStorage.Clear();
-                firstEventSorted = false;
 
                 secondEventEventStorage.Clear();
-                secondEventSorted = false;
             }
 
             public void RemoveEntityComponent(long entityId)
@@ -127,7 +113,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             public void AddUpdate(ComponentUpdateReceived<Update> update)
             {
                 entitiesUpdated.Add(update.EntityId);
-                updateStorage.Add(update);
+                updateStorage.InsertSorted(update, updateComparer);
             }
 
             public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
@@ -151,7 +137,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                authorityChanges.Add(authorityChange);
+                authorityChanges.InsertSorted(authorityChange, authorityComparer);
             }
 
             public List<EntityId> GetComponentsAdded()
@@ -166,26 +152,11 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates()
             {
-                // todo consider if this needs to be sorted
-                // possible offer two functions
-                // probably just sort it
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updateStorage.Sort(updateComparer);
-                }
-
                 return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage);
             }
 
             public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates(EntityId entityId)
             {
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updateStorage.Sort(updateComparer);
-                }
-
                 var range = updateStorage.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage, range.FirstIndex,
                     range.Count);
@@ -193,35 +164,17 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
             {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
                 return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
             }
 
             public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
             {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
                 var range = authorityChanges.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
             }
 
             ReceivedMessagesSpan<ComponentEventReceived<FirstEvent.Event>> IDiffEventStorage<FirstEvent.Event>.GetEvents(EntityId entityId)
             {
-                if (!firstEventSorted)
-                {
-                    firstEventEventStorage.Sort(firstEventComparer);
-                    firstEventSorted = true;
-                }
-
                 var range = firstEventEventStorage.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentEventReceived<FirstEvent.Event>>(
                     firstEventEventStorage, range.FirstIndex, range.Count);
@@ -229,28 +182,16 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             ReceivedMessagesSpan<ComponentEventReceived<FirstEvent.Event>> IDiffEventStorage<FirstEvent.Event>.GetEvents()
             {
-                if (!firstEventSorted)
-                {
-                    firstEventEventStorage.Sort(firstEventComparer);
-                    firstEventSorted = true;
-                }
-
                 return new ReceivedMessagesSpan<ComponentEventReceived<FirstEvent.Event>>(firstEventEventStorage);
             }
 
             void IDiffEventStorage<FirstEvent.Event>.AddEvent(ComponentEventReceived<FirstEvent.Event> ev)
             {
-                firstEventEventStorage.Add(ev);
+                firstEventEventStorage.InsertSorted(ev, firstEventComparer);
             }
 
             ReceivedMessagesSpan<ComponentEventReceived<SecondEvent.Event>> IDiffEventStorage<SecondEvent.Event>.GetEvents(EntityId entityId)
             {
-                if (!secondEventSorted)
-                {
-                    secondEventEventStorage.Sort(secondEventComparer);
-                    secondEventSorted = true;
-                }
-
                 var range = secondEventEventStorage.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentEventReceived<SecondEvent.Event>>(
                     secondEventEventStorage, range.FirstIndex, range.Count);
@@ -258,18 +199,12 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             ReceivedMessagesSpan<ComponentEventReceived<SecondEvent.Event>> IDiffEventStorage<SecondEvent.Event>.GetEvents()
             {
-                if (!secondEventSorted)
-                {
-                    secondEventEventStorage.Sort(secondEventComparer);
-                    secondEventSorted = true;
-                }
-
                 return new ReceivedMessagesSpan<ComponentEventReceived<SecondEvent.Event>>(secondEventEventStorage);
             }
 
             void IDiffEventStorage<SecondEvent.Event>.AddEvent(ComponentEventReceived<SecondEvent.Event> ev)
             {
-                secondEventEventStorage.Add(ev);
+                secondEventEventStorage.InsertSorted(ev, secondEventComparer);
             }
         }
     }

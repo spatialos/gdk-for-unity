@@ -33,14 +33,13 @@ namespace Improbable.Gdk.Tests
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("ExhaustiveMapKey");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ExhaustiveMapKey.Component>();
 
@@ -162,7 +161,6 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
         }

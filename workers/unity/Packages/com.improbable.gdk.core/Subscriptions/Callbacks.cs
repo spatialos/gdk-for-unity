@@ -1,9 +1,125 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.Subscriptions
 {
+    internal class Callbacks<T>
+    {
+        private List<WrappedCallback<T>> callbacks = new List<WrappedCallback<T>>();
+        private HashSet<ulong> currentKeys = new HashSet<ulong>();
+
+        // These can be lists as we expect the number of callbacks added/removed during invocation of other callbacks
+        // to be low.
+        private List<ulong> toRemove = new List<ulong>();
+        private List<WrappedCallback<T>> toAdd = new List<WrappedCallback<T>>();
+
+        private bool isInInvoke = false;
+
+        public void Add(ulong key, Action<T> callback)
+        {
+            if (isInInvoke)
+            {
+                toAdd.Add(new WrappedCallback<T>(key, callback));
+                return;
+            }
+
+            callbacks.Add(new WrappedCallback<T>(key, callback));
+            currentKeys.Add(key);
+        }
+
+        public bool Remove(ulong key)
+        {
+            if (!currentKeys.Contains(key))
+            {
+                return false;
+            }
+
+            if (isInInvoke)
+            {
+                if (toRemove.Contains(key))
+                {
+                    return false;
+                }
+
+                toRemove.Add(key);
+                return true;
+            }
+
+            currentKeys.Remove(key);
+            return callbacks.RemoveAll(callback => callback.Key == key) == 1;
+        }
+
+        public void InvokeAll(T op)
+        {
+            isInInvoke = true;
+
+            try
+            {
+                for (int i = 0; i < callbacks.Count; i++)
+                {
+                    callbacks[i].Action(op);
+                }
+            }
+            finally
+            {
+                isInInvoke = false;
+
+            }
+
+
+            FlushDeferredOperations();
+        }
+
+        public void InvokeAllReverse(T op)
+        {
+            isInInvoke = true;
+
+            try
+            {
+                for (int i = callbacks.Count - 1; i >= 0; i--)
+                {
+                    callbacks[i].Action(op);
+                }
+            }
+            finally
+            {
+                isInInvoke = false;
+            }
+
+            FlushDeferredOperations();
+        }
+
+        private void FlushDeferredOperations()
+        {
+            callbacks.RemoveAll(callback => toRemove.Contains(callback.Key));
+
+            foreach (var key in toRemove)
+            {
+                currentKeys.Remove(key);
+            }
+
+            foreach (var callback in toAdd)
+            {
+                callbacks.Add(callback);
+            }
+
+            toRemove.Clear();
+            toAdd.Clear();
+        }
+
+        private struct WrappedCallback<T>
+        {
+            public ulong Key;
+            public Action<T> Action;
+
+            public WrappedCallback(ulong key, Action<T> action)
+            {
+                Key = key;
+                Action = action;
+            }
+        }
+    }
+
     // Slight adjustment to the component callbacks class
     // todo check if this can have in params for ops (i.e. can it be used with a non readonly struct)
     public class IndexedCallbacks<T>
