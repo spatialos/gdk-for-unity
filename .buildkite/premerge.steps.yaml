@@ -13,7 +13,7 @@ common: &common
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=v2-1550169760-797337f060834fd6-------z"
+    - "queue=v2-1552597756-b56d2092b045104e-------z"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -44,47 +44,47 @@ steps:
     <<: *common
     artifact_paths:
       - logs/**/*
-    env: 
+    env:
       WORKER_TYPE: "AndroidClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "mono"
 
   - label: "build :iphone:"
     command: bash -c ci/build.sh
-    <<: *common 
+    <<: *common
     artifact_paths:
       - logs/**/*
-    env: 
+    env:
       WORKER_TYPE: "iOSClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityClient mono"
     command: bash -c ci/build.sh
-    <<: *common 
+    <<: *common
     artifact_paths:
       - logs/**/*
-    env: 
+    env:
       WORKER_TYPE: "UnityClient"
       BUILD_TARGET: "cloud"
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityClient il2cpp"
     command: bash -c ci/build.sh
-    <<: *common 
+    <<: *common
     artifact_paths:
       - logs/**/*
-    env: 
+    env:
       WORKER_TYPE: "UnityClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityGameLogic mono"
     command: bash -c ci/build.sh
-    <<: *common 
+    <<: *common
     artifact_paths:
       - logs/**/*
-    env: 
+    env:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_TARGET: "cloud"
       SCRIPTING_TYPE: "mono"
