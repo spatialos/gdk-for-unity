@@ -53,31 +53,43 @@ namespace Improbable.Gdk.Subscriptions
         {
             isInInvoke = true;
 
-            for (int i = 0; i < callbacks.Count; i++)
+            try
             {
-                callbacks[i].Action(op);
+                for (int i = 0; i < callbacks.Count; i++)
+                {
+                    callbacks[i].Action(op);
+                }
+            }
+            finally
+            {
+                isInInvoke = false;
+
             }
 
-            isInInvoke = false;
 
-            FlushDefferedOperations();
+            FlushDeferredOperations();
         }
 
         public void InvokeAllReverse(T op)
         {
             isInInvoke = true;
 
-            for (int i = callbacks.Count - 1; i >= 0; i--)
+            try
             {
-                callbacks[i].Action(op);
+                for (int i = callbacks.Count - 1; i >= 0; i--)
+                {
+                    callbacks[i].Action(op);
+                }
+            }
+            finally
+            {
+                isInInvoke = false;
             }
 
-            isInInvoke = false;
-
-            FlushDefferedOperations();
+            FlushDeferredOperations();
         }
 
-        private void FlushDefferedOperations()
+        private void FlushDeferredOperations()
         {
             callbacks.RemoveAll(callback => toRemove.Contains(callback.Key));
 
