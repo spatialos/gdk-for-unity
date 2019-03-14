@@ -29,7 +29,7 @@
 - `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
     - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
     - The field `Entity` has been removed.
-- The field `Dispatcher` has been removed from the `SpatialOSReceiveSystem`.
+- The `Improbable.Gdk.Core.Dispatcher` class has been removed.
 
 ### Added
 

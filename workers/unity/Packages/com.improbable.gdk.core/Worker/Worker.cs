@@ -236,12 +236,7 @@ namespace Improbable.Gdk.Core
 
         private static string GetConnectionFailureReason(Connection connection)
         {
-            var connectionFailureReason = "No reason found for connection failure";
-            var dispatcher = new Dispatcher();
-            dispatcher.OnDisconnect(op => connectionFailureReason = op.Reason);
-            dispatcher.Process(connection.GetOpList(0));
-
-            return connectionFailureReason;
+            return connection.GetConnectionStatusCodeDetailString() ?? "No reason found for connection failure";
         }
 
         private void AddCoreSystems()
