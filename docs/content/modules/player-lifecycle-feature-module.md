@@ -118,7 +118,7 @@ First, ensure that `AutoRequestPlayerCreation` is set to false.
 ##### 2. Serialize before calling RequestPlayerCreation
 Then, ensure that it is serialized into a byte array before calling `RequestPlayerCreation`:
 ```csharp
-var myArguments = new SampleArgumentsObject { PlayerName = "playerName", SpawnPosition = new Coordinates(42, 0, 69)) };
+var myArguments = new SampleArgumentsObject { PlayerName = "playerName", SpawnPosition = new Coordinates(50, 0, 75)) };
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
 var serializedArguments = PlayerLifecycleHelper.SerializeArguments(myArguments);
 playerCreationSystem.RequestPlayerCreation(serializedArguments);
