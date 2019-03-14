@@ -19,9 +19,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             private List<EntityId> componentsAdded = new List<EntityId>();
             private List<EntityId> componentsRemoved = new List<EntityId>();
 
-            private bool authoritySorted;
-            private bool updatesSorted;
-
             private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
             private readonly UpdateComparer<Update> updateComparer = new UpdateComparer<Update>();
 
@@ -42,9 +39,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             private MessageList<ComponentEventReceived<Evt.Event>> evtEventStorage =
                 new MessageList<ComponentEventReceived<Evt.Event>>();
-
-            // todo consider putting this in the list type
-            private bool evtSorted;
 
             private readonly EventComparer<Evt.Event> evtComparer =
                 new EventComparer<Evt.Event>();
@@ -75,11 +69,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 componentsAdded.Clear();
                 componentsRemoved.Clear();
 
-                authoritySorted = false;
-                updatesSorted = false;
-
                 evtEventStorage.Clear();
-                evtSorted = false;
             }
 
             public void RemoveEntityComponent(long entityId)
@@ -113,7 +103,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             public void AddUpdate(ComponentUpdateReceived<Update> update)
             {
                 entitiesUpdated.Add(update.EntityId);
-                updateStorage.Add(update);
+                updateStorage.InsertSorted(update, updateComparer);
             }
 
             public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
@@ -137,7 +127,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
 
-                authorityChanges.Add(authorityChange);
+                authorityChanges.InsertSorted(authorityChange, authorityComparer);
             }
 
             public List<EntityId> GetComponentsAdded()
@@ -152,26 +142,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates()
             {
-                // todo consider if this needs to be sorted
-                // possible offer two functions
-                // probably just sort it
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updateStorage.Sort(updateComparer);
-                }
-
                 return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage);
             }
 
             public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates(EntityId entityId)
             {
-                if (!updatesSorted)
-                {
-                    updatesSorted = true;
-                    updateStorage.Sort(updateComparer);
-                }
-
                 var range = updateStorage.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage, range.FirstIndex,
                     range.Count);
@@ -179,35 +154,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
             {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
                 return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
             }
 
             public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
             {
-                if (!authoritySorted)
-                {
-                    authoritySorted = true;
-                    authorityChanges.Sort(authorityComparer);
-                }
-
                 var range = authorityChanges.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
             }
 
             ReceivedMessagesSpan<ComponentEventReceived<Evt.Event>> IDiffEventStorage<Evt.Event>.GetEvents(EntityId entityId)
             {
-                if (!evtSorted)
-                {
-                    evtEventStorage.Sort(evtComparer);
-                    evtSorted = true;
-                }
-
                 var range = evtEventStorage.GetEntityRange(entityId);
                 return new ReceivedMessagesSpan<ComponentEventReceived<Evt.Event>>(
                     evtEventStorage, range.FirstIndex, range.Count);
@@ -215,18 +172,12 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             ReceivedMessagesSpan<ComponentEventReceived<Evt.Event>> IDiffEventStorage<Evt.Event>.GetEvents()
             {
-                if (!evtSorted)
-                {
-                    evtEventStorage.Sort(evtComparer);
-                    evtSorted = true;
-                }
-
                 return new ReceivedMessagesSpan<ComponentEventReceived<Evt.Event>>(evtEventStorage);
             }
 
             void IDiffEventStorage<Evt.Event>.AddEvent(ComponentEventReceived<Evt.Event> ev)
             {
-                evtEventStorage.Add(ev);
+                evtEventStorage.InsertSorted(ev, evtComparer);
             }
         }
     }

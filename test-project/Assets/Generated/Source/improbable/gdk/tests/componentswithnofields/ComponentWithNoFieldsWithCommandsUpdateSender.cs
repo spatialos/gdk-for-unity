@@ -33,14 +33,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>();
 
@@ -72,7 +71,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
         }
