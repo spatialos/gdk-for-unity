@@ -48,14 +48,6 @@ Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-t
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
 
-* `byte[] SerializeArguments(object playerCreationArguments)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to serialize arbitrary data into a byte array that can be passed into a player creation request.<br/>
-Call this when you manually request player creation.
-
-* `T DeserializeArguments<T>(byte[] serializedArguments)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to deserialize the byte array that was passed into a player creation request.<br/>
-Call this when you want to make use of the deserialized arguments in an [entity template]({{urlRoot}}/content/entity-templates).
-
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/content/modules/player-lifecycle-feature-module) documentation.
 
 ### Transform synchronization module
