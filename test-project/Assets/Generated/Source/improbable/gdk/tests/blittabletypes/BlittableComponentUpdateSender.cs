@@ -33,14 +33,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("BlittableComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
 
@@ -97,7 +96,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
         }
