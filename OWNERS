@@ -1,3 +1,6 @@
 approvers:
     - ElleEss
     - NotRobSheridan
+
+labels:
+    - "T: documentation"
