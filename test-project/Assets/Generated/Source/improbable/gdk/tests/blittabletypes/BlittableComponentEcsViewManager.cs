@@ -43,9 +43,10 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 var updates = diffStorage.GetUpdates();
+                var dataFromEntity = workerSystem.GetComponentDataFromEntity<Component>();
                 for (int i = 0; i < updates.Count; ++i)
                 {
-                    ApplyUpdate(in updates[i]);
+                    ApplyUpdate(in updates[i], dataFromEntity);
                 }
 
                 var authChanges = diffStorage.GetAuthorityChanges();
@@ -97,15 +98,15 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(entity);
             }
 
-            private void ApplyUpdate(in ComponentUpdateReceived<Update> update)
+            private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
             {
                 workerSystem.TryGetEntity(update.EntityId, out var entity);
-                if (!entityManager.HasComponent<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(entity))
+                if (!dataFromEntity.Exists(entity))
                 {
                     return;
                 }
 
-                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(entity);
+                var data = dataFromEntity[entity];
 
                 if (update.Update.BoolField.HasValue)
                 {
@@ -133,7 +134,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
 
                 data.MarkDataClean();
-                entityManager.SetComponentData(entity, data);
+                dataFromEntity[entity] = data;
             }
 
             private void SetAuthority(EntityId entityId, Authority authority)
