@@ -18,12 +18,20 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
+        private NativeArray<JobHandle> gatheringJobs;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             GenerateComponentGroups();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentCleanups.Count];
+            gatheringJobs = new NativeArray<JobHandle>(componentCleanups.Count, Allocator.Persistent);
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+            gatheringJobs.Dispose();
         }
 
         private void GenerateComponentGroups()
@@ -44,7 +52,6 @@ namespace Improbable.Gdk.ReactiveComponents
         protected override void OnUpdate()
         {
             Profiler.BeginSample("GatherChunks");
-            var gatheringJobs = new NativeArray<JobHandle>(componentCleanups.Count, Allocator.Temp);
             for (var i = 0; i < componentCleanups.Count; i++)
             {
                 var replicator = componentCleanups[i];
@@ -52,9 +59,9 @@ namespace Improbable.Gdk.ReactiveComponents
                 gatheringJobs[i] = jobHandle;
             }
 
-            JobHandle.CompleteAll(gatheringJobs);
-            gatheringJobs.Dispose();
             Profiler.EndSample();
+
+            JobHandle.CompleteAll(gatheringJobs);
 
             for (var i = 0; i < componentCleanups.Count; i++)
             {
