@@ -1,6 +1,0 @@
-package playground;
-
-component Score {
-    id = 12007;
-    float score = 1;
-}
