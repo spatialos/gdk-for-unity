@@ -43,9 +43,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
 
                 var updates = diffStorage.GetUpdates();
+                var dataFromEntity = workerSystem.GetComponentDataFromEntity<Component>();
                 for (int i = 0; i < updates.Count; ++i)
                 {
-                    ApplyUpdate(in updates[i]);
+                    ApplyUpdate(in updates[i], dataFromEntity);
                 }
 
                 var authChanges = diffStorage.GetAuthorityChanges();
@@ -97,18 +98,18 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 entityManager.RemoveComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(entity);
             }
 
-            private void ApplyUpdate(in ComponentUpdateReceived<Update> update)
+            private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
             {
                 workerSystem.TryGetEntity(update.EntityId, out var entity);
-                if (!entityManager.HasComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(entity))
+                if (!dataFromEntity.Exists(entity))
                 {
                     return;
                 }
 
-                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>(entity);
+                var data = dataFromEntity[entity];
 
                 data.MarkDataClean();
-                entityManager.SetComponentData(entity, data);
+                dataFromEntity[entity] = data;
             }
 
             private void SetAuthority(EntityId entityId, Authority authority)
