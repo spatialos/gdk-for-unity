@@ -1,9 +1,0 @@
-<#@ template language="C#" #>
-<#@ output extension=".cs" #>
-
-<#= CommonGeneratorUtils.GetGeneratedHeader() #>
-
-namespace <#= qualifiedNamespace #>
-{ 
-    <#= CommonGeneratorUtils.IndentEveryNewline(new UnityEnumContent().Generate(enumDefinition)) #>
-}
