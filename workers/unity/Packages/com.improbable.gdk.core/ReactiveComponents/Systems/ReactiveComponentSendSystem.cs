@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -17,6 +19,8 @@ namespace Improbable.Gdk.ReactiveComponents
     public class ReactiveComponentSendSystem : ComponentSystem
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
+        private NativeArray<ArchetypeChunk>[] chunkArrayCache;
+        private NativeArray<JobHandle> gatheringJobs;
 
         private IConnectionHandler connection;
 
@@ -27,6 +31,14 @@ namespace Improbable.Gdk.ReactiveComponents
             connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
+            chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
+            gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Persistent);
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+            gatheringJobs.Dispose();
         }
 
         protected override void OnUpdate()
@@ -36,17 +48,52 @@ namespace Improbable.Gdk.ReactiveComponents
                 return;
             }
 
-            var commandSystem = World.GetExistingManager<CommandSystem>();
+            Profiler.BeginSample("GatherChunks");
+            for (var i = 0; i < componentReplicators.Count; i++)
+            {
+                var replicator = componentReplicators[i];
+                var eventIndex = i;
+                var commandIndex = componentReplicators.Count + i;
+
+                chunkArrayCache[eventIndex] = replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var eventJobHandle);
+                chunkArrayCache[commandIndex] = replicator.CommandGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var commandJobHandle);
+
+                gatheringJobs[eventIndex] = eventJobHandle;
+                gatheringJobs[commandIndex] = commandJobHandle;
+            }
+
+            Profiler.EndSample();
+
+            JobHandle.CompleteAll(gatheringJobs);
+
+            ReplicateEvents();
+            ReplicateCommands();
+        }
+
+        private void ReplicateEvents()
+        {
             var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
-            foreach (var replicator in componentReplicators)
+            for (var i = 0; i < componentReplicators.Count; i++)
             {
+                var eventIndex = i;
                 Profiler.BeginSample("SendEvents");
-                replicator.Handler.SendEvents(replicator.EventGroup, this, componentUpdateSystem);
+                componentReplicators[i].Handler.SendEvents(chunkArrayCache[eventIndex], this, componentUpdateSystem);
+                chunkArrayCache[eventIndex].Dispose();
                 Profiler.EndSample();
+            }
+        }
 
+        private void ReplicateCommands()
+        {
+            var commandSystem = World.GetExistingManager<CommandSystem>();
+
+            for (var i = 0; i < componentReplicators.Count; i++)
+            {
+                var commandIndex = componentReplicators.Count + i;
                 Profiler.BeginSample("SendCommands");
-                replicator.Handler.SendCommands(replicator.CommandGroup, this, commandSystem);
+                componentReplicators[i].Handler.SendCommands(chunkArrayCache[commandIndex], this, commandSystem);
+                chunkArrayCache[commandIndex].Dispose();
                 Profiler.EndSample();
             }
         }

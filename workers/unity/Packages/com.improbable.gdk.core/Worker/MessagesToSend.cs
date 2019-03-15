@@ -7,6 +7,9 @@ namespace Improbable.Gdk.Core
 {
     public class MessagesToSend
     {
+        private static List<Type> componentTypes;
+        private static List<Type> commandTypes;
+
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
@@ -34,7 +37,16 @@ namespace Improbable.Gdk.Core
 
         public MessagesToSend()
         {
-            var componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+            if (componentTypes == null)
+            {
+                componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+            }
+
+            if (commandTypes == null)
+            {
+                commandTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandSendStorage));
+            }
+
             foreach (var type in componentTypes)
             {
                 var instance = (IComponentDiffStorage) Activator.CreateInstance(type);
@@ -49,7 +61,6 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            var commandTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandSendStorage));
             foreach (var type in commandTypes)
             {
                 var instance = (IComponentCommandSendStorage) Activator.CreateInstance(type);

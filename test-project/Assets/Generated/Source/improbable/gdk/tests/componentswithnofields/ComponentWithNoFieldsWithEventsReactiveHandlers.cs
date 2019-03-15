@@ -36,11 +36,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
             };
 
-            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
+            public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var eventEvtType = system.GetArchetypeChunkComponentType<EventSender.Evt>(true);
                 foreach (var chunk in chunkArray)
@@ -58,11 +57,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
+            public void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem)
             {
             }
         }
@@ -83,7 +81,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+            public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
@@ -92,8 +90,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReceivedUpdates>();
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>();
                 var evtEventType = system.GetArchetypeChunkComponentType<ReceivedEvents.Evt>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -157,8 +153,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
 
                 }
-
-                chunkArray.Dispose();
             }
         }
 
@@ -175,13 +169,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 None = Array.Empty<ComponentType>()
             };
 
-            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+            public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -197,8 +189,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
     }

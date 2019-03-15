@@ -5,13 +5,13 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal class Callbacks<T>
     {
-        private List<WrappedCallback<T>> callbacks = new List<WrappedCallback<T>>();
+        private List<WrappedCallback> callbacks = new List<WrappedCallback>();
         private HashSet<ulong> currentKeys = new HashSet<ulong>();
 
         // These can be lists as we expect the number of callbacks added/removed during invocation of other callbacks
         // to be low.
         private List<ulong> toRemove = new List<ulong>();
-        private List<WrappedCallback<T>> toAdd = new List<WrappedCallback<T>>();
+        private List<WrappedCallback> toAdd = new List<WrappedCallback>();
 
         private bool isInInvoke = false;
 
@@ -19,11 +19,11 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (isInInvoke)
             {
-                toAdd.Add(new WrappedCallback<T>(key, callback));
+                toAdd.Add(new WrappedCallback(key, callback));
                 return;
             }
 
-            callbacks.Add(new WrappedCallback<T>(key, callback));
+            callbacks.Add(new WrappedCallback(key, callback));
             currentKeys.Add(key);
         }
 
@@ -63,9 +63,7 @@ namespace Improbable.Gdk.Subscriptions
             finally
             {
                 isInInvoke = false;
-
             }
-
 
             FlushDeferredOperations();
         }
@@ -107,7 +105,7 @@ namespace Improbable.Gdk.Subscriptions
             toAdd.Clear();
         }
 
-        private struct WrappedCallback<T>
+        private struct WrappedCallback
         {
             public ulong Key;
             public Action<T> Action;

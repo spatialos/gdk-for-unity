@@ -46,7 +46,7 @@ namespace <#= qualifiedNamespace #>
                 diff.AddCommandRequest(request, ComponentId, <#= command.CommandIndex #>);
             }
 
-            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
             {
                 <#= command.FqnResponseType #>? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)
@@ -54,8 +54,7 @@ namespace <#= qualifiedNamespace #>
                     rawResponse = <#= command.FqnResponseType #>.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var id = commandMetaData.GetRequestId(ComponentId, <#= command.CommandIndex #>, op.RequestId);
-                var commandContext = commandMetaData.GetContext<<#= command.FqnRequestType #>>(ComponentId, <#= command.CommandIndex #>, id);
+                var commandContext = commandMetaData.GetContext<<#= command.FqnRequestType #>>(ComponentId, <#= command.CommandIndex #>, op.RequestId);
                 commandMetaData.MarkIdForRemoval(ComponentId, <#= command.CommandIndex #>, op.RequestId);
 
                 var response = new <#= receivedResponseType #>(
@@ -66,7 +65,7 @@ namespace <#= qualifiedNamespace #>
                     rawResponse,
                     commandContext.Request,
                     commandContext.Context,
-                    id);
+                    commandContext.RequestId);
 
                 diff.AddCommandResponse(response, ComponentId, <#= command.CommandIndex #>);
             }
@@ -93,15 +92,15 @@ namespace <#= qualifiedNamespace #>
                 for (int i = 0; i < requests.Count; ++i)
                 {
                     ref readonly var request = ref requests[i];
-                    var context = new CommandContext<<#= command.FqnRequestType #>>(request.sendingEntity, request.request.Payload, request.request.Context);
-                    commandMetaData.AddRequest<<#= command.FqnRequestType #>>(ComponentId, <#= command.CommandIndex #>, request.requestId, context);
+                    var context = new CommandContext<<#= command.FqnRequestType #>>(request.SendingEntity, request.Request.Payload, request.Request.Context, request.RequestId);
+                    commandMetaData.AddRequest<<#= command.FqnRequestType #>>(ComponentId, <#= command.CommandIndex #>, in context);
 
                     var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
-                    <#= command.FqnRequestType #>.Serialization.Serialize(request.request.Payload, schemaCommandRequest.GetObject());
+                    <#= command.FqnRequestType #>.Serialization.Serialize(request.Request.Payload, schemaCommandRequest.GetObject());
                     var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest);
 
                     serializedMessages.AddRequest(serializedRequest, <#= command.CommandIndex #>,
-                        request.request.TargetEntityId.Id, request.request.TimeoutMillis, request.requestId);
+                        request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
                 }
 
                 var responses = storage.GetResponses();
@@ -125,6 +124,7 @@ namespace <#= qualifiedNamespace #>
                 }
             }
         }
+
 <# } #>
     }
 }

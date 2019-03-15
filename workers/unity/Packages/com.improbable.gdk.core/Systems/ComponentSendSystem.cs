@@ -22,6 +22,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
+        private NativeArray<JobHandle> gatheringJobs;
 
         private IConnectionHandler connection;
 
@@ -33,6 +34,13 @@ namespace Improbable.Gdk.Core
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count];
+            gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Persistent);
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+            gatheringJobs.Dispose();
         }
 
         public bool TryRegisterCustomReplicationSystem(uint componentId)
@@ -57,7 +65,6 @@ namespace Improbable.Gdk.Core
             var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             Profiler.BeginSample("GatherChunks");
-            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Temp);
             for (var i = 0; i < componentReplicators.Count; i++)
             {
                 var replicator = componentReplicators[i];
@@ -65,9 +72,9 @@ namespace Improbable.Gdk.Core
                 gatheringJobs[i] = jobHandle;
             }
 
-            JobHandle.CompleteAll(gatheringJobs);
-            gatheringJobs.Dispose();
             Profiler.EndSample();
+
+            JobHandle.CompleteAll(gatheringJobs);
 
             for (var i = 0; i < componentReplicators.Count; i++)
             {

@@ -52,7 +52,7 @@ MonoBehaviour:
     - {fileID: 102900000, guid: f5fda56aad5d91d408ff123b26ab6ade, type: 3}
     LocalBuildConfig:
       BuildTargets:
-      - Options: 0
+      - Options: 1
         Enabled: 1
         Required: 0
       - Options: 0

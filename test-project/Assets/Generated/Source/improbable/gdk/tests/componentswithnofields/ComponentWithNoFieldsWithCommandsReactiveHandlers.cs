@@ -45,28 +45,26 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 },
             };
 
-            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
+            public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
             }
 
-            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
+            public void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem)
             {
                 Profiler.BeginSample("ComponentWithNoFieldsWithCommands");
                 var entityType = system.GetArchetypeChunkEntityType();
-                {
-                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
-                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(true);
+                var senderTypeCmd = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(true);
+                var responderTypeCmd = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(true);
 
-                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-                    foreach (var chunk in chunks)
+                foreach (var chunk in chunkArray)
+                {
+                    var entities = chunk.GetNativeArray(entityType);
+                    if (chunk.Has(senderTypeCmd))
                     {
-                        var entities = chunk.GetNativeArray(entityType);
-                        var senders = chunk.GetNativeArray(senderType);
-                        var responders = chunk.GetNativeArray(responderType);
+                        var senders = chunk.GetNativeArray(senderTypeCmd);
                         for (var i = 0; i < senders.Length; i++)
                         {
                             var requests = senders[i].RequestsToSend;
-                            var responses = responders[i].ResponsesToSend;
                             if (requests.Count > 0)
                             {
                                 foreach (var request in requests)
@@ -76,7 +74,12 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                                 requests.Clear();
                             }
+                        }
 
+                        var responders = chunk.GetNativeArray(responderTypeCmd);
+                        for (var i = 0; i < responders.Length; i++)
+                        {
+                            var responses = responders[i].ResponsesToSend;
                             if (responses.Count > 0)
                             {
                                 foreach (var response in responses)
@@ -89,7 +92,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
 
-                    chunks.Dispose();
                 }
 
                 Profiler.EndSample();
@@ -113,7 +115,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+            public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
@@ -124,8 +126,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 var cmdRequestType = system.GetArchetypeChunkComponentType<CommandRequests.Cmd>();
                 var cmdResponseType = system.GetArchetypeChunkComponentType<CommandResponses.Cmd>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -180,7 +180,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     // Cmd Command
                     if (chunk.Has(cmdRequestType))
                     {
-                            var cmdRequestArray = chunk.GetNativeArray(cmdRequestType);
+                        var cmdRequestArray = chunk.GetNativeArray(cmdRequestType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<CommandRequests.Cmd>(entities[i]);
@@ -198,8 +198,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
 
@@ -216,13 +214,11 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 None = Array.Empty<ComponentType>()
             };
 
-            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+            public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -238,8 +234,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
     }

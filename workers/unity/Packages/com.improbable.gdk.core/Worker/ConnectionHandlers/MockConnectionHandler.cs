@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Core
 
         #region IConnectionHandler implementation
 
-        public ViewDiff GetMessagesReceived()
+        public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
             var diffToReturn = currentDiff;
 
@@ -63,7 +63,12 @@ namespace Improbable.Gdk.Core
             var nextDiff = currentDiff;
             nextDiff.Clear();
 
-            return diffToReturn;
+            viewDiff = diffToReturn;
+        }
+
+        public MessagesToSend GetMessagesToSendContainer()
+        {
+            return new MessagesToSend();
         }
 
         public void PushMessagesToSend(MessagesToSend messages)
@@ -108,6 +113,10 @@ namespace Improbable.Gdk.Core
                 var snapshot = maybeSnapshot.Value;
                 viewDiff.AddComponent(snapshotToUpdate(snapshot), entityId, componentId);
             }
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 diff.AddCommandRequest(request, ComponentId, 1);
             }
 
-            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
             {
                 global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)
@@ -43,8 +43,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     rawResponse = global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var id = commandMetaData.GetRequestId(ComponentId, 1, op.RequestId);
-                var commandContext = commandMetaData.GetContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(ComponentId, 1, id);
+                var commandContext = commandMetaData.GetContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(ComponentId, 1, op.RequestId);
                 commandMetaData.MarkIdForRemoval(ComponentId, 1, op.RequestId);
 
                 var response = new FirstCommand.ReceivedResponse(
@@ -55,7 +54,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     rawResponse,
                     commandContext.Request,
                     commandContext.Context,
-                    id);
+                    commandContext.RequestId);
 
                 diff.AddCommandResponse(response, ComponentId, 1);
             }
@@ -82,15 +81,15 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 for (int i = 0; i < requests.Count; ++i)
                 {
                     ref readonly var request = ref requests[i];
-                    var context = new CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(request.sendingEntity, request.request.Payload, request.request.Context);
-                    commandMetaData.AddRequest<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(ComponentId, 1, request.requestId, context);
+                    var context = new CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(request.SendingEntity, request.Request.Payload, request.Request.Context, request.RequestId);
+                    commandMetaData.AddRequest<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest>(ComponentId, 1, in context);
 
                     var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, 1);
-                    global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(request.request.Payload, schemaCommandRequest.GetObject());
+                    global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest.Serialization.Serialize(request.Request.Payload, schemaCommandRequest.GetObject());
                     var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest);
 
                     serializedMessages.AddRequest(serializedRequest, 1,
-                        request.request.TargetEntityId.Id, request.request.TimeoutMillis, request.requestId);
+                        request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
                 }
 
                 var responses = storage.GetResponses();
@@ -114,6 +113,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
         }
+
         public class SecondCommandDiffCommandDeserializer : ICommandDiffDeserializer
         {
             public uint GetComponentId()
@@ -140,7 +140,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 diff.AddCommandRequest(request, ComponentId, 2);
             }
 
-            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
             {
                 global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)
@@ -148,8 +148,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     rawResponse = global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var id = commandMetaData.GetRequestId(ComponentId, 2, op.RequestId);
-                var commandContext = commandMetaData.GetContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(ComponentId, 2, id);
+                var commandContext = commandMetaData.GetContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(ComponentId, 2, op.RequestId);
                 commandMetaData.MarkIdForRemoval(ComponentId, 2, op.RequestId);
 
                 var response = new SecondCommand.ReceivedResponse(
@@ -160,7 +159,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     rawResponse,
                     commandContext.Request,
                     commandContext.Context,
-                    id);
+                    commandContext.RequestId);
 
                 diff.AddCommandResponse(response, ComponentId, 2);
             }
@@ -187,15 +186,15 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 for (int i = 0; i < requests.Count; ++i)
                 {
                     ref readonly var request = ref requests[i];
-                    var context = new CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(request.sendingEntity, request.request.Payload, request.request.Context);
-                    commandMetaData.AddRequest<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(ComponentId, 2, request.requestId, context);
+                    var context = new CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(request.SendingEntity, request.Request.Payload, request.Request.Context, request.RequestId);
+                    commandMetaData.AddRequest<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest>(ComponentId, 2, in context);
 
                     var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, 2);
-                    global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(request.request.Payload, schemaCommandRequest.GetObject());
+                    global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest.Serialization.Serialize(request.Request.Payload, schemaCommandRequest.GetObject());
                     var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest);
 
                     serializedMessages.AddRequest(serializedRequest, 2,
-                        request.request.TargetEntityId.Id, request.request.TimeoutMillis, request.requestId);
+                        request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
                 }
 
                 var responses = storage.GetResponses();
@@ -219,5 +218,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
         }
+
     }
 }
