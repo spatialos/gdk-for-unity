@@ -248,8 +248,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             , ICommandRequestSendStorage<FirstCommand.Request>
             , ICommandResponseSendStorage<FirstCommand.Response>
         {
-            private MessageList<(FirstCommand.Request Request, Entity SendingEntity, long RequestId)> requestStorage =
-                new MessageList<(FirstCommand.Request Request, Entity SendingEntity, long RequestId)>();
+            private MessageList<CommandRequestWithMetaData<FirstCommand.Request>> requestStorage =
+                new MessageList<CommandRequestWithMetaData<FirstCommand.Request>>();
 
             private MessageList<FirstCommand.Response> responseStorage =
                 new MessageList<FirstCommand.Response>();
@@ -282,7 +282,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void AddRequest(FirstCommand.Request request, Entity entity, long requestId)
             {
-                requestStorage.Add((request, entity, requestId));
+                requestStorage.Add(new CommandRequestWithMetaData<FirstCommand.Request>(request, entity, requestId));
             }
 
             public void AddResponse(FirstCommand.Response response)
@@ -290,7 +290,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 responseStorage.Add(response);
             }
 
-            internal MessageList<(FirstCommand.Request request, Entity sendingEntity, long requestId)> GetRequests()
+            internal MessageList<CommandRequestWithMetaData<FirstCommand.Request>> GetRequests()
             {
                 return requestStorage;
             }
@@ -305,8 +305,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             , ICommandRequestSendStorage<SecondCommand.Request>
             , ICommandResponseSendStorage<SecondCommand.Response>
         {
-            private MessageList<(SecondCommand.Request Request, Entity SendingEntity, long RequestId)> requestStorage =
-                new MessageList<(SecondCommand.Request Request, Entity SendingEntity, long RequestId)>();
+            private MessageList<CommandRequestWithMetaData<SecondCommand.Request>> requestStorage =
+                new MessageList<CommandRequestWithMetaData<SecondCommand.Request>>();
 
             private MessageList<SecondCommand.Response> responseStorage =
                 new MessageList<SecondCommand.Response>();
@@ -339,7 +339,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void AddRequest(SecondCommand.Request request, Entity entity, long requestId)
             {
-                requestStorage.Add((request, entity, requestId));
+                requestStorage.Add(new CommandRequestWithMetaData<SecondCommand.Request>(request, entity, requestId));
             }
 
             public void AddResponse(SecondCommand.Response response)
@@ -347,7 +347,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 responseStorage.Add(response);
             }
 
-            internal MessageList<(SecondCommand.Request request, Entity sendingEntity, long requestId)> GetRequests()
+            internal MessageList<CommandRequestWithMetaData<SecondCommand.Request>> GetRequests()
             {
                 return requestStorage;
             }

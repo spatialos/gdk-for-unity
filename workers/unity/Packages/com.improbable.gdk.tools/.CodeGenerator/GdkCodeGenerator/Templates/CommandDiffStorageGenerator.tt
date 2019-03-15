@@ -146,8 +146,8 @@ namespace <#= qualifiedNamespace #>
             , ICommandRequestSendStorage<<#= requestType #>>
             , ICommandResponseSendStorage<<#= responseType #>>
         {
-            private MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)> requestStorage =
-                new MessageList<(<#= requestType #> Request, Entity SendingEntity, long RequestId)>();
+            private MessageList<CommandRequestWithMetaData<<#= requestType #>>> requestStorage =
+                new MessageList<CommandRequestWithMetaData<<#= requestType #>>>();
 
             private MessageList<<#= responseType #>> responseStorage =
                 new MessageList<<#= responseType #>>();
@@ -180,7 +180,7 @@ namespace <#= qualifiedNamespace #>
 
             public void AddRequest(<#= requestType #> request, Entity entity, long requestId)
             {
-                requestStorage.Add((request, entity, requestId));
+                requestStorage.Add(new CommandRequestWithMetaData<<#= requestType #>>(request, entity, requestId));
             }
 
             public void AddResponse(<#= responseType #> response)
@@ -188,7 +188,7 @@ namespace <#= qualifiedNamespace #>
                 responseStorage.Add(response);
             }
 
-            internal MessageList<(<#= requestType #> request, Entity sendingEntity, long requestId)> GetRequests()
+            internal MessageList<CommandRequestWithMetaData<<#= requestType #>>> GetRequests()
             {
                 return requestStorage;
             }

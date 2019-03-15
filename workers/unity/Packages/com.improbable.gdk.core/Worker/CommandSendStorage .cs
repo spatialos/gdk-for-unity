@@ -30,11 +30,11 @@ namespace Improbable.Gdk.Core
         void AddResponse(T response);
     }
 
-    internal struct CommandRequestWithMetaData<T>
+    internal readonly struct CommandRequestWithMetaData<T>
     {
-        public T Request;
-        public Entity SendingEntity;
-        public long RequestId;
+        public readonly T Request;
+        public readonly Entity SendingEntity;
+        public readonly long RequestId;
 
         public CommandRequestWithMetaData(T request, Entity sendingEntity, long requestId)
         {

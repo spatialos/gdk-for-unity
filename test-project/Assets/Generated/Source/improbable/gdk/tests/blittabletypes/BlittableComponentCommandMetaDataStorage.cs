@@ -33,24 +33,20 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void AddRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(uint internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
 
-            public void AddRequest(CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest> context, long requestId)
+            public void AddRequest(in CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest> context)
             {
-                requestIdToRequest[requestId] = context;
+                requestIdToRequest[context.RequestId] = context;
             }
 
-            public long GetRequestId(uint internalRequestId)
+            public CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest> GetPayload(uint internalRequestId)
             {
-                return internalRequestIdToRequestId[internalRequestId];
-            }
-
-            public CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest> GetPayload(long requestId)
-            {
-                return requestIdToRequest[requestId];
+                var id = internalRequestIdToRequestId[internalRequestId];
+                return requestIdToRequest[id];
             }
         }
 
@@ -78,24 +74,20 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void AddRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(uint internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
 
-            public void AddRequest(CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest> context, long requestId)
+            public void AddRequest(in CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest> context)
             {
-                requestIdToRequest[requestId] = context;
+                requestIdToRequest[context.RequestId] = context;
             }
 
-            public long GetRequestId(uint internalRequestId)
+            public CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest> GetPayload(uint internalRequestId)
             {
-                return internalRequestIdToRequestId[internalRequestId];
-            }
-
-            public CommandContext<global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest> GetPayload(long requestId)
-            {
-                return requestIdToRequest[requestId];
+                var id = internalRequestIdToRequestId[internalRequestId];
+                return requestIdToRequest[id];
             }
         }
 

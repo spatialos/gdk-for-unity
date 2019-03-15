@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             world = new World("test-world");
             logDispatcher = new TestLogDispatcher();
-            world.CreateManager<WorkerSystem>(null, null, logDispatcher, TestWorkerType, Vector3.zero);
+            world.CreateManager<WorkerSystem>(new MockConnectionHandler(), null, logDispatcher, TestWorkerType, Vector3.zero);
 
             sendSystem = world.GetOrCreateManager<ComponentSendSystem>();
 
