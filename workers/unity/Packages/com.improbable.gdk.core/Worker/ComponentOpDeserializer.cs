@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
         {
             if (!ComponentIdToComponentDeserializer.TryGetValue(op.Update.ComponentId, out var deserializer))
             {
-                throw new ArgumentException($"Can not deserialize component with ID {op.Update.ComponentId}");
+                throw new ArgumentException($"Can not deserialize update on component with ID {op.Update.ComponentId}");
             }
 
             deserializer.AddUpdateToDiff(op, viewDiff, updateId);
@@ -55,7 +55,8 @@ namespace Improbable.Gdk.Core
                 (op.Request.ComponentId, op.Request.SchemaData.Value.GetCommandIndex()),
                 out var deserializer))
             {
-                throw new ArgumentException($"Can not deserialize component with ID {op.Request.ComponentId}");
+                throw new ArgumentException($"Can not deserialize command request with command index " +
+                    $"{op.Request.SchemaData.Value.GetCommandIndex()} on component with ID {op.Request.ComponentId}");
             }
 
             deserializer.AddRequestToDiff(op, viewDiff);
@@ -67,7 +68,8 @@ namespace Improbable.Gdk.Core
             if (!CommandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.CommandIndex),
                 out var deserializer))
             {
-                throw new ArgumentException($"Can not deserialize component with ID {op.Response.ComponentId}");
+                throw new ArgumentException($"Can not deserialize command response command index " +
+                    $"{op.Response.SchemaData.Value.GetCommandIndex()} on component with ID {op.Response.ComponentId}");
             }
 
             deserializer.AddResponseToDiff(op, viewDiff, commandMetaData);

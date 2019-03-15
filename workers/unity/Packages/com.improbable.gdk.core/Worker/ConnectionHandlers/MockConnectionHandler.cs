@@ -1,6 +1,4 @@
-using System;
 using Improbable.Worker.CInterop;
-using JetBrains.Annotations;
 
 namespace Improbable.Gdk.Core
 {
