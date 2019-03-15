@@ -62,7 +62,6 @@ namespace Improbable.Gdk.Core
                 items[index] = item;
             }
 
-            items[Count] = item;
             ++Count;
         }
 
