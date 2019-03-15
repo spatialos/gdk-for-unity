@@ -30,7 +30,7 @@ namespace Improbable.Gdk.ReactiveComponents
             connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
-            chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count];
+            chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
         }
 
         protected override void OnUpdate()
@@ -40,6 +40,25 @@ namespace Improbable.Gdk.ReactiveComponents
                 return;
             }
 
+            Profiler.BeginSample("GatherChunks");
+            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Temp);
+            for (var i = 0; i < componentReplicators.Count; i++)
+            {
+                var replicator = componentReplicators[i];
+                var eventIndex = i;
+                var commandIndex = componentReplicators.Count + i;
+
+                chunkArrayCache[eventIndex] = replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var eventJobHandle);
+                chunkArrayCache[commandIndex] = replicator.CommandGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var commandJobHandle);
+
+                gatheringJobs[eventIndex] = eventJobHandle;
+                gatheringJobs[commandIndex] = commandJobHandle;
+            }
+
+            JobHandle.CompleteAll(gatheringJobs);
+            gatheringJobs.Dispose();
+            Profiler.EndSample();
+
             ReplicateEvents();
             ReplicateCommands();
         }
@@ -48,24 +67,12 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
-            Profiler.BeginSample("GatherChunks_Events");
-            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Temp);
             for (var i = 0; i < componentReplicators.Count; i++)
             {
-                var replicator = componentReplicators[i];
-                chunkArrayCache[i] = replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
-                gatheringJobs[i] = jobHandle;
-            }
-
-            JobHandle.CompleteAll(gatheringJobs);
-            gatheringJobs.Dispose();
-            Profiler.EndSample();
-
-            for (var i = 0; i < componentReplicators.Count; i++)
-            {
+                var eventIndex = i;
                 Profiler.BeginSample("SendEvents");
-                componentReplicators[i].Handler.SendEvents(chunkArrayCache[i], this, componentUpdateSystem);
-                chunkArrayCache[i].Dispose();
+                componentReplicators[i].Handler.SendEvents(chunkArrayCache[eventIndex], this, componentUpdateSystem);
+                chunkArrayCache[eventIndex].Dispose();
                 Profiler.EndSample();
             }
         }
@@ -74,24 +81,12 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             var commandSystem = World.GetExistingManager<CommandSystem>();
 
-            Profiler.BeginSample("GatherChunks_Commands");
-            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Temp);
             for (var i = 0; i < componentReplicators.Count; i++)
             {
-                var replicator = componentReplicators[i];
-                chunkArrayCache[i] = replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
-                gatheringJobs[i] = jobHandle;
-            }
-
-            JobHandle.CompleteAll(gatheringJobs);
-            gatheringJobs.Dispose();
-            Profiler.EndSample();
-
-            for (var i = 0; i < componentReplicators.Count; i++)
-            {
+                var commandIndex = componentReplicators.Count + i;
                 Profiler.BeginSample("SendCommands");
-                componentReplicators[i].Handler.SendCommands(chunkArrayCache[i], this, commandSystem);
-                chunkArrayCache[i].Dispose();
+                componentReplicators[i].Handler.SendCommands(chunkArrayCache[commandIndex], this, commandSystem);
+                chunkArrayCache[commandIndex].Dispose();
                 Profiler.EndSample();
             }
         }
