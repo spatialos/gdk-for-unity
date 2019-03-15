@@ -20,6 +20,7 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
+        private NativeArray<JobHandle> gatheringJobs;
 
         private IConnectionHandler connection;
 
@@ -31,6 +32,13 @@ namespace Improbable.Gdk.ReactiveComponents
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
+            gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Persistent);
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+            gatheringJobs.Dispose();
         }
 
         protected override void OnUpdate()
@@ -41,7 +49,6 @@ namespace Improbable.Gdk.ReactiveComponents
             }
 
             Profiler.BeginSample("GatherChunks");
-            var gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Temp);
             for (var i = 0; i < componentReplicators.Count; i++)
             {
                 var replicator = componentReplicators[i];
@@ -55,9 +62,9 @@ namespace Improbable.Gdk.ReactiveComponents
                 gatheringJobs[commandIndex] = commandJobHandle;
             }
 
-            JobHandle.CompleteAll(gatheringJobs);
-            gatheringJobs.Dispose();
             Profiler.EndSample();
+
+            JobHandle.CompleteAll(gatheringJobs);
 
             ReplicateEvents();
             ReplicateCommands();
