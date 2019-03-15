@@ -132,8 +132,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             , ICommandRequestSendStorage<Cmd.Request>
             , ICommandResponseSendStorage<Cmd.Response>
         {
-            private MessageList<(Cmd.Request Request, Entity SendingEntity, long RequestId)> requestStorage =
-                new MessageList<(Cmd.Request Request, Entity SendingEntity, long RequestId)>();
+            private MessageList<CommandRequestWithMetaData<Cmd.Request>> requestStorage =
+                new MessageList<CommandRequestWithMetaData<Cmd.Request>>();
 
             private MessageList<Cmd.Response> responseStorage =
                 new MessageList<Cmd.Response>();
@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void AddRequest(Cmd.Request request, Entity entity, long requestId)
             {
-                requestStorage.Add((request, entity, requestId));
+                requestStorage.Add(new CommandRequestWithMetaData<Cmd.Request>(request, entity, requestId));
             }
 
             public void AddResponse(Cmd.Response response)
@@ -174,7 +174,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 responseStorage.Add(response);
             }
 
-            internal MessageList<(Cmd.Request request, Entity sendingEntity, long requestId)> GetRequests()
+            internal MessageList<CommandRequestWithMetaData<Cmd.Request>> GetRequests()
             {
                 return requestStorage;
             }
