@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -14,14 +17,13 @@ namespace Improbable.Gdk.ReactiveComponents
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
         private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
-
-        // Here to prevent adding an action for the same type multiple times
-        private readonly HashSet<Type> typesToRemove = new HashSet<Type>();
+        private NativeArray<ArchetypeChunk>[] chunkArrayCache;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
             GenerateComponentGroups();
+            chunkArrayCache = new NativeArray<ArchetypeChunk>[componentCleanups.Count];
         }
 
         private void GenerateComponentGroups()
@@ -34,25 +36,43 @@ namespace Improbable.Gdk.ReactiveComponents
                 componentCleanups.Add(new ComponentCleanup
                 {
                     Handler = componentCleanupHandler,
-                    ComponentsToCleanGroup = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
+                    Group = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
                 });
             }
         }
 
         protected override void OnUpdate()
         {
-            foreach (var cleanup in componentCleanups)
+            Profiler.BeginSample("GatherChunks");
+            var gatheringJobs = new NativeArray<JobHandle>(componentCleanups.Count, Allocator.Temp);
+            for (var i = 0; i < componentCleanups.Count; i++)
             {
+                var replicator = componentCleanups[i];
+                chunkArrayCache[i] = replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
+                gatheringJobs[i] = jobHandle;
+            }
+
+            JobHandle.CompleteAll(gatheringJobs);
+            gatheringJobs.Dispose();
+            Profiler.EndSample();
+
+            for (var i = 0; i < componentCleanups.Count; i++)
+            {
+                var cleanup = componentCleanups[i];
+                var chunkArray = chunkArrayCache[i];
+
                 Profiler.BeginSample("CleanReactiveComponents");
-                cleanup.Handler.CleanComponents(cleanup.ComponentsToCleanGroup, this, PostUpdateCommands);
+                cleanup.Handler.CleanComponents(chunkArray, this, PostUpdateCommands);
                 Profiler.EndSample();
+
+                chunkArray.Dispose();
             }
         }
 
         private struct ComponentCleanup
         {
             public ComponentCleanupHandler Handler;
-            public ComponentGroup ComponentsToCleanGroup;
+            public ComponentGroup Group;
         }
     }
 }
