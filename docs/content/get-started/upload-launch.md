@@ -74,13 +74,13 @@ Uploaded assembly my_assembly to project unity_gdk successfully.
 
 #### 3. Launch a cloud deployment
 
-The next step is to [start a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. When you launch a cloud deployment you have to provide four parameters:
+The next step is to [start a cloud deployment](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud#5-deploy-the-project) using the assembly that you just uploaded. When you launch a cloud deployment you have to provide five parameters:
 
 * **Assembly Name** - this identifies the worker assemblies to use.
 * **Deployment Name** - this labels your deployment in the SpatialOS Console.
 * **Snapshot File** - this specifies which snapshot file the deployment uses. A snapshot declares the state of the world as the deployment starts.
 * **Launch Config File** - this is the deployment's launch configuration `.json` file which declares the world and load balancing configuration.
-* **Deployment Region** - the region that your deployment will be started in, set to `US` by default.
+* **Deployment Region** - the geographic location that your deployment starts in: `EU` for Europe or `US` for USA. Set to `US` by default.
 
 <br/>
 To launch your cloud deployment:
@@ -94,9 +94,9 @@ To launch your cloud deployment:
 |**Deployment Name**| A name of your choice - for example; `shootyshooty`. <br/>(The name needs to conform to the following regex: `[a-z0-9_]{2,32}`.)|
 |**Snapshot File**|`snapshots/cloud.snapshot`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 |**Launch Config File** | `cloud_launch_large.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
-|**Deployment Region**|This can be set to `US` (default) or `EU`. Select the region closest to you for lower latencies when connecting clients. Note that the simulated players deployment will also be deployed to the same region.|
+|**Deployment Region**| You can set this to `US` for the USA (default) or `EU` for Europe. Select the geographical location closest to you for lower latencies when connecting clients. <br/> (Note that the simulated players deployment deploys to the same region - you will find out more about simulated players in later steps.)|
 |**Enable Simulated Players**| Ensure this is checked.|
-|**Override Name**| Leave this unchecked.<br/>This allows you to change the name of the simulated players deployment.|
+|**Override Name**| Leave this unchecked.<br/>This allows you to change the name of the simulated players deployment - more about simulated players in the next steps.|
 |**Deployment Name**<br/> (The second Deployment Name listed)| Do not edit this field.|
 |**Launch Config File**<br/> (The second config listed)|`cloud_launch_large_sim_players.json`<br/>Note that this is a relative path from the root of your SpatialOS project.|
 
@@ -109,9 +109,9 @@ To launch your cloud deployment:
 **Note:** You will see that there are two Deployment Names and two Launch Config Files listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
 <br/>
 
-**It's finished when:** the Console pages for both deployments have opened up in your browser.
+**It's finished when:** The Console pages for both deployments open automatically in your browser.
 
-You should also see two messages printed in your Unity Console indicating both deployments have been started:
+You should also see two messages printed in your Unity Console indicating both deployments have started:
 
 ```
 Successfully created the main deployment.
