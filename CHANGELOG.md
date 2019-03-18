@@ -7,11 +7,11 @@
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
 - The `Require` attribute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
-- The generated Readers have been renamed, previously they were called `{COMPONENT_NAME}.Requirable.Reader`, now they are called `{COMPONENT_NAME}Reader`.
+- The generated Readers have been renamed from `{COMPONENT_NAME}.Requirable.Reader` to `{COMPONENT_NAME}Reader`.
 - The Reader callback events' names have changed.
     - `On{EVENT_NAME}` is now `On{EVENT_NAME}Event`.
     - `{FIELD_NAME}Updated` is now `On{FIELD_NAME}Update`.
-- The generated Writers have been renamed, previously they were called. `{COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
+- The generated Writers have been renamed from` {COMPONENT_NAME}.Requirable.Writer` to `{COMPONENT_NAME}Writer`.
 - The Writer send method names have changed.
     - `Send{EVENT_NAME}` is now `Send{EVENT_NAME}Event`.
     - `Send` is now `SendUpdate`.
