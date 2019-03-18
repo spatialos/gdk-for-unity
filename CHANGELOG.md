@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.0` - 2019-03-18
+
 ### Breaking Changes
 
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
