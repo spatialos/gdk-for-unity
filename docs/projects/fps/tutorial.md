@@ -207,7 +207,7 @@ The client-side logic we want to capture for this game mechanic is:
 1. Name this script `HealthPickupClientVisibility`, and replace its contents with the following code snippet:
 
 ```csharp
-using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.Subscriptions;
 using Pickups;
 using UnityEngine;
 
@@ -216,14 +216,14 @@ namespace Fps
     [WorkerType(WorkerUtils.UnityClient)]
     public class HealthPickupClientVisibility : MonoBehaviour
     {
-        [Require] private HealthPickup.Requirable.Reader healthPickupReader;
+        [Require] private HealthPickupReader healthPickupReader;
 
         private MeshRenderer cubeMeshRenderer;
 
         private void OnEnable()
         {
             cubeMeshRenderer = GetComponentInChildren<MeshRenderer>();
-            healthPickupReader.ComponentUpdated += OnHealthPickupComponentUpdated;
+            healthPickupReader.OnUpdate += OnHealthPickupComponentUpdated;
             UpdateVisibility();
         }
 
@@ -317,8 +317,8 @@ To achieve this we need to:
 ```csharp
 using System.Collections;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectRepresentation;
 using Improbable.Gdk.Health;
+using Improbable.Gdk.Subscriptions;
 using Pickups;
 using UnityEngine;
 
@@ -327,8 +327,8 @@ namespace Fps
     [WorkerType(WorkerUtils.UnityGameLogic)]
     public class HealthPickupServerBehaviour : MonoBehaviour
     {
-        [Require] private HealthPickup.Requirable.Writer healthPickupWriter;
-        [Require] private HealthComponent.Requirable.CommandRequestSender healthCommandRequestSender;
+        [Require] private HealthPickupWriter healthPickupWriter;
+        [Require] private HealthComponentCommandSender healthCommandRequestSender;
 
         private Coroutine respawnCoroutine;
 
@@ -367,7 +367,7 @@ namespace Fps
 
         private void SetIsActive(bool isActive)
         {
-            healthPickupWriter?.Send(new HealthPickup.Update
+            healthPickupWriter?.SendUpdate(new HealthPickup.Update
                 {
                     IsActive = new Option<BlittableBool>(isActive)
                 });
@@ -375,14 +375,14 @@ namespace Fps
 
         private void HandleCollisionWithPlayer(GameObject player)
         {
-            var playerSpatialOsComponent = player.GetComponent<SpatialOSComponent>();
+            var playerSpatialOsComponent = player.GetComponent<LinkedEntityComponent>();
 
             if (playerSpatialOsComponent == null)
             {
                 return;
             }
 
-            healthCommandRequestSender.SendModifyHealthRequest(playerSpatialOsComponent.SpatialEntityId, new HealthModifier
+            healthCommandRequestSender.SendModifyHealthCommand(playerSpatialOsComponent.EntityId, new HealthModifier
             {
                 Amount = healthPickupWriter.Data.HealthValue
             });
@@ -406,13 +406,13 @@ Let’s break down what the above snippet does:
 
 * `[WorkerType(WorkerUtils.UnityGameLogic)]`<br>
 This `WorkerType` annotation decorates the class `HealthPickupServerBehaviour`. It tells SpatialOS to **only** enable this class on `UnityGameLogic` server-workers, ensuring that it will never run on your client-workers.
-* `[Require] private HealthPickup.Requirable.Writer healthPickupWriter;`<br>
+* `[Require] private HealthPickupWriter healthPickupWriter;`<br>
 This is an instruction to the server-worker running the `HealthPickupServerBehaviour` class. It tells the server-worker to **only** enable this script on the worker with write-access to the `HealthPickup` component.
 * `private void OnTriggerEnter(Collider other)`<br>
 Most functions will **only** be called if the script component's `enabled` property is true, but `OnTriggerEnter` is called even when this is false. It is unusual in this sense. For this reason, scripts which use `OnTriggerEnter` **must** check whether the `Writer` is null (indicating a lack of authority) before using functions on the writer.
 * `private void SetIsActive(bool isActive)`<br>
 This function performs a component update. It sets the value of `IsActive`, the compoment property we [defined earlier](#define-a-new-spatialos-component), to a given value.
-* `healthPickupWriter?.Send(new HealthPickup.Update`<br>
+* `healthPickupWriter?.SendUpdate(new HealthPickup.Update`<br>
 When sent to SpatialOS, the `HealthPickup.Update` object updates the `HealthPickup` component.
 * `private void HandleCollisionWithPlayer(GameObject player)`<br>
 This function will be called any time a player walks through a health pack. It handles cross-worker interaction using [commands](https://docs.improbable.io/reference/latest/shared/glossary#command). When you send a command it acts as a request, which SpatialOS delivers to the single worker that has write-access for the component that the command is intended for.<br>
