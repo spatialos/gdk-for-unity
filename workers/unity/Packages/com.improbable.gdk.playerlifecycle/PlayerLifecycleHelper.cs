@@ -23,27 +23,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(owningComponent, serverAccess);
         }
 
-        public static byte[] SerializeArguments(object playerCreationArguments)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memoryStream, playerCreationArguments);
-                return memoryStream.ToArray();
-            }
-        }
-
-        public static T DeserializeArguments<T>(byte[] serializedArguments)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                var binaryFormatter = new BinaryFormatter();
-                memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                return (T) binaryFormatter.Deserialize(memoryStream);
-            }
-        }
-
         public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
         {
             var entityManager = workerWorld.GetOrCreateManager<EntityManager>();
