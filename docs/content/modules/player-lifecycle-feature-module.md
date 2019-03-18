@@ -3,6 +3,7 @@
 
 <%(TOC)%>
 # Player Lifecycle Feature Module
+
 _This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
@@ -21,10 +22,6 @@ After your worker has been created, you need to use the following code snippet:
 1. On a [client-worker]({{urlRoot}}/content/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
   * By default, the module automatically sends a player creation request as soon as the client worker connects to SpatialOS. To manually initiate player creation or provide arbitrary data in a player creation request, add an extra `false` argument when adding client systems: `PlayerLifecycleHelper.AddClientSystems(Worker.World, false);`
 1. On a [server-worker]({{urlRoot}}/content/glossary#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
-
-The Player lifecycle module provides a `PlayerLifecycleConfig` configuration class, containing a field called `AutoRequestPlayerCreation`. By default this is set to true, in which case the client-worker initiates the player entity creation as soon as it has connected to SpatialOS.
-
-Calling `PlayerLifecycleHelper.AddClientSystems(Worker.World, false)` sets this value to false, in which case you must manually initiate player creation.
 
 ## How to spawn a player entity
 
@@ -48,10 +45,10 @@ Create a method that returns an `EntityTemplate` object and takes the following 
 * `string workerId`: The ID of the worker that wants to spawn this player entity.
 *  `byte[] playerCreationArguments`: a serialized byte array of arguments provided by the worker sending the player creation request.
 
-When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method.
-This methods adds the SpatialOS components to the player entity template necessary to manage the player lifecycle for this entity.
+When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method. This methods adds the SpatialOS components to the player entity template necessary to manage the player lifecycle for this entity.
 
 The following code snippet shows an example on how to implement such a method:
+
 ```csharp
 public static class PlayerTemplate
 {
@@ -74,10 +71,10 @@ public static class PlayerTemplate
 
 ##### 2. Specify an entity template for player creation
 
-The `PlayerLifecycleConfig` configuration class needs to be configured to use the player entity template.
-This can be done by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
+The `PlayerLifecycleConfig` configuration class needs to be configured to use the player entity template. This can be done by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
 
 The following example is a code snippet using a script that runs once when starting the game to initialize the configuration for the player lifecycle module:
+
 ```csharp
 public static class OneTimeInitialization
 {
@@ -105,26 +102,47 @@ public static class OneTimeInitialization
 ##### 3. (Optional) Manually request player creation
 
 If `AutoRequestPlayerCreation` is set to false, you must manually call `RequestPlayerCreation` in the `SendCreatePlayerRequestSystem`:
+
 ```csharp
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
 playerCreationSystem.RequestPlayerCreation();
 ```
 
-## How to pass arbitrary data into a player creation request
+## How to use arbitrary data in the player creation loop
 
 ##### 1. Set AutoRequestPlayerCreation to false
+
 First, ensure that `AutoRequestPlayerCreation` is set to false.
 
-##### 2. Serialize before calling RequestPlayerCreation
-Then, ensure that it is serialized into a byte array before calling `RequestPlayerCreation`:
+##### 2. Call RequestPlayerCreation with serialized data
+
+Then, call `RequestPlayerCreation`. Ensure that your arbitrary data is serialized into a byte array.
+
 ```csharp
 var myArguments = new SampleArgumentsObject { PlayerName = "playerName", SpawnPosition = new Coordinates(50, 0, 75)) };
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
-var serializedArguments = PlayerLifecycleHelper.SerializeArguments(myArguments);
+var serializedArguments = SerializeArguments(myArguments);
 playerCreationSystem.RequestPlayerCreation(serializedArguments);
 ```
-##### 3. Deserialize into the same type you originally serialized from
-And lastly, ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
+
+Where an example implementation of `SerializeArguments` could be:
+
+```csharp
+private byte[] SerializeArguments(object playerCreationArguments)
+{
+    using (var memoryStream = new MemoryStream())
+    {
+        var binaryFormatter = new BinaryFormatter();
+        binaryFormatter.Serialize(memoryStream, playerCreationArguments);
+        return memoryStream.ToArray();
+    }
+}
+```
+
+##### 3. Deserialize data into the same type you originally serialized from
+
+Lastly, ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
+
 ```csharp
 public static class PlayerTemplate
 {
@@ -135,7 +153,7 @@ public static class PlayerTemplate
         // Obtain the attribute of your server-worker
         var serverAttribute = "UnityGameLogic";
 
-        var deserializedArguments = PlayerLifecycleHelper.DeserializeArguments<SampleArgumentsObject>(playerCreationArguments);
+        var deserializedArguments = DeserializeArguments<SampleArgumentsObject>(playerCreationArguments);
 
         var entityTemplate = new EntityTemplate();
         entityTemplate.AddPosition(new Position.Snapshot { Coords = deserializedArguments.SpawnPosition }, serverAttribute);
@@ -144,6 +162,18 @@ public static class PlayerTemplate
         AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
         return entityTemplate;
+    }
+
+    // An example implementation of DeserializeArguments
+    private T DeserializeArguments<T>(byte[] serializedArguments)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            var binaryFormatter = new BinaryFormatter();
+            memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            return (T) binaryFormatter.Deserialize(memoryStream);
+        }
     }
 }
 ```
