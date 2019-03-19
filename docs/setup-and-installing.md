@@ -73,9 +73,9 @@ Once you have navigated to the **Workloads** tab:
 
 **Using Rider?**
 
-Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [.NET Framework 4.7.1 Developer Pack](https://dotnet.microsoft.com/download/visual-studio-sdks).
+If you prefer to use [Rider](https://www.jetbrains.com/rider/), install the [.NET Framework 4.7.1 Developer Pack](https://dotnet.microsoft.com/download/visual-studio-sdks).
 
-You may also install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
+Additionally, install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 <%(/Expandable)%>
 
