@@ -26,7 +26,7 @@
     - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the `GameObject` to the SpatialOS entity.
     - You should also pass-in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
         - Note that for the Transform Synchronization feature module to work correctly, you need to set up a linked Transform Component on your GameObject. You also need to link any Rigidbody Component on your GameObject.
-    - There is no limit on the number of GameObject instances that you can link to a SpatialOS entity. However, you cannot add the same component type more than once.
+    - There is no limit on the number of GameObject instances that you can link to a SpatialOS entity. However, you cannot add a component type to a linked GameObject instance more than once.
     - Deleting a linked GameObject unlinks it from the SpatialOS entity automatically.
 - `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
     - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
@@ -62,7 +62,7 @@
 
 - Fixed a bug where, from the SpatialOS menu in the Unity Editor, running **SpatialOS ** > **Generate code** would always regenerate code, even if no files had changed.
 - Fixed a bug where building all workers in our sample projects would fail if you have Android build support installed but didn't set the path to the Android SDK.
-- Fixed a bug where some prefabs would not be processed correctly, causing NullReferenceExceptions in OnEnable.
+ - Fixed a bug where some prefabs would not be processed correctly, causing `NullReferenceExceptions` in `OnEnable`.
 
 ### Internal
 
@@ -71,7 +71,7 @@
 - Exposed annotations in the code generator model.
 - Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
 - Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
-- Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
+ - Re-added tests for Reader/Writer injection criteria and MonoBehaviour enabling.
 - Reactive components have been isolated and can be disabled.
 - Subscriptions API has been added, this allows you to subscribe anything for which a manager has been defined.
      - This now backs the `Require` API in MonoBehaviours.
