@@ -17,7 +17,7 @@
 - The Writer send method names have changed.
     - `Send{EVENT_NAME}` is now `Send{EVENT_NAME}Event`.
     - `Send` is now `SendUpdate`.
-- The generated command senders in Monobehaviours have also changed.
+ - The generated command senders in MonoBehaviours have also changed.
     - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and are now called `{COMPONENT_NAME}CommandSender`.
     - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` is now called `{COMPONENT_NAME}CommandReceiver`.
 - When creating GameObjects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
