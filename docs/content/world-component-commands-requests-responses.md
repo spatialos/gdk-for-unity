@@ -4,6 +4,7 @@
 [//]: # (TODO - Update the ECS Commands doc to refer to this for relevant info. It doesn’t seem to have much of this duplicated, so IMO this is just a matter of removing 2 sentences of details about the request/response types and adding 1 sentence with a link here. Could do a straightforward PR once this doc is in.)
 <%(TOC)%>
 # Commands: World and component command requests and responses
+
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS]({{urlRoot}}/content/intro-workflows-spatialos-entities)) and [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk). You should also be familiar with the terms; [schema]({{urlRoot}}/content/glossary#schema), [SpatialOS entity]({{urlRoot}}/content/glossary#spatialos-entity) and [SpatialOS components]({{urlRoot}}/content/glossary#spatialos-component).
@@ -26,7 +27,8 @@ You can find documentation for commands by following these links:
 
 
 ### API - Component commands
-For every component command that you specify in your schema, the GDK generates command request and response structs using the [code-generator]({{urlRoot}}/content/code-generator). These types are available in the `{namespace defined in schema}.{name of component}.{name of command}` class.  
+
+For every component command that you specify in your schema, the GDK generates command request and response structs using the code generator. These types are available in the `{namespace defined in schema}.{name of component}.{name of command}` class.  
 
 For each component command, the GDK generates:
 

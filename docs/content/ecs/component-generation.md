@@ -8,7 +8,7 @@
 
 > Note this document refers to ECS components but it is also relevant if you are using the MonoBehaviour workflow. You don't need to know about ECS to use component generation.
 
-The [code generator]({{urlRoot}}/content/code-generator) uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
+The code generator uses `.schema` files to generate components that the Unity ECS can understand. See the [schemalang guide](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
  Code generation runs when you open your Unity Editor or when you select **SpatialOS** > **Generate Code** from the Editor menu.
 
@@ -29,9 +29,15 @@ This struct contains the following fields:
 
   * the public property `uint ComponentId` to read the component ID of this component as defined in [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang).
 
-Additionally, for each field defined in your schema file, the generated C# struct creates:
+Additionally, for each field defined in your schema file, the generated C# struct contains:
   
   * a public field corresponding to the field defined in schemalang.
+
+If there are any fields defined in your schema file, the generated C# struct contains:
+
+  * a public constructor with one parameter per field
+
+This struct also has the [`[System.Serializable]` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
 
 ### Component
 
@@ -40,17 +46,12 @@ This struct contains the following fields:
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang.
   * the private fields `byte dirtyBits{i}`, which represents a bitmask used internally to identify whether a component field needs to be replicated to the [SpatialOS Runtime]({{urlRoot}}/content/glossary#spatialos-runtime).
 
-Additionally, for each field defined in your [schema]({{urlRoot}}/content/glossary#schema) file, the generated C# struct creates:
+Additionally, for each field defined in your [schema]({{urlRoot}}/content/glossary#schema) file, the generated C# struct contains:
 
   * a private field corresponding to the field defined in schemalang.
   * a public property that represents the value of this field. If you change the value of this property, the corresponding `dirtyBit` is set to true.
 
-The struct also contains the following methods:
-```csharp
-public static Improbable.Worker.CInterop.ComponentData CreateSchemaComponentData({arguments: the fields defined in schemalang})
-```
-
-Use this method to add this component to your [entity template]({{urlRoot}}/content/entity-templates).
+The struct also contains the following method:
 
 ```csharp
 public Snapshot ToComponentSnapshot(Unity.Entities.World world);
@@ -59,6 +60,7 @@ public Snapshot ToComponentSnapshot(Unity.Entities.World world);
 Use this method to convert this component into the corresponding `ISpatialComponentSnapshot`.
 
 ### Primitive types
+
 Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for Unity (GDK).
 
 | Schemalang type                | SpatialOS GDK type      |
@@ -76,6 +78,7 @@ Each primitive type in schemalang corresponds to a type in the SpatialOS GDK for
 Note that, for the moment, schemalang `bool` corresponds to a `BlittableBool` which is required to make the components blittable. This allows you to represent any schema component as a `struct` inheriting from `IComponentData` so that it can be used by Unity’s ECS.
 
 #### Collection types
+
 Schemalang has three collection types:
 
 | Schemalang collection | SpatialOS GDK collection                          |
@@ -86,7 +89,8 @@ Schemalang has three collection types:
 
 
 ### Custom types
-For every custom data type in schema, a `struct` is generated defining this type in C# and providing additional serialization methods that are used internally.
+
+A `struct` is generated for every custom data type in schema. The generated struct has the [`[System.Serializable]` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
 
 **Schemalang**
 ```
@@ -105,16 +109,13 @@ public struct SomeData
   {
     Value = value;
   }
-
-  public static class Serialization
-  {
-    // methods to serialize / deserialize this specific type
-  }
 }
 ```
 
 ### Enums
-For every schemalang enum, a C# enum will be generated.
+
+A C# enum is generated for every schemalang enum. The generated enum has the [`[System.Serializable]` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
+
 > The `uint` values defined for the generated C# enum are not guaranteed to be the same as the defined schemalang field IDs.
 
 **Schemalang**

@@ -11,14 +11,13 @@ Before running a [deployment of your game]({{urlRoot}}/content/deploy) locally o
 1. Prepare the build configuration of your workers.
 1. Build your workers.
 
-
 ## Building the bridge and launch configurations of your workers
+
 A [SpatialOS deployment]({{urlRoot}}/content/glossary#deploying) requires [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config) and [launch](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration) configurations (commonly referred to as “worker configs”) to be built for all of its server-workers and client-workers.
 
 Worker configs are built using information contained within [worker configuration files](https://docs.improbable.io/reference/latest/shared/glossary#worker-configuration-worker-json). You can find examples of worker configurations for [client-workers](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityClient.worker.json) and [server-workers](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json) in the [Unity project](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity) in this repository.
 
 To build the worker configs, you can either:
-
 
 * With your project open in your Unity Editor, select **SpatialOS** > **Build worker configs**.
 
@@ -45,8 +44,9 @@ To do this:
     * Which Scenes each worker should contain in its build.
     * Which platforms you want to build it for.
     * Which build options you want enabled. You can select the following build options:
-      * [Development Build](https://docs.unity3d.com/ScriptReference/BuildOptions.Development.html)
-      * [Headless Mode](https://docs.unity3d.com/ScriptReference/BuildOptions.EnableHeadlessMode.html): This is only available for Linux builds. If you want to reproduce the same behaviour for Windows or OSX, start your built-out workers with the following parameters: `-batchmode -nographics`. This can be configured in the [launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration).
+      * [Development](https://docs.unity3d.com/ScriptReference/BuildOptions.Development.html)
+      * [Server Build](https://docs.unity3d.com/ScriptReference/BuildOptions.EnableHeadlessMode.html)
+      * [Compression](https://docs.unity3d.com/Manual/BuildSettings.html)
 
 ## Building your workers
 
@@ -61,6 +61,7 @@ This starts the build process for the worker and deployment type (cloud or local
 You can now find the built-out workers in `build/assembly/worker` in the root of the SpatialOS GDK for Unity project.
 
 #### TIP: Speed up development iteration with worker quick-run
+
  When you are developing with the GDK, you don't need to build out workers all the time, you can use quick-run to run multiple workers in your Unity Editor using Ctrl+L (Windows) or Cmd+L (Mac).
 
 During development you use a local deployment rather than a cloud deployment. In a local deployment, you can either build your workers to run locally or use quick-run. With quick-run you can run multiple workers in your Unity Editor, so you don't have to keep building out workers during development iteration.  

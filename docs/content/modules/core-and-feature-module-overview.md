@@ -17,7 +17,7 @@ The Core Module contains multiple packages (or "assemblies") that you need to us
 This provides the basic implementation to use SpatialOS natively in Unity.
 
 * `Improbable.Gdk.Tools`<br/>
- This contains the [Code Generator]({{urlRoot}}/content/code-generator) which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/content/glossary#schema).)
+ This contains the code generator which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/content/glossary#schema).)
 
 * `Improbable.Gdk.TestUtils` <br/>
 This provides both a testing framework, which you can use to test any other module and a test which you can use to validate the state of the overall project.
@@ -44,7 +44,7 @@ Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-t
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
 Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
 
-* `AddPlayerLifecycleComponents(entityBuilder, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+* `AddPlayerLifecycleComponents(entityTemplate, workerId, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
 
@@ -79,7 +79,7 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 This module consists of:
 
 * `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating [GameObjects linked to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
+<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
 <br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities).
 
 * `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>

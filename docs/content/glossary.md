@@ -90,7 +90,7 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 ### Connection
 
-Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established by an instance of the [`Improbable.Gdk.Core.Worker` class]({{urlRoot}}/content/workers/api-worker). See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) for more information.
+Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established using the `Improbable.Gdk.Core.Worker` class. See [Connecting to SpatialOS]({{urlRoot}}/content/connecting-to-spatialos) for more information.
 
 > Related:
 > 
@@ -127,18 +127,6 @@ These packages provide the the basic implementation to synchronize with the Spat
 > Related:
 >
 > * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview)
-
-### Custom replication
-
-> Also referred to as "custom synchronisation".
-
-[Standard replication](#standard-replication) is a powerful solution that keeps your [SpatialOS world](#spatialos-world) and your [Unity ECS World](#unity-ecs-world) synchronized. However, we recognize that it's not the perfect solution for everyone. Firstly, as a generic solution, it's not optimized for your specific game. You may wish to apply custom predicates and filters to minimize network traffic. Secondly, you may wish to update a non-spatial endpoint (such as a database).
-
-Both of these use cases are made possible by custom replication, a system that gives you full control over how a [SpatialOS component](#spatialos-component) is replicated.
-
-> Related:
->
-> * [Custom replication systems]({{urlRoot}}/content/ecs/custom-replication-system)
 
 ### Deploying
 
@@ -323,7 +311,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Also referred to as "synchronization".
 
-Replication is the process by which all workers in the [SpatialOS world](#spatialos-world) maintain a consistent model of that world. It can be achieved by either [standard](#standard-replication) or [custom](#custom-replication) replication.
+Replication is the process by which all workers in the [SpatialOS world](#spatialos-world) maintain a consistent model of that world. It can be achieved using [standard replication](#standard-replication).
 
 ### Server-worker
 

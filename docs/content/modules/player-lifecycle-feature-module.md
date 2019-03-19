@@ -10,7 +10,6 @@ Before reading this document, make sure you are familiar with:
   * [Core Module and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
   * [Creating entity templates]({{urlRoot}}/content/entity-templates)
   * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-  * [Creating workers with WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector)
 
 The Player lifecycle module is a feature module providing you with a simple player spawning and player lifecycle management implementation.
 

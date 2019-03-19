@@ -3,8 +3,8 @@
 
 <%(TOC)%>
 # How to send and receive events
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
 
@@ -24,56 +24,60 @@ package playground;
 
 type Location
 {
-  float x = 1;
-  float y = 2;
-  float z = 3;
+    float x = 1;
+    float y = 2;
+    float z = 3;
 }
 
 component Bomb
 {
-	id = 12002;
-	event Location explode;
+    id = 12002;
+    event Location explode;
 }
 ```
 
 This will generate the following classes in the `Playground` namespace:
 
-  * `Bomb.Requirable.Reader`
-  * `Bomb.Requirable.Writer`
-
+  * `BombReader`
+  * `BombWriter`
 
 ### How to send events
+
 The following code snippet provides an example on how to send events. To send an event,  ensure that your worker has write authority over the corresponding SpatialOS component.
 
 ```csharp
+using Improbable.Gdk.Subscriptions;
 using Playground;
 
 public class TriggerExplosion : MonoBehaviour
 {
-	[Require] private Bomb.Requirable.Writer bombWriter;
+	[Require] private BombWriter bombWriter;
 
 	private void Update()
 	{
     	if (Input.GetKeyDown(KeyCode.Space))
     	{
-        	bombWriter.SendExplode(new Location(1, 1, 1));
+        	bombWriter.SendExplodeEvent(new Location(1, 1, 1));
     	}
 	}
 }
 ```
+
 ### How to receive events
+
 The following code snippet provides an example on how to receive events. Any worker that has your entity checked out and has read access over the corresponding SpatialOS component can receive events.
 
 ```csharp
+using Improbable.Gdk.Subscriptions;
 using Playground;
 
 public class HandleExplosion : MonoBehaviour
 {
-	[Require] private Bomb.Requirable.Reader bombReader;
+	[Require] private BombReader bombReader;
 
 	private void OnEnable()
 	{
-    	bombReader.OnExplode += OnExplode;
+    	bombReader.OnChangeColorEvent += OnExplode;
 	}
 
 	private void OnDisable()

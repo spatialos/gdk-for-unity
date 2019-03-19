@@ -23,7 +23,6 @@
         - MonoBehaviour workflow
             - Create workers
                 - [WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
-                - [API - WorkerConnector]({{urlRoot}}/content/gameobject/api-workerconnector)
             - Link to GameObjects
                 - [SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
                 - [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
@@ -35,7 +34,6 @@
                 - [Readers and writers: Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
                 - [Commands: SpatialOS component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
                 - [Commands: World commands]({{urlRoot}}/content/gameobject/world-commands)
-            - [API - SpatialOSComponent]({{urlRoot}}/content/gameobject/spatialoscomponent)
         - ECS workflow
             - [System update order]({{urlRoot}}/content/ecs/system-update-order)
             - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
@@ -49,7 +47,6 @@
                 - [Authority]({{urlRoot}}/content/ecs/authority)
             - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
             - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
-            - [Custom replication system]({{urlRoot}}/content/ecs/custom-replication-system)
     - Modules
         - [Core and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
         - [Transform Synchronization Feature Module]({{urlRoot}}/content/modules/transform-feature-module)
@@ -63,8 +60,6 @@
         - Workers
             - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
             - [Connect to the SpatialOS Runtime]({{urlRoot}}/content/connecting-to-spatialos)
-            - [API - worker]({{urlRoot}}/content/workers/api-worker)
-            - [API - worker system]({{urlRoot}}/content/workers/api-worker-system)
         - SpatialOS entities
             - [Update entity lifecycle]({{urlRoot}}/content/entity-lifecycle)
             - [Create SpatialOS entity templates]({{urlRoot}}/content/entity-templates)
@@ -73,7 +68,6 @@
     - Tools
         - [Snapshots]({{urlRoot}}/content/snapshots)
         - Code generation
-            - [The code generator]({{urlRoot}}/content/code-generator)
             - [ECS component generation]({{urlRoot}}/content/ecs/component-generation)
         - [Logs]({{urlRoot}}/content/ecs/logging)
     - Mobile support

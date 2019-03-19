@@ -5,14 +5,14 @@
 
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
-The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all [SpatialOS entities](({{urlRoot}}/content/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary#spatialos-component).
+The SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages your game world by keeping track of all [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/content/glossary#spatialos-component).
 To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/content/glossary#worker). You can set up many different types of workers but the two main types are  [server-workers]({{urlRoot}}/content/glossary#server-worker) and [client-workers]({{urlRoot}}/content/glossary#client-worker).
 
 (To find out more about workers in the GDK, see the introduction to [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk).)
 
 It’s the workers (both server-workers and client-workers) which create a connection between your game and the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your worker types as part of your game development. Then, when your game runs, it creates worker instances which connect to the SpatialOS Runtime.  During their creation, worker instances attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker instance fails.
 
-If you are using the [MonoBehaviour workflow or the ECS workflow]{{urlRoot}}/content/intro-workflows-spatialos-entities), you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) or the [Worker API]({{urlRoot}}/content/workers/api-worker) to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
+If you are using the [MonoBehaviour workflow or the ECS workflow]{{urlRoot}}/content/intro-workflows-spatialos-entities), you can use the [Worker Connector]({{urlRoot}}/content/gameobject/linking-spatialos-entities) or the `Worker` to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 
 
 ## Which connection flow to use
@@ -21,6 +21,7 @@ We provide two types of connection flow, depending on what kind of worker and wh
 In all cases, your worker contains a reference to a `Connection` object after successfully connecting to the SpatialOS Runtime.
 
 ### Receptionist service connection flow
+
 Use the Receptionist service connection flow in the following cases:
 
   * Connecting a server-worker or a client-worker instance to a local deployment.
@@ -38,25 +39,27 @@ From SpatialOS v13.5, there are two versions of the Locator connection. The new 
 
 
 ### v10.4+ Locator connection flow (stable version)
+
 Use this Locator service connection flow for:
 
  * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
 
 
 ### New v13.5+ Locator connection flow (alpha version)
+
 Use this Locator service connection flow for:
 
 * Connecting a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
 * Connecting a client-worker instance to a cloud deployment from your Unity Editor for debugging via the [development authentication functionality](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
 
 ## When to use the `Connection` object
+
 Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 Use this object for:
 
   * Accessing the ID of the worker.
   * Accessing the [worker flags]({{urlRoot}}/content/glossary#worker-flags).
   * accessing the used [worker attribute]({{urlRoot}}/content/glossary#worker-attribute).
-  * Sending and receiving component updates and messages to and from the SpatialOS Runtime. (Note that this is done internally by the GDK so you shouldn't need to do it unless you create a [custom replication system]({{urlRoot}}/content/ecs/custom-replication-system).
 
 ## Protocol logging
 You can use protocol logging to log additional data to the data your worker sends and receives while connected to the SpatialOS Runtime.

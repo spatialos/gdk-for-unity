@@ -5,7 +5,6 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro
 First see the documentation on:
 
 * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
-* [Worker API]({{urlRoot}}/content/workers/api-worker)
 
 To demonstrate the use of the `Worker` class, the GDK contains an example implementation
 of how to create a worker instance (server-worker or client-worker) as a `Worker` object and connect to SpatialOS. We provide an abstract `WorkerConnector` class and a `DefaultWorkerConnector` child class implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it.

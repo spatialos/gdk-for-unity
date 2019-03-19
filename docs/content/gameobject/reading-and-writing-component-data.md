@@ -35,10 +35,11 @@ This example MonoBehaviour would be enabled on any worker which has read access 
 
 ```csharp
 using Improbable.Examples;
+using Improbable.Gdk.Subscriptions;
 
 public class ReadHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirable.Reader healthReader;
+    [Require] private HealthReader healthReader;
 
     private int ReadHealthValue()
     {
@@ -54,10 +55,12 @@ This example MonoBehaviour would be enabled only on any worker that has write ac
 
 ```csharp
 using Improbable.Examples;
+using Improbable.Gdk.Subscriptions;
+
 
 public class WriteHealthBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirable.Writer healthWriter;
+    [Require] private HealthWriter healthWriter;
 
     private void Update()
     {
@@ -68,7 +71,7 @@ public class WriteHealthBehaviour : MonoBehaviour
         };
 
         // Send component update to the SpatialOS Runtime
-        healthWriter.Send(healthUpdate);
+        healthWriter.SendUpdate(healthUpdate);
     }
 }
 ```
@@ -80,15 +83,16 @@ This example MonoBehaviour would be enabled on any worker which has read access 
 
 ```csharp
 using Improbable.Examples;
+using Improbable.Gdk.Subscriptions;
 
 public class ReactToHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirable.Reader healthReader;
+    [Require] private HealthReader healthReader;
 
     private void OnEnable()
     {
         // Register callback for whenever any property of the component gets updated
-        healthReader.ComponentUpdated += OnHealthComponentUpdated;
+        healthReader.OnUpdate += OnHealthComponentUpdated;
     }
 
     private void OnDisable()
@@ -112,20 +116,19 @@ public class ReactToHealthChangeBehaviour : MonoBehaviour
 The following code example sets up a specific field update callback.
 This example MonoBehaviour would be enabled on any worker which has read access to the `Health` component.
 
-> Currently updating any field of the component will trigger the callback for all `{name of component property}Updated`.
-
 ```csharp
 using Improbable.Examples;
+using Improbable.Gdk.Subscriptions;
 
 public class ReactToCurrentHealthChangeBehaviour : MonoBehaviour
 {
-    [Require] private Health.Requirable.Reader healthReader;
+    [Require] private HealthReader healthReader;
 
     private void OnEnable()
     {
         // Register callback for whenever a specific property, e.g. current_health,
         // of the component gets updated
-        healthReader.CurrentHealthUpdated += OnCurrentHealthUpdated;
+        healthReader.OnCurrentHealthUpdate += OnCurrentHealthUpdated;
     }
 
     private void OnCurrentHealthUpdated(int newCurrentHealth)
