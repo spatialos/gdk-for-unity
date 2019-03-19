@@ -63,8 +63,8 @@ You can also check our [Known Issues]({{urlRoot}}/known-issues) for other error 
  To use quick-run with the FPS Starter Project:<br/>
  <br/>
 1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).<br/>
-1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
-1. In your Unity Editor, play the `FPS-Development` Scene.<br/>
+2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
+3. In your Unity Editor, play the `FPS-Development` Scene.<br/>
 
 <br/>
 #### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch.md)

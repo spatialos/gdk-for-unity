@@ -36,8 +36,8 @@ To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It 
 
 The module consists of:
 
-* `PlayerLifecycleHelper.AddClientSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker.<br/>
+* `PlayerLifecycleHelper.AddClientSystems(world, autoRequestPlayerCreation)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker. It also provides the option to disable automatic player creation when the worker connects to SpatialOS.<br/>
 Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
 
 * `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
