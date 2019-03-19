@@ -2,10 +2,12 @@
 
 ## Unreleased
 
+## `0.2.0` - 2019-03-18
+
 ### Breaking Changes
 
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
-- Command request and responses are no longer constructed from that static methods `CreateRequest` and `CreateResponse`. Instead they are have constructors that take the same arguments.
+- Command request and responses are no longer constructed from static methods `CreateRequest` and `CreateResponse`. Instead, they are constructors that take the same arguments.
 - The `Require` attribute has moved from the `Improbable.Gdk.GameObjectRepresentation` namespace to the `Improbable.Gdk.Subscriptions` namespace.
 - The generated Readers have been renamed from `{COMPONENT_NAME}.Requirable.Reader` to `{COMPONENT_NAME}Reader`.
 - The Reader callback events' names have changed.
@@ -15,17 +17,17 @@
 - The Writer send method names have changed.
     - `Send{EVENT_NAME}` is now `Send{EVENT_NAME}Event`.
     - `Send` is now `SendUpdate`.
-- The generated command senders in Monobehaviours have also changed.
-    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and is now called `{COMPONENT_NAME}CommandSender`.
+ - The generated command senders in MonoBehaviours have also changed.
+    - `{COMPONENT_NAME}.Requirable.CommandRequestSender` and `{COMPONENT_NAME}.Requirable.CommandResponseHandler` have been combined and are now called `{COMPONENT_NAME}CommandSender`.
     - `{COMPONENT_NAME}.Requirable.CommandRequestHandler` is now called `{COMPONENT_NAME}CommandReceiver`.
-- When creating game objects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
+- When creating GameObjects, the `IEntityGameObjectCreator.OnEntityCreated` signature has changed from `GameObject OnEntityCreated(SpatialOSEntity entity)` to `void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)`.
 - The signature of `IEntityGameObjectCreator.OnEntityCreated` has changed from `void OnEntityRemoved(EntityId entityId, GameObject linkedGameObject)` to `void OnEntityRemoved(EntityId entityId)`.
-    - All linked `GameObject` instances will still be unlinked before this is called, however it is now the user's responsibility to track if a `GameObject` was created when the entity was added.
-    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the `GameObject` to the SpatiaOS entity.
-    - You should also pass in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
-        - Note that for the Transform Synchronization feature module to work correctly, there must be a linked `Transform` `GameObject` component. `Rigidbody` should also be added if one is present on the `GameObject`.
-    - There is no limit on the number of `GameObject` instances that can be linked to a SpatialOS entity. However the same component type can not be added more than once.
-    - Deleting a linked `GameObject` will unlink it from the SpatialOS entity automatically.
+    - All linked `GameObject` instances are still unlinked before this is called, however it is now your responsibility to track if a `GameObject` was created when the entity was added.
+    - You should now call `linker.LinkGameObjectToSpatialOSEntity()` to link the `GameObject` to the SpatialOS entity.
+    - You should also pass-in a list of `ComponentType` to `LinkGameObjectToSpatialOSEntity` which you wish to be copied from the `GameObject` to the ECS entity associated with the `GameObject`.
+        - Note that for the Transform Synchronization feature module to work correctly, you need to set up a linked Transform Component on your GameObject. You also need to link any Rigidbody Component on your GameObject.
+    - There is no limit on the number of GameObject instances that you can link to a SpatialOS entity. However, you cannot add a component type to a linked GameObject instance more than once.
+    - Deleting a linked GameObject unlinks it from the SpatialOS entity automatically.
 - `SpatialOSComponent` has been renamed to `LinkedEntityComponent`.
     - The field `SpatialEntityId` on the `LinkedEntityComponent` has been renamed to `EntityId`.
     - The field `Entity` has been removed.
@@ -37,9 +39,9 @@
     - Note that generated types that implement `ISpatialComponentData` are not marked as `Serializable`.
 - Added the `DynamicConverter` class for converting a `ISpatialComponentSnapshot` to an `ISpatialComponentUpdate`.
 - Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
-    - This component contains a single bool which denotes whether you have authority over that component.
-    - It will not tell you about soft-handover (`AuthorityLossImminent`).
-- You may now `[Require]` `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+    - This component contains a single boolean which denotes whether a server-worker instance has write access authority over that component.
+    - The component does not tell you about soft-handover (`AuthorityLossImminent`).
+- You may now `[Require]` an `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in MonoBehaviours.
 - Added constructors for all generated component snapshot types.
 - Added the ability to send arbitrary serialized data in a player creation request.
     - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
@@ -51,16 +53,16 @@
 
 - Upgraded the Worker SDK version to `13.6.2`.
 - Improved the UX of the BuildConfiguration inspector.
-- Improved the UX of the GDK Tools Configuration window.
-- Deleting a `GameObject` now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
+- Improved the UX of the GDK’s Tools Configuration window.
+- Deleting a GameObject now automatically unlinks it from its ECS entity. Note that the ECS entity and the SpatialOS entity are _not_ also deleted.
 - Changed the format of the BuildConfiguration asset. Please recreate, or copy it from `workers/unity/Playground/Assets/Config/BuildConfiguration.asset`.
 - Building workers will not change the active build target anymore. The build target will be set back to whatever was set before starting the build process.
 
 ### Fixed
 
-- Fixed a bug where running `SpatialOS -> Generate code` would always regenerate code, even if no files had changed.
-- Fixed a bug where building all workers in our sample projects would fail, if you have Android build support installed, but didn't set the path to the Android SDK.
-- Fixed a bug where some prefabs would not be processed correctly, causing NullReferenceExceptions in OnEnable.
+- Fixed a bug where, from the SpatialOS menu in the Unity Editor, running **SpatialOS ** > **Generate code** would always regenerate code, even if no files had changed.
+- Fixed a bug where building all workers in our sample projects would fail if you have Android build support installed but didn't set the path to the Android SDK.
+ - Fixed a bug where some prefabs would not be processed correctly, causing `NullReferenceExceptions` in `OnEnable`.
 
 ### Internal
 
@@ -69,13 +71,14 @@
 - Exposed annotations in the code generator model.
 - Added a `MockConnectionHandler` implementation for testing code which requires the world to be populated with SpatialOS entities.
 - Added tests for `StandardSubscriptionManagers` and `AggregateSubscription`.
-- Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
+ - Re-added tests for Reader/Writer injection criteria and MonoBehaviour enabling.
 - Reactive components have been isolated and can be disabled.
 - Subscriptions API has been added, this allows you to subscribe anything for which a manager has been defined.
-    - This now backs the `Require` API in Monobehaviours
-- Low level APIs have been changed significantly.
+     - This now backs the `Require` API in MonoBehaviours.
+- Low-level APIs have been changed significantly.
 - Added a View separate from the Unity ECS.
 - Removed unnecessary `KcpNetworkParameters` overrides in `MobileWorkerConnector` where it matched the default values.
+
 
 ## `0.1.5` - 2019-02-18
 
