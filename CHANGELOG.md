@@ -74,7 +74,7 @@
 - Re-added tests for Reader/Writer injection criteria and Monobehaviour enabling.
 - Reactive components have been isolated and can be disabled.
 - Subscriptions API has been added, this allows you to subscribe anything for which a manager has been defined.
-    - This now backs the `Require` API in Monobehaviours
+     - This now backs the `Require` API in MonoBehaviours.
 - Low-level APIs have been changed significantly.
 - Added a View separate from the Unity ECS.
 - Removed unnecessary `KcpNetworkParameters` overrides in `MobileWorkerConnector` where it matched the default values.
