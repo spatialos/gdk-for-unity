@@ -41,7 +41,7 @@
 - Added a generated ECS shared component called `{COMPONENT_NAME}.ComponentAuthority` for each SpatialOS component.
     - This component contains a single boolean which denotes whether a server-worker instance has write access authority over that component.
     - The component does not tell you about soft-handover (`AuthorityLossImminent`).
-- You may now `[Require]` an `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in Monobehaviours.
+- You may now `[Require]` an `EntityId`, `Entity`, `World`, `ILogDispatcher`, and `WorldCommandSender` in MonoBehaviours.
 - Added constructors for all generated component snapshot types.
 - Added the ability to send arbitrary serialized data in a player creation request.
     - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
