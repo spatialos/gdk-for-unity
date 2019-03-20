@@ -7,8 +7,8 @@
 Before reading this document, make sure you are familiar with:
 
 * [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
-  * [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
-  * [Read and write access]({{urlRoot}}/content/glossary#authority)
+* [Readers and Writers]({{urlRoot}}/content/gameobject/readers-writers)
+* [Read and write access]({{urlRoot}}/content/glossary#authority)
 
 ## About commands
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/content/workers/workers-in-the-gdk). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities).<br/>
@@ -22,8 +22,8 @@ This document is about MonoBehaviour component commands. The commands documentat
 
 * [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
-* MonoBehaviour component commands, see [(MonoBehaviour) Sending and receiving component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
-* ECS component commands - this document.
+* [MonoBehaviour component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+* ECS component commands - this document
 * Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 
 
