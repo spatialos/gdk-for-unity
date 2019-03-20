@@ -30,7 +30,7 @@ This document is about MonoBehaviour component commands. The commands documentat
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
 * MonoBehaviour component commands - this document
 * [ECS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
-* Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
+* Both workflows - [World and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 
 ### How to send and receive component commands
 
