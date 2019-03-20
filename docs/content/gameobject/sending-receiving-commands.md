@@ -26,12 +26,11 @@ There are two types of commands in SpatialOS:
 
 This document is about MonoBehaviour component commands. The commands documentation is:
 
-* Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 * [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
 * Monobehaviour component commands - this document
-* ECS component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
-
+* [ECS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
+* Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 
 ### How to send and receive component commands
 
