@@ -28,7 +28,7 @@ This document is about MonoBehaviour component commands. The commands documentat
 
 * [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
- * MonoBehaviour component commands - this document
+* MonoBehaviour component commands - this document
 * [ECS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
 * Both workflows - [world and component command requests and responses]({{urlRoot}}/content/world-component-commands-requests-responses)
 
