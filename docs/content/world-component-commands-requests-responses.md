@@ -21,10 +21,8 @@ You can find documentation for commands by following these links:
 
 * [MonoBehaviour world commands]({{urlRoot}}/content/gameobject/world-commands)
 * [ECS world commands]({{urlRoot}}/content/ecs/world-commands)
-* MonoBehaviour component commands, see [GameObject: Sending and receiving commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
-* MonoBehaviour component commands, see [ECS: Sending and receiving component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
-* Both workflows - world and component command requests and responses - this document
-
+* [MonoBehaviour component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+* [ECS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
 
 ### API - Component commands
 
