@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -28,8 +29,8 @@ namespace Improbable.Gdk.Tools
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
         /// <summary>
-        /// This regex matches a C# compile error or warning log.
-        /// It captures the following components:
+        ///     This regex matches a C# compile error or warning log.
+        ///     It captures the following components:
         ///     File that caused the issue
         ///     Line and column in the file
         ///     Log type, warning or error
@@ -227,31 +228,21 @@ namespace Improbable.Gdk.Tools
                 var schemaRoot = toolsConfig.SchemaSourceDirs[0];
                 CleanDestination(schemaRoot);
 
-                var packages = new Dictionary<string, string>();
-                var dependencyQueue = new Queue<string>();
-
-                // Find and include paths of all direct and nested dependencies.
-                dependencyQueue.Enqueue(Common.ManifestPath);
-                while (dependencyQueue.Count > 0)
+                // Get all packages we depend on
+                var request = Client.List(true);
+                while (!request.IsCompleted)
                 {
-                    var dependencies = GetLocalPathsInPackage(Common.ParseDependencies(dependencyQueue.Dequeue()));
-
-                    foreach (var dependency in dependencies)
-                    {
-                        if (!packages.ContainsKey(dependency.Key))
-                        {
-                            packages.Add(dependency.Key, dependency.Value);
-                            dependencyQueue.Enqueue($"{dependency.Value}/package.json");
-                        }
-                    }
+                    // Wait for the request to complete
                 }
 
-                var schemaSources = packages.Where(SchemaPathExists)
-                    .ToDictionary(kv => kv.Key, GetSchemaPath);
+                var packages = request.Result;
+                var schemaSources = packages.ToDictionary(package => package.name,
+                        package => Path.Combine(package.resolvedPath, "Schema"))
+                    .Where(kv => Directory.Exists(kv.Value));
 
                 foreach (var source in schemaSources)
                 {
-                    CopySchemaFiles(schemaRoot, source);
+                    CopySchemaFiles(schemaRoot, source.Key, source.Value);
                 }
             }
             catch (Exception e)
@@ -261,15 +252,15 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static void CopySchemaFiles(string schemaRoot, KeyValuePair<string, string> source)
+        private static void CopySchemaFiles(string schemaRoot, string packageName, string packageSchemaPath)
         {
-            var files = Directory.GetFiles(source.Value, "*.schema", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(packageSchemaPath, "*.schema", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                var relativeFilePath = file.Replace(source.Value, string.Empty).TrimStart(Path.DirectorySeparatorChar);
-                var to = Path.Combine(schemaRoot, FromGdkPackagesDir, source.Key, relativeFilePath);
+                var relativeFilePath = file.Replace(packageSchemaPath, string.Empty).TrimStart(Path.DirectorySeparatorChar);
+                var fileCopy = Path.Combine(schemaRoot, FromGdkPackagesDir, packageName, relativeFilePath);
 
-                var directoryName = Path.GetDirectoryName(to);
+                var directoryName = Path.GetDirectoryName(fileCopy);
                 if (!string.IsNullOrEmpty(directoryName))
                 {
                     if (!Directory.Exists(directoryName))
@@ -278,30 +269,8 @@ namespace Improbable.Gdk.Tools
                     }
                 }
 
-                File.WriteAllText(to, SchemaWarningMessage + File.ReadAllText(file));
+                File.WriteAllText(fileCopy, SchemaWarningMessage + File.ReadAllText(file));
             }
-        }
-
-        private static Dictionary<string, string> GetLocalPathsInPackage(Dictionary<string, string> packages)
-        {
-            return packages.Where(kv => kv.Value.StartsWith("file:"))
-                .ToDictionary(kv => kv.Key, RemoveFilePrefix)
-                .ToDictionary(kv => kv.Key, kv => Path.Combine(Common.PackagesDir, kv.Value));
-        }
-
-        private static bool SchemaPathExists(KeyValuePair<string, string> arg)
-        {
-            return Directory.Exists(GetSchemaPath(arg));
-        }
-
-        private static string GetSchemaPath(KeyValuePair<string, string> arg)
-        {
-            return Path.GetFullPath(Path.Combine(arg.Value, "Schema"));
-        }
-
-        private static string RemoveFilePrefix(KeyValuePair<string, string> kv)
-        {
-            return kv.Value.Replace("file:", string.Empty);
         }
 
         private static void CleanDestination(string schemaDirectory)

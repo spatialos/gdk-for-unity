@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -36,7 +37,6 @@ namespace Improbable.Gdk.Tools
         public const string ProductName = "SpatialOS for Unity";
 
         public const string PackagesDir = "Packages";
-        public static readonly string ManifestPath = Path.Combine(PackagesDir, "manifest.json");
 
         private const string UsrLocalBinDir = "/usr/local/bin";
         private const string UsrLocalShareDir = "/usr/local/share";
@@ -66,29 +66,21 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         public static string GetPackagePath(string packageName)
         {
-            var manifest = ParseDependencies(ManifestPath);
-
-            if (!manifest.TryGetValue(packageName, out var path))
+            // Get package info
+            var request = Client.Search(packageName);
+            while (!request.IsCompleted)
             {
-                throw new Exception($"The project manifest must reference '{packageName}'.");
+                // Wait for the request to complete
             }
 
-            if (!path.StartsWith("file:"))
+            var result = request.Result;
+
+            if (request.Status != StatusCode.Success || result.Length <= 0)
             {
-                throw new Exception($"The '{packageName}' package must exist on disk.");
+                throw new Exception($"Count not find '{packageName}', is it in your projects' manifest?");
             }
 
-            path = path.Replace("file:", string.Empty);
-
-            if (Path.IsPathRooted(path))
-            {
-                // A "rooted path" is an absolute path, therefore it will point directly at the package.
-                return path;
-            }
-
-            path = Path.GetFullPath(Path.Combine(PackagesDir, path));
-
-            return path;
+            return result[0].resolvedPath;
         }
 
         /// <summary>
@@ -167,7 +159,7 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        /// Checks whether `dotnet` and `spatial` exist on the PATH.
+        ///     Checks whether `dotnet` and `spatial` exist on the PATH.
         /// </summary>
         /// <returns></returns>
         public static bool CheckDependencies()
