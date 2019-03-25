@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Get started: 4 - Get playing!
+# Get playing
 
 Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see the two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
@@ -35,7 +35,7 @@ In fact, as far as SpatialOS is concerned, these simulated players are indisting
 
 The simulated players are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` server-worker instances. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
-To get the legion of enemies started, use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
+To get the legion of enemies started, you will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
@@ -55,4 +55,3 @@ Back in the game, you will soon see the new simulated player-clients running. Tr
 Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
 
 #### Next: [View your game world]({{urlRoot}}/content/get-started/view-game-world.md)
-

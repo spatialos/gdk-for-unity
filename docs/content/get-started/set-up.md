@@ -1,8 +1,8 @@
 <nav id="pageToc" class="page-toc">
     <ul>
         <li>
-            <a href="#1-sign-up-for-a-spatialos-account-or-make-sure-you-are-logged-in">
-                1. Sign up for a SpatialOS account
+            <a href="#1-sign-up-or-log-in">
+                1. Sign up or log in
             </a>
         </li>
         <li>
@@ -36,7 +36,7 @@ There are four parts to this step:
 
 <br/>
 
-### 1. Sign up for a SpatialOS account, or make sure you are logged in
+### 1. Sign up or log in 
 
 If you have not signed up before, you can do this [here](https://improbable.io/get-spatialos).
 <br/>
@@ -60,7 +60,7 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 | | | |
 |---|---|---|
 | **Option** | **Required?** | **Why?** |
-| Linux Build Support | **YES** | All server-workers in a cloud deployment run in a Linux environment. |
+| Linux Build Support | **Yes** | All server-workers in a cloud deployment run in a Linux environment. |
 | Mac Build Support | No |  Only required if you wish to build clients compatible with MacOS. |
 | Android Build Support | No | Only required if you wish to build mobile clients for Android. |
 | iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
@@ -128,7 +128,7 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 | | | |
 |---|---|---|
 | **Option** | **Required?** | **Why?** |
-| Linux Build Support | **YES** | All server-workers in a cloud deployment run in a Linux environment. |
+| Linux Build Support | **Yes** | All server-workers in a cloud deployment run in a Linux environment. |
 | Windows Build Support | No |  Only required if you wish to build clients compatible with Windows. |
 | Android Build Support | No | Only required if you wish to build mobile clients for Android. |
 | iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
