@@ -67,20 +67,21 @@ namespace Improbable.Gdk.Tools
         public static string GetPackagePath(string packageName)
         {
             // Get package info
-            var request = Client.Search(packageName);
+            var request = Client.List(true);
             while (!request.IsCompleted)
             {
                 // Wait for the request to complete
             }
 
             var result = request.Result;
+            var package = result.FirstOrDefault(info => info.name.Equals(packageName));
 
-            if (request.Status != StatusCode.Success || result.Length <= 0)
+            if (package == null)
             {
-                throw new Exception($"Count not find '{packageName}', is it in your projects' manifest?");
+                throw new Exception($"Count not find '{packageName}', is it in your projects' manifest?\n{request.Error.message}");
             }
 
-            return result[0].resolvedPath;
+            return package.resolvedPath;
         }
 
         /// <summary>
