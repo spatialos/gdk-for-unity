@@ -18,14 +18,20 @@ namespace Improbable.Gdk.PlayerLifecycle
         private WorkerSystem workerSystem;
         private ILogDispatcher logDispatcher;
 
-        private ComponentGroup initializationGroup;
-
         private byte[] serializedArgumentsCache;
 
-        private List<EntityId> playerCreatorEntityIds;
+        private bool playerRequestQueued;
+
+        private int playerCreatorQueryAttempts = 0;
         private long? playerCreatorQueryId;
 
-        private bool sendAutoPlayerCreationRequest;
+        private List<EntityId> playerCreatorEntityIds = new List<EntityId>();
+
+        private readonly EntityQuery playerCreatorQuery = new EntityQuery
+        {
+            Constraint = new ComponentConstraint(PlayerCreator.ComponentId),
+            ResultType = new SnapshotResultType()
+        };
 
         protected override void OnCreateManager()
         {
@@ -35,99 +41,95 @@ namespace Improbable.Gdk.PlayerLifecycle
             commandSystem = World.GetExistingManager<CommandSystem>();
             logDispatcher = workerSystem.LogDispatcher;
 
-            playerCreatorEntityIds = new List<EntityId>();
+            QueryForPlayerCreators();
 
-            initializationGroup = GetComponentGroup(
-                ComponentType.ReadOnly<WorkerEntityTag>(),
-                ComponentType.ReadOnly<OnConnected>()
-            );
+            if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
+            {
+                RequestPlayerCreation();
+            }
         }
 
-        public bool RequestPlayerCreation(byte[] serializedArguments = null)
+        private void QueryForPlayerCreators()
+        {
+            playerCreatorQueryId = commandSystem.SendCommand(new WorldCommands.EntityQuery.Request
+            {
+                EntityQuery = playerCreatorQuery
+            });
+            ++playerCreatorQueryAttempts;
+        }
+
+        public void RequestPlayerCreation(byte[] serializedArguments = null)
         {
             serializedArgumentsCache = serializedArguments;
+            playerRequestQueued = true;
+        }
 
-            var playerCreatorCount = playerCreatorEntityIds.Count;
-            if (playerCreatorCount > 0)
-            {
-                commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
-                    playerCreatorEntityIds[Random.Range(0, playerCreatorCount)],
-                    new CreatePlayerRequestType(serializedArgumentsCache)));
-                return true;
-            }
-
-            Debug.LogWarning("Unable to send player creation request: no player creator entities found yet.");
-            return false;
+        private void SendCreatePlayerRequest()
+        {
+            commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
+                playerCreatorEntityIds[Random.Range(0, playerCreatorEntityIds.Count)],
+                new CreatePlayerRequestType(serializedArgumentsCache)
+            ));
+            playerRequestQueued = false;
         }
 
         private void RetryCreatePlayerRequest()
         {
-            RequestPlayerCreation(serializedArgumentsCache);
+            SendCreatePlayerRequest();
         }
 
         protected override void OnUpdate()
         {
-            if (PlayerLifecycleConfig.AutoRequestPlayerCreation && !initializationGroup.IsEmptyIgnoreFilter)
+            if (playerCreatorEntityIds.Count > 0)
             {
-                sendAutoPlayerCreationRequest = true;
-            }
-
-            if (playerCreatorEntityIds.Count == 0)
-            {
-                if (!playerCreatorQueryId.HasValue)
+                if (playerRequestQueued)
                 {
-                    playerCreatorQueryId = commandSystem.SendCommand(new WorldCommands.EntityQuery.Request
-                    {
-                        EntityQuery = new EntityQuery
-                        {
-                            Constraint = new ComponentConstraint(PlayerCreator.ComponentId),
-                            ResultType = new SnapshotResultType()
-                        }
-                    });
+                    SendCreatePlayerRequest();
                 }
-                else
-                {
-                    var entityQueryResponses = commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
-                    for (var i = 0; i < entityQueryResponses.Count; i++)
-                    {
-                        ref readonly var response = ref entityQueryResponses[i];
-                        if (response.RequestId == playerCreatorQueryId)
-                        {
-                            playerCreatorQueryId = null;
 
-                            if (response.Result != null)
-                            {
-                                playerCreatorEntityIds.AddRange(response.Result.Keys);
-                            }
-                        }
+                // Currently this has a race condition where you can receive two entities
+                // The fix for this is more sophisticated server side handling of requests
+                var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
+
+                for (var i = 0; i < responses.Count; i++)
+                {
+                    ref readonly var response = ref responses[i];
+                    if (response.StatusCode == StatusCode.AuthorityLost)
+                    {
+                        RetryCreatePlayerRequest();
+                    }
+                    else if (response.StatusCode != StatusCode.Success)
+                    {
+                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            $"Create player request failed: {response.Message}"
+                        ));
                     }
                 }
-
-                return;
             }
-
-            if (sendAutoPlayerCreationRequest)
+            else
             {
-                RequestPlayerCreation();
-                sendAutoPlayerCreationRequest = false;
-            }
-
-            // Currently this has a race condition where you can receive two entities
-            // The fix for this is more sophisticated server side handling of requests
-            var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
-
-            for (var i = 0; i < responses.Count; i++)
-            {
-                ref readonly var response = ref responses[i];
-                if (response.StatusCode == StatusCode.AuthorityLost)
+                var entityQueryResponses = commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
+                for (var i = 0; i < entityQueryResponses.Count; i++)
                 {
-                    RetryCreatePlayerRequest();
-                }
-                else if (response.StatusCode != StatusCode.Success)
-                {
-                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        $"Create player request failed: {response.Message}"
-                    ));
+                    ref readonly var response = ref entityQueryResponses[i];
+                    if (response.RequestId == playerCreatorQueryId)
+                    {
+                        if (response.StatusCode == StatusCode.Success && response.Result != null)
+                        {
+                            playerCreatorQueryId = null;
+                            playerCreatorEntityIds.AddRange(response.Result.Keys);
+                        }
+                        else if (playerCreatorQueryAttempts > PlayerLifecycleConfig.MaxPlayerCreatorQueryAttempts)
+                        {
+                            Debug.LogError($"Unable to create player after {playerCreatorQueryAttempts} attempts.");
+                        }
+                        else
+                        {
+                            QueryForPlayerCreators();
+                        }
+
+                        break;
+                    }
                 }
             }
         }
