@@ -55,11 +55,9 @@ namespace Improbable.Gdk.PlayerLifecycle
                     new CreatePlayerRequestType(serializedArgumentsCache)));
                 return true;
             }
-            else
-            {
-                Debug.LogWarning("Unable to send player creation request: no player creator entities found yet.");
-                return false;
-            }
+
+            Debug.LogWarning("Unable to send player creation request: no player creator entities found yet.");
+            return false;
         }
 
         private void RetryCreatePlayerRequest()
