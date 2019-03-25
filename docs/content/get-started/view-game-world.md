@@ -27,8 +27,6 @@ The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/oper
 <br/>
 <%(Callout message="Note that the Logs and Metrics are also [available via an API](https://docs.improbable.io/reference/latest/shared/operate/byo-metrics) if you wish to create your own dashboards or alerts.")%>
 
-## Game running nicely! Want to add more features?
+## Want to add more features?
 
-You can add your first feature by following the [Health Pick-up tutorial]({{urlRoot}}/projects/fps/tutorial).
-
-
+You can add your first feature by following our [Health Pick-up tutorial]({{urlRoot}}/projects/fps/tutorial).
