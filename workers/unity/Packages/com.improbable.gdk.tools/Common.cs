@@ -78,36 +78,10 @@ namespace Improbable.Gdk.Tools
 
             if (package == null)
             {
-                throw new Exception($"Count not find '{packageName}', is it in your projects' manifest?\n{request.Error.message}");
+                throw new Exception($"Count not find '{packageName}', is it in your project's manifest?\n{request.Error.message}");
             }
 
             return package.resolvedPath;
-        }
-
-        /// <summary>
-        ///     Parses a json file and returns the dependencies found in it.
-        /// </summary>
-        /// <param name="filePath">Path to the json file to be parsed.</param>
-        /// <returns>The dependencies in the given json file.</returns>
-        internal static Dictionary<string, string> ParseDependencies(string filePath)
-        {
-            try
-            {
-                var package = Json.Deserialize(File.ReadAllText(filePath, Encoding.UTF8));
-                if (!package.TryGetValue("dependencies", out var dependenciesJson))
-                {
-                    return new Dictionary<string, string>();
-                }
-
-                return ((Dictionary<string, object>) dependenciesJson).ToDictionary(kv => kv.Key,
-                    kv => (string) kv.Value);
-            }
-            catch (Exception e)
-            {
-                var errorMessage = $"Failed to parse dependencies: {e.Message}";
-                Debug.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
         }
 
         /// <summary>
@@ -115,9 +89,9 @@ namespace Improbable.Gdk.Tools
         ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
         ///     don't always have that in the PATH provided to them.
         /// </summary>
-        /// <param name="binarybaseName">The base name of the binary to find (without an extension).</param>
+        /// <param name="binaryBaseName">The base name of the binary to find (without an extension).</param>
         /// <returns></returns>
-        private static string DiscoverLocation(string binarybaseName)
+        private static string DiscoverLocation(string binaryBaseName)
         {
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
@@ -128,9 +102,9 @@ namespace Improbable.Gdk.Tools
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                binarybaseName = Path.ChangeExtension(binarybaseName, ".exe");
+                binaryBaseName = Path.ChangeExtension(binaryBaseName, ".exe");
 
-                if (binarybaseName == null)
+                if (binaryBaseName == null)
                 {
                     return string.Empty;
                 }
@@ -144,18 +118,18 @@ namespace Improbable.Gdk.Tools
                 {
                     if (!splitPath.Contains(macPath))
                     {
-                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();
+                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binaryBaseName) }).ToArray();
                     }
                 }
             }
 
-            var location = splitPath.Select(p => Path.Combine(p, binarybaseName)).FirstOrDefault(File.Exists);
+            var location = splitPath.Select(p => Path.Combine(p, binaryBaseName)).FirstOrDefault(File.Exists);
             if (location != null)
             {
                 return location;
             }
 
-            Debug.LogError($"Could not discover location for {binarybaseName}");
+            Debug.LogError($"Could not discover location for {binaryBaseName}");
             return string.Empty;
         }
 

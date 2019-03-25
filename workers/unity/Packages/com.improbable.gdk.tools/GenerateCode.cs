@@ -257,7 +257,8 @@ namespace Improbable.Gdk.Tools
             var files = Directory.GetFiles(packageSchemaPath, "*.schema", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                var relativeFilePath = file.Replace(packageSchemaPath, string.Empty).TrimStart(Path.DirectorySeparatorChar);
+                var relativeFilePath =
+                    file.Replace(packageSchemaPath, string.Empty).TrimStart(Path.DirectorySeparatorChar);
                 var fileCopy = Path.Combine(schemaRoot, FromGdkPackagesDir, packageName, relativeFilePath);
 
                 var directoryName = Path.GetDirectoryName(fileCopy);
@@ -269,7 +270,15 @@ namespace Improbable.Gdk.Tools
                     }
                 }
 
-                File.WriteAllText(fileCopy, SchemaWarningMessage + File.ReadAllText(file));
+                using (var output = File.OpenWrite(fileCopy))
+                using (var outputText = new StreamWriter(output))
+                {
+                    outputText.Write(SchemaWarningMessage);
+                    using (var inputText = File.OpenRead(file))
+                    {
+                        inputText.CopyTo(outputText.BaseStream);
+                    }
+                }
             }
         }
 
