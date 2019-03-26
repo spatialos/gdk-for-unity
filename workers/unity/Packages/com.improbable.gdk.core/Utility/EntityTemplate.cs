@@ -19,13 +19,13 @@ namespace Improbable.Gdk.Core
         private readonly Acl acl = new Acl();
 
         /// <summary>
-        ///     Constructs the client access attribute, given a client's worker ID.
+        ///     Constructs a worker access attribute, given a worker ID.
         /// </summary>
-        /// <param name="clientWorkerId">The worker ID of the client.</param>
-        /// <returns>The client access attribute.</returns>
-        public static string GetClientAccess(string clientWorkerId)
+        /// <param name="workerId">An ID of a worker.</param>
+        /// <returns>A string representing the worker access attribute.</returns>
+        public static string GetWorkerAccessAttribute(string workerId)
         {
-            return $"workerId:{clientWorkerId}";
+            return $"workerId:{workerId}";
         }
 
         /// <summary>

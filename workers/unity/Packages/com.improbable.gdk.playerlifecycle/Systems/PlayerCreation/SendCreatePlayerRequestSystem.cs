@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
@@ -6,6 +7,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
 using Unity.Entities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -21,10 +23,11 @@ namespace Improbable.Gdk.PlayerLifecycle
         private byte[] serializedArgumentsCache;
 
         private bool playerRequestQueued;
-        private int playerCreationAttempts = 0;
+        private long? playerCreationRequestId;
+        private int playerCreationAttempts;
 
-        private int playerCreatorQueryAttempts = 0;
-        private long? playerCreatorQueryId;
+        private int playerCreatorQueryAttempts;
+        private long? playerCreatorEntityQueryId;
 
         private readonly List<EntityId> playerCreatorEntityIds = new List<EntityId>();
 
@@ -42,7 +45,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             commandSystem = World.GetExistingManager<CommandSystem>();
             logDispatcher = workerSystem.LogDispatcher;
 
-            QueryForPlayerCreators();
+            SendPlayerCreatorEntityQuery();
 
             if (PlayerLifecycleConfig.AutoRequestPlayerCreation)
             {
@@ -50,36 +53,81 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
         }
 
-        private void QueryForPlayerCreators()
+        private void SendPlayerCreatorEntityQuery()
         {
-            playerCreatorQueryId = commandSystem.SendCommand(new WorldCommands.EntityQuery.Request
+            playerCreatorEntityQueryId = commandSystem.SendCommand(new WorldCommands.EntityQuery.Request
             {
                 EntityQuery = playerCreatorQuery
             });
+
             ++playerCreatorQueryAttempts;
+        }
+
+        private void HandleEntityQueryResponses()
+        {
+            var entityQueryResponses = commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
+            for (var i = 0; i < entityQueryResponses.Count; i++)
+            {
+                ref readonly var response = ref entityQueryResponses[i];
+                if (response.RequestId != playerCreatorEntityQueryId)
+                {
+                    continue;
+                }
+
+                playerCreatorEntityQueryId = null;
+
+                if (response.StatusCode == StatusCode.Success && response.Result != null)
+                {
+                    playerCreatorEntityIds.AddRange(response.Result.Keys);
+                }
+                else if (playerCreatorQueryAttempts > PlayerLifecycleConfig.MaxPlayerCreatorQueryAttempts)
+                {
+                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        $"Unable to find player creator after {playerCreatorQueryAttempts} attempts."
+                    ));
+                }
+                else
+                {
+                    logDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                        $"Retrying player creator query, attempt {playerCreatorQueryAttempts}."
+                    ));
+
+                    SendPlayerCreatorEntityQuery();
+                }
+
+                break;
+            }
         }
 
         public void RequestPlayerCreation(byte[] serializedArguments = null)
         {
+            if (playerCreationRequestId.HasValue)
+            {
+                logDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                    $"Unable to perform player creation request as one has already been requested."
+                ));
+                return;
+            }
+
             serializedArgumentsCache = serializedArguments;
             playerRequestQueued = true;
         }
 
         private void SendCreatePlayerRequest()
         {
-            commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
+            playerCreationRequestId = commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
                 playerCreatorEntityIds[Random.Range(0, playerCreatorEntityIds.Count)],
                 new CreatePlayerRequest(serializedArgumentsCache)
             ));
+
             playerRequestQueued = false;
+            ++playerCreationAttempts;
         }
 
         private void RetryCreatePlayerRequest()
         {
             if (playerCreationAttempts < PlayerLifecycleConfig.MaxPlayerCreationAttempts)
             {
-                ++playerCreationAttempts;
-
                 logDispatcher.HandleLog(LogType.Warning, new LogEvent(
                     $"Retrying player creation request, attempt {playerCreationAttempts}."
                 ));
@@ -94,65 +142,57 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
         }
 
+        private void HandlePlayerCreation()
+        {
+            if (playerRequestQueued)
+            {
+                SendCreatePlayerRequest();
+            }
+
+            if (!playerCreationRequestId.HasValue)
+            {
+                return;
+            }
+
+            var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
+
+            for (var i = 0; i < responses.Count; i++)
+            {
+                ref readonly var response = ref responses[i];
+                if (response.RequestId != playerCreationRequestId)
+                {
+                    continue;
+                }
+
+                playerCreationRequestId = null;
+
+                switch (response.StatusCode)
+                {
+                    case StatusCode.Success:
+                        break;
+                    case StatusCode.AuthorityLost:
+                    case StatusCode.InternalError:
+                    case StatusCode.Timeout:
+                        RetryCreatePlayerRequest();
+                        break;
+                    default:
+                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                            $"Create player request failed: {response.Message}"
+                        ));
+                        break;
+                }
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (playerCreatorEntityIds.Count > 0)
             {
-                if (playerRequestQueued)
-                {
-                    SendCreatePlayerRequest();
-                }
-
-                // Currently this has a race condition where you can receive two entities
-                // The fix for this is more sophisticated server side handling of requests
-                var responses = commandSystem.GetResponses<PlayerCreator.CreatePlayer.ReceivedResponse>();
-
-                for (var i = 0; i < responses.Count; i++)
-                {
-                    ref readonly var response = ref responses[i];
-                    if (response.StatusCode == StatusCode.AuthorityLost)
-                    {
-                        RetryCreatePlayerRequest();
-                    }
-                    else if (response.StatusCode != StatusCode.Success)
-                    {
-                        logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                            $"Create player request failed: {response.Message}"
-                        ));
-                    }
-                }
+                HandlePlayerCreation();
             }
             else
             {
-                var entityQueryResponses = commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
-                for (var i = 0; i < entityQueryResponses.Count; i++)
-                {
-                    ref readonly var response = ref entityQueryResponses[i];
-                    if (response.RequestId == playerCreatorQueryId)
-                    {
-                        if (response.StatusCode == StatusCode.Success && response.Result != null)
-                        {
-                            playerCreatorQueryId = null;
-                            playerCreatorEntityIds.AddRange(response.Result.Keys);
-                        }
-                        else if (playerCreatorQueryAttempts > PlayerLifecycleConfig.MaxPlayerCreatorQueryAttempts)
-                        {
-                            logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                                $"Unable to find player creator after {playerCreatorQueryAttempts} attempts."
-                            ));
-                        }
-                        else
-                        {
-                            logDispatcher.HandleLog(LogType.Warning, new LogEvent(
-                                $"Retrying player creator query, attempt {playerCreatorQueryAttempts}."
-                            ));
-
-                            QueryForPlayerCreators();
-                        }
-
-                        break;
-                    }
-                }
+                HandleEntityQueryResponses();
             }
         }
     }

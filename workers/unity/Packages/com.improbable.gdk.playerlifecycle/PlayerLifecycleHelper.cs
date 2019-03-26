@@ -13,7 +13,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             string clientWorkerId,
             string serverAccess)
         {
-            template.AddComponent(new PlayerHeartbeatClient.Snapshot(), EntityTemplate.GetClientAccess(clientWorkerId));
+            template.AddComponent(new PlayerHeartbeatClient.Snapshot(),
+                EntityTemplate.GetWorkerAccessAttribute(clientWorkerId));
+
             template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
             template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
         }
