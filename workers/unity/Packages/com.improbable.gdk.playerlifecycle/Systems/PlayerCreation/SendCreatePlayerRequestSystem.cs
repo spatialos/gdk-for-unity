@@ -24,9 +24,9 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private bool playerCreationRequestQueued;
         private long? playerCreationRequestId;
-        private int playerCreationAttempts;
+        private int playerCreationRetries;
 
-        private int playerCreatorQueryAttempts;
+        private int playerCreatorQueryRetries;
         private long? playerCreatorEntityQueryId;
 
         private readonly List<EntityId> playerCreatorEntityIds = new List<EntityId>();
@@ -59,8 +59,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 EntityQuery = playerCreatorQuery
             });
-
-            ++playerCreatorQueryAttempts;
         }
 
         private void HandleEntityQueryResponses()
@@ -80,19 +78,21 @@ namespace Improbable.Gdk.PlayerLifecycle
                 {
                     playerCreatorEntityIds.AddRange(response.Result.Keys);
                 }
-                else if (playerCreatorQueryAttempts > PlayerLifecycleConfig.MaxPlayerCreatorQueryAttempts)
-                {
-                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        $"Unable to find player creator after {playerCreatorQueryAttempts} attempts."
-                    ));
-                }
-                else
+                else if (playerCreatorQueryRetries < PlayerLifecycleConfig.MaxPlayerCreatorQueryRetries)
                 {
                     logDispatcher.HandleLog(LogType.Warning, new LogEvent(
-                        $"Retrying player creator query, attempt {playerCreatorQueryAttempts}."
+                        $"Retrying player creator query, attempt {playerCreatorQueryRetries}."
                     ));
 
                     SendPlayerCreatorEntityQuery();
+
+                    ++playerCreatorQueryRetries;
+                }
+                else
+                {
+                    logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                        $"Unable to find player creator after {playerCreatorQueryRetries} retries."
+                    ));
                 }
 
                 break;
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 return;
             }
 
-            playerCreationAttempts = 0;
+            playerCreationRetries = 0;
             serializedArgumentsCache = serializedArguments;
             playerCreationRequestQueued = true;
         }
@@ -122,23 +122,23 @@ namespace Improbable.Gdk.PlayerLifecycle
             ));
 
             playerCreationRequestQueued = false;
-            ++playerCreationAttempts;
         }
 
         private void RetryCreatePlayerRequest()
         {
-            if (playerCreationAttempts < PlayerLifecycleConfig.MaxPlayerCreationAttempts)
+            if (playerCreationRetries < PlayerLifecycleConfig.MaxPlayerCreationRetries)
             {
                 logDispatcher.HandleLog(LogType.Warning, new LogEvent(
-                    $"Retrying player creation request, attempt {playerCreationAttempts}."
+                    $"Retrying player creation request, attempt {playerCreationRetries}."
                 ));
 
+                ++playerCreationRetries;
                 SendCreatePlayerRequest();
             }
             else
             {
                 logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                    $"Unable to create player after {playerCreationAttempts} attempts."
+                    $"Unable to create player after {playerCreationRetries} attempts."
                 ));
             }
         }
