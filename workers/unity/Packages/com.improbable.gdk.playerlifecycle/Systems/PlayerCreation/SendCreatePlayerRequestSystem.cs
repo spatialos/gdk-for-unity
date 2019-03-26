@@ -22,7 +22,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private byte[] serializedArgumentsCache;
 
-        private bool playerRequestQueued;
+        private bool playerCreationRequestQueued;
         private long? playerCreationRequestId;
         private int playerCreationAttempts;
 
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
                 playerCreatorEntityQueryId = null;
 
-                if (response.StatusCode == StatusCode.Success && response.Result != null)
+                if (response.StatusCode == StatusCode.Success)
                 {
                     playerCreatorEntityIds.AddRange(response.Result.Keys);
                 }
@@ -109,8 +109,9 @@ namespace Improbable.Gdk.PlayerLifecycle
                 return;
             }
 
+            playerCreationAttempts = 0;
             serializedArgumentsCache = serializedArguments;
-            playerRequestQueued = true;
+            playerCreationRequestQueued = true;
         }
 
         private void SendCreatePlayerRequest()
@@ -120,7 +121,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 new CreatePlayerRequest(serializedArgumentsCache)
             ));
 
-            playerRequestQueued = false;
+            playerCreationRequestQueued = false;
             ++playerCreationAttempts;
         }
 
@@ -144,7 +145,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private void HandlePlayerCreation()
         {
-            if (playerRequestQueued)
+            if (playerCreationRequestQueued)
             {
                 SendCreatePlayerRequest();
             }
