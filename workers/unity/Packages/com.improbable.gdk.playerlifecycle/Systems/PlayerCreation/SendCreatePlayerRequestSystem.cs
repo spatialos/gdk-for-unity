@@ -21,11 +21,12 @@ namespace Improbable.Gdk.PlayerLifecycle
         private byte[] serializedArgumentsCache;
 
         private bool playerRequestQueued;
+        private int playerCreationAttempts = 0;
 
         private int playerCreatorQueryAttempts = 0;
         private long? playerCreatorQueryId;
 
-        private List<EntityId> playerCreatorEntityIds = new List<EntityId>();
+        private readonly List<EntityId> playerCreatorEntityIds = new List<EntityId>();
 
         private readonly EntityQuery playerCreatorQuery = new EntityQuery
         {
@@ -75,7 +76,22 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private void RetryCreatePlayerRequest()
         {
-            SendCreatePlayerRequest();
+            if (playerCreationAttempts < PlayerLifecycleConfig.MaxPlayerCreationAttempts)
+            {
+                ++playerCreationAttempts;
+
+                logDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                    $"Retrying player creation request, attempt {playerCreationAttempts}."
+                ));
+
+                SendCreatePlayerRequest();
+            }
+            else
+            {
+                logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                    $"Unable to create player after {playerCreationAttempts} attempts."
+                ));
+            }
         }
 
         protected override void OnUpdate()
@@ -121,10 +137,16 @@ namespace Improbable.Gdk.PlayerLifecycle
                         }
                         else if (playerCreatorQueryAttempts > PlayerLifecycleConfig.MaxPlayerCreatorQueryAttempts)
                         {
-                            Debug.LogError($"Unable to create player after {playerCreatorQueryAttempts} attempts.");
+                            logDispatcher.HandleLog(LogType.Error, new LogEvent(
+                                $"Unable to find player creator after {playerCreatorQueryAttempts} attempts."
+                            ));
                         }
                         else
                         {
+                            logDispatcher.HandleLog(LogType.Warning, new LogEvent(
+                                $"Retrying player creator query, attempt {playerCreatorQueryAttempts}."
+                            ));
+
                             QueryForPlayerCreators();
                         }
 

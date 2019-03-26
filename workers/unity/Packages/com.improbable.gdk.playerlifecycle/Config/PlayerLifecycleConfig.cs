@@ -11,7 +11,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         public const float PlayerHeartbeatIntervalSeconds = 5f;
         public const int MaxNumFailedPlayerHeartbeats = 2;
 
+        public const int MaxPlayerCreationAttempts = 5;
         public const int MaxPlayerCreatorQueryAttempts = 5;
+
         public static bool AutoRequestPlayerCreation = true;
 
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
