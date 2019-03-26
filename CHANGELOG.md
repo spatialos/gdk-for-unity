@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Internal
+
+- Tools package now uses PackageManager API instead of parsing manifest.json
+
 ## `0.2.0` - 2019-03-18
 
 ### Breaking Changes
