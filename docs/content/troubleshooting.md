@@ -1,4 +1,3 @@
-<%(TOC)%>
 # Troubleshooting
 
 > **Note**: We also maintain a [known issues](https://github.com/spatialos/gdk-for-unity/projects/2) page for any open bugs in the SpatialOS GDK for Unity.
