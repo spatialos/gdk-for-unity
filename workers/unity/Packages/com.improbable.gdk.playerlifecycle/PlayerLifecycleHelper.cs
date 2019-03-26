@@ -10,17 +10,12 @@ namespace Improbable.Gdk.PlayerLifecycle
     public static class PlayerLifecycleHelper
     {
         public static void AddPlayerLifecycleComponents(EntityTemplate template,
-            string workerId,
-            string clientAccess,
+            string clientWorkerId,
             string serverAccess)
         {
-            var clientHeartbeat = new PlayerHeartbeatClient.Snapshot();
-            var serverHeartbeat = new PlayerHeartbeatServer.Snapshot();
-            var owningComponent = new OwningWorker.Snapshot { WorkerId = workerId };
-
-            template.AddComponent(clientHeartbeat, clientAccess);
-            template.AddComponent(serverHeartbeat, serverAccess);
-            template.AddComponent(owningComponent, serverAccess);
+            template.AddComponent(new PlayerHeartbeatClient.Snapshot(), EntityTemplate.GetClientAccess(clientWorkerId));
+            template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
+            template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
         }
 
         public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)

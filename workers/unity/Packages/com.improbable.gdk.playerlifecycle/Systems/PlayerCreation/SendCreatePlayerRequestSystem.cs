@@ -68,7 +68,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
                 playerCreatorEntityIds[Random.Range(0, playerCreatorEntityIds.Count)],
-                new CreatePlayerRequestType(serializedArgumentsCache)
+                new CreatePlayerRequest(serializedArgumentsCache)
             ));
             playerRequestQueued = false;
         }

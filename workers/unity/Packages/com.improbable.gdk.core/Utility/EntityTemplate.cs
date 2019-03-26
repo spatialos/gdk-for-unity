@@ -19,6 +19,16 @@ namespace Improbable.Gdk.Core
         private readonly Acl acl = new Acl();
 
         /// <summary>
+        ///     Constructs the client access attribute, given a client's worker ID.
+        /// </summary>
+        /// <param name="clientWorkerId">The worker ID of the client.</param>
+        /// <returns>The client access attribute.</returns>
+        public static string GetClientAccess(string clientWorkerId)
+        {
+            return $"workerId:{clientWorkerId}";
+        }
+
+        /// <summary>
         ///     Adds a SpatialOS component to the EntityTemplate.
         /// </summary>
         /// <param name="snapshot">The component snapshot to add.</param>

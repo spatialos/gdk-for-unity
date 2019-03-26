@@ -1,12 +1,11 @@
 package improbable.player_lifecycle;
-import "improbable/vector3.schema";
 
-type CreatePlayerRequestType
+type CreatePlayerRequest
 {
     bytes serialized_arguments = 1;
 }
 
-type CreatePlayerResponseType
+type CreatePlayerResponse
 {
     EntityId created_entity_id = 1;
 }
@@ -14,5 +13,5 @@ type CreatePlayerResponseType
 component PlayerCreator
 {
     id = 13000;
-    command CreatePlayerResponseType create_player(CreatePlayerRequestType);
+    command CreatePlayerResponse create_player(CreatePlayerRequest);
 }
