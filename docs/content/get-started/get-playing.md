@@ -43,7 +43,7 @@ Modify the `fps_simulated_players_per_coordinator` flag value from 0 to 10 and h
 
 <img src="{{assetRoot}}assets/worker-flags-modification.png" style="margin: 0 auto; display: block;" />
 
-What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 2 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
+What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 5 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
 
 <%(Callout type="warn" message="If you exceed 10 `fps_simulated_players_per_coordinator` you may experience deployment instability.")%>
 
