@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -36,7 +37,6 @@ namespace Improbable.Gdk.Tools
         public const string ProductName = "SpatialOS for Unity";
 
         public const string PackagesDir = "Packages";
-        public static readonly string ManifestPath = Path.Combine(PackagesDir, "manifest.json");
 
         private const string UsrLocalBinDir = "/usr/local/bin";
         private const string UsrLocalShareDir = "/usr/local/share";
@@ -66,55 +66,21 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         public static string GetPackagePath(string packageName)
         {
-            var manifest = ParseDependencies(ManifestPath);
-
-            if (!manifest.TryGetValue(packageName, out var path))
+            // Get package info
+            var request = Client.List(offlineMode: true);
+            while (!request.IsCompleted)
             {
-                throw new Exception($"The project manifest must reference '{packageName}'.");
+                // Wait for the request to complete
             }
 
-            if (!path.StartsWith("file:"))
+            var package = request.Result.FirstOrDefault(info => info.name.Equals(packageName));
+
+            if (package == null)
             {
-                throw new Exception($"The '{packageName}' package must exist on disk.");
+                throw new Exception($"Could not find '{packageName}', is it in your project's manifest?\n{request.Error.message}");
             }
 
-            path = path.Replace("file:", string.Empty);
-
-            if (Path.IsPathRooted(path))
-            {
-                // A "rooted path" is an absolute path, therefore it will point directly at the package.
-                return path;
-            }
-
-            path = Path.GetFullPath(Path.Combine(PackagesDir, path));
-
-            return path;
-        }
-
-        /// <summary>
-        ///     Parses a json file and returns the dependencies found in it.
-        /// </summary>
-        /// <param name="filePath">Path to the json file to be parsed.</param>
-        /// <returns>The dependencies in the given json file.</returns>
-        internal static Dictionary<string, string> ParseDependencies(string filePath)
-        {
-            try
-            {
-                var package = Json.Deserialize(File.ReadAllText(filePath, Encoding.UTF8));
-                if (!package.TryGetValue("dependencies", out var dependenciesJson))
-                {
-                    return new Dictionary<string, string>();
-                }
-
-                return ((Dictionary<string, object>) dependenciesJson).ToDictionary(kv => kv.Key,
-                    kv => (string) kv.Value);
-            }
-            catch (Exception e)
-            {
-                var errorMessage = $"Failed to parse dependencies: {e.Message}";
-                Debug.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
+            return package.resolvedPath;
         }
 
         /// <summary>
@@ -122,9 +88,9 @@ namespace Improbable.Gdk.Tools
         ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
         ///     don't always have that in the PATH provided to them.
         /// </summary>
-        /// <param name="binarybaseName">The base name of the binary to find (without an extension).</param>
+        /// <param name="binaryBaseName">The base name of the binary to find (without an extension).</param>
         /// <returns></returns>
-        private static string DiscoverLocation(string binarybaseName)
+        private static string DiscoverLocation(string binaryBaseName)
         {
             var pathValue = Environment.GetEnvironmentVariable("PATH");
             if (pathValue == null)
@@ -135,9 +101,9 @@ namespace Improbable.Gdk.Tools
 
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                binarybaseName = Path.ChangeExtension(binarybaseName, ".exe");
+                binaryBaseName = Path.ChangeExtension(binaryBaseName, ".exe");
 
-                if (binarybaseName == null)
+                if (binaryBaseName == null)
                 {
                     return string.Empty;
                 }
@@ -151,23 +117,23 @@ namespace Improbable.Gdk.Tools
                 {
                     if (!splitPath.Contains(macPath))
                     {
-                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binarybaseName) }).ToArray();
+                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binaryBaseName) }).ToArray();
                     }
                 }
             }
 
-            var location = splitPath.Select(p => Path.Combine(p, binarybaseName)).FirstOrDefault(File.Exists);
+            var location = splitPath.Select(p => Path.Combine(p, binaryBaseName)).FirstOrDefault(File.Exists);
             if (location != null)
             {
                 return location;
             }
 
-            Debug.LogError($"Could not discover location for {binarybaseName}");
+            Debug.LogError($"Could not discover location for {binaryBaseName}");
             return string.Empty;
         }
 
         /// <summary>
-        /// Checks whether `dotnet` and `spatial` exist on the PATH.
+        ///     Checks whether `dotnet` and `spatial` exist on the PATH.
         /// </summary>
         /// <returns></returns>
         public static bool CheckDependencies()
