@@ -181,6 +181,8 @@ namespace Improbable.Gdk.PlayerLifecycle
                         ));
                         break;
                 }
+
+                break;
             }
         }
 
