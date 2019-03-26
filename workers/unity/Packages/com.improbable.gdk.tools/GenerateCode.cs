@@ -229,14 +229,13 @@ namespace Improbable.Gdk.Tools
                 CleanDestination(schemaRoot);
 
                 // Get all packages we depend on
-                var request = Client.List(true);
+                var request = Client.List(offlineMode: true);
                 while (!request.IsCompleted)
                 {
                     // Wait for the request to complete
                 }
 
-                var packages = request.Result;
-                var schemaSources = packages.ToDictionary(package => package.name,
+                var schemaSources = request.Result.ToDictionary(package => package.name,
                         package => Path.Combine(package.resolvedPath, "Schema"))
                     .Where(kv => Directory.Exists(kv.Value));
 
