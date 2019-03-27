@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Get started: 4 - Get playing!
+# Get playing
 
 Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see the two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
 
@@ -35,7 +35,9 @@ In fact, as far as SpatialOS is concerned, these simulated players are indisting
 
 The simulated players are hosted in a separate deployment to ensure that they do not share resources with your `UnityGameLogic` server-worker instances. You can find this deployment by returning to your SpatialOS [Console](https://console.improbable.io/projects) and selecting the deployment with the `_sim_players` suffix.
 
-To get the legion of enemies started, use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
+To get the legion of enemies started, you will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
+
+> **NOTE:** Make sure you have selected the Deployment **with** the `_sim_players` suffix.
 
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
@@ -43,7 +45,7 @@ Modify the `fps_simulated_players_per_coordinator` flag value from 0 to 10 and h
 
 <img src="{{assetRoot}}assets/worker-flags-modification.png" style="margin: 0 auto; display: block;" />
 
-What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 2 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
+What this will do is start up 10 simulated player-clients per Simulated Player Coordinator worker (of which there are 20 running in the deployment), and they will connect-in every 5 seconds (dictated by the `fps_simulated_players_creation_interval` flag).
 
 <%(Callout type="warn" message="If you exceed 10 `fps_simulated_players_per_coordinator` you may experience deployment instability.")%>
 
@@ -55,4 +57,3 @@ Back in the game, you will soon see the new simulated player-clients running. Tr
 Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
 
 #### Next: [View your game world]({{urlRoot}}/content/get-started/view-game-world.md)
-
