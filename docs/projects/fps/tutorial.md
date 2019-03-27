@@ -29,7 +29,7 @@ To implement this feature you will:
 1. Launch your Unity Editor.
 1. It should automatically detect the project but if it doesn't, select **Open** and then select `gdk-for-unity-fps-starter-project/workers/unity`.
 
-## Define the state model of our health packs
+## Design a SpatialOS component for our health packs
 
 To satisfy our design constraints, we need our health packs to contain some state that is replicated between our server-workers and client-workers:
 
@@ -67,17 +67,23 @@ The `id` property is a required property for every SpatialOS component defined i
 See the [schemalang reference](https://docs.improbable.io/reference/13.6/shared/schema/reference#ids) for more information.
 <%(/Expandable)%>
 
-**Step 4.** Run the code generator. From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
+<%(#Expandable title="Why are we assigning the fields?")%>
+Each field in a component must have a unique id (within the component) which it is assigned to.
+
+This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference#components) for more info.
+<%(/Expandable)%>
+
+**Step 4.** Run the code generator. 
+
+From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
 
 The code generator creates C# code based on the components and types defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Any time you modify your `schema` files you **must** then run the code generator to see your changes reflected in code.
 
 > When writing schema files, your properties must use snake case (for example, `health_value`), but the the code generator will create C# code in the [standard C# capitalisation conventions](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions).
 
-<%(Callout message="
-Code generation is automatically run whenever you open a GDK for Unity project in your Unity editor.<br/><br/>
+Code generation is automatically run whenever you open a GDK for Unity project in your Unity editor.
 
 If you are worried your generated code is in a bad state, select **SpatialOS** > **Generate code (force)** from the Unity Editor menu to delete the generated code and regenerate it.
-")%>
 
 <%(#Expandable title="Where is the generated code?")%>
 The generated code for your component can be found in the `Assets/Generated/Source/improbable/` directory of your Unity project. Feel free to have a look if you want to see what happens behind the scenes.
@@ -89,7 +95,7 @@ Note that you don’t need to understand the generated code in order to follow t
 
 Now that we've defined and generated the `HealthPickup` component and its properties, let's define the `HealthPickup` entity template! 
 
-An entity template simply declares which SpatialOS components are present on the entity, the initial values of those components, and which worker types can read or write to the components.
+An entity template simply declares which SpatialOS components are present on the entity, the initial values of those components, and which worker types can read from or write to the components.
 
 The `HealthPickup` entity is a new type of entity, so we must create a new entity template. To do this, we'll need to add a new function within the `FpsEntityTemplates` class:
 
@@ -120,7 +126,7 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 Let's pull out some of the more interesting lines from the above snippet:
 
 * The line `entityTemplate.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);` states that both the [server-worker]({{urlRoot}}/content/glossary#server-worker) (`WorkerUtils.UnityGameLogic`) and [client-worker]({{urlRoot}}/content/glossary#client-worker) (`UnityClient`) have [read access]({{urlRoot}}/content/glossary#read-access) to this entity (that they can see health packs).
-* The line `entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);` adds an instance of the `HealthPickup` component to the `HealthPickup` entity.
+* The line `entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);` adds an instance of the `HealthPickup` component to the `HealthPickup` entity and sets the write access to the `UnityGameLogic` worker type.
 
 > Our design constraints state that we should not trust the client, so we only give write-access to the `HealthPickup` component to the [server-worker]({{urlRoot}}/content/glossary#server-worker). This means that a client cannot change the health value of the health pack or force it to be active.
 
@@ -283,14 +289,12 @@ While they are human-readable and you can manually edit the values of the proper
 
 ## Plan your entity representations
 
-In this section we’re going to decide how to represent the `HealthPickup` entity in our client-workers and in our server-workers. Let's review the design constraints listed above:
+In this section we’re going to decide how to represent the `HealthPickup` entity in our client-workers and in our server-workers. Let's review the relevant design constraints listed above:
 
-1. The pick-ups have static positions in the game world and are present in the world at start-up time.
 1. A pick-up grants health to a single player which walks over them.
 1. After the health pack is consumed, it is no longer visible to clients and no longer grants health.
 1. After a period of time, the health pack is "respawned" and is available to be picked up again.
 1. Critical interactions like: collision detection between the player and the health pack and granting the health is done on the game logic worker. That is to say, we do not trust the client.
-1. (Optional) Players which have full health cannot pick up the health packs.
 
 From these we can derive some rules about how the `UnityClient` and `UnityGameLogic` workers should represent the `HealthPickup` entity: 
 
@@ -315,15 +319,7 @@ The `Assets/Fps/Resources/Prefabs/UnityClient/` folder contains two sub-folders,
 
 The FPS Starter Project has some custom logic built into the `AdvancedEntityPipeline` for handling its `Player` entities. When creating your own entity prefabs for the `UnityClient` worker you can put them directly into `Assets/Fps/Resources/Prefabs/UnityClient/`.
 
-If you are interested in why the FPS Starter Project named those sub-directories `Authoritative` and `NonAuthoritative`, it relates to write-access for components on the entity.
-
-At any point in time a single entity may be known about by multiple workers, even of the same type. In a large game you might have multiple `UnityGameLogic` workers. These often overlap, which means that they both "know about" some of the same entities. However, only **one** of those workers can have write-access permissions to components on an entity at any given time.
-
-That means even two workers of the same type (e.g. `UnityGameLogic`) may not have the same responsibilities for a particular entity. The **authoritative** worker (i.e. the one that has write-access) may be responsible for executing some logic and updating the entity's component data. The **non-authoritative** worker only has read-access, which it may use to drive its own local representation of that entity, but it shouldn't try to update the entity's component values (and wouldn't be able to if it tried!). These two workers have _different representations_ of the same entity, even though they are the same type of worker.
-
 The `Player` entity has a special relationship with the `UnityClient` instance that is authoritative over it. That `UnityClient` is running on the gamer's machine, and that gamer "owns" that `Player` entity. It's their representation in the world. As such, there are big differences between how the `Player` entity should be represented on the authoritative client (it should have a camera, collect player input etc.) compared to if the `Player` entity represents someone else in the game. The FPS Starter Project has some additional logic to manage these representations as a way of keeping the code more organised.
-
-Authority is a tricky, but crucial concept in SpatialOS, particularly as write-access is actually defined on a per-component basis rather than a per-entity basis. You can find out more by reading up about [component authority]({{urlRoot}}/content/glossary#authority).
 <%(/Expandable)%>
 
 ## Implement client-side entity representation
