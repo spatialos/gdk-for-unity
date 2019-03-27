@@ -26,7 +26,7 @@ This provides both a testing framework, which you can use to test any other modu
 
 ### Build system module
 
-The `Improbable.Gdk.BuildSystem` module provides an example implementation of how to build your workers. It creates a menu item in your Unity Editor toolbar (menu: **SpatialOS** > **Build...** ) that you can use to easily [build your workers]({{urlRoot}}/content/build#building-your-workers). It also generates a [ScriptableObject (Unity documentation)](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains the build configuration for each worker.  This functionality is only available from your Unity Editor.
+The `Improbable.Gdk.BuildSystem` module provides an example implementation of how to build your workers. It creates a menu item in your Unity Editor toolbar (menu: **SpatialOS** > **Build...** ) that you can use to easily build your workers. It also generates a [ScriptableObject (Unity documentation)](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains the build configuration for each worker.  This functionality is only available from your Unity Editor.
 
 ### Player lifecycle module
 

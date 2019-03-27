@@ -360,7 +360,7 @@ You'll use a snapshot as the starting point (an [initial snapshot](https://docs.
 
 > Not to be confused with [.NET assembly (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime).
 
-A SpatialOS assembly is created when you [build your workers]({{urlRoot}}/content/build#building-your-workers). It contains all the files that your game uses at runtime. This includes the compiled code and an executable and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
+A SpatialOS assembly is created when you build your workers. It contains all the files that your game uses at runtime. This includes the compiled code and an executable and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
 
 The SpatialOS assembly is stored locally at `build\assembly` in the root directory of your SpatialOS project. When you start a [cloud deployment]({{urlRoot}}/content/deploy#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
 
