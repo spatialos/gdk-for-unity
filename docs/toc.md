@@ -1,16 +1,16 @@
 - <h3>SpatialOS GDK for Unity</h3>
     - [Welcome]({{urlRoot}}/index)
-    - Get started
-        - [1. Introduction]({{urlRoot}}/content/get-started/get-started)
-        - [2. Set up]({{urlRoot}}/content/get-started/set-up)
-        - [3. Build your workers]({{urlRoot}}/content/get-started/build-workers)
-        - [4. Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
-        - [5. Get playing]({{urlRoot}}/content/get-started/get-playing.md)
-        - [6. View your game world]({{urlRoot}}/content/get-started/view-game-world)
     - [Roadmap](https://github.com/spatialos/gdk-for-unity/projects/1)
 - <h3>Starter projects</h3>
     - FPS Starter Project
         - [Overview]({{urlRoot}}/projects/fps/overview)
+        - Get started
+            - [1. Introduction]({{urlRoot}}/content/get-started/get-started)
+            - [2. Set up]({{urlRoot}}/content/get-started/set-up)
+            - [3. Build your workers]({{urlRoot}}/content/get-started/build-workers)
+            - [4. Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
+            - [5. Get playing]({{urlRoot}}/content/get-started/get-playing.md)
+            - [6. View your game world]({{urlRoot}}/content/get-started/view-game-world)
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
     - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)
     - Make your own
@@ -19,7 +19,7 @@
         - [3. Build your workers]({{urlRoot}}/content/build)
         - [4. Deploy your game]({{urlRoot}}/content/deploy)
 - <h3>Feature Modules</h3>
-    - [Core & Others]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+    - [Core & others]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
@@ -72,7 +72,7 @@
         - iOS
             - [Set up]({{urlRoot}}/content/mobile/ios/setup)
             - [Run your iOS client]({{urlRoot}}/content/mobile/ios/ways-to-test)
-            - Connection Flows
+            - Connection flows
                 - [Local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
                 - [Cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
     - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
