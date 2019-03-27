@@ -8,7 +8,7 @@
             - [1. Introduction]({{urlRoot}}/content/get-started/get-started)
             - [2. Set up]({{urlRoot}}/content/get-started/set-up)
             - [3. Build your workers]({{urlRoot}}/content/get-started/build-workers)
-            - [4. Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
+            - [4. Upload & launch your game]({{urlRoot}}/content/get-started/upload-launch)
             - [5. Get playing]({{urlRoot}}/content/get-started/get-playing.md)
             - [6. View your game world]({{urlRoot}}/content/get-started/view-game-world)
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
@@ -31,36 +31,36 @@
         - [Entity templates]({{urlRoot}}/content/entity-templates)
         - [Logs]({{urlRoot}}/content/ecs/logging)
         - [Snapshots]({{urlRoot}}/content/snapshots)
-        - [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
+        - [Worker]({{urlRoot}}/content/workers/workers-in-the-gdk)
     - Workflows
         - [Which workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)
         - MonoBehaviours
             - [Creating workers]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector)
             - Link to GameObjects
-                - [SpatialOS entities as GameObjects]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
-                - [Workers as GameObjects]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
+                - [SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities)
+                - [Workers]({{urlRoot}}/content/gameobject/linking-workers-gameobjects)
             - Interacting with SpatialOS
                 - [Readers & Writers]({{urlRoot}}/content/gameobject/readers-writers)
                     - [Lifecycle]({{urlRoot}}/content/gameobject/interact-spatialos-monobehaviours)
                     - [Component data & updates]({{urlRoot}}/content/gameobject/reading-and-writing-component-data)
                     - [Events]({{urlRoot}}/content/gameobject/sending-receiving-events)
                 - Commands
-                    - [SpatialOS component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
+                    - [Component commands]({{urlRoot}}/content/gameobject/sending-receiving-commands)
                     - [World commands]({{urlRoot}}/content/gameobject/world-commands)
                     - [Create & delete SpatialOS entities]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities)
         - ECS
             - [Worker entity]({{urlRoot}}/content/workers/worker-entity)
             - [System update order]({{urlRoot}}/content/ecs/system-update-order)
-            - [ECS entity contract]({{urlRoot}}/content/ecs/entity-contracts)
+            - [ECS entity contracts]({{urlRoot}}/content/ecs/entity-contracts)
             - Interacting with SpatialOS
                 - [Authority]({{urlRoot}}/content/ecs/authority)
                 - [Component updates]({{urlRoot}}/content/ecs/component-updates)
                 - [Events]({{urlRoot}}/content/ecs/events)
                 - Commands
-                    - [SpatialOS component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
+                    - [Component commands]({{urlRoot}}/content/ecs/sending-receiving-component-commands)
                     - [World commands]({{urlRoot}}/content/ecs/world-commands)
             - [Reactive components]({{urlRoot}}/content/ecs/reactive-components)
-            - [Temporary component]({{urlRoot}}/content/ecs/temporary-components)
+            - [Temporary components]({{urlRoot}}/content/ecs/temporary-components)
     - Mobile
         - [Overview]({{urlRoot}}/content/mobile/overview)
         - Android

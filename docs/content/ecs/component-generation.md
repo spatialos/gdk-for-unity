@@ -3,7 +3,7 @@
 [//]: # (TODO - Move this doc from ECS to generic - and change its title to not be ECS)
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1IGblyE-pvA4ZyJIjN8PcD1Ct6pE4FNhtlXRdp_Sy97o/edit)
 <%(TOC)%>
-#  Component generation
+# Code generation
  _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 > Note this document refers to ECS components but it is also relevant if you are using the MonoBehaviour workflow. You don't need to know about ECS to use component generation.

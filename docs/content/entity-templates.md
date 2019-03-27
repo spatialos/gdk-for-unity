@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 22)
 
 <%(TOC)%>
-# SpatialOS entities: Creating entity templates
+# Entity templates
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with the documentation on the [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities) and the [workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) overview.

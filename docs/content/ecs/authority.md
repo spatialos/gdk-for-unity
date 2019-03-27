@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Authority
+# ECS: Authority
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities.md)._
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component).

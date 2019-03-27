@@ -2,7 +2,7 @@
 [//]: # (TODO - technical author pass)
 
 <%(TOC)%>
-# SpatialOS entities: How to create and delete entities
+# How to create and delete entities
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:

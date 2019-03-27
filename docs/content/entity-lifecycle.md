@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 21)
 [//]: # (TODO - technical author pass)
 <%(TOC)%>
-# SpatialOS entities: update entity lifecycle
+# Entity lifecycle
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 The [SpatialOS runtime]({{urlRoot}}/content/glossary#spatialos-runtime) manages the lifecycle of [SpatialOS entities]({{urlRoot}}/content/glossary#spatialos-entity) in your [worker’s view]({{urlRoot}}/content/glossary#worker-s-view), or the part of the [game world]({{urlRoot}}/content/glossary#spatialos-world) that your worker has access to. The SpatialOS GDK for Unity interacts with the SpatialOS runtime through [Operations](https://docs.improbable.io/reference/latest/shared/design/operations#operations-how-workers-communicate-with-spatialos) and integrates the lifecycle natively into Unity.
