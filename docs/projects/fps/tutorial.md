@@ -116,7 +116,7 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
     entityTemplate.AddComponent(new Metadata.Snapshot("HealthPickup"), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);
-    entityTemplate.SetReadAccess(gameLogic, WorkerUtils.UnityClient);
+    entityTemplate.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);
     entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
     return entityTemplate;
@@ -431,9 +431,11 @@ Now we've added some game logic to interact with our `HealthPickup` entity we sh
 
 **Step 2.** Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in `Assets/Fps/Scene`.
 
+**Step 3.** Disable the `SimulatedPlayerCoordinatorWorker` prefab in the Scene. This will prevent any simulated player clients from spawning.
+
 **Step 3.** Press **Play** in your Unity Editor to play the game.
 
-You'll know that your previous changes have worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. Currently it just sits there, inert. If you walk into it, nothing happens. Let's fix that!
+You'll know that your previous changes have worked if you can see a `HealthPickup` entity in the inspector, and find a floating health pack when running around in-game. Currently it just floats there. If you walk into it, nothing happens. Let's fix that!
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
