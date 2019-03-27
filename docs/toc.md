@@ -1,12 +1,12 @@
 - <h3>SpatialOS GDK for Unity</h3>
     - [Welcome]({{urlRoot}}/index)
     - Get started
-        - [Introduction]({{urlRoot}}/content/get-started/get-started)
-        - [1 - Set up]({{urlRoot}}/content/get-started/set-up)
-        - [2 - Build your workers]({{urlRoot}}/content/get-started/build-workers)
-        - [3 - Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
-        - [4 - Get playing]({{urlRoot}}/content/get-started/get-playing.md)
-        - [5 - View your game world]({{urlRoot}}/content/get-started/view-game-world)   
+        - [1. Introduction]({{urlRoot}}/content/get-started/get-started)
+        - [2. Set up]({{urlRoot}}/content/get-started/set-up)
+        - [3. Build your workers]({{urlRoot}}/content/get-started/build-workers)
+        - [4. Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch)
+        - [5. Get playing]({{urlRoot}}/content/get-started/get-playing.md)
+        - [6. View your game world]({{urlRoot}}/content/get-started/view-game-world)   
     - [Add your first feature]({{urlRoot}}/projects/fps/tutorial)
 - <h3>Starter projects</h3>
     - FPS Starter Project
