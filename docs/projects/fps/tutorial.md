@@ -489,7 +489,7 @@ namespace Fps
             // If the pickup is inactive on initial checkout - turn off collisions and start the respawning process.
             if (!healthPickupWriter.Data.IsActive)
             {
-                respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+                respawnCoroutine = StartCoroutine(RespawnHealthPackRoutine());
             }
         }
 
@@ -543,10 +543,10 @@ namespace Fps
             SetIsActive(false);
 
             // Begin cool-down period before re-activating health pack
-            respawnCoroutine = StartCoroutine(RespawnCubeRoutine());
+            respawnCoroutine = StartCoroutine(RespawnHealthPackRoutine());
         }
 
-        private IEnumerator RespawnCubeRoutine()
+        private IEnumerator RespawnHealthPackRoutine()
         {
             yield return new WaitForSeconds(15f);
             SetIsActive(true);
@@ -554,6 +554,7 @@ namespace Fps
     }
 }
 ```
+
 Let’s break down what the above snippet does:
 
 * `[WorkerType(WorkerUtils.UnityGameLogic)]`<br/>
@@ -575,7 +576,7 @@ This function will be called any time a player walks through a health pack. It h
 
 > Cross-worker interactions can be necessary when your game has multiple `UnityGameLogic` server-workers, because the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access to the `Player` entity who has collided with that health pack.
 
-* `private IEnumerator RespawnCubeRoutine()`<br>
+* `private IEnumerator RespawnHealthPackRoutine()`<br>
 This coroutine re-activates consumed health packs after a cool-down period. It starts at the end of the `HandleCollisionWithPlayer` function as well as in `OnEnable` for any health pack entities which are inactive. Any running coroutines are stopped in `OnDisable`.
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>
