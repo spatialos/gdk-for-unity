@@ -1,96 +1,197 @@
 <%(TOC)%>
-# Add the GDK to your project
+# Project setup
 
-Follow the [Setup and installation guide]({{urlRoot}}/setup-and-installing) to make sure you have everything installed.
+To use the SpatialOS GDK for Unity in a new project, you need to:
 
-To use the SpatialOS GDK for Unity in a new project, you need to set up your project manifest, and then set up world initialization. Your new project must have the [same structure as a SpatialOS project](https://docs.improbable.io/reference/latest/shared/reference/project-structure).
+1. Setup the [SpatialOS project structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure).
+1. Add the GDK packages to your Unity project.
 
-The **spatialos.json** file for your project needs to have the same `sdk_version` and `dependencies` as the GDK's [spatialos.json](https://github.com/spatialos/gdk-for-unity/blob/master/spatialos.json).
+## Setup a SpatialOS project
 
-For a basic set up of two workers, one `UnityGameLogic` and one `UnityClient`, we recommend you to reuse these files (within `workers/unity`):
+A SpatialOS project needs to have a specific directory layout and configuration files in order to function properly.
 
-  * [spatialos.UnityGameLogic.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json)
-  * [spatialos.UnityClient.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityClient.worker.json)
+**Step 1.** Setup the directory layout.
+In the root of your SpatialOS project, you need to create the following directories: `schema` and `workers`.
 
-## Set up base assets and directories
+* `schema`: This directory contains your `.schema` files.
+* `workers`: This directory contains your worker code and configuration.
 
-  * Copy [this file](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef) into `workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
-
-## Set up your project manifest
-Add the following dependencies to the `packages` manifest located inside `workers/unity/Packages/manifest.json`:
+<%(#Expandable title="What should my project directory look like when I'm done?")%>
+```text
+  <project_root>
+    ├── schema/
+    ├── workers/
 ```
+<%(/Expandable)%>
+
+**Step 2.** Create the required configuration files.
+
+In the root of your SpatialOS project, create two files:
+
+* `spatialos.json`, copy and paste in the following content:
+
+```json
+{
+    "name": "my_project",
+    "project_version": "0.0.1",
+    "sdk_version": "13.6.2-gdk-for-unity",
+    "dependencies": [
+        {"name": "standard_library", "version": "13.6.2-gdk-for-unity"}
+    ]
+}
+```
+
+> Note to replace the value of the `name` field with your **own** project name, which you can find in the [SpatialOS Console](https://console.improbable.io/projects).
+
+* `default_launch.json`, copy and paste in the following content:
+
+```json
+{
+  "template": "small",
+  "world": {
+    "chunkEdgeLengthMeters": 50,
+    "snapshots": {
+      "snapshotWritePeriodSeconds": 0
+    },
+    "dimensions": {
+      "xMeters": 1000,
+      "zMeters": 1000
+    }
+  },
+  "load_balancing": {
+    "layer_configurations": [
+      {
+        "layer": "UnityGameLogic",
+        "points_of_interest": {
+          "num_workers": 1,
+          "points": [
+            {
+              "x": 0,
+              "z": 0
+            }
+          ]
+        },
+        "options": {
+          "manual_worker_connection_only": true
+        }
+      }
+    ]
+  },
+  "workers": [
+    {
+      "worker_type": "UnityGameLogic",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ]
+    },
+    {
+      "worker_type": "UnityClient",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ]
+    }
+  ]
+}
+```
+
+<%(#Expandable title="What should my project directory look like when I'm done?")%>
+```text
+  <project_root>
+    ├── schema/
+    ├── workers/
+    ├── spatialos.json
+    ├── default_launch.json
+```
+<%(/Expandable)%>
+
+**Step 3.** Create a new Unity project.
+
+You need to put the new Unity project in the `workers` directory. For example `workers/my-unity-project/`.
+
+<%(#Expandable title="What should my project directory look like when I'm done?")%>
+```text
+  <project_root>
+    ├── schema/
+    ├── workers/
+        ├── my-unity-project/
+    ├── spatialos.json
+    ├── default_launch.json
+```
+<%(/Expandable)%>
+
+**Step 4.** Add worker configurations
+
+For a basic set up of two worker types, an `UnityGameLogic` and `UnityClient`, we recommend you to reuse these files:
+
+* [spatialos.UnityGameLogic.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityGameLogic.worker.json)
+* [spatialos.UnityClient.worker.json](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/spatialos.UnityClient.worker.json)
+
+Copy these files into `workers/my-unity-project/`.
+
+
+<%(#Expandable title="What should my project directory look like when I'm done?")%>
+```text
+  <project_root>
+    ├── schema/
+    ├── workers/
+        ├── my-unity-project/
+            ├── spatialos.UnityGameLogic.worker.json
+            ├── spatialos.UnityClient.worker.json
+    ├── spatialos.json
+    ├── default_launch.json
+```
+<%(/Expandable)%>
+
+## Add the GDK packages
+
+**Step 1.** Create a `asmdef` for generated code.
+
+In order to ensure that the generated code can access its dependencies, you will need to create an `asmdef` for the generated code. We recommend that you reuse the following file: 
+
+* [Improbable.Gdk.Generated.asmdef](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef)
+
+Copy this file into `workers/my-unity-project/Assets/Generated`.
+
+> **Note:** You will need to create the `Generated` folder.
+
+**Step 2.** Add package references to your `manifest.json`.
+
+Unity loads the packages that are declared in the `manifest.json` file into your Unity project. We will be side-loading the GDK packages.
+
+Open the `manifest.json` in the `workers/my-unity-project/Packages/` directory and add the following dependencies:
+
+```json
 {
   "dependencies": {
     "com.improbable.gdk.core": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.core",
     "com.improbable.gdk.buildsystem": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.buildsystem",
-    "com.improbable.gdk.playerlifecycle": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.playerlifecycle",
     "com.improbable.gdk.testutils": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.testutils",
-    "com.improbable.gdk.tools": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.tools",
-    "com.improbable.gdk.transformsynchronization": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.transformsynchronization",
-    "com.unity.package-manager-ui": "1.9.11",
-    "com.unity.modules.physics": "1.0.0"
   }
 }
 ```
 
-## Download dependencies
+> **Note:** There may already be some dependencies listed in your `manifest.json`. If there are, do not remove them - just add to the list.
 
-Open your Unity project in your Unity Editor by navigating to `workers/unity` from the root folder of your SpatialOS project.
-This triggers the following actions:
+<%(Callout message="The packages listed above are just the **minimum** set required to get started with the GDK.<br/><br/>You can add additional feature module packages by referencing them the same way.")%>
+
+<%(#Expandable title="What is sideloading?")%>
+Sideloading is the mechanism by which we load packages in the GDK (for now!). 
+
+Unity allows you to reference a package with a file path instead of fetching a versioned package from a registry.
+
+The consequence of this mechanism is that you tend to need two repositories cloned side by side.
+<%(/Expandable)%>
+
+**Step 3.** Open your Unity project
+
+Open your Unity project located at `workers/unity/my-unity-project`. This triggers a few actions:
   
-  * Unity downloads several required SpatialOS libraries. This may result in opening a browser windows prompting you to log in to your SpatialOS account.  Please log in.
-  
-  > This only happens the first time you open the project or if the required libraries change.
+* Unity downloads several required SpatialOS libraries.
 
-  * Unity generates code from the [schema]({{urlRoot}}/content/glossary#schema) files defined in your SpatialOS project.
+> This may result in opening a browser windows prompting you to log in to your SpatialOS account.
 
-  > This only happens, if Unity detects any changes in the schema files since the last time it generated the code.
-
-## Set up world initialization
-
-By default, Unity creates a `DefaultWorld` and then searches the whole project for systems it can add to this world. You can use the `DefaultWorld` to run logic that is completely independent of SpatialOS. However, you can’t use it to run systems that interact with SpatialOS, because each worker creates its own world and stores additional information about its connection.
-
-You need to choose whether to use the `DefaultWorld` or whether to disable it, depending on the logic your project contains.
-
-### Projects containing SpatialOS and non-SpatialOS logic
-
-If your project contains both SpatialOS logic and logic that is completely independent of SpatialOS, you can use the `DefaultWorld`. However, you need to add the `DisableAutoCreation` attribute to each system that interacts with SpatialOS. This prevents Unity from adding these systems to the `DefaultWorld`.
-
-### Projects containing only SpatialOS logic
-
-If your project contains only SpatialOS logic, you can disable the `DefaultWorld`.
-
-To disable the default world:
-
-1. In your Unity Editor, go to **Edit** > **Project Settings** > **Player** and add `UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP` to the **Scripting Define Symbols** field. This disables the creation of the `DefaultWorld`.
-1. Create an initialization script that contains the logic for setting up the injection hooks and cleaning up the worlds. For example:
-
-```csharp
-using Improbable.Gdk.Core;
-using Unity.Entities;
-using UnityEngine;
-
-namespace YourProject
-{
-    public static class OneTimeInitialisation
-    {
-        private static bool initialized;
-
-        [RuntimeInitializeOnLoadMethod]
-        private static void Init()
-        {
-            // ensure that it will only be run when the first Scene gets loaded
-            if (initialized)
-            {
-                return;
-            }
-
-            initialized = true;
-            WorldsInitializationHelper.SetupInjectionHooks();
-            PlayerLoopManager.RegisterDomainUnload(WorldsInitializationHelper.DomainUnloadShutdown, 1000);
-        }
-    }
-}
-
-```
-This sets up the injection hooks needed to run Unity's hybrid ECS and ensures that all worlds are properly cleaned up. You need to set the `initialized` field to `true` to ensure it is only run once, otherwise `Init` is run whenever a Scene gets loaded due to the `RuntimeInitializeOnLoadMethod` attribute.
+* Unity generates code from the [schema]({{urlRoot}}/content/glossary#schema) files defined in your SpatialOS project.
