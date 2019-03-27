@@ -37,6 +37,8 @@ The simulated players are hosted in a separate deployment to ensure that they do
 
 To get the legion of enemies started, you will use [Worker Flags]({{urlRoot}}/content/glossary.md#worker-flags), which you can find from your SpatialOS Console's Deployment Overview page:
 
+> **NOTE:** Make sure you have selected the Deployment **with** the `_sim_players` suffix.
+
 <img src="{{assetRoot}}assets/overview-page-worker-flags.png" style="margin: 0 auto; display: block;" />
 
 Modify the `fps_simulated_players_per_coordinator` flag value from 0 to 10 and hit save:

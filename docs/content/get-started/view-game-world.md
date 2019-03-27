@@ -7,7 +7,7 @@ Let’s take a look at how many simulated player-clients are now running around 
 <br/>
 <br/>
 #### World Inspector
-The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) (shown below) provides a real time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers ) provides a real-time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities they are reading from and writing to.
+The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) (shown below) provides a real-time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities a worker-instance is reading from and writing to.
 
 We can use it, for instance, to highlight where all the simulated player-clients and player-entities are in the world (note: not cool to identify where your friends are hiding).
 
@@ -29,4 +29,6 @@ The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/oper
 
 ## Want to add more features?
 
-You can add your first feature by following our [Health Pick-up tutorial]({{urlRoot}}/projects/fps/tutorial).
+This concludes our Getting Started guide - congratulations for taking your first steps with the GDK for Unity!
+
+You can continue with the FPS Starter Project by following our [Health Pick-up tutorial]({{urlRoot}}/projects/fps/tutorial). This will teach you the basics of adding SpatialOS components and building a networked game feature in SpatialOS.
