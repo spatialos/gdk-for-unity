@@ -613,53 +613,47 @@ The `HandleCollisionWithPlayer` function in your `HealthPickupServerBehaviour.cs
 
 The game logic is now in place, and we can test if it is working correctly. Follow these steps to test the feature:
 
-<%(#Expandable title="<b>Step 1. Enable the player health bar.</b>")%>
+**Step 1.** Enable the player health bar.
+
 Modify the `OnScreenUI` prefab by enabling the **OnScreenUI** > **InGameHud** > **HealthBar** game object. 
 
 This will display a health bar in the top left corner to make it easier for you to see how the health of a player changes.
 
 ![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
-<%(/Expandable)%>
 
-<%(#Expandable title="<b> Step 2. Build your workers.</b>")%>
+**Step 2.** Build your workers.
+
 Select **SpatialOS** > **Build For Local** > **UnityClient**.
 
-To fully test our changes, we will need to launch two clients so you can shoot yourself. We will launch out of these as a built-out client-worker.
+To fully test our changes, we will need to launch two clients so you can shoot yourself. We will launch one of these as a built-out client-worker.
 
 If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.
-<%(/Expandable)%>
 
-<%(#Expandable title="<b>3. Launch a local deployment.</b>")%>
+**Step 3.** Launch a local deployment.
 
 From the Unity Editor menu, select **SpatialOS** > **Local launch**. This opens a terminal which notifies you when the deployment is up and running.
 
 Alternatively you can enter `Ctrl + L` in your Unity Editor.
 
-<%(/Expandable)%>
-
-<%(#Expandable title="<b>4. Launch a server-worker and client-worker in-editor.</b>")%>
+**Step 4.** Launch a server-worker and client-worker in-editor.
 
 With the `FPS-Development` Scene open in your Unity Editor, select the Unity `Play` button.
 
-<%(/Expandable)%>
-
-<%(#Expandable title="<b>5. Launch a built-out <code>UnityClient</code> worker-instance</b>.")%>
+**Step 5.** Launch a built-out `UnityClient` worker-instance
 
 From the Unity Editor menu, select **SpatialOS** > **Launch standalone client**.
 
 This will launch an instance of your `UnityClient` in a separate window. This uses the built-out `UnityClient` worker, so make sure you have performed a "Build UnityClient for local" as in step 1.
 
-<%(/Expandable)%>
-
-<%(#Expandable title="<b>6. Use one client to shoot the other.</b>")%>
+**Step 6.** Use one client to shoot the other.
 
 To see the effects of a health pack restoring a player's health you'll need to damage them first.
 
 This may require some switching between the editor and your standalone client, but you should be able to steer one player entity to the other and shoot them a few times.
 
-You can use the SpatialOS inspector to help you find where the two players are, and navigate them to the same location. You can also select the icon for the damaged player and, in the right-side of the SpatialOS inspector, view the component data for the player's `Health` component to confirm that damage from the gunfire has been applied.<%(/Expandable)%>
+You can use the SpatialOS inspector to help you find where the two players are, and navigate them to the same location.
 
-<%(#Expandable title="<b>7. Use the inspector to check the damage has been applied.</b>")%>
+**Step 7.** Use the inspector to check the damage has been applied.
 
 When a local deployment is running you can open the SpatialOS local inspector in your browser: http://localhost:21000/inspector/
 
@@ -668,9 +662,8 @@ By selecting the visual marker for an entity you can view its component values i
 Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace **improbable** > **gdk** > **health** > **HealthComponent** > **health**.
 
 ![A picture showing how the above looks]({{assetRoot}}assets/health-pickups-tutorial/inspect-health.jpg)
-<%(/Expandable)%>
 
-<%(#Expandable title="<b>8. Walk the damaged player over the health pack and check if it is consumed and applied.</b>")%>
+**Step 8.** Walk the damaged player over the health pack and check if it is consumed and applied.
 Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
 
 **Don't forget to check how much health the player has before walking through the health pack so you can compare the before and after!**
@@ -680,14 +673,15 @@ When the injured player collides with the health pack it should become invisible
 Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace **improbable** > **gdk** > **health** > **HealthComponent** > **health**.
 
 You should also see the health pack reappear after a short time.
-<%(/Expandable)%>
+
+---
 
 Here's how it should look:
 
 <%(Video file="{{assetRoot}}assets/health-pickups-tutorial/health-pickup-demo.mp4")%>
 
 <br/>
-<br/>
+
 **That's it! Well done, and welcome to the GDK!**
 
 We’d love to know what you think, and invite you to join our community on [our forums](https://forums.improbable.io/), or on [Discord](https://discordapp.com/invite/SCZTCYm).
