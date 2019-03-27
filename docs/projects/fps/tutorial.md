@@ -276,7 +276,7 @@ All SpatialOS GDK projects contain a directory named `snapshots` in the root of 
 
 Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
 
-While they are human-readable and you can manually edit the values of the properties within, however be careful not to make mistakes that will inhibit the conversion back to binary form!
+While they are human-readable and you can manually edit the values of the properties within, be careful to not make mistakes that will inhibit the conversion back to binary form!
 <%(/Expandable)%>
 
 **Step 6.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
@@ -388,14 +388,14 @@ namespace Fps
 This script is mostly standard C# code that you could find in any game built with Unity Engine. There are a few parts which are specific to the SpatialOS GDK though, let's break those down:
 
 * `[WorkerType(WorkerUtils.UnityClient)]`<br/>
-This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `Monobehaviour` will only be enabled on `UnityClient` client-workers, ensuring that it will never run on your server-workers.
+This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityClient` client-workers, ensuring that it will never run on your server-workers.
 
 > While we also separate our prefabs by worker types, its good practice to annotation `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupReader healthPickupReader;`<br/>
 This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/content/gameobject/readers-writers#reader-api).
 
-> The `[Reqiure]` annotation on the `HealthPickupReader` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Reader's requirements is that the underlying SpatialOS component is checked out on your worker-instance, regardless of authority. <br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
+> The `[Require]` annotation on the `HealthPickupReader` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Reader's requirements is that the underlying SpatialOS component is checked out on your worker-instance, regardless of authority. <br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 
 * `healthPickupReader.OnUpdate += OnHealthPickupComponentUpdated;`<br/>
 Here, we bind a method to an event on the `Reader`. This means that whenever the `HealthPickup` component is updated, we will trigger a callback on `OnHealthPickupComponentUpdated`. This allow you to react to changes in components.
@@ -431,7 +431,7 @@ Now we've added some game logic to interact with our `HealthPickup` entity we sh
 
 > We advise using a test-iterate cycle when developing with the GDK for Unity. You can take advantage of the quick iteration time afforded by running multiple workers in your Unity Editor.
 
-**Step 1.** In your Unity Editor, launch a local deployment of your game by selecting **SpatialOS** > **"Local launch"** or using the shortcut `Ctrl + L`/`Cmd + L`.
+**Step 1.** In your Unity Editor, launch a local deployment of your game by selecting **SpatialOS** > **Local launch** or using the shortcut `Ctrl + L`/`Cmd + L`.
 
 **Step 2.** Open the `FPS-Development` Scene in your Unity Editor. The Scene file is located in `Assets/Fps/Scene`.
 
@@ -561,14 +561,14 @@ namespace Fps
 Let’s break down what the above snippet does:
 
 * `[WorkerType(WorkerUtils.UnityGameLogic)]`<br/>
-This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `Monobehaviour` will only be enabled on `UnityGameLogic` client-workers, ensuring that it will never run on your server-workers.
+This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityGameLogic` client-workers, ensuring that it will never run on your server-workers.
 
 > While we also separate our prefabs by worker types, its good practice to annotation `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupWriter healthPickupWriter;`<br/>
 This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/content/gameobject/readers-writers#writer-api).
 
-> The `[Reqiure]` annotation on the `HealthPickupWriter` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Writer's requirements is that the underlying SpatialOS component is checked out on your worker-instance, and your worker-instance is authoritative over that component.<br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
+> The `[Require]` annotation on the `HealthPickupWriter` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Writer's requirements is that the underlying SpatialOS component is checked out on your worker-instance, and your worker-instance is authoritative over that component.<br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 
 * `private void OnTriggerEnter(Collider other)`<br/>
 Most functions will **only** be called if the `MonoBehaviour` is enabled, but `OnTriggerEnter` is called even when it is disabled. It is unusual in this sense. For this reason, scripts which use `OnTriggerEnter` **must** check whether objects that are have annotations `[Require]` are null (indicating that the requirements were not met) before using functions on those objects.
@@ -629,7 +629,7 @@ This will display a health bar in the top left corner to make it easier for you 
 <%(#Expandable title="<b> Step 2. Build your workers.</b>")%>
 Select **SpatialOS** > **Build For Local** > **UnityClient**.
 
-To fully test our changes, we will need to launch two clients so you can shoot yourself. We will launhc out of these as a built-out client-worker.
+To fully test our changes, we will need to launch two clients so you can shoot yourself. We will launch out of these as a built-out client-worker.
 
 If you are running your workers from within your Unity Editor a build is not necessary, however in a moment we will launch a built-out client-worker. Building the workers is therefore essential.
 <%(/Expandable)%>
