@@ -386,7 +386,7 @@ This script is mostly standard C# code that you could find in any game built wit
 * `[WorkerType(WorkerUtils.UnityClient)]`<br/>
 This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityClient` client-workers, ensuring that it will never run on your server-workers.
 
-> While we also separate our prefabs by worker types, its good practice to annotation `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
+> While we also separate our prefabs by worker types, its good practice to annotate `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupReader healthPickupReader;`<br/>
 This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/content/gameobject/readers-writers#reader-api).
@@ -559,7 +559,7 @@ Let’s break down what the above snippet does:
 * `[WorkerType(WorkerUtils.UnityGameLogic)]`<br/>
 This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityGameLogic` client-workers, ensuring that it will never run on your server-workers.
 
-> While we also separate our prefabs by worker types, its good practice to annotation `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
+> While we also separate our prefabs by worker types, its good practice to annotate `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupWriter healthPickupWriter;`<br/>
 This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/content/gameobject/readers-writers#writer-api).
