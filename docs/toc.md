@@ -19,7 +19,7 @@
         - [3. Build your workers]({{urlRoot}}/content/build)
         - [4. Deploy your game]({{urlRoot}}/content/deploy)
 - <h3>Feature Modules</h3>
-    - [Core & others]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+    - [Overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization]({{urlRoot}}/content/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
