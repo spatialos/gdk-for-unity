@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 5.3)
 
 <%(TOC)%>
-# Workers: How to represent a worker as a GameObject
+# Link workers to GameObjects
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:

@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 16+27)
 
 <%(TOC)%>
-# Workflows: MonoBehaviour or ECS workflow
+# Which workflow
 
 When you use SpatialOS with Unity, you have the option of two workflows: the traditional MonoBehaviour workflow using GameObjects or the ECS workflow. You can also choose to use a mixture of the two workflows.
 
