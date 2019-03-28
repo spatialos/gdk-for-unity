@@ -5,24 +5,24 @@
 <%(TOC)%>
 # Commands: World and component command requests and responses
 
-_This document relates to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
-Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS](\{\{urlRoot\}\}/reference/workflows/which-workflow)) and [workers in the GDK](\{\{urlRoot\}\}/reference/concepts/worker). You should also be familiar with the terms; [schema](\{\{urlRoot\}\}/reference/glossary#schema), [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) and [SpatialOS components](\{\{urlRoot\}\}/reference/glossary#spatialos-component).
+Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS]({{urlRoot}}/reference/workflows/which-workflow)) and [workers in the GDK]({{urlRoot}}/reference/concepts/worker). You should also be familiar with the terms; [schema]({{urlRoot}}/reference/glossary#schema), [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) and [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component).
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](\{\{urlRoot\}\}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow).
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow).
 
 There are two types of commands in SpatialOS:
 
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](\{\{urlRoot\}\}/reference/glossary#spatialos-entity).
-* **Component commands** you set up in your [schema](\{\{urlRoot\}\}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 You can find documentation for commands by following these links:
 
-* [MonoBehaviour world commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/world-commands)
-* [ECS world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands)
-* [MonoBehaviour component commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-* [ECS component commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/component-commands)
+* [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+* [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
+* [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
+* [ECS component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
 
 ### API - Component commands
 
@@ -59,7 +59,7 @@ static Request CreateRequest(EntityId targetEntityId, TRequest request, uint? ti
 Parameters:
 
   * `EntityId entityId` - The ID of the SpatialOS entity that you want to send the command to.
-  * `TRequest payload` - This is the data which is sent to the worker with [write access](\{\{urlRoot\}\}/reference/glossary#authority) with your command. The type `TRequest` of this payload depends on what you defined in your schema as the payload.
+  * `TRequest payload` - This is the data which is sent to the worker with [write access]({{urlRoot}}/reference/glossary#authority) with your command. The type `TRequest` of this payload depends on what you defined in your schema as the payload.
   * `uint timeoutMillis` - Optional. Specifies the amount of time to wait before the command fails with a timeout status. This is `null` by default which actually means it’s 5 seconds as this value comes from the lower-level [SpatialOS worker SDK](https://docs.improbable.io/reference/latest/csharpsdk/introduction).
   * `bool allowShortCircuiting` - Optional.
 A boolean specifying whether or not a command which is sent to the same worker can be handled without going through the SpatialOS Runtime. The default is `false`.   * `object context` - Optional. An arbitrary object you can associate with the command which you also get back along with the response. This is useful to pass more information about the situation to the code handling the response. The default is `null`.

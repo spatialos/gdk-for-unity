@@ -3,18 +3,18 @@
 
 Before reading this document, make sure you are familiar with:
 
-  * [The SpatialOS GDK for Unity](\{\{urlRoot\}\}/reference/overview)
-  * [Mobile support overview](\{\{urlRoot\}\}/reference/mobile/overview)
-  * [Setting up Android support for the GDK](\{\{urlRoot\}\}/reference/mobile/android/setup)
+  * [The SpatialOS GDK for Unity]({{urlRoot}}/reference/overview)
+  * [Mobile support overview]({{urlRoot}}/reference/mobile/overview)
+  * [Setting up Android support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
 
-Unity provides multiple ways to test your Android [client-worker](\{\{urlRoot\}\}/reference/glossary#client-worker). We integrated them all to work with [SpatialOS](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
+Unity provides multiple ways to test your Android [client-worker]({{urlRoot}}/reference/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
 
 ## In the Editor
 For standard workflows and for minor changes, we recommend that you run your game in the Editor. Now that your build platform is set to **Android**, Unity compiles and executes sections of code marked with the [platform #define directive](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html); `#if UNITY_ANDROID`. This means that you have the full capabilities and ease of use of your Unity Editor, while still executing code that would otherwise only run on an Android device.
 
 For more information, see the following documentation:
 
-  * [Connect to a local deployment in the Editor](\{\{urlRoot\}\}/reference/mobile/android/local-deploy#in-editor)
+  * [Connect to a local deployment in the Editor]({{urlRoot}}/reference/mobile/android/local-deploy#in-editor)
 
 ## Unity Remote
 
@@ -23,7 +23,7 @@ With the Unity Remote app, you don’t have to spend time building and deploying
 For more information, see the following documentation:
 
   * [Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
-  * [Connect to a local deployment using Unity Remote](\{\{urlRoot\}\}/reference/mobile/android/local-deploy#unity-remote)
+  * [Connect to a local deployment using Unity Remote]({{urlRoot}}/reference/mobile/android/local-deploy#unity-remote)
 
 ## Android Emulator
 
@@ -32,7 +32,7 @@ The Android Emulator from Android Studio emulates Android devices on your develo
 For more information, see the following documentation:
 
   * [The Android Developers documentation](https://developer.android.com/studio/run/emulator)
-  * [Connect to a local deployment using Android Emulator](\{\{urlRoot\}\}/reference/mobile/android/local-deploy#android-emulator)
+  * [Connect to a local deployment using Android Emulator]({{urlRoot}}/reference/mobile/android/local-deploy#android-emulator)
 
 ## Android device
 
@@ -40,4 +40,4 @@ While it takes time to build and deploy, this option provides the full native ca
 
 For more information, see the following documentation:
 
-  * [Connect to a local deployment using your Android device](\{\{urlRoot\}\}/reference/mobile/android/local-deploy#android-device)
+  * [Connect to a local deployment using your Android device]({{urlRoot}}/reference/mobile/android/local-deploy#android-device)
