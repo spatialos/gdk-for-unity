@@ -176,7 +176,7 @@ In order to ensure that the generated code can access its dependencies, you will
 
 * [Improbable.Gdk.Generated.asmdef](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef)
 
-Copy this file into `workers/my-unity-project/Assets/Generated`.
+Copy this file into `workers/my-unity-project/Assets/Generated/Improbable.Gdk.Generated.asmdef`.
 
 > **Note:** You will need to create the `Generated` folder.
 
@@ -190,6 +190,7 @@ Open the `manifest.json` in the `workers/my-unity-project/Packages/` directory a
 {
   "dependencies": {
     "com.improbable.gdk.core": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.core",
+    "com.improbable.gdk.tools": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.tools",
     "com.improbable.gdk.buildsystem": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.buildsystem",
     "com.improbable.gdk.testutils": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.testutils",
   }
@@ -208,7 +209,17 @@ Unity allows you to reference a package with a file path instead of fetching a v
 The consequence of this mechanism is that you tend to need two repositories cloned side by side.
 <%(/Expandable)%>
 
-**Step 3.** Open your Unity project
+**Step 3.** Create a GDK tools configuration file.
+
+Our `com.improbable.gdk.tools` package uses a configuration file when downloading Worker SDK packages and generating code. We recommend that you reuse this file:
+
+* [`GdKToolsConfiguration.json`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Config/GdkToolsConfiguration.json)
+
+Copy this file into `workers/my-unity-project/Assets/Config/GdkToolsConfiguration.json`
+
+> **Note:** You will need to create the `Config` folder.
+
+**Step 4.** Open your Unity project
 
 Open your Unity project located at `workers/my-unity-project`. This triggers a few actions:
   
