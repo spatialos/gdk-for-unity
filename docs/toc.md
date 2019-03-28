@@ -15,9 +15,8 @@
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
     - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)
     - Make your own
-        - [1. Machine setup]({{urlRoot}}/setup-and-installing)
-        - [2. Project setup]({{urlRoot}}/content/set-up-new-project)
-        - [3. Build your workers]({{urlRoot}}/content/build)
+        - [1. Project setup]({{urlRoot}}/content/set-up-new-project)
+        - [2. Build your workers]({{urlRoot}}/content/build)
 - <h3>Feature Modules</h3>
     - [Overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
     - [Transform Synchronization]({{urlRoot}}/content/modules/transform-feature-module)

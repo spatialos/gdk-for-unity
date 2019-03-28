@@ -1,10 +1,32 @@
 <%(TOC)%>
 # Project setup
 
+_Make sure you have followed the [Setup & installation]({{urlRoot}}/machine-setup) before following this guide._
+
+---
+
 To use the SpatialOS GDK for Unity in a new project, you need to:
 
+1. Clone the `gdk-for-unity` repository.
 1. Setup the [SpatialOS project structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure).
 1. Add the GDK packages to your Unity project.
+
+## Clone the SpatialOS GDK for Unity repository
+
+To run the GDK for Unity, you need to download the source code. To do this, you need to clone the GDK repository.
+
+### Using a terminal
+
+Clone the SpatialOS GDK for Unity repository using one of the following terminal commands:
+
+|     |     |
+| --- | --- |
+| HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
+| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
+
+### Using GitHub Desktop
+
+To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, select the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then select Clone.
 
 ## Setup a SpatialOS project
 
