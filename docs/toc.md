@@ -25,6 +25,7 @@
     - [Player Lifecycle]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/content/intro-reference)
+    - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
     - GDK concepts
         - [Code generation]({{urlRoot}}/content/ecs/component-generation)
         - [Connection flows]({{urlRoot}}/content/connecting-to-spatialos)
@@ -76,8 +77,8 @@
             - Connection flows
                 - [Local deployment]({{urlRoot}}/content/mobile/ios/local-deploy)
                 - [Cloud deployment]({{urlRoot}}/content/mobile/ios/cloud-deploy)
-    - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
-    - [GDK for Unity glossary]({{urlRoot}}/content/glossary)
+    - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
+    - [GDK glossary]({{urlRoot}}/content/glossary)
     - [Troubleshooting]({{urlRoot}}/content/troubleshooting)
     - [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
 
