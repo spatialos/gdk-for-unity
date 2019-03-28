@@ -3,20 +3,20 @@
 <%(TOC)%>
 # Link SpatialOS entities to GameObjects
 
-_This document relates to the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
-* The SpatialOS entity section of [MonoBehaviour and ECS workflows: SpatialOS entities](\{\{urlRoot\}\}/reference/workflows/which-workflow)
-* [Workers in the GDK](\{\{urlRoot\}\}/reference/concepts/worker)
+* The SpatialOS entity section of [MonoBehaviour and ECS workflows: SpatialOS entities]({{urlRoot}}/reference/workflows/which-workflow)
+* [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 
-As described in the [SpatialOS entity background documentation](\{\{urlRoot\}\}/reference/workflows/which-workflow), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
+As described in the [SpatialOS entity background documentation]({{urlRoot}}/reference/workflows/which-workflow), you represent SpatialOS entities with GameObjects in a Scene by creating the SpatialOS entity first, then linking it to a GameObject in a Scene.
 
 This document is a guide on how to link a SpatialOS entity with a GameObject using the GameObject Creation Feature Module.
 
-You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates) documentation.
+You create SpatialOS entities by creating setting up entity templates. Find out how to do this in the [Entity templates]({{urlRoot}}/reference/concepts/entity-templates) documentation.
 
-When you are using the MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime) by using Readers and Writers. Find out how to interact with SpatialOS entities in the [Reader and Writers documentation](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/index).
+When you are using the MonoBehaviour workflow, you interact with SpatialOS entities in the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) by using Readers and Writers. Find out how to interact with SpatialOS entities in the [Reader and Writers documentation]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index).
 
 ## The Creation Feature Module
 
@@ -27,12 +27,12 @@ To enable the GameObject Creation Feature Module in your project:
 
 1. Set up your project to use the GameObject Creation Feature Module.
   * In your Unity project’s `Packages` directory, locate the Unity Packages manifest `manifest.json`. Add the GameObject Creation Feature Module to the manifest by adding: `"com.improbable.gdk.gameobjectcreation": "file:<path-to-gdk>/workers/unity/Packages/com.improbable.gdk.gameobjectcreation"`
-1. Set up your worker types to use the GameObject Creation Feature Module when the [WorkerConnector](\{\{urlRoot\}\}/reference/workflows/monobehaviour/creating-workers) initializes systems.
+1. Set up your worker types to use the GameObject Creation Feature Module when the [WorkerConnector]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) initializes systems.
   * To use the default implementation of GameObject creation, in your implementation of `WorkerConnector.HandleWorkerConnectionEstablished`, call `GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World)`.
 1. In your project, create a prefab for any SpatialOS entity you want to represent as a GameObject. Where you store the prefab depends on which worker type is going to create the GameObject.
   * For any worker, use the `Resources/Prefabs/Common/` directory.
   * For specific worker types, use the `Resources/Prefabs/<WorkerType>` directory where `<WorkerType>` is the type of worker which is going to make this prefab. (Using this directory makes the prefab available for only for a specific worker type.)
-1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template](\{\{urlRoot\}\}/reference/concepts/entity-templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
+1. For the SpatialOS entity, you want to represent as a GameObject, in its [entity template]({{urlRoot}}/reference/concepts/entity-templates), set the value of its `Metadata` component to the name of the prefab you have just set up.
 
 ### How to customize the GameObject Creation Feature Module
 
@@ -46,7 +46,7 @@ void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker);
 
 Fields:
 
-  * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view](\{\{urlRoot\}\}/reference/glossary#worker-s-view).
+  * `SpatialOSEntity entity`: A SpatialOS entity that entered your [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view).
   * `EntityGameObjectLinker linker`: An instance of the linker. Ensure you call `linker.LinkGameObjectToSpatialOSEntity(EntityId entityId, GameObject gameObject, params Type[] componentTypesToAdd)` to link the `GameObject` and SpatialOS entity.
 
 ```csharp

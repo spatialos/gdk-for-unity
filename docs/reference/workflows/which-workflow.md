@@ -7,7 +7,7 @@ When you use SpatialOS with Unity, you have the option of two workflows: the tra
 
 > ECS is an alternative Unity development paradigm, introduced by Unity in early 2018. Find out more on [Unity’s GitHub](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail.md#world).
 
-[SpatialOS entities](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) are the objects in your [SpatialOS world](\{\{urlRoot\}\}/reference/glossary#spatialos-world); how you create them depends on which workflow you are using.
+[SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) are the objects in your [SpatialOS world]({{urlRoot}}/reference/glossary#spatialos-world); how you create them depends on which workflow you are using.
 
 ## The two workflows
 
@@ -24,21 +24,21 @@ The sections on _getting started_, _configuring your project_, and  _tools_ appl
 
 ## SpatialOS entities
 
-SpatialOS entities are the objects in your [SpatialOS world](\{\{urlRoot\}\}/reference/glossary#spatialos-world). The instance of your game world running on cloud servers (or locally on your development computer during game development) is called "the Runtime".
+SpatialOS entities are the objects in your [SpatialOS world]({{urlRoot}}/reference/glossary#spatialos-world). The instance of your game world running on cloud servers (or locally on your development computer during game development) is called "the Runtime".
 
 All of the data that you want to share between servers and clients needs to be stored in SpatialOS entities, using their components.
 
->You can read more about SpatialOS entities and their components in the [SpatialOS concept documentation](https://docs.improbable.io/reference/latest/shared/concepts/world-entities-components) and in the [GDK glossary](\{\{urlRoot\}\}/reference/glossary#spatialos-entity).
+>You can read more about SpatialOS entities and their components in the [SpatialOS concept documentation](https://docs.improbable.io/reference/latest/shared/concepts/world-entities-components) and in the [GDK glossary]({{urlRoot}}/reference/glossary#spatialos-entity).
 
 In order to create a SpatialOS entity, you need to set up SpatialOS workers. Workers are programs which you create; they work together, executing logic on your game’s SpatialOS world. They perform the computation associated with a world: they can read what’s happening, watch for changes, and make changes of their own. It is these workers which create the SpatialOS entities.
 
->You can read more about SpatialOS workers in the [SpatialOS concept documentation](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing), the [GDK glossary](\{\{urlRoot\}\}/reference/glossary#worker) and the GDK documentation on [workers](\{\{urlRoot\}\}/reference/concepts/worker).  
+>You can read more about SpatialOS workers in the [SpatialOS concept documentation](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing), the [GDK glossary]({{urlRoot}}/reference/glossary#worker) and the GDK documentation on [workers]({{urlRoot}}/reference/concepts/worker).  
 
 ## GameObjects and SpatialOS entities
 
 When working with the SpatialOS GDK using the MonoBehaviour workflow, you can think of SpatialOS entities as approximating to Unity GameObjects. However, while traditional Unity development with GameObjects involves creating a GameObject first and then adding various GameObject components to it to give it the functionality you want, to create SpatialOS entities, you do something different. Instead, you first make a SpatialOS entity and add its data, the GDK then creates a Unity ECS entity to store all the data, and then it creates a GameObject to represent this in your game (if you want it to; you may not want it to, which we discuss below.)
 
-So, you set up a worker and it is the worker which sends a request to the [Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime) to create a SpatialOS entity. Once the Runtime has created the SpatialOS entity, that worker receives a notification which triggers it to create a corresponding ECS entity. It can also create a corresponding GameObject, if you have set it up to do this. In your Unity Project, the ECS entity and any corresponding GameObject represent the SpatialOS entity.
+So, you set up a worker and it is the worker which sends a request to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) to create a SpatialOS entity. Once the Runtime has created the SpatialOS entity, that worker receives a notification which triggers it to create a corresponding ECS entity. It can also create a corresponding GameObject, if you have set it up to do this. In your Unity Project, the ECS entity and any corresponding GameObject represent the SpatialOS entity.
 
 It’s worth noting that, even if you use only the MonoBehaviour workflow, the GDK still uses ECS under the hood.
 
@@ -58,11 +58,11 @@ So, players, NPCs or even background objects like trees, that you want to exist 
 
 In the MonoBehaviour workflow, to represent your SpatialOS entity as a GameObject, you need to set up your workers to create SpatialOS entities using entity templates. See the following documentation for more information:
 
-* Both workflows - [SpatialOS entities: Creating entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates)
+* Both workflows - [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
-* Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
+* Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
 
-* MonoBehaviour workflow - [SpatialOS entities: How to link SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities)
+* MonoBehaviour workflow - [SpatialOS entities: How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
 
 ## Unity ECS entities and SpatialOS entities
 
@@ -72,7 +72,7 @@ As with the MonoBehaviour workflow, you create a SpatialOS entity first which th
 
 So, it is the workers which you have set up which request the Runtime to create a SpatialOS entity. This triggers the GDK to create an ECS entity;  so the ECS entity represents the SpatialOS entity in your Unity project.
 
-So, you set up a worker and it is the worker which sends a request to the [Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime) to create a SpatialOS entity. Once the Runtime has created the SpatialOS entity, that worker receives a notification which triggers it to create a corresponding ECS entity. In your Unity Project, the ECS entity represents the SpatialOS entity.
+So, you set up a worker and it is the worker which sends a request to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) to create a SpatialOS entity. Once the Runtime has created the SpatialOS entity, that worker receives a notification which triggers it to create a corresponding ECS entity. In your Unity Project, the ECS entity represents the SpatialOS entity.
 
 #### SpatialOS entities are always ECS entities
 
@@ -88,6 +88,6 @@ In a battle royale game, for example,  you could have an offline lobby, in which
 
 In the ECS workflow, to represent your SpatialOS entity as an ECS entity, you need to set up your workers to create SpatialOS entities using entity templates.  See the following documentation for more information:
 
-* Both workflows - [SpatialOS entities: Creating entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates)
+* Both workflows - [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
-* Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
+* Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)

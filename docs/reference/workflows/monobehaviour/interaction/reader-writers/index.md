@@ -4,14 +4,14 @@
 
 <%(TOC)%>
 # Readers and Writers
-_This document relates to the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow#spatialos-entities)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-  * [Linking SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities)
-  * [Workers](\{\{urlRoot\}\}/reference/concepts/worker)
-  * (Optional) [SpatialOS schema](\{\{urlRoot\}\}/reference/glossary#schema).
-  * (Optional) [Read and write access](\{\{urlRoot\}\}/reference/glossary#authority)
+  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
+  * [Workers]({{urlRoot}}/reference/concepts/worker)
+  * (Optional) [SpatialOS schema]({{urlRoot}}/reference/glossary#schema).
+  * (Optional) [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 Readers and Writers allow you to inspect and change the state of SpatialOS components using MonoBehaviours by letting you perform the following actions:
 
@@ -37,16 +37,16 @@ For every SpatialOS component defined in schema, the GDK generates a Reader and 
   * `<namespace of schema component>.<component name>Reader`
   * `<namespace of schema component>.<component name>Writer`
 
-You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
+You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
 
   * A reader for a specific component can be injected as long as the worker has read access over this component.
   * A writer for a specific component can only be injected, if the worker has write access over this component.
 
 You can find out more about how to work with Readers and Writers in:
 
-  * [How to interact with SpatialOS using MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
-  * [How to read, update and react to changes](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
-  * [How to send and receive events](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/events)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
+  * [How to read, update and react to changes]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
+  * [How to send and receive events]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/events)
 
 ## Reader API
 
@@ -61,7 +61,7 @@ For the following API, let:
 |-------------------|------------------------|--------------------------------|
 | EntityId | `EntityId`                 | The entity ID of the underlying SpatialOS entity of this Reader. |
 | Data  	| `TComponentData`              	| The data stored inside the component that this Reader is associated with. |
-| Authority | `Authority` | The [authority](\{\{urlRoot\}\}/reference/glossary#authority) status of the current worker of the component that this Reader is associated with. |
+| Authority | `Authority` | The [authority]({{urlRoot}}/reference/glossary#authority) status of the current worker of the component that this Reader is associated with. |
 
 **Events:**
 ```csharp
@@ -121,7 +121,7 @@ For the following API, let:
 ```csharp
 void SendUpdate(TComponentUpdate update);
 ```
-Allows you to send a component update to the [SpatialOS Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime).
+Allows you to send a component update to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
 Parameters:
 

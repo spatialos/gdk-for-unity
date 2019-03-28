@@ -4,7 +4,7 @@
 [//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1IGblyE-pvA4ZyJIjN8PcD1Ct6pE4FNhtlXRdp_Sy97o/edit)
 <%(TOC)%>
 # Code generation
- _This document relates to both the [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
 > Note this document refers to ECS components but it is also relevant if you are using the MonoBehaviour workflow. You don't need to know about ECS to use component generation.
 
@@ -19,7 +19,7 @@ The code generator generates two structs for each SpatialOS component defined in
   * A **snapshot** `struct` which implements `Improbable.Gdk.Core.ISpatialComponentSnapshot`. Its fully qualified name is: `{schema package}.{name of schema component}.Snapshot`.
   * A **component** `struct` which implements `Unity.Entities.IComponentData`, `Improbable.Gdk.Core.ISpatialComponentData`, and `Improbable.Gdk.Core.ISnapshottable<{schema package}.{name of schema component}.Snapshot>`. Its fully qualified name is: `{schema package}.{name of schema component}.Component`.
 
-These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/component-commands) or [events](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
+These structs only contain the defined schema data fields. They do *not* contain any fields or methods relating to [commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands) or [events](https://docs.improbable.io/reference/latest/shared/glossary#event) defined on that component.
 
 ## Generation details
 
@@ -44,9 +44,9 @@ This struct also has the [`[System.Serializable]` attribute](https://docs.unity3
 This struct contains the following fields:
 
   * the public property `uint ComponentId` to read the component ID of this component as defined in schemalang.
-  * the private fields `byte dirtyBits{i}`, which represents a bitmask used internally to identify whether a component field needs to be replicated to the [SpatialOS Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime).
+  * the private fields `byte dirtyBits{i}`, which represents a bitmask used internally to identify whether a component field needs to be replicated to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
-Additionally, for each field defined in your [schema](\{\{urlRoot\}\}/reference/glossary#schema) file, the generated C# struct contains:
+Additionally, for each field defined in your [schema]({{urlRoot}}/reference/glossary#schema) file, the generated C# struct contains:
 
   * a private field corresponding to the field defined in schemalang.
   * a public property that represents the value of this field. If you change the value of this property, the corresponding `dirtyBit` is set to true.

@@ -4,15 +4,15 @@
 
 <%(TOC)%>
 # Readers and Writers: Component data and updates
-_This document relates to the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow#spatialos-entities)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:
 
-* [Linking SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities)
-* [Reader and Writer](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/index)
-* [SpatialOS components](\{\{urlRoot\}\}/reference/glossary#spatialos-component)
-* [Read and write access](\{\{urlRoot\}\}/reference/glossary#authority)
-* [Schema](\{\{urlRoot\}\}/reference/glossary#schema)
+* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
+* [Reader and Writer]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+* [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component)
+* [Read and write access]({{urlRoot}}/reference/glossary#authority)
+* [Schema]({{urlRoot}}/reference/glossary#schema)
 
 
 We use the following schema for all examples described in this documentation.
@@ -27,7 +27,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a [GameObject that is linked to a SpatialOS entity](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities) containing the `Health` component.
+The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) containing the `Health` component.
 
 ## How to read component properties
 

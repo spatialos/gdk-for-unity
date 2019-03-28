@@ -13,18 +13,18 @@ If you are new to SpatialOS, you can check out the SpatialOS concept documentati
 
 We recommend you take a look at the following three pages first:
 
-* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow.md). <br/>
+* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/which-workflow.md). <br/>
 You can choose to work with either the traditional Unity MonoBehaviour approach or the new Unity Entity Component System (ECS) approach.
 
-* The background document on [workers in the GDK](\{\{urlRoot\}\}/reference/concepts/worker.md).
+* The background document on [workers in the GDK]({{urlRoot}}/reference/concepts/worker.md).
 
-* The guide on [how to create SpatialOS entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates.md).
+* The guide on [how to create SpatialOS entity templates]({{urlRoot}}/reference/concepts/entity-templates.md).
 
 ### Workflows
 
 #### MonoBehaviour
 
-If you are using the MonoBehaviour workflow, you should look at [How to link SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities.md), once you have looked at the above three documents.
+If you are using the MonoBehaviour workflow, you should look at [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities.md), once you have looked at the above three documents.
 
 #### ECS 
 

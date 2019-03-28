@@ -4,7 +4,7 @@
 
 <%(TOC)%>
 # System update order
- _This document relates to the [ECS workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 Unity provides attributes to define the [update order of systems (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
 
@@ -33,7 +33,7 @@ The groups are executed in the following order:
 * `SpatialOSUpdateGroup` - Most systems which use SpatialOS components should run in this group.
 * `SpatialOSSendGroup` - This group contains all systems related to sending data to SpatialOS .
   * `InternalSpatialOSSendGroup` - This group is used by the `SpatialOSSendSystem` to handle sending all replicated components to SpatialOS. **(Internal use only)**
-  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive](\{\{urlRoot\}\}/reference/workflows/ecs/reactive-components) and [temporary components](\{\{urlRoot\}\}/reference/workflows/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
+  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/reference/workflows/ecs/reactive-components) and [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
 
 ## Update vs FixedUpdate
 

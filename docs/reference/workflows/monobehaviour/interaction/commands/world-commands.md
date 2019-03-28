@@ -5,30 +5,30 @@
 
 <%(TOC)%>
 # World commands
-_This document relates to the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow#spatialos-entities)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
 
 Before reading this document, make sure you are familiar with
 
-  * [How to interact with SpatialOS using MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
   * [Commands: World and component command requests and responses
-](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses)
-  * [SpatialOS entities: Creating entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates)
+]({{urlRoot}}/reference/world-component-commands-requests-responses)
+  * [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](\{\{urlRoot\}\}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow).<br/>
 
 There are two types of commands in SpatialOS:
 
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](\{\{urlRoot\}\}/reference/glossary#spatialos-entity).
-* **Component commands** you set up in your [schema](\{\{urlRoot\}\}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 The commands documentation is:
 
 * MonoBehaviour world commands - this document
-* [ECS world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands)
-* [MonoBehaviour component commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-* [ECS component commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/component-commands)
-* Both workflows - [World and component command requests and responses](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses)
+* [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
+* [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
+* [ECS component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
+* Both workflows - [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
 
 
 ## How to send and receive world commands
@@ -40,7 +40,7 @@ We provide the following type for sending and receiving world commands:
 
 The `WorldCommandSender` can be injected without any condition. A MonoBehaviour that requires only this will be enabled as soon as the associated GameObject is created.
 
-If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) document.
+If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) document.
 
 ### CreateEntity
 You can use the `WorldCommandSender.SendCreateEntityCommand` method to request the creation of a new SpatialOS entity. It has the following signature:
@@ -91,7 +91,7 @@ Parameters:
   * `WorldCommands.DeleteEntity.Request request`: The command request payload.
   * `Action<WorldCommands.DeleteEntity.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
 
->  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [You should wait until you receive a callback on ](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities#the-creation-feature-module).
+>  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [You should wait until you receive a callback on ]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities#the-creation-feature-module).
 
 
 ### EntityQuery

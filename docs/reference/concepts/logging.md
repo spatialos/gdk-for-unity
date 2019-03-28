@@ -1,7 +1,7 @@
 [//]: # (TODO: Move this doc from the ecs folder)
 <%(TOC)%>
 #  Logs
- _This document relates to both the [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
 The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
@@ -9,7 +9,7 @@ The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of 
 *  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
     * Note: By default, messages with the log level `LogType.Log` are not sent to SpatialOS. This can be changed by instantiating the `ForwardingDispatcher` with a different `minimumLogLevel` parameter.
 
-All workers use the `ForwardingDispatcher` by default in the Playground. If you want to use the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher](\{\{urlRoot\}\}/reference/concepts/logging#creating-and-using-your-own-dispatcher).
+All workers use the `ForwardingDispatcher` by default in the Playground. If you want to use the `LoggingDispatcher`, see the last step of [Creating and using your own dispatcher]({{urlRoot}}/reference/concepts/logging#creating-and-using-your-own-dispatcher).
 
 ## Using the ILogDispatcher
 
