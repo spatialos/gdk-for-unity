@@ -46,4 +46,6 @@ For completeness, lets test building the cloud configuration as well; with your 
 
 # Next steps
 
-This concludes setting up a new project with the SpatialOS GDK for Unity! The next thing you'll want to do is get your workers to connect to the SpatialOS runtime. Check out [the WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector) documentation to learn how to do this.
+This concludes setting up a new project with the SpatialOS GDK for Unity!
+
+The next thing you'll want to do is get your workers to connect to the SpatialOS runtime. Check out [the WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector) documentation to learn how to do this.
