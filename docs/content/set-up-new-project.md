@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="2")%>
 # Project setup
 
 _Make sure you have followed the [Setup & installation]({{urlRoot}}/machine-setup) before following this guide._
