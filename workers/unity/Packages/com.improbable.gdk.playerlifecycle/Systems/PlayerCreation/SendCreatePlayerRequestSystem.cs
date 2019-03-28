@@ -25,6 +25,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         private bool playerCreationRequestQueued;
         private long? playerCreationRequestId;
         private int playerCreationRetries;
+        private Action<PlayerCreator.CreatePlayer.ReceivedResponse> playerCreationCallback;
 
         private int playerCreatorQueryRetries;
         private long? playerCreatorEntityQueryId;
@@ -108,7 +109,11 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     have already been found, the request is sent in the next tick.
         /// </summary>
         /// <param name="serializedArguments">A serialized byte array of arbitrary player creation arguments.</param>
-        public void RequestPlayerCreation(byte[] serializedArguments = null)
+        /// <param name="callback">
+        ///     An action to be invoked when the worker receives a response to the player creation request.
+        /// </param>
+        public void RequestPlayerCreation(byte[] serializedArguments = null,
+            Action<PlayerCreator.CreatePlayer.ReceivedResponse> callback = null)
         {
             if (playerCreationRequestId.HasValue)
             {
@@ -120,6 +125,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             playerCreationRetries = 0;
             serializedArgumentsCache = serializedArguments;
+            playerCreationCallback = callback;
             playerCreationRequestQueued = true;
         }
 
@@ -186,9 +192,12 @@ namespace Improbable.Gdk.PlayerLifecycle
                 // response for the player creation request that we last sent.
                 playerCreationRequestId = null;
 
+                playerCreationCallback?.Invoke(response);
+
                 switch (response.StatusCode)
                 {
                     case StatusCode.Success:
+                        playerCreationCallback = null;
                         break;
                     case StatusCode.AuthorityLost:
                     case StatusCode.InternalError:
@@ -196,6 +205,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                         RetryCreatePlayerRequest();
                         break;
                     default:
+                        playerCreationCallback = null;
                         logDispatcher.HandleLog(LogType.Error, new LogEvent(
                             $"Create player request failed: {response.Message}"
                         ));
