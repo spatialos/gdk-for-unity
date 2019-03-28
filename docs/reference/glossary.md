@@ -141,7 +141,7 @@ As their name suggests, [cloud deployments](https://docs.improbable.io/reference
 
 > Related:
 >
-> * [How to deploy your game](\{\{urlRoot\}\}/reference/deploy)
+> * [How to deploy your game](\{\{urlRoot\}\}/reference/concepts/deployments)
 
 ### Feature modules
 
@@ -362,12 +362,12 @@ You'll use a snapshot as the starting point (an [initial snapshot](https://docs.
 
 A SpatialOS assembly is created when you build your workers. It contains all the files that your game uses at runtime. This includes the compiled code and an executable and the assets your [workers](#worker) use (like models and textures used by a client to visualize the game).
 
-The SpatialOS assembly is stored locally at `build\assembly` in the root directory of your SpatialOS project. When you start a [cloud deployment](\{\{urlRoot\}\}/reference/deploy#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
+The SpatialOS assembly is stored locally at `build\assembly` in the root directory of your SpatialOS project. When you start a [cloud deployment](\{\{urlRoot\}\}/reference/concepts/deployments#cloud-deployment), your SpatialOS assembly is uploaded and becomes accessible from the [Console](https://console.improbable.io/).
 
 > Related:
 > 
 > * [spatial cloud upload](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-upload)
-> * [Deploying to the cloud](\{\{urlRoot\}\}/reference/deploy#cloud-deployment)
+> * [Deploying to the cloud](\{\{urlRoot\}\}/reference/concepts/deployments#cloud-deployment)
 
 ### `spatial` command-line tool (CLI)
 
