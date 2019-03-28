@@ -4,9 +4,9 @@
 Before reading this document, make sure you are familiar with:
 
 * [Setting up iOS Support for the GDK](\{\{urlRoot\}\}/reference/mobile/ios/setup)
-* [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/ways-to-test)
+* [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/run-client)
 * [Development Authentication Flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
-* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/gameobject/creating-workers-with-workerconnector)
+* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
 
 ## Prepare your project to connect to a cloud deployment {#prepare}
 

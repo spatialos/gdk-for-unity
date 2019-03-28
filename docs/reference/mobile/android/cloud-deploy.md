@@ -4,9 +4,9 @@
 Before reading this document, make sure you are familiar with:
 
 * [Setting up Android Support for the GDK](\{\{urlRoot\}\}/reference/mobile/android/setup)
-* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/ways-to-test)
+* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/run-client)
 * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
-* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/gameobject/creating-workers-with-workerconnector)
+* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
 
 ## Prepare your project to connect to a cloud deployment {#prepare}
 

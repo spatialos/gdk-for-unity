@@ -5,12 +5,12 @@
 <%(TOC)%>
 # Commands: World and component command requests and responses
 
-_This document relates to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
 
-Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS](\{\{urlRoot\}\}/reference/intro-workflows-spatialos-entities)) and [workers in the GDK](\{\{urlRoot\}\}/reference/workers/workers-in-the-gdk). You should also be familiar with the terms; [schema](\{\{urlRoot\}\}/reference/glossary#schema), [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) and [SpatialOS components](\{\{urlRoot\}\}/reference/glossary#spatialos-component).
+Before reading this document, make sure you know about the two different workflows ([GameObject- MonoBehaviour and ECS](\{\{urlRoot\}\}/reference/workflows/which-workflow)) and [workers in the GDK](\{\{urlRoot\}\}/reference/concepts/worker). You should also be familiar with the terms; [schema](\{\{urlRoot\}\}/reference/glossary#schema), [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) and [SpatialOS components](\{\{urlRoot\}\}/reference/glossary#spatialos-component).
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](\{\{urlRoot\}\}/reference/workers/workers-in-the-gdk). Commands are relevant to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/intro-workflows-spatialos-entities).
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](\{\{urlRoot\}\}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow).
 
 There are two types of commands in SpatialOS:
 
@@ -19,10 +19,10 @@ There are two types of commands in SpatialOS:
 
 You can find documentation for commands by following these links:
 
-* [MonoBehaviour world commands](\{\{urlRoot\}\}/reference/gameobject/world-commands)
-* [ECS world commands](\{\{urlRoot\}\}/reference/ecs/world-commands)
-* [MonoBehaviour component commands](\{\{urlRoot\}\}/reference/gameobject/sending-receiving-commands)
-* [ECS component commands](\{\{urlRoot\}\}/reference/ecs/sending-receiving-component-commands)
+* [MonoBehaviour world commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+* [ECS world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands)
+* [MonoBehaviour component commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/component-commands)
+* [ECS component commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/component-commands)
 
 ### API - Component commands
 

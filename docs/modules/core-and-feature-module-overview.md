@@ -3,11 +3,11 @@
 
 <%(TOC)%>
 # Feature Modules Overview
-_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
 The SpatialOS GDK for Unity consists of several modules: the Core Module and multiple Feature Modules. The Core Module provides the functionality to enable your game for SpatialOS, while Feature Modules provide functionality that is not needed to connect to the SpatialOS [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) but makes it easier to implement your game; such as player lifecycle or transform synchronization. Each module has helper functions which you can use to add the module’s functionality to a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/reference/workers).
 
-See the documentation on [Workers in the GDK]({{urlRoot}}/reference/workers/workers-in-the-gdk) for information on the relationship between workers and [ECS entities]({{urlRoot}}/reference/glossary#unity-ecs-entity).
+See the documentation on [Workers in the GDK]({{urlRoot}}/reference/concepts/worker) for information on the relationship between workers and [ECS entities]({{urlRoot}}/reference/glossary#unity-ecs-entity).
 
 ## Core Module
 
@@ -38,15 +38,15 @@ The module consists of:
 
 * `PlayerLifecycleHelper.AddClientSystems(world, autoRequestPlayerCreation)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker. It also provides the option to disable automatic player creation when the worker connects to SpatialOS.<br/>
-Call this when you create your [worker]({{urlRoot}}/reference/workers/workers-in-the-gdk).
+Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
 
 * `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
-Call this when you create your [worker]({{urlRoot}}/reference/workers/workers-in-the-gdk).
+Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
 
 * `AddPlayerLifecycleComponents(entityTemplate, workerId, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
-Call this during [entity template creation]({{urlRoot}}/reference/entity-templates).
+Call this during [entity template creation]({{urlRoot}}/reference/concepts/entity-templates).
 
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
 
@@ -65,7 +65,7 @@ Call this to implement the transform synchronization module, adding all the nece
 Call this to add the SpatialOS components used by the transform synchronization module to your SpatialOS entity template. <br/>
 You can optionally pass in a `rotation`, `location` or `velocity`.
 
-Call this during [entity templates creation]({{urlRoot}}/reference/entity-templates).
+Call this during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
 
 Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
 
@@ -78,8 +78,8 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 This module consists of:
 
 * `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/reference/gameobject/linking-spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/reference/gameobject/linking-spatialos-entities).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference//gameobject/linking-spatialos-entities).
+<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
+<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
 
 * `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
 Use this to enable the default implementation or with the parameters below to change the default.
@@ -88,7 +88,7 @@ Use this to enable the default implementation or with the parameters below to ch
 Use this enable custom spawning by passing in parameters to change the default.
 
 
-Call these during [entity templates creation]({{urlRoot}}/reference/entity-templates).
+Call these during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
 
 ### Mobile support module
 

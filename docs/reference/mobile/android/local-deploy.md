@@ -6,7 +6,7 @@ This page explains how to connect an Android client to a local deployment of Spa
 Before reading this document, make sure you are familiar with:
 
 * [Setting up Android Support for the GDK](\{\{urlRoot\}\}/reference/mobile/android/setup)
-* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/ways-to-test)
+* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/run-client)
 
 ## Prepare your project to connect to a local deployment {#prepare}
 

@@ -4,19 +4,19 @@
 <%(TOC)%>
 # Player Lifecycle Feature Module
 
-_This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
   * [Core Module and Feature Module overview]({{urlRoot}}/modules/core-and-feature-module-overview)
-  * [Creating entity templates]({{urlRoot}}/reference/entity-templates)
-  * [Workers in the GDK]({{urlRoot}}/reference/workers/workers-in-the-gdk)
+  * [Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
+  * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 
 The Player lifecycle module is a feature module providing you with a simple player spawning and player lifecycle management implementation.
 
 ## How to enable this module
 
-To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/reference/gameobject/creating-workers-with-workerconnector).
+To enable this module, you need to add the necessary systems to your workers in the `HandleWorkerConnectionEstablished()` of your [`WorkerConnector`]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers).
 After your worker has been created, you need to use the following code snippet:
 
 1. On a [client-worker]({{urlRoot}}/reference/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
@@ -38,9 +38,9 @@ If `AutoRequestPlayerCreation` is set to false you must manually initiate player
 
 ##### 1. Define the player entity template
 
-The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
+The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/concepts/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
-Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template]({{urlRoot}}/reference/entity-templates):
+Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template]({{urlRoot}}/reference/concepts/entity-templates):
 
 * `string workerId`: The ID of the worker that wants to spawn this player entity.
 *  `byte[] playerCreationArguments`: a serialized byte array of arguments provided by the worker instance sending the player creation request.

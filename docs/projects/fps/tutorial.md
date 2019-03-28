@@ -303,7 +303,7 @@ From these we can derive some rules about how the `UnityClient` and `UnityGameLo
 
 ---
 
-The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
+The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
 
 <%(#Expandable title="How does the FPS Starter Project pair SpatialOS entities with Unity prefabs?")%>
 
@@ -389,7 +389,7 @@ This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for 
 > While we also separate our prefabs by worker types, its good practice to annotate `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupReader healthPickupReader;`<br/>
-This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/reference/gameobject/readers-writers#reader-api).
+This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index#reader-api).
 
 > The `[Require]` annotation on the `HealthPickupReader` is very important. This tells the GDK to [inject]({{urlRoot}}/reference/glossary#inject) this object when its requirements are fulfilled. A Reader's requirements is that the underlying SpatialOS component is checked out on your worker-instance, regardless of authority. <br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 
@@ -403,9 +403,9 @@ Here, we access the **current** data of the `HealthPickup` component of the unde
 
 No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities) which represents them as a grouping of Unity ECS entity and components. 
+The GDK also offers an [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow) which represents them as a grouping of Unity ECS entity and components. 
 
-If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities) for you.
+If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow) for you.
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.
 
@@ -563,7 +563,7 @@ Let’s break down what the above snippet does:
 This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityGameLogic` server-workers, ensuring that it will never run on your client-workers.
 
 * `[Require] private HealthPickupWriter healthPickupWriter;`<br/>
-This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/reference/gameobject/readers-writers#writer-api).
+This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index#writer-api).
 
 > The `[Require]` annotation on the `HealthPickupWriter` is very important. This tells the GDK to [inject]({{urlRoot}}/reference/glossary#inject) this object when its requirements are fulfilled. A Writer's requirements is that the underlying SpatialOS component is checked out on your worker-instance, and your worker-instance is authoritative over that component.<br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 

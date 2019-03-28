@@ -6,7 +6,7 @@ This page describes how to connect an iOS client to a local deployment of Spatia
 Before reading this document, make sure you are familiar with:
 
   * [Setting up iOS Support for the GDK](\{\{urlRoot\}\}/reference/mobile/ios/setup)
-  * [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/ways-to-test)
+  * [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/run-client)
 
 ## Prepare your project to connect to a local deployment {#prepare}
 

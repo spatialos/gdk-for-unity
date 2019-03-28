@@ -16,11 +16,11 @@ In order to read or modify a [SpatalOS component](#spatialos-component), a [work
 * At an entity level, which workers have read access
 * At a component level, which workers may have write access
 
-In the SpatialOS GDK, the [EntityTemplate implementation](\{\{urlRoot\}\}/reference/entity-templates) allows you to add ACL components to entities.
+In the SpatialOS GDK, the [EntityTemplate implementation](\{\{urlRoot\}\}/reference/concepts/entity-templates) allows you to add ACL components to entities.
 
 > Related:
 >
-> * [Creating entity templates](\{\{urlRoot\}\}/reference/entity-templates)
+> * [Creating entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates)
 
 ### Authority
 >Also known as “write access”.
@@ -90,11 +90,11 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 ### Connection
 
-Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established using the `Improbable.Gdk.Core.Worker` class. See [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/connecting-to-spatialos) for more information.
+Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-world), the worker must connect to SpatialOS. The connection is established using the `Improbable.Gdk.Core.Worker` class. See [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/concepts/connection-flows) for more information.
 
 > Related:
 > 
-> * [Creating workers with the `WorkerConnector`](\{\{urlRoot\}\}/reference/gameobject/creating-workers-with-workerconnector)
+> * [Creating workers with the `WorkerConnector`](\{\{urlRoot\}\}/reference/workflows/monobehaviour/creating-workers)
 > * [Locator Connection Flow](#locator-connection-flow)
 > * [Receptionist Connection Flow](#receptionist-connection-flow)
 
@@ -162,18 +162,18 @@ A game client is a binary. A [client-worker](#client-worker) is an object instan
 
 ### GameObject
 
-In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [How to link SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/gameobject/linking-workers-gameobjects)
+In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [How to link SpatialOS entities with GameObjects](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/workers)
 
 > Related:
 > 
 > * [Unity Manual: GameObject](https://docs.unity3d.com/Manual/class-GameObject.html)
-> * [Unity Scripting API Reference: GameObject](https://docs.unity3d.com/ScriptReference/GameObject.html)
+> * [Unity Scripting API Reference: GameObject](https://docs.unity3d.com/Scriptreference/workflows/monobehaviour.html)
 
 ### Inject
 
 The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
 
-In the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/gameobject/interact-spatialos-monobehaviours) the GDK performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`[Require]` attribute](\{\{urlRoot\}\}/reference/gameobject/interact-spatialos-monobehaviours) to allow you to interact with SpatialOS. A MonoBehaviour is only enabled when all of its dependencies are populated.
+In the [MonoBehaviour workflow](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) the GDK performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`[Require]` attribute](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) to allow you to interact with SpatialOS. A MonoBehaviour is only enabled when all of its dependencies are populated.
 
 In the ECS workflow, Unity performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`Inject`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/8f94d72d1fd9b8db896646d9d533055917dc265a/Documentation/reference/injection.md) attribute inside systems to iterate over all the [Unity ECS Entities](#unity-ecs-entity) matching a required [Unity ECS component](#unity-ecs-component) type.
 
@@ -224,7 +224,7 @@ Note that there are [other ways](https://docs.improbable.io/reference/13.3/share
 
 > Related:
 > 
-> * [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/connecting-to-spatialos)
+> * [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/concepts/connection-flows)
 > * [Connection](#connection)
 > * [Creating your own game authentication server](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk)
 > * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
@@ -240,13 +240,13 @@ A [worker](#worker) can send and receive updates and messages to and from the [S
 > Related:
 >
 > * [Command requests and responses](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses)
-> * [Sending and receiving events using MonoBehaviours](\{\{urlRoot\}\}/reference/gameobject/sending-receiving-events)
-> * [Sending and receiving events using ECS](\{\{urlRoot\}\}/reference/ecs/events)
+> * [Sending and receiving events using MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/events)
+> * [Sending and receiving events using ECS](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/events)
 
 ### MonoBehaviour
 
 
-A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours](\{\{urlRoot\}\}/reference/gameobject/interact-spatialos-monobehaviours). This allows you to use the traditional MonoBehaviour workflow using GameObjects from the very beginning, without having to worry about the ECS. 
+A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). This allows you to use the traditional MonoBehaviour workflow using GameObjects from the very beginning, without having to worry about the ECS. 
 
 > Related:
 >
@@ -285,7 +285,7 @@ Reactive components contain all updates and messages received during the last [u
 
 > Related: 
 >
-> * [Reactive components](\{\{urlRoot\}\}/reference/ecs/reactive-components)
+> * [Reactive components](\{\{urlRoot\}\}/reference/workflows/ecs/reactive-components)
 
 ### Receptionist connection flow
 
@@ -296,7 +296,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Related:
 >
-> * [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/connecting-to-spatialos)
+> * [Connecting to SpatialOS](\{\{urlRoot\}\}/reference/concepts/connection-flows)
 > * [Connection](#connection)
 
 ### Read access
@@ -328,7 +328,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity Scene stores GameObjects that you might use to [represent your SpatialOS entities](\{\{urlRoot\}\}/reference/gameobject/linking-spatialos-entities). Each Scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity Scene stores GameObjects that you might use to [represent your SpatialOS entities](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities). Each Scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
@@ -538,11 +538,11 @@ Unity ECS components contain only data and are represented as structs rather tha
 
 The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in your Unity Editor.
 
-Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours](\{\{urlRoot\}\}/reference/gameobject/linking-spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/linking/spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 
 > Related:
 >
-> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/ecs_in_detail#icomponentdata)
+> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#icomponentdata)
 
 ### Unity ECS Entity
 
@@ -553,7 +553,7 @@ In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS 
 
 > Related:
 >
-> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/ecs_in_detail#entity)
+> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#entity)
 
 ### Unity ECS system
 
@@ -571,7 +571,7 @@ In the GDK, ECS worlds (and everything in them) are an abstraction used to repre
 
 > Related: 
 > 
-> * [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/ecs_in_detail#world)
+> * [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#world)
 
 ### Unity packages
 
@@ -593,8 +593,8 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 
 > Related:
 > 
-> * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/ecs_in_detail)
-> [System update order in the GDK](\{\{urlRoot\}\}/reference/ecs/system-update-order)
+> * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail)
+> [System update order in the GDK](\{\{urlRoot\}\}/reference/workflows/ecs/system-update-order)
 
 ### Worker
 
@@ -617,7 +617,7 @@ If the worker has write access to a SpatialOS component, it can [send updates an
 it can update [properties](https://docs.improbable.io/reference/latest/shared/glossary#property), send and handle [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) and trigger [events](https://docs.improbable.io/reference/latest/shared/glossary#event).
 
 
-See also the [Workers in the GDK](\{\{urlRoot\}\}/reference/workers/workers-in-the-gdk) documentation.
+See also the [Workers in the GDK](\{\{urlRoot\}\}/reference/concepts/worker) documentation.
 
 > Related: 
 > 
