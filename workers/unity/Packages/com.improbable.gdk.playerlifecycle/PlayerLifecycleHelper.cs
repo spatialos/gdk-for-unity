@@ -9,6 +9,12 @@ namespace Improbable.Gdk.PlayerLifecycle
 {
     public static class PlayerLifecycleHelper
     {
+        /// <summary>
+        ///     Adds the SpatialOS components used by the player lifecycle module to an entity template.
+        /// </summary>
+        /// <param name="template">The entity template to add player lifecycle components to.</param>
+        /// <param name="clientWorkerId">The ID of the client-worker.</param>
+        /// <param name="serverAccess">The server-worker write access attribute.</param>
         public static void AddPlayerLifecycleComponents(EntityTemplate template,
             string clientWorkerId,
             string serverAccess)
@@ -20,6 +26,18 @@ namespace Improbable.Gdk.PlayerLifecycle
             template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
         }
 
+        /// <summary>
+        ///     Returns whether an entity is owned by a worker. It can be used to determine whether a client-worker is
+        ///     responsible for a particular player entity.
+        /// </summary>
+        /// <param name="entityId">An ECS component containing a SpatialOS Entity ID.</param>
+        /// <param name="workerWorld">An ECS World associated with a worker.</param>
+        /// <returns>
+        ///     True if the entity with ID entityId contains an OwningWorker component with a value matching the
+        ///     workerWorld's workerId. False if the entity does not contain an OwningWorker component, or if the value
+        ///     does not match the workerId. Throws an InvalidOperationException if workerWorld does not contain a
+        ///     WorkerSystem, or if the entity does not exist in the worker's view.
+        /// </returns>
         public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
         {
             var entityManager = workerWorld.GetOrCreateManager<EntityManager>();
@@ -46,6 +64,11 @@ namespace Improbable.Gdk.PlayerLifecycle
             return worker.Connection.GetWorkerId() == ownerId;
         }
 
+        /// <summary>
+        ///     Adds all the systems a client-worker requires for the player lifecycle module.
+        /// </summary>
+        /// <param name="world">A world that belongs to a client-worker.</param>
+        /// <param name="autoRequestPlayerCreation">An option to toggle automatic player creation.</param>
         public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true)
         {
             PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
@@ -53,6 +76,10 @@ namespace Improbable.Gdk.PlayerLifecycle
             world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
         }
 
+        /// <summary>
+        ///     Adds all the systems a server-worker requires for the player lifecycle module.
+        /// </summary>
+        /// <param name="world">A world that belongs to a server-worker.</param>
         public static void AddServerSystems(World world)
         {
             world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();

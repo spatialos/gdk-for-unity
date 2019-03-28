@@ -99,6 +99,11 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
         }
 
+        /// <summary>
+        ///     Queues a request for player creation, if none are currently in progress. If player creation entities
+        ///     have already been found, the request is sent in the next tick.
+        /// </summary>
+        /// <param name="serializedArguments">A serialized byte array of arbitrary player creation arguments.</param>
         public void RequestPlayerCreation(byte[] serializedArguments = null)
         {
             if (playerCreationRequestId.HasValue)
@@ -128,11 +133,12 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             if (playerCreationRetries < PlayerLifecycleConfig.MaxPlayerCreationRetries)
             {
+                ++playerCreationRetries;
+
                 logDispatcher.HandleLog(LogType.Warning, new LogEvent(
                     $"Retrying player creation request, attempt {playerCreationRetries}."
                 ));
 
-                ++playerCreationRetries;
                 SendCreatePlayerRequest();
             }
             else

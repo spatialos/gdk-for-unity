@@ -8,14 +8,34 @@ namespace Improbable.Gdk.PlayerLifecycle
 
     public static class PlayerLifecycleConfig
     {
+        /// <summary>
+        ///     The time in seconds between player heartbeat requests.
+        /// </summary>
         public const float PlayerHeartbeatIntervalSeconds = 5f;
+
+        /// <summary>
+        ///     The maximum number of failed heartbeats before a player is disconnected.
+        /// </summary>
         public const int MaxNumFailedPlayerHeartbeats = 2;
 
+        /// <summary>
+        ///     The maximum number of retries for player creation.
+        /// </summary>
         public const int MaxPlayerCreationRetries = 5;
+
+        /// <summary>
+        ///     The maximum number of retries for finding player creator entities, before any player creation occurs.
+        /// </summary>
         public const int MaxPlayerCreatorQueryRetries = 5;
 
+        /// <summary>
+        ///     This indicates whether a player should be created automatically upon a worker connecting to SpatialOS.
+        /// </summary>
         public static bool AutoRequestPlayerCreation = true;
 
+        /// <summary>
+        ///     The delegate responsible for returning a player entity template when creating a player.
+        /// </summary>
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
     }
 }
