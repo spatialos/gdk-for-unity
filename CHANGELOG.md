@@ -2,9 +2,27 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Removed `clientAccess` from the `AddPlayerLifecycleComponents` signature. We now construct the client access attribute within the helper.
+
+### Added
+
+- Added a static helper in the `EntityTemplate` class to construct worker access attributes.
+
+### Changed
+
+- The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
+- Removed the `Type` suffix from player lifecycle schema types.
+
+### Fixed
+
+- Fixed an issue where player creation requests could retry infinitely without logging failure.
+
 ### Internal
 
-- Tools package now uses PackageManager API instead of parsing manifest.json
+- Tools package now uses PackageManager API instead of parsing manifest.json.
+- Updated default snapshot to have more than one PlayerCreator entity.
 
 ## `0.2.0` - 2019-03-18
 

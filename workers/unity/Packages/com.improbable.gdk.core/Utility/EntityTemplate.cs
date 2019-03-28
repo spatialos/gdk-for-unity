@@ -19,6 +19,16 @@ namespace Improbable.Gdk.Core
         private readonly Acl acl = new Acl();
 
         /// <summary>
+        ///     Constructs a worker access attribute, given a worker ID.
+        /// </summary>
+        /// <param name="workerId">An ID of a worker.</param>
+        /// <returns>A string representing the worker access attribute.</returns>
+        public static string GetWorkerAccessAttribute(string workerId)
+        {
+            return $"workerId:{workerId}";
+        }
+
+        /// <summary>
         ///     Adds a SpatialOS component to the EntityTemplate.
         /// </summary>
         /// <param name="snapshot">The component snapshot to add.</param>

@@ -84,10 +84,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 {
                     var responseSuccess = new PlayerCreator.CreatePlayer.Response(
                         requestContext.createPlayerRequest.RequestId,
-                        new CreatePlayerResponseType
-                        {
-                            CreatedEntityId = response.EntityId.Value
-                        }
+                        new CreatePlayerResponse(response.EntityId.Value)
                     );
 
                     commandSystem.SendResponse(responseSuccess);
