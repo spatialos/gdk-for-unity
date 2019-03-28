@@ -48,7 +48,7 @@ Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
 Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
 
-* `AddPlayerLifecycleComponents(entityTemplate, workerId, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
+* `AddPlayerLifecycleComponents(entityTemplate, workerId, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/reference/concepts/entity-templates).
 

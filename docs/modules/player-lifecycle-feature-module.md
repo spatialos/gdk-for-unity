@@ -62,7 +62,7 @@ public static class PlayerTemplate
         var entityTemplate = new EntityTemplate();
         entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), serverAttribute);
         // add all components that you want the player entity to have
-        AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
+        AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
 
         return entityTemplate;
     }
@@ -159,7 +159,7 @@ public static class PlayerTemplate
         entityTemplate.AddPosition(new Position.Snapshot(deserializedArguments.SpawnPosition), serverAttribute);
         entityTemplate.AddComponent(new PlayerName.Snapshot(deserializedArguments.PlayerName), serverAttribute);
         // add all components that you want the player entity to have
-        AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
+        AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
 
         return entityTemplate;
     }
