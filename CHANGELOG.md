@@ -9,6 +9,7 @@
 ### Added
 
 - Added a static helper in the `EntityTemplate` class to construct worker access attributes.
+- Added an optional callback as an argument to the `RequestPlayerCreation` method in `SendCreatePlayerRequestSystem`. This callback is invoked upon receiving a response to a player creation request.
 
 ### Changed
 
