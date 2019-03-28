@@ -22,6 +22,7 @@
 ### Internal
 
 - Tools package now uses PackageManager API instead of parsing manifest.json.
+- Updated default snapshot to have more than one Player Creator entity.
 
 ## `0.2.0` - 2019-03-18
 
