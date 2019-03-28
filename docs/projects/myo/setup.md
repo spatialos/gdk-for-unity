@@ -228,4 +228,4 @@ Open your Unity project located at `workers/my-unity-project`. This triggers a f
 
 > This may result in opening a browser windows prompting you to log in to your SpatialOS account.
 
-* Unity generates code from the [schema]({{urlRoot}}/content/glossary#schema) files defined in your SpatialOS project.
+* Unity generates code from the [schema]({{urlRoot}}/reference/glossary#schema) files defined in your SpatialOS project.

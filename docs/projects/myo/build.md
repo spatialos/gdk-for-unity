@@ -1,7 +1,7 @@
 <%(TOC)%>
 # Build your workers
 
-Before running a [deployment of your game]({{urlRoot}}/content/deploy) locally or in the cloud, you need to setup a build configuration [scriptable object](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
+Before running a [deployment of your game]({{urlRoot}}/reference/deploy) locally or in the cloud, you need to setup a build configuration [scriptable object](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 **Step 1.** Create a build configuration asset.
 
@@ -48,4 +48,4 @@ For completeness, lets test building the cloud configuration as well; with your 
 
 This concludes setting up a new project with the SpatialOS GDK for Unity!
 
-The next thing you'll want to do is get your workers to connect to the SpatialOS runtime. Check out [the WorkerConnector]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector) documentation to learn how to do this.
+The next thing you'll want to do is get your workers to connect to the SpatialOS runtime. Check out [the WorkerConnector]({{urlRoot}}/reference/gameobject/creating-workers-with-workerconnector) documentation to learn how to do this.

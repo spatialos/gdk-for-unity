@@ -1,6 +1,6 @@
 # Build your workers
 
-As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers]({{urlRoot}}/content/glossary#worker).
+As you will be launching a cloud deployment, you need to build out the code executables which will be run by SpatialOS servers - these are called [workers]({{urlRoot}}/reference/glossary#worker).
 
 <%(#Expandable title="<b>TIP: Speed up local development iteration</b>")%>
 This tutorial takes you through the steps to set up a cloud deployment. However, in a local deployment, you can either build your workers to run locally or run the workers in the Unity Editor. You can run multiple workers in your Unity Editor, so you don't have to keep building out workers during development iteration.

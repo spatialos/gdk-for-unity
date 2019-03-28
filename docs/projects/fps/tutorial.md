@@ -18,9 +18,9 @@ You will add health pack pick-ups to the game. These health pack pick-ups are su
 
 To implement this feature you will:
 
-* Add a new [SpatialOS component]({{urlRoot}}/content/glossary#spatialos-component) to hold the state of the health packs.
+* Add a new [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) to hold the state of the health packs.
 * Define a new [SpatialOS entity template](https://docs.improbable.io/reference/latest/shared/glossary#entity-template) called `HealthPickup`.
-* Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/content/glossary#snapshot) so they are loaded in the [SpatialOS world]({{urlRoot}}/content/glossary#spatialos-world) at startup.
+* Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/reference/glossary#snapshot) so they are loaded in the [SpatialOS world]({{urlRoot}}/reference/glossary#spatialos-world) at startup.
 * Write game logic such that the health packs grant health to players.
 * Write game logic to "respawn" health packs after they have been consumed.
 
@@ -38,7 +38,7 @@ To satisfy our design constraints, we need our health packs to contain some stat
 
 > Strictly speaking, the property that represents the value of the health pack _could be_ a hardcoded value in your server-worker instances, but this design opens up the possibility for dynamic health packs which have varying values.
 
-We write the definitions for these properties in [schemalang]({{urlRoot}}/content/glossary#schema), a SpatialOS specific language. Let's do that now!
+We write the definitions for these properties in [schemalang]({{urlRoot}}/reference/glossary#schema), a SpatialOS specific language. Let's do that now!
 
 **Step 1.** Using your file manager, navigate to `gdk-for-unity-fps-starter-project/schema`, then create a `pickups` directory.
 
@@ -125,10 +125,10 @@ public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
 
 Let's pull out some of the more interesting lines from the above snippet:
 
-* The line `entityTemplate.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);` states that both the [server-worker]({{urlRoot}}/content/glossary#server-worker) (`WorkerUtils.UnityGameLogic`) and [client-worker]({{urlRoot}}/content/glossary#client-worker) (`UnityClient`) have [read access]({{urlRoot}}/content/glossary#read-access) to this entity (that they can see health packs).
+* The line `entityTemplate.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient);` states that both the [server-worker]({{urlRoot}}/reference/glossary#server-worker) (`WorkerUtils.UnityGameLogic`) and [client-worker]({{urlRoot}}/reference/glossary#client-worker) (`UnityClient`) have [read access]({{urlRoot}}/reference/glossary#read-access) to this entity (that they can see health packs).
 * The line `entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);` adds an instance of the `HealthPickup` component to the `HealthPickup` entity and sets the write access to the `UnityGameLogic` worker type.
 
-> Our design constraints state that we should not trust the client, so we only give write-access to the `HealthPickup` component to the [server-worker]({{urlRoot}}/content/glossary#server-worker). This means that a client cannot change the health value of the health pack or force it to be active.
+> Our design constraints state that we should not trust the client, so we only give write-access to the `HealthPickup` component to the [server-worker]({{urlRoot}}/reference/glossary#server-worker). This means that a client cannot change the health value of the health pack or force it to be active.
 
 <%(#Expandable title="What are <code>Position</code>, <code>Metadata</code>, and <code>Persistence</code>?")%>
 These SpatialOS components are [standard library](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library) components.
@@ -156,7 +156,7 @@ To find out about how to do this, read up about [layers](https://docs.improbable
 In this section we’re going to add a health pack entity to the SpatialOS world. There are two ways to do this:
 
 * At runtime, by sending a `CreateEntity` command with an `EntityTemplate` object to the SpatialOS Runtime.
-* At start-up, by adding a health pack entity to the [Snapshot]({{urlRoot}}/content/glossary#snapshot), so it's loaded into the world when the SpatialOS Runtime loads.
+* At start-up, by adding a health pack entity to the [Snapshot]({{urlRoot}}/reference/glossary#snapshot), so it's loaded into the world when the SpatialOS Runtime loads.
 
 We will do the latter, so that when the game begins there will already be a health pack in a pre-defined location.
 
@@ -303,7 +303,7 @@ From these we can derive some rules about how the `UnityClient` and `UnityGameLo
 
 ---
 
-The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
+The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
 
 <%(#Expandable title="How does the FPS Starter Project pair SpatialOS entities with Unity prefabs?")%>
 
@@ -389,9 +389,9 @@ This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for 
 > While we also separate our prefabs by worker types, its good practice to annotate `MonoBehaviour`s that are worker specific with `WorkerType` annotations.<br/><br/>It makes it explicit to the reader where the `MonoBehaviour` should run and serves as a safety check against accidentally putting this behaviour on a prefab meant for a different worker type.
 
 * `[Require] private HealthPickupReader healthPickupReader;`<br/>
-This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/content/gameobject/readers-writers#reader-api).
+This is a `Reader` object, which allows you to interact with your SpatialOS components easily at runtime. In particular, this is a `HealthPickupReader`, which allows you to access the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Reader API]({{urlRoot}}/reference/gameobject/readers-writers#reader-api).
 
-> The `[Require]` annotation on the `HealthPickupReader` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Reader's requirements is that the underlying SpatialOS component is checked out on your worker-instance, regardless of authority. <br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
+> The `[Require]` annotation on the `HealthPickupReader` is very important. This tells the GDK to [inject]({{urlRoot}}/reference/glossary#inject) this object when its requirements are fulfilled. A Reader's requirements is that the underlying SpatialOS component is checked out on your worker-instance, regardless of authority. <br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 
 * `healthPickupReader.OnUpdate += OnHealthPickupComponentUpdated;`<br/>
 Here, we bind a method to an event on the `Reader`. This means that whenever the `HealthPickup` component is updated, we will trigger a callback on `OnHealthPickupComponentUpdated`. This allow you to react to changes in components.
@@ -403,9 +403,9 @@ Here, we access the **current** data of the `HealthPickup` component of the unde
 
 No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) which represents them as a grouping of Unity ECS entity and components. 
+The GDK also offers an [ECS workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities) which represents them as a grouping of Unity ECS entity and components. 
 
-If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities) for you.
+If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/intro-workflows-spatialos-entities) for you.
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.
 
@@ -563,9 +563,9 @@ Let’s break down what the above snippet does:
 This `WorkerType` annotation marks this `MonoBehaviours` to only be enabled for a specific worker-type. In this case, this `MonoBehaviour` will only be enabled on `UnityGameLogic` server-workers, ensuring that it will never run on your client-workers.
 
 * `[Require] private HealthPickupWriter healthPickupWriter;`<br/>
-This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/content/gameobject/readers-writers#writer-api).
+This is a `Writer` object, which allows you to interact with and modify your SpatialOS components easily at runtime. In particular, this is a `HealthPickupWriter`, which allows you to access and write to the value of the `HealthPickup` component of the underlying linked entity. For more information about Readers, see the [Writer API]({{urlRoot}}/reference/gameobject/readers-writers#writer-api).
 
-> The `[Require]` annotation on the `HealthPickupWriter` is very important. This tells the GDK to [inject]({{urlRoot}}/content/glossary#inject) this object when its requirements are fulfilled. A Writer's requirements is that the underlying SpatialOS component is checked out on your worker-instance, and your worker-instance is authoritative over that component.<br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
+> The `[Require]` annotation on the `HealthPickupWriter` is very important. This tells the GDK to [inject]({{urlRoot}}/reference/glossary#inject) this object when its requirements are fulfilled. A Writer's requirements is that the underlying SpatialOS component is checked out on your worker-instance, and your worker-instance is authoritative over that component.<br/><br/>**A `Monobehaviour` will only be enabled if all required objects have their requirements satisfied.**
 
 * `private void OnTriggerEnter(Collider other)`<br/>
 Most functions will **only** be called if the `MonoBehaviour` is enabled, but `OnTriggerEnter` is called even when it is disabled. It is unusual in this sense. For this reason, scripts which use `OnTriggerEnter` **must** check whether objects that are have annotations `[Require]` are null (indicating that the requirements were not met) before using functions on those objects.

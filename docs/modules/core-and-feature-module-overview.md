@@ -3,11 +3,11 @@
 
 <%(TOC)%>
 # Feature Modules Overview
-_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/intro-workflows-spatialos-entities)._
 
-The SpatialOS GDK for Unity consists of several modules: the Core Module and multiple Feature Modules. The Core Module provides the functionality to enable your game for SpatialOS, while Feature Modules provide functionality that is not needed to connect to the SpatialOS [Runtime]({{urlRoot}}/content/glossary#spatialos-runtime) but makes it easier to implement your game; such as player lifecycle or transform synchronization. Each module has helper functions which you can use to add the module’s functionality to a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/content/workers).
+The SpatialOS GDK for Unity consists of several modules: the Core Module and multiple Feature Modules. The Core Module provides the functionality to enable your game for SpatialOS, while Feature Modules provide functionality that is not needed to connect to the SpatialOS [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) but makes it easier to implement your game; such as player lifecycle or transform synchronization. Each module has helper functions which you can use to add the module’s functionality to a [worker](https://github.com/spatialos/UnityGDK/blob/master/docs/reference/workers).
 
-See the documentation on [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk) for information on the relationship between workers and [ECS entities]({{urlRoot}}/content/glossary#unity-ecs-entity).
+See the documentation on [Workers in the GDK]({{urlRoot}}/reference/workers/workers-in-the-gdk) for information on the relationship between workers and [ECS entities]({{urlRoot}}/reference/glossary#unity-ecs-entity).
 
 ## Core Module
 
@@ -17,7 +17,7 @@ The Core Module contains multiple packages (or "assemblies") that you need to us
 This provides the basic implementation to use SpatialOS natively in Unity.
 
 * `Improbable.Gdk.Tools`<br/>
- This contains the code generator which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/content/glossary#schema).)
+ This contains the code generator which generates C# code from your schema file and the tools to download dependent SpatialOS packages. (See the SpatialOS documentation on [schema]({{urlRoot}}/reference/glossary#schema).)
 
 * `Improbable.Gdk.TestUtils` <br/>
 This provides both a testing framework, which you can use to test any other module and a test which you can use to validate the state of the overall project.
@@ -38,15 +38,15 @@ The module consists of:
 
 * `PlayerLifecycleHelper.AddClientSystems(world, autoRequestPlayerCreation)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker. It also provides the option to disable automatic player creation when the worker connects to SpatialOS.<br/>
-Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
+Call this when you create your [worker]({{urlRoot}}/reference/workers/workers-in-the-gdk).
 
 * `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
-Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-the-gdk).
+Call this when you create your [worker]({{urlRoot}}/reference/workers/workers-in-the-gdk).
 
 * `AddPlayerLifecycleComponents(entityTemplate, workerId, clientAccess, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
-Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
+Call this during [entity template creation]({{urlRoot}}/reference/entity-templates).
 
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
 
@@ -65,7 +65,7 @@ Call this to implement the transform synchronization module, adding all the nece
 Call this to add the SpatialOS components used by the transform synchronization module to your SpatialOS entity template. <br/>
 You can optionally pass in a `rotation`, `location` or `velocity`.
 
-Call this during [entity templates creation]({{urlRoot}}/content/entity-templates).
+Call this during [entity templates creation]({{urlRoot}}/reference/entity-templates).
 
 Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
 
@@ -78,8 +78,8 @@ To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It
 This module consists of:
 
 * `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/content/gameobject/linking-spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/content/gameobject/linking-spatialos-entities).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/content//gameobject/linking-spatialos-entities).
+<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/reference/gameobject/linking-spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/reference/gameobject/linking-spatialos-entities).
+<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference//gameobject/linking-spatialos-entities).
 
 * `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
 Use this to enable the default implementation or with the parameters below to change the default.
@@ -88,11 +88,11 @@ Use this to enable the default implementation or with the parameters below to ch
 Use this enable custom spawning by passing in parameters to change the default.
 
 
-Call these during [entity templates creation]({{urlRoot}}/content/entity-templates).
+Call these during [entity templates creation]({{urlRoot}}/reference/entity-templates).
 
 ### Mobile support module
 
-To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/content/glossary#client-worker) to SpatialOS.
+To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS.
 
 `Improbable.Gdk.Mobile` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).
 
@@ -107,4 +107,4 @@ Inherit from this class to define your custom mobile worker connectors.
 * `Improbable.Gdk.Mobile.iOS` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/iOS).
 <br/>It provides additional functionality that you might need when developing for iOS.
 
-Find out more in the [Mobile support]({{urlRoot}}/content/mobile/overview) documentation.
+Find out more in the [Mobile support]({{urlRoot}}/reference/mobile/overview) documentation.

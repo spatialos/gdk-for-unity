@@ -35,7 +35,7 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
 
-- This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
+- This installs the [SpatialOS CLI]({{urlRoot}}/reference/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/reference/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
 
 **Step 4.** Install a **code editor** if you don't have one already
 
@@ -103,7 +103,7 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/mac" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Mac|label=Mac" target="_blank">SpatialOS installer</a>**
 
-- This installs the [SpatialOS CLI]({{urlRoot}}/content/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/content/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables.
+- This installs the [SpatialOS CLI]({{urlRoot}}/reference/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/reference/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables.
 
 **Step 4.** Install a **code editor** if you don't have one already
 

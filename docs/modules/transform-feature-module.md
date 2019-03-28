@@ -6,7 +6,7 @@
 
 <%(TOC)%>
 # Transform Synchronization Feature Module
-_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/intro-workflows-spatialos-entities)._
 
 Transform synchronisation is making sure that when the authoritative worker moves an entity, that it also moves on all other workers.
 
@@ -27,7 +27,7 @@ This feature module manages both types of location automatically; primarily upda
 
 #### How to enable automatic transform synchronization for an entity
 [//]: # (TODO - Add link below to feature module helper function as noted - doc 35)
-When [creating a SpatialOS entity]({{urlRoot}}/content/gameobject/create-delete-spatialos-entities) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
+When [creating a SpatialOS entity]({{urlRoot}}/reference/gameobject/create-delete-spatialos-entities) use the feature module helper functions to add the SpatialOS components necessary to use the Transform Synchronization feature module.
 
 ```csharp
 var serverAttribute = "UnityGameLogic";
