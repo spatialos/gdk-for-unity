@@ -16,7 +16,7 @@ To connect your Android device to a cloud deployment, you need a mobile connecto
 
 <%(#Expandable title="Create a mobile connector script")%>
 
-If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
+If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
 
 1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/AndroidClientWorkerConnector.cs) in our Blank Starter Project.
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
@@ -35,7 +35,7 @@ Altenatively, if you want to create your own authentication server, follow [this
 
     > If you start an emulator, ensure you choose the same CPU architecture for your virtual machine as your development computer. Using a different architecture might affect the performance of your emulator.
 
-1. [Build your server-workers.]({{urlRoot}}/content/build)
+1. [Build your server-workers.]({{urlRoot}}/projects/myo/build)
 1. Upload your server-workers. To do this, open a terminal window and from the root directory of your SpatialOS project, enter `spatial cloud upload <assembly name>`.
 1. In the same directory, start your cloud deployment using `spatial cloud launch --snapshot=snapshots/<your snapshot> <assembly name> <launch configuration>.json <deployment name>`.
 1. In the SpatialOS Console, tag your cloud deployment with the tag `dev_login`. <BR/>

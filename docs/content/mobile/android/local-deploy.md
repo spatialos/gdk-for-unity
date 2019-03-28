@@ -21,7 +21,7 @@ To connect your Android device to a local deployment, you need to prepare its co
 
 <%(#Expandable title="Create a mobile connector script")%>
 
-If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
+If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
 
 1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/AndroidClientWorkerConnector.cs) in our Blank Starter Project.
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
@@ -58,7 +58,7 @@ It’s done when you see the following message in the terminal: `SpatialOS ready
 
     > Ensure you choose the same CPU architecture for your virtual machine as your development computer. If you don’t, you will get warning messages as mismatched CPU architecture affects performance.
 1. [Set up your local deployment](#prepare).
-1. [Build your server-workers]({{urlRoot}}/content/build).
+1. [Build your server-workers]({{urlRoot}}/projects/myo/build).
 1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. Still in your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.

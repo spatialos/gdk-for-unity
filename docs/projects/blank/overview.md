@@ -14,7 +14,7 @@ It has the minimum GDK feature set you need to start developing games for Spatia
 - An empty [snapshot]({{urlRoot}}/content/snapshots#snapshots).
 - [Client-worker and server-worker]({{urlRoot}}/content/glossary#worker) JSON [configuration files](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 - Client-worker and server-worker [worker connectors]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector) and [worker prefabs]({{urlRoot}}/content/gameobject/creating-workers-with-workerconnector#how-to-use-worker-prefabs).
-- [Worker build configuration]({{urlRoot}}/content/build#build-your-workers).
+- [Worker build configuration]({{urlRoot}}/projects/myo/build#build-your-workers).
 - A set of Unity Scenes to use in development.
 
 > **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and [command line interfaces (djangogirls.org)](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.

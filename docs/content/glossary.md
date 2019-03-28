@@ -41,7 +41,7 @@ Which specific worker actually has write access is managed by SpatialOS, and can
 
 If you want to start a [cloud deployment](#deploying), you must first build your game in order to be able to upload the resulting binaries to your cloud deployment. 
 
-The guide on [how to build your game]({{urlRoot}}/content/build) explains this process step by step.
+The guide on [how to build your game]({{urlRoot}}/projects/myo/build) explains this process step by step.
 
 ### Checking out
 

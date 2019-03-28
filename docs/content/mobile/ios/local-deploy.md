@@ -21,7 +21,7 @@ To connect your iOS device to a local deployment, you need to prepare its config
 
 <%(#Expandable title="Create a mobile connector script")%>
 
-If you [added the GDK]({{urlRoot}}/content/set-up-new-project) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your iOS client-worker GameObject. To do this:
+If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your iOS client-worker GameObject. To do this:
 
 1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/iOSClientWorkerConnector.cs) in our Blank Starter Project.
 1. In your Unity Editor, add the MonoBehaviour script to your iOS client-worker GameObject.
