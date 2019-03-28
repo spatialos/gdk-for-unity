@@ -188,7 +188,7 @@ The consequence of this mechanism is that you tend to need two repositories clon
 
 **Step 3.** Open your Unity project
 
-Open your Unity project located at `workers/unity/my-unity-project`. This triggers a few actions:
+Open your Unity project located at `workers/my-unity-project`. This triggers a few actions:
   
 * Unity downloads several required SpatialOS libraries.
 
