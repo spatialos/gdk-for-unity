@@ -123,8 +123,11 @@ namespace Improbable.Gdk.PlayerLifecycle
             playerCreationRequestQueued = true;
         }
 
+        // We only enter this method if playerCreatorEntityIds.Count is greater than 0, meaning that there will
+        // always be at least one element in the list of Player Creator entity IDs.
         private void SendCreatePlayerRequest()
         {
+            // Here we construct our CreatePlayer request, and choose a random Player Creator entity to send it to.
             playerCreationRequestId = commandSystem.SendCommand(new PlayerCreator.CreatePlayer.Request(
                 playerCreatorEntityIds[Random.Range(0, playerCreatorEntityIds.Count)],
                 new CreatePlayerRequest(serializedArgumentsCache)
@@ -179,6 +182,8 @@ namespace Improbable.Gdk.PlayerLifecycle
                     continue;
                 }
 
+                // Clears the player creation request ID to indicate that we have received a
+                // response for the player creation request that we last sent.
                 playerCreationRequestId = null;
 
                 switch (response.StatusCode)
