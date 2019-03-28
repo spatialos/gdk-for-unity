@@ -28,12 +28,12 @@ The GDK is composed of three layers:
 <br/> **Read the [SpatialOS concept docs](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)** on the SpatialOS documentation website (5 minute read).
 <br/>
 <br/>
-Find out what's involved in getting started with our [Get started with SpatialOS for Unity walk-through youtube video](https://www.youtube.com/watch?v=6PNDBYtIimw), based on our [Get Started guide]({{urlRoot}}/content/get-started/get-started) (15-minute watch).
+Find out what's involved in getting started with our [Get started with SpatialOS for Unity walk-through youtube video](https://www.youtube.com/watch?v=6PNDBYtIimw), based on our [Get Started guide]({{urlRoot}}/projects/fps/get-started/get-started) (15-minute watch).
 
 ### Ready to get going?
 
 * If you’re ready to get started, the _Get started_  guide takes you through setting up the GDK and launching the  FPS Starter Project. (Note that the GDK is aimed at users comfortable with programming in Unity.) <br/>
-**[Get started]({{urlRoot}}/content/get-started/get-started) with the SpatialOS GDK for Unity.**
+**[Get started]({{urlRoot}}/projects/fps/get-started/get-started) with the SpatialOS GDK for Unity.**
 
 
 >This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback.

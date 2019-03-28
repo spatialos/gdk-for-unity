@@ -3,7 +3,7 @@
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
-Before starting this tutorial, make sure you have followed the [Get started]({{urlRoot}}/content/get-started/get-started) guide which sets up the FPS Starter Project. This tutorial follows on from that guide.
+Before starting this tutorial, make sure you have followed the [Get started]({{urlRoot}}/projects/fps/get-started/get-started) guide which sets up the FPS Starter Project. This tutorial follows on from that guide.
 
 ## What does the tutorial cover?
 

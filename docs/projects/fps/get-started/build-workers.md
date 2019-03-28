@@ -40,7 +40,7 @@ Building workers for the first time may take a while (about 10 minutes). Why not
 
 > **NOTE**: You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage.
 
-If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/content/get-started/upload-launch). 
+If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch). 
 
 If you got build errors in Unity Editor Console window, check the Common build errors section below.
 
@@ -59,4 +59,4 @@ You can also check our [Known Issues](https://github.com/spatialos/gdk-for-unity
 
 <br/>
 
-#### Next: [Upload and launch your game]({{urlRoot}}/content/get-started/upload-launch.md)
+#### Next: [Upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch.md)

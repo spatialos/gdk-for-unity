@@ -126,4 +126,4 @@ This starts the process of launching your deployments. This may take a few minut
 
 It’s time to play your game.
 
-#### Next: [Get playing!]({{urlRoot}}/content/get-started/get-playing.md)
+#### Next: [Get playing!]({{urlRoot}}/projects/fps/get-started/get-playing.md)

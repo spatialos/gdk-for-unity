@@ -2,7 +2,7 @@
 # Overview
 
 ### New to the GDK?
-If you are new to the GDK, the best place to start is with the [Get started]({{urlRoot}}/content/get-started/get-started) guide. This guides you through setting up SpatialOS with Unity using the FPS Starter Project, which you can use as both a learning tool and a starter for your own game.
+If you are new to the GDK, the best place to start is with the [Get started]({{urlRoot}}/projects/fps/get-started/get-started) guide. This guides you through setting up SpatialOS with Unity using the FPS Starter Project, which you can use as both a learning tool and a starter for your own game.
 
 ### SpatialOS concepts
 
