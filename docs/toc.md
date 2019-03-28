@@ -18,9 +18,9 @@
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
 - <h3>Feature Modules</h3>
-    - [Overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
-    - [Transform Synchronization]({{urlRoot}}/content/modules/transform-feature-module)
-    - [Player Lifecycle]({{urlRoot}}/content/modules/player-lifecycle-feature-module)
+    - [Overview]({{urlRoot}}/modules/core-and-feature-module-overview)
+    - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
+    - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/content/intro-reference)
     - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)

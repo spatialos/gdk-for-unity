@@ -126,7 +126,7 @@ These packages provide the the basic implementation to synchronize with the Spat
 
 > Related:
 >
-> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+> * [Core and Feature modules]({{urlRoot}}/modules/core-and-feature-module-overview)
 
 ### Deploying
 
@@ -152,7 +152,7 @@ The core module and all feature modules are [Unity packages](#unity-packages) an
 
 > Related:
 >
-> * [Core and Feature modules]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+> * [Core and Feature modules]({{urlRoot}}/modules/core-and-feature-module-overview)
 
 ### Game client
 

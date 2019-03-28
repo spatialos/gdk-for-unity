@@ -48,7 +48,7 @@ Call this when you create your [worker]({{urlRoot}}/content/workers/workers-in-t
 Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
 Call this during [entity template creation]({{urlRoot}}/content/entity-templates).
 
-Find out more in the [Player lifecycle feature module]({{urlRoot}}/content/modules/player-lifecycle-feature-module) documentation.
+Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
 
 ### Transform synchronization module
 
@@ -67,8 +67,7 @@ You can optionally pass in a `rotation`, `location` or `velocity`.
 
 Call this during [entity templates creation]({{urlRoot}}/content/entity-templates).
 
-Find out more in the [Transform synchronization feature module]({{urlRoot}}/content/modules/transform-feature-module) documentation.
-
+Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
 
 ### GameObject creation module
 

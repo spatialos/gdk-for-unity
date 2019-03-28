@@ -8,7 +8,7 @@ _This document relates to both [MonoBehaviour and  ECS workflow]({{urlRoot}}/con
 
 Before reading this document, make sure you are familiar with:
 
-  * [Core Module and Feature Module overview]({{urlRoot}}/content/modules/core-and-feature-module-overview)
+  * [Core Module and Feature Module overview]({{urlRoot}}/modules/core-and-feature-module-overview)
   * [Creating entity templates]({{urlRoot}}/content/entity-templates)
   * [Workers in the GDK]({{urlRoot}}/content/workers/workers-in-the-gdk)
 
