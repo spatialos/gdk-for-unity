@@ -2,7 +2,7 @@
 # Setting up Android support for the GDK
 
 ## Get the dependencies for developing Android games
-1. Follow the steps in [Get the dependencies]({{urlRoot}}/setup-and-installing) and additionally install **Android build support** for Unity.
+1. Follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and be sure to select the **iOS build support** component during your Unity installation.
 1. Install [Android Studio](https://developer.android.com/studio/):<br>
   At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
 1. Install Android SDK:<br>

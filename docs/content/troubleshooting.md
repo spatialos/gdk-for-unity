@@ -21,7 +21,7 @@ In your Unity Editor:
   * Unity gives you build support for your development machine (Windows or Mac) by default.
   * _**In addition**_, make sure you have **Linux** build support enabled. You need Linux build support because all server-workers in a cloud deployment run in a Linux environment.
 
-Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup and installing]({{urlRoot}}/setup-and-installing) for more information.
+Fix this by runing the Unity installer and selecting the appropriate build support options during the installation. See [Setup & installation]({{urlRoot}}/machine-setup) for more information.
 
  **Note:** When building your project do not change the `UnityGameLogic Cloud Environment` field in your `BuildConfiguration.asset` from Linux. This can cause further build errors.
 
@@ -33,7 +33,7 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 
 **Fix**<br/>
 
-1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/setup-and-installing)).
+1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/machine-setup)).
 1. Ensure that the dotnet executable is added to your PATH environment variable.
 1. Restart your computer after making the above changes.
 
@@ -131,5 +131,5 @@ You don't have the correct compilation units installed.
 
 Restart your computer. We've noticed that this sometimes resolves the issue. If the issue persists:
 
-1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/setup-and-installing).
+1. Follow the Visual Studio installation steps on our [setup page]({{urlRoot}}/machine-setup).
 1. Restart your computer.
