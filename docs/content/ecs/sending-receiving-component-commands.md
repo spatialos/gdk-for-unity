@@ -1,7 +1,7 @@
 [//]: # (Doc of docs reference 34)
 [//]: # (Tech writer review)
 <%(TOC)%>
-# Sending and receiving component commands
+# ECS: Component commands
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with:

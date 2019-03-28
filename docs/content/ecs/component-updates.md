@@ -2,7 +2,7 @@
 [//]: # (TODO - Tech writer review)
 
 <%(TOC)%>
-#  Component updates
+#  ECS: Component updates
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 Before reading this document, make sure you are familiar with

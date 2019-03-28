@@ -53,7 +53,7 @@ If you got build errors in Unity Editor Console window, check the Common build e
 * You may need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
 * Unity gives you build support for your development machine (Windows or Mac) by default.
 
-You can also check our [Known Issues]({{urlRoot}}/known-issues) for other error messages.
+You can also check our [Known Issues](https://github.com/spatialos/gdk-for-unity/projects/2) for other error messages.
 
 <%(/Expandable)%>
 

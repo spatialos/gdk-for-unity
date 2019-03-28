@@ -2,7 +2,7 @@
 [//]: # (TODO - Tech writer pass)
 
 <%(TOC)%>
-# How to send and receive events
+# Readers and Writers: Events
 
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities#spatialos-entities)._
 

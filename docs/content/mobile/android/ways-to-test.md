@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Ways to test your Android client
+# Run your Android client
 
 Before reading this document, make sure you are familiar with:
 
