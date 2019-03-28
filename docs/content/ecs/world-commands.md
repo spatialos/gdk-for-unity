@@ -1,5 +1,5 @@
 <%(TOC)%>
-# World commands
+# ECS: World commands
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)

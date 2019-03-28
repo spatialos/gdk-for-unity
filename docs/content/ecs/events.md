@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Sending and receiving events
+# ECS: Events
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 

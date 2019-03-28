@@ -1,28 +1,31 @@
-## Sign up for a SpatialOS account, or make sure you are logged in
-
-If you have already signed up, make sure you are logged into [Improbable.io](https://improbable.io). If you are logged in, you should see your picture in the top right of this page; if you are not logged in, select __Sign in__ at the top of this page and follow the instructions.
+### 1. Sign up or log in 
 
 If you have not signed up before, you can do this [here](https://improbable.io/get-spatialos).
 <br/>
+
+If you have already signed up, make sure you are logged into [Improbable.io](https://improbable.io). If you are logged in, you should see your picture in the top right of this page; if you are not logged in, select __Sign in__ at the top of this page and follow the instructions.
+
 <br/>
 
-## Set up your machine
+### 2. Install the GDK dependencies
 
 <%(#Expandable title="Setup for Windows")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.5</strong></a>**
+**Step 1.** Install **Unity 2018.3.5**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
-- Make sure you download the **Installer** version, and select the following components during installation:
-  - **Linux Build Support**
-  - **Mac Build Support**
+You can download **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>Unity 2018.3.5</strong></a>** from the Unity download archive.
 
-> **Note:**
-> Even though you are developing on a Windows PC, you need:<br/>
-> **Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
-> **Mac Build Support** if you want to share your game with end-users on a Mac.<br/>
-> Unity gives you Windows build support by default.
+Make sure you download the **Installer** version, and refer to the matrix below for which options to install :
+
+| | | |
+|---|---|---|
+| **Option** | **Required?** | **Why?** |
+| Linux Build Support | **Yes** | All server-workers in a cloud deployment run in a Linux environment. |
+| Mac Build Support | No |  Only required if you wish to build clients compatible with MacOS. |
+| Android Build Support | No | Only required if you wish to build mobile clients for Android. |
+| iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -52,19 +55,21 @@ The SpatialOS GDK for Unity source code is hosted on GitHub. You need to downloa
 
  **Using Visual Studio?**
 
-As you install [Visual Studio](https://www.visualstudio.com/downloads/), select the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find this by selecting the **More** option for *Visual Studio Build Tools* in the Visual Studio Installer, and selecting **Modify** from the drop-down menu.
+You need to install the **.NET Core cross-platform development** and **Game development with Unity** workloads. To to this:
 
-![Select Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
+- As you install [Visual Studio](https://www.visualstudio.com/downloads/), select the **Workloads** tab in the Installer. If you already have Visual Studio installed, you can find the **Workloads** tab by opening Visual Studio Installer and, in the **Products** section, selecting **Modify** for Visual Studio 2017. If you can't see the **Modify** option, select **More**.
+
+![Click Modify to find the Workloads tab.]({{assetRoot}}assets/setup/windows/visualstudioworkloads.png)
 
 Once you have navigated to the **Workloads** tab:
 
 - Select **.NET Core cross-platform development**.
-- After selecting **Game development with Unity**:
+- Select **Game development with Unity**:
   - Deselect any options in the **Summary** on the right that mention a Unity Editor (for example, Unity 2017.2 64-bit Editor or Unity 2018.1 64-bit Editor).
-  - The SpatialOS GDK for Unity requires **Unity 2018.3.5**, which should already be installed if you have followed the setup guide correctly.
+  - The SpatialOS GDK for Unity requires **Unity 2018.3.5**, which you already installed in step 1.
   - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.5 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to a newer version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.5 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
 
 **Using Rider?**
 
@@ -74,19 +79,21 @@ Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [
 
 <%(#Expandable title="Setup for Mac")%>
 
-**Step 1.** Install **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.5</strong></a>**
+**Step 1.** Install **Unity 2018.3.5**
 
 Ensure you install this exact version as other Unity versions may not work with the GDK.
 
-- Make sure to download the **Installer** version, and select the following components during installation:
-  - **Linux Build Support**
-  - **Windows Build Support**
+You can download **<a href="https://unity3d.com/get-unity/download/archive" data-track-link="Unity Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>Unity 2018.3.5</strong></a>** from the Unity download archive.
 
-> **Note:**
-> Even though you are developing on a Mac, you need:<br/>
-> **Linux Build Support** because all server-workers in a cloud deployment run in a Linux environment. <br/>
-> **Windows Build Support** if you want to share your game with end-users on a Windows PC.<br/>
-> Unity gives you Mac build support by default.
+Make sure you download the **Installer** version, and refer to the matrix below for which options to install :
+
+| | | |
+|---|---|---|
+| **Option** | **Required?** | **Why?** |
+| Linux Build Support | **Yes** | All server-workers in a cloud deployment run in a Linux environment. |
+| Windows Build Support | No |  Only required if you wish to build clients compatible with Windows. |
+| Android Build Support | No | Only required if you wish to build mobile clients for Android. |
+| iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
 
 **Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
@@ -123,23 +130,3 @@ Once you have installed [Visual Studio](https://www.visualstudio.com/downloads/)
 Once you have installed [Rider](https://www.jetbrains.com/rider/), install the [**Unity Support** plugin](https://github.com/JetBrains/resharper-unity) for a better experience.
 
 <%(/Expandable)%>
-
-#### Make sure you have chosen the right build support
-
-- You need **Linux** build support. This is because server-workers in a cloud deployment run in a Linux environment.<br/>
-- You need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
-- You need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
-- Unity gives you build support for your development machine (Windows or Mac) by default.
-
-#### Android and iOS support
-
-Mobile support is in pre-alpha. If you are developing a game for Android or iOS, refer to our GDK for Unity [mobile support documentation]({{urlRoot}}/content//mobile/overview)
-
-#### Need some help?
-
-If you need help using the GDK, come and talk to us about the software and the documentation via:
-
-- **The SpatialOS forums** - Visit the [support section](https://forums.improbable.io/new-topic?category=Support&tags=unity-gdk) in our forums and use the unity-gdk tag.
-- **Discord** - Find us in the [#unity channel](https://discord.gg/SCZTCYm). You may need to grab Discord [here](https://discordapp.com/).
-- **Github issues** - Create an [issue](https://github.com/spatialos/gdk-for-unity/issues) in this repository.
-  <br/>

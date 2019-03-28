@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Receiving entity updates from SpatialOS: reactive components
+# Reactive components
  _This document relates to the [ECS workflow]({{urlRoot}}/content/intro-workflows-spatialos-entities)._
 
 To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
