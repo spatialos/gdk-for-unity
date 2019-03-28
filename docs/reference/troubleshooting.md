@@ -81,15 +81,15 @@ These warnings are benign so you can ignore them.
 #### <li> <b> I get several warnings when deleting a GameObject or ECS entity that represents a SpatialOS entity</b>
 
 **Cause**<br/>
-These warnings occur when a [GameObject](\{\{urlRoot\}\}/reference/glossary#gameobject) or [ECS entity](\{\{urlRoot\}\}/reference/glossary#unity-ecs-entity) that represents a [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) is deleted before its corresponding SpatialOS entity leaves the [worker's view](\{\{urlRoot\}\}/reference/glossary#worker-s-view). 
+These warnings occur when a [GameObject]({{urlRoot}}/reference/glossary#gameobject) or [ECS entity]({{urlRoot}}/reference/glossary#unity-ecs-entity) that represents a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) is deleted before its corresponding SpatialOS entity leaves the [worker's view]({{urlRoot}}/reference/glossary#worker-s-view). 
 
  The GDK expects that a GameObject or ECS entity that represents a SpatialOS entity is only deleted after the SpatialOS entity it represents has left that worker's view: 
 
 * The GDK automatically deletes an ECS entity when its corresponding SpatialOS entity leaves that worker's view. 
-* For GameObjects, you need to delete the GameObject via your code. The SpatialOS [Runtime](\{\{urlRoot\}\}/reference/glossary#spatialos-runtime) sends a message to the server-worker when a SpatialOS entity leaves that worker's view, and the GDK passes this message on to you; it's your responsibility to act upon these commands at the right time in your code.
+* For GameObjects, you need to delete the GameObject via your code. The SpatialOS [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) sends a message to the server-worker when a SpatialOS entity leaves that worker's view, and the GDK passes this message on to you; it's your responsibility to act upon these commands at the right time in your code.
 
 **Fix**<br/>
-When you want to delete a GameObject that represents a SpatialOS entity, send a [DeleteEntity world command](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/world-commands.md) to delete the entity on the SpatialOS side instead.
+When you want to delete a GameObject that represents a SpatialOS entity, send a [DeleteEntity world command]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands.md) to delete the entity on the SpatialOS side instead.
 [comment]: <> "TODO: make this fix clearer and what it means by "passing the message on to you" JIRA: https://improbableio.atlassian.net/browse/UTY-1573 and https://improbableio.atlassian.net/browse/TC-168."
 
 <br/>
@@ -103,9 +103,9 @@ When you want to delete a GameObject that represents a SpatialOS entity, send a 
 
 This can be caused by multiple problems. Follow the checklist below to discover the cause and fix:
 
-  * Ensure that your field is declared in a [MonoBehaviour](\{\{urlRoot\}\}/reference/glossary#monobehaviour). They are not supported in ECS systems.
-  * Ensure that the field is decorated with a `[Require]` attribute (see [How to interact with SpatialOS using MonoBehaviours](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)).
-   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
+  * Ensure that your field is declared in a [MonoBehaviour]({{urlRoot}}/reference/glossary#monobehaviour). They are not supported in ECS systems.
+  * Ensure that the field is decorated with a `[Require]` attribute (see [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)).
+   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
 [comment]: <> "TODO: make this clearer - what is meant by "SpatialOS component" here - do we mean a GameObject component called SpatialOS component? And how do we check whether this is added to the MonoBehaviour? . JIRA:https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
   * Ensure that you only access Requirables in a MonoBehaviour while the MonoBehaviour is enabled. Requirables are supposed to be null while the MonoBehaviour is disabled. Note that certain Unity event methods like `OnTriggerEnter` or `OnCollisionEnter` may be invoked, even if a MonoBehaviour is disabled.
 [comment]: <> "TODO: make this fix clearer - what is meant by "Requireables" - we haven't defined this. JIRA: https://improbableio.atlassian.net/browse/UTY-1575 and https://improbableio.atlassian.net/browse/TC-169."
@@ -117,9 +117,9 @@ This can be caused by multiple problems. Follow the checklist below to discover 
 
 This can be caused by multiple problems. Follow the checklist below to discover the cause and fix:
 
-  * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker](\{\{urlRoot\}\}/reference/glossary#worker).
-   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
-  * Ensure that the [requirements](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the [SpatialOS entity](\{\{urlRoot\}\}/reference/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector](\{\{urlRoot\}\}/reference/glossary#inspector). In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
+  * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker]({{urlRoot}}/reference/glossary#worker).
+   * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity). You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
+  * Ensure that the [requirements]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) for all your fields in your MonoBehaviour are satisfied. You can verify this by examining the [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector]({{urlRoot}}/reference/glossary#inspector). In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.
 
 <br/>
 #### <li> <b> When opening a GDK for Unity solution in Visual Studio 2017, the file has no matching compilation unit </b>

@@ -1,6 +1,6 @@
 <%(TOC)%>
 # ECS: Events
- _This document relates to the [ECS workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 
 Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
@@ -44,7 +44,7 @@ Given the example schema, the GDK generates these types:
 * `ColorData` - Equivalent of the schema type.
 * `CubeColor.EventSenders.ChangeColor` - The event sender type.
 
-The GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/authority) for more on how authority works in the GDK.
+The GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority) for more on how authority works in the GDK.
 
 On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of type `ColorData`. To send an event, add a `ColorData` struct to the list.
 

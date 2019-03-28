@@ -5,8 +5,8 @@ This page describes how to connect an iOS client to a local deployment of Spatia
 
 Before reading this document, make sure you are familiar with:
 
-  * [Setting up iOS Support for the GDK](\{\{urlRoot\}\}/reference/mobile/ios/setup)
-  * [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/run-client)
+  * [Setting up iOS Support for the GDK]({{urlRoot}}/reference/mobile/ios/setup)
+  * [Ways to test your iOS client]({{urlRoot}}/reference/mobile/ios/run-client)
 
 ## Prepare your project to connect to a local deployment {#prepare}
 
@@ -17,7 +17,7 @@ To connect your iOS device to a local deployment, you need to prepare its config
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-**Note:** If you are using one of our [Starter Projects](\{\{urlRoot\}\}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
 
 <%(#Expandable title="Create a mobile connector script")%>
 
@@ -45,7 +45,7 @@ You need the Unity Remote app installed on your iOS device in order to follow st
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
 1. In your Unity Editor, Select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. Open the Scene that starts both your [client-workers](\{\{urlRoot\}\}/reference/glossary#client-worker) and [server-workers](\{\{urlRoot\}\}/reference/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
+1. Open the Scene that starts both your [client-workers]({{urlRoot}}/reference/glossary#client-worker) and [server-workers]({{urlRoot}}/reference/glossary#server-worker). In the FPS Starter Project this is `FPS-Development.scene`.
 1. In the Editor’s Game view, select **Play**.
 
     > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.

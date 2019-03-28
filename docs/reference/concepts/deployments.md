@@ -69,7 +69,7 @@ where:
   * `<assembly name>` identifies the worker assemblies to use. The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`
   * `<launch configuration>` is the configuration file for the deployment. This project includes `default_launch.json`, which is intended for use with local deployments, and `cloud_launch.json`, which is for cloud deployments.
   * `<deployment name>` is a name of your choice, which is used to identify the deployment. The name needs to conform to the following regex: `[a-z0-9_]{2,32}`
-  * `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation](\{\{urlRoot\}\}/reference/concepts/snapshots) for further information.
+  * `<snapshot file>` is the snapshot of the world you want to start from. See this [documentation]({{urlRoot}}/reference/concepts/snapshots) for further information.
 
 ### Launch the game client
 

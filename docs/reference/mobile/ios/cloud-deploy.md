@@ -3,8 +3,8 @@
 
 Before reading this document, make sure you are familiar with:
 
-* [Setting up iOS Support for the GDK](\{\{urlRoot\}\}/reference/mobile/ios/setup)
-* [Ways to test your iOS client](\{\{urlRoot\}\}/reference/mobile/ios/run-client)
+* [Setting up iOS Support for the GDK]({{urlRoot}}/reference/mobile/ios/setup)
+* [Ways to test your iOS client]({{urlRoot}}/reference/mobile/ios/run-client)
 * [Development Authentication Flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
 
@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with:
 
 To connect your iOS device to a cloud deployment, you need a mobile connector script.
 
-**Note:** If you are using one of our [Starter Projects](\{\{urlRoot\}\}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
 
 <%(#Expandable title="Create a mobile connector script")%>
 

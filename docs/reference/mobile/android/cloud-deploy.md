@@ -3,8 +3,8 @@
 
 Before reading this document, make sure you are familiar with:
 
-* [Setting up Android Support for the GDK](\{\{urlRoot\}\}/reference/mobile/android/setup)
-* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/run-client)
+* [Setting up Android Support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
+* [Ways to test your Android client]({{urlRoot}}/reference/mobile/android/run-client)
 * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
 
@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with:
 
 To connect your Android device to a cloud deployment, you need a mobile connector script.
 
-**Note:** If you are using one of our [Starter Projects](\{\{urlRoot\}\}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
 
 <%(#Expandable title="Create a mobile connector script")%>
 

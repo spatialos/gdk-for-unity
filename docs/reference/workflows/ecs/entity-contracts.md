@@ -3,15 +3,15 @@
 
 <%(TOC)%>
 # ECS entity contracts
-  _This document relates to the [ECS workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+  _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
-  * [SpatialOS entities: update entity lifecycle](\{\{urlRoot\}\}/reference/concepts/entity-lifecycle)
-  * [System update order](\{\{urlRoot\}\}/reference/workflows/ecs/system-update-order)
-  * [Temporary components](\{\{urlRoot\}\}/reference/workflows/ecs/temporary-components)
-  * [Reactive components](\{\{urlRoot\}\}/reference/workflows/ecs/reactive-components)
-  * [Workers: Worker entity](\{\{urlRoot\}\}/reference/workflows/ecs/worker-entity)
+  * [SpatialOS entities: update entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
+  * [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+  * [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
+  * [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
+  * [Workers: Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
 
 This documentation describes the guarantees we provide for the components that an ECS Entity has.
 
@@ -23,7 +23,7 @@ A reactive component is implemented as a temporary component, and so has the sam
 
 ## Components on ECS Entities that represent SpatialOS entities
 
-For each SpatialOS entity that a [worker](\{\{urlRoot\}\}/reference/concepts/worker) checks out, the `EcsViewSystem` creates an ECS Entity for that worker’s ECS world.
+For each SpatialOS entity that a [worker]({{urlRoot}}/reference/concepts/worker) checks out, the `EcsViewSystem` creates an ECS Entity for that worker’s ECS world.
 The following guarantees hold for any ECS Entity representing a SpatialOS entity:
 
   * Any SpatialOS entity that is in the worker's view is represented as an ECS Entity.
@@ -31,7 +31,7 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
   * The `NewlyAddedSpatialOSEntity` component is a temporary component and added upon creating these entities.
   * The `SpatialEntityId` component is always available on these entities.
   * The `{name of component}.Component` components are always available on these entities for all schema components that belong to these entities.
-  * The `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands).
+  * The `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
   * `{name of component}.CommandSenders.{name of command}` components are always available on these entities for every single command defined in your schema.
   * `{name of component}.CommandResponders.{name of command}` components are available on these entities for all components ands that the worker is authoritative over.
   * `{name of component}.EventSender.{name of event}` components are available on these entities for all components that the worker is authoritative over.
@@ -58,12 +58,12 @@ Whenever a component update or message is sent by the worker, the following hold
   * All command responses added to the `{name of component}.CommandResponders.{name of command}.ResponsesToSend`  will be sent the next time the `SpatialOSSendSystem` is run.
 
 ## Components on worker entities
-A worker entity is created for each ECS World that is associated with a [worker](\{\{urlRoot\}\}/reference/concepts/worker).
+A worker entity is created for each ECS World that is associated with a [worker]({{urlRoot}}/reference/concepts/worker).
 We guarantee the following:
 
   * The worker entity will exist for as long as the ECS World exists.
   * The `WorkerEntityTag` component is always available on the worker entity.
-  * The `WorldCommands.{name of world command}.CommandSender` components are always available on the worker entity and contain the API to send [world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands).
+  * The `WorldCommands.{name of world command}.CommandSender` components are always available on the worker entity and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
   * `{name of component}.CommandSenders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
   * `{name of component}.CommandResponders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
   * The `OnConnected` component is a temporary component added upon creating the worker entity.
