@@ -33,6 +33,7 @@ To clone the repository using GitHub desktop: navigate to **File > Clone Reposit
 A SpatialOS project needs to have a specific directory layout and configuration files in order to function properly.
 
 **Step 1.** Setup the directory layout.
+
 In the root of your SpatialOS project, you need to create the following directories: `schema` and `workers`.
 
 * `schema`: This directory contains your `.schema` files.
@@ -145,7 +146,7 @@ You need to put the new Unity project in the `workers` directory. For example `w
 ```
 <%(/Expandable)%>
 
-**Step 4.** Add worker configurations
+**Step 4.** Add worker configurations.
 
 For a basic set up of two worker types, an `UnityGameLogic` and `UnityClient`, we recommend you to reuse these files:
 
@@ -219,7 +220,7 @@ Copy this file into `workers/my-unity-project/Assets/Config/GdkToolsConfiguratio
 
 > **Note:** You will need to create the `Config` folder.
 
-**Step 4.** Open your Unity project
+**Step 4.** Open your Unity project.
 
 Open your Unity project located at `workers/my-unity-project`. This triggers a few actions:
   
