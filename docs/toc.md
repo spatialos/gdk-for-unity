@@ -27,6 +27,7 @@
     - GDK concepts
         - [Code generation]({{urlRoot}}/reference/concepts/code-generation)
         - [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
+        - [Deployments]({{urlRoot}}/reference/concepts/deployments)
         - [Entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
         - [Entity templates]({{urlRoot}}/reference/concepts/entity-templates)
         - [Logs]({{urlRoot}}/reference/concepts/logging)
