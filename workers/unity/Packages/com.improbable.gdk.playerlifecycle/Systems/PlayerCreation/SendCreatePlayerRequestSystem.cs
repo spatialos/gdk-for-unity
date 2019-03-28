@@ -80,18 +80,22 @@ namespace Improbable.Gdk.PlayerLifecycle
                 }
                 else if (playerCreatorQueryRetries < PlayerLifecycleConfig.MaxPlayerCreatorQueryRetries)
                 {
+                    ++playerCreatorQueryRetries;
+
                     logDispatcher.HandleLog(LogType.Warning, new LogEvent(
                         $"Retrying player creator query, attempt {playerCreatorQueryRetries}."
                     ));
 
                     SendPlayerCreatorEntityQuery();
-
-                    ++playerCreatorQueryRetries;
                 }
                 else
                 {
+                    var retryText = playerCreatorQueryRetries == 0
+                        ? "1 attempt"
+                        : $"{playerCreatorQueryRetries + 1} attempts";
+
                     logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                        $"Unable to find player creator after {playerCreatorQueryRetries} retries."
+                        $"Unable to find player creator after {retryText}."
                     ));
                 }
 
@@ -143,8 +147,12 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
             else
             {
+                var retryText = playerCreationRetries == 0
+                    ? "1 attempt"
+                    : $"{playerCreationRetries + 1} attempts";
+
                 logDispatcher.HandleLog(LogType.Error, new LogEvent(
-                    $"Unable to create player after {playerCreationRetries} attempts."
+                    $"Unable to create player after {retryText}."
                 ));
             }
         }
