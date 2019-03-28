@@ -12,7 +12,7 @@
 
 ### Changed
 
-- The player lifecycle module now dynamically queries for player creator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded player creator Entity ID.
+- The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
 - Removed the `Type` suffix from player lifecycle schema types.
 
 ### Fixed
@@ -22,7 +22,7 @@
 ### Internal
 
 - Tools package now uses PackageManager API instead of parsing manifest.json.
-- Updated default snapshot to have more than one Player Creator entity.
+- Updated default snapshot to have more than one PlayerCreator entity.
 
 ## `0.2.0` - 2019-03-18
 
