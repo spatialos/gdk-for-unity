@@ -6,7 +6,6 @@
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS GDK Player Lifecycle Module. Made by Improbable.",
     "dependencies": {
-        "com.improbable.gdk.core":"0.2.0",
-        "com.improbable.gdk.tools":"0.2.0"
+        "com.improbable.gdk.core":"0.2.0"
     }
 }
