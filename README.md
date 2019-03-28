@@ -22,7 +22,7 @@ The GDK is composed of three layers:
 * [Documentation](https://docs.improbable.io/unity/alpha/)
 
 * [Development roadmap](https://github.com/spatialos/gdk-for-unity/projects/1)
-* [Issue reporting](https://github.com/spatialos/UnityGDK/issues) ([Known issues](https://docs.improbable.io/unity/alpha/known-issues))
+* [Issue reporting](https://github.com/spatialos/UnityGDK/issues)
 
 * Community: [Discord](https://discord.gg/SCZTCYm) - [Forums](https://forums.improbable.io/latest?tags=unity-gdk) - [Mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb)
 
