@@ -55,12 +55,12 @@ public static class PlayerTemplate
     public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
     {
         // Obtain unique client attribute of the client-worker that requested the player entity
-        var clientAttribute = $"workerId:{workerId}";
+        var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
         // Obtain the attribute of your server-worker
         var serverAttribute = "UnityGameLogic";
 
         var entityTemplate = new EntityTemplate();
-        entityTemplate.AddPosition(new Position.Snapshot { Coords = new Coordinates() }, serverAttribute);
+        entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), serverAttribute);
         // add all components that you want the player entity to have
         AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
@@ -149,15 +149,15 @@ public static class PlayerTemplate
     public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
     {
         // Obtain unique client attribute of the client-worker that requested the player entity
-        var clientAttribute = $"workerId:{workerId}";
+        var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
         // Obtain the attribute of your server-worker
         var serverAttribute = "UnityGameLogic";
 
         var deserializedArguments = DeserializeArguments<SampleArgumentsObject>(playerCreationArguments);
 
         var entityTemplate = new EntityTemplate();
-        entityTemplate.AddPosition(new Position.Snapshot { Coords = deserializedArguments.SpawnPosition }, serverAttribute);
-        entityTemplate.AddComponent(new PlayerName.Snapshot { PlayerName = deserializedArguments.PlayerName }, serverAttribute);
+        entityTemplate.AddPosition(new Position.Snapshot(deserializedArguments.SpawnPosition), serverAttribute);
+        entityTemplate.AddComponent(new PlayerName.Snapshot(deserializedArguments.PlayerName), serverAttribute);
         // add all components that you want the player entity to have
         AddPlayerLifecycleComponents(entityTemplate, workerId, clientAttribute, serverAttribute);
 
