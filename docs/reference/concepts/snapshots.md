@@ -1,6 +1,6 @@
 <%(TOC)%>
 # Snapshots
-_This document relates to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
 A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/latest/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/latest/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
 
@@ -21,6 +21,6 @@ To generate the snapshot, in your Unity Editor menu: **SpatialOS** > **Generate 
 This saves the generated snapshot to `snapshots/default.snapshot`, which is where SpatialOS expects to find it unless explicitly told to use another path when you start the deployment.
 
 ## How to start a deployment from a snapshot
-You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Deploying your game](\{\{urlRoot\}\}/reference/concepts/deployments) for details.
+You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Deploying your game]({{urlRoot}}/reference/concepts/deployments) for details.
 
 Both of these commands can take the optional command line parameter `--snapshot=<path>`. This starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.

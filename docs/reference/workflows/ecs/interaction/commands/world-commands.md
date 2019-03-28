@@ -1,6 +1,6 @@
 <%(TOC)%>
 # ECS: World commands
- _This document relates to the [ECS workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
 
@@ -18,7 +18,7 @@ To receive a response use `WorldCommands.ReserveEntityIds.CommandResponses`. Thi
 
 ## 2. Create an entity
 
-You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template](\{\{urlRoot\}\}/reference/concepts/entity-templates).
+You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template]({{urlRoot}}/reference/concepts/entity-templates).
 
 To send a request use a `WorldCommands.CreateEntity.CommandSender` component. This contains a list of `WorldCommands.CreateEntity.Request` structs. Add a struct to the list to send the command.
 
@@ -27,7 +27,7 @@ To send a request use a `WorldCommands.CreateEntity.CommandSender` component. Th
 
 To receive a response use `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
 
-Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates](\{\{urlRoot\}\}/reference/concepts/entity-templates) page.
+Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates]({{urlRoot}}/reference/concepts/entity-templates) page.
 
 ```csharp
 public class CreateCreatureSystem : ComponentSystem

@@ -5,8 +5,8 @@ This page explains how to connect an Android client to a local deployment of Spa
 
 Before reading this document, make sure you are familiar with:
 
-* [Setting up Android Support for the GDK](\{\{urlRoot\}\}/reference/mobile/android/setup)
-* [Ways to test your Android client](\{\{urlRoot\}\}/reference/mobile/android/run-client)
+* [Setting up Android Support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
+* [Ways to test your Android client]({{urlRoot}}/reference/mobile/android/run-client)
 
 ## Prepare your project to connect to a local deployment {#prepare}
 
@@ -17,7 +17,7 @@ To connect your Android device to a local deployment, you need to prepare its co
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
-**Note:** If you are using one of our [Starter Projects](\{\{urlRoot\}\}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
+**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
 
 <%(#Expandable title="Create a mobile connector script")%>
 
@@ -42,7 +42,7 @@ You need your Unity Remote app for this. See the [Unity documentation](https://d
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
 1. In your Unity Editor, open the project that you want to deploy and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
 1. In the **Editor Settings** window's **Unity Remote** section, set the **Device** setting to **Any Android Device**.
-1. Open the Scene that starts both your [client-workers](\{\{urlRoot\}\}/reference/glossary#client-worker) and [server-workers](\{\{urlRoot\}\}/reference/glossary#server-worker).
+1. Open the Scene that starts both your [client-workers]({{urlRoot}}/reference/glossary#client-worker) and [server-workers]({{urlRoot}}/reference/glossary#server-worker).
 1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
 1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.

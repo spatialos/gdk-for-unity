@@ -2,29 +2,29 @@
 [//]: # (Tech writer review)
 <%(TOC)%>
 # ECS: Component commands
- _This document relates to the [ECS workflow](\{\{urlRoot\}\}/reference/workflows/which-workflow)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
-* [World and component command requests and responses](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses)
-* [Readers and Writers](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/reader-writers/index)
-* [Read and write access](\{\{urlRoot\}\}/reference/glossary#authority)
+* [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
+* [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+* [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ## About commands
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers](\{\{urlRoot\}\}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows](\{\{urlRoot\}\}/reference/workflows/which-workflow).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow).<br/>
 
 There are two types of commands in SpatialOS:
 
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities](\{\{urlRoot\}\}/reference/glossary#spatialos-entity).
-* **Component commands** you set up in your [schema](\{\{urlRoot\}\}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
+* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity).
+* **Component commands** you set up in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
 This document is about MonoBehaviour component commands. The commands documentation is:
 
-* [MonoBehaviour world commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/world-commands)
-* [ECS world commands](\{\{urlRoot\}\}/reference/workflows/ecs/interaction/commands/world-commands)
-* [MonoBehaviour component commands](\{\{urlRoot\}\}/reference/workflows/monobehaviour/interaction/commands/component-commands)
+* [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+* [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
+* [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
 * ECS component commands - this document
-* Both workflows - [world and component command requests and responses](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses)
+* Both workflows - [world and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
 
 
 ## How to send and receive component commands
@@ -32,7 +32,7 @@ The GDK generates the following ECS components to allow you to send and receive 
 
   * `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
   * `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
-  * [Command request and response structs](\{\{urlRoot\}\}/reference/world-component-commands-requests-responses): allows you to create and handle incoming and outgoing command requests and responses
+  * [Command request and response structs]({{urlRoot}}/reference/world-component-commands-requests-responses): allows you to create and handle incoming and outgoing command requests and responses
 
 We use the following schema for all examples described in this documentation.
 ```
