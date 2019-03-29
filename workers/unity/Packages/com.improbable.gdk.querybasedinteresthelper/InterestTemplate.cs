@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.QueryBasedInterest
