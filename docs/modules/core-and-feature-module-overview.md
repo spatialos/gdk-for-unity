@@ -34,24 +34,6 @@ This feature module contains a default implementation of spawning GameObjects fo
 
 ### Player lifecycle module
 
-To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It contains members which you use to implement player spawning and player heartbeats.
-
-`Improbable.Gdk.PlayerLifecycle` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle).
-
-The module consists of:
-
-* `PlayerLifecycleHelper.AddClientSystems(world, autoRequestPlayerCreation)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to implement the player lifecycle module, adding all the necessary client systems to your client-worker. It also provides the option to disable automatic player creation when the worker connects to SpatialOS.<br/>
-Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
-
-* `PlayerLifecycleHelper.AddServerSystems(world)` -  in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to implement the player lifecycle module, adding all the necessary server systems to your server-worker.<br/>
-Call this when you create your [worker]({{urlRoot}}/reference/concepts/worker).
-
-* `AddPlayerLifecycleComponents(entityTemplate, workerId, serverAccess)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs).<br/>
-Call this to add the SpatialOS components used by the player lifecycle module to your entity.<br/>
-Call this during [entity template creation]({{urlRoot}}/reference/concepts/entity-templates).
-
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
 
 ### Transform synchronization module
