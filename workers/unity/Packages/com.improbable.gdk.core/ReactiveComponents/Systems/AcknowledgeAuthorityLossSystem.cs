@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -17,6 +19,9 @@ namespace Improbable.Gdk.ReactiveComponents
         private readonly List<ComponentAuthorityLossDetails> authorityLossDetails =
             new List<ComponentAuthorityLossDetails>();
 
+        private NativeArray<ArchetypeChunk>[] chunkArrayCache;
+        private NativeArray<JobHandle> gatheringJobs;
+
         private ComponentUpdateSystem updateSystem;
 
         protected override void OnCreateManager()
@@ -24,6 +29,14 @@ namespace Improbable.Gdk.ReactiveComponents
             base.OnCreateManager();
             updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
             GenerateComponentGroups();
+            chunkArrayCache = new NativeArray<ArchetypeChunk>[authorityLossDetails.Count];
+            gatheringJobs = new NativeArray<JobHandle>(authorityLossDetails.Count, Allocator.Persistent);
+        }
+
+        protected override void OnDestroyManager()
+        {
+            base.OnDestroyManager();
+            gatheringJobs.Dispose();
         }
 
         private void GenerateComponentGroups()
@@ -35,25 +48,43 @@ namespace Improbable.Gdk.ReactiveComponents
                 authorityLossDetails.Add(new ComponentAuthorityLossDetails
                 {
                     Handler = authorityLossHandler,
-                    AuthorityLossGroup = GetComponentGroup(authorityLossHandler.Query)
+                    Group = GetComponentGroup(authorityLossHandler.Query)
                 });
             }
         }
 
         protected override void OnUpdate()
         {
-            foreach (var details in authorityLossDetails)
+            Profiler.BeginSample("GatherChunks");
+            for (var i = 0; i < authorityLossDetails.Count; i++)
             {
+                var replicator = authorityLossDetails[i];
+                chunkArrayCache[i] = replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
+                gatheringJobs[i] = jobHandle;
+            }
+
+            Profiler.EndSample();
+
+            JobHandle.CompleteAll(gatheringJobs);
+
+            for (var i = 0; i < authorityLossDetails.Count; i++)
+            {
+                var details = authorityLossDetails[i];
+                var chunkArray = chunkArrayCache[i];
+
+
                 Profiler.BeginSample("AcknowledgingAuthorityLoss");
-                details.Handler.AcknowledgeAuthorityLoss(details.AuthorityLossGroup, this, updateSystem);
+                details.Handler.AcknowledgeAuthorityLoss(chunkArray, this, updateSystem);
                 Profiler.EndSample();
+
+                chunkArray.Dispose();
             }
         }
 
         private struct ComponentAuthorityLossDetails
         {
             public AbstractAcknowledgeAuthorityLossHandler Handler;
-            public ComponentGroup AuthorityLossGroup;
+            public ComponentGroup Group;
         }
     }
 }

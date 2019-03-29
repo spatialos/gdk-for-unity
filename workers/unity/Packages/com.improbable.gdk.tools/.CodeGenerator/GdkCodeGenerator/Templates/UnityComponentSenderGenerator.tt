@@ -41,14 +41,13 @@ namespace <#= qualifiedNamespace #>
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 <#= profilingStart #>
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<<#= componentNamespace #>.Component>();
 
@@ -88,7 +87,6 @@ var fieldDetails = fieldDetailsList[i]; #>
                     }
                 }
 
-                chunkArray.Dispose();
                 <#= profilingEnd #>
             }
         }

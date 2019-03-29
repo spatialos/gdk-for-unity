@@ -33,14 +33,13 @@ namespace Improbable.Gdk.Tests
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("NestedComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NestedComponent.Component>();
 
@@ -77,7 +76,6 @@ namespace Improbable.Gdk.Tests
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
         }

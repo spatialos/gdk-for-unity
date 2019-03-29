@@ -1,8 +1,11 @@
+using System;
+
 namespace Improbable.Gdk.Core
 {
-    public interface IConnectionHandler
+    public interface IConnectionHandler : IDisposable
     {
-        ViewDiff GetMessagesReceived();
+        void GetMessagesReceived(ref ViewDiff viewDiff);
+        MessagesToSend GetMessagesToSendContainer();
         void PushMessagesToSend(MessagesToSend messages);
         bool IsConnected();
     }

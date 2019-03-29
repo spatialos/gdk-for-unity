@@ -59,12 +59,11 @@ namespace <#= qualifiedNamespace #>
 <# } #>
             };
 
-            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
+            public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
 <# if (eventDetailsList.Count > 0) { #>
                 <#= profilingStart #>
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
 <# foreach (var eventDetail in eventDetailsList) { #>
                 var event<#= eventDetail.EventName #>Type = system.GetArchetypeChunkComponentType<EventSender.<#= eventDetail.EventName #>>(true);
@@ -90,12 +89,11 @@ namespace <#= qualifiedNamespace #>
                     }
                 }
 
-                chunkArray.Dispose();
                 <#= profilingEnd #>
 <# } #>
             }
 
-            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
+            public void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem)
             {
 <# if (commandDetailsList.Count > 0) { #>
                 <#= profilingStart #>
@@ -103,23 +101,30 @@ namespace <#= qualifiedNamespace #>
 <#
 for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandDetails = commandDetailsList[i];
-    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandDetails.CommandName}";
-    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandDetails.CommandName}";
+    var commandName = commandDetails.CommandName;
+    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandName}";
+    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandName}";
 #>
-                {
-                    var senderType = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
-                    var responderType = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
+                var senderType<#= commandName #> = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
+                var responderType<#= commandName #> = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
+<# } #>
 
-                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-                    foreach (var chunk in chunks)
+                foreach (var chunk in chunkArray)
+                {
+                    var entities = chunk.GetNativeArray(entityType);
+<#
+for (var i = 0; i < commandDetailsList.Count; i++) {
+    var commandDetails = commandDetailsList[i];
+    var commandName = commandDetails.CommandName;
+    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandName}";
+    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandName}";
+#>
+                    if (chunk.Has(senderType<#= commandName #>))
                     {
-                        var entities = chunk.GetNativeArray(entityType);
-                        var senders = chunk.GetNativeArray(senderType);
-                        var responders = chunk.GetNativeArray(responderType);
+                        var senders = chunk.GetNativeArray(senderType<#= commandName #>);
                         for (var i = 0; i < senders.Length; i++)
                         {
                             var requests = senders[i].RequestsToSend;
-                            var responses = responders[i].ResponsesToSend;
                             if (requests.Count > 0)
                             {
                                 foreach (var request in requests)
@@ -129,7 +134,12 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
                                 requests.Clear();
                             }
+                        }
 
+                        var responders = chunk.GetNativeArray(responderType<#= commandName #>);
+                        for (var i = 0; i < responders.Length; i++)
+                        {
+                            var responses = responders[i].ResponsesToSend;
                             if (responses.Count > 0)
                             {
                                 foreach (var response in responses)
@@ -142,9 +152,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                         }
                     }
 
-                    chunks.Dispose();
-                }
 <# } #>
+                }
 
                 <#= profilingEnd #>
 <# } #>
@@ -173,7 +182,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+            public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
@@ -195,8 +204,6 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                 var <#= commandDetails.CamelCaseCommandName #>RequestType = system.GetArchetypeChunkComponentType<CommandRequests.<#= commandDetails.CommandName #>>();
                 var <#= commandDetails.CamelCaseCommandName #>ResponseType = system.GetArchetypeChunkComponentType<CommandResponses.<#= commandDetails.CommandName #>>();
 <# } #>
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -271,7 +278,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                     // <#= commandDetails.CommandName #> Command
                     if (chunk.Has(<#= commandDetails.CamelCaseCommandName #>RequestType))
                     {
-                            var <#= commandDetails.CamelCaseCommandName #>RequestArray = chunk.GetNativeArray(<#= commandDetails.CamelCaseCommandName #>RequestType);
+                        var <#= commandDetails.CamelCaseCommandName #>RequestArray = chunk.GetNativeArray(<#= commandDetails.CamelCaseCommandName #>RequestType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<CommandRequests.<#= commandDetails.CommandName #>>(entities[i]);
@@ -290,8 +297,6 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                     }
 <# } #>
                 }
-
-                chunkArray.Dispose();
             }
         }
 
@@ -308,13 +313,11 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                 None = Array.Empty<ComponentType>()
             };
 
-            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+            public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<<#= componentNamespace #>.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -330,8 +333,6 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
     }

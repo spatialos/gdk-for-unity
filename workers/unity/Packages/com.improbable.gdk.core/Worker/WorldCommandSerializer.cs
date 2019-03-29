@@ -22,8 +22,8 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.CreateEntity.Request>(request.SendingEntity,
-                    request.Request, request.Request.Context);
-                commandMetaData.AddRequest(0, 0, request.RequestId, context);
+                    request.Request, request.Request.Context, request.RequestId);
+                commandMetaData.AddRequest(0, 0, context);
 
                 serializedMessages.AddCreateEntityRequest(request.Request.Entity, request.Request.EntityId?.Id,
                     request.Request.TimeoutMillis, request.RequestId);
@@ -38,8 +38,8 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.DeleteEntity.Request>(request.SendingEntity,
-                    request.Request, request.Request.Context);
-                commandMetaData.AddRequest(0, 0, request.RequestId, context);
+                    request.Request, request.Request.Context, request.RequestId);
+                commandMetaData.AddRequest(0, 0, context);
 
                 serializedMessages.AddDeleteEntityRequest(request.Request.EntityId.Id, request.Request.TimeoutMillis,
                     request.RequestId);
@@ -54,8 +54,8 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.ReserveEntityIds.Request>(request.SendingEntity,
-                    request.Request, request.Request.Context);
-                commandMetaData.AddRequest(0, 0, request.RequestId, context);
+                    request.Request, request.Request.Context, request.RequestId);
+                commandMetaData.AddRequest(0, 0, context);
 
                 serializedMessages.AddReserveEntityIdsRequest(request.Request.NumberOfEntityIds,
                     request.Request.TimeoutMillis, request.RequestId);
@@ -70,8 +70,8 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.EntityQuery.Request>(request.SendingEntity,
-                    request.Request, request.Request.Context);
-                commandMetaData.AddRequest(0, 0, request.RequestId, context);
+                    request.Request, request.Request.Context, request.RequestId);
+                commandMetaData.AddRequest(0, 0, context);
 
                 serializedMessages.AddEntityQueryRequest(request.Request.EntityQuery, request.Request.TimeoutMillis,
                     request.RequestId);

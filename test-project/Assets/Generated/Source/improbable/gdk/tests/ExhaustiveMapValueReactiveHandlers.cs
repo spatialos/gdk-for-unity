@@ -35,11 +35,11 @@ namespace Improbable.Gdk.Tests
             {
             };
 
-            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
+            public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
             }
 
-            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
+            public void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem)
             {
             }
         }
@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Tests
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+            public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
@@ -67,8 +67,6 @@ namespace Improbable.Gdk.Tests
                 var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
                 var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ExhaustiveMapValue.ReceivedUpdates>();
                 var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -121,8 +119,6 @@ namespace Improbable.Gdk.Tests
                     }
 
                 }
-
-                chunkArray.Dispose();
             }
         }
 
@@ -139,13 +135,11 @@ namespace Improbable.Gdk.Tests
                 None = Array.Empty<ComponentType>()
             };
 
-            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+            public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -161,8 +155,6 @@ namespace Improbable.Gdk.Tests
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
     }

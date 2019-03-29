@@ -57,11 +57,10 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 },
             };
 
-            public void SendEvents(ComponentGroup replicationGroup, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
+            public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("NonBlittableComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var eventFirstEventType = system.GetArchetypeChunkComponentType<EventSender.FirstEvent>(true);
                 var eventSecondEventType = system.GetArchetypeChunkComponentType<EventSender.SecondEvent>(true);
@@ -87,28 +86,27 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
 
-            public void SendCommands(ComponentGroup commandGroup, ComponentSystemBase system, CommandSystem commandSystem)
+            public void SendCommands(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, CommandSystem commandSystem)
             {
                 Profiler.BeginSample("NonBlittableComponent");
                 var entityType = system.GetArchetypeChunkEntityType();
-                {
-                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
-                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
+                var senderTypeFirstCommand = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand>(true);
+                var responderTypeFirstCommand = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand>(true);
+                var senderTypeSecondCommand = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
+                var responderTypeSecondCommand = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
 
-                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-                    foreach (var chunk in chunks)
+                foreach (var chunk in chunkArray)
+                {
+                    var entities = chunk.GetNativeArray(entityType);
+                    if (chunk.Has(senderTypeFirstCommand))
                     {
-                        var entities = chunk.GetNativeArray(entityType);
-                        var senders = chunk.GetNativeArray(senderType);
-                        var responders = chunk.GetNativeArray(responderType);
+                        var senders = chunk.GetNativeArray(senderTypeFirstCommand);
                         for (var i = 0; i < senders.Length; i++)
                         {
                             var requests = senders[i].RequestsToSend;
-                            var responses = responders[i].ResponsesToSend;
                             if (requests.Count > 0)
                             {
                                 foreach (var request in requests)
@@ -118,7 +116,12 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                                 requests.Clear();
                             }
+                        }
 
+                        var responders = chunk.GetNativeArray(responderTypeFirstCommand);
+                        for (var i = 0; i < responders.Length; i++)
+                        {
+                            var responses = responders[i].ResponsesToSend;
                             if (responses.Count > 0)
                             {
                                 foreach (var response in responses)
@@ -131,22 +134,12 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
 
-                    chunks.Dispose();
-                }
-                {
-                    var senderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand>(true);
-                    var responderType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand>(true);
-
-                    var chunks = commandGroup.CreateArchetypeChunkArray(Allocator.TempJob);
-                    foreach (var chunk in chunks)
+                    if (chunk.Has(senderTypeSecondCommand))
                     {
-                        var entities = chunk.GetNativeArray(entityType);
-                        var senders = chunk.GetNativeArray(senderType);
-                        var responders = chunk.GetNativeArray(responderType);
+                        var senders = chunk.GetNativeArray(senderTypeSecondCommand);
                         for (var i = 0; i < senders.Length; i++)
                         {
                             var requests = senders[i].RequestsToSend;
-                            var responses = responders[i].ResponsesToSend;
                             if (requests.Count > 0)
                             {
                                 foreach (var request in requests)
@@ -156,7 +149,12 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                                 requests.Clear();
                             }
+                        }
 
+                        var responders = chunk.GetNativeArray(responderTypeSecondCommand);
+                        for (var i = 0; i < responders.Length; i++)
+                        {
+                            var responses = responders[i].ResponsesToSend;
                             if (responses.Count > 0)
                             {
                                 foreach (var response in responses)
@@ -169,7 +167,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
 
-                    chunks.Dispose();
                 }
 
                 Profiler.EndSample();
@@ -197,7 +194,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 None = Array.Empty<ComponentType>(),
             };
 
-            public override void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+            public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
@@ -213,8 +210,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 var secondCommandRequestType = system.GetArchetypeChunkComponentType<CommandRequests.SecondCommand>();
                 var secondCommandResponseType = system.GetArchetypeChunkComponentType<CommandResponses.SecondCommand>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -291,7 +286,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     // FirstCommand Command
                     if (chunk.Has(firstCommandRequestType))
                     {
-                            var firstCommandRequestArray = chunk.GetNativeArray(firstCommandRequestType);
+                        var firstCommandRequestArray = chunk.GetNativeArray(firstCommandRequestType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<CommandRequests.FirstCommand>(entities[i]);
@@ -311,7 +306,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     // SecondCommand Command
                     if (chunk.Has(secondCommandRequestType))
                     {
-                            var secondCommandRequestArray = chunk.GetNativeArray(secondCommandRequestType);
+                        var secondCommandRequestArray = chunk.GetNativeArray(secondCommandRequestType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
                             buffer.RemoveComponent<CommandRequests.SecondCommand>(entities[i]);
@@ -329,8 +324,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
 
@@ -347,13 +340,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 None = Array.Empty<ComponentType>()
             };
 
-            public override void AcknowledgeAuthorityLoss(ComponentGroup group, ComponentSystemBase system,
+            public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
                 var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
-
-                var chunkArray = group.CreateArchetypeChunkArray(Allocator.TempJob);
 
                 foreach (var chunk in chunkArray)
                 {
@@ -369,8 +360,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                         }
                     }
                 }
-
-                chunkArray.Dispose();
             }
         }
     }

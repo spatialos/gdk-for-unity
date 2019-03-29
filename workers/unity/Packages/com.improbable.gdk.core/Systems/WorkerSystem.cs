@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerType;
         public readonly Vector3 Origin;
 
-        internal readonly MessagesToSend MessagesToSend = new MessagesToSend();
+        internal MessagesToSend MessagesToSend;
 
         internal readonly View View = new View();
         internal readonly IConnectionHandler ConnectionHandler;
@@ -38,6 +38,8 @@ namespace Improbable.Gdk.Core
             WorkerType = workerType;
             Origin = origin;
             ConnectionHandler = connectionHandler;
+
+            MessagesToSend = connectionHandler.GetMessagesToSendContainer();
         }
 
         /// <summary>
@@ -78,13 +80,13 @@ namespace Improbable.Gdk.Core
 
         internal void GetMessages()
         {
-            Diff = ConnectionHandler.GetMessagesReceived();
+            ConnectionHandler.GetMessagesReceived(ref Diff);
         }
 
         internal void SendMessages()
         {
             ConnectionHandler.PushMessagesToSend(MessagesToSend);
-            MessagesToSend.Clear();
+            MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
         }
 
         protected override void OnCreateManager()
@@ -93,6 +95,12 @@ namespace Improbable.Gdk.Core
             var entityManager = World.GetOrCreateManager<EntityManager>();
             WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
             Enabled = false;
+        }
+
+        protected override void OnDestroyManager()
+        {
+            ConnectionHandler.Dispose();
+            base.OnDestroyManager();
         }
 
         protected override void OnUpdate()

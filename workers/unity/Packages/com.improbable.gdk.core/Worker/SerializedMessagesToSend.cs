@@ -9,6 +9,12 @@ namespace Improbable.Gdk.Core
     {
         private const uint PositionComponentId = 54;
 
+        private static readonly UpdateParameters UpdateParams = new UpdateParameters
+            { Loopback = ComponentUpdateLoopback.ShortCircuited };
+
+        private static List<Type> componentTypes;
+        private static List<Type> commandTypes;
+
         private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
         private readonly MessageList<RequestToSend> requests = new MessageList<RequestToSend>();
         private readonly MessageList<ResponseToSend> responses = new MessageList<ResponseToSend>();
@@ -37,19 +43,27 @@ namespace Improbable.Gdk.Core
         private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
-        private readonly UpdateParameters updateParams = new UpdateParameters();
+        private CommandMetaData metaData;
 
         public SerializedMessagesToSend()
         {
-            updateParams.Loopback = ComponentUpdateLoopback.ShortCircuited;
+            if (componentTypes == null)
+            {
+                componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSerializer));
+            }
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSerializer)))
+            if (commandTypes == null)
+            {
+                commandTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSerializer));
+            }
+
+            foreach (var type in componentTypes)
             {
                 var instance = (IComponentSerializer) Activator.CreateInstance(type);
                 componentSerializers.Add(instance);
             }
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSerializer)))
+            foreach (var type in commandTypes)
             {
                 var instance = (ICommandSerializer) Activator.CreateInstance(type);
                 commandSerializers.Add(instance);
@@ -71,9 +85,11 @@ namespace Improbable.Gdk.Core
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
+            metaData = commandMetaData;
+
             foreach (var serializer in commandSerializers)
             {
-                serializer.Serialize(messages, this, commandMetaData);
+                serializer.Serialize(messages, this, metaData);
             }
 
             foreach (var metrics in messages.GetMetrics())
@@ -103,21 +119,22 @@ namespace Improbable.Gdk.Core
             entityQueryRequests.Clear();
             metricsToSend.Clear();
             logMessages.Clear();
+            authorityLossAcks.Clear();
         }
 
-        public void SendAll(Connection connection, CommandMetaData commandMetaData)
+        public CommandMetaData SendAndClear(Connection connection)
         {
             for (int i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
-                connection.SendComponentUpdate(update.EntityId, update.Update, updateParams);
+                connection.SendComponentUpdate(update.EntityId, update.Update, UpdateParams);
             }
 
             for (int i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var id = connection.SendCommandRequest(request.EntityId, request.Request, request.CommandId, request.Timeout);
-                commandMetaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId, id);
+                metaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId, id);
             }
 
             for (int i = 0; i < responses.Count; ++i)
@@ -136,28 +153,28 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var request = ref createEntityRequests[i];
                 var id = connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < deleteEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref deleteEntityRequests[i];
                 var id = connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < reserveEntityIdsRequests.Count; ++i)
             {
                 ref readonly var request = ref reserveEntityIdsRequests[i];
                 var id = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < entityQueryRequests.Count; ++i)
             {
                 ref readonly var request = ref entityQueryRequests[i];
                 var id = connection.SendEntityQueryRequest(request.Query, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
             for (int i = 0; i < metricsToSend.Count; ++i)
@@ -177,6 +194,10 @@ namespace Improbable.Gdk.Core
                 ref readonly var entityComponent = ref authorityLossAcks[i];
                 connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId, entityComponent.ComponentId);
             }
+
+            Clear();
+
+            return metaData;
         }
 
         public void AddComponentUpdate(ComponentUpdate update, long entityId)
@@ -217,6 +238,27 @@ namespace Improbable.Gdk.Core
         public void AddEntityQueryRequest(EntityQuery query, uint? timeout, long requestId)
         {
             entityQueryRequests.Add(new EntityQueryRequestToSend(query, timeout, requestId));
+        }
+
+        internal void DestroyUnsentMessages()
+        {
+            for (int i = 0; i < updates.Count; ++i)
+            {
+                ref readonly var update = ref updates[i];
+                update.Update.SchemaData.Value.Destroy();
+            }
+
+            for (int i = 0; i < requests.Count; ++i)
+            {
+                ref readonly var request = ref requests[i];
+                request.Request.SchemaData.Value.Destroy();
+            }
+
+            for (int i = 0; i < responses.Count; ++i)
+            {
+                ref readonly var response = ref responses[i];
+                response.Response.SchemaData.Value.Destroy();
+            }
         }
 
         #region Containers

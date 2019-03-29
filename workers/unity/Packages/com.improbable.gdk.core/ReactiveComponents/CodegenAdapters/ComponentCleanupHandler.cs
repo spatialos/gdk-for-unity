@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -6,7 +7,7 @@ namespace Improbable.Gdk.ReactiveComponents
     {
         public abstract EntityArchetypeQuery CleanupArchetypeQuery { get; }
 
-        public abstract void CleanComponents(ComponentGroup group, ComponentSystemBase system,
+        public abstract void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             EntityCommandBuffer buffer);
     }
 }

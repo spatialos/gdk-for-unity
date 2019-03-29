@@ -33,14 +33,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             };
 
             public void SendUpdates(
-                ComponentGroup replicationGroup,
+                NativeArray<ArchetypeChunk> chunkArray,
                 ComponentSystemBase system,
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
                 Profiler.BeginSample("NonBlittableComponent");
 
-                var chunkArray = replicationGroup.CreateArchetypeChunkArray(Allocator.TempJob);
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>();
 
@@ -117,7 +116,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                 }
 
-                chunkArray.Dispose();
                 Profiler.EndSample();
             }
         }

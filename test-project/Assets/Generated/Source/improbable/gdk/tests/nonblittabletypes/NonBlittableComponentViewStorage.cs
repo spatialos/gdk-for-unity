@@ -90,7 +90,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void ApplyUpdate(long entityId, in Update update)
             {
-                var data = componentData[entityId];
+                if (!componentData.TryGetValue(entityId, out var data)) 
+                {
+                    return;
+                }
+                
 
                 if (update.BoolField.HasValue)
                 {

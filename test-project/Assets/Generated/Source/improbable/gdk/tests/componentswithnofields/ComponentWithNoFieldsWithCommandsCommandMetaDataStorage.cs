@@ -33,24 +33,20 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void AddRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(uint internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
 
-            public void AddRequest(CommandContext<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> context, long requestId)
+            public void AddRequest(in CommandContext<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> context)
             {
-                requestIdToRequest[requestId] = context;
+                requestIdToRequest[context.RequestId] = context;
             }
 
-            public long GetRequestId(uint internalRequestId)
+            public CommandContext<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> GetPayload(uint internalRequestId)
             {
-                return internalRequestIdToRequestId[internalRequestId];
-            }
-
-            public CommandContext<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> GetPayload(long requestId)
-            {
-                return requestIdToRequest[requestId];
+                var id = internalRequestIdToRequestId[internalRequestId];
+                return requestIdToRequest[id];
             }
         }
 

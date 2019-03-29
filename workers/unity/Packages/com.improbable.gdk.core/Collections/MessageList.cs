@@ -45,6 +45,39 @@ namespace Improbable.Gdk.Core
             ++Count;
         }
 
+        public void Insert(int index, in T item)
+        {
+            if (items.Length <= Count)
+            {
+                int targetLength = items.Length == 0 ? 4 : items.Length * 2;
+                var temp = new T[targetLength];
+                Array.Copy(items, 0, temp, 0, index);
+                temp[index] = item;
+                Array.Copy(items, index, temp, index + 1, Count - index);
+                items = temp;
+            }
+            else
+            {
+                Array.Copy(items, index, items, index + 1, Count - index);
+                items[index] = item;
+            }
+
+            ++Count;
+        }
+
+        public void InsertSorted(in T item, IComparer<T> comparer)
+        {
+            var index = Array.BinarySearch(items, 0, Count, item, comparer);
+            if (index < 0)
+            {
+                Insert(~index, in item);
+            }
+            else
+            {
+                Insert(index, in item);
+            }
+        }
+
         // Similar to the List<> RemoveAll. No return value and the array is not resized down.
         public void RemoveAll(Predicate<T> match)
         {
