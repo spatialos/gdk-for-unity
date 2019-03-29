@@ -8,13 +8,13 @@
 
 ## Errors
 
-### Could not discover location for `dotnet.exe`
+#### Could not discover location for `dotnet.exe`
 
-#### Cause
+**Cause**
 
 Either you don't have the .NET Core SDK (x64) installed or the directory containing the dotnet executable is not in your PATH.
 
-#### Fix
+**Fix**
 
 1. Ensure that you have the correct version of [.NET Core SDK (x64)(Microsoft documentation)](https://www.microsoft.com/net/download/dotnet-core/) installed. Our supported versions are listed on the [setup page]({{urlRoot}}/machine-setup)).
 1. Ensure that the dotnet executable is added to your PATH environment variable.
@@ -24,15 +24,15 @@ Either you don't have the .NET Core SDK (x64) installed or the directory contain
 
 ## Exceptions
 
-### `Runtime\bcl.exe` did not run properly
+#### `Runtime\bcl.exe` did not run properly
 
-#### Cause
+**Cause**
 
 This is a benign exception that is thrown when cross compiling a worker while burst compilation is turned on. Your worker was successfully built despite this error. 
 
 This occurs because Unity's burst compiler doesn't yet fully support cross compilation (Windows to Linux, for example).
 
-#### Workaround
+**Fix**
 
 To remove the error message, disable burst compilation by unchecking **Jobs** > **Enable Burst Compilation** in your Unity Editor.
 
@@ -40,9 +40,9 @@ To remove the error message, disable burst compilation by unchecking **Jobs** > 
 
 ## Problems
 
-### A Reader/Writer or CommandSender/Receiver in my code is null
+#### A Reader/Writer or CommandSender/Receiver in my code is null
 
-This can be caused by multiple problems:
+This can be caused by one of multiple problems. Please check the list below for possible fixes:
 
 * Ensure that your field is declared in a [MonoBehaviour]({{urlRoot}}/reference/glossary#monobehaviour). They are **not** supported in ECS systems.
 * Ensure that the field is decorated with a `[Require]` attribute.
@@ -52,11 +52,10 @@ This can be caused by multiple problems:
 
 > **Note:** certain Unity event methods like `OnTriggerEnter` or `OnCollisionEnter` may be invoked, even if a MonoBehaviour is disabled.
 
-<br/>
 
-### A MonoBehaviour containing fields with the `Require` attribute is disabled when I expect it to be enabled
+#### A MonoBehaviour containing fields with the `Require` attribute is disabled when I expect it to be enabled
 
-This can be caused by multiple problems:
+This can be caused by one of multiple problems. Please check the list below for possible fixes:
 
 * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker]({{urlRoot}}/reference/glossary#worker).
 * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity). 
