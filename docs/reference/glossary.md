@@ -239,7 +239,6 @@ A [worker](#worker) can send and receive updates and messages to and from the [S
 
 > Related:
 >
-> * [Command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
 > * [Sending and receiving events using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/events)
 > * [Sending and receiving events using ECS]({{urlRoot}}/reference/workflows/ecs/interaction/events)
 
