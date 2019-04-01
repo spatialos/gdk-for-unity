@@ -162,6 +162,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Runs the redirected process and returns a task which can be waited on.
         /// </summary>
+        /// <param name="token">A cancellation token which can be used for cancelling the underlying process. Default is null.</param>
         /// <returns>A task which would return the exit code and output.</returns>
         public Task<RedirectedProcessResult> RunAsync(CancellationToken? token = null)
         {
@@ -225,7 +226,7 @@ namespace Improbable.Gdk.Tools
                             return;
                         }
 
-                        Task.Delay(1, token);
+                        Task.Delay(500, token);
                     }
                 }, token);
 
