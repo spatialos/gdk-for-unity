@@ -15,8 +15,9 @@ namespace Improbable.Gdk.Tools
         private const string ImprobableJsonDir = "build/ImprobableJson";
         private const string SchemaPackageDir = ".schema";
 
-        private static readonly string SchemaCompilerRelativePath =
-            $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
+        private static readonly string SchemaCompilerPath = Path.Combine(
+            Common.GetPackagePath("com.improbable.worker.sdk"),
+            ".schema_compiler/schema_compiler");
 
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
@@ -71,23 +72,17 @@ namespace Improbable.Gdk.Tools
         {
             try
             {
-                EditorApplication.LockReloadAssemblies();
-
-                if (DownloadCoreSdk.TryDownload() == DownloadResult.Error)
-                {
-                    return;
-                }
-
                 if (!Common.CheckDependencies())
                 {
                     return;
                 }
 
+                EditorApplication.LockReloadAssemblies();
+
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     CsProjectFile));
 
-                var schemaCompilerPath =
-                    Path.GetFullPath(Path.Combine(Application.dataPath, SchemaCompilerRelativePath));
+                var schemaCompilerPath = SchemaCompilerPath;
 
                 var workerJsonPath =
                     Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
@@ -188,7 +183,6 @@ namespace Improbable.Gdk.Tools
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
-            baseArgs.Add($"--schema-path=\"{toolsConfig.SchemaStdLibDir}\"");
 
             // Add user defined schema directories
             baseArgs.AddRange(toolsConfig.SchemaSourceDirs

@@ -1,0 +1,17 @@
+package improbable.gdk.player_lifecycle;
+
+type CreatePlayerRequest
+{
+    bytes serialized_arguments = 1;
+}
+
+type CreatePlayerResponse
+{
+    EntityId created_entity_id = 1;
+}
+
+component PlayerCreator
+{
+    id = 13000;
+    command CreatePlayerResponse create_player(CreatePlayerRequest);
+}

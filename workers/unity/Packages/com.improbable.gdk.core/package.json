@@ -6,6 +6,7 @@
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Core Module. Made by Improbable.",
   "dependencies": {
+    "com.improbable.worker.sdk": "13.7.1",
     "com.improbable.gdk.tools": "0.2.4",
     "com.improbable.gdk.testutils": "0.2.4",
     "com.unity.entities": "0.0.12-preview.33"

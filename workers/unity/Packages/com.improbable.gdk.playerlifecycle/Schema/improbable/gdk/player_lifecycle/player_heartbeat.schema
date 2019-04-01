@@ -1,0 +1,14 @@
+package improbable.gdk.player_lifecycle;
+
+import "improbable/gdk/core/common.schema";
+
+component PlayerHeartbeatClient
+{
+    id = 13001;
+    command improbable.gdk.core.Empty player_heartbeat(improbable.gdk.core.Empty);
+}
+
+component PlayerHeartbeatServer
+{
+    id = 13002;
+}
