@@ -274,6 +274,7 @@ namespace Improbable.Gdk.BuildSystem
             using (new ShowProgressBarScope($"Package {basePath}"))
             {
                 RedirectedProcess.Command(Common.SpatialBinary)
+                    .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
                     .WithArgs("file", "zip", $"--output=\"{Path.GetFullPath(zipAbsolutePath)}\"",
                         $"--basePath=\"{Path.GetFullPath(basePath)}\"", "\"**\"",
                         $"--compression={useCompression}")

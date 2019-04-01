@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEngine;
@@ -53,7 +54,7 @@ namespace Improbable.Gdk.Tools
     {
         private string command = string.Empty;
         private string[] arguments;
-        private string workingDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+        private string workingDirectory;
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
 
@@ -126,118 +127,10 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         public int Run()
         {
-            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
+            var (process, outputLog) = SetupProcess();
+
+            using (process)
             {
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = workingDirectory
-            };
-
-            using (var process = new Process())
-            {
-                process.StartInfo = info;
-
-
-                StringBuilder outputLog = null;
-                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) !=
-                    OutputRedirectBehaviour.None)
-                {
-                    outputLog = new StringBuilder();
-                }
-
-                process.OutputDataReceived += (sender, args) =>
-                {
-                    var outputString = args.Data;
-                    if (string.IsNullOrEmpty(outputString))
-                    {
-                        return;
-                    }
-
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
-                    {
-                        outputString = ProcessSpatialOutput(outputString);
-                    }
-
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdOut) !=
-                        OutputRedirectBehaviour.None)
-                    {
-                        Debug.Log(outputString);
-                    }
-
-                    if (outputLog != null)
-                    {
-                        lock (outputLog)
-                        {
-                            outputLog.AppendLine(ProcessSpatialOutput(outputString));
-                        }
-                    }
-
-                    foreach (var outputProcessor in outputProcessors)
-                    {
-                        try
-                        {
-                            outputProcessor.Invoke(outputString);
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogException(e);
-                        }
-                    }
-                };
-
-                process.ErrorDataReceived += (sender, args) =>
-                {
-                    var errorString = args.Data;
-                    if (string.IsNullOrEmpty(errorString))
-                    {
-                        return;
-                    }
-
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
-                    {
-                        errorString = ProcessSpatialOutput(errorString);
-                    }
-
-                    if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) !=
-                        OutputRedirectBehaviour.None)
-                    {
-                        Debug.LogError(errorString);
-                    }
-
-                    if (outputLog != null)
-                    {
-                        lock (outputLog)
-                        {
-                            outputLog.AppendLine(ProcessSpatialOutput(errorString));
-                        }
-                    }
-
-                    foreach (var errorProcessor in errorProcessors)
-                    {
-                        try
-                        {
-                            errorProcessor.Invoke(errorString);
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogException(e);
-                        }
-                    }
-                };
-
-                process.EnableRaisingEvents = true;
-
-                if (!process.Start())
-                {
-                    throw new Exception(
-                        $"Failed to run {info.FileName} {info.Arguments}");
-                }
-
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
                 process.WaitForExit();
 
                 if (outputLog == null)
@@ -270,7 +163,7 @@ namespace Improbable.Gdk.Tools
         ///     Runs the redirected process and returns a task which can be waited on.
         /// </summary>
         /// <returns>A task which would return the exit code and output.</returns>
-        public Task<RedirectedProcessResult> RunAsync()
+        public Task<RedirectedProcessResult> RunAsync(CancellationToken? token = null)
         {
             return Task.Run(() =>
             {
@@ -292,15 +185,193 @@ namespace Improbable.Gdk.Tools
                     }
                 });
 
-                var exitCode = Run();
+                if (token == null)
+                {
+                    var exitCode = Run();
+
+                    return new RedirectedProcessResult
+                    {
+                        ExitCode = exitCode,
+                        Stdout = processStandardOutput,
+                        Stderr = processStandardError
+                    };
+                }
+
+                var task = RunWithCancel(token.Value);
+                task.Wait();
 
                 return new RedirectedProcessResult
                 {
-                    ExitCode = exitCode,
+                    ExitCode = task.Result,
                     Stdout = processStandardOutput,
                     Stderr = processStandardError
                 };
             });
+        }
+
+        private async Task<int> RunWithCancel(CancellationToken token)
+        {
+            var (process, outputLog) = SetupProcess();
+
+            using (process)
+            {
+                await Task.Run(() =>
+                {
+                    while (!process.HasExited)
+                    {
+                        if (token.IsCancellationRequested)
+                        {
+                            process.Kill();
+                            return;
+                        }
+
+                        Task.Delay(1, token);
+                    }
+                }, token);
+
+                process.WaitForExit();
+
+                if (outputLog == null)
+                {
+                    return process.ExitCode;
+                }
+
+                // Ensure that the first line of the log is something useful in the Unity editor console.
+                var trimmedOutput = outputLog.ToString().TrimStart();
+
+                if (trimmedOutput == string.Empty)
+                {
+                    return process.ExitCode;
+                }
+
+                if (process.ExitCode == 0)
+                {
+                    Debug.Log(trimmedOutput);
+                }
+                else
+                {
+                    Debug.LogError(trimmedOutput);
+                }
+
+                return process.ExitCode;
+            }
+        }
+
+        private (Process, StringBuilder) SetupProcess()
+        {
+            var info = new ProcessStartInfo(command, string.Join(" ", arguments))
+            {
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                WorkingDirectory = workingDirectory
+            };
+
+            var process = new Process
+            {
+                StartInfo = info
+            };
+
+            StringBuilder outputLog = null;
+            if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectAccumulatedOutput) !=
+                OutputRedirectBehaviour.None)
+            {
+                outputLog = new StringBuilder();
+            }
+
+            process.OutputDataReceived += (sender, args) =>
+            {
+                var outputString = args.Data;
+                if (string.IsNullOrEmpty(outputString))
+                {
+                    return;
+                }
+
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
+                {
+                    outputString = ProcessSpatialOutput(outputString);
+                }
+
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdOut) !=
+                    OutputRedirectBehaviour.None)
+                {
+                    Debug.Log(outputString);
+                }
+
+                if (outputLog != null)
+                {
+                    lock (outputLog)
+                    {
+                        outputLog.AppendLine(ProcessSpatialOutput(outputString));
+                    }
+                }
+
+                foreach (var outputProcessor in outputProcessors)
+                {
+                    try
+                    {
+                        outputProcessor.Invoke(outputString);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                }
+            };
+
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                var errorString = args.Data;
+                if (string.IsNullOrEmpty(errorString))
+                {
+                    return;
+                }
+
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
+                {
+                    errorString = ProcessSpatialOutput(errorString);
+                }
+
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.RedirectStdErr) !=
+                    OutputRedirectBehaviour.None)
+                {
+                    Debug.LogError(errorString);
+                }
+
+                if (outputLog != null)
+                {
+                    lock (outputLog)
+                    {
+                        outputLog.AppendLine(ProcessSpatialOutput(errorString));
+                    }
+                }
+
+                foreach (var errorProcessor in errorProcessors)
+                {
+                    try
+                    {
+                        errorProcessor.Invoke(errorString);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                }
+            };
+
+            process.EnableRaisingEvents = true;
+
+            if (!process.Start())
+            {
+                throw new Exception(
+                    $"Failed to run {info.FileName} {info.Arguments}");
+            }
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            return (process, outputLog);
         }
 
         private static string ProcessSpatialOutput(string argsData)
