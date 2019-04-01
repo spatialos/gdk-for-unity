@@ -307,7 +307,7 @@ The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlR
 
 <%(#Expandable title="How does the FPS Starter Project pair SpatialOS entities with Unity prefabs?")%>
 
-The FPS Starter Project uses the `AdvancedEntityPipeline` implementation of the [`IEntityGameObjectCreator` interface]({{urlRoot}}/api/game-object-creation/i-entity-game-object-creator) from the [GameObject Creation]({{urlRoot}}/modules/core-and-feature-module-overview#gameobject-creation-module) feature module to handle the instantiation of GameObjects to represent SpatialOS entities.
+The FPS Starter Project uses the `AdvancedEntityPipeline` implementation of the [`IEntityGameObjectCreator` interface]({{urlRoot}}/api/game-object-creation/i-entity-game-object-creator) from the [GameObject Creation]({{urlRoot}}/modules/game-object-creation/overview) feature module to handle the instantiation of GameObjects to represent SpatialOS entities.
 
 This tracks associations between entities and prefabs by matching their `Metadata` component's metadata string to the names of prefabs in the `Assets/Fps/Resources/Prefabs/` directory. If the worker receives information about a new SpatialOS entity then the GameObject Creation package immediately instantiates a GameObject of the appropriate type to represent that entity.
 

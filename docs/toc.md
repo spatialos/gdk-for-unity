@@ -19,6 +19,10 @@
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
 - <h3>Feature Modules</h3>
     - [Overview]({{urlRoot}}/modules/core-and-feature-module-overview)
+    - Game Object Creation
+        - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
+        - [Setup basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
+        - [Custom spawning logic]({{urlRoot}}/modules/game-object-creation/custom-usage)
     - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>

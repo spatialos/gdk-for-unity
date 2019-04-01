@@ -69,27 +69,6 @@ Call this during [entity templates creation]({{urlRoot}}/reference/concepts/enti
 
 Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
 
-### GameObject creation module
-
-To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It offers a default implementation of spawning GameObjects for your SpatialOS entities.
-
-`Improbable.Gdk.GameObjectCreation` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation).
-
-This module consists of:
-
-* `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
-
-* `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
-Use this to enable the default implementation or with the parameters below to change the default.
-
-* `GameObjectCreationHelper.EnableStandardGameObjectCreation(world,  entityGameObjectCreator)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
-Use this enable custom spawning by passing in parameters to change the default.
-
-
-Call these during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
-
 ### Mobile support module
 
 To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS.
