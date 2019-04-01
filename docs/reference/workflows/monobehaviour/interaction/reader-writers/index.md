@@ -8,27 +8,26 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/wor
 
 Before reading this document, make sure you are familiar with:
 
-  * [Linking SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
-  * [Workers]({{urlRoot}}/reference/concepts/worker)
-  * (Optional) [SpatialOS schema]({{urlRoot}}/reference/glossary#schema).
-  * (Optional) [Read and write access]({{urlRoot}}/reference/glossary#authority)
+* [Workers]({{urlRoot}}/reference/concepts/worker)
+* (Optional) [SpatialOS schema]({{urlRoot}}/reference/glossary#schema).
+* (Optional) [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 Readers and Writers allow you to inspect and change the state of SpatialOS components using MonoBehaviours by letting you perform the following actions:
 
 **Reader**
 
-  * Read the data of a SpatialOS component.
-  * Read the authority state of your worker over a SpatialOS component.
-  * Register callbacks for reacting to property value changed of a SpatialOS component.
-  * Register callbacks for reacting to events corresponding to a SpatialOS component.
-  * Register callbacks for reacting to changes to the authority state of your worker over a SpatialOS component.
+* Read the data of a SpatialOS component.
+* Read the authority state of your worker over a SpatialOS component.
+* Register callbacks for reacting to property value changed of a SpatialOS component.
+* Register callbacks for reacting to events corresponding to a SpatialOS component.
+* Register callbacks for reacting to changes to the authority state of your worker over a SpatialOS component.
 
 **Writer**
 
-  * Change the property values of a SpatialOS component.
-  * Send events defined in a SpatialOS component.
-  * Send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
-  * All the functionality that a Reader provides.
+* Change the property values of a SpatialOS component.
+* Send events defined in a SpatialOS component.
+* Send acknowledgements for [`AuthorityLossImminent` notifications](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
+* All the functionality that a Reader provides.
 
 > Note that a writer will only receive authority state change callbacks for `AuthorityLossImminent`.
 

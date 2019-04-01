@@ -162,7 +162,7 @@ A game client is a binary. A [client-worker](#client-worker) is an object instan
 
 ### GameObject
 
-In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/workers)
+In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) has checked out is represented as a [Unity ECS Entity](#unity-ecs-entity). Additionally, you can represent a SpatialOS entity as a GameObject. See [the GameObject Creation feature module]({{urlRoot}}/modules/game-object-creation/overview) documentation for more info.
 
 > Related:
 > 
@@ -328,7 +328,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 ### Scene
 
-In the GDK, a Unity Scene stores GameObjects that you might use to [represent your SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities). Each Scene can interact with multiple Unity ECS worlds.
+In the GDK, a Unity Scene stores GameObjects that you might use to represent your SpatialOS entities. Each Scene can interact with multiple Unity ECS worlds.
 
 Scenes are an abstraction used to represent the part of the [SpatialOS world](#spatialos-world) that the [workers](#worker) defined in the Scene have checked out.
 > Related: [Unity Manual: Scenes](https://docs.unity3d.com/Manual/CreatingScenes.html)
@@ -538,7 +538,7 @@ Unity ECS components contain only data and are represented as structs rather tha
 
 The GDK generates ECS components from [schema](#schema). This enables you to interact with [SpatialOS components](#spatialos-component) using familiar workflows in your Unity Editor.
 
-Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. We also provide [support for using them in MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities). Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
+Generated Unity ECS components can be injected into systems, read, and modified just as normal Unity ECS components can. Additionally, the generated code enables you to send and receive updates and [messages](#message) from and to SpatialOS.
 
 > Related:
 >

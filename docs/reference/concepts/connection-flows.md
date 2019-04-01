@@ -8,11 +8,11 @@ _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/ref
 The SpatialOS [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) manages your game world by keeping track of all [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/reference/glossary#spatialos-component).
 To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/reference/glossary#worker). You can set up many different types of workers but the two main types are  [server-workers]({{urlRoot}}/reference/glossary#server-worker) and [client-workers]({{urlRoot}}/reference/glossary#client-worker).
 
-(To find out more about workers in the GDK, see the introduction to [workers in the GDK]({{urlRoot}}/reference/concepts/worker).)
+(To find out more about workers in the GDK, see the introduction to [workers in the GDK]({{urlRoot}}/reference/concepts/worker).
 
 It’s the workers (both server-workers and client-workers) which create a connection between your game and the SpatialOS Runtime. In order for them to do this, you need to set up the configuration of your worker types as part of your game development. Then, when your game runs, it creates worker instances which connect to the SpatialOS Runtime.  During their creation, worker instances attempt to connect to the SpatialOS Runtime. If the connection fails, the creation of the worker instance fails.
 
-If you are using the [MonoBehaviour workflow or the ECS workflow]{{urlRoot}}/reference/workflows/which-workflow), you can use the [Worker Connector]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) or the `Worker` to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
+If you are using the [MonoBehaviour workflow or the ECS workflow]({{urlRoot}}/reference/workflows/which-workflow), you can use the [Worker Connector]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) or the `Worker` to set up your workers (server-workers and client-workers) to connect to SpatialOS. Upon successfully connecting to the SpatialOS Runtime, your worker stores a `Connection` object.
 
 
 ## Which connection flow to use

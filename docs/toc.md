@@ -41,9 +41,6 @@
         - [Which workflow]({{urlRoot}}/reference/workflows/which-workflow)
         - MonoBehaviours
             - [Creating workers]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers)
-            - Link to GameObjects
-                - [SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
-                - [Workers]({{urlRoot}}/reference/workflows/monobehaviour/linking/workers)
             - Interacting with SpatialOS
                 - [Readers & Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
                     - [Lifecycle]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
