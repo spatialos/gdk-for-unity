@@ -39,14 +39,18 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Ensure an android device/emulator is present
-                if (RedirectedProcess.Command(adbPath).WithArgs("get-state").Run() != 0)
+                if (RedirectedProcess.Command(adbPath)
+                    .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
+                    .WithArgs("get-state").Run() != 0)
                 {
                     Debug.LogError("No Android device/emulator detected.");
                     return;
                 }
 
                 // Install apk on connected phone / emulator
-                if (RedirectedProcess.Command(adbPath).WithArgs("install", "-r", $"\"{apkPath}\"").Run() != 0)
+                if (RedirectedProcess.Command(adbPath)
+                    .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
+                    .WithArgs("install", "-r", $"\"{apkPath}\"").Run() != 0)
                 {
                     Debug.LogError("Failed to install the apk on the device/emulator. If the application is already installed on your device/emulator, " +
                         "try uninstalling it before launching the mobile client.");
@@ -69,6 +73,7 @@ namespace Improbable.Gdk.Mobile
                 RedirectedProcess.Command(adbPath)
                     .WithArgs("shell", "am", "start", "-S", "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",
                         "-e", "\"arguments\"", $"\\\"{arguments.ToString()}\\\"")
+                    .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
                     .Run();
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Done", 1.0f);
