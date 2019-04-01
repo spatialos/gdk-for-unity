@@ -1,0 +1,7 @@
+package improbable.gdk.player_lifecycle;
+
+component OwningWorker
+{
+    id = 13003;
+    string worker_id = 1;
+}

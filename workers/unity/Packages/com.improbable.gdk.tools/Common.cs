@@ -53,19 +53,6 @@ namespace Improbable.Gdk.Tools
             return GetPackagePath("com.improbable.gdk.tools");
         }
 
-        static Common()
-        {
-            try
-            {
-                var versionFile = Path.Combine(GetThisPackagePath(), "core-sdk.version");
-                CoreSdkVersion = File.ReadAllText(versionFile, Encoding.UTF8).Trim();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
         /// <summary>
         ///     Finds the path for a given package referenced directly in the manifest.json,
         ///     or indirectly referenced as a package dependency.
