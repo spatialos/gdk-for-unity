@@ -11,7 +11,6 @@ Before reading this document, make sure you are familiar with:
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
   * [(MonoBehaviour) World commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
   * [(MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
-  * [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
 
