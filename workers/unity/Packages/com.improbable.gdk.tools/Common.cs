@@ -14,12 +14,6 @@ namespace Improbable.Gdk.Tools
     public static class Common
     {
         /// <summary>
-        ///     The version of the CoreSdk the GDK is pinned to.
-        ///     Modify the core-sdk.version file in this source file's directory to change the version.
-        /// </summary>
-        public static string CoreSdkVersion { get; }
-
-        /// <summary>
         ///     The absolute path to the root folder of the SpatialOS project.
         /// </summary>
         public static readonly string
