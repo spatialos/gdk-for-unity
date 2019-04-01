@@ -6,8 +6,6 @@
 
 Before reading this document, make sure you are familiar with:
 
-* [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
-* [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ## About commands
@@ -24,15 +22,15 @@ This document is about MonoBehaviour component commands. The commands documentat
 * [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
 * [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
 * ECS component commands - this document
-* Both workflows - [world and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
+* Both workflows - [world commands API reference]({{urlRoot}}/api/core/commands/world-commands)
 
 
 ## How to send and receive component commands
 The GDK generates the following ECS components to allow you to send and receive commands using the ECS flow:
 
-  * `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
-  * `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
-  * [Command request and response structs]({{urlRoot}}/reference/world-component-commands-requests-responses): allows you to create and handle incoming and outgoing command requests and responses
+* `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
+* `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
+* Command request and response structs
 
 We use the following schema for all examples described in this documentation.
 ```

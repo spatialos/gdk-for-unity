@@ -10,8 +10,6 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/wor
 Before reading this document, make sure you are familiar with
 
   * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
-  * [Commands: World and component command requests and responses
-]({{urlRoot}}/reference/world-component-commands-requests-responses)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
 ## About commands
@@ -24,11 +22,11 @@ There are two types of commands in SpatialOS:
 
 The commands documentation is:
 
-* MonoBehaviour world commands - this document
+* [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
 * [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
 * [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-* [ECS component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
-* Both workflows - [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
+* ECS component commands - this document
+* Both workflows - [world commands API reference]({{urlRoot}}/api/core/commands/world-commands)
 
 
 ## How to send and receive world commands

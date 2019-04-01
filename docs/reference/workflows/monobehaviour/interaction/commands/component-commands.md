@@ -11,7 +11,6 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/wor
 
 Before reading this document, make sure you are familiar with:
 
-  * [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
   * [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
@@ -30,7 +29,7 @@ This document is about MonoBehaviour component commands. The commands documentat
 * [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
 * MonoBehaviour component commands - this document
 * [ECS component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
-* Both workflows - [World and component command requests and responses]({{urlRoot}}/reference/world-component-commands-requests-responses)
+* Both workflows - [world commands API reference]({{urlRoot}}/api/core/commands/world-commands)
 
 ### How to send and receive component commands
 
