@@ -1,4 +1,4 @@
-package improbable.transform;
+package improbable.gdk.transform_synchronization;
 
 // These are both types to be removed later when we decide on a compression scheme.
 

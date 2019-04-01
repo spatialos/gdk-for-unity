@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tools
         public string SchemaStdLibDir;
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
+        public string DescriptorOutputDir;
         public string RuntimeIp;
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
@@ -47,6 +48,11 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"{GdkToolsConfigurationWindow.CodegenOutputDirLabel} cannot be empty.");
             }
 
+            if (string.IsNullOrEmpty(DescriptorOutputDir))
+            {
+                errors.Add($"{GdkToolsConfigurationWindow.DescriptorOutputDirLabel} cannot be empty.");
+            }
+
             if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
             {
                 errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
@@ -74,6 +80,7 @@ namespace Improbable.Gdk.Tools
         {
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
+            DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             RuntimeIp = DefaultValues.RuntimeIp;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
@@ -105,6 +112,7 @@ namespace Improbable.Gdk.Tools
         {
             public const string SchemaStdLibDir = "../../build/dependencies/schema/standard_library";
             public const string CodegenOutputDir = "Assets/Generated/Source";
+            public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
             public const string RuntimeIp = null;
             public const string DevAuthTokenDir = "Resources";

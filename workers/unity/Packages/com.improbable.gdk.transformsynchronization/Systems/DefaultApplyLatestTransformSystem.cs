@@ -1,4 +1,4 @@
-﻿using Improbable.Transform;
+﻿using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;

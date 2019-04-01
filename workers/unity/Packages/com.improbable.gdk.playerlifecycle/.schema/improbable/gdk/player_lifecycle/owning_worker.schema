@@ -1,4 +1,4 @@
-package improbable.player_lifecycle;
+package improbable.gdk.player_lifecycle;
 
 component OwningWorker
 {
