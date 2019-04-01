@@ -28,6 +28,10 @@ This provides both a testing framework, which you can use to test any other modu
 
 The `Improbable.Gdk.BuildSystem` module provides an example implementation of how to build your workers. It creates a menu item in your Unity Editor toolbar (menu: **SpatialOS** > **Build...** ) that you can use to easily build your workers. It also generates a [ScriptableObject (Unity documentation)](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains the build configuration for each worker.  This functionality is only available from your Unity Editor.
 
+### GameObject Creation 
+
+This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
+
 ### Player lifecycle module
 
 To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It contains members which you use to implement player spawning and player heartbeats.

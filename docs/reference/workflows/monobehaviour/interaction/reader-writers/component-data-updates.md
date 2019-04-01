@@ -26,7 +26,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a GameObject that is linked to a SpatialOS entity containing the `Health` component.
+The following examples assume that you have a GameObject that is [linked to a SpatialOS entity]({{urlRoot}}/modules/game-object-creation/overview) containing the `Health` component.
 
 ## How to read component properties
 
