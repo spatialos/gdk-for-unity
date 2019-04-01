@@ -1,6 +1,8 @@
 <%(TOC)%>
 # Mobile Support Overview
 
+<%(Callout type="warn" message=" Mobile support is in pre-alpha (SpatialOS documentation). Please follow our Roadmap to learn more about updates to this in future releases.")%>
+
 Before starting with mobile development, make sure you are familiar with
 
   * [The SpatialOS GDK for Unity]({{urlRoot}}/reference/overview)
@@ -9,7 +11,7 @@ Before starting with mobile development, make sure you are familiar with
 
 ## Developing SpatialOS games for Android and iOS
 
-The SpatialOS GDK for Unity contains a [mobile feature module]({{urlRoot}}/modules/core-and-feature-module-overview#mobile-support-module) which enables you to develop games for Android and iOS. SpatialOS games are cross-platform by default, so Android, iOS, PC, Xbox One and PS4 users can play together in the same deployment.
+The SpatialOS GDK for Unity contains a [mobile feature module]({{urlRoot}}/modules/core-and-feature-module-overview#mobile-support-module) which enables you to develop games for Android and iOS. SpatialOS games are cross-platform by default, so PC and mobile users can play together in the same deployment.
 
 All feature modules work with mobile devices.
 
