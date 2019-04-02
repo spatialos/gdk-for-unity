@@ -55,6 +55,7 @@ namespace Improbable.Gdk.Tools
         private string workingDirectory;
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
+        private int? timeoutSecs;
 
         private OutputRedirectBehaviour outputRedirectBehaviour =
             OutputRedirectBehaviour.ProcessSpatialOutput |
@@ -129,6 +130,16 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
+        ///     Adds a timeout to the process execution. The process will be killed if the timeout expires.
+        /// </summary>
+        /// <param name="timeoutSecs">The timeout in seconds.</param>
+        public RedirectedProcess WithTimeout(int timeoutSecs)
+        {
+            this.timeoutSecs = timeoutSecs;
+            return this;
+        }
+
+        /// <summary>
         ///     Runs the redirected process and waits for it to return.
         /// </summary>
         public int Run()
@@ -138,7 +149,19 @@ namespace Improbable.Gdk.Tools
             using (process)
             {
                 Start(process);
-                process.WaitForExit();
+                if (timeoutSecs == null)
+                {
+                    process.WaitForExit();
+                }
+                else
+                {
+                    process.WaitForExit(timeoutSecs.Value * 1000);
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+                        process.WaitForExit();
+                    }
+                }
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
@@ -213,10 +236,31 @@ namespace Improbable.Gdk.Tools
 
             var taskCompletionSource = new TaskCompletionSource<int>();
 
+            Task timeoutTask = null;
+            var timeoutSource = new CancellationTokenSource();
+
+            if (timeoutSecs != null)
+            {
+                timeoutTask = new Task(async () =>
+                {
+                    await Task.Delay(timeoutSecs.Value * 1000);
+
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+                    }
+                }, timeoutSource.Token);
+            }
+
             // Register a handler to process the output when it exits.
             process.Exited += (sender, args) =>
             {
                 taskCompletionSource.SetResult(process.ExitCode);
+
+                if (timeoutTask != null)
+                {
+                    timeoutSource.Cancel();
+                }
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
@@ -239,15 +283,18 @@ namespace Improbable.Gdk.Tools
             };
 
             Start(process);
+            timeoutTask?.Start();
 
             // Register a handler for when a cancel is requested, we kill the process.
             token.Register(() =>
             {
+                timeoutSource.Cancel();
+
                 if (process.HasExited)
                 {
                     return;
                 }
-                
+
                 process.Kill();
             });
 
