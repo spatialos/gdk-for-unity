@@ -18,6 +18,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// </summary>
         public static int MaxNumFailedPlayerHeartbeats = 2;
 
+        /// <summary>
+        ///     The maximum number of retries for player creation requests.
+        /// </summary>
         public static int MaxPlayerCreationRetries = 5;
 
         /// <summary>
