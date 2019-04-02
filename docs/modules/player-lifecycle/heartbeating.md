@@ -1,7 +1,7 @@
 <%(TOC)%>
 # Heartbeating
 
-Heartbeating is how a server-worker continually checks that a client-worker is still connected to SpatialOS.
+Heartbeating is how a server-worker continually checks that a client-worker has not disconnected from SpatialOS.
 
 The server-worker sends a `PlayerHeartbeat` request at regular intervals. If the server-worker doesn’t receive any responses back from a client-worker within a given period of time, the server-worker will assume the client has died. The server-worker then proceeds to delete the Player entity associated with that client-worker.
 
