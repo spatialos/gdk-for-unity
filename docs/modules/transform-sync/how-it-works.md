@@ -4,9 +4,9 @@
 
 There are two concepts of the location of a SpatialOS entity:
 
-* The _transform_. This contains both a location and rotation and is used by worker-instances to run physics simulations or render entities for a client.
+* The _transform_. This contains a location, rotation, and physics tick and is used by worker-instances to run physics simulations or render entities for a client.
 
-* The _position_. This is defined by the standard library component `Improbable.Position` and is used by the SpatialOS load balancer to determine which worker should be delegated authority over a given entity-component.
+* The _position_. This only contains a location. This is defined by the standard library component `Improbable.Position` and is used by the SpatialOS load balancer to determine which worker should be delegated authority over a given entity-component.
 
 <%(#Expandable title="Why do we need two locations?")%>
 There are a few reasons why you might want a separate `Transform` and `Position` component.
