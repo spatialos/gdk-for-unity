@@ -22,7 +22,7 @@
     - Build System
         - [Overview]({{urlRoot}}/modules/build-system/overview)
         - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
-        - [Build in the editor]({{urlRoot}}/modules/build-system/editor-menu)
+        - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
     - Game Object Creation
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)

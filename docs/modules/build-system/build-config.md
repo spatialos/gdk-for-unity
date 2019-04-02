@@ -30,11 +30,11 @@ For each worker type and deployment type pair, you can configure:
 | Server build | Denotes whether the worker is running in headless mode. |
 | Compression | Which compression scheme to use in the build. |
 
-> **Note:** All server-workers **must** have a Linux build target enabled for the cloud target because server-workers are ran on Linux machines in cloud deployments.
+> **Note:** All [server-workers]({{urlRoot}}/reference/glossary#server-worker) **must** have a Linux build target enabled for the cloud target because server-workers are ran on Linux machines in cloud deployments.
 
 ### Build and Required options
 
-These two options describe the behaviour of a worker-type, deployment target, and platform combination.
+These two options describe the behaviour of a worker type, deployment target, and platform combination.
 
 | | | |
 |---|---|---|

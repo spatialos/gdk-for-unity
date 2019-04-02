@@ -26,7 +26,7 @@ This provides both a testing framework, which you can use to test any other modu
 
 ### Build system module
 
-This feature module contains a default implementation and tooling in the Unity Editor for building your GDK for Unity workers. See our [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/build-system/overview).
+This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor. See our [build system documentation]({{urlRoot}}/modules/build-system/overview) for more details on installation and usage.
 
 ### GameObject Creation 
 

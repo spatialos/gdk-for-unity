@@ -1,6 +1,6 @@
 # Command line interface
 
-The build system also exposes a command line interface (CLI) that you can use to start worker builds. This is useful for building your project on a headless machine or in a continuous integration context.
+The build system exposes a command line interface (CLI) that you can use to build your GDK for Unity workers. This is useful for building your project on a headless machine or in a continuous integration context.
 
 We expose a single static method: [`Improbable.Gdk.BuildSystem.WorkerBuilder.Build`]({{urlRoot}}/api/build-system/worker-builder) for use in the CLI. It accepts the following arguments:
 

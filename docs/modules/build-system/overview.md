@@ -1,12 +1,12 @@
 # Build System Feature Module
 
-This feature module contains a default implementation and tooling in the Unity Editor for building your GDK for Unity workers.
+This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor.
 
 > **Note:** The Build System Feature Module does not have an integration for building non-Unity workers at this time.
 
 ## Installation
 
-### 1. Add the package
+### Add the package
 
  Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
 
