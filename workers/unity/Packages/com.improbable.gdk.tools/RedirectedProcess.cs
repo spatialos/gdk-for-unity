@@ -93,6 +93,10 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Adds custom processing for regular output of process.
         /// </summary>
+        /// <remarks>
+        ///     The <see cref="outputProcessor"/> callback will be ran on a different thread to the one which
+        ///     registered it.
+        /// </remarks>
         /// <param name="outputProcessor">Processing action for regular output.</param>
         public RedirectedProcess AddOutputProcessing(Action<string> outputProcessor)
         {
@@ -103,6 +107,10 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Adds custom processing for error output of process.
         /// </summary>
+        /// <remarks>
+        ///     The <see cref="errorProcessor"/> callback will be ran on a different thread to the one which
+        ///     registered it.
+        /// </remarks>
         /// <param name="errorProcessor">Processing action for error output.</param>
         public RedirectedProcess AddErrorProcessing(Action<string> errorProcessor)
         {
