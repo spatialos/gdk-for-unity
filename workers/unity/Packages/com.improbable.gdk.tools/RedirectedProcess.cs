@@ -132,7 +132,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Adds a timeout to the process execution. The process will be killed if the timeout expires.
         /// </summary>
-        /// <param name="timeoutSecs">The timeout in seconds.</param>
+        /// <param name="timeout">The timeout for the process execution.</param>
         public RedirectedProcess WithTimeout(TimeSpan timeout)
         {
             this.timeout = timeout;
