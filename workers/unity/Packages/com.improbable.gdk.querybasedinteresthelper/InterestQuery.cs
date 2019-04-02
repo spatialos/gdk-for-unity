@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Improbable.Gdk.QueryBasedInterest
 {
@@ -7,13 +9,19 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestQuery
     {
+        private Constraint queryConstraint;
         private ComponentInterest.Query query;
+
+        // Hides the default constructor
+        private InterestQuery()
+        {
+        }
 
         /// <summary>
         ///     Creates an InterestQuery.
         /// </summary>
         /// <param name="constraint">
-        ///     A QueryConstraint object defining the constraints of the query.
+        ///     A Constraint object defining the constraints of the query.
         /// </param>
         /// <remarks>
         ///     Returns the full snapshot result by default.
@@ -25,9 +33,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             var interest = new InterestQuery
             {
+                queryConstraint = constraint,
                 query =
                 {
-                    Constraint = constraint.AsQueryConstraint(),
                     FullSnapshotResult = true,
                     ResultComponentId = new List<uint>()
                 }
@@ -70,14 +78,47 @@ namespace Improbable.Gdk.QueryBasedInterest
             var resultIds = new List<uint>(resultComponentIds.Length + 1) { resultComponentId };
             resultIds.AddRange(resultComponentIds);
 
+            return FilterResults(resultIds);
+        }
+
+        /// <summary>
+        ///     Defines what components to return in the query results.
+        /// </summary>
+        /// <param name="resultComponentIds">
+        ///     Set of IDs of components to return from the query results.
+        /// </param>
+        /// <remarks>
+        ///     At least one component ID must be provided. Query results are not filtered
+        ///     if resultComponentIds is null or contains 0 elements.
+        /// </remarks>
+        /// <returns>
+        ///     An updated InterestQuery object.
+        /// </returns>
+        public InterestQuery FilterResults(IEnumerable<uint> resultComponentIds)
+        {
+            if (IsEnumerableNullOrEmpty(resultComponentIds))
+            {
+                Debug.LogWarning("At least one InterestQuery must be provided to filter a queries results.");
+                return this;
+            }
+
             query.FullSnapshotResult = null;
-            query.ResultComponentId = resultIds;
+            query.ResultComponentId.AddRange(resultComponentIds);
             return this;
         }
 
+        /// <summary>
+        ///     Returns the underlying ComponentInterest.Query object from the InterestQuery class.
+        /// </summary>
         public ComponentInterest.Query AsComponentInterestQuery()
         {
+            query.Constraint = queryConstraint.AsQueryConstraint();
             return query;
+        }
+
+        private bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
+        {
+            return data == null || !data.Any();
         }
     }
 }

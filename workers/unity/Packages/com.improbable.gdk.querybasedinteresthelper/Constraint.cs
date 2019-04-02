@@ -1,18 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.QueryBasedInterest
 {
     /// <summary>
-    ///     Utility class to help define constraints for Interest queries.
+    ///     Utility class to help define QueryConstraint objects for Interest queries.
     /// </summary>
     public class Constraint
     {
-        private ComponentInterest.QueryConstraint constraint;
+        private ComponentInterest.QueryConstraint queryConstraint;
 
-        private Constraint(ComponentInterest.QueryConstraint constraint)
+        private Constraint(ComponentInterest.QueryConstraint queryConstraint)
         {
-            this.constraint = constraint;
+            this.queryConstraint = queryConstraint;
         }
 
         private static ComponentInterest.QueryConstraint Default()
@@ -25,13 +27,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Sphere constraint.
+        ///     Creates a Constraint object with a Sphere QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the Sphere constraint.
+        ///     Radius of the Sphere QueryConstraint.
         /// </param>
         /// <param name="center">
-        ///     Center of the Sphere constraint.
+        ///     Center of the Sphere QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -48,19 +50,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Sphere constraint.
+        ///     Creates a Constraint object with a Sphere QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the Sphere constraint.
+        ///     Radius of the Sphere QueryConstraint.
         /// </param>
         /// <param name="centerX">
-        ///     X coordinate of the center of the Sphere constraint.
+        ///     X coordinate of the center of the Sphere QueryConstraint.
         /// </param>
         /// <param name="centerY">
-        ///     Y coordinate of the center of the Sphere constraint.
+        ///     Y coordinate of the center of the Sphere QueryConstraint.
         /// </param>
         /// <param name="centerZ">
-        ///     Z coordinate of the center of the Sphere constraint.
+        ///     Z coordinate of the center of the Sphere QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -75,13 +77,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Cylinder constraint.
+        ///     Creates a Constraint object with a Cylinder QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the Cylinder constraint.
+        ///     Radius of the Cylinder QueryConstraint.
         /// </param>
         /// <param name="center">
-        ///     Center of the Cylinder constraint.
+        ///     Center of the Cylinder QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -89,7 +91,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint Cylinder(double radius, Coordinates center)
         {
             var constraint = Default();
-            constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint()
+            constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint
             {
                 Center = center,
                 Radius = radius
@@ -98,19 +100,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Cylinder constraint.
+        ///     Creates a Constraint object with a Cylinder QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the Cylinder constraint.
+        ///     Radius of the Cylinder QueryConstraint.
         /// </param>
         /// <param name="centerX">
-        ///     X coordinate of the center of the Cylinder constraint.
+        ///     X coordinate of the center of the Cylinder QueryConstraint.
         /// </param>
         /// <param name="centerY">
-        ///     Y coordinate of the center of the Cylinder constraint.
+        ///     Y coordinate of the center of the Cylinder QueryConstraint.
         /// </param>
         /// <param name="centerZ">
-        ///     Z coordinate of the center of the Cylinder constraint.
+        ///     Z coordinate of the center of the Cylinder QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -125,19 +127,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Box constraint.
+        ///     Creates a Constraint object with a Box queryConstraint.
         /// </summary>
         /// <param name="xWidth">
-        ///     Width of Box constraint in the X-axis.
+        ///     Width of Box QueryConstraint in the X-axis.
         /// </param>
         /// <param name="yHeight">
-        ///     Height of Box constraint in the Y-axis.
+        ///     Height of Box QueryConstraint in the Y-axis.
         /// </param>
         /// <param name="zDepth">
-        ///     Depth of Box constraint in the Z-axis.
+        ///     Depth of Box QueryConstraint in the Z-axis.
         /// </param>
         /// <param name="center">
-        ///     Center of the Box constraint.
+        ///     Center of the Box QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -158,25 +160,25 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Box constraint.
+        ///     Creates a Constraint object with a Box QueryConstraint.
         /// </summary>
         /// <param name="xWidth">
-        ///     Width of Box constraint in the X-axis.
+        ///     Width of Box QueryConstraint in the X-axis.
         /// </param>
         /// <param name="yHeight">
-        ///     Height of Box constraint in the Y-axis.
+        ///     Height of Box QueryConstraint in the Y-axis.
         /// </param>
         /// <param name="zDepth">
-        ///     Depth of Box constraint in the Z-axis.
+        ///     Depth of Box QueryConstraint in the Z-axis.
         /// </param>
         /// <param name="centerX">
-        ///     X coordinate of the center of the Box constraint.
+        ///     X coordinate of the center of the Box QueryConstraint.
         /// </param>
         /// <param name="centerY">
-        ///     Y coordinate of the center of the Box constraint.
+        ///     Y coordinate of the center of the Box QueryConstraint.
         /// </param>
         /// <param name="centerZ">
-        ///     Z coordinate of the center of the Box constraint.
+        ///     Z coordinate of the center of the Box QueryConstraint.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -193,13 +195,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a RelativeSphere constraint.
+        ///     Creates a Constraint object with a RelativeSphere QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the RelativeSphere constraint.
+        ///     Radius of the RelativeSphere QueryConstraint.
         /// </param>
         /// <remarks>
-        ///     This constraint defines a sphere relative to the position of the entity.
+        ///     This Constraint defines a sphere relative to the position of the entity.
         /// </remarks>
         /// <returns>
         ///     A Constraint object.
@@ -215,13 +217,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a RelativeCylinder constraint.
+        ///     Creates a Constraint object with a RelativeCylinder QueryConstraint.
         /// </summary>
         /// <param name="radius">
-        ///     Radius of the cylinder constraint.
+        ///     Radius of the cylinder QueryConstraint.
         /// </param>
         /// <remarks>
-        ///     This constraint defines a cylinder relative to the position of the entity.
+        ///     This Constraint defines a cylinder relative to the position of the entity.
         /// </remarks>
         /// <returns>
         ///     A Constraint object.
@@ -237,19 +239,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a RelativeBox constraint.
+        ///     Creates a Constraint object with a RelativeBox QueryConstraint.
         /// </summary>
         /// <param name="xWidth">
-        ///     Width of box constraint in the X-axis.
+        ///     Width of box QueryConstraint in the X-axis.
         /// </param>
         /// <param name="yHeight">
-        ///     Height of box constraint in the Y-axis.
+        ///     Height of box QueryConstraint in the Y-axis.
         /// </param>
         /// <param name="zDepth">
-        ///     Depth of box constraint in the Z-axis.
+        ///     Depth of box QueryConstraint in the Z-axis.
         /// </param>
         /// <remarks>
-        ///     This constraint defines a box relative to the position of the entity.
+        ///     This Constraint defines a box relative to the position of the entity.
         /// </remarks>
         /// <returns>
         ///     A Constraint object.
@@ -265,10 +267,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with an EntityId constraint.
+        ///     Creates a Constraint object with an EntityId QueryConstraint.
         /// </summary>
         /// <param name="entityId">
-        ///     EntityId of the .
+        ///     EntityId of an entity to interested in.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -281,7 +283,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with an EntityId constraint.
+        ///     Creates a Constraint object with an Component QueryConstraint.
         /// </summary>
         /// <typeparam name="T">
         ///     Type of the component to constrain.
@@ -297,10 +299,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with a Component constraint.
+        ///     Creates a Constraint object with a Component QueryConstraint.
         /// </summary>
         /// <param name="componentId">
-        ///     ID of the component to constrain.
+        ///     Component ID of the component to constrain.
         /// </param>
         /// <returns>
         ///     A Constraint object.
@@ -313,16 +315,16 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a Constraint object with an And constraint.
+        ///     Creates a Constraint object with an And QueryConstraint.
         /// </summary>
         /// <param name="constraint">
-        ///     First constraint in the list of conjunctions.
+        ///     First Constraint in the list of conjunctions.
         /// </param>
         /// <param name="constraints">
-        ///     Further constraints for the list of conjunctions.
+        ///     Further Constraints for the list of conjunctions.
         /// </param>
         /// <remarks>
-        ///     At least one constraint must be provided to create an "All" QueryConstraint.
+        ///     At least one Constraint must be provided to create a valid "All" QueryConstraint.
         /// </remarks>
         /// <returns>
         ///     A Constraint object.
@@ -331,22 +333,48 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             return new Constraint(new ComponentInterest.QueryConstraint
             {
-                AndConstraint = ConstraintParamsToList(constraint, constraints),
+                AndConstraint = ConstraintParamsToQueryConstraints(constraint, constraints),
                 OrConstraint = new List<ComponentInterest.QueryConstraint>()
             });
         }
 
         /// <summary>
-        ///     Creates a Constraint object with an Or constraint.
+        ///     Creates a Constraint object with an And QueryConstraint.
         /// </summary>
-        /// <param name="constraint">
-        ///     First constraint in the list of disjunctions.
-        /// </param>
         /// <param name="constraints">
-        ///     Further constraints for the list of disjunctions.
+        ///     Constraints for the list of conjunctions.
         /// </param>
         /// <remarks>
-        ///     At least one constraint must be provided to create an "Any" QueryConstraint.
+        ///     At least one Constraint must be provided to create a valid "All" QueryConstraint.
+        /// </remarks>
+        /// <returns>
+        ///     A Constraint object.
+        /// </returns>
+        public static Constraint All(IEnumerable<Constraint> constraints)
+        {
+            if (IsEnumerableNullOrEmpty(constraints))
+            {
+                throw new ArgumentException("At least one Constraint must be provided.");
+            }
+
+            return new Constraint(new ComponentInterest.QueryConstraint
+            {
+                AndConstraint = ConstraintEnumerableToQueryConstraints(constraints),
+                OrConstraint = new List<ComponentInterest.QueryConstraint>()
+            });
+        }
+
+        /// <summary>
+        ///     Creates a Constraint object with an Or QueryConstraint.
+        /// </summary>
+        /// <param name="constraint">
+        ///     First Constraint in the list of disjunctions.
+        /// </param>
+        /// <param name="constraints">
+        ///     Further Constraints for the list of disjunctions.
+        /// </param>
+        /// <remarks>
+        ///     At least one Constraint must be provided to create a valid "Any" QueryConstraint.
         /// </remarks>
         /// <returns>
         ///     A Constraint object.
@@ -356,7 +384,33 @@ namespace Improbable.Gdk.QueryBasedInterest
             return new Constraint(new ComponentInterest.QueryConstraint
             {
                 AndConstraint = new List<ComponentInterest.QueryConstraint>(),
-                OrConstraint = ConstraintParamsToList(constraint, constraints)
+                OrConstraint = ConstraintParamsToQueryConstraints(constraint, constraints)
+            });
+        }
+
+        /// <summary>
+        ///     Creates a Constraint object with an Or queryConstraint.
+        /// </summary>
+        /// <param name="constraints">
+        ///     Set of Constraints for the list of disjunctions.
+        /// </param>
+        /// <remarks>
+        ///     At least one Constraint must be provided to create a valid "Any" QueryConstraint.
+        /// </remarks>
+        /// <returns>
+        ///     A Constraint object.
+        /// </returns>
+        public static Constraint Any(IEnumerable<Constraint> constraints)
+        {
+            if (IsEnumerableNullOrEmpty(constraints))
+            {
+                throw new ArgumentException("At least one Constraint must be provided.");
+            }
+
+            return new Constraint(new ComponentInterest.QueryConstraint
+            {
+                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
+                OrConstraint = ConstraintEnumerableToQueryConstraints(constraints)
             });
         }
 
@@ -368,23 +422,36 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public ComponentInterest.QueryConstraint AsQueryConstraint()
         {
-            return constraint;
+            return queryConstraint;
         }
 
-        private static List<ComponentInterest.QueryConstraint> ConstraintParamsToList(Constraint constraint,
+        private static List<ComponentInterest.QueryConstraint> ConstraintParamsToQueryConstraints(
+            Constraint constraint,
             params Constraint[] constraints)
         {
             var output = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1)
             {
-                constraint.constraint
+                constraint.queryConstraint
             };
 
             foreach (var constraintParam in constraints)
             {
-                output.Add(constraintParam.constraint);
+                output.Add(constraintParam.queryConstraint);
             }
 
             return output;
+        }
+
+        private static List<ComponentInterest.QueryConstraint> ConstraintEnumerableToQueryConstraints(
+            IEnumerable<Constraint> constraints)
+        {
+            return (List<ComponentInterest.QueryConstraint>)
+                constraints.Select(constraint => constraint.queryConstraint);
+        }
+
+        private static bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
+        {
+            return data == null || !data.Any();
         }
     }
 }

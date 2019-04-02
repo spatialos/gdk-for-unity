@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.QueryBasedInterest
 {
@@ -29,9 +31,12 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <summary>
         ///     Creates a new InterestTemplate object given an existing InterestTemplate.
         /// </summary>
-        /// <param name="interest">
+        /// <param name="interestTemplate">
         ///     An existing InterestTemplate.
         /// </param>
+        /// <remarks>
+        ///     The underlying data is deep copied.
+        /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
@@ -43,15 +48,18 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <summary>
         ///     Creates a new InterestTemplate object given an existing Interest component.
         /// </summary>
-        /// <param name="interest">
+        /// <param name="interestComponent">
         ///     An existing Interest component.
         /// </param>
+        /// <remarks>
+        ///     The underlying data is deep copied.
+        /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public static InterestTemplate Create(Interest.Component interest)
+        public static InterestTemplate Create(Interest.Component interestComponent)
         {
-            return Create(interest.ComponentInterest);
+            return Create(interestComponent.ComponentInterest);
         }
 
         /// <summary>
@@ -60,6 +68,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <param name="interest">
         ///     The underlying dictionary of an Interest component.
         /// </param>
+        /// <remarks>
+        ///     The underlying data is deep copied.
+        /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
@@ -89,72 +100,44 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Mutates the given interest component directly.
+        ///     Add InterestQueries to the Interest component.
         /// </summary>
-        /// <param name="interest">
-        ///     An existing Interest component.
+        /// <param name="interestQuery">
+        ///     First InterestQuery to add for a given authoritative component.
         /// </param>
-        /// <returns>
-        ///     An InterestTemplate object.
-        /// </returns>
-        public static InterestTemplate CreateReference(Interest.Component interest)
-        {
-            return CreateReference(interest.ComponentInterest);
-        }
-
-        /// <summary>
-        ///     Mutates the underlying dictionary of an interest component.
-        /// </summary>
-        /// <param name="interest">
-        ///     The underlying dictionary of an Interest component.
-        /// </param>
-        /// <returns>
-        ///     An InterestTemplate object.
-        /// </returns>
-        public static InterestTemplate CreateReference(Dictionary<uint, ComponentInterest> interest)
-        {
-            return new InterestTemplate(interest);
-        }
-
-        /// <summary>
-        ///     Add interestQueries to the Interest component.
-        /// </summary>
-        /// <param name="query">
-        ///     First interestQuery to add for a given authoritative component.
-        /// </param>
-        /// <param name="queries">
-        ///     Further interestQueries to add for a given authoritative component.
+        /// <param name="interestQueries">
+        ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to add the interestQueries to.
+        ///     Type of the authoritative component to add the InterestQueries to.
         /// </typeparam>
         /// <remarks>
-        ///     At least one interestQuery must be provided to update the Interest component.
+        ///     At least one InterestQuery must be provided to update the Interest component.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public InterestTemplate AddQueries<T>(InterestQuery query,
-            params InterestQuery[] queries)
+        public InterestTemplate AddQueries<T>(InterestQuery interestQuery,
+            params InterestQuery[] interestQueries)
             where T : ISpatialComponentData
         {
-            return AddQueries(Dynamic.GetComponentId<T>(), query, queries);
+            return AddQueries(Dynamic.GetComponentId<T>(), interestQuery, interestQueries);
         }
 
         /// <summary>
-        ///     Add interestQueries to the Interest component.
+        ///     Add InterestQueries to the Interest component.
         /// </summary>
         /// <param name="componentId">
-        ///     Component ID of the authoritative component to add the interestQueries to.
+        ///     Component ID of the authoritative component to add the InterestQueries to.
         /// </param>
         /// <param name="interestQuery">
-        ///     First interestQuery to add for a given authoritative component.
+        ///     First InterestQuery to add for a given authoritative component.
         /// </param>
         /// <param name="interestQueries">
-        ///     Further interestQueries to add for a given authoritative component.
+        ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one interestQuery must be provided to update the Interest component.
+        ///     At least one InterestQuery must be provided to update the Interest component.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
@@ -163,8 +146,59 @@ namespace Improbable.Gdk.QueryBasedInterest
             InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
-            var componentInterestQueries = QueryParamsToList(interestQuery, interestQueries);
+            return AddQueries(componentId, InterestQueryParamsToQueries(interestQuery, interestQueries));
+        }
 
+        /// <summary>
+        ///     Add InterestQueries to the Interest component.
+        /// </summary>
+        /// <param name="interestQueries">
+        ///     Set of InterestQueries to add for a given authoritative component.
+        /// </param>
+        /// <typeparam name="T">
+        ///     Type of the authoritative component to add the InterestQueries to.
+        /// </typeparam>
+        /// <remarks>
+        ///     At least one InterestQuery must be provided to update the Interest component.
+        /// </remarks>
+        /// <returns>
+        ///     An InterestTemplate object.
+        /// </returns>
+        public InterestTemplate AddQueries<T>(IEnumerable<InterestQuery> interestQueries)
+            where T : ISpatialComponentData
+        {
+            return AddQueries(Dynamic.GetComponentId<T>(), interestQueries);
+        }
+
+        /// <summary>
+        ///     Add InterestQueries to the Interest component.
+        /// </summary>
+        /// <param name="componentId">
+        ///     Component ID of the authoritative component to add the InterestQueries to.
+        /// </param>
+        /// <param name="interestQueries">
+        ///     Set of InterestQueries to add for a given authoritative component.
+        /// </param>
+        /// <remarks>
+        ///     At least one InterestQuery must be provided to update the Interest component. No queries are added
+        ///     if interestQueries is null or contains 0 elements.
+        /// </remarks>
+        /// <returns>
+        ///     An InterestTemplate object.
+        /// </returns>
+        public InterestTemplate AddQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
+        {
+            if (IsEnumerableNullOrEmpty(interestQueries))
+            {
+                Debug.LogWarning("At least one InterestQuery must be provided to add to a component's interest.");
+                return this;
+            }
+
+            return AddQueries(componentId, InterestQueryEnumerableToQueries(interestQueries));
+        }
+
+        private InterestTemplate AddQueries(uint componentId, List<ComponentInterest.Query> componentInterestQueries)
+        {
             if (!interest.TryGetValue(componentId, out var componentInterest))
             {
                 interest.Add(componentId, new ComponentInterest
@@ -179,44 +213,44 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Replaces a component's interestQueries in the Interest component.
+        ///     Replaces a component's InterestQueries in the Interest component.
         /// </summary>
-        /// <param name="query">
-        ///     First interestQuery to add for a given authoritative component.
+        /// <param name="interestQuery">
+        ///     First InterestQuery to add for a given authoritative component.
         /// </param>
-        /// <param name="queries">
-        ///     Further interestQueries to add for a given authoritative component.
+        /// <param name="interestQueries">
+        ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to replace interestQueries of.
+        ///     Type of the authoritative component to replace InterestQueries of.
         /// </typeparam>
         /// <remarks>
-        ///     At least one interestQuery must be provided to replace a component's interest.
+        ///     At least one InterestQuery must be provided to replace a component's interest.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
-        public InterestTemplate ReplaceQueries<T>(InterestQuery query,
-            params InterestQuery[] queries)
+        public InterestTemplate ReplaceQueries<T>(InterestQuery interestQuery,
+            params InterestQuery[] interestQueries)
             where T : ISpatialComponentData
         {
-            return ReplaceQueries(Dynamic.GetComponentId<T>(), query, queries);
+            return ReplaceQueries(Dynamic.GetComponentId<T>(), interestQuery, interestQueries);
         }
 
         /// <summary>
-        ///     Replaces a component's interestQueries in the Interest component.
+        ///     Replaces a component's InterestQueries in the Interest component.
         /// </summary>
         /// <param name="componentId">
-        ///     Component ID of the authoritative component to replace interestQueries of.
+        ///     Component ID of the authoritative component to replace InterestQueries of.
         /// </param>
         /// <param name="interestQuery">
-        ///     First interestQuery to add for a given authoritative component.
+        ///     First InterestQuery to add for a given authoritative component.
         /// </param>
-        /// <param name="queries">
-        ///     Further interestQueries to add for a given authoritative component.
+        /// <param name="interestQueries">
+        ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one interestQuery must be provided to replace a component's interest.
+        ///     At least one InterestQuery must be provided to replace a component's interest.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
@@ -225,8 +259,60 @@ namespace Improbable.Gdk.QueryBasedInterest
             InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
-            var componentInterestQueries = QueryParamsToList(interestQuery, interestQueries);
+            return ReplaceQueries(componentId, InterestQueryParamsToQueries(interestQuery, interestQueries));
+        }
 
+        /// <summary>
+        ///     Replaces a component's InterestQueries in the Interest component.
+        /// </summary>
+        /// <param name="interestQueries">
+        ///     Set of InterestQueries to add for a given authoritative component.
+        /// </param>
+        /// <typeparam name="T">
+        ///     Type of the authoritative component to replace InterestQueries of.
+        /// </typeparam>
+        /// <remarks>
+        ///     At least one InterestQuery must be provided to replace a component's interest.
+        /// </remarks>
+        /// <returns>
+        ///     An InterestTemplate object.
+        /// </returns>
+        public InterestTemplate ReplaceQueries<T>(IEnumerable<InterestQuery> interestQueries)
+            where T : ISpatialComponentData
+        {
+            return ReplaceQueries(Dynamic.GetComponentId<T>(), interestQueries);
+        }
+
+        /// <summary>
+        ///     Replaces a component's InterestQueries in the Interest component.
+        /// </summary>
+        /// <param name="componentId">
+        ///     Component ID of the authoritative component to replace InterestQueries of.
+        /// </param>
+        /// <param name="interestQueries">
+        ///     Set of InterestQueries to add for a given authoritative component.
+        /// </param>
+        /// <remarks>
+        ///     At least one InterestQuery must be provided to replace a component's interest. No queries are replaced
+        ///     if interestQueries is null or contains 0 elements.
+        /// </remarks>
+        /// <returns>
+        ///     An InterestTemplate object.
+        /// </returns>
+        public InterestTemplate ReplaceQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
+        {
+            if (IsEnumerableNullOrEmpty(interestQueries))
+            {
+                Debug.LogWarning("At least one InterestQuery must be provided to replace a component's interest.");
+                return this;
+            }
+
+            return ReplaceQueries(componentId, InterestQueryEnumerableToQueries(interestQueries));
+        }
+
+        private InterestTemplate ReplaceQueries(uint componentId,
+            List<ComponentInterest.Query> componentInterestQueries)
+        {
             if (!interest.TryGetValue(componentId, out var componentInterest))
             {
                 interest.Add(componentId, new ComponentInterest
@@ -242,10 +328,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Add interestQueries to the Interest component.
+        ///     Add InterestQueries to the Interest component.
         /// </summary>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to clear interestQueries from.
+        ///     Type of the authoritative component to clear InterestQueries from.
         /// </typeparam>
         /// <returns>
         ///     An InterestTemplate object.
@@ -257,10 +343,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Add interestQueries to the Interest component.
+        ///     Add InterestQueries to the Interest component.
         /// </summary>
         /// <param name="componentId">
-        ///     Component ID of the authoritative component to clear interestQueries from.
+        ///     Component ID of the authoritative component to clear InterestQueries from.
         /// </param>
         /// <returns>
         ///     An InterestTemplate object.
@@ -272,7 +358,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Removes all interestQueries.
+        ///     Removes all InterestQueries.
         /// </summary>
         /// <returns>
         ///     An InterestTemplate object.
@@ -316,7 +402,8 @@ namespace Improbable.Gdk.QueryBasedInterest
             return interest;
         }
 
-        private static List<ComponentInterest.Query> QueryParamsToList(InterestQuery interestQuery,
+        private static List<ComponentInterest.Query> InterestQueryParamsToQueries(
+            InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
             var output = new List<ComponentInterest.Query>(interestQueries.Length + 1)
@@ -330,6 +417,18 @@ namespace Improbable.Gdk.QueryBasedInterest
             }
 
             return output;
+        }
+
+        private static List<ComponentInterest.Query> InterestQueryEnumerableToQueries(
+            IEnumerable<InterestQuery> interestQueries)
+        {
+            return (List<ComponentInterest.Query>)
+                interestQueries.Select(interestQuery => interestQuery.AsComponentInterestQuery());
+        }
+
+        private bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
+        {
+            return data == null || !data.Any();
         }
     }
 }

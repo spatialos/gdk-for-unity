@@ -10,6 +10,10 @@
 
 - Added a static helper in the `EntityTemplate` class to construct worker access attributes.
 - Added an optional callback as an argument to the `RequestPlayerCreation` method in `SendCreatePlayerRequestSystem`. This callback is invoked upon receiving a response to a player creation request.
+- Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
+    - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
+    - `InterestQuery` reduces boilerplate code required to construct interest queries.
+    - `Constraint` contains static methods to easily create constraints for an interest query.
 
 ### Changed
 
@@ -72,10 +76,6 @@
 - Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
 - Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
 - Added the ability to mark a build target as `Required` which will cause builds to fail in the Editor if the prerequisite build support is not installed.
-- Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
-    - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
-    - `InterestQuery` enables simpler construction of interest queries.
-    - `Constraint` contains static methods to easily create constraints for an interest query.
 
 ### Changed
 
