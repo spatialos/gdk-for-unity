@@ -46,23 +46,6 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a new InterestTemplate object given an existing Interest component.
-        /// </summary>
-        /// <param name="interestComponent">
-        ///     An existing Interest component.
-        /// </param>
-        /// <remarks>
-        ///     The underlying data is deep copied.
-        /// </remarks>
-        /// <returns>
-        ///     An InterestTemplate object.
-        /// </returns>
-        public static InterestTemplate Create(Interest.Component interestComponent)
-        {
-            return Create(interestComponent.ComponentInterest);
-        }
-
-        /// <summary>
         ///     Creates a new InterestTemplate object from the content of an existing Interest component.
         /// </summary>
         /// <param name="interest">
@@ -181,14 +164,14 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </param>
         /// <remarks>
         ///     At least one InterestQuery must be provided to update the Interest component. No queries are added
-        ///     if interestQueries is null or contains 0 elements.
+        ///     if interestQueries is empty.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
         public InterestTemplate AddQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
         {
-            if (IsEnumerableNullOrEmpty(interestQueries))
+            if (!interestQueries.Any())
             {
                 Debug.LogWarning("At least one InterestQuery must be provided to add to a component's interest.");
                 return this;
@@ -294,14 +277,14 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </param>
         /// <remarks>
         ///     At least one InterestQuery must be provided to replace a component's interest. No queries are replaced
-        ///     if interestQueries is null or contains 0 elements.
+        ///     if interestQueries is empty.
         /// </remarks>
         /// <returns>
         ///     An InterestTemplate object.
         /// </returns>
         public InterestTemplate ReplaceQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
         {
-            if (IsEnumerableNullOrEmpty(interestQueries))
+            if (!interestQueries.Any())
             {
                 Debug.LogWarning("At least one InterestQuery must be provided to replace a component's interest.");
                 return this;
@@ -381,17 +364,6 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Returns a deep copy of the underlying data of an Interest component.
-        /// </summary>
-        /// <returns>
-        ///     A Dictionary<uint, ComponentInterest>.
-        /// </returns>
-        public Dictionary<uint, ComponentInterest> ToComponentInterest()
-        {
-            return DeepCopy(interest);
-        }
-
-        /// <summary>
         ///     Returns the underlying data of an Interest component.
         /// </summary>
         /// <returns>
@@ -422,13 +394,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         private static List<ComponentInterest.Query> InterestQueryEnumerableToQueries(
             IEnumerable<InterestQuery> interestQueries)
         {
-            return (List<ComponentInterest.Query>)
-                interestQueries.Select(interestQuery => interestQuery.AsComponentInterestQuery());
-        }
-
-        private bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
-        {
-            return data == null || !data.Any();
+            return interestQueries.Select(interestQuery => interestQuery.AsComponentInterestQuery()).ToList();
         }
     }
 }

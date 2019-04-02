@@ -9,7 +9,6 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestQuery
     {
-        private Constraint queryConstraint;
         private ComponentInterest.Query query;
 
         // Hides the default constructor
@@ -33,9 +32,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             var interest = new InterestQuery
             {
-                queryConstraint = constraint,
                 query =
                 {
+                    Constraint = constraint.AsQueryConstraint(),
                     FullSnapshotResult = true,
                     ResultComponentId = new List<uint>()
                 }
@@ -89,14 +88,14 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </param>
         /// <remarks>
         ///     At least one component ID must be provided. Query results are not filtered
-        ///     if resultComponentIds is null or contains 0 elements.
+        ///     if resultComponentIds is empty.
         /// </remarks>
         /// <returns>
         ///     An updated InterestQuery object.
         /// </returns>
         public InterestQuery FilterResults(IEnumerable<uint> resultComponentIds)
         {
-            if (IsEnumerableNullOrEmpty(resultComponentIds))
+            if (!resultComponentIds.Any())
             {
                 Debug.LogWarning("At least one InterestQuery must be provided to filter a queries results.");
                 return this;
@@ -112,13 +111,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </summary>
         public ComponentInterest.Query AsComponentInterestQuery()
         {
-            query.Constraint = queryConstraint.AsQueryConstraint();
             return query;
-        }
-
-        private bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
-        {
-            return data == null || !data.Any();
         }
     }
 }

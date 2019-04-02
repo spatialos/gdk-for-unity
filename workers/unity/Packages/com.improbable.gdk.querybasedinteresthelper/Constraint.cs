@@ -352,7 +352,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public static Constraint All(IEnumerable<Constraint> constraints)
         {
-            if (IsEnumerableNullOrEmpty(constraints))
+            if (!constraints.Any())
             {
                 throw new ArgumentException("At least one Constraint must be provided.");
             }
@@ -402,7 +402,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public static Constraint Any(IEnumerable<Constraint> constraints)
         {
-            if (IsEnumerableNullOrEmpty(constraints))
+            if (!constraints.Any())
             {
                 throw new ArgumentException("At least one Constraint must be provided.");
             }
@@ -445,13 +445,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         private static List<ComponentInterest.QueryConstraint> ConstraintEnumerableToQueryConstraints(
             IEnumerable<Constraint> constraints)
         {
-            return (List<ComponentInterest.QueryConstraint>)
-                constraints.Select(constraint => constraint.queryConstraint);
-        }
-
-        private static bool IsEnumerableNullOrEmpty<T>(IEnumerable<T> data)
-        {
-            return data == null || !data.Any();
+            return constraints.Select(constraint => constraint.queryConstraint).ToList();
         }
     }
 }
