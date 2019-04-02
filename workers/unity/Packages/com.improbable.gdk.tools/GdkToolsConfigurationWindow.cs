@@ -117,8 +117,6 @@ namespace Improbable.Gdk.Tools
                     EditorGUILayout.TextField(DescriptorOutputDirLabel, toolsConfig.DescriptorOutputDir);
 
                 GUILayout.Label(SchemaSourceDirsLabel, EditorStyles.boldLabel);
-                toolsConfig.SchemaStdLibDir =
-                    EditorGUILayout.TextField(SchemaStdLibDirLabel, toolsConfig.SchemaStdLibDir);
 
                 for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
                 {
