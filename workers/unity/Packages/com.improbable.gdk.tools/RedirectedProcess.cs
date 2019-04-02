@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Tools
         private string workingDirectory;
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
-        private int? timeoutSecs;
+        private TimeSpan? timeout;
 
         private OutputRedirectBehaviour outputRedirectBehaviour =
             OutputRedirectBehaviour.ProcessSpatialOutput |
@@ -133,9 +133,9 @@ namespace Improbable.Gdk.Tools
         ///     Adds a timeout to the process execution. The process will be killed if the timeout expires.
         /// </summary>
         /// <param name="timeoutSecs">The timeout in seconds.</param>
-        public RedirectedProcess WithTimeout(int timeoutSecs)
+        public RedirectedProcess WithTimeout(TimeSpan timeout)
         {
-            this.timeoutSecs = timeoutSecs;
+            this.timeout = timeout;
             return this;
         }
 
@@ -149,13 +149,13 @@ namespace Improbable.Gdk.Tools
             using (process)
             {
                 Start(process);
-                if (timeoutSecs == null)
+                if (timeout == null)
                 {
                     process.WaitForExit();
                 }
                 else
                 {
-                    process.WaitForExit(timeoutSecs.Value * 1000);
+                    process.WaitForExit(timeout.Value.Milliseconds);
                     if (!process.HasExited)
                     {
                         process.Kill();
@@ -239,11 +239,11 @@ namespace Improbable.Gdk.Tools
             Task timeoutTask = null;
             var timeoutSource = new CancellationTokenSource();
 
-            if (timeoutSecs != null)
+            if (timeout != null)
             {
                 timeoutTask = new Task(async () =>
                 {
-                    await Task.Delay(timeoutSecs.Value * 1000);
+                    await Task.Delay(timeout.Value.Milliseconds);
 
                     if (!process.HasExited)
                     {
@@ -260,6 +260,7 @@ namespace Improbable.Gdk.Tools
                 if (timeoutTask != null)
                 {
                     timeoutSource.Cancel();
+                    timeoutSource.Dispose();
                 }
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
