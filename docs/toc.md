@@ -33,7 +33,6 @@
         - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
         - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
         - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
-    - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
