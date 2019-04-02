@@ -1,5 +1,5 @@
 <%(Toc)%>
-# Setup basic spawning
+# Set up basic spawning
 
 ## Set up your GameObject prefabs
 
@@ -21,15 +21,15 @@ Then, if it can't find one there, it will look for a prefab at:
 Resources/Prefabs/Common/<Metadata.entity-type>
 ```
 
-If prefab is not found at either location, a GameObject will not be spawned for that SpatialOS entity
+If the prefab is not found at either location, a GameObject will not be spawned for that SpatialOS entity
 
-This leads to the following rules for a GameObject that will represent a SpatialOS entity:
+This leads to the following rules for representing a SpatialOS Entity as a GameObject:
 
 * The prefab must be named `<Metadata.entity_type>`.
 * For a specific worker, use the `Resources/Prefabs/<worker-type>` directory.
 * For a prefab that is common to any worker, use the `Resources/Prefabs/Common`.
 
-## Setup your worker connector
+## Set up your worker connector
 
 You then need to add the underlying systems to your worker. Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add the following line to the `HandleWorkerConnectionEstablished` method.
 
