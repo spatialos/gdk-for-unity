@@ -1,6 +1,6 @@
 # Build configuration
 
-The Build System feature module uses a scriptable object for its build configuration. 
+The Build System Feature Module uses a scriptable object for its build configuration.
 
 You can create a build configuration asset from the Unity Editor by selecting **Assets** > **Create** > **SpatialOS** > **Build Configuration**.
 
