@@ -19,6 +19,10 @@
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
 - <h3>Feature Modules</h3>
     - [Overview]({{urlRoot}}/modules/core-and-feature-module-overview)
+    - Game Object Creation
+        - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
+        - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
+        - [Set up custom spawning]({{urlRoot}}/modules/game-object-creation/custom-usage)
     - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
@@ -37,9 +41,6 @@
         - [Which workflow]({{urlRoot}}/reference/workflows/which-workflow)
         - MonoBehaviours
             - [Creating workers]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers)
-            - Link to GameObjects
-                - [SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
-                - [Workers]({{urlRoot}}/reference/workflows/monobehaviour/linking/workers)
             - Interacting with SpatialOS
                 - [Readers & Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
                     - [Lifecycle]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
