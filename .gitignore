@@ -49,10 +49,6 @@ _ReSharper.Caches
 
 workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Generated
 
-# Generated packages
-workers/unity/Packages/com.improbable.worker.sdk/**/*.*
-workers/unity/Packages/com.improbable.worker.sdk.mobile/**/*.*
-
 # Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains.meta
