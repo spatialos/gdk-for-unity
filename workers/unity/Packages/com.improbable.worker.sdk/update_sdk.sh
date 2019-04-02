@@ -6,7 +6,7 @@ spatial package get worker_sdk core-dynamic-x86_64-win32 $SDK_VERSION ./Plugins/
 
 spatial package get worker_sdk csharp-c-interop $SDK_VERSION ./Plugins/Improbable/Sdk/Common --unzip -f
 
-spatial package get schema standard_library $SDK_VERSION ./Schema --unzip -f
+spatial package get schema standard_library $SDK_VERSION ./.schema --unzip -f
 
 spatial package get tools schema_compiler-x86_64-win32 $SDK_VERSION ./.schema_compiler --unzip -f
 spatial package get tools schema_compiler-x86_64-macos $SDK_VERSION ./.schema_compiler --unzip -f
