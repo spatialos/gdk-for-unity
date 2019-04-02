@@ -37,7 +37,7 @@ You then need to add the underlying systems to your worker. Open your [`WorkerCo
     GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World);
 ```
 
-> **Note:** You may need to override the `EnableStandardGameObjectCreation` method in your `WorkerConnector` implementation if you haven't already.
+> **Note:** You may need to override the `HandleWorkerConnectionEstablished` method in your `WorkerConnector` implementation if you haven't already.
 
 This adds the `GameObjectInitializationSystem` with an instance of the `GameObjectCreatorFromMetadata` class to your worker.
 

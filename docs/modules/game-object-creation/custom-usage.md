@@ -39,7 +39,7 @@ Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/mon
     GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, new MyGameObjectCreator());
 ```
 
-> **Note:** You may need to override the `EnableStandardGameObjectCreation` method in your `WorkerConnector` implementation if you haven't already.
+> **Note:** You may need to override the `HandleWorkerConnectionEstablished` method in your `WorkerConnector` implementation if you haven't already.
 
 ## (Optional) Link a worker prefab to your worker instance
 
