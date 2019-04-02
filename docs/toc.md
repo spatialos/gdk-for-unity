@@ -28,6 +28,11 @@
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
         - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
         - [Set up custom spawning]({{urlRoot}}/modules/game-object-creation/custom-usage)
+    - Transform Synchronization
+        - [Overview]({{urlRoot}}/modules/transform-sync/overview)
+        - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
+        - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
+        - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
     - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
     - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
