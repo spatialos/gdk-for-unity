@@ -1,6 +1,24 @@
 <%(TOC)%>
-# Heartbeating 101
+# Heartbeating
 
-## When is a player entity deleted?
+Heartbeating is how a server-worker continually checks that a client-worker is still connected to SpatialOS.
 
-To ensure that player entities of disconnected client-workers instances get deleted correctly, the server-worker instances responsible for managing the player lifecycle sends a `PlayerHeartBeat` [command]({{urlRoot}}/reference/world-component-commands-requests-responses) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker instance sends a request to the SpatialOS Runtime to delete this entity.
+The server-worker sends a `PlayerHeartbeat` request at regular intervals. If the server-worker doesn’t receive any responses back from a client-worker within a given period of time, the server-worker will assume the client has died. The server-worker then proceeds to delete the Player entity associated with that client-worker.
+
+## How does it work in the GDK?
+
+### Initialisation
+
+[Initialisation](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/PlayerHeartbeatInitializationSystem.cs)
+
+### Sending PlayerHeartbeat requests
+
+[Sending heartbeat requests](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/SendPlayerHeartbeatRequestSystem.cs)
+
+### Handling PlayerHeartBeat requests
+
+[Handling heartbeat requests](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatRequestSystem.cs)
+
+### Handling an unresponsive client
+
+[Sending heartbeat requests](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatResponseSystem.cs)

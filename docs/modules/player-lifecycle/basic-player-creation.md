@@ -1,36 +1,32 @@
 <%(TOC)%>
-# Implementing basic player spawning
+# Implementing basic player creation
 
 <%(Callout message="
 Before reading this document, make sure you have read the following documentation on:
 
-* [Setting up the Player Lifecycle Feature Module]({{urlRoot}}/modules/player-lifecycle/set-up)
+* [Player Lifecycle Feature Module]({{urlRoot}}/modules/player-lifecycle/overview)
 * [Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-To spawn a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) representing
-a player, you need to:
+By default, the module automatically sends a player creation request as soon as the client-worker instance connects to SpatialOS. This spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) representing a player.
 
-1. Enable the Player Lifecycle Feature Module.
-1. Define the entity template for your player entity.
-1. Configure what entity template to use during player creation.
-1. (Optional) Manually request player creation.
+To do this, you need to:
 
->**NOTE:** To pass in arbitrary serialized data with the player creation request, set `AutoRequestPlayerCreation` to false.
+1. Set up your worker connector.
+1. Define the entity template for your player entities.
+1. Configure what entity template to use for player creation.
 
-If `AutoRequestPlayerCreation` is set to false you must manually initiate player creation, as described in Step 3.
-
-##### 1. Enable the Player Lifecycle module
+## Set up your worker connector
 
 After setting up the module, you must enable it by adding the necessary systems to your workers. This is done in the `HandleWorkerConnectionEstablished()` method of your [`WorkerConnector`]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers), by using the following code snippets:
 
 1. On a [client-worker]({{urlRoot}}/reference/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
 1. On a [server-worker]({{urlRoot}}/reference/glossary#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
 
-By default, the module automatically sends a player creation request as soon as the client-worker instance connects to SpatialOS. To manually initiate player creation or provide arbitrary data in a player creation request, add an extra `false` argument when adding client systems: `PlayerLifecycleHelper.AddClientSystems(Worker.World, false);`
+To change this behaviour, read the documentation on [custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation).
 
-##### 2. Define the player entity template
+## Define the player entity template
 
 The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/concepts/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
@@ -63,7 +59,7 @@ public static class PlayerTemplate
 }
 ```
 
-##### 3. Specify an entity template for player creation
+## Configure an entity template to use for player creation
 
 You need to configure the `PlayerLifecycleConfig` configuration class to use the player entity template. Do this by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
 
@@ -93,11 +89,6 @@ public static class OneTimeInitialization
 }
 ```
 
-##### 4. (Optional) Manually request player creation
+## When is a player entity deleted?
 
-If `AutoRequestPlayerCreation` is set to false, you must manually call `RequestPlayerCreation` in the `SendCreatePlayerRequestSystem`:
-
-```csharp
-var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
-playerCreationSystem.RequestPlayerCreation();
-```
+To ensure that player entities of disconnected client-workers instances get deleted correctly, the server-worker instances responsible for managing the player lifecycle sends a `PlayerHeartBeat` [command]({{urlRoot}}/reference/world-component-commands-requests-responses) to the different player entities to check whether they are still connected. If a player entity fails to send a response three times in a row, the server-worker instance sends a request to the SpatialOS Runtime to delete this entity.
