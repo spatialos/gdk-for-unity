@@ -24,7 +24,7 @@ You can choose to work with either the traditional Unity MonoBehaviour approach 
 
 #### MonoBehaviour
 
-If you are using the MonoBehaviour workflow, you should look at [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities.md), once you have looked at the above three documents.
+If you are using the MonoBehaviour workflow, you should look at [the GameObject Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview) documentation to learn how to link GameObjects to SpatialOS entities.
 
 #### ECS 
 

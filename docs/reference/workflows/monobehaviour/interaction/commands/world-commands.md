@@ -89,7 +89,7 @@ Parameters:
   * `WorldCommands.DeleteEntity.Request request`: The command request payload.
   * `Action<WorldCommands.DeleteEntity.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
 
->  Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. [You should wait until you receive a callback on ]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities#the-creation-feature-module).
+> Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. You should wait until you receive a callback on the [`IEntityGameObjectCreator` instance]({{urlRoot}}/modules/game-object-creation/custom-usage#onentityremoved).
 
 
 ### EntityQuery

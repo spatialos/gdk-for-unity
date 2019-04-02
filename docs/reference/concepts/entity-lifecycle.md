@@ -16,7 +16,7 @@ When an entity moves into your worker's [view]({{urlRoot}}/reference/glossary#wo
  - A message stating the current state of each [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on that entity that your worker has interest in
  - (Optionally) A message stating that your worker has been delegated [authority]({{urlRoot}}/reference/glossary#authority) over a SpatialOS component.
 
-The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a process described in the [Entity Contracts documentation]({{urlRoot}}/reference/workflows/ecs/entity-contracts). You can also optionally associate a GameObject with this entity as described [in this doc]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
+The SpatialOS GDK for Unity turns these messages into a single ECS Entity in a process described in the [Entity Contracts documentation]({{urlRoot}}/reference/workflows/ecs/entity-contracts). You can also optionally associate a GameObject with this entity as described in the [GameObject Creation feature module documentation]({{urlRoot}}/modules/game-object-creation/overview).
 
 ## What happens when an entity leaves your view
 

@@ -28,6 +28,10 @@ This provides both a testing framework, which you can use to test any other modu
 
 The `Improbable.Gdk.BuildSystem` module provides an example implementation of how to build your workers. It creates a menu item in your Unity Editor toolbar (menu: **SpatialOS** > **Build...** ) that you can use to easily build your workers. It also generates a [ScriptableObject (Unity documentation)](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains the build configuration for each worker.  This functionality is only available from your Unity Editor.
 
+### GameObject Creation 
+
+This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
+
 ### Player lifecycle module
 
 To access this module, use the   `Improbable.Gdk.PlayerLifecycle` namespace. It contains members which you use to implement player spawning and player heartbeats.
@@ -68,27 +72,6 @@ You can optionally pass in a `rotation`, `location` or `velocity`.
 Call this during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
 
 Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
-
-### GameObject creation module
-
-To access this module, use the `Improbable.Gdk.GameObjectCreation` namespace. It offers a default implementation of spawning GameObjects for your SpatialOS entities.
-
-`Improbable.Gdk.GameObjectCreation` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation).
-
-This module consists of:
-
-* `IEntityGameObjectCreator` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs).
-<br/>This is an interface to implement your customized version of the [Creation Feature Module]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) which you use for creating GameObjects and [linking them to SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
-<br/>See the documentation on [How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities).
-
-* `GameObjectCreationHelper.EnableStandardGameObjectCreation(world)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
-Use this to enable the default implementation or with the parameters below to change the default.
-
-* `GameObjectCreationHelper.EnableStandardGameObjectCreation(world,  entityGameObjectCreator)` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs).<br/>
-Use this enable custom spawning by passing in parameters to change the default.
-
-
-Call these during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
 
 ### Mobile support module
 

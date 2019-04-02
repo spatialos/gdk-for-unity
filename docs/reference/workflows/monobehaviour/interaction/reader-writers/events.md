@@ -12,14 +12,13 @@ Events are SpatialOS's equivalent of broadcasted messages. They allow you to sen
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
 
-* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
 * [Reader and Writer]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 
-
 We use the following [schema]({{urlRoot}}/reference/glossary#schema) for all examples described in this documentation.
-```
+
+```schema
 package playground;
 
 type Location
