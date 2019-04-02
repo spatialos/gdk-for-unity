@@ -56,13 +56,10 @@ So, players, NPCs or even background objects like trees, that you want to exist 
 
 #### Further information on setting up SpatialOS entities with GameObjects
 
-In the MonoBehaviour workflow, to represent your SpatialOS entity as a GameObject, you need to set up your workers to create SpatialOS entities using entity templates. See the following documentation for more information:
+In the MonoBehaviour workflow, to represent your SpatialOS entity as a GameObject, you need to setup the GameObject Creation Feature Module. See the following documentation for more information:
 
-* Both workflows - [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
-
-* Both workflows - [SpatialOS entities: How to create and delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
-
-* MonoBehaviour workflow - [SpatialOS entities: How to link SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
+- [GameObject Creation Feature Module overview]({{urlRoot}}/modules/game-object-creation/overview)
+- [GameObject Creation Feature Module basic setup up]({{urlRoot}}/modules/game-object-creation/standard-usage)
 
 ## Unity ECS entities and SpatialOS entities
 

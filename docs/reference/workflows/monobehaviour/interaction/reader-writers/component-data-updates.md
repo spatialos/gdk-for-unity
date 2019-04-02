@@ -8,7 +8,6 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/wor
 
 Before reading this document, make sure you are familiar with:
 
-* [Linking SpatialOS entities with GameObjects]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities)
 * [Reader and Writer]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
 * [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
@@ -27,7 +26,7 @@ component Health {
 }
 ```
 
-The following examples assume that you have a [GameObject that is linked to a SpatialOS entity]({{urlRoot}}/reference/workflows/monobehaviour/linking/spatialos-entities) containing the `Health` component.
+The following examples assume that you have a GameObject that is [linked to a SpatialOS entity]({{urlRoot}}/modules/game-object-creation/overview) containing the `Health` component.
 
 ## How to read component properties
 
@@ -41,7 +40,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 {
     [Require] private HealthReader healthReader;
 
-    private int ReadHealthValue()
+private int ReadHealthValue()
     {
         // Read the current health value of your entity’s Health component.
         return healthReader.Data.CurrentHealth;
