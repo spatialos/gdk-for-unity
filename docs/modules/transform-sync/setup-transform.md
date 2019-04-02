@@ -1,5 +1,23 @@
 # Set up tranform synchronization for an entity
 
+## Set up your worker connector
+
+You then need to add the underlying systems to your worker. Open your [`WorkerConnector` implementations]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add the following line to the `HandleWorkerConnectionEstablished` method.
+
+**If this is a client-worker:**
+
+```csharp
+    TransformSynchronizationHelper.AddClientSystems(Worker.World);
+```
+
+**If this is a server-worker:**
+
+```csharp
+    TransformSynchronizationHelper.AddServerWorkers(Worker.World);
+```
+
+> **Note:** You may need to override the `HandleWorkerConnectionEstablished` method in your `WorkerConnector` implementation if you haven't already.
+
 ## Add the components to your EntityTemplate
 
 When you have a SpatialOS entity that you want the transform to be synchronized, you need to ensure that the required components are present on that entity.
