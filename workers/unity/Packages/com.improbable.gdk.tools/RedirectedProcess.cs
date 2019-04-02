@@ -137,6 +137,7 @@ namespace Improbable.Gdk.Tools
 
             using (process)
             {
+                Start(process);
                 process.WaitForExit();
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
@@ -237,8 +238,18 @@ namespace Improbable.Gdk.Tools
                 process.Dispose();
             };
 
+            Start(process);
+
             // Register a handler for when a cancel is requested, we kill the process.
-            token.Register(() => { process.Kill(); });
+            token.Register(() =>
+            {
+                if (process.HasExited)
+                {
+                    return;
+                }
+                
+                process.Kill();
+            });
 
             return taskCompletionSource.Task;
         }
@@ -350,16 +361,19 @@ namespace Improbable.Gdk.Tools
 
             process.EnableRaisingEvents = true;
 
+            return (process, outputLog);
+        }
+
+        private static void Start(Process process)
+        {
             if (!process.Start())
             {
                 throw new Exception(
-                    $"Failed to run {info.FileName} {info.Arguments}");
+                    $"Failed to run {process.StartInfo.FileName} {process.StartInfo.Arguments}");
             }
 
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-
-            return (process, outputLog);
         }
 
         private static string ProcessSpatialOutput(string argsData)
