@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.Tools.MiniJSON;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Tools
@@ -133,15 +131,9 @@ namespace Improbable.Gdk.Tools
             {
                 process.WaitForExit();
 
-                if (outputLog == null)
-                {
-                    return process.ExitCode;
-                }
+                var trimmedOutput = outputLog?.ToString().TrimStart();
 
-                // Ensure that the first line of the log is something useful in the Unity editor console.
-                var trimmedOutput = outputLog.ToString().TrimStart();
-
-                if (trimmedOutput == string.Empty)
+                if (string.IsNullOrEmpty(trimmedOutput))
                 {
                     return process.ExitCode;
                 }
@@ -164,85 +156,65 @@ namespace Improbable.Gdk.Tools
         /// </summary>
         /// <param name="token">A cancellation token which can be used for cancelling the underlying process. Default is null.</param>
         /// <returns>A task which would return the exit code and output.</returns>
-        public Task<RedirectedProcessResult> RunAsync(CancellationToken? token = null)
+        public async Task<RedirectedProcessResult> RunAsync(CancellationToken? token = null)
         {
-            return Task.Run(() =>
+            var processStandardOutput = new List<string>();
+            var processStandardError = new List<string>();
+
+            AddOutputProcessing(output =>
             {
-                var processStandardOutput = new List<string>();
-                var processStandardError = new List<string>();
-
-                AddOutputProcessing(output =>
+                lock (processStandardOutput)
                 {
-                    lock (processStandardOutput)
-                    {
-                        processStandardOutput.Add(output);
-                    }
-                });
-                AddErrorProcessing(error =>
-                {
-                    lock (processStandardOutput)
-                    {
-                        processStandardError.Add(error);
-                    }
-                });
-
-                if (token == null)
-                {
-                    var exitCode = Run();
-
-                    return new RedirectedProcessResult
-                    {
-                        ExitCode = exitCode,
-                        Stdout = processStandardOutput,
-                        Stderr = processStandardError
-                    };
+                    processStandardOutput.Add(output);
                 }
+            });
+            AddErrorProcessing(error =>
+            {
+                lock (processStandardOutput)
+                {
+                    processStandardError.Add(error);
+                }
+            });
 
-                var task = RunWithCancel(token.Value);
-                task.Wait();
+            if (token == null)
+            {
+                var exitCode = Run();
 
                 return new RedirectedProcessResult
                 {
-                    ExitCode = task.Result,
+                    ExitCode = exitCode,
                     Stdout = processStandardOutput,
                     Stderr = processStandardError
                 };
-            });
+            }
+
+            var result = await RunWithCancel(token.Value);
+
+            return new RedirectedProcessResult
+            {
+                ExitCode = result,
+                Stdout = processStandardOutput,
+                Stderr = processStandardError
+            };
         }
 
-        private async Task<int> RunWithCancel(CancellationToken token)
+        private Task<int> RunWithCancel(CancellationToken token)
         {
             var (process, outputLog) = SetupProcess();
 
-            using (process)
+            var taskCompletionSource = new TaskCompletionSource<int>();
+
+            // Register a handler to process the output when it exits.
+            process.Exited += (sender, args) =>
             {
-                await Task.Run(() =>
+                taskCompletionSource.SetResult(process.ExitCode);
+
+                var trimmedOutput = outputLog?.ToString().TrimStart();
+
+                if (string.IsNullOrEmpty(trimmedOutput))
                 {
-                    while (!process.HasExited)
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            process.Kill();
-                            return;
-                        }
-
-                        Task.Delay(500, token);
-                    }
-                }, token);
-
-                process.WaitForExit();
-
-                if (outputLog == null)
-                {
-                    return process.ExitCode;
-                }
-
-                // Ensure that the first line of the log is something useful in the Unity editor console.
-                var trimmedOutput = outputLog.ToString().TrimStart();
-
-                if (trimmedOutput == string.Empty)
-                {
-                    return process.ExitCode;
+                    process.Dispose();
+                    return;
                 }
 
                 if (process.ExitCode == 0)
@@ -254,8 +226,13 @@ namespace Improbable.Gdk.Tools
                     Debug.LogError(trimmedOutput);
                 }
 
-                return process.ExitCode;
-            }
+                process.Dispose();
+            };
+
+            // Register a handler for when a cancel is requested, we kill the process.
+            token.Register(() => { process.Kill(); });
+
+            return taskCompletionSource.Task;
         }
 
         private (Process, StringBuilder) SetupProcess()
@@ -289,7 +266,8 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) !=
+                    OutputRedirectBehaviour.None)
                 {
                     outputString = ProcessSpatialOutput(outputString);
                 }
@@ -329,7 +307,8 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) != OutputRedirectBehaviour.None)
+                if ((outputRedirectBehaviour & OutputRedirectBehaviour.ProcessSpatialOutput) !=
+                    OutputRedirectBehaviour.None)
                 {
                     errorString = ProcessSpatialOutput(errorString);
                 }
