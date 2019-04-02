@@ -13,24 +13,7 @@ With your project open in your Unity Editor, go to the Project window and select
 
 The build configuration has a reasonable default configuration, however, you may want to make changes.
 
-Each worker type has both a local and cloud configuration meant for local deployment development and cloud deployment development respectively.
-You can configure:
-
-* Which Unity Scenes each worker should contain in its build.
-* Which platforms you want your worker to build for.
-* A set of build options. Refer to the table for the description of these.
-
-| | |
-|---|---|
-| **Build Option** | **Description** |
-| Build | Denotes whether to build this target or not. |
-| Required | Denotes whether a build failure while building this target should trigger a build-wide failure. |
-| Development | Denotes whether the build should be a development build with debug symbols. |
-| Server build | Denotes whether the worker is running in headless mode. |
-| Compression | Which compression scheme to use in the build. |
-
-
-> **Note:** All server-workers **must** have a Linux build target enabled for the cloud target because server-workers are ran on Linux machines in cloud deployments.
+Please see our [Build System Feature Module documentation]({{urlRoot}}/modules/build-system/overview) to learn how to configure the build.
 
 **Step 4.** Test building your workers.
 

@@ -19,6 +19,11 @@
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
 - <h3>Feature Modules</h3>
     - [Overview]({{urlRoot}}/modules/core-and-feature-module-overview)
+    - Build System
+        - [Overview]({{urlRoot}}/modules/build-system/overview)
+        - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
+        - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
+        - [Command line interface]({{urlRoot}}/modules/build-system/cli)
     - Game Object Creation
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
         - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
