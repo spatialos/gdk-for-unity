@@ -8,7 +8,6 @@ namespace Improbable.Gdk.Tools
     [Serializable]
     public class GdkToolsConfiguration
     {
-        public string SchemaStdLibDir;
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
         public string DescriptorOutputDir;
@@ -36,10 +35,6 @@ namespace Improbable.Gdk.Tools
         internal List<string> Validate()
         {
             var errors = new List<string>();
-            if (string.IsNullOrEmpty(SchemaStdLibDir))
-            {
-                errors.Add($"{GdkToolsConfigurationWindow.SchemaStdLibDirLabel} cannot be empty.");
-            }
 
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
@@ -95,7 +90,6 @@ namespace Improbable.Gdk.Tools
 
         internal void ResetToDefault()
         {
-            SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
@@ -126,7 +120,6 @@ namespace Improbable.Gdk.Tools
 
         private static class DefaultValues
         {
-            public const string SchemaStdLibDir = "../../build/dependencies/schema/standard_library";
             public const string CodegenOutputDir = "Assets/Generated/Source";
             public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
