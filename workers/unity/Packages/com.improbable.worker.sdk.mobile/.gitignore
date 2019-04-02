@@ -1,0 +1,3 @@
+# Ignore everything besides .meta in Plugins
+Plugins/**/*.*
+!Plugins/**/*.meta
