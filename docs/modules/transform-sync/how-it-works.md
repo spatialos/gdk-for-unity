@@ -1,37 +1,63 @@
 # How the Transform Synchronization Feature Module works
 
-## What is Transform
+## What is transform
 
-There are two concepts of the location of a SpatialOS entity:
+The transform of an entity describes its location and rotation. Worker-instances generally use it to run physics simulations or render entities for a client. Note that the SpatialOS representation of transform is _not_ the same as Unity's representation of transform.
 
-* The _transform_. This contains a location, rotation, and physics tick and is used by worker-instances to run physics simulations or render entities for a client.
+In the Transform Synchronization Feature Module, we represent the Transform as:
 
-* The _position_. This only contains a location. This is defined by the standard library component `Improbable.Position` and is used by the SpatialOS load balancer to determine which worker should be delegated authority over a given entity-component.
+```
+package improbable.transform;
 
-<%(#Expandable title="Why do we need two locations?")%>
-There are a few reasons why you might want a separate `Transform` and `Position` component.
+type Location {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
 
-1. **Separation of responsibilies.** By separating out what worker-instances see as the location of the entity and what the load balancer sees as the location of the entity you conceptually separate these. A gameplay programmer would only need to be aware of the `Transform` component and wouldn't need to worry about the load balancing at all.
-2. **Save bandwidth.** The `Position` represents location with 3 doubles. The `Transform` component represents location as 3 floats, which is the Unity native representation. This means that, ignoring rotation, a position update is twice as large as a transform update.<br/><br/>If `Transform` has a high frequency update rate and `Position` has a low frequency update rate then you have a net bandwidth saving over updating just `Position` at a high frequency!
-3. **Atomicity.** The `Transform` component contains more than just the location. It also contains the rotation and physics tick. If these were on a separate component, you lose the guarantee that all three (location, rotation, physics tick) are update atomically.<br/><br/>Two updates sent in the same frame from one worker are _not_ guaranteed to be received on the same frame in another.
+type Velocity {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+type Quaternion {
+    float w = 1;
+    float x = 2;
+    float y = 3;
+    float z = 4;
+}
+
+component TransformInternal {
+    id = 11000;
+    Location location = 1;
+    Quaternion rotation = 2;
+    Velocity velocity = 3;
+    uint32 physics_tick = 4;
+    float ticks_per_second = 5;
+}
+```
+
+> **Note:** The `TransformInternal` component contains additional fields such as `velocity` and `physics_tick`. These are implementation details of the Transform Synchronization Feature Module.
+
+<%(#Expandable title="Why not reuse the <code>Improbable.Position</code> SpatialOS component?")%>
+There are a few reasons why you might want different `Transform` and `Position` components.
+
+1. **Separation of responsibilies.** The `Improbable.Position` component is the load balancer's representation of location and the `TransformInternal` component is the workers' representation of location. This allows you to abstract the concept of location from the load balancer. A gameplay programmer would only need to be aware of the `TransformInternal` component without having to know about the load balancer at all.
+2. **Save bandwidth.** The `Position` component represents location with 3 doubles. The `TransformInternal` component represents location as 3 floats, which is the Unity native representation. This means that, ignoring rotation, a position update is twice as large as a transform update.<br/><br/>If the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate then you have a net bandwidth saving over updating just the `Position` component at a high frequency!
+3. **Atomicity.** The `Transform` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically.<br/><br/>Two updates sent in the same frame from one worker are _not_ guaranteed to be received on the same frame in another.
 <%(/Expandable)%>
 
 ## How do my entities' transform get synchronized
 
-The behaviour of the Transform Synchronization Feature Modules differs depending on whether your worker-instance is authoritative over the `Transform` _and_ `Position` components. This behaviour can be adjusted with [transform synchronization strategies]({{urlRoot}}/modules/transform-sync/strategies), but broadly goes as follows:
-
-<%(#Expandable title="Do you support the Unity ECS Transforms package?")%>
-We don't support the Unity ECS Transform package at this time.
-
-If this is a feature that you strongly desire, please let us know in either: the [Discord](https://discord.gg/SCZTCYm) or our [forums](https://forums.improbable.io/latest?tags=unity-gdk).
-<%(/Expandable)%>
+The behaviour of the Transform Synchronization Feature Modules differs depending on whether your worker-instance is authoritative over the `TransformInternal` _and_ `Position` components. This behaviour can be adjusted with [transform synchronization strategies]({{urlRoot}}/modules/transform-sync/strategies), but broadly goes as follows:
 
 ##### On authoritative worker-instances
 
-The Transform Synchronization Feature Module listens for transform changes in native Unity representations (`UnityEngine.Transform` or `UnityEngine.Rigidbody`) and translates these into SpatialOS component updates. 
+The Transform Synchronization Feature Module listens for changes in the native Unity transform representation (`UnityEngine.Transform` or `UnityEngine.Rigidbody`) and translates these into `TransformInternal` and `Position` component updates.
 
-This means that, as a user, you shouldn't need to manually update the `Transform` or `Position` components. You can simply move your GameObjects as you normally would and these changes will be synchronized as specified in the applied strategy.
+This means that, as a user, you shouldn't manually update the `TransformInternal` or `Position` components. You can simply move your GameObjects as you normally would and these changes will be synchronized as specified in the applied strategy.
 
 ##### On non-authoritative worker-instances
 
-The Transform Synchronization Feature Module listens for SpatialOS component updates in the `Transform` component and applies these changes to the native Unity representation (`UnityEngine.Transform` or `UnityEngine.Rigidbody`) as specified in the applied strategy.
+The Transform Synchronization Feature Module listens for SpatialOS component updates in the `TransformInternal` component and applies these changes to the native Unity transform representation (`UnityEngine.Transform` or `UnityEngine.Rigidbody`) as specified in the applied strategy.
