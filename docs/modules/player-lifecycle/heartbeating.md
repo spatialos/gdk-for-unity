@@ -1,17 +1,17 @@
 <%(TOC)%>
 # Heartbeating
 
-Heartbeating is a technique used to regularly checking-in on the health of connected client-workers and ensuring that unresponsive or disconnected clients are periodically removed from the game world.
+Heartbeating is a technique used to ensure that client-workers are still connected. Unresponsive or disconnected clients are periodically removed from the game world.
 
 ## Why is it useful?
 
-Client-workers typically create a new Player entity at some point after connecting to SpatialOS. Without the heartbeats, this Player entity would simply exist in the world forever as client-workers would create a different, new Player entity on each new connection.
+Client-workers typically create a new player entity at some point after connecting to SpatialOS. Without the heartbeats, it is impossible for a server-worker to tell whether the client-worker is still connected and responsive.
 
-By introducing heartbeats, we can ensure that a Player entity corresponding to a disconnected or unresponsive client-worker is deleted from the world. This assures us that, in a stable deployment, the number of Player entities in a world is equal to the number of client-workers connected.
+By introducing heartbeats, we ensure that a player entity belonging to a disconnected or unresponsive client-worker is deleted from the world. This assures us that, in a stable deployment, the number of Player entities in a world is equal to the number of client-workers connected.
 
 ## How does it work?
 
-Generally, a server sends a heartbeat request at regular intervals to clients. If the server continually receives failures or is unable to get a response back from a client, the server will assume the client has disconnected. The server then deletes the Player associated with that client.
+A server sends a heartbeat request at regular intervals to the clients. If the server continually receives failures or the request times out, the server assumes that the client has disconnected. The server then deletes the player associated with that client.
 
 ## How is it implemented in the GDK?
 
