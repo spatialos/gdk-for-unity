@@ -97,7 +97,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             if (!resultComponentIds.Any())
             {
-                Debug.LogWarning("At least one InterestQuery must be provided to filter a queries results.");
+                Debug.LogWarning("At least one InterestQuery must be provided to filter a query's results.");
                 return this;
             }
 
