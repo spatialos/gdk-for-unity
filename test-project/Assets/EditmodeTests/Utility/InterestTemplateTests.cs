@@ -63,8 +63,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AddQueries<Position.Component>(initialQuery)
                 .ReplaceQueries<Position.Component>(differentBasicQuery);
 
-            ComponentInterest replacedQuery;
-            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
             var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
 
             Assert.True(queryExists);
@@ -80,8 +79,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
                 .ReplaceQueries<Position.Component>(DifferentBasicQuery);
 
-            ComponentInterest replacedQuery;
-            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out replacedQuery);
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
 
             Assert.True(queryExists);
             Assert.AreEqual(1, replacedQuery.Queries.Count);
