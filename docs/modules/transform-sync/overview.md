@@ -14,7 +14,7 @@ If this is a feature that you strongly desire, please let us know in either: the
 
 Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
 
-The GameObject Creation Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
+The Transform Synchronization Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
 
 ```text
 workers/unity/Packages/com.improbable.gdk.transformsynchronization/package.json
