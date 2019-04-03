@@ -2,6 +2,22 @@ using Improbable.Gdk.Core;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
+    /// <summary>
+    ///     Signature of the delegate called to get a Player Entity Template.
+    /// </summary>
+    /// <param name="clientWorkerId">
+    ///     The worker ID of a client-worker that sent a player creation request.
+    /// </param>
+    /// <param name="serializedArguments">
+    ///     A serialized byte array of arbitrary data.
+    /// </param>
+    /// <remarks>
+    ///     This is called by the `HandleCreatePlayerRequestSystem` to get a player entity template
+    ///     that can be used to create a SpatialOS Player entity.
+    /// </remarks>
+    /// <returns>
+    ///     An EntityTemplate to create a SpatialOS Player entity from.
+    /// </returns>
     public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
         string clientWorkerId,
         byte[] serializedArguments);
