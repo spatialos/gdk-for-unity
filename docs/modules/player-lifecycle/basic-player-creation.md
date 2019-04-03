@@ -9,7 +9,7 @@ Before reading this document, make sure you have read the following documentatio
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance which receives the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player. It then deletes the player entity after multiple consecutive unsuccessful [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating).
+By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance receiving the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player.The player entity gets deleted, if the server-worker fails to receive multiple [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating) consecutively.
 
 ## Set up your worker connector
 
@@ -38,7 +38,7 @@ Create a method that returns an `EntityTemplate` object and takes the following 
 * `string workerId`: The ID of the worker that wants to spawn this player entity.
 *  `byte[] playerCreationArguments`: a serialized byte array of arguments provided by the worker instance sending the player creation request.
 
-When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method. This method adds lifecycle SpatialOS components to the player entity template; these components are necessary to manage the player lifecycle for this entity.
+When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method. This method adds SpatialOS components to the player entity template that are used by the Player Lifecycle Feature Module to manage the lifecycle of this entity.
 
 The following code snippet shows an example on how to implement such a method:
 
