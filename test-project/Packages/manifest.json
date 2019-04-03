@@ -6,6 +6,7 @@
     "com.improbable.gdk.querybasedinteresthelper": "file:../../workers/unity/Packages/com.improbable.gdk.querybasedinteresthelper",
     "com.improbable.gdk.testutils": "file:../../workers/unity/Packages/com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:../../workers/unity/Packages/com.improbable.gdk.tools",
+    "com.improbable.worker.sdk": "file:../../workers/unity/Packages/com.improbable.worker.sdk",
     "com.unity.modules.physics": "1.0.0"
   },
   "registry": "https://staging-packages.unity.com"
