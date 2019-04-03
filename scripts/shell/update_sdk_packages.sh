@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail
 
+cd "$(dirname "$0")"
+
 SDK_VERSION="13.6.2"
 
 PKG_ROOT="../../workers/unity/Packages"
