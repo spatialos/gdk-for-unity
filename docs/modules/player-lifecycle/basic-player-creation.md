@@ -11,12 +11,6 @@ Before reading this document, make sure you have read the following documentatio
 
 By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance which receives the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player. It then deletes the player entity after multiple consecutive unsuccessful [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating).
 
-To set-up this functionality:
-
-1. Set up your worker connector.
-1. Define the entity template for your player entities.
-1. Configure what entity template to use for player creation.
-
 ## Set up your worker connector
 
 You need to add the underlying player lifecycle systems to your worker. Open your [`WorkerConnector` implementations]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add one of the following lines to the `HandleWorkerConnectionEstablished` method.
