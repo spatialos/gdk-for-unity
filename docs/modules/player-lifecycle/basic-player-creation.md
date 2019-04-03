@@ -19,10 +19,19 @@ To set-up this functionality:
 
 ## Set up your worker connector
 
-After setting up the module, you must enable it by adding the necessary systems to your workers. This is done in the `HandleWorkerConnectionEstablished()` method of your [`WorkerConnector`]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers), by using the following code snippets:
+You need to add the underlying player lifecycle systems to your worker. Open your [`WorkerConnector` implementations]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add one of the following lines to the `HandleWorkerConnectionEstablished` method.
 
-1. On a [client-worker]({{urlRoot}}/reference/glossary#client-worker): `PlayerLifecycleHelper.AddClientSystems(Worker.World)`
-1. On a [server-worker]({{urlRoot}}/reference/glossary#server-worker): `PlayerLifecycleHelper.AddServerSystems(Worker.World)`
+**If this is a client-worker:**
+
+```csharp
+    PlayerLifecycleHelper.AddClientSystems(Worker.World);
+```
+
+**If this is a server-worker:**
+
+```csharp
+    PlayerLifecycleHelper.AddServerWorkers(Worker.World);
+```
 
 To change this behaviour, read the documentation on [custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation).
 
