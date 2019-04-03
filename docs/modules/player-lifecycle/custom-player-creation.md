@@ -9,16 +9,16 @@ Before reading this document, make sure you are familiar with:
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-## How to manually send player creation requests
+## Manually sending player creation requests
 
-By default, the Player Lifecycle Feature Module sends a player creation request as soon as the client-worker instance connects to SpatialOS.
+By default, the Player Lifecycle Feature Module sends a player creation request is sent as soon as the client-worker instance connects to SpatialOS.
 
 To modify this behaviour, you must set `PlayerLifecycleConfig.AutoRequestPlayerCreation` to false by one of the following ways:
 
 * Add an extra `false` argument when adding client systems: `PlayerLifecycleHelper.AddClientSystems(Worker.World, autoRequestPlayerCreation: false);`
-* Set the field to false during set-up: `PlayerLifecycleConfig.AutoRequestPlayerCreation = false;`
+* Set the field to false manually during set-up: `PlayerLifecycleConfig.AutoRequestPlayerCreation = false;`
 
-To spawn the player after disabling the default behaviour, you need to call the `RequestPlayerCreation` method. This method can be found in the `SendCreatePlayerRequestSystem`.
+Once `AutoRequestPlayerCreation` is set to false you must manually call the `RequestPlayerCreation` method, which can be found in the `SendCreatePlayerRequestSystem`.
 
 ```csharp
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
@@ -51,11 +51,7 @@ private void OnCreatePlayerResponse(PlayerCreator.CreatePlayer.ReceivedResponse 
 
 ## Using arbitrary data in the player creation loop
 
-The default player creation loop sends requests automatically. To use arbitrary data in the loop, you must ensure that `AutoRequestPlayerCreation` is set to false.
-
-1. Disable `AutoRequestPlayerCreation` as described in the [step above](#manually-sending-player-creation-requests).
-1. Call `RequestPlayerCreation` with serialized data.
-2. Deserialize data back into the original type.
+To send arbitrary data during the creation of the player, you need to manually send the player creation request [as described earlier](#manually-sending-player-creation-requests).
 
 ##### Call RequestPlayerCreation with serialized data
 
@@ -92,7 +88,7 @@ private byte[] SerializeArguments(object playerCreationArguments)
 
 ##### Deserialize data into the same type you originally serialized from
 
-The data serialized in the previous step is sent across to the server-worker as part of the player creation request. This data is passed in as the `playerCreationArguments` parameter of the entity template delegate that is invoked.
+The data serialized in the previous step on the client-worker is then sent across to the server-worker as part of the player creation request. It is then passed in as the `playerCreationArguments` parameter of the entity template delegate that is invoked.
 
 Ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
 
