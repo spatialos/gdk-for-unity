@@ -13,8 +13,8 @@ namespace Improbable.Gdk.PlayerLifecycle
     ///     serialized data when calling `RequestPlayerCreation` manually.
     /// </param>
     /// <remarks>
-    ///     This is called by the <see cref="HandleCreatePlayerRequestSystem"/> to get a player entity template
-    ///     that can be used to create a SpatialOS Player entity.
+    ///     The `CreatePlayerEntityTemplate` method in the <see cref="PlayerLifecycleConfig"/>, called by the
+    ///     <see cref="HandleCreatePlayerRequestSystem"/>, must match this signature.
     /// </remarks>
     /// <returns>
     ///     An <see cref="EntityTemplate"/> to create a SpatialOS Player entity from.
