@@ -9,8 +9,8 @@ namespace Improbable.Gdk.PlayerLifecycle
     ///     The worker ID of a client-worker that sent a player creation request.
     /// </param>
     /// <param name="serializedArguments">
-    ///     A serialized byte array of arbitrary data. By default this is null unless you provided the
-    ///     serialized data when calling `RequestPlayerCreation` manually.
+    ///     A serialized byte array of arbitrary data. By default this is null unless you provided
+    ///     the serialized data when calling `RequestPlayerCreation` manually.
     /// </param>
     /// <remarks>
     ///     The `CreatePlayerEntityTemplate` method in the <see cref="PlayerLifecycleConfig"/>, called by the
