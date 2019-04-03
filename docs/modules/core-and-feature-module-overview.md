@@ -28,13 +28,13 @@ This provides both a testing framework, which you can use to test any other modu
 
 This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor. See our [build system documentation]({{urlRoot}}/modules/build-system/overview) for more details on installation and usage.
 
-### GameObject Creation 
+### GameObject Creation
 
 This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
 
 ### Player lifecycle module
 
-Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
+This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle-feature-module).
 
 ### Transform synchronization module
 

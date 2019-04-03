@@ -9,9 +9,9 @@ Before reading this document, make sure you have read the following documentatio
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-By default, the module automatically sends a player creation request as soon as the client-worker instance connects to SpatialOS. This spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) representing a player.
+By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance which receives the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player. It then deletes the player entity after multiple consecutive unsuccessful [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating).
 
-To do this, you need to:
+To set-up this functionality:
 
 1. Set up your worker connector.
 1. Define the entity template for your player entities.
@@ -28,7 +28,7 @@ To change this behaviour, read the documentation on [custom player creation]({{u
 
 ## Define the player entity template
 
-The module takes care of spawning the player entity as soon as a client-worker connects. To enable this behaviour, the server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/concepts/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
+The server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/concepts/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
 Create a method that returns an `EntityTemplate` object and takes the following parameters to define your player [entity template]({{urlRoot}}/reference/concepts/entity-templates):
 
@@ -46,20 +46,18 @@ public static class PlayerTemplate
     {
         // Obtain unique client attribute of the client-worker that requested the player entity
         var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
-        // Obtain the attribute of your server-worker
-        var serverAttribute = "UnityGameLogic";
 
         var entityTemplate = new EntityTemplate();
-        entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), serverAttribute);
+        entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), "UnityGameLogic");
         // add all components that you want the player entity to have
-        AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
+        AddPlayerLifecycleComponents(entityTemplate, workerId, "UnityGameLogic");
 
         return entityTemplate;
     }
 }
 ```
 
-## Configure an entity template to use for player creation
+## Configure the entity template delegate
 
 You need to configure the `PlayerLifecycleConfig` configuration class to use the player entity template. Do this by setting the `PlayerLifecycleConfig.CreatePlayerEntityTemplate` field to `PlayerTemplate.CreatePlayerEntityTemplate`.
 
@@ -88,7 +86,3 @@ public static class OneTimeInitialization
     }
 }
 ```
-
-## When is a player entity deleted?
-
-To ensure that player entities of disconnected client-workers instances get deleted correctly, the server-worker instances responsible for managing the player lifecycle sends a `PlayerHeartBeat` command to the different player entities to check whether they are still connected. If a player entity fails to send a response `PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats` times in a row, the server-worker instance sends a request to the SpatialOS Runtime to delete this entity.

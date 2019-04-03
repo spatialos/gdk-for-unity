@@ -11,13 +11,12 @@ Before reading this document, make sure you are familiar with:
 
 ## Manually sending player creation requests
 
-By default, the Player Lifecycle Feature Module automatically sends a player creation request is sent as soon as the client-worker instance connects to SpatialOS.
+By default, the Player Lifecycle Feature Module sends a player creation request is sent as soon as the client-worker instance connects to SpatialOS.
 
 To modify this behaviour, you must set `PlayerLifecycleConfig.AutoRequestPlayerCreation` to false by one of the following ways:
 
 * Add an extra `false` argument when adding client systems: `PlayerLifecycleHelper.AddClientSystems(Worker.World, autoRequestPlayerCreation: false);`
 * Set the field to false manually during set-up: `PlayerLifecycleConfig.AutoRequestPlayerCreation = false;`
-* Directly modify `PlayerLifecycleConfig` to be false by default
 
 Once `AutoRequestPlayerCreation` is set to false you must manually call the `RequestPlayerCreation` method, which can be found in the `SendCreatePlayerRequestSystem`.
 
@@ -35,13 +34,13 @@ If manual player creation is enabled, you can configure a callback to be trigger
 For example:
 
 ```csharp
-void CallPlayerCreation()
+public void CallPlayerCreation()
 {
     var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
     playerCreationSystem.RequestPlayerCreation(callback: OnCreatePlayerResponse);
 }
 
-void OnCreatePlayerResponse(PlayerCreator.CreatePlayer.ReceivedResponse response)
+private void OnCreatePlayerResponse(PlayerCreator.CreatePlayer.ReceivedResponse response)
 {
     if (response.StatusCode != StatusCode.Success)
     {
@@ -52,15 +51,15 @@ void OnCreatePlayerResponse(PlayerCreator.CreatePlayer.ReceivedResponse response
 
 ## Using arbitrary data in the player creation loop
 
-The default player creation loop sends requests automatically. To use arbitrary data in the loop, you must ensure that `AutoRequestPlayerCreation` is set to false. Some
+The default player creation loop sends requests automatically. To use arbitrary data in the loop, you must ensure that `AutoRequestPlayerCreation` is set to false.
 
-1. Disable `AutoRequestPlayerCreation`, some ways of doing this are described [here](#manually-sending-player-creation-requests).
+1. Disable `AutoRequestPlayerCreation` as described in the [step above](#manually-sending-player-creation-requests).
 1. Call `RequestPlayerCreation` with serialized data.
 2. Deserialize data back into the original type.
 
 ##### Call RequestPlayerCreation with serialized data
 
-Then, call `RequestPlayerCreation`. Ensure that your arbitrary data is serialized into a byte array.
+Get the `SendCreatePlayerRequestSystem`, and invoke the `RequestPlayerCreation` method. Ensure that your arbitrary data is serialized into a byte array.
 
 ```csharp
 var myArguments = new SampleArgumentsObject
@@ -73,7 +72,9 @@ var serializedArguments = SerializeArguments(myArguments);
 playerCreationSystem.RequestPlayerCreation(serializedArguments);
 ```
 
-Where an example implementation of `SerializeArguments` could be:
+<%(#Expandable title="How do I serialize my data?")%>
+
+There are numerous ways to serialize data. An example implementation could be:
 
 ```csharp
 private byte[] SerializeArguments(object playerCreationArguments)
@@ -87,41 +88,49 @@ private byte[] SerializeArguments(object playerCreationArguments)
 }
 ```
 
+<%(/Expandable)%>
+
 ##### Deserialize data into the same type you originally serialized from
 
-Lastly, ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
+The data serialized in the previous step on the client-worker is then sent across to the server-worker as part of the player creation request. It is then passed in as the `playerCreationArguments` parameter of the entity template delegate that is invoked.
+
+Ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
 
 ```csharp
-public static class PlayerTemplate
+public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
 {
-    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
+    // Obtain unique client attribute of the client-worker that requested the player entity
+    var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
+    // Obtain the attribute of your server-worker
+    var serverAttribute = "UnityGameLogic";
+
+    var deserializedArguments = DeserializeArguments<SampleArgumentsObject>(playerCreationArguments);
+
+    var entityTemplate = new EntityTemplate();
+    entityTemplate.AddPosition(new Position.Snapshot(deserializedArguments.SpawnPosition), serverAttribute);
+    entityTemplate.AddComponent(new PlayerName.Snapshot(deserializedArguments.PlayerName), serverAttribute);
+    // add all components that you want the player entity to have
+    AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
+
+    return entityTemplate;
+}
+```
+
+<%(#Expandable title="How do I deserialize my data?")%>
+
+Like serialization, there are many ways to deserialize data. Given the serialization example earlier, a sample deserialization implementation could be:
+
+```csharp
+private T DeserializeArguments<T>(byte[] serializedArguments)
+{
+    using (var memoryStream = new MemoryStream())
     {
-        // Obtain unique client attribute of the client-worker that requested the player entity
-        var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
-        // Obtain the attribute of your server-worker
-        var serverAttribute = "UnityGameLogic";
-
-        var deserializedArguments = DeserializeArguments<SampleArgumentsObject>(playerCreationArguments);
-
-        var entityTemplate = new EntityTemplate();
-        entityTemplate.AddPosition(new Position.Snapshot(deserializedArguments.SpawnPosition), serverAttribute);
-        entityTemplate.AddComponent(new PlayerName.Snapshot(deserializedArguments.PlayerName), serverAttribute);
-        // add all components that you want the player entity to have
-        AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
-
-        return entityTemplate;
-    }
-
-    // An example implementation of DeserializeArguments
-    private T DeserializeArguments<T>(byte[] serializedArguments)
-    {
-        using (var memoryStream = new MemoryStream())
-        {
-            var binaryFormatter = new BinaryFormatter();
-            memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            return (T) binaryFormatter.Deserialize(memoryStream);
-        }
+        var binaryFormatter = new BinaryFormatter();
+        memoryStream.Write(serializedArguments, 0, serializedArguments.Length);
+        memoryStream.Seek(0, SeekOrigin.Begin);
+        return (T) binaryFormatter.Deserialize(memoryStream);
     }
 }
 ```
+
+<%(/Expandable)%>
