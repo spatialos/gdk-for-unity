@@ -197,7 +197,7 @@ namespace Improbable.Gdk.Tools
             baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
 
             // Schema Descriptor
-            baseArgs.Add($"--descriptor-dir=\"{ImprobableDescriptorDir}\"");
+            baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
 
             return baseArgs.ToArray();
         }
