@@ -1,13 +1,13 @@
 <%(TOC)%>
 # Player Lifecycle Feature Module
 
-The Player Lifecycle Feature Module provides you with an implementation of player creation and simple player lifecycle management. You can find the Feature Module in the GDK repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle).
+The Player Lifecycle Feature Module provides player creation functionality and simple player lifecycle management. You can find the Feature Module in the GDK repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle).
 
 The module includes the following features:
 
 * Send player creation requests and handle responses.
 * Ability to provide arbitrary serialized data as part of the player creation loop.
-* Send and acknowledge player heartbeats. [What's a heartbeat?]({{urlRoot}}/modules/player-lifecycle/heartbeating)
+* Send and acknowledge player [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating).
 
 You can find more information about the underlying APIs provided in our [API reference docs]({{urlRoot}}/api/player-lifecycle-index).
 

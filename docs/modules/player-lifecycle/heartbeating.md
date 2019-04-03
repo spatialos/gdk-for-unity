@@ -32,12 +32,12 @@ It sends a `PlayerHeartbeat` request to each of those entities. These requests n
 
 Note that there are numerous ways that a request may fail, as outlined [here](https://docs.improbable.io/reference/latest/shared/design/commands#failure-modes).
 
-### Handling PlayerHeartbeat requests
+### How to handle `PlayerHeartbeat` requests
 
-The client-worker runs the [`HandlePlayerHeartbeatRequestSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatRequestSystem.cs), which sends a response back to each `PlayerHeartbeat` request that was sent to that specific client-worker.
+The client-worker runs the [`HandlePlayerHeartbeatRequestSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatRequestSystem.cs), which sends a response back whenever it receives a `PlayerHeartbeat` request.
 
 ### Handling PlayerHeartbeat responses
 
-Back on the server-worker, the [`HandlePlayerHeartbeatResponseSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatResponseSystem.cs) iterates through the `PlayerHeartbeat` responses received. If at least one successful response was received from a particular Player entity, the `NumFailedHeartbeats` inside its `HeartbeatData` component is set to 0.
+The [`HandlePlayerHeartbeatResponseSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatResponseSystem.cs) on the server-worker iterates through all `PlayerHeartbeat` responses received. If at least one successful response was received from a player entity, the `NumFailedHeartbeats` inside this player entity's `HeartbeatData` component is set to 0.
 
-If no responses were received with a `Success` status code from a Player entity, the `NumFailedHeartbeats` field is incremented. In the case that an entity has more failed heartbeats than the number configured in `PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats`, a request to delete the SpatialOS entity is sent.
+If no responses were received with a `Success` status code from a Player entity, the `NumFailedHeartbeats` field is incremented. If an entity has more failed heartbeats than the number configured in `PlayerLifecycleConfig.MaxNumFailedPlayerHeartbeats`, a request to delete the SpatialOS entity is sent to the SpatialOS Runtime.
