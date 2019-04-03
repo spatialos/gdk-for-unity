@@ -13,11 +13,11 @@ namespace Improbable.Gdk.PlayerLifecycle
     ///     serialized data when calling `RequestPlayerCreation` manually.
     /// </param>
     /// <remarks>
-    ///     This is called by the `HandleCreatePlayerRequestSystem` to get a player entity template
+    ///     This is called by the <see cref="HandleCreatePlayerRequestSystem"/> to get a player entity template
     ///     that can be used to create a SpatialOS Player entity.
     /// </remarks>
     /// <returns>
-    ///     An EntityTemplate to create a SpatialOS Player entity from.
+    ///     An <see cref="EntityTemplate"/> to create a SpatialOS Player entity from.
     /// </returns>
     public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
         string clientWorkerId,
@@ -29,7 +29,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     The time in seconds between player heartbeat requests.
         /// </summary>
         /// <remarks>
-        ///     This is used by the `SendPlayerHeartbeatRequestSystem` on the server-worker to determine
+        ///     This is used by the <see cref="SendPlayerHeartbeatRequestSystem"/> on the server-worker to determine
         ///     how often to send a `PlayerHeartbeat` request to client-workers.
         /// </remarks>
         public static float PlayerHeartbeatIntervalSeconds = 5f;
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     The maximum number of failed heartbeats before a player is disconnected.
         /// </summary>
         /// <remarks>
-        ///     The `HandlePlayerHeartbeatResponseSystem` will delete a player entity if a client-worker
+        ///     The <see cref="HandlePlayerHeartbeatResponseSystem"/> will delete a player entity if a client-worker
         ///     fails to respond successfully to this number of consecutive `PlayerHeartbeat` requests.
         /// </remarks>
         public static int MaxNumFailedPlayerHeartbeats = 2;
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// </summary>
         /// <remarks>
         ///     All player creation requests must be sent to a player creator entity, which are initially queried for when
-        ///     the `SendCreatePlayerRequestSystem` starts. This field indicates the maximum number of retries for the
+        ///     the <see cref="SendCreatePlayerRequestSystem"/> starts. This field indicates the maximum number of retries for the
         //      initial entity query to find the player creator entities.
         /// </remarks>
         public static int MaxPlayerCreatorQueryRetries = 5;
@@ -73,11 +73,11 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static bool AutoRequestPlayerCreation = true;
 
         /// <summary>
-        ///     The delegate responsible for returning a player entity template when creating a player.
+        ///     The delegate responsible for returning a player <see cref="EntityTemplate"/> when creating a player.
         /// </summary>
         /// <remarks>
-        ///     This must be set before initiating any player creation because it is called by the `HandleCreatePlayerRequestSystem`.
-        ///     The system gets a new player entity template so that it can ask SpatialOS to create a new Player entity.
+        ///     This must be set before initiating any player creation because it is called by the <see cref="HandleCreatePlayerRequestSystem"/>.
+        ///     The system gets a new player <see cref="EntityTemplate"/> so that it can ask SpatialOS to create a new Player entity.
         /// </remarks>
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
     }
