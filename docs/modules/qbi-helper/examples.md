@@ -2,7 +2,7 @@
 
 ## Minimap
 
-[](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#minimap)
+[Minimap](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#minimap)
 
 ```csharp
 var playerConstraint = Constraint.All(
@@ -27,7 +27,7 @@ var interest = InterestTemplate.Create()
 
 ## Teams
 
-[](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#teams)
+[Teams](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#teams)
 
 ```csharp
 var teamComponentId;
