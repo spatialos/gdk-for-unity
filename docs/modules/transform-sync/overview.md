@@ -5,7 +5,7 @@ This feature module contains functionality that synchronizes your entities' Spat
 <%(#Expandable title="Do you support the Unity ECS Transforms package?")%>
 We don't support the Unity ECS Transform package at this time.
 
-If this is a feature that you strongly desire, please let us know in either: the [Discord](https://discord.gg/SCZTCYm) or our [forums](https://forums.improbable.io/latest?tags=unity-gdk).
+If this is a feature that you strongly desire, please let us know on either [Discord](https://discord.gg/SCZTCYm) or our [forums](https://forums.improbable.io/latest?tags=unity-gdk).
 <%(/Expandable)%>
 
 ## Installation
