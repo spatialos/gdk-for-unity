@@ -18,7 +18,7 @@ To modify this behaviour, you must set `PlayerLifecycleConfig.AutoRequestPlayerC
 * Add an extra `false` argument when adding client systems: `PlayerLifecycleHelper.AddClientSystems(Worker.World, autoRequestPlayerCreation: false);`
 * Set the field to false during set-up: `PlayerLifecycleConfig.AutoRequestPlayerCreation = false;`
 
-To spawn the player after disabling the default behaviour, you need to call the `RequestPlayerCreation` method. This method can be found in the `SendCreatePlayerRequestSystem`.
+Once `AutoRequestPlayerCreation` is set to false, call the `SendCreatePlayerRequestSystem.RequestPlayerCreation()` method when you are ready to request player creation.
 
 ```csharp
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
