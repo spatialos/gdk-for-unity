@@ -24,11 +24,11 @@ This provides both a testing framework, which you can use to test any other modu
 
 ## Feature Modules
 
-### Build system module
+### Build System
 
 This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor. See our [build system documentation]({{urlRoot}}/modules/build-system/overview) for more details on installation and usage.
 
-### GameObject Creation 
+### GameObject Creation
 
 This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
 
@@ -54,24 +54,9 @@ Call this during [entity template creation]({{urlRoot}}/reference/concepts/entit
 
 Find out more in the [Player lifecycle feature module]({{urlRoot}}/modules/player-lifecycle-feature-module) documentation.
 
-### Transform synchronization module
+### Transform Synchronization
 
-To access this module, use the `Improbable.Gdk.TransformSynchronization` namespace. It is a basic implementation of synchronizing the position and rotation of SpatialOS entities between client-workers and server-workers.
-
-`Improbable.Gdk.TransformSynchronization` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization).
-
-This module consists of:
-
-* `TransformSynchronizationHelper.AddSystems(world)` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization).<br/>
-Call this to implement the transform synchronization module, adding all the necessary systems to all workers.
-
-* `AddTransformSynchronizationComponents(entityTemplate, writeAccess, location = default(Vector3), velocity = default(Vector3))` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs).<br/>
-Call this to add the SpatialOS components used by the transform synchronization module to your SpatialOS entity template. <br/>
-You can optionally pass in a `rotation`, `location` or `velocity`.
-
-Call this during [entity templates creation]({{urlRoot}}/reference/concepts/entity-templates).
-
-Find out more in the [Transform synchronization feature module]({{urlRoot}}/modules/transform-feature-module) documentation.
+This feature module contains functionality that will automatically synchronize your entities' transform. See our [Transform Synchronization documentation]({{urlRoot}}/modules/transform-sync/overview) for more details on installation and usage.
 
 ### Mobile support module
 
