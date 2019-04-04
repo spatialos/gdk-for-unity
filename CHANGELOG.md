@@ -15,6 +15,7 @@
     - `InterestQuery` reduces boilerplate code required to construct interest queries.
     - `Constraint` contains static methods to easily create constraints for an interest query.
 - Added a `WithTimeout(TimeSpan timeout)` method to the `RedirectedProcess` class. This allows you to set a timeout for the underlying process execution.
+- Added a `Improbable.Gdk.Core.Collections.Result<T, E>` struct to represent a result which can either contain a value `T` or an error `E`.
 
 ### Changed
 
