@@ -1,7 +1,7 @@
 <%(TOC)%>
 # Player Lifecycle Feature Module
 
-The Player Lifecycle Feature Module provides player creation functionality and simple player lifecycle management. You can find the Feature Module in the GDK repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle).
+The Player Lifecycle Feature Module provides player creation functionality and simple player lifecycle management.
 
 The module includes the following features:
 

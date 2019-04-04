@@ -27,7 +27,7 @@ playerCreationSystem.RequestPlayerCreation();
 
 To find out more about the `RequestPlayerCreation` method, take a look at the `SendCreatePlayerRequestSystem` [API reference documentation]({{urlRoot}}/api/player-lifecycle/send-create-player-request-system#methods).
 
-## Adding a player creation callback
+### Add a player creation callback
 
 If manual player creation is enabled, you can configure a callback to be triggered when a player creation response is received. The callback must be of type `Action<PlayerCreator.CreatePlayer.ReceivedResponse>`.
 
@@ -49,13 +49,13 @@ private void OnCreatePlayerResponse(PlayerCreator.CreatePlayer.ReceivedResponse 
 }
 ```
 
-## Using arbitrary data in the player creation loop
+## How to use arbitrary data in the player creation loop
 
-To send arbitrary data during the creation of the player, you need to manually send the player creation request [as described earlier](#manually-sending-player-creation-requests).
+To send arbitrary data during the creation of the player, you need to manually send the player creation request [as described earlier](#how-to-manually-send-player-creation-requests).
 
-##### Call RequestPlayerCreation with serialized data
+### Call RequestPlayerCreation with serialized data
 
-Get the `SendCreatePlayerRequestSystem`, and invoke the `RequestPlayerCreation` method. Ensure that your arbitrary data is serialized into a byte array.
+You must call `RequestPlayerCreation` and provide the `serializedArguments` parameter, which must be of type `byte[]`.
 
 ```csharp
 var myArguments = new SampleArgumentsObject
@@ -65,7 +65,7 @@ var myArguments = new SampleArgumentsObject
 };
 var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
 var serializedArguments = SerializeArguments(myArguments);
-playerCreationSystem.RequestPlayerCreation(serializedArguments);
+playerCreationSystem.RequestPlayerCreation(serializedArguments: serializedArguments);
 ```
 
 <%(#Expandable title="How do I serialize my data?")%>
@@ -86,7 +86,7 @@ private byte[] SerializeArguments(object playerCreationArguments)
 
 <%(/Expandable)%>
 
-##### Deserialize data into the same type you originally serialized from
+### Deserialize data into the same type you originally serialized from
 
 The data serialized in the previous step is sent across to the server-worker as part of the player creation request. This data is passed in as the `playerCreationArguments` parameter of the entity template delegate that is invoked.
 
