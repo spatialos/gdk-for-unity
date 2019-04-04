@@ -55,7 +55,6 @@ namespace Improbable.Gdk.Tools
         private string workingDirectory;
         private readonly List<Action<string>> outputProcessors = new List<Action<string>>();
         private readonly List<Action<string>> errorProcessors = new List<Action<string>>();
-        private TimeSpan? timeout;
 
         private OutputRedirectBehaviour outputRedirectBehaviour =
             OutputRedirectBehaviour.ProcessSpatialOutput |
@@ -130,16 +129,6 @@ namespace Improbable.Gdk.Tools
         }
 
         /// <summary>
-        ///     Adds a timeout to the process execution. The process will be killed if the timeout expires.
-        /// </summary>
-        /// <param name="timeout">The timeout for the process execution.</param>
-        public RedirectedProcess WithTimeout(TimeSpan timeout)
-        {
-            this.timeout = timeout;
-            return this;
-        }
-
-        /// <summary>
         ///     Runs the redirected process and waits for it to return.
         /// </summary>
         public int Run()
@@ -148,20 +137,7 @@ namespace Improbable.Gdk.Tools
 
             using (process)
             {
-                Start(process);
-                if (timeout == null)
-                {
-                    process.WaitForExit();
-                }
-                else
-                {
-                    process.WaitForExit(timeout.Value.Milliseconds);
-                    if (!process.HasExited)
-                    {
-                        process.Kill();
-                        process.WaitForExit();
-                    }
-                }
+                process.WaitForExit();
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
@@ -220,7 +196,7 @@ namespace Improbable.Gdk.Tools
                 };
             }
 
-            var result = await RunWithCancel(token.Value);
+            var result = await RunWithCancel(token.Value).ConfigureAwait(false);
 
             return new RedirectedProcessResult
             {
@@ -234,34 +210,12 @@ namespace Improbable.Gdk.Tools
         {
             var (process, outputLog) = SetupProcess();
 
-            var taskCompletionSource = new TaskCompletionSource<int>();
-
-            Task timeoutTask = null;
-            var timeoutSource = new CancellationTokenSource();
-
-            if (timeout != null)
-            {
-                timeoutTask = new Task(async () =>
-                {
-                    await Task.Delay(timeout.Value.Milliseconds);
-
-                    if (!process.HasExited)
-                    {
-                        process.Kill();
-                    }
-                }, timeoutSource.Token);
-            }
+            var taskCompletionSource = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             // Register a handler to process the output when it exits.
             process.Exited += (sender, args) =>
             {
                 taskCompletionSource.SetResult(process.ExitCode);
-
-                if (timeoutTask != null)
-                {
-                    timeoutSource.Cancel();
-                    timeoutSource.Dispose();
-                }
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
@@ -284,13 +238,10 @@ namespace Improbable.Gdk.Tools
             };
 
             Start(process);
-            timeoutTask?.Start();
 
             // Register a handler for when a cancel is requested, we kill the process.
             token.Register(() =>
             {
-                timeoutSource.Cancel();
-
                 if (process.HasExited)
                 {
                     return;
@@ -309,9 +260,13 @@ namespace Improbable.Gdk.Tools
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = workingDirectory
+                UseShellExecute = false
             };
+
+            if (!string.IsNullOrEmpty(workingDirectory))
+            {
+                info.WorkingDirectory = workingDirectory;
+            }
 
             var process = new Process
             {
