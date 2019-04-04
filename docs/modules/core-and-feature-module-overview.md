@@ -32,9 +32,13 @@ This feature module provides tooling for building your GDK for Unity workers ins
 
 This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
 
-### Player Lifecycle
+### Player lifecycle module
 
 This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle/overview).
+
+## Query-based interest helper
+
+This feature module contains methods that enable you to easily define the `Interest` component used by Query-based interest. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/qbi-helper/overview).
 
 ### Transform Synchronization
 

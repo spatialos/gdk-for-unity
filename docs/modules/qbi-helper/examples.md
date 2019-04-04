@@ -1,7 +1,9 @@
-### Examples
-The following examples show you what the queries defined [here](https://docs.improbable.io/reference/13.5/shared/reference/query-based-interest#examples) look like in the GDK with this helper module enabled.
+# Examples
 
-##### Minimap
+## Minimap
+
+[](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#minimap)
+
 ```csharp
 var playerConstraint = Constraint.All(
     Constraint.RelativeSphere(20),
@@ -23,7 +25,10 @@ var interest = InterestTemplate.Create()
     .AddQueries<PlayerControls.Component>(playerQuery, minimapQuery);
 ```
 
-##### Teams
+## Teams
+
+[](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest#teams)
+
 ```csharp
 var teamComponentId;
 //some logic to determine teamComponentId
