@@ -32,7 +32,7 @@ It sends a `PlayerHeartbeat` request to each of those entities. These requests n
 
 Note that there are numerous ways that a request may fail, as outlined [here](https://docs.improbable.io/reference/latest/shared/design/commands#failure-modes).
 
-### How to handle `PlayerHeartbeat` requests
+### How to handle PlayerHeartbeat requests
 
 The client-worker runs the [`HandlePlayerHeartbeatRequestSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatRequestSystem.cs), which sends a response back whenever it receives a `PlayerHeartbeat` request.
 
