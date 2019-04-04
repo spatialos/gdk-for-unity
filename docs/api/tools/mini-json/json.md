@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a>.<a href="{{urlRoot}}/api/tools/mini-json-index">MiniJSON</a><br/>
 GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L79">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L79">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,7 +45,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Deserialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L86">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L86">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -73,7 +73,7 @@ Parses the string json into a value
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Serialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L445">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.tools/MiniJson.cs/#L445">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

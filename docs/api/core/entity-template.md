@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -13,7 +13,8 @@ code {
 }
 </style>
 </sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#methods">Methods</a>
+<nav id="pageToc" class="page-toc"><ul><li><a href="#static-methods">Static Methods</a>
+<li><a href="#methods">Methods</a>
 </ul></nav>
 
 </p>
@@ -32,6 +33,45 @@ code {
 
 
 
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Static Methods
+
+
+</p>
+
+
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetWorkerAccessAttribute</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L26">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>string GetWorkerAccessAttribute(string workerId)</code></p>
+Constructs a worker access attribute, given a worker ID. 
+</p><b>Returns:</b></br>A string representing the worker access attribute.
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>string workerId</code> : An ID of a worker.</li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+
 
 
 </p>
@@ -47,7 +87,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddComponent&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L45">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -103,7 +143,7 @@ Adds a SpatialOS component to the <a href="{{urlRoot}}/api/core/entity-template"
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponent&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L70">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -131,7 +171,7 @@ Attempts to get a component snapshot stored in the <a href="{{urlRoot}}/api/core
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L75">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L85">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -159,7 +199,7 @@ Checks if a component snapshot is stored in the <a href="{{urlRoot}}/api/core/en
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasComponent&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L85">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L95">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -187,7 +227,7 @@ Checks if a component snapshot is stored in the <a href="{{urlRoot}}/api/core/en
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SetComponent&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L98">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L108">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -233,7 +273,7 @@ Sets a component snapshot in the <a href="{{urlRoot}}/api/core/entity-template">
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RemoveComponent&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L107">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L117">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -261,7 +301,7 @@ Removes a component snapshot from the <a href="{{urlRoot}}/api/core/entity-templ
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentWriteAccess</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L119">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L129">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -289,7 +329,7 @@ Retrieves the write access worker attribute for a given component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentWriteAccess&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L129">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L139">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -317,7 +357,7 @@ Retrieves the write access worker attribute for a given component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SetComponentWriteAccess</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L139">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L149">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -346,7 +386,7 @@ Sets the write access worker attribute for a given component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SetComponentWriteAccess&lt;TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L149">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L159">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -383,7 +423,7 @@ Sets the write access worker attribute for a given component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SetReadAccess</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L159">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L169">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -411,7 +451,7 @@ Sets the worker attributes which should have read access over this entity.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.0/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L175">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/Utility/EntityTemplate.cs/#L185">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
