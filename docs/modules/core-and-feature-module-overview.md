@@ -34,7 +34,7 @@ This feature module contains a default implementation of spawning GameObjects fo
 
 ### Player Lifecycle
 
-This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle-feature-module).
+This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle/overview).
 
 ### Transform synchronization module
 
