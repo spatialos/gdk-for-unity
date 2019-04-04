@@ -5,6 +5,7 @@
     "com.improbable.gdk.gameobjectcreation": "file:com.improbable.gdk.gameobjectcreation",
     "com.improbable.gdk.mobile": "file:com.improbable.gdk.mobile",
     "com.improbable.gdk.playerlifecycle": "file:com.improbable.gdk.playerlifecycle",
+    "com.improbable.gdk.querybasedinteresthelper": "file:com.improbable.gdk.querybasedinteresthelper",
     "com.improbable.gdk.testutils": "file:com.improbable.gdk.testutils",
     "com.improbable.gdk.tools": "file:com.improbable.gdk.tools",
     "com.improbable.gdk.transformsynchronization": "file:com.improbable.gdk.transformsynchronization",

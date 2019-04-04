@@ -10,6 +10,10 @@
 
 - Added a static helper in the `EntityTemplate` class to construct worker access attributes.
 - Added an optional callback as an argument to the `RequestPlayerCreation` method in `SendCreatePlayerRequestSystem`. This callback is invoked upon receiving a response to a player creation request.
+- Added a new Query-based interest helper module, `com.improbable.gdk.querybasedinteresthelper`.
+    - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
+    - `InterestQuery` reduces boilerplate code required to construct interest queries.
+    - `Constraint` contains static methods to easily create constraints for an interest query.
 
 ### Changed
 
