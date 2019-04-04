@@ -18,10 +18,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a new InterestTemplate object.
+        ///     Creates a new <see cref="InterestTemplate"/> object.
         /// </summary>
         /// <returns>
-        ///     A new InterestTemplate object.
+        ///     A new <see cref="InterestTemplate"/> object.
         /// </returns>
         public static InterestTemplate Create()
         {
@@ -29,16 +29,16 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a new InterestTemplate object given an existing InterestTemplate.
+        ///     Creates a new <see cref="InterestTemplate"/> object given an existing <see cref="InterestTemplate"/>.
         /// </summary>
         /// <param name="interestTemplate">
-        ///     An existing InterestTemplate.
+        ///     An existing <see cref="InterestTemplate"/>.
         /// </param>
         /// <remarks>
         ///     The underlying data is deep copied.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public static InterestTemplate Create(InterestTemplate interestTemplate)
         {
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Creates a new InterestTemplate object from the content of an existing Interest component.
+        ///     Creates a new <see cref="InterestTemplate"/> object from the content of an existing Interest component.
         /// </summary>
         /// <param name="interest">
         ///     The underlying dictionary of an Interest component.
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     The underlying data is deep copied.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public static InterestTemplate Create(Dictionary<uint, ComponentInterest> interest)
         {
@@ -86,19 +86,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Add InterestQueries to the Interest component.
         /// </summary>
         /// <param name="interestQuery">
-        ///     First InterestQuery to add for a given authoritative component.
+        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
         /// </param>
         /// <param name="interestQueries">
         ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to add the InterestQueries to.
+        ///     Type of the authoritative component to add the InterestQueries objects to.
         /// </typeparam>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to update the Interest component.
+        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate AddQueries<T>(InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
@@ -114,16 +114,16 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Component ID of the authoritative component to add the InterestQueries to.
         /// </param>
         /// <param name="interestQuery">
-        ///     First InterestQuery to add for a given authoritative component.
+        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
         /// </param>
         /// <param name="interestQueries">
         ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to update the Interest component.
+        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate AddQueries(uint componentId,
             InterestQuery interestQuery,
@@ -142,10 +142,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Type of the authoritative component to add the InterestQueries to.
         /// </typeparam>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to update the Interest component.
+        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate AddQueries<T>(IEnumerable<InterestQuery> interestQueries)
             where T : ISpatialComponentData
@@ -163,11 +163,11 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Set of InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to update the Interest component. No queries are added
-        ///     if interestQueries is empty.
+        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component. No
+        ///     queries are added if interestQueries is empty.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate AddQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
         {
@@ -199,7 +199,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Replaces a component's InterestQueries in the Interest component.
         /// </summary>
         /// <param name="interestQuery">
-        ///     First InterestQuery to add for a given authoritative component.
+        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
         /// </param>
         /// <param name="interestQueries">
         ///     Further InterestQueries to add for a given authoritative component.
@@ -208,10 +208,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Type of the authoritative component to replace InterestQueries of.
         /// </typeparam>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to replace a component's interest.
+        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ReplaceQueries<T>(InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
@@ -227,16 +227,16 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Component ID of the authoritative component to replace InterestQueries of.
         /// </param>
         /// <param name="interestQuery">
-        ///     First InterestQuery to add for a given authoritative component.
+        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
         /// </param>
         /// <param name="interestQueries">
         ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to replace a component's interest.
+        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ReplaceQueries(uint componentId,
             InterestQuery interestQuery,
@@ -255,10 +255,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Type of the authoritative component to replace InterestQueries of.
         /// </typeparam>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to replace a component's interest.
+        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ReplaceQueries<T>(IEnumerable<InterestQuery> interestQueries)
             where T : ISpatialComponentData
@@ -276,11 +276,11 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Set of InterestQueries to add for a given authoritative component.
         /// </param>
         /// <remarks>
-        ///     At least one InterestQuery must be provided to replace a component's interest. No queries are replaced
-        ///     if interestQueries is empty.
+        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest. No
+        ///     queries are replaced if interestQueries is empty.
         /// </remarks>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ReplaceQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
         {
@@ -317,7 +317,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Type of the authoritative component to clear InterestQueries from.
         /// </typeparam>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ClearQueries<T>()
             where T : ISpatialComponentData
@@ -332,7 +332,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Component ID of the authoritative component to clear InterestQueries from.
         /// </param>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ClearQueries(uint componentId)
         {
@@ -344,7 +344,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Removes all InterestQueries.
         /// </summary>
         /// <returns>
-        ///     An InterestTemplate object.
+        ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
         public InterestTemplate ClearAllQueries()
         {

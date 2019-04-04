@@ -11,22 +11,21 @@ namespace Improbable.Gdk.QueryBasedInterest
     {
         private ComponentInterest.Query query;
 
-        // Hides the default constructor
         private InterestQuery()
         {
         }
 
         /// <summary>
-        ///     Creates an InterestQuery.
+        ///     Creates an <see cref="InterestQuery"/>.
         /// </summary>
         /// <param name="constraint">
-        ///     A Constraint object defining the constraints of the query.
+        ///     A <see cref="Constraint"/> object defining the constraints of the query.
         /// </param>
         /// <remarks>
         ///     Returns the full snapshot result by default.
         /// </remarks>
         /// <returns>
-        ///     An InterestQuery object.
+        ///     An <see cref="InterestQuery"/> object.
         /// </returns>
         public static InterestQuery Query(Constraint constraint)
         {
@@ -43,17 +42,17 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Sets the maximum frequency of the query.
+        ///     Sets the maximum frequency (Hz) of the query.
         /// </summary>
-        /// <param name="frequency">
-        ///     The maximum frequency to return query results.
+        /// <param name="frequencyHz">
+        ///     The maximum frequency (Hz) to return query results.
         /// </param>
         /// <returns>
-        ///     An updated InterestQuery object.
+        ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
-        public InterestQuery WithMaxFrequencyHz(float frequency)
+        public InterestQuery WithMaxFrequencyHz(float frequencyHz)
         {
-            query.Frequency = frequency;
+            query.Frequency = frequencyHz;
             return this;
         }
 
@@ -70,7 +69,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     At least one component ID must be provided.
         /// </remarks>
         /// <returns>
-        ///     An updated InterestQuery object.
+        ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
         public InterestQuery FilterResults(uint resultComponentId, params uint[] resultComponentIds)
         {
@@ -91,7 +90,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     if resultComponentIds is empty.
         /// </remarks>
         /// <returns>
-        ///     An updated InterestQuery object.
+        ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
         public InterestQuery FilterResults(IEnumerable<uint> resultComponentIds)
         {
@@ -107,7 +106,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Returns the underlying ComponentInterest.Query object from the InterestQuery class.
+        ///     Returns the underlying ComponentInterest.Query object from the <see cref="InterestQuery"/> class.
         /// </summary>
         public ComponentInterest.Query AsComponentInterestQuery()
         {

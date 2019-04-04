@@ -34,7 +34,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void AddQueries_can_be_called_after_AddQueries()
+        public void AddQueries_can_be_called_multiple_times_on_different_components()
         {
             Assert.DoesNotThrow(() => EmptyInterest
                 .AddQueries<Position.Component>(BasicQuery, BasicQuery)
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ReplaceQueries_clears_previous_query()
+        public void ReplaceQueries_clears_previous_query_for_a_component()
         {
             var initialQuery = BasicQuery;
             var initialQueryRadius = initialQuery.AsComponentInterestQuery()
@@ -73,7 +73,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ReplaceQueries_clears_previous_queries()
+        public void ReplaceQueries_clears_previous_queries_for_a_component()
         {
             var interest = EmptyInterest
                 .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ClearQueries_clears_a_single_list_of_queries()
+        public void ClearQueries_clears_queries_for_a_single_component()
         {
             var interest = EmptyInterest
                 .AddQueries<Metadata.Component>(BasicQuery)
@@ -95,17 +95,19 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .ClearQueries<Metadata.Component>();
 
             Assert.AreEqual(2, interest.AsComponentInterest().Keys.Count);
+            Assert.True(interest.AsComponentInterest().ContainsKey(Persistence.ComponentId));
+            Assert.True(interest.AsComponentInterest().ContainsKey(Position.ComponentId));
         }
 
         [Test]
-        public void ClearQueries_can_be_used_with_empty_lists()
+        public void ClearQueries_can_be_used_with_empty_interest()
         {
             Assert.DoesNotThrow(() => EmptyInterest
                 .ClearQueries<Metadata.Component>());
         }
 
         [Test]
-        public void ClearAllQueries_clears_entire_dictionary()
+        public void ClearAllQueries_clears_queries_for_all_components()
         {
             var interest = EmptyInterest
                 .AddQueries<Metadata.Component>(BasicQuery)
@@ -117,28 +119,28 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ClearAllQueries_can_be_used_with_empty_dictionary()
+        public void ClearAllQueries_can_be_used_with_empty_interest()
         {
             Assert.DoesNotThrow(() => EmptyInterest
                 .ClearAllQueries());
         }
 
         [Test]
-        public void GetInterest_should_not_return_null_after_creation()
+        public void AsComponentInterest_should_not_return_null_after_creation()
         {
             var interest = EmptyInterest.AsComponentInterest();
             Assert.IsNotNull(interest);
         }
 
         [Test]
-        public void GetInterest_should_not_return_null_after_creation_from_template()
+        public void AsComponentInterest_should_not_return_null_after_creation_from_template()
         {
             var interest = EmptyInterestFromTemplate.AsComponentInterest();
             Assert.IsNotNull(interest);
         }
 
         [Test]
-        public void GetInterest_should_not_return_null_after_creation_from_dictionary()
+        public void AsComponentInterest_should_not_return_null_after_creation_from_dictionary()
         {
             var interest = EmptyInterestFromDictionary.AsComponentInterest();
             Assert.IsNotNull(interest);
@@ -178,7 +180,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void Snapshot_should_not_contain_null_component_interest()
+        public void ToSnapshot_with_empty_interest_should_not_contain_null_component_interest()
         {
             var interest = EmptyInterest.ToSnapshot();
             Assert.IsNotNull(interest.ComponentInterest);
