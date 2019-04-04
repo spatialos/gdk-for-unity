@@ -7,7 +7,7 @@ Heartbeating is a technique used to ensure that client-workers are still connect
 
 Client-workers typically create a new player entity at some point after connecting to SpatialOS. Without the heartbeats, it is impossible for a server-worker to tell whether the client-worker is still connected and responsive.
 
-By introducing heartbeats, we ensure that a player entity belonging to a disconnected or unresponsive client-worker is deleted from the world. This assures us that, in a stable deployment, the number of Player entities in a world is equal to the number of client-workers connected.
+By introducing heartbeats, we ensure that each player entity belonging to a disconnected or unresponsive client-worker is deleted from the world. This assures us that, in a stable deployment, the number of Player entities in a world is equal to the number of client-workers connected.
 
 ## How it works
 

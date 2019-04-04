@@ -9,7 +9,7 @@ Before reading this document, make sure you have read the following documentatio
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance receiving the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player. The player entity gets deleted, if the server-worker fails to receive multiple [heartbeats]({{urlRoot}}/modules/player-lifecycle/heartbeating) consecutively.
+By default, the module sends a player creation request as soon as the client-worker instance connects to SpatialOS. The server-worker instance receiving the request spawns a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) to represent the player.
 
 To change this behaviour, read the documentation on [custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation).
 
