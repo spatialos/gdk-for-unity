@@ -33,6 +33,10 @@
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
         - [Custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation)
         - [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating)
+    - QBI Helper
+        - [Overview]({{urlRoot}}/modules/qbi-helper/overview)
+        - [Construct queries]({{urlRoot}}/modules/qbi-helper/constructing-queries)
+        - [Examples]({{urlRoot}}/modules/qbi-helper/examples)
     - Transform Synchronization
         - [Overview]({{urlRoot}}/modules/transform-sync/overview)
         - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
