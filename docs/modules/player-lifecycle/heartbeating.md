@@ -21,7 +21,7 @@ On the server-worker, the [`PlayerHeartbeatInitializationSystem`](https://github
 
 The `HeartbeatData` component is used to determine which entities need to be sent `PlayerHeartbeat` requests and to track how many consecutive failed heartbeats a player has.
 
-### Sending PlayerHeartbeat requests
+### How to send PlayerHeartbeat requests
 
 At intervals set by `PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds`, the [`SendPlayerHeartbeatRequestSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/SendPlayerHeartbeatRequestSystem.cs) finds all entities fulfilling the following constraints:
 
@@ -36,7 +36,7 @@ Note that there are numerous ways that a request may fail, as outlined [here](ht
 
 The client-worker runs the [`HandlePlayerHeartbeatRequestSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatRequestSystem.cs), which sends a response back whenever it receives a `PlayerHeartbeat` request.
 
-### Handling PlayerHeartbeat responses
+### How to handle PlayerHeartbeat responses
 
 The [`HandlePlayerHeartbeatResponseSystem`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.playerlifecycle/Systems/PlayerHeartbeat/HandlePlayerHeartbeatResponseSystem.cs) on the server-worker iterates through all `PlayerHeartbeat` responses received. If at least one successful response was received from a player entity, the `NumFailedHeartbeats` inside this player entity's `HeartbeatData` component is set to 0.
 
