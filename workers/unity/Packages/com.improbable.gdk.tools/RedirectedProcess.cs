@@ -137,6 +137,7 @@ namespace Improbable.Gdk.Tools
 
             using (process)
             {
+                Start(process);
                 process.WaitForExit();
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
