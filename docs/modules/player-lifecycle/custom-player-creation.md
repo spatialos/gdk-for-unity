@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Customising player creation
+# Customise player creation
 
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
