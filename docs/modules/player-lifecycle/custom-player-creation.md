@@ -106,7 +106,7 @@ public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] 
     entityTemplate.AddPosition(new Position.Snapshot(deserializedArguments.SpawnPosition), serverAttribute);
     entityTemplate.AddComponent(new PlayerName.Snapshot(deserializedArguments.PlayerName), serverAttribute);
     // add all components that you want the player entity to have
-    AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
+    PlayerLifecycleHelper.AddPlayerLifecycleComponents(entityTemplate, workerId, serverAttribute);
 
     return entityTemplate;
 }

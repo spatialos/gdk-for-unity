@@ -40,7 +40,7 @@ Create a method that returns an `EntityTemplate` object and takes the following 
 * `string workerId`: The ID of the worker that wants to spawn this player entity.
 *  `byte[] playerCreationArguments`: a serialized byte array of arguments provided by the worker instance sending the player creation request.
 
-When defining the entity template, you need to use the `AddPlayerLifecycleComponents` method. This method adds the SpatialOS components that are required by the Player Lifecycle Feature Module to the player entity template.
+When defining the entity template, you need to use the `PlayerLifecycleHelper.AddPlayerLifecycleComponents` method. This method adds the SpatialOS components that are required by the Player Lifecycle Feature Module to the player entity template.
 
 The following code snippet shows an example on how to implement such a method:
 
@@ -55,7 +55,7 @@ public static class PlayerTemplate
         var entityTemplate = new EntityTemplate();
         entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), "UnityGameLogic");
         // add all components that you want the player entity to have
-        AddPlayerLifecycleComponents(entityTemplate, workerId, "UnityGameLogic");
+        PlayerLifecycleHelper.AddPlayerLifecycleComponents(entityTemplate, workerId, "UnityGameLogic");
 
         return entityTemplate;
     }
