@@ -47,10 +47,14 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <param name="frequencyHz">
         ///     The maximum frequency (Hz) to return query results.
         /// </param>
+        /// <remarks>
+        ///     Although the `Frequency` of a ComponentInterest.Query can be set, the runtime will ignore this field
+        ///     for now as the feature has not yet been rolled out. Until then, this method will remain private.
+        /// </remarks>
         /// <returns>
         ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
-        public InterestQuery WithMaxFrequencyHz(float frequencyHz)
+        private InterestQuery WithMaxFrequencyHz(float frequencyHz)
         {
             query.Frequency = frequencyHz;
             return this;

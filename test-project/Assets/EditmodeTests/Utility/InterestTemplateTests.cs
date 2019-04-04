@@ -49,6 +49,45 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
+        public void AddQueries_can_be_called_multiple_times_on_same_component_with_enumerable()
+        {
+            Assert.DoesNotThrow(() => EmptyInterest
+                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery})
+                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery}));
+        }
+
+        [Test]
+        public void AddQueries_can_be_called_multiple_times_on_different_components_with_enumerable()
+        {
+            Assert.DoesNotThrow(() => EmptyInterest
+                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery})
+                .AddQueries<Metadata.Component>(new List<InterestQuery>{BasicQuery, BasicQuery}));
+        }
+
+        [Test]
+        public void AddQueries_can_be_called_with_a_single_query_with_enumerable()
+        {
+            Assert.DoesNotThrow(() => EmptyInterest
+                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery}));
+        }
+
+        [Test]
+        public void AddQueries_does_nothing_with_empty_enumerable()
+        {
+            Assert.False(EmptyInterest
+                .AddQueries<Position.Component>(new List<InterestQuery>())
+                .AsComponentInterest()
+                .ContainsKey(Position.ComponentId));
+        }
+
+        [Test]
+        public void AddQueries_does_not_throw_exception_with_empty_enumerable()
+        {
+            Assert.DoesNotThrow(() => EmptyInterest
+                .AddQueries<Position.Component>(new List<InterestQuery>()));
+        }
+
+        [Test]
         public void ReplaceQueries_clears_previous_query_for_a_component()
         {
             var initialQuery = BasicQuery;
@@ -83,6 +122,64 @@ namespace Improbable.Gdk.EditmodeTests.Utility
 
             Assert.True(queryExists);
             Assert.AreEqual(1, replacedQuery.Queries.Count);
+        }
+
+        [Test]
+        public void ReplaceQueries_clears_previous_query_for_a_component_with_enumerable()
+        {
+            var initialQuery = BasicQuery;
+            var initialQueryRadius = initialQuery.AsComponentInterestQuery()
+                .Constraint.RelativeSphereConstraint.Value.Radius;
+
+            var differentBasicQuery = DifferentBasicQuery;
+            var differentQueryRadius = differentBasicQuery.AsComponentInterestQuery()
+                .Constraint.RelativeSphereConstraint.Value.Radius;
+
+            var interest = EmptyInterest
+                .AddQueries<Position.Component>(initialQuery)
+                .ReplaceQueries<Position.Component>(new List<InterestQuery>{differentBasicQuery});
+
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+            var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
+
+            Assert.True(queryExists);
+            Assert.AreEqual(1, replacedQuery.Queries.Count);
+            Assert.AreNotEqual(initialQueryRadius, replacedQueryRadius);
+            Assert.AreEqual(differentQueryRadius, replacedQueryRadius);
+        }
+
+        [Test]
+        public void ReplaceQueries_clears_previous_queries_for_a_component_with_enumerable()
+        {
+            var interest = EmptyInterest
+                .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
+                .ReplaceQueries<Position.Component>(new List<InterestQuery>{DifferentBasicQuery});
+
+            var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+
+            Assert.True(queryExists);
+            Assert.AreEqual(1, replacedQuery.Queries.Count);
+        }
+
+        [Test]
+        public void ReplaceQueries_does_nothing_with_empty_enumerable()
+        {
+            var basicQuery = BasicQuery;
+            var interest = EmptyInterest
+                .AddQueries<Position.Component>(basicQuery)
+                .ReplaceQueries<Position.Component>(new List<InterestQuery>());
+
+            Assert.True(interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var queryValue));
+            Assert.AreEqual(queryValue.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius,
+                basicQuery.AsComponentInterestQuery().Constraint.RelativeSphereConstraint.Value.Radius);
+        }
+
+        [Test]
+        public void ReplaceQueries_does_not_throw_exception_with_empty_enumerable()
+        {
+            Assert.DoesNotThrow(() => EmptyInterest
+                .AddQueries<Position.Component>(BasicQuery)
+                .ReplaceQueries<Position.Component>(new List<InterestQuery>()));
         }
 
         [Test]

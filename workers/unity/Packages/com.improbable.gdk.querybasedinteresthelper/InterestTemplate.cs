@@ -92,7 +92,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     Further InterestQueries to add for a given authoritative component.
         /// </param>
         /// <typeparam name="T">
-        ///     Type of the authoritative component to add the InterestQueries objects to.
+        ///     Type of the authoritative component to add the InterestQueries to.
         /// </typeparam>
         /// <remarks>
         ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
@@ -311,7 +311,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Add InterestQueries to the Interest component.
+        ///     Clears all InterestQueries for a given authoritative component.
         /// </summary>
         /// <typeparam name="T">
         ///     Type of the authoritative component to clear InterestQueries from.
@@ -326,7 +326,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Add InterestQueries to the Interest component.
+        ///     Clears all InterestQueries for a given authoritative component.
         /// </summary>
         /// <param name="componentId">
         ///     Component ID of the authoritative component to clear InterestQueries from.
@@ -341,7 +341,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Removes all InterestQueries.
+        ///     Clears all InterestQueries.
         /// </summary>
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
