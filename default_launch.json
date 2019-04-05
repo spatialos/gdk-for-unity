@@ -42,6 +42,12 @@
         {
           "all": {}
         }
+      ],
+      "flags": [
+        {
+          "name": "my_flag",
+          "value": "has_a_value"
+        }
       ]
     },
     {
