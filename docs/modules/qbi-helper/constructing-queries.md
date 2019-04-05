@@ -1,4 +1,7 @@
-# Construct a query
+<%(TOC)%>
+# How it works
+
+
 
 ### Creating query constraints
 Query constraints are the conditions that an interest query must meet in order to return results. You can use the `Constraint` class to create constraints for interest queries. For example:

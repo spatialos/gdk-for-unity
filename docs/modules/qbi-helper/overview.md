@@ -1,7 +1,7 @@
 <%(TOC)%>
 # Query-based Interest Helper Module
 
-The Query-based Interest Helper Module provides methods that enable you to easily define the `Interest` component used by QBI.
+The Query-based Interest Helper Module provides methods to easily define the `Interest` component used by QBI.
 
 The module includes functionality to:
 

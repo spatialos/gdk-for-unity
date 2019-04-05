@@ -1,3 +1,4 @@
+<%(TOC)%>
 # Examples
 
 ## Minimap
