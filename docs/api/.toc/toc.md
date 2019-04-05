@@ -155,6 +155,10 @@
         - <a href="{{urlRoot}}/api/player-lifecycle/player-lifecycle-helper">PlayerLifecycleHelper</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/send-create-player-request-system">SendCreatePlayerRequestSystem</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/send-player-heartbeat-request-system">SendPlayerHeartbeatRequestSystem</a>
+    - [QueryBasedInterest]({{urlRoot}}/api/query-based-interest-index)
+        - <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a>
     - [ReactiveComponents]({{urlRoot}}/api/reactive-components-index)
         - <a href="{{urlRoot}}/api/reactive-components/abstract-acknowledge-authority-loss-handler">AbstractAcknowledgeAuthorityLossHandler</a>
         - <a href="{{urlRoot}}/api/reactive-components/acknowledge-authority-loss-system">AcknowledgeAuthorityLossSystem</a>

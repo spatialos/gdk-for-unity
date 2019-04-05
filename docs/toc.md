@@ -33,7 +33,11 @@
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
         - [Custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation)
         - [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating)
-    - [Transform Synchronization]({{urlRoot}}/modules/transform-feature-module)
+    - Transform Synchronization
+        - [Overview]({{urlRoot}}/modules/transform-sync/overview)
+        - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
+        - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
+        - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
