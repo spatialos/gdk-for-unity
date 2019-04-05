@@ -1,6 +1,5 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Unity.Entities;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ namespace Playground
                 ComponentType.Create<CameraTransform>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
             );
-            inputGroup.SetFilter(new PlayerInput.ComponentAuthority(true));
+            inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

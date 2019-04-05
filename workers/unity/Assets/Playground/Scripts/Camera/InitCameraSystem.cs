@@ -1,6 +1,4 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -9,19 +7,20 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitCameraSystem : ComponentSystem
     {
-        [Inject] private ComponentUpdateSystem componentUpdateSystem;
-
+        private ComponentUpdateSystem componentUpdateSystem;
         private ComponentGroup inputGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
+            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+
             inputGroup = GetComponentGroup(
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            inputGroup.SetFilter(new PlayerInput.ComponentAuthority(true));
+            inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

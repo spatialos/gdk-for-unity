@@ -1,17 +1,6 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
-using Unity.Collections;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
@@ -19,11 +8,6 @@ namespace Playground
     public struct CollisionComponent : IComponentData
     {
         public Entity OtherEntity;
-
-        public CollisionComponent(Entity otherEntity)
-        {
-            OtherEntity = otherEntity;
-        }
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -32,19 +16,20 @@ namespace Playground
         private static readonly EntityId InvalidEntityId = new EntityId(0);
 
         private ComponentGroup collisionGroup;
-
-        [Inject] private CommandSystem commandSystem;
+        private CommandSystem commandSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            commandSystem = World.GetExistingManager<CommandSystem>();
 
             collisionGroup = GetComponentGroup(
                 ComponentType.ReadOnly<Launchable.Component>(),
                 ComponentType.ReadOnly<Launchable.ComponentAuthority>(),
                 ComponentType.ReadOnly<CollisionComponent>()
             );
-            collisionGroup.SetFilter(new Launchable.ComponentAuthority(true));
+            collisionGroup.SetFilter(Launchable.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

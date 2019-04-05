@@ -1,31 +1,25 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessColorChangeSystem : ComponentSystem
     {
-        [Inject] private ComponentUpdateSystem updateSystem;
-        [Inject] private WorkerSystem workerSystem;
+        private ComponentUpdateSystem updateSystem;
+        private WorkerSystem workerSystem;
 
         private Dictionary<Color, MaterialPropertyBlock> materialPropertyBlocks;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
+
+            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+
             ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
         }
 

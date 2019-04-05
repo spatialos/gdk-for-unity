@@ -1,18 +1,7 @@
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
@@ -21,8 +10,16 @@ namespace Playground
     {
         private const float RechargeTime = 2.0f;
 
-        [Inject] private CommandSystem commandSystem;
-        [Inject] private WorkerSystem workerSystem;
+        private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+        }
 
         protected override void OnUpdate()
         {

@@ -26,7 +26,7 @@ namespace Playground
                 ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
                 ComponentType.Create<Rigidbody>()
             );
-            cubeGroup.SetFilter(new CubeTargetVelocity.ComponentAuthority(true));
+            cubeGroup.SetFilter(CubeTargetVelocity.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

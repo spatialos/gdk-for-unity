@@ -1,35 +1,30 @@
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class DisconnectSystem : ComponentSystem
     {
-        public struct DisconnectData
-        {
-            public readonly int Length;
-            [ReadOnly] public SharedComponentDataArray<OnDisconnected> DisconnectMessage;
-            [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-        }
+        private ComponentGroup group;
 
-        [Inject] private DisconnectData data;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            group = GetComponentGroup(
+                ComponentType.ReadOnly<OnDisconnected>(),
+                ComponentType.ReadOnly<WorkerEntityTag>()
+            );
+        }
 
         protected override void OnUpdate()
         {
+            var disconnectData = group.GetSharedComponentDataArray<OnDisconnected>();
+
             Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
-                data.DisconnectMessage[0].ReasonForDisconnect);
+                disconnectData[0].ReasonForDisconnect);
         }
     }
 }

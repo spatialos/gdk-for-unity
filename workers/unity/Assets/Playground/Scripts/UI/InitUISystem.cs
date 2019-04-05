@@ -22,7 +22,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            uiInitGroup.SetFilter(new PlayerInput.ComponentAuthority(true));
+            uiInitGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

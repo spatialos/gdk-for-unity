@@ -33,7 +33,7 @@ namespace Playground
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
             );
-            launchGroup.SetFilter(new PlayerInput.ComponentAuthority(true));
+            launchGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

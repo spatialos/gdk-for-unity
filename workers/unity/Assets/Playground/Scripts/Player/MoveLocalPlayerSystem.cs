@@ -1,7 +1,5 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Improbable.Transform;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -38,7 +36,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.Subtractive<Speed>()
             );
-            newPlayerGroup.SetFilter(new PlayerInput.ComponentAuthority(true));
+            newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
 
             playerInputGroup = GetComponentGroup(
                 ComponentType.Create<Rigidbody>(),
@@ -46,7 +44,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
-            playerInputGroup.SetFilter(new TransformInternal.ComponentAuthority(true));
+            playerInputGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

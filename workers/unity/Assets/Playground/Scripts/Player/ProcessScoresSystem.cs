@@ -1,23 +1,21 @@
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class ProcessScoresSystem : ComponentSystem
     {
-        [Inject] private CommandSystem commandSystem;
-        [Inject] private WorkerSystem workerSystem;
+        private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+        }
 
         protected override void OnUpdate()
         {

@@ -1,18 +1,8 @@
 using Improbable.Common;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Improbable.PlayerLifecycle;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -33,7 +23,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 ComponentType.Create<HeartbeatData>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            group.SetFilter(new PlayerHeartbeatServer.ComponentAuthority(true));
+            group.SetFilter(PlayerHeartbeatServer.ComponentAuthority.Authoritative);
 
             commandSystem = World.GetExistingManager<CommandSystem>();
         }
