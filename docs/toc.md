@@ -33,9 +33,10 @@
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
         - [Custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation)
         - [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating)
-    - QBI Helper
+    - Query-based Interest Helper
         - [Overview]({{urlRoot}}/modules/qbi-helper/overview)
-        - [Construct queries]({{urlRoot}}/modules/qbi-helper/constructing-queries)
+        - [How it works]({{urlRoot}}/modules/qbi-helper/how-it-works)
+        - [Interest construction]({{urlRoot}}/modules/qbi-helper/interest-construction)
         - [Examples]({{urlRoot}}/modules/qbi-helper/examples)
     - Transform Synchronization
         - [Overview]({{urlRoot}}/modules/transform-sync/overview)
@@ -254,6 +255,10 @@
         - <a href="{{urlRoot}}/api/player-lifecycle/player-lifecycle-helper">PlayerLifecycleHelper</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/send-create-player-request-system">SendCreatePlayerRequestSystem</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/send-player-heartbeat-request-system">SendPlayerHeartbeatRequestSystem</a>
+    - [QueryBasedInterest]({{urlRoot}}/api/query-based-interest-index)
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a>
     - [ReactiveComponents]({{urlRoot}}/api/reactive-components-index)
         - <a href="{{urlRoot}}/api/reactive-components/abstract-acknowledge-authority-loss-handler">AbstractAcknowledgeAuthorityLossHandler</a>
         - <a href="{{urlRoot}}/api/reactive-components/acknowledge-authority-loss-system">AcknowledgeAuthorityLossSystem</a>
