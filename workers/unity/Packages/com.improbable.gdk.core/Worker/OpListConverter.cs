@@ -32,6 +32,7 @@ namespace Improbable.Gdk.Core
                         break;
                     case OpType.FlagUpdate:
                         var flagOp = opList.GetFlagUpdateOp(i);
+                        viewDiff.AddWorkerFlagChanged(flagOp.Name, flagOp.Value);
                         break;
                     case OpType.LogMessage:
                         var logOp = opList.GetLogMessageOp(i);
