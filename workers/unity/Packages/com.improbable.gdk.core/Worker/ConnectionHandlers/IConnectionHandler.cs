@@ -8,5 +8,6 @@ namespace Improbable.Gdk.Core
         MessagesToSend GetMessagesToSendContainer();
         void PushMessagesToSend(MessagesToSend messages);
         bool IsConnected();
+        string GetWorkerFlag(string value);
     }
 }

@@ -51,6 +51,16 @@ namespace Improbable.Gdk.Core
             serializationHandler.EnqueueMessagesToSend(messages);
         }
 
+        public string GetWorkerFlag(string name)
+        {
+            if (!IsConnected())
+            {
+                return null;
+            }
+
+            return connection.GetWorkerFlag(name);
+        }
+
         private void SendSerializedMessages()
         {
             while (serializationHandler.TryDequeueSerializedMessages(out var messages))
