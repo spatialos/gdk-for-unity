@@ -1,11 +1,4 @@
 using System.Collections.Generic;
-using Improbable.Worker.CInterop;
-
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Improbable.Gdk.Core
 {

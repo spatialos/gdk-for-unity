@@ -2,23 +2,17 @@ using Improbable.Common;
 using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
-#region Diagnostic control
-
-// Disable the "variable is never assigned" for injected fields.
-#pragma warning disable 649
-
-#endregion
-
 namespace Playground.MonoBehaviours
 {
     public class ToggleRotationCommandReceiver : MonoBehaviour
     {
         public float TimeBetweenSpinChanges = 1.0f;
 
+#pragma warning disable 649
         [Require] private SpinnerRotationCommandReceiver requestHandler;
+#pragma warning restore 649
 
         private RotationBehaviour rotationBehaviour;
-
         private float nextAvailableSpinChangeTime;
 
         private void OnEnable()

@@ -3,13 +3,6 @@ using Improbable.Transform;
 using Unity.Entities;
 using UnityEngine.Experimental.PlayerLoop;
 
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -29,13 +22,13 @@ namespace Improbable.Gdk.TransformSynchronization
             transformGroup = GetComponentGroup(
                 ComponentType.Create<BufferedTransform>(),
                 ComponentType.Create<TransformToSet>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()
         {
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-
             var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
             var transformBufferArray = transformGroup.GetBufferArray<BufferedTransform>();
 

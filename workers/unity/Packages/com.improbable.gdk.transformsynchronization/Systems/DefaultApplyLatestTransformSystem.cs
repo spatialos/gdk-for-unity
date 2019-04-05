@@ -3,14 +3,6 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
-#region Diagnostic control
-
-#pragma warning disable 169
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -28,14 +20,18 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<TransformToSet>(),
                 ComponentType.ReadOnly<SetTransformToGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             transformGroup = GetComponentGroup(
                 ComponentType.Subtractive<Rigidbody>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadOnly<TransformToSet>(),
                 ComponentType.ReadOnly<SetTransformToGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()
@@ -46,8 +42,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateRigidbodyData()
         {
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-
             var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
             var transformToSetArray = rigidbodyGroup.GetComponentDataArray<TransformToSet>();
 
@@ -63,8 +57,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformData()
         {
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-
             var transformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
             var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
 

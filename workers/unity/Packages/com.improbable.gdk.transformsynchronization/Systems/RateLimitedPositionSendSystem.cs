@@ -3,12 +3,6 @@ using Improbable.Transform;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -28,13 +22,13 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.Create<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<Position.ComponentAuthority>());
+                ComponentType.ReadOnly<Position.ComponentAuthority>()
+            );
+            positionGroup.SetFilter(Position.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
         {
-            positionGroup.SetFilter(Position.ComponentAuthority.Authoritative);
-
             var rateLimitedConfigArray = positionGroup.GetSharedComponentDataArray<RateLimitedSendConfig>();
             var positionArray = positionGroup.GetComponentDataArray<Position.Component>();
             var transformArray = positionGroup.GetComponentDataArray<TransformInternal.Component>();

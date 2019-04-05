@@ -4,15 +4,6 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
