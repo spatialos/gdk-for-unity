@@ -28,12 +28,16 @@
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
         - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
         - [Set up custom spawning]({{urlRoot}}/modules/game-object-creation/custom-usage)
+    - Player Lifecycle
+        - [Overview]({{urlRoot}}/modules/player-lifecycle/overview)
+        - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
+        - [Custom player creation]({{urlRoot}}/modules/player-lifecycle/custom-player-creation)
+        - [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating)
     - Transform Synchronization
         - [Overview]({{urlRoot}}/modules/transform-sync/overview)
         - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
         - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
         - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
-    - [Player Lifecycle]({{urlRoot}}/modules/player-lifecycle-feature-module)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
