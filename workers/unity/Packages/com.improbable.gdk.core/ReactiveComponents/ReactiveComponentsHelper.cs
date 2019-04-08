@@ -1,3 +1,4 @@
+#if !DISABLE_REACTIVE_COMPONENTS
 using Unity.Entities;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -27,3 +28,4 @@ namespace Improbable.Gdk.ReactiveComponents
         }
     }
 }
+#endif

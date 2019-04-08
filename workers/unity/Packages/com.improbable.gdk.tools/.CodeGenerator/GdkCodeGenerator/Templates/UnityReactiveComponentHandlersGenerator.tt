@@ -11,6 +11,7 @@
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -337,3 +338,4 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
         }
     }
 }
+#endif

@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             }
         }
 
+
+#if !DISABLE_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct MyEvent : IComponentData
@@ -53,5 +55,6 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             }
 
         }
+#endif
     }
 }

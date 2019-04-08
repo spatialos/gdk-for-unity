@@ -1,46 +1,43 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class LocalPlayerInputSync : ComponentSystem
     {
-        private struct PlayerInputData
-        {
-            public readonly int Length;
-            public ComponentDataArray<PlayerInput.Component> PlayerInput;
-            public ComponentDataArray<CameraTransform> CameraTransform;
-            public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-        }
-
-        [Inject] private PlayerInputData playerInputData;
-
         private const float MinInputChange = 0.01f;
+
+        private ComponentGroup inputGroup;
+
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            inputGroup = GetComponentGroup(
+                ComponentType.Create<PlayerInput.Component>(),
+                ComponentType.Create<CameraTransform>(),
+                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
+            );
+            inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < playerInputData.Length; i++)
+            var cameraTransformData = inputGroup.GetComponentDataArray<CameraTransform>();
+            var playerInputData = inputGroup.GetComponentDataArray<PlayerInput.Component>();
+
+            for (var i = 0; i < cameraTransformData.Length; i++)
             {
-                var cameraTransform = playerInputData.CameraTransform[i];
+                var cameraTransform = cameraTransformData[i];
                 var forward = cameraTransform.Rotation * Vector3.up;
                 var right = cameraTransform.Rotation * Vector3.right;
                 var input = Input.GetAxisRaw("Horizontal") * right + Input.GetAxisRaw("Vertical") * forward;
                 var isShiftDown = Input.GetKey(KeyCode.LeftShift);
 
-                var oldPlayerInput = playerInputData.PlayerInput[i];
+                var oldPlayerInput = playerInputData[i];
 
                 if (Math.Abs(oldPlayerInput.Horizontal - input.x) > MinInputChange
                     || Math.Abs(oldPlayerInput.Vertical - input.z) > MinInputChange
@@ -52,7 +49,8 @@ namespace Playground
                         Vertical = input.z,
                         Running = isShiftDown
                     };
-                    playerInputData.PlayerInput[i] = newPlayerInput;
+
+                    playerInputData[i] = newPlayerInput;
                 }
             }
         }

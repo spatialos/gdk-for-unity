@@ -1,17 +1,7 @@
 using Improbable.Gdk.Core;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
@@ -20,95 +10,109 @@ namespace Playground
     {
         private const float RechargeTime = 2.0f;
 
-        private struct LaunchCommandData
-        {
-            public readonly int Length;
-            public EntityArray Entity;
-            public ComponentDataArray<Launcher.Component> Launcher;
-            public ComponentDataArray<Launchable.CommandSenders.LaunchMe> Senders;
-            [ReadOnly] public ComponentDataArray<Launcher.CommandRequests.LaunchEntity> Requests;
-        }
+        private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
 
-        private struct LaunchableData
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            public ComponentDataArray<Launchable.Component> Launchable;
-            public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<Launcher.CommandSenders.IncreaseScore> Sender;
-            [ReadOnly] public ComponentDataArray<Launchable.CommandRequests.LaunchMe> Requests;
-        }
+            base.OnCreateManager();
 
-        [Inject] private CommandSystem commandSender;
-        [Inject] private LaunchCommandData launchCommandData;
-        [Inject] private LaunchableData launchableData;
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            workerSystem = World.GetExistingManager<WorkerSystem>();
+        }
 
         protected override void OnUpdate()
         {
+            HandleLaunchEntityRequests();
+            HandleLaunchMeRequests();
+        }
+
+        private void HandleLaunchEntityRequests()
+        {
+            var requests = commandSystem.GetRequests<Launcher.LaunchEntity.ReceivedRequest>();
+            var launcherComponents = GetComponentDataFromEntity<Launcher.Component>();
+
             // Handle Launch Commands from players. Only allow if they have energy etc.
-            for (var i = 0; i < launchCommandData.Length; i++)
+            for (var i = 0; i < requests.Count; i++)
             {
-                var launcher = launchCommandData.Launcher[i];
-                var entity = launchCommandData.Entity[i];
-
-                if (launcher.RechargeTimeLeft > 0)
+                ref readonly var request = ref requests[i];
+                if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
                 {
-                    return;
+                    continue;
                 }
 
-                var requests = launchCommandData.Requests[i].Requests;
-                var energyLeft = launcher.EnergyLeft;
-                var j = 0;
-                while (energyLeft > 0f && j < requests.Count)
+                var launcher = launcherComponents[entity];
+
+                if (launcher.RechargeTimeLeft <= 0)
                 {
-                    var info = requests[j].Payload;
+                    var energyLeft = launcher.EnergyLeft;
+                    var info = request.Payload;
                     var energy = math.min(info.LaunchEnergy, energyLeft);
-                    var request = new Launchable.LaunchMe.Request(info.EntityToLaunch,
-                        new LaunchMeCommandRequest(info.ImpactPoint, info.LaunchDirection,
-                            energy, info.Player));
-                    commandSender.SendCommand(request, entity);
+                    var launchMeRequest = new Launchable.LaunchMe.Request(info.EntityToLaunch,
+                        new LaunchMeCommandRequest(
+                            info.ImpactPoint,
+                            info.LaunchDirection,
+                            energy,
+                            info.Player)
+                    );
+
+                    commandSystem.SendCommand(launchMeRequest, entity);
+
                     energyLeft -= energy;
-                    j++;
+                    if (energyLeft <= 0.01f)
+                    {
+                        launcher.EnergyLeft = 0.0f;
+                        launcher.RechargeTimeLeft = RechargeTime;
+                        PostUpdateCommands.AddComponent(entity, new Recharging());
+                    }
+                    else
+                    {
+                        launcher.EnergyLeft = energyLeft;
+                    }
+
+                    launcherComponents[entity] = launcher;
                 }
 
-                if (energyLeft <= 0.01f)
-                {
-                    launcher.EnergyLeft = 0.0f;
-                    launcher.RechargeTimeLeft = RechargeTime;
-                    PostUpdateCommands.AddComponent(launchCommandData.Entity[i], new Recharging());
-                }
-                else
-                {
-                    launcher.EnergyLeft = energyLeft;
-                }
-
-                launchCommandData.Launcher[i] = launcher;
+                commandSystem.SendResponse(new Launcher.LaunchEntity.Response(request.RequestId, new LaunchCommandResponse()));
             }
+        }
 
+        private void HandleLaunchMeRequests()
+        {
             // Handle Launch Me Commands by applying force to rigidbodies proportional to launch energy.
             // Also add launch energy to launcher component.
-            for (var i = 0; i < launchableData.Length; i++)
+            var requests = commandSystem.GetRequests<Launchable.LaunchMe.ReceivedRequest>();
+            var launchableComponents = GetComponentDataFromEntity<Launchable.Component>();
+
+            for (var i = 0; i < requests.Count; i++)
             {
-                var rigidbody = launchableData.Rigidbody[i];
-                var launchable = launchableData.Launchable[i];
-                var sender = launchableData.Sender[i];
-
-                foreach (var request in launchableData.Requests[i].Requests)
+                ref readonly var request = ref requests[i];
+                if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
                 {
-                    var info = request.Payload;
-                    rigidbody.AddForceAtPosition(
-                        new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z) *
-                        info.LaunchEnergy * 100.0f,
-                        new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
-                    );
-                    launchable.MostRecentLauncher = info.Player;
-
-                    sender.RequestsToSend.Add(new Launcher.IncreaseScore.Request(
-                        launchable.MostRecentLauncher,
-                        new ScoreIncreaseRequest(1.0f)));
+                    continue;
                 }
 
-                launchableData.Sender[i] = sender;
-                launchableData.Launchable[i] = launchable;
+                var launchable = launchableComponents[entity];
+                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
+
+                var info = request.Payload;
+
+                rigidbody.AddForceAtPosition(
+                    new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z) *
+                    info.LaunchEnergy * 100.0f,
+                    new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
+                );
+
+                launchable.MostRecentLauncher = info.Player;
+                launchableComponents[entity] = launchable;
+
+                commandSystem.SendCommand(
+                    new Launcher.IncreaseScore.Request(
+                        launchable.MostRecentLauncher,
+                        new ScoreIncreaseRequest(1.0f)
+                    ),
+                    entity
+                );
             }
         }
     }

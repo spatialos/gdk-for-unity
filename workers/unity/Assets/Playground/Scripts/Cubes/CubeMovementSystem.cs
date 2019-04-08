@@ -6,29 +6,12 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
 namespace Playground
 {
     [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
     internal class CubeMovementSystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public ComponentArray<Rigidbody> Rigidbody;
-            public ComponentDataArray<CubeTargetVelocity.Component> Cube;
-            [ReadOnly] public ComponentDataArray<Authoritative<CubeTargetVelocity.Component>> DenoteAuthority;
-        }
-
-        [Inject] private Data data;
+        private ComponentGroup cubeGroup;
 
         private Vector3 origin;
 
@@ -37,28 +20,37 @@ namespace Playground
             base.OnCreateManager();
 
             origin = World.GetExistingManager<WorkerSystem>().Origin;
+
+            cubeGroup = GetComponentGroup(
+                ComponentType.Create<CubeTargetVelocity.Component>(),
+                ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
+                ComponentType.Create<Rigidbody>()
+            );
+            cubeGroup.SetFilter(CubeTargetVelocity.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            var entities = cubeGroup.GetEntityArray();
+            var cubeVelocityData = cubeGroup.GetComponentDataArray<CubeTargetVelocity.Component>();
+
+            for (var i = 0; i < cubeVelocityData.Length; i++)
             {
-                var rigidbody = data.Rigidbody[i];
-                var cubeComponent = data.Cube[i];
+                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entities[i]);
+                var cubeComponent = cubeVelocityData[i];
 
                 if (cubeComponent.TargetVelocity.X > 0 && rigidbody.position.x - origin.x > 10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = -2.0f };
-                    data.Cube[i] = cubeComponent;
+                    cubeVelocityData[i] = cubeComponent;
                 }
                 else if (cubeComponent.TargetVelocity.X < 0 && rigidbody.position.x - origin.x < -10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
-                    data.Cube[i] = cubeComponent;
+                    cubeVelocityData[i] = cubeComponent;
                 }
 
-                var velocity = new Vector3(cubeComponent.TargetVelocity.X, cubeComponent.TargetVelocity.Y, cubeComponent.TargetVelocity.Z);
-                rigidbody.MovePosition(rigidbody.position + Time.fixedDeltaTime * velocity);
+                rigidbody.MovePosition(rigidbody.position + cubeComponent.TargetVelocity.ToUnityVector() * Time.fixedDeltaTime);
             }
         }
     }

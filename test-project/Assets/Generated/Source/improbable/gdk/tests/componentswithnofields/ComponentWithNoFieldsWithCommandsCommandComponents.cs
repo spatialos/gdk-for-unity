@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -62,3 +63,4 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         }
     }
 }
+#endif

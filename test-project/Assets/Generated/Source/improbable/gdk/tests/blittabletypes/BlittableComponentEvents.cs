@@ -37,6 +37,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             }
         }
 
+
+#if !DISABLE_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct FirstEvent : IComponentData
@@ -88,5 +90,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             }
 
         }
+#endif
     }
 }

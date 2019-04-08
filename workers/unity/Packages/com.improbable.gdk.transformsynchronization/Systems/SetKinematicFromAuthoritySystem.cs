@@ -4,16 +4,6 @@ using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -37,13 +27,16 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.Create<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             authChangeGroup = GetComponentGroup(
                 ComponentType.Create<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>());
+                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>()
+            );
         }
 
         protected override void OnUpdate()
@@ -54,8 +47,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateNewEntityGroup()
         {
-            newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-
             var rigidbodyArray = newEntityGroup.GetComponentArray<Rigidbody>();
             var kinematicStateWhenAuthArray = newEntityGroup.GetComponentDataArray<KinematicStateWhenAuth>();
 

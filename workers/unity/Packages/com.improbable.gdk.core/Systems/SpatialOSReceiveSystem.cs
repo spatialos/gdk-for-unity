@@ -1,6 +1,7 @@
 using System;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -32,13 +33,21 @@ namespace Improbable.Gdk.Core
         {
             try
             {
+                Profiler.BeginSample("GetMessages");
                 worker.GetMessages();
+                Profiler.EndSample();
 
                 var diff = worker.Diff;
 
+                Profiler.BeginSample("ApplyDiff ECS");
                 ecsViewSystem.ApplyDiff(diff);
+                Profiler.EndSample();
+                Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
+                Profiler.EndSample();
+                Profiler.BeginSample("ApplyDiff View");
                 view.ApplyDiff(diff);
+                Profiler.EndSample();
             }
             catch (Exception e)
             {

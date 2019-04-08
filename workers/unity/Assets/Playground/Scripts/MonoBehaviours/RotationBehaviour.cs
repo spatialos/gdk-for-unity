@@ -4,12 +4,6 @@ using UnityEngine;
 using SpatialQuaternion = Improbable.Transform.Quaternion;
 using Quaternion = UnityEngine.Quaternion;
 
-#region Diagnostic control
-
-#pragma warning disable 169
-
-#endregion
-
 public class RotationBehaviour : MonoBehaviour
 {
     public bool RotatingClockWise = true;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if !DISABLE_REACTIVE_COMPONENTS
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
@@ -25,3 +26,4 @@ namespace Improbable.Gdk.ReactiveComponents
         }
     }
 }
+#endif
