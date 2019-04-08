@@ -21,6 +21,7 @@ namespace Improbable.Gdk.Core
 
         private readonly List<LogMessageReceived> logsReceived = new List<LogMessageReceived>();
         private Metrics metricsReceived;
+        private readonly List<(string, string)> workerFlagsChanged = new List<(string, string)>();
 
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
@@ -106,6 +107,7 @@ namespace Improbable.Gdk.Core
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
             logsReceived.Clear();
+            workerFlagsChanged.Clear();
             metricsReceived = null;
             InCriticalSection = false;
             Disconnected = false;
@@ -272,6 +274,11 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        public void SetWorkerFlag(string flag, string value)
+        {
+            workerFlagsChanged.Add((flag, value));
+        }
+
         public void Disconnect(string message)
         {
             Disconnected = true;
@@ -291,6 +298,11 @@ namespace Improbable.Gdk.Core
         internal List<LogMessageReceived> GetLogsMessages()
         {
             return logsReceived;
+        }
+
+        internal List<(string, string)> GetWorkerFlagChanges()
+        {
+            return workerFlagsChanged;
         }
 
         internal IComponentDiffStorage GetComponentDiffStorage(uint componentId)

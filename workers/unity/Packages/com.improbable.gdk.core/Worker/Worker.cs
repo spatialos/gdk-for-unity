@@ -253,6 +253,7 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
 
             // Subscriptions systems
+            World.GetOrCreateManager<WorkerFlagCallbackSystem>();
             World.GetOrCreateManager<CommandCallbackSystem>();
             World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
             World.GetOrCreateManager<ComponentCallbackSystem>();

@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Core
         private readonly List<IViewStorage> viewStorages = new List<IViewStorage>();
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
+        private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
 
         public View()
         {
@@ -118,6 +119,11 @@ namespace Improbable.Gdk.Core
             return componentIdToViewStorage[componentId].GetAuthority(entityId.Id) == Authority.Authoritative;
         }
 
+        public string GetWorkerFlag(string name)
+        {
+            return workerFlags.TryGetValue(name, out var value) ? value : null;
+        }
+
         internal void ApplyDiff(ViewDiff diff)
         {
             var entitiesAdded = diff.GetEntitiesAdded();
@@ -135,6 +141,11 @@ namespace Improbable.Gdk.Core
             foreach (var storage in viewStorages)
             {
                 storage.ApplyDiff(diff);
+            }
+
+            foreach (var pair in diff.GetWorkerFlagChanges())
+            {
+                workerFlags[pair.Item1] = pair.Item2;
             }
         }
     }

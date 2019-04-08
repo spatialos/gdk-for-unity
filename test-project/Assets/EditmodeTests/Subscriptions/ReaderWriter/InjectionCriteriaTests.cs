@@ -33,6 +33,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
             world.CreateManager<WorkerSystem>(connectionHandler, null,
                 new LoggingDispatcher(), "TestWorkerType", Vector3.zero);
             receiveSystem = world.CreateManager<SpatialOSReceiveSystem>();
+            world.GetOrCreateManager<WorkerFlagCallbackSystem>();
             world.GetOrCreateManager<ComponentUpdateSystem>();
             world.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
             world.CreateManager<SubscriptionSystem>();
