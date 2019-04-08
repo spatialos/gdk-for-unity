@@ -7,12 +7,94 @@ Before reading this document, make sure you are familiar with:
   * [How Query-based interest works]({{urlRoot}}/modules/qbi-helper/how-it-works)
 ")%>
 
-##
+This module offers 3 classes to help construct your `Interest` component:
 
-### Creating query constraints
-Query constraints are the conditions that an interest query must meet in order to return results. You can use the `Constraint` class to create constraints for interest queries. For example:
+* `InterestTemplate`, to define and manipulate an `Interest` component.
+* `InterestQuery`, an interest query with methods to easily set a `Constraint` and define what components the query should return.
+* `Constraint`, a static class with constructors for all the possible constraints an `InterestQuery` can have.
 
-### Construct interest queries
+## InterestTemplate
+
+An `InterestTemplate` is effectively a wrapper around the `Interest` component, providing ways to more easily add, replace and clear queries from the underlying interest map.
+
+### Initialise
+
+You initialise an empty `InterestTemplate` by calling `InterestTemplate.Create()`. This is useful when defining a set of interest queries for the first time, for example when defining Entity Templates.
+
+```csharp
+var basicInterestTemplate = InterestTemplate.Create();
+```
+
+You can also construct this from an existing `InterestTemplate` or set of interest queries. This creates a deep copy of the `InterestTemplate`, to allow you to modify the queries without affecting the original set.
+
+```csharp
+var advancedInterestTemplate = InterestTemplate.Create(basicInterestTemplate);
+```
+
+### Modify
+
+When modifying an `InterestTemplate`, you must specify which particular component's queries you are modifying. To do this, you can either:
+
+* provide the component as a type argument
+* pass the component ID as the first argument
+
+For example, to add a query you might do either:
+
+```csharp
+InterestTemplate.Create()
+    .AddQueries<Position.Component>(query1, query2);
+```
+
+or
+
+```csharp
+InterestTemplate.Create()
+    .AddQueries(Position.ComponentId, query1, query2);
+```
+
+#### Add
+
+When adding queries, you can either provide the queries as parameters or an enumerable set:
+
+```csharp
+// Parameters
+InterestTemplate.Create()
+    .AddQueries<Position.Component>(query1, query2);
+
+// Enumerable
+var queryList = new List() { query1, query2 };
+
+InterestTemplate.Create()
+    .AddQueries<Position.Component>(queryList);
+```
+
+#### Replace
+
+By doing this, you replace all the existing queries for an authoritative component with the new queries you pass in. In a similar way to adding queries, you must provide the queries as parameters or an enumerable set.
+
+```csharp
+// Parameters
+InterestTemplate.Create(basicInterestTemplate)
+    .ReplaceQueries<Position.Component>(query1);
+
+// Enumerable
+var queryList = new List() { query1 };
+
+InterestTemplate.Create(basicInterestTemplate)
+    .ReplaceQueries<Position.Component>(queryList);
+```
+
+At least one query must be provided, otherwise the existing queries for a given authoritative component will not be removed.
+
+#### Clear
+
+
+
+###
+
+## Basic construction
+
+### Define a query
 
 To create an interest query, you must call `InterestQuery.Query` and provide a `Constraint`. For example:
 
@@ -28,6 +110,18 @@ var query = InterestQuery
     .Query(constraint)
     .FilterResults(Position.ComponentId, Metadata.ComponentId);
 ```
+
+### Add query to InterestTemplate
+
+
+## Advanced features
+
+### Replace
+
+### Clear
+
+### Creating query constraints
+Query constraints are the conditions that an interest query must meet in order to return results. You can use the `Constraint` class to create constraints for interest queries. For example:
 
 ### Use InterestTemplate to add/replace/clear queries
 
