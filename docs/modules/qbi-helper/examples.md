@@ -80,6 +80,15 @@ The worker authoritative over the `Interest` component can make changes to the i
 
 ## Teams
 
+This example shows how a player could observe the position of all other players on their team.
+
+Suppose there is a Red team and a Blue team. Entities representing players are given either a `RedTeam` or `BlueTeam` component by a server-worker, to express which team they belong to.
+
+We then consider two components:
+
+* `PlayerControls`, authoritative on client-worker
+* `RedTeam` or `BlueTeam`, authoritative on server-worker
+
 <%(#Expandable title="See schema")%>
 
 ```
@@ -98,6 +107,8 @@ component BlueTeam {
 ```
 
 <%(/Expandable)%>
+
+Our client-worker wants to know the positions of all players with the same team component as the client-worker's player. This is represented as a query with a component constraint on either the `RedTeam` or `BlueTeam` component ID, returning just the `Position` component.
 
 ```csharp
 var teamComponentId;
