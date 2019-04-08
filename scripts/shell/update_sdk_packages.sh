@@ -37,8 +37,8 @@ update_package tools schema_compiler-x86_64-macos "$SDK_PATH/.schema_compiler"
 update_package tools schema_compiler-x86_64-linux "$SDK_PATH/.schema_compiler"
 
 #Update Mobile SDK
-update_package worker_sdk core-static-fullylinked-arm-ios "$SDK_MOBILE_PATH/Plugins/Improbable/Core/iOS/arm" "CoreSdkStatic.lib;libCoreSdkStatic.a;libCoreSdkStatic.a.pic"
-update_package worker_sdk core-static-fullylinked-x86_64-ios "$SDK_MOBILE_PATH/Plugins/Improbable/Core/iOS/x86_64" "CoreSdkStatic.lib;libCoreSdkStatic.a;libCoreSdkStatic.a.pic"
+update_package worker_sdk core-static-fullylinked-arm-ios "$SDK_MOBILE_PATH/Plugins/Improbable/Core/iOS/arm" "CoreSdkStatic.lib;libCoreSdkStatic.a.pic"
+update_package worker_sdk core-static-fullylinked-x86_64-ios "$SDK_MOBILE_PATH/Plugins/Improbable/Core/iOS/x86_64" "CoreSdkStatic.lib;libCoreSdkStatic.a.pic"
 
 update_package worker_sdk core-dynamic-arm64-android "$SDK_MOBILE_PATH/Plugins/Improbable/Core/Android/arm64"
 update_package worker_sdk core-dynamic-armeabi_v7a-android "$SDK_MOBILE_PATH/Plugins/Improbable/Core/Android/armv7"
