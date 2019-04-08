@@ -3,7 +3,7 @@
 
 The code generator uses `.schema` files to generate C# code that you can use to interact with SpatialOS in Unity. See the [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/introduction#schema-introduction) for details on how to create schema components.
 
-The code generator runs when you:
+The code generator runs when you do one of the following:
 
 * Open your Unity Editor
 * Select **SpatialOS** > **Generate Code** from the Unity Editor menu
