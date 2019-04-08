@@ -69,11 +69,25 @@ namespace Improbable.Gdk.Core
                     callbackToKey = new Dictionary<Action<string, string>, ulong>();
                 }
 
-                var key = callbackSystem.RegisterWorkerFlagChangeCallback(value);
+                var key = callbackSystem.RegisterWorkerFlagChangeCallback(pair =>
+                {
+                    if (!IsValid)
+                    {
+                        return;
+                    }
+
+                    value(pair.Item1, pair.Item2);
+                });
+
                 callbackToKey.Add(value, key);
             }
             remove
             {
+                if (callbackToKey == null)
+                {
+                    return;
+                }
+
                 if (!callbackToKey.TryGetValue(value, out var key))
                 {
                     return;
@@ -91,6 +105,11 @@ namespace Improbable.Gdk.Core
 
         internal void RemoveAllCallbacks()
         {
+            if (callbackToKey == null)
+            {
+                return;
+            }
+
             foreach (var valuePair in callbackToKey)
             {
                 callbackSystem.UnregisterWorkerFlagChangeCallback(valuePair.Value);

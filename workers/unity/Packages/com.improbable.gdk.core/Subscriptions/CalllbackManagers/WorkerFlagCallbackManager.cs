@@ -16,9 +16,9 @@ namespace Improbable.Gdk.Subscriptions
             workerSystem = world.GetExistingManager<WorkerSystem>();
         }
 
-        public ulong RegisterCallback(Action<string, string> callback)
+        public ulong RegisterCallback(Action<(string, string)> callback)
         {
-            callbacks.Add(nextCallbackId, pair => callback(pair.Item1, pair.Item2));
+            callbacks.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 

@@ -8,7 +8,15 @@ namespace Improbable.Gdk.Subscriptions
     {
         private WorkerFlagCallbackManager manager;
 
-        public ulong RegisterWorkerFlagChangeCallback(Action<string, string> callback)
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+            Enabled = false;
+
+            manager = new WorkerFlagCallbackManager(World);
+        }
+
+        public ulong RegisterWorkerFlagChangeCallback(Action<(string, string)> callback)
         {
             return manager.RegisterCallback(callback);
         }
@@ -21,14 +29,6 @@ namespace Improbable.Gdk.Subscriptions
         internal void InvokeCallbacks()
         {
             manager.InvokeCallbacks();
-        }
-
-        protected override void OnCreateManager()
-        {
-            base.OnCreateManager();
-            Enabled = false;
-
-            manager = new WorkerFlagCallbackManager(World);
         }
 
         protected override void OnUpdate()
