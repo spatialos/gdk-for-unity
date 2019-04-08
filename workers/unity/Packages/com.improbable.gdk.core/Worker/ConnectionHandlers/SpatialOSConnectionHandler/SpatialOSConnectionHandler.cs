@@ -51,16 +51,6 @@ namespace Improbable.Gdk.Core
             messages.Clear();
         }
 
-        public string GetWorkerFlag(string name)
-        {
-            if (!IsConnected())
-            {
-                return null;
-            }
-
-            return connection.GetWorkerFlag(name);
-        }
-
         public void Dispose()
         {
             connection?.Dispose();

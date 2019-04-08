@@ -81,11 +81,6 @@ namespace Improbable.Gdk.Core
             return true;
         }
 
-        public string GetWorkerFlag(string name)
-        {
-            return null;
-        }
-
         #endregion
 
         private class EntityTemplateDynamicHandler : DynamicConverter.IConverterHandler

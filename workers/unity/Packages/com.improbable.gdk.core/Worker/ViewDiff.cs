@@ -274,7 +274,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void AddWorkerFlagChanged(string flag, string value)
+        public void SetWorkerFlag(string flag, string value)
         {
             workerFlagsChanged.Add((flag, value));
         }

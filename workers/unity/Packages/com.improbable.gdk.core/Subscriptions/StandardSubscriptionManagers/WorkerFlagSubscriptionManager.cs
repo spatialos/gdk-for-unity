@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core
         public bool IsValid;
 
         private readonly WorkerFlagCallbackSystem callbackSystem;
-        private readonly IConnectionHandler connectionHandler;
+        private readonly View view;
 
         private Dictionary<Action<string, string>, ulong> callbackToKey;
 
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Core
         {
             IsValid = true;
             callbackSystem = world.GetExistingManager<WorkerFlagCallbackSystem>();
-            connectionHandler = world.GetExistingManager<WorkerSystem>().ConnectionHandler;
+            view = world.GetExistingManager<WorkerSystem>().View;
         }
 
         public event Action<string, string> OnWorkerFlagChange
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.Core
 
         public string GetFlag(string name)
         {
-            return connectionHandler.GetWorkerFlag(name);
+            return view.GetWorkerFlag(name);
         }
 
         internal void RemoveAllCallbacks()
