@@ -14,15 +14,19 @@
     - `InterestTemplate` provides functionality to ergonomically add, replace and clear queries from an Interest component.
     - `InterestQuery` reduces boilerplate code required to construct interest queries.
     - `Constraint` contains static methods to easily create constraints for an interest query.
+- Added a `WithTimeout(TimeSpan timeout)` method to the `RedirectedProcess` class. This allows you to set a timeout for the underlying process execution.
+- Added a `Improbable.Gdk.Core.Collections.Result<T, E>` struct to represent a result which can either contain a value `T` or an error `E`.
 
 ### Changed
 
 - The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
 - Removed the `Type` suffix from player lifecycle schema types.
+- `RedirectedProcess.RunAsync()` now takes a `CancellationToken?` as a parameter. This token can be used to cancel the underlying process.
 
 ### Fixed
 
 - Fixed an issue where player creation requests could retry infinitely without logging failure.
+- Fixed an issue where if you called `RedirectedProcess.Command(...)` in a non-main thread, it would throw an exception.
 
 ### Internal
 
