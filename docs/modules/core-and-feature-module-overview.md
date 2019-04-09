@@ -2,6 +2,7 @@
 [//]: # (TODO - which module is ECS or GO-MB specific and which is generic?)
 
 <%(TOC)%>
+
 # Feature Modules Overview
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
@@ -36,7 +37,7 @@ This feature module contains a default implementation of spawning GameObjects fo
 
 This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle/overview).
 
-## Query-based interest helper
+### Query-based interest helper
 
 This feature module contains methods that enable you to easily define the `Interest` component used by Query-based interest. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/qbi-helper/overview).
 

@@ -35,8 +35,9 @@
         - [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating)
     - Query-based Interest Helper
         - [Overview]({{urlRoot}}/modules/qbi-helper/overview)
-        - [How it works]({{urlRoot}}/modules/qbi-helper/how-it-works)
-        - [Interest construction]({{urlRoot}}/modules/qbi-helper/interest-construction)
+        - [Intro to QBI]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
+        - [How to use InterestTemplate]({{urlRoot}}/modules/qbi-helper/interest-template)
+        - [How to construct an InterestQuery]({{urlRoot}}/modules/qbi-helper/interest-query)
         - [Examples]({{urlRoot}}/modules/qbi-helper/examples)
     - Transform Synchronization
         - [Overview]({{urlRoot}}/modules/transform-sync/overview)
