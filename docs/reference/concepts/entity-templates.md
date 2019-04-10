@@ -20,7 +20,7 @@ There are examples of how to use this class below.
 
 
 ### Create component snapshots
-For each [schema component]({{urlRoot}}/reference/glossary#schema) you define, the `code generator` creates a struct which inherits from `ISpatialComponentSnapshot`, the generated [snapshot struct]({{urlRoot}}/reference/concepts/code-generation#overview). For example, for the following schema:
+For each [schema component]({{urlRoot}}/reference/glossary#schema) you define, the `code generator` creates a struct which inherits from `ISpatialComponentSnapshot`, the generated [snapshot struct]({{urlRoot}}/reference/concepts/code-generation#snapshot). For example, for the following schema:
 
 ```
 component Health {
