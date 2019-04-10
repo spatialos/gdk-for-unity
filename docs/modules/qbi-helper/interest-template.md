@@ -5,14 +5,14 @@
 <%(Callout message="
 Before reading this document, make sure you have read:
 
-  * [Introduction to Query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
+  * [Introduction to query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
 ")%>
 
 An [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) is a wrapper around the `Interest` component, providing intuitive methods to add, replace and clear queries from the underlying interest map.
 
 ## Create a template
 
-You create an empty [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) by calling `InterestTemplate.Create()`. This is useful when defining a set of interest queries for the first time, for example when defining Entity Templates.
+You create an empty [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) by calling `InterestTemplate.Create()`. This is useful when defining a set of interest queries for the first time, for example when defining entity templates.
 
 ```csharp
 var basicInterestTemplate = InterestTemplate.Create();
@@ -30,8 +30,6 @@ When modifying an [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/inte
 
 * provide the component as a type argument
 * provide the component ID as the first argument
-
-For example, to add a query you might do one of the following:
 
 ```csharp
 // Component identified by type argument
@@ -100,9 +98,10 @@ To return a [`Snapshot`]({{urlRoot}}/api/core/snapshot) of the `Interest` compon
 var interestTemplate = InterestTemplate.Create()
     .AddQueries<Position.Component>(query1, query2);
 
-// Add the Interest component to an entity template
+// Create an entity template and add components to it
 var entityTemplate = new EntityTemplate();
-...
+
+// Add the Interest component to the entity template
 entityTemplate.AddComponent(interestTemplate.ToSnapshot(), WorkerUtils.UnityGameLogic);
 ```
 
@@ -111,8 +110,6 @@ entityTemplate.AddComponent(interestTemplate.ToSnapshot(), WorkerUtils.UnityGame
 To update `Interest` at execution time, you need to modify the underlying Dictionary within the `Interest` component.
 
 The [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class provides the `AsComponentInterest` method to return this Dictionary. This can be used to update the `Interest` component.
-
-For example, to update an entity's interest with a completely new set of queries in the MonoBehaviour workflow:
 
 ```csharp
 // Create the new interest template

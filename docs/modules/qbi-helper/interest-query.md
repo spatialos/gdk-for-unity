@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you have read:
 
-  * [Introduction to Query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
+  * [Introduction to query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
   * [How to use InterestTemplate]({{urlRoot}}/modules/qbi-helper/interest-template)
 ")%>
 

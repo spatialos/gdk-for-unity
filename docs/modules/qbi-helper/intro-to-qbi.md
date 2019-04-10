@@ -1,6 +1,6 @@
 <%(TOC)%>
 
-# Introduction to Query-based interest
+# Introduction to query-based interest
 
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
@@ -9,7 +9,7 @@ Before reading this document, make sure you are familiar with:
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-This page provides a quick overview of the key primitives in Query-based interest.
+This page provides a quick overview of the key primitives in query-based interest.
 
 ## Interest
 
@@ -31,7 +31,7 @@ A query is represented as a constraint. The constraint specifies for which entit
 
 Constraints are used to define what entities a query should be looking for.
 
-The available constraints with Query-based interest are:
+The available constraints with query-based interest are:
 
 |Constraint|Description|
 |---|---|
