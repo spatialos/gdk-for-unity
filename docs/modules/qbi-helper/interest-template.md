@@ -18,7 +18,7 @@ You create an empty [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/in
 var basicInterestTemplate = InterestTemplate.Create();
 ```
 
-You can also construct this from an existing [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) or set of interest queries. This creates a deep copy of the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), to allow you to modify the queries without affecting the original set.
+You can also construct this from an existing [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) or a set of interest queries. This creates a deep copy of the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), to allow you to modify the queries without affecting the original set.
 
 ```csharp
 var advancedInterestTemplate = InterestTemplate.Create(basicInterestTemplate);
@@ -28,8 +28,8 @@ var advancedInterestTemplate = InterestTemplate.Create(basicInterestTemplate);
 
 When modifying an [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), you must specify which particular component's queries you are modifying. You can either:
 
-* provide the component as a generic type parameter
-* pass the component ID as the first argument
+* provide the component as a type argument
+* provide the component ID as the first argument
 
 For example, to add a query you might do one of the following:
 
@@ -45,7 +45,7 @@ InterestTemplate.Create()
 
 ### Add queries
 
-When adding queries, you can either provide the queries as parameters or an enumerable set:
+When adding queries, you can either provide the queries as parameters or an enumerable set.
 
 ```csharp
 // Parameters
@@ -73,7 +73,7 @@ InterestTemplate.Create(basicInterestTemplate)
     .ReplaceQueries<Position.Component>(queryList);
 ```
 
-> At least one query must be provided, otherwise the existing queries for a given authoritative component will not be removed.
+> At least one query must be provided, otherwise this operation does not remove the existing queries for a given authoritative component.
 
 ### Clear queries
 
@@ -110,7 +110,7 @@ entityTemplate.AddComponent(interestTemplate.ToSnapshot(), WorkerUtils.UnityGame
 
 To update `Interest` at execution time, you need to modify the underlying Dictionary within the `Interest` component.
 
-The [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class provides the `AsComponentInterest` method to return this Dictionary, so that it can be used to update the `Interest` component.
+The [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class provides the `AsComponentInterest` method to return this Dictionary. This can be used to update the `Interest` component.
 
 For example, to update an entity's interest with a completely new set of queries in the MonoBehaviour workflow:
 

@@ -19,12 +19,12 @@ This translates to two queries:
 
 * `Position` and `PlayerInfo` component updates for entities:
   * with a `PlayerInfo` component
-  * are within a 20m radius of the client's player
+  * that are within a 20m radius of the client's player
 * `Position` and `MinimapRepresentation` component updates for entities:
   * with a `MinimapRepresentation` component
-  * are within a 50m x 50m box around the client's player
+  * that are within a 50m x 50m box around the client's player
 
-We can build up our [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint) and use this to construct our [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query):
+We build up our [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint) and use this to construct our [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query).
 
 ```csharp
 var playerQuery = InterestQuery
@@ -44,9 +44,7 @@ var minimapQuery = InterestQuery
     .FilterResults(Position.ComponentId, MinimapRepresentation.ComponentId);
 ```
 
-
-
-We can then use the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class to construct our interest. As we are specifying interest for the client-worker, we tie the queries to a component the client-worker is authoritative over, `PlayerControls`:
+We then use the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class to specify the interest. As we define the interest for the client-worker, we tie the queries to a component the client-worker is authoritative over. In this example, we choose the `PlayerControls` component.
 
 ```csharp
 var interestTemplate = InterestTemplate.Create()
