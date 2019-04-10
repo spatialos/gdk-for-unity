@@ -42,7 +42,7 @@
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
     - GDK concepts
-        - [Code generation]({{urlRoot}}/reference/concepts/code-generation)
+        - [Code generator]({{urlRoot}}/reference/concepts/code-generation)
         - [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
         - [Deployments]({{urlRoot}}/reference/concepts/deployments)
         - [Entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
