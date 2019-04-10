@@ -1,5 +1,9 @@
 package name;
 
+type Name {
+    float color = 1;
+}
+
 component Name
 {
     id = 200;
