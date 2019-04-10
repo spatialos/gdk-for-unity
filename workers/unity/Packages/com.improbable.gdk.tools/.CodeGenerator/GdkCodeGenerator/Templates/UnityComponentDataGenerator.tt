@@ -4,7 +4,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = "global::" + qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -374,7 +374,7 @@ var fieldDetails = fieldDetailsList[i]; #>
             internal uint handle;
             public global::System.Collections.Generic.List<Update> Updates
             {
-                get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+                get => <#= componentNamespace #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
 

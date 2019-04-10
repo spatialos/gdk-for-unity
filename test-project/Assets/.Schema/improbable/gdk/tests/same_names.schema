@@ -1,0 +1,7 @@
+package name;
+
+component Name
+{
+    id = 200;
+    float name = 1;
+}

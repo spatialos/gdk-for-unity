@@ -4,6 +4,7 @@
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var componentDetails = GetComponentDetails();
     var eventDetailsList = GetEventDetailsList();
+    var componentNamespace = "global::" + qualifiedNamespace + "." + componentDetails.ComponentName;
 #>
 <#= generatedHeader #>
 
@@ -42,8 +43,8 @@ namespace <#= qualifiedNamespace #>
 
                 public List<<#= eventDetails.FqnPayloadType #>> Events
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
-                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
                 }
             }
 
@@ -59,8 +60,8 @@ namespace <#= qualifiedNamespace #>
 
                 public List<<#= eventDetails.FqnPayloadType #>> Events
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
-                    internal set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
                 }
             }
 
