@@ -6,9 +6,9 @@
 
 Consider a simple game that displays a minimap to players, with three components:
 
-* `PlayerControls`, authoritative on client-worker
-* `PlayerInfo`, authoritative on server-worker
-* `MinimapRepresentation`, authoritative on server-worker
+* `PlayerControls`, authoritative on client-worker instances
+* `PlayerInfo`, authoritative on server-worker instances
+* `MinimapRepresentation`, authoritative on server-worker instances
 
 <%(#Expandable title="See schema")%>
 
@@ -34,8 +34,8 @@ component MinimapRepresentation {
 
 There are two things our client-worker wants to observe:
 
-* players within a 20m radius
-* minimap objects within a 50m x 50m box
+* other players within a 20m radius of your own player
+* minimap objects within a 50m x 50m box centered on your player
 
 This translates to two queries:
 
@@ -87,8 +87,8 @@ Suppose there is a Red team and a Blue team. Entities representing players are g
 
 We then consider two components:
 
-* `PlayerControls`, authoritative on client-worker
-* `RedTeam` or `BlueTeam`, authoritative on server-worker
+* `PlayerControls`, authoritative on client-worker instances
+* `RedTeam` or `BlueTeam`, authoritative on server-worker instances
 
 <%(#Expandable title="See schema")%>
 
@@ -112,8 +112,8 @@ component BlueTeam {
 Our client-worker wants to know the positions of all players with the same team component as the client-worker's player. This is represented as a query with a component constraint on either the `RedTeam` or `BlueTeam` component ID, returning just the `Position` component.
 
 ```csharp
-var teamComponentId;
-//some logic to determine teamComponentId
+// Some logic to determine teamComponentId
+var teamComponentId = GetPlayerTeamId();
 
 var teamQuery = InterestQuery
     .Query(Constraint.Component(teamComponentId))

@@ -8,11 +8,11 @@ Before reading this document, make sure you have read:
   * [Introduction to Query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
 ")%>
 
-An [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) is effectively a wrapper around the `Interest` component, providing ways to more easily add, replace and clear queries from the underlying interest map.
+An [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) is a wrapper around the `Interest` component, providing intuitive methods to add, replace and clear queries from the underlying interest map.
 
-## Initialise
+## Create a template
 
-You initialise an empty [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) by calling `InterestTemplate.Create()`. This is useful when defining a set of interest queries for the first time, for example when defining Entity Templates.
+You create an empty [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) by calling `InterestTemplate.Create()`. This is useful when defining a set of interest queries for the first time, for example when defining Entity Templates.
 
 ```csharp
 var basicInterestTemplate = InterestTemplate.Create();
@@ -24,7 +24,7 @@ You can also construct this from an existing [`InterestTemplate`]({{urlRoot}}/ap
 var advancedInterestTemplate = InterestTemplate.Create(basicInterestTemplate);
 ```
 
-## Modify
+## Modify a template
 
 When modifying an [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), you must specify which particular component's queries you are modifying. You can either:
 
@@ -60,7 +60,7 @@ InterestTemplate.Create()
 
 ### Replace
 
-By doing this, you replace all the existing queries for an authoritative component with the new queries you pass in. In a similar way to adding queries, you must provide the queries as parameters or an enumerable set.
+This operation replaces all the existing queries for the given component ID with the new queries you pass in. In a similar way to adding queries, you can provide the queries as parameters or an enumerable set.
 
 ```csharp
 // Parameters
@@ -73,7 +73,7 @@ InterestTemplate.Create(basicInterestTemplate)
     .ReplaceQueries<Position.Component>(queryList);
 ```
 
-At least one query must be provided, otherwise the existing queries for a given authoritative component will not be removed.
+> At least one query must be provided, otherwise the existing queries for a given authoritative component will not be removed.
 
 ### Clear
 
@@ -86,6 +86,8 @@ basicInterestTemplate.ClearQueries<Position.Component>();
 // Removes all queries
 basicInterestTemplate.ClearAllQueries();
 ```
+
+## Get Interest from the template
 
 After adding, removing or modifying a set of queries, there are two ways to get `Interest` out of the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template).
 
@@ -118,7 +120,10 @@ var newInterestTemplate = InterestTemplate.Create()
     .AddQueries<Position.Component>(query1, query2);
 
 // Require the InterestWriter and update the ComponentInterest field
-InterestWriter.Data.ComponentInterest = newInterestTemplate.AsComponentInterest();
+InterestWriter.SendUpdate(new Interest.Update
+{
+    ComponentInterest = newInterestTemplate.AsComponentInterest();
+});
 ```
 
 <%(#Expandable title="How would I update Interest at runtime with the ECS workflow?")%>

@@ -15,7 +15,7 @@ An [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query) object
 
 ## Create a query
 
-To create an interest query, you must call `InterestQuery.Query` and provide a [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint). For example:
+To create an interest query, call `InterestQuery.Query` and provide a [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint). For example:
 
 ```csharp
 var query = InterestQuery

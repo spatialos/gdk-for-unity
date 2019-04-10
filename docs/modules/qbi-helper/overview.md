@@ -6,8 +6,8 @@ The Query-based Interest Helper Module provides methods to easily define the `In
 
 The module includes functionality to:
 
-* Add, replace and clear queries easily from an `Interest` component.
-* Easily define a query's constraints and components to return.
+* Add, replace and clear queries from an `Interest` component.
+* Define a query's constraints and which components it should return.
 * Construct query constraints with less boilerplate code.
 
 You can find more information about the underlying APIs provided in our [API reference docs]({{urlRoot}}/api/query-based-interest-index).

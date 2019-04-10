@@ -9,27 +9,21 @@ Before reading this document, make sure you are familiar with:
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-The Query-based interest helper module offers 3 classes to help construct an `Interest` component:
-
-* [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), to define and manipulate an `Interest` component.
-* [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query), an interest query with methods to easily set a [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint) and define what components the query should return.
-* [`Constraint`]({{urlRoot}}/api/query-based-interest/constraint), a static class with constructors for all the possible constraints an [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query) can have.
-
-To understand how these classes can be used, this document provides an overview of key primitives in Query-based interest and how they link together.
+This page provides a quick overview of the key primitives in Query-based interest.
 
 ## Interest
 
 Query-based interest is enabled for an entity by adding the [`improbable.Interest`](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#interest-optional) component to that entity.
 
-`Interest` is effectively a mapping from a component ID to a list of queries, where each list of queries is only run on a worker that is authoritative over the component with that ID.
+`Interest` is effectively a mapping from a component ID to a list of queries, where each list of queries is only active on the worker that is authoritative over the component with that ID.
 
-For example, if you want to control the interest of a worker responsible for simulating the position of a player entity, you could use the `Position` component, whose ID is `54`, as the key to map a set of queries to. These queries would then define which components the worker should be interested in.
+For example, if you want to control the interest of a worker responsible for simulating the position of a player entity, you could use the `Position` component, whose ID is `54`, as the key to a set of queries. These queries would then define which components the worker should be interested in.
 
-> The [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class provides methods to define and manipulate and `Interest` component.
+> The [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class provides methods to define and manipulate an `Interest` component.
 
 ## Queries
 
-A query is represented as a constraint and what components the query should return from entities that satisfy the constraint. You can specify exactly what components to return or simply request that the query return _all_ components on matching entities.
+A query is represented as a constraint and which components the query should return from entities that satisfy the constraint. You can specify exactly what components to return or state that the query returns _all_ components on matching entities.
 
 > The [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query) class provides methods to create a query, set a constraint and define what components the query should return.
 
