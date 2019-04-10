@@ -7,7 +7,7 @@
     var commandDetailsList = GetCommandDetailsList();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var generator = new UnityReferenceTypeProviderContent();
-    var componentNamespace = "global::" + qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 

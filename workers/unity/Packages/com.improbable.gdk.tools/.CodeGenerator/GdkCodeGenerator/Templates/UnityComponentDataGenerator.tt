@@ -4,7 +4,7 @@
     var fieldDetailsList = GetFieldDetailsList();
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
-    var componentNamespace = "global::" + qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
