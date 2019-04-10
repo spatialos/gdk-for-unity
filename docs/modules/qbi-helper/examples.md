@@ -10,28 +10,6 @@ Consider a simple game that displays a minimap to players, with three components
 * `PlayerInfo`, authoritative on server-worker instances
 * `MinimapRepresentation`, authoritative on server-worker instances
 
-<%(#Expandable title="See schema")%>
-
-```
-component PlayerInfo {
-    id = 2000;
-    int32 player_id = 1;
-}
-
-component PlayerControls {
-    id = 2001;
-    int32 input_value = 1;
-}
-
-component MinimapRepresentation {
-    id = 2002;
-    uint32 map_icon = 1;
-    uint32 faction = 2;
-}
-```
-
-<%(/Expandable)%>
-
 There are two things our client-worker wants to observe:
 
 * other players within a 20m radius of your own player
@@ -56,6 +34,8 @@ var playerQuery = InterestQuery
             Constraint.RelativeSphere(20)))
     .FilterResults(Position.ComponentId, PlayerInfo.ComponentId);
 
+// As our minimap is top-down, we do not care about the height of entities around the player.
+// Therefore, the relative box constraint's height is set to `double.PositiveInfinity`.
 var minimapQuery = InterestQuery
     .Query(
         Constraint.All(
@@ -63,6 +43,8 @@ var minimapQuery = InterestQuery
             Constraint.RelativeBox(50, double.PositiveInfinity, 50)))
     .FilterResults(Position.ComponentId, MinimapRepresentation.ComponentId);
 ```
+
+
 
 We can then use the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template) class to construct our interest. As we are specifying interest for the client-worker, we tie the queries to a component the client-worker is authoritative over, `PlayerControls`:
 
@@ -89,25 +71,6 @@ We then consider two components:
 
 * `PlayerControls`, authoritative on client-worker instances
 * `RedTeam` or `BlueTeam`, authoritative on server-worker instances
-
-<%(#Expandable title="See schema")%>
-
-```
-component PlayerControls {
-   id = 2001;
-   int32 input_value = 1;
-}
-
-component RedTeam {
-   id = 2004;
-}
-
-component BlueTeam {
-   id = 2005;
-}
-```
-
-<%(/Expandable)%>
 
 Our client-worker wants to know the positions of all players with the same team component as the client-worker's player. This is represented as a query with a component constraint on either the `RedTeam` or `BlueTeam` component ID, returning just the `Position` component.
 

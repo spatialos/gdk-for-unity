@@ -28,7 +28,7 @@ var advancedInterestTemplate = InterestTemplate.Create(basicInterestTemplate);
 
 When modifying an [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template), you must specify which particular component's queries you are modifying. You can either:
 
-* provide the component as a type argument
+* provide the component as a generic type parameter
 * pass the component ID as the first argument
 
 For example, to add a query you might do one of the following:
@@ -43,7 +43,7 @@ InterestTemplate.Create()
     .AddQueries(Position.ComponentId, query1, query2);
 ```
 
-### Add
+### Add queries
 
 When adding queries, you can either provide the queries as parameters or an enumerable set:
 
@@ -58,7 +58,7 @@ InterestTemplate.Create()
     .AddQueries<Position.Component>(queryList);
 ```
 
-### Replace
+### Replace queries
 
 This operation replaces all the existing queries for the given component ID with the new queries you pass in. In a similar way to adding queries, you can provide the queries as parameters or an enumerable set.
 
@@ -75,7 +75,7 @@ InterestTemplate.Create(basicInterestTemplate)
 
 > At least one query must be provided, otherwise the existing queries for a given authoritative component will not be removed.
 
-### Clear
+### Clear queries
 
 You can either clear queries for a given authoritative component or clear _all_ queries in the [`InterestTemplate`]({{urlRoot}}/api/query-based-interest/interest-template).
 
