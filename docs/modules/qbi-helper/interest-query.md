@@ -3,7 +3,7 @@
 # How to construct an InterestQuery
 
 <%(Callout message="
-Before reading this document, make sure you are familiar with:
+Before reading this document, make sure you have read:
 
   * [Introduction to Query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
   * [How to use InterestTemplate]({{urlRoot}}/modules/qbi-helper/interest-template)
@@ -24,7 +24,7 @@ var query = InterestQuery
 
 <%(#Expandable title="What constraints can I use?")%>
 
-To learn more about what the available constraints, see:
+To learn more about the available constraints, see:
 
 * [Available constraints]({{urlRoot}}/modules/qbi-helper/intro-to-qbi#constraints)
 * [`Constraint` API reference]({{urlRoot}}/api/query-based-interest/constraint)

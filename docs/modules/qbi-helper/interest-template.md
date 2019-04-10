@@ -3,7 +3,7 @@
 # How to use InterestTemplate
 
 <%(Callout message="
-Before reading this document, make sure have read:
+Before reading this document, make sure you have read:
 
   * [Introduction to Query-based interest]({{urlRoot}}/modules/qbi-helper/intro-to-qbi)
 ")%>
