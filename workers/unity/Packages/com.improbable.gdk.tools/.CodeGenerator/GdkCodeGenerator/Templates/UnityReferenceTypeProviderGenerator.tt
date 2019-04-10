@@ -7,7 +7,7 @@
     var commandDetailsList = GetCommandDetailsList();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var generator = new UnityReferenceTypeProviderContent();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
@@ -34,10 +34,10 @@ namespace <#= qualifiedNamespace #>
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(eventDetails.EventName, $"List<{eventDetails.FqnPayloadType}>"), 3) #>
 <# } #>
 <# foreach (var commandDetails in commandDetailsList) { #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Sender", $"List<{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Request>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Requests", $"List<{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responder", $"List<{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Response>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responses", $"List<{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse>"), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Sender", $"List<{componentNamespace}.{commandDetails.CommandName}.Request>"), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Requests", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest>"), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responder", $"List<{componentNamespace}.{commandDetails.CommandName}.Response>"), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responses", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse>"), 3) #>
 
 <# } #>
         }

@@ -30,13 +30,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
 
                     List<Cmd.ReceivedRequest> requests;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd>(entity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd>(entity))
                     {
-                        requests = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd>(entity).Requests;
+                        requests = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd>(entity).Requests;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd
+                        var data = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandRequests.Cmd
                         {
                             CommandListHandle = ReferenceTypeProviders.CmdRequestsProvider.Allocate(world)
                         };
@@ -61,13 +61,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     }
 
                     List<Cmd.ReceivedResponse> responses;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd>(response.SendingEntity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd>(response.SendingEntity))
                     {
-                        responses = entityManager.GetComponentData<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd>(response.SendingEntity).Responses;
+                        responses = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd>(response.SendingEntity).Responses;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd
+                        var data = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponses.Cmd
                         {
                             CommandListHandle = ReferenceTypeProviders.CmdResponsesProvider.Allocate(world)
                         };
@@ -99,16 +99,16 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     ? entityManager.GetComponentData<SpatialEntityId>(entity).EntityId
                     : new EntityId(0);
 
-                var commandSender = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd();
-                commandSender.CommandListHandle = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Allocate(world);
-                commandSender.RequestsToSend = new List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>();
+                var commandSender = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd();
+                commandSender.CommandListHandle = global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdSenderProvider.Allocate(world);
+                commandSender.RequestsToSend = new List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>();
 
                 entityManager.AddComponentData(entity, commandSender);
 
-                var commandResponder = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd();
+                var commandResponder = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd();
                 commandResponder.CommandListHandle =
-                    Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Allocate(world);
-                commandResponder.ResponsesToSend = new List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>();
+                    global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReferenceTypeProviders.CmdResponderProvider.Allocate(world);
+                commandResponder.ResponsesToSend = new List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>();
 
                 entityManager.AddComponentData(entity, commandResponder);
 

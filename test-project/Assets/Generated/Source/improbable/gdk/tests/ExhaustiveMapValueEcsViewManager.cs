@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Tests
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
 
-                var component = new Improbable.Gdk.Tests.ExhaustiveMapValue.Component();
+                var component = new global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component();
 
                 component.field1Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Allocate(world);
                 component.field2Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Allocate(world);
@@ -131,7 +131,7 @@ namespace Improbable.Gdk.Tests
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
-                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
+                var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.Tests
                 ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
                 ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
 
-                entityManager.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
+                entityManager.RemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
             }
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)

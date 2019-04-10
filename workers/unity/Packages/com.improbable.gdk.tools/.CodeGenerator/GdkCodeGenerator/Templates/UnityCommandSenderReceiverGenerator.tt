@@ -4,6 +4,7 @@
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
@@ -276,7 +277,7 @@ namespace <#= qualifiedNamespace #>
         }
 
 <# foreach (var commandDetails in commandDetailsList) {
-    var receivedCommandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedResponse";
+    var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse";
     var commandRequest = $"{componentDetails.ComponentName}.{commandDetails.CommandName}.Request";
 #>
         public void Send<#= commandDetails.CommandName #>Command(EntityId targetEntityId, <#= commandDetails.FqnRequestType #> request, Action<<#= receivedCommandResponseType #>> callback = null)
@@ -285,13 +286,13 @@ namespace <#= qualifiedNamespace #>
             Send<#= commandDetails.CommandName #>Command(commandRequest, callback);
         }
 
-        public void Send<#= commandDetails.CommandName #>Command(<#= commandRequest #> request, Action<<#= receivedCommandResponseType #>> callback = null)
+        public void Send<#= commandDetails.CommandName #>Command(<#= componentNamespace #>.<#= commandDetails.CommandName #>.Request request, Action<<#= componentNamespace #>.<#= commandDetails.CommandName #>.ReceivedResponse> callback = null)
         {
             int validCallbackEpoch = callbackEpoch;
             var requestId = commandSender.SendCommand(request, entity);
             if (callback != null)
             {
-                Action<<#= receivedCommandResponseType #>> wrappedCallback = response =>
+                Action<<#= componentNamespace #>.<#= commandDetails.CommandName #>.ReceivedResponse> wrappedCallback = response =>
                 {
                     if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
                     {
@@ -320,17 +321,17 @@ namespace <#= qualifiedNamespace #>
         private readonly CommandSystem commandSystem;
 
 <# foreach (var commandDetails in commandDetailsList) {
-    var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
+    var receivedCommandRequestType = $"{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest";
 #>
-        private Dictionary<Action<<#= receivedCommandRequestType #>>, ulong> <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey;
+        private Dictionary<Action<<#= componentNamespace #>.<#= commandDetails.CommandName #>.ReceivedRequest>, ulong> <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey;
 
-        public event Action<<#= receivedCommandRequestType #>> On<#= commandDetails.CommandName #>RequestReceived
+        public event Action<<#= componentNamespace #>.<#= commandDetails.CommandName #>.ReceivedRequest> On<#= commandDetails.CommandName #>RequestReceived
         {
             add
             {
                 if (<#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey == null)
                 {
-                    <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey = new Dictionary<Action<<#= receivedCommandRequestType #>>, ulong>();
+                    <#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey = new Dictionary<Action<<#= componentNamespace #>.<#= commandDetails.CommandName #>.ReceivedRequest>, ulong>();
                 }
 
                 var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -359,29 +360,29 @@ namespace <#= qualifiedNamespace #>
             IsValid = true;
         }
 <# foreach (var commandDetails in commandDetailsList) {
-    var commandResponseType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.Response";
+    var commandResponseType = $"{componentNamespace}.{commandDetails.CommandName}.Response";
 #>
 
-        public void Send<#= commandDetails.CommandName #>Response(<#= commandResponseType #> response)
+        public void Send<#= commandDetails.CommandName #>Response(<#= componentNamespace #>.<#= commandDetails.CommandName #>.Response response)
         {
             commandSystem.SendResponse(response);
         }
 
         public void Send<#= commandDetails.CommandName #>Response(long requestId, <#= commandDetails.FqnResponseType #> response)
         {
-            commandSystem.SendResponse(new <#= commandResponseType #>(requestId, response));
+            commandSystem.SendResponse(new <#= componentNamespace #>.<#= commandDetails.CommandName #>.Response(requestId, response));
         }
 
         public void Send<#= commandDetails.CommandName #>Failure(long requestId, string failureMessage)
         {
-            commandSystem.SendResponse(new <#= commandResponseType #>(requestId, failureMessage));
+            commandSystem.SendResponse(new <#= componentNamespace #>.<#= commandDetails.CommandName #>.Response(requestId, failureMessage));
         }
 <# } #>
 
         public void RemoveAllCallbacks()
         {
 <# foreach (var commandDetails in commandDetailsList) {
-    var receivedCommandRequestType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName}.ReceivedRequest";
+    var receivedCommandRequestType = $"{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest";
 #>
             if (<#= commandDetails.CamelCaseCommandName #>CallbackToCallbackKey != null)
             {

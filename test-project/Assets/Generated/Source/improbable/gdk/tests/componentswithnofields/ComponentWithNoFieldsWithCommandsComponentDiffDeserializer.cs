@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId)
             {
-                var update = Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                var update = global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
                 diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
             }
 

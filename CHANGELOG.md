@@ -33,6 +33,7 @@
 
 - Fixed an issue where player creation requests could retry infinitely without logging failure.
 - Fixed an issue where if you called `RedirectedProcess.Command(...)` in a non-main thread, it would throw an exception.
+- Fixed an issue where having the same name for a schema package and a schema component would lead to generating invalid code.
 
 ### Internal
 

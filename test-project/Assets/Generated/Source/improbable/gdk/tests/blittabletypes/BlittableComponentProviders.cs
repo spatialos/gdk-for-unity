@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -214,7 +214,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class FirstCommandSenderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -223,13 +223,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -239,7 +239,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Request> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -280,7 +280,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class FirstCommandRequestsProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -289,13 +289,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -305,7 +305,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedRequest> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -346,7 +346,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class FirstCommandResponderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -355,13 +355,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -371,7 +371,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.Response> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -412,7 +412,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class FirstCommandResponsesProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -421,13 +421,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -437,7 +437,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.FirstCommand.ReceivedResponse> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -479,7 +479,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
             public static class SecondCommandSenderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -488,13 +488,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -504,7 +504,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Request> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -545,7 +545,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class SecondCommandRequestsProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -554,13 +554,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -570,7 +570,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedRequest> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -611,7 +611,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class SecondCommandResponderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -620,13 +620,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -636,7 +636,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.Response> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -677,7 +677,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             
             public static class SecondCommandResponsesProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -686,13 +686,13 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -702,7 +702,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.SecondCommand.ReceivedResponse> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

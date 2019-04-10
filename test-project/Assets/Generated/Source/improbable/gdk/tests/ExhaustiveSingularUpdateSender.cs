@@ -24,8 +24,8 @@ namespace Improbable.Gdk.Tests
             {
                 All = new[]
                 {
-                    ComponentType.Create<Improbable.Gdk.Tests.ExhaustiveSingular.Component>(),
-                    ComponentType.Create<Improbable.Gdk.Tests.ExhaustiveSingular.ComponentAuthority>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveSingular.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Tests
                 Profiler.BeginSample("ExhaustiveSingular");
 
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
-                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ExhaustiveSingular.Component>();
+                var componentType = system.GetArchetypeChunkComponentType<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>();
 
                 var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 

@@ -1,0 +1,11 @@
+package name;
+
+type Test {
+    float color = 1;
+}
+
+component Name
+{
+    id = 200;
+    float name = 1;
+}

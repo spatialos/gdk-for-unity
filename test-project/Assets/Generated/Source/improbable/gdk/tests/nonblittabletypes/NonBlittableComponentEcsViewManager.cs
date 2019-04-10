@@ -87,7 +87,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
 
-                var component = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component();
+                var component = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component();
 
                 component.stringFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
                 component.optionalFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
@@ -103,13 +103,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
-                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
+                var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
                 NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Free(data.optionalFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Free(data.listFieldHandle);
                 NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Free(data.mapFieldHandle);
 
-                entityManager.RemoveComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
+                entityManager.RemoveComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
             }
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)

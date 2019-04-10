@@ -270,19 +270,19 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             IsValid = true;
         }
 
-        public void SendCmdCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request, Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> callback = null)
+        public void SendCmdCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request, Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> callback = null)
         {
             var commandRequest = new ComponentWithNoFieldsWithCommands.Cmd.Request(targetEntityId, request);
             SendCmdCommand(commandRequest, callback);
         }
 
-        public void SendCmdCommand(ComponentWithNoFieldsWithCommands.Cmd.Request request, Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> callback = null)
+        public void SendCmdCommand(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request request, Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> callback = null)
         {
             int validCallbackEpoch = callbackEpoch;
             var requestId = commandSender.SendCommand(request, entity);
             if (callback != null)
             {
-                Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> wrappedCallback = response =>
+                Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> wrappedCallback = response =>
                 {
                     if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
                     {
@@ -309,15 +309,15 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         private readonly CommandCallbackSystem callbackSystem;
         private readonly CommandSystem commandSystem;
 
-        private Dictionary<Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>, ulong> cmdCallbackToCallbackKey;
+        private Dictionary<Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>, ulong> cmdCallbackToCallbackKey;
 
-        public event Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> OnCmdRequestReceived
+        public event Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> OnCmdRequestReceived
         {
             add
             {
                 if (cmdCallbackToCallbackKey == null)
                 {
-                    cmdCallbackToCallbackKey = new Dictionary<Action<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>, ulong>();
+                    cmdCallbackToCallbackKey = new Dictionary<Action<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>, ulong>();
                 }
 
                 var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -345,19 +345,19 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             IsValid = true;
         }
 
-        public void SendCmdResponse(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response response)
+        public void SendCmdResponse(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response response)
         {
             commandSystem.SendResponse(response);
         }
 
         public void SendCmdResponse(long requestId, global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty response)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response(requestId, response));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response(requestId, response));
         }
 
         public void SendCmdFailure(long requestId, string failureMessage)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response(requestId, failureMessage));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response(requestId, failureMessage));
         }
 
         public void RemoveAllCallbacks()

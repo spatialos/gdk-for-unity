@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Tests
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
 
-                var component = new Improbable.Gdk.Tests.NestedComponent.Component();
+                var component = new global::Improbable.Gdk.Tests.NestedComponent.Component();
 
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
@@ -95,7 +95,7 @@ namespace Improbable.Gdk.Tests
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
-                entityManager.RemoveComponent<Improbable.Gdk.Tests.NestedComponent.Component>(entity);
+                entityManager.RemoveComponent<global::Improbable.Gdk.Tests.NestedComponent.Component>(entity);
             }
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
