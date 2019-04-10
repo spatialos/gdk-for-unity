@@ -23,7 +23,7 @@ For example, if you want to control the interest of a worker responsible for sim
 
 ## Queries
 
-A query is represented as a constraint and which components the query should return from entities that satisfy the constraint. You can specify exactly what components to return or state that the query returns _all_ components on matching entities.
+A query is represented as a constraint. The constraint specifies for which entities we want to receive components . You can either return _all_ components or specify a list of components that should be returned for all entities satisfying the constraint.
 
 > The [`InterestQuery`]({{urlRoot}}/api/query-based-interest/interest-query) class provides methods to create a query, set a constraint and define what components the query should return.
 
