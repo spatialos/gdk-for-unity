@@ -35,7 +35,7 @@ The code generator also maps [schema collection types](https://docs.improbable.i
 
 ## User defined types
 
-The code generator generates a C# struct for each [user defined type in schema](https://docs.improbable.io/reference/latest/shared/schema/reference#user-defined-types). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html). The struct has a constructor with a parameter per schema field.
+The code generator generates a C# struct for each [user defined type in schema](https://docs.improbable.io/reference/latest/shared/schema/reference#user-defined-types). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
 
 ## Enums
 
