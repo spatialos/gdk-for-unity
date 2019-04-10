@@ -34,7 +34,7 @@ var playerQuery = InterestQuery
             Constraint.RelativeSphere(20)))
     .FilterResults(Position.ComponentId, PlayerInfo.ComponentId);
 
-// As our minimap is top-down, we do not care about the height of entities around the player.
+// For a simple 2D minimap, we want to know about entities around a player irrespective of an entity's altitude.
 // Therefore, the relative box constraint's height is set to `double.PositiveInfinity`.
 var minimapQuery = InterestQuery
     .Query(
