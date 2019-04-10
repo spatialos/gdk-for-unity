@@ -34,8 +34,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 
@@ -49,8 +49,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 

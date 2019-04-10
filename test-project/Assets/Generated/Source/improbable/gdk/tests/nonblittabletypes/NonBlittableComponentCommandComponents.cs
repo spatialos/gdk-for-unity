@@ -15,19 +15,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public struct FirstCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request> RequestsToSend
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request> RequestsToSend
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Set(CommandListHandle, value);
                 }
             }
             public struct SecondCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request> RequestsToSend
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request> RequestsToSend
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -37,19 +37,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public struct FirstCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> Requests
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> Requests
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandRequestsProvider.Set(CommandListHandle, value);
                 }
             }
             public struct SecondCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> Requests
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> Requests
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandRequestsProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -59,19 +59,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public struct FirstCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response> ResponsesToSend
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response> ResponsesToSend
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Set(CommandListHandle, value);
                 }
             }
             public struct SecondCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response> ResponsesToSend
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response> ResponsesToSend
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Set(CommandListHandle, value);
                 }
             }
         }
@@ -81,19 +81,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public struct FirstCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> Responses
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> Responses
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponsesProvider.Set(CommandListHandle, value);
                 }
             }
             public struct SecondCommand : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> Responses
+                public List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> Responses
                 {
-                    get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Get(CommandListHandle);
-                    set => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Set(CommandListHandle, value);
+                    get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Get(CommandListHandle);
+                    set => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponsesProvider.Set(CommandListHandle, value);
                 }
             }
         }

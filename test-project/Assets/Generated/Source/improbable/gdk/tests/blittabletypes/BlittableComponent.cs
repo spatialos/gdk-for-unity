@@ -223,7 +223,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
         public static class Serialization
         {
-            public static void SerializeComponent(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 {
                     obj.AddBool(1, component.BoolField);
@@ -242,7 +242,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -282,7 +282,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
                 {
@@ -322,7 +322,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public static void SerializeSnapshot(Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            public static void SerializeSnapshot(global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 {
                     obj.AddBool(1, snapshot.BoolField);
@@ -341,9 +341,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component();
+                var component = new global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component();
 
                 {
                     component.BoolField = obj.GetBool(1);
@@ -363,9 +363,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
-                var update = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
+                var update = new global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
                 var obj = updateObj.GetFields();
 
                 {
@@ -411,9 +411,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            public static global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
             {
-                var update = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
+                var update = new global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update();
                 var obj = data.GetFields();
 
                 {
@@ -444,9 +444,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
+            public static global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
-                var component = new Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot();
+                var component = new global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot();
 
                 {
                     component.BoolField = obj.GetBool(1);
@@ -471,7 +471,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component component)
             {
                 var obj = updateObj.GetFields();
 
@@ -517,7 +517,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Snapshot snapshot)
             {
                 var obj = updateObj.GetFields();
 
@@ -580,7 +580,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             internal uint handle;
             public global::System.Collections.Generic.List<Update> Updates
             {
-                get => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+                get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
 
