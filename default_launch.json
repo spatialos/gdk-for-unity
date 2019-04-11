@@ -54,7 +54,38 @@
       "worker_type": "UnityClient",
       "permissions": [
         {
-          "all": {}
+          "entity_query": {
+            "allow": true,
+            "components": [
+              "*"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "worker_type": "AndroidClient",
+      "permissions": [
+        {
+          "entity_query": {
+            "allow": true,
+            "components": [
+              "*"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "worker_type": "iOSClient",
+      "permissions": [
+        {
+          "entity_query": {
+            "allow": true,
+            "components": [
+              "*"
+            ]
+          }
         }
       ]
     }
