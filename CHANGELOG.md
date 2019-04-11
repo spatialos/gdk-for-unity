@@ -17,7 +17,6 @@
 - Added a `WithTimeout(TimeSpan timeout)` method to the `RedirectedProcess` class. This allows you to set a timeout for the underlying process execution.
 - Added a `Improbable.Gdk.Core.Collections.Result<T, E>` struct to represent a result which can either contain a value `T` or an error `E`.
 - Added Scripting Define Symbol `DISABLE_REACTIVE_COMPONENTS`. Using this symbol will disable all reactive componts and systems.
-    - Currently not compatible with the FPS Starter Project.
 - Added a `WorkerFlagReader` which you can subscribe and `Require`. This allows you to:
     - Add callbacks for changes to worker flags.
     - Read the value of worker flags.
