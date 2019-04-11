@@ -84,7 +84,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                     ++playerCreatorQueryRetries;
 
                     logDispatcher.HandleLog(LogType.Warning, new LogEvent(
-                        $"Retrying player creator query, attempt {playerCreatorQueryRetries}."
+                        $"Retrying player creator query, attempt {playerCreatorQueryRetries}.\n{response.Message}"
                     ));
 
                     SendPlayerCreatorEntityQuery();
