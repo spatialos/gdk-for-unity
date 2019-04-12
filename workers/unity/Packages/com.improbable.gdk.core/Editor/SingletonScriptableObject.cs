@@ -4,9 +4,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.BuildSystem.Configuration
+namespace Improbable.Gdk.Core.Editor
 {
-    internal abstract class SingletonScriptableObject<TSelf> : ScriptableObject
+    public abstract class SingletonScriptableObject<TSelf> : ScriptableObject
         where TSelf : SingletonScriptableObject<TSelf>
     {
         private static readonly List<TSelf> Instances =
