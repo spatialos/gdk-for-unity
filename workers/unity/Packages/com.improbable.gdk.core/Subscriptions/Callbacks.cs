@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -53,17 +54,19 @@ namespace Improbable.Gdk.Subscriptions
         {
             isInInvoke = true;
 
-            try
+            for (var i = 0; i < callbacks.Count; i++)
             {
-                for (var i = 0; i < callbacks.Count; i++)
+                try
                 {
                     callbacks[i].Invoke(op);
                 }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
-            finally
-            {
-                isInInvoke = false;
-            }
+
+            isInInvoke = false;
 
             FlushDeferredOperations();
         }
@@ -72,17 +75,19 @@ namespace Improbable.Gdk.Subscriptions
         {
             isInInvoke = true;
 
-            try
+            for (var i = callbacks.Count - 1; i >= 0; i--)
             {
-                for (var i = callbacks.Count - 1; i >= 0; i--)
+                try
                 {
                     callbacks[i].Invoke(op);
                 }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
-            finally
-            {
-                isInInvoke = false;
-            }
+
+            isInInvoke = false;
 
             FlushDeferredOperations();
         }
@@ -124,10 +129,10 @@ namespace Improbable.Gdk.Subscriptions
             public readonly ulong Key;
             private readonly Action<T> action;
 
-            public WrappedCallback(ulong key, Action<T> action)
+            public WrappedCallback(ulong key, Action<T> callback)
             {
                 Key = key;
-                this.action = action;
+                action = callback;
             }
 
             public void Invoke(T arg)
