@@ -7,7 +7,9 @@ namespace Playground
     [WorkerType(WorkerUtils.UnityGameLogic)]
     public class WorkerFlagTest : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private WorkerFlagReader workerFlagReader;
+#pragma warning restore 649
 
         private void OnEnable()
         {

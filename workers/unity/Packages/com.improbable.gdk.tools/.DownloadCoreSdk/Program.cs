@@ -28,6 +28,7 @@ namespace Improbable
 
             var packages = new List<Package>
             {
+                new Package(tempPath, "worker_sdk", "core-dynamic-x86-win32", $"{nativeDependenciesPath}/Windows/x86", new List<string> {"include", "CoreSdkDll.lib"}),
                 new Package(tempPath, "worker_sdk", "core-dynamic-x86_64-win32", $"{nativeDependenciesPath}/Windows/x86_64", new List<string> {"include", "CoreSdkDll.lib"}),
                 new Package(tempPath, "worker_sdk", "core-dynamic-x86_64-linux", $"{nativeDependenciesPath}/Linux/x86_64", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "core-bundle-x86_64-macos", $"{nativeDependenciesPath}/OSX", new List<string> {"include"}),
