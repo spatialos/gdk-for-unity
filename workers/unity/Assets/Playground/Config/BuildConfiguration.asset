@@ -30,7 +30,7 @@ MonoBehaviour:
     CloudBuildConfig:
       BuildTargets:
       - Options: 0
-        Enabled: 0
+        Enabled: 1
         Required: 0
       - Options: 0
         Enabled: 1
