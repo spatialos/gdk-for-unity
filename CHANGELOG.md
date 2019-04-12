@@ -14,6 +14,10 @@
 
 ## `0.2.1` - 2019-04-15
 
+### Changed
+
+- Exceptions in callbacks now no longer break the system that called it, but get logged instead.
+
 ### Breaking Changes
 
 - Removed `clientAccess` from the `AddPlayerLifecycleComponents` signature. We now construct the client access attribute within the helper.
