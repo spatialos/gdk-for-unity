@@ -4,7 +4,7 @@
     var componentDetails = GetComponentDetails();
     var fieldDetailsList = GetFieldDetailsList();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
     var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
     var profilingEnd = "Profiler.EndSample();";
 #>

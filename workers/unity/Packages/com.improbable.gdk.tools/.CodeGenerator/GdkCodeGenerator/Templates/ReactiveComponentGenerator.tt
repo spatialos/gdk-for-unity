@@ -4,10 +4,11 @@
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var eventDetailsList = GetEventDetailsList();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
@@ -54,7 +55,7 @@ namespace <#= qualifiedNamespace #>
 
             public void Clean(World world)
             {
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
+                <#= componentNamespace #>.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
             }
         }
 
@@ -223,7 +224,7 @@ namespace <#= qualifiedNamespace #>
 
             public void Clean(World world)
             {
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= ev.EventName #>Provider.CleanDataInWorld(world);
+                <#= componentNamespace #>.ReferenceTypeProviders.<#= ev.EventName #>Provider.CleanDataInWorld(world);
             }
         }
 <# } #>
@@ -313,3 +314,4 @@ namespace <#= qualifiedNamespace #>
         }
     }
 }
+#endif

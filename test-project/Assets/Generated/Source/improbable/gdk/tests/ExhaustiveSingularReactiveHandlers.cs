@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,10 +52,10 @@ namespace Improbable.Gdk.Tests
                 All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
-                    ComponentType.Create<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
-                    ComponentType.Create<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
-                    ComponentType.Create<Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>(),
-                    ComponentType.Create<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
+                    ComponentType.Create<ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
+                    ComponentType.Create<ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>(),
+                    ComponentType.Create<AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
                 },
                 None = Array.Empty<ComponentType>(),
             };
@@ -63,10 +64,10 @@ namespace Improbable.Gdk.Tests
                 EntityCommandBuffer buffer)
             {
                 var entityType = system.GetArchetypeChunkEntityType();
-                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
-                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
-                var receivedUpdateType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>();
-                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
+                var componentAddedType = system.GetArchetypeChunkComponentType<ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
+                var componentRemovedType = system.GetArchetypeChunkComponentType<ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
+                var receivedUpdateType = system.GetArchetypeChunkComponentType<global::Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>();
+                var authorityChangeType = system.GetArchetypeChunkComponentType<AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
 
                 foreach (var chunk in chunkArray)
                 {
@@ -78,12 +79,12 @@ namespace Improbable.Gdk.Tests
                         var updateArray = chunk.GetNativeArray(receivedUpdateType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
-                            buffer.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>(entities[i]);
+                            buffer.RemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveSingular.ReceivedUpdates>(entities[i]);
                             var updateList = updateArray[i].Updates;
 
                             // Pool update lists to avoid excessive allocation
                             updateList.Clear();
-                            Improbable.Gdk.Tests.ExhaustiveSingular.Update.Pool.Push(updateList);
+                            global::Improbable.Gdk.Tests.ExhaustiveSingular.Update.Pool.Push(updateList);
 
                             ReferenceTypeProviders.UpdatesProvider.Free(updateArray[i].handle);
                         }
@@ -94,7 +95,7 @@ namespace Improbable.Gdk.Tests
                     {
                         for (int i = 0; i < entities.Length; ++i)
                         {
-                            buffer.RemoveComponent<ComponentAdded<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
+                            buffer.RemoveComponent<ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
                         }
                     }
 
@@ -103,7 +104,7 @@ namespace Improbable.Gdk.Tests
                     {
                         for (int i = 0; i < entities.Length; ++i)
                         {
-                            buffer.RemoveComponent<ComponentRemoved<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
+                            buffer.RemoveComponent<ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
                         }
                     }
 
@@ -113,7 +114,7 @@ namespace Improbable.Gdk.Tests
                         var authorityChangeArray = chunk.GetNativeArray(authorityChangeType);
                         for (int i = 0; i < entities.Length; ++i)
                         {
-                            buffer.RemoveComponent<AuthorityChanges<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
+                            buffer.RemoveComponent<AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(entities[i]);
                             AuthorityChangesProvider.Free(authorityChangeArray[i].Handle);
                         }
                     }
@@ -128,7 +129,7 @@ namespace Improbable.Gdk.Tests
             {
                 All = new ComponentType[]
                 {
-                    ComponentType.ReadOnly<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
+                    ComponentType.ReadOnly<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),
@@ -138,7 +139,7 @@ namespace Improbable.Gdk.Tests
             public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
                 ComponentUpdateSystem updateSystem)
             {
-                var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
+                var authorityLossType = system.GetArchetypeChunkComponentType<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>>();
                 var spatialEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>();
 
                 foreach (var chunk in chunkArray)
@@ -159,3 +160,4 @@ namespace Improbable.Gdk.Tests
         }
     }
 }
+#endif

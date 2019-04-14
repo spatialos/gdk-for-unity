@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public static class UpdatesProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Update> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -82,7 +82,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
             public static class CmdSenderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -91,13 +91,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Request> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -148,7 +148,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             
             public static class CmdRequestsProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -157,13 +157,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -173,7 +173,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedRequest> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -214,7 +214,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             
             public static class CmdResponderProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -223,13 +223,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -239,7 +239,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.Response> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -280,7 +280,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             
             public static class CmdResponsesProvider 
             {
-                private static readonly Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>> Storage = new Dictionary<uint, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>>();
+                private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -289,13 +289,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>));
+                    Storage.Add(handle, default(List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> Get(uint handle)
+                public static List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -305,7 +305,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     return value;
                 }
             
-                public static void Set(uint handle, List<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> value)
+                public static void Set(uint handle, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Cmd.ReceivedResponse> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

@@ -24,8 +24,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             {
                 All = new[]
                 {
-                    ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>(),
-                    ComponentType.Create<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ComponentAuthority>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 Profiler.BeginSample("ComponentWithNoFieldsWithEvents");
 
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
-                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>();
+                var componentType = system.GetArchetypeChunkComponentType<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>();
 
                 var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 

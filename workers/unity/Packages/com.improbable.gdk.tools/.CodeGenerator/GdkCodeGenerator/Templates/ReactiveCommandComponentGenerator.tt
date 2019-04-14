@@ -4,9 +4,11 @@
     var componentDetails = GetComponentDetails();
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -26,8 +28,8 @@ namespace <#= qualifiedNamespace #>
         var responseType = command.CommandName + ".Response";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 
-        var commandResponseBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponses.{command.CommandName}";
-        var commandRequestBufferType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandRequests.{command.CommandName}";
+        var commandResponseBufferType = $"{componentNamespace}.CommandResponses.{command.CommandName}";
+        var commandRequestBufferType = $"{componentNamespace}.CommandRequests.{command.CommandName}";
 #>
         public class <#= command.CommandName #>ReactiveCommandComponentManager : IReactiveCommandComponentManager
         {
@@ -112,16 +114,16 @@ namespace <#= qualifiedNamespace #>
                     ? entityManager.GetComponentData<SpatialEntityId>(entity).EntityId
                     : new EntityId(0);
 
-                var commandSender = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= command.CommandName #>();
-                commandSender.CommandListHandle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Allocate(world);
-                commandSender.RequestsToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Request>();
+                var commandSender = new <#= componentNamespace #>.CommandSenders.<#= command.CommandName #>();
+                commandSender.CommandListHandle = <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Allocate(world);
+                commandSender.RequestsToSend = new List<<#= componentNamespace #>.<#= command.CommandName #>.Request>();
 
                 entityManager.AddComponentData(entity, commandSender);
 
-                var commandResponder = new <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= command.CommandName #>();
+                var commandResponder = new <#= componentNamespace #>.CommandResponders.<#= command.CommandName #>();
                 commandResponder.CommandListHandle =
-                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Allocate(world);
-                commandResponder.ResponsesToSend = new List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Response>();
+                    <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Allocate(world);
+                commandResponder.ResponsesToSend = new List<<#= componentNamespace #>.<#= command.CommandName #>.Response>();
 
                 entityManager.AddComponentData(entity, commandResponder);
 
@@ -161,3 +163,4 @@ namespace <#= qualifiedNamespace #>
 <# } #>
     }
 }
+#endif

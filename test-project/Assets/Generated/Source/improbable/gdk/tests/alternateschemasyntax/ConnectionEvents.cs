@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             }
         }
 
+
+#if !DISABLE_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct MyEvent : IComponentData
@@ -32,8 +34,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 
@@ -47,11 +49,12 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
                 public List<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.RandomDataType> Events
                 {
-                    get => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.Set(handle, value);
                 }
             }
 
         }
+#endif
     }
 }

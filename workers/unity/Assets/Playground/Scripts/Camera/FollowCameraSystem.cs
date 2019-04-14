@@ -1,15 +1,5 @@
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
@@ -37,27 +27,34 @@ namespace Playground
         // Origin offset to make camera orbit character's head rather than their feet.
         private static readonly Vector3 TargetOffset = new Vector3(0, 1, 0);
 
-        private struct Data
-        {
-            public readonly int Length;
-            public ComponentDataArray<CameraInput> CameraInput;
-            public ComponentDataArray<CameraTransform> CameraTransform;
-            [ReadOnly] public ComponentArray<Rigidbody> RigidBody;
-        }
+        private ComponentGroup group;
 
-        [Inject] private Data data;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            group = GetComponentGroup(
+                ComponentType.Create<CameraInput>(),
+                ComponentType.Create<CameraTransform>(),
+                ComponentType.ReadOnly<Rigidbody>()
+            );
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
+            var cameraInputData = group.GetComponentDataArray<CameraInput>();
+            var cameraTransformData = group.GetComponentDataArray<CameraTransform>();
+            var rigidbodyData = group.GetComponentArray<Rigidbody>();
+
+            for (var i = 0; i < cameraInputData.Length; i++)
             {
-                var input = UpdateCameraInput(data.CameraInput[i]);
-                var transform = UpdateCameraTransform(input, data.RigidBody[i].position);
+                var input = UpdateCameraInput(cameraInputData[i]);
+                var transform = UpdateCameraTransform(input, rigidbodyData[i].position);
 
                 UpdateCamera(transform);
 
-                data.CameraInput[i] = input;
-                data.CameraTransform[i] = transform;
+                cameraInputData[i] = input;
+                cameraTransformData[i] = transform;
             }
         }
 
@@ -95,9 +92,9 @@ namespace Playground
 
         private static void UpdateCamera(CameraTransform transform)
         {
-            var camera = Camera.main;
-            camera.transform.position = transform.Position;
-            camera.transform.rotation = transform.Rotation;
+            var cameraTransform = Camera.main.transform;
+            cameraTransform.position = transform.Position;
+            cameraTransform.rotation = transform.Rotation;
         }
     }
 }

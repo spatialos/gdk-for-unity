@@ -37,6 +37,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             }
         }
 
+
+#if !DISABLE_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct FirstEvent : IComponentData
@@ -45,8 +47,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public List<global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> Events
                 {
-                    get => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
                 }
             }
 
@@ -56,8 +58,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public List<global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> Events
                 {
-                    get => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
                 }
             }
 
@@ -71,8 +73,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public List<global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload> Events
                 {
-                    get => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.FirstEventProvider.Set(handle, value);
                 }
             }
 
@@ -82,11 +84,12 @@ namespace Improbable.Gdk.Tests.BlittableTypes
 
                 public List<global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload> Events
                 {
-                    get => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.SecondEventProvider.Set(handle, value);
                 }
             }
 
         }
+#endif
     }
 }

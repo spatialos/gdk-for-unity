@@ -1,20 +1,9 @@
 using System;
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
@@ -32,27 +21,29 @@ namespace Playground
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
 
+        private CommandSystem commandSystem;
+        private ComponentGroup launchGroup;
 
-        private struct PlayerData
+        protected override void OnCreateManager()
         {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntity;
-            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-            public ComponentDataArray<Launcher.CommandSenders.LaunchEntity> Sender;
-        }
+            base.OnCreateManager();
 
-        [Inject] private PlayerData playerData;
+            commandSystem = World.GetExistingManager<CommandSystem>();
+            launchGroup = GetComponentGroup(
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
+            );
+            launchGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+        }
 
         protected override void OnUpdate()
         {
-            if (playerData.Length == 0)
-            {
-                return;
-            }
+            var entities = launchGroup.GetEntityArray();
+            var spatialIdData = launchGroup.GetComponentDataArray<SpatialEntityId>();
 
-            if (playerData.Length > 1)
+            if (spatialIdData.Length > 1)
             {
-                throw new InvalidOperationException($"Expected at most 1 playerData but got {playerData.Length}");
+                throw new InvalidOperationException($"Expected at most 1 playerData but got {spatialIdData.Length}");
             }
 
             PlayerCommand command;
@@ -76,8 +67,7 @@ namespace Playground
             }
 
             var rigidBody = info.rigidbody;
-            var sender = playerData.Sender[0];
-            var playerId = playerData.SpatialEntity[0].EntityId;
+            var playerId = spatialIdData[0].EntityId;
 
             var component = rigidBody.gameObject.GetComponent<LaunchableBehaviour>();
 
@@ -89,13 +79,13 @@ namespace Playground
             var impactPoint = Vector3f.FromUnityVector(info.point);
             var launchDirection = Vector3f.FromUnityVector(ray.direction);
 
-            sender.RequestsToSend.Add(new Launcher.LaunchEntity.Request(playerId,
+            var request = new Launcher.LaunchEntity.Request(playerId,
                 new LaunchCommandRequest(component.EntityId, impactPoint, launchDirection,
                     command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
                     playerId
-                )));
+                ));
 
-            playerData.Sender[0] = sender;
+            commandSystem.SendCommand(request, entities[0]);
         }
     }
 }

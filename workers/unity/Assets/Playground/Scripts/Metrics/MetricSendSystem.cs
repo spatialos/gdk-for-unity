@@ -4,12 +4,6 @@ using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
 namespace Playground
 {
     public class MetricSendSystem : ComponentSystem

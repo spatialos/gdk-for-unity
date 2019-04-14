@@ -24,8 +24,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 All = new[]
                 {
-                    ComponentType.Create<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(),
-                    ComponentType.Create<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ComponentAuthority>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>(),
+                    ComponentType.Create<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 Profiler.BeginSample("BlittableComponent");
 
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
-                var componentType = system.GetArchetypeChunkComponentType<Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
+                var componentType = system.GetArchetypeChunkComponentType<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>();
 
                 var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 

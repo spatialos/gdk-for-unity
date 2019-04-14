@@ -253,14 +253,17 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
 
             // Subscriptions systems
+            World.GetOrCreateManager<WorkerFlagCallbackSystem>();
             World.GetOrCreateManager<CommandCallbackSystem>();
             World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
             World.GetOrCreateManager<ComponentCallbackSystem>();
             World.GetOrCreateManager<RequireLifecycleSystem>();
             World.GetOrCreateManager<SubscriptionSystem>();
 
+#if !DISABLE_REACTIVE_COMPONENTS
             // Reactive components
             ReactiveComponentsHelper.AddCommonSystems(World);
+#endif
         }
 
         public void Dispose()

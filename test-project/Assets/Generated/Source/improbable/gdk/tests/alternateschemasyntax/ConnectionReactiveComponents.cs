@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
@@ -27,9 +28,9 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                     }
 
                     List<Update> updates;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity))
                     {
-                        updates = entityManager.GetComponentData<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity).Updates;
+                        updates = entityManager.GetComponentData<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReceivedUpdates>(entity).Updates;
                     }
                     else
                     {
@@ -48,7 +49,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public void Clean(World world)
             {
-                Connection.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
             }
         }
 
@@ -213,7 +214,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 
             public void Clean(World world)
             {
-                Connection.ReferenceTypeProviders.MyEventProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.MyEventProvider.CleanDataInWorld(world);
             }
         }
 
@@ -227,7 +228,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,
-                        ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                 }
 
                 for (int i = 0; i < authorityChanges.Count; ++i)
@@ -251,39 +252,39 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.RemoveComponent<NotAuthoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
 
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
+                        entityManager.RemoveComponent<Authoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>>());
                         break;
                 }
             }
@@ -296,9 +297,10 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 //     .WithField(LoggingUtils.EntityId, entityId.Id)
                 //     .WithField("New Authority", newAuthority)
                 //     .WithField("Expected Old Authority", expectedOldAuthority)
-                //     .WithField("Component", "Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
+                //     .WithField("Component", "global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection")
                 // );
             }
         }
     }
 }
+#endif

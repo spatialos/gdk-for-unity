@@ -3,13 +3,6 @@ using Improbable.Transform;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -27,14 +20,18 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.Create<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
             transformGroup = GetComponentGroup(
                 ComponentType.Subtractive<Rigidbody>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.Create<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
@@ -45,8 +42,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateRigidbodyData()
         {
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
-
             var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
             var transformToSendArray = rigidbodyGroup.GetComponentDataArray<TransformToSend>();
 
@@ -65,8 +60,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformData()
         {
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
-
             var transformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
             var transformToSendArray = transformGroup.GetComponentDataArray<TransformToSend>();
 

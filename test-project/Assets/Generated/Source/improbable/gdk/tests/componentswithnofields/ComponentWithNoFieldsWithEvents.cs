@@ -120,61 +120,61 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         public static class Serialization
         {
-            public static void SerializeComponent(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static void SerializeComponent(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
             }
 
-            public static void SerializeUpdate(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static void SerializeUpdate(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
             }
 
-            public static void SerializeSnapshot(Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
+            public static void SerializeSnapshot(global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
             }
 
-            public static Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
+            public static global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
-                var component = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component();
+                var component = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component();
 
                 return component;
             }
 
-            public static Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            public static global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
-                var update = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update();
+                var update = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update();
                 var obj = updateObj.GetFields();
 
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
+            public static global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)
             {
-                var update = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update();
+                var update = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Update();
                 var obj = data.GetFields();
 
                 return update;
             }
 
-            public static Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
+            public static global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
-                var component = new Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot();
+                var component = new global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot();
 
                 return component;
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component component)
             {
                 var obj = updateObj.GetFields();
 
             }
 
-            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot snapshot)
+            public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Snapshot snapshot)
             {
                 var obj = updateObj.GetFields();
 
@@ -192,7 +192,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             internal uint handle;
             public global::System.Collections.Generic.List<Update> Updates
             {
-                get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.UpdatesProvider.Get(handle);
+                get => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
 

@@ -3,13 +3,6 @@ using Improbable.Transform;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -36,7 +29,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.Create<TicksSinceLastTransformUpdate>(),
                 ComponentType.Create<BufferedTransform>(),
                 ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
             transformGroup = GetComponentGroup(
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
@@ -46,7 +41,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.Create<BufferedTransform>(),
                 ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
                 ComponentType.Subtractive<Rigidbody>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
@@ -57,8 +54,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformData()
         {
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
-
             var ticksSinceLastUpdateArray = rigidbodyGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
             var transformComponentArray = rigidbodyGroup.GetComponentDataArray<TransformInternal.Component>();
             var bufferedTransformArray = rigidbodyGroup.GetBufferArray<BufferedTransform>();
@@ -88,8 +83,6 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateRigidbodyData()
         {
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
-
             var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
             var transformComponentArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
             var bufferedTransformArray = transformGroup.GetBufferArray<BufferedTransform>();

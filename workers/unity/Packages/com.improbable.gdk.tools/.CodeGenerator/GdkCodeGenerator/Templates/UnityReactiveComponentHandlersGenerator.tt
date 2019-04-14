@@ -5,12 +5,13 @@
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var commandDetailsList = GetCommandDetailsList();
     var eventDetailsList = GetEventDetailsList();
-    var componentNamespace = qualifiedNamespace + "." + componentDetails.ComponentName;
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
     var profilingStart = $"Profiler.BeginSample(\"{componentDetails.ComponentName}\");";
     var profilingEnd = "Profiler.EndSample();";
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,8 +51,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     All = new[]
                     {
-                        ComponentType.Create<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandSenders.<#= commandDetails.CommandName #>>(),
-                        ComponentType.Create<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.CommandResponders.<#= commandDetails.CommandName #>>(),
+                        ComponentType.Create<<#= componentNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(),
+                        ComponentType.Create<<#= componentNamespace #>.CommandResponders.<#= commandDetails.CommandName #>>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
@@ -102,8 +103,8 @@ namespace <#= qualifiedNamespace #>
 for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandDetails = commandDetailsList[i];
     var commandName = commandDetails.CommandName;
-    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandName}";
-    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandName}";
+    var commandSenderType = $"{componentNamespace}.CommandSenders.{commandName}";
+    var commandResponderType = $"{componentNamespace}.CommandResponders.{commandName}";
 #>
                 var senderType<#= commandName #> = system.GetArchetypeChunkComponentType<<#= commandSenderType #>>(true);
                 var responderType<#= commandName #> = system.GetArchetypeChunkComponentType<<#= commandResponderType #>>(true);
@@ -116,8 +117,8 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 for (var i = 0; i < commandDetailsList.Count; i++) {
     var commandDetails = commandDetailsList[i];
     var commandName = commandDetails.CommandName;
-    var commandSenderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandSenders.{commandName}";
-    var commandResponderType = $"{qualifiedNamespace}.{componentDetails.ComponentName}.CommandResponders.{commandName}";
+    var commandSenderType = $"{componentNamespace}.CommandSenders.{commandName}";
+    var commandResponderType = $"{componentNamespace}.CommandResponders.{commandName}";
 #>
                     if (chunk.Has(senderType<#= commandName #>))
                     {
@@ -337,3 +338,4 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
         }
     }
 }
+#endif

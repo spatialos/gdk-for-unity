@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Unity.Entities;
 using Improbable.Gdk.Core;
@@ -27,9 +28,9 @@ namespace Improbable.Gdk.Tests
                     }
 
                     List<Update> updates;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity))
                     {
-                        updates = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity).Updates;
+                        updates = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ExhaustiveOptional.ReceivedUpdates>(entity).Updates;
                     }
                     else
                     {
@@ -48,7 +49,7 @@ namespace Improbable.Gdk.Tests
 
             public void Clean(World world)
             {
-                ExhaustiveOptional.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.UpdatesProvider.CleanDataInWorld(world);
             }
         }
 
@@ -157,7 +158,7 @@ namespace Improbable.Gdk.Tests
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,
-                        ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
+                        ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
                 }
 
                 for (int i = 0; i < authorityChanges.Count; ++i)
@@ -181,39 +182,39 @@ namespace Improbable.Gdk.Tests
                 switch (authority)
                 {
                     case Authority.Authoritative:
-                        if (!entityManager.HasComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
+                        if (!entityManager.HasComponent<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.Authoritative, Authority.NotAuthoritative, entityId);
                             return;
                         }
 
-                        entityManager.RemoveComponent<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
+                        entityManager.RemoveComponent<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
 
                         break;
                     case Authority.AuthorityLossImminent:
-                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.AuthorityLossImminent, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
                         break;
                     case Authority.NotAuthoritative:
-                        if (!entityManager.HasComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
+                        if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
                             LogInvalidAuthorityTransition(Authority.NotAuthoritative, Authority.Authoritative, entityId);
                             return;
                         }
 
-                        if (entityManager.HasComponent<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
+                        if (entityManager.HasComponent<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity))
                         {
-                            entityManager.RemoveComponent<AuthorityLossImminent<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
+                            entityManager.RemoveComponent<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
                         }
 
-                        entityManager.RemoveComponent<Authoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
+                        entityManager.RemoveComponent<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>(entity);
+                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveOptional.Component>>());
                         break;
                 }
             }
@@ -226,9 +227,10 @@ namespace Improbable.Gdk.Tests
                 //     .WithField(LoggingUtils.EntityId, entityId.Id)
                 //     .WithField("New Authority", newAuthority)
                 //     .WithField("Expected Old Authority", expectedOldAuthority)
-                //     .WithField("Component", "Improbable.Gdk.Tests.ExhaustiveOptional")
+                //     .WithField("Component", "global::Improbable.Gdk.Tests.ExhaustiveOptional")
                 // );
             }
         }
     }
 }
+#endif

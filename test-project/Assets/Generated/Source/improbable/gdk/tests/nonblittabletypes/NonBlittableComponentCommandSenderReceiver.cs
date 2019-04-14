@@ -270,19 +270,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             IsValid = true;
         }
 
-        public void SendFirstCommandCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request, Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> callback = null)
+        public void SendFirstCommandCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request, Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> callback = null)
         {
             var commandRequest = new NonBlittableComponent.FirstCommand.Request(targetEntityId, request);
             SendFirstCommandCommand(commandRequest, callback);
         }
 
-        public void SendFirstCommandCommand(NonBlittableComponent.FirstCommand.Request request, Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> callback = null)
+        public void SendFirstCommandCommand(global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request request, Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> callback = null)
         {
             int validCallbackEpoch = callbackEpoch;
             var requestId = commandSender.SendCommand(request, entity);
             if (callback != null)
             {
-                Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> wrappedCallback = response =>
+                Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedResponse> wrappedCallback = response =>
                 {
                     if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
                     {
@@ -294,19 +294,19 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
             }
         }
-        public void SendSecondCommandCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request, Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> callback = null)
+        public void SendSecondCommandCommand(EntityId targetEntityId, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request, Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> callback = null)
         {
             var commandRequest = new NonBlittableComponent.SecondCommand.Request(targetEntityId, request);
             SendSecondCommandCommand(commandRequest, callback);
         }
 
-        public void SendSecondCommandCommand(NonBlittableComponent.SecondCommand.Request request, Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> callback = null)
+        public void SendSecondCommandCommand(global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request request, Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> callback = null)
         {
             int validCallbackEpoch = callbackEpoch;
             var requestId = commandSender.SendCommand(request, entity);
             if (callback != null)
             {
-                Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> wrappedCallback = response =>
+                Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedResponse> wrappedCallback = response =>
                 {
                     if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
                     {
@@ -333,15 +333,15 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         private readonly CommandCallbackSystem callbackSystem;
         private readonly CommandSystem commandSystem;
 
-        private Dictionary<Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>, ulong> firstCommandCallbackToCallbackKey;
+        private Dictionary<Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>, ulong> firstCommandCallbackToCallbackKey;
 
-        public event Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> OnFirstCommandRequestReceived
+        public event Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest> OnFirstCommandRequestReceived
         {
             add
             {
                 if (firstCommandCallbackToCallbackKey == null)
                 {
-                    firstCommandCallbackToCallbackKey = new Dictionary<Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>, ulong>();
+                    firstCommandCallbackToCallbackKey = new Dictionary<Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.ReceivedRequest>, ulong>();
                 }
 
                 var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -358,15 +358,15 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 firstCommandCallbackToCallbackKey.Remove(value);
             }
         }
-        private Dictionary<Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>, ulong> secondCommandCallbackToCallbackKey;
+        private Dictionary<Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>, ulong> secondCommandCallbackToCallbackKey;
 
-        public event Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> OnSecondCommandRequestReceived
+        public event Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest> OnSecondCommandRequestReceived
         {
             add
             {
                 if (secondCommandCallbackToCallbackKey == null)
                 {
-                    secondCommandCallbackToCallbackKey = new Dictionary<Action<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>, ulong>();
+                    secondCommandCallbackToCallbackKey = new Dictionary<Action<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.ReceivedRequest>, ulong>();
                 }
 
                 var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -394,34 +394,34 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             IsValid = true;
         }
 
-        public void SendFirstCommandResponse(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response response)
+        public void SendFirstCommandResponse(global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response response)
         {
             commandSystem.SendResponse(response);
         }
 
         public void SendFirstCommandResponse(long requestId, global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse response)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response(requestId, response));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response(requestId, response));
         }
 
         public void SendFirstCommandFailure(long requestId, string failureMessage)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response(requestId, failureMessage));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response(requestId, failureMessage));
         }
 
-        public void SendSecondCommandResponse(Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response response)
+        public void SendSecondCommandResponse(global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response response)
         {
             commandSystem.SendResponse(response);
         }
 
         public void SendSecondCommandResponse(long requestId, global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse response)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response(requestId, response));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response(requestId, response));
         }
 
         public void SendSecondCommandFailure(long requestId, string failureMessage)
         {
-            commandSystem.SendResponse(new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response(requestId, failureMessage));
+            commandSystem.SendResponse(new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response(requestId, failureMessage));
         }
 
         public void RemoveAllCallbacks()

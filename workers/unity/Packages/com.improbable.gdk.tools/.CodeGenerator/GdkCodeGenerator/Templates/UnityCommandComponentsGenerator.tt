@@ -4,9 +4,11 @@
     var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
     var componentDetails = GetComponentDetails();
     var commandDetailsList = GetCommandDetailsList();
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
 #>
 <#= generatedHeader #>
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -20,10 +22,10 @@ namespace <#= qualifiedNamespace #>
             public struct <#= command.CommandName #> : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Request> RequestsToSend
+                public List<global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Request> RequestsToSend
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Get(CommandListHandle);
-                    set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Set(CommandListHandle, value);
+                    get => global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Get(CommandListHandle);
+                    set => global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>SenderProvider.Set(CommandListHandle, value);
                 }
             }
 <# } #>
@@ -35,10 +37,10 @@ namespace <#= qualifiedNamespace #>
             public struct <#= command.CommandName #> : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.ReceivedRequest> Requests
+                public List<<#= componentNamespace #>.<#= command.CommandName #>.ReceivedRequest> Requests
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Get(CommandListHandle);
-                    set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Set(CommandListHandle, value);
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Get(CommandListHandle);
+                    set => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>RequestsProvider.Set(CommandListHandle, value);
                 }
             }
 <# } #>
@@ -50,10 +52,10 @@ namespace <#= qualifiedNamespace #>
             public struct <#= command.CommandName #> : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.Response> ResponsesToSend
+                public List<<#= componentNamespace #>.<#= command.CommandName #>.Response> ResponsesToSend
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Get(CommandListHandle);
-                    set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Set(CommandListHandle, value);
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Get(CommandListHandle);
+                    set => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>ResponderProvider.Set(CommandListHandle, value);
                 }
             }
 <# } #>
@@ -65,13 +67,14 @@ namespace <#= qualifiedNamespace #>
             public struct <#= command.CommandName #> : IComponentData
             {
                 internal uint CommandListHandle;
-                public List<<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.<#= command.CommandName #>.ReceivedResponse> Responses
+                public List<<#= componentNamespace #>.<#= command.CommandName #>.ReceivedResponse> Responses
                 {
-                    get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Get(CommandListHandle);
-                    set => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Set(CommandListHandle, value);
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Get(CommandListHandle);
+                    set => <#= componentNamespace #>.ReferenceTypeProviders.<#= command.CommandName #>ResponsesProvider.Set(CommandListHandle, value);
                 }
             }
 <# } #>
         }
     }
 }
+#endif

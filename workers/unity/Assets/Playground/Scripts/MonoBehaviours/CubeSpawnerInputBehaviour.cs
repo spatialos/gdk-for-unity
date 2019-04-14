@@ -6,17 +6,11 @@ using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
 
-#region Diagnostic control
-
-// Disable the "variable is never assigned" for injected fields.
-#pragma warning disable 649
-
-#endregion
-
 namespace Playground.MonoBehaviours
 {
     public class CubeSpawnerInputBehaviour : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private PlayerInputWriter playerInputWriter;
         [Require] private CubeSpawnerReader cubeSpawnerReader;
         [Require] private CubeSpawnerCommandSender cubeSpawnerCommandSender;
@@ -25,6 +19,7 @@ namespace Playground.MonoBehaviours
         [Require] private World world;
 
         [Require] private ILogDispatcher logDispatcher;
+#pragma warning restore 649
 
         private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
         {

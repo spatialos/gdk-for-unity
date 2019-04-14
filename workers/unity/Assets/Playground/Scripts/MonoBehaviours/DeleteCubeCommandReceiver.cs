@@ -6,22 +6,17 @@ using Improbable.Gdk.Subscriptions;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
-#region Diagnostic control
-
-// Disable the "variable is never assigned" for injected fields.
-#pragma warning disable 649
-
-#endregion
-
 namespace Playground.MonoBehaviours
 {
     public class DeleteCubeCommandReceiver : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private CubeSpawnerWriter cubeSpawnerWriter;
         [Require] private CubeSpawnerCommandReceiver cubeSpawnerReceiver;
         [Require] private WorldCommandSender worldCommandSender;
 
         [Require] private ILogDispatcher logDispatcher;
+#pragma warning restore 649
 
         public void OnEnable()
         {

@@ -9,25 +9,18 @@ using Improbable.Worker.CInterop;
 using UnityEngine;
 using Quaternion = Improbable.Transform.Quaternion;
 
-#region Diagnostic control
-
-// Disable the "variable is never assigned" for injected fields.
-#pragma warning disable 649
-
-// ReSharper disable PossibleInvalidOperationException
-
-#endregion
-
 namespace Playground.MonoBehaviours
 {
     public class SpawnCubeCommandReceiver : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private TransformInternalReader transformReader;
         [Require] private CubeSpawnerCommandReceiver cubeSpawnerCommandRequestHandler;
         [Require] private CubeSpawnerWriter cubeSpawnerWriter;
         [Require] private WorldCommandSender worldCommandRequestSender;
 
         [Require] private ILogDispatcher logDispatcher;
+#pragma warning restore 649
 
         public void OnEnable()
         {

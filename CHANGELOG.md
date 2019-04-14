@@ -16,6 +16,11 @@
     - `Constraint` contains static methods to easily create constraints for an interest query.
 - Added a `WithTimeout(TimeSpan timeout)` method to the `RedirectedProcess` class. This allows you to set a timeout for the underlying process execution.
 - Added a `Improbable.Gdk.Core.Collections.Result<T, E>` struct to represent a result which can either contain a value `T` or an error `E`.
+- Added Scripting Define Symbol `DISABLE_REACTIVE_COMPONENTS`. Using this symbol will disable all reactive componts and systems.
+- Added a `WorkerFlagReader` which you can subscribe and `Require`. This allows you to:
+    - Add callbacks for changes to worker flags.
+    - Read the value of worker flags.
+- Expose `GetWorkerFlag(string name)` on the `View`.
 
 ### Changed
 
@@ -27,12 +32,14 @@
 
 - Fixed an issue where player creation requests could retry infinitely without logging failure.
 - Fixed an issue where if you called `RedirectedProcess.Command(...)` in a non-main thread, it would throw an exception.
+- Fixed an issue where having the same name for a schema package and a schema component would lead to generating invalid code.
 
 ### Internal
 
 - Tools package now uses PackageManager API instead of parsing manifest.json.
 - Updated default snapshot to have more than one PlayerCreator entity.
 - Fixed package dependencies.
+- Worker flag changes are propagated to the `ViewDiff`.
 
 ## `0.2.0` - 2019-03-18
 

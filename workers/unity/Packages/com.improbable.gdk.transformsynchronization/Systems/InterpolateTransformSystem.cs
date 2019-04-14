@@ -5,14 +5,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
-#region Diagnostic control
-
-#pragma warning disable 169
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
-
-
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
@@ -34,13 +26,13 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<InterpolationConfig>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            interpolationGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()
         {
-            interpolationGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-
             var interpolationConfigArray = interpolationGroup.GetSharedComponentDataArray<InterpolationConfig>();
             var bufferedTransformArray = interpolationGroup.GetBufferArray<BufferedTransform>();
             var spatialEntityIdArray = interpolationGroup.GetComponentDataArray<SpatialEntityId>();

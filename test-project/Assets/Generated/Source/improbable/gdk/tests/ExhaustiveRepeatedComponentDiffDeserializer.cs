@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Tests
 
             public void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId)
             {
-                var update = Improbable.Gdk.Tests.ExhaustiveRepeated.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                var update = global::Improbable.Gdk.Tests.ExhaustiveRepeated.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
                 diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
             }
 

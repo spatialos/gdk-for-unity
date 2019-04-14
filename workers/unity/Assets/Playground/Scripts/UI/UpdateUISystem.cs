@@ -1,57 +1,69 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
-using Unity.Collections;
 using Unity.Entities;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnassignedField.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class UpdateUISystem : ComponentSystem
     {
-        public struct PlayerDataLauncher
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<Launcher.Component> Launcher;
-            [ReadOnly] public ComponentDataArray<Launcher.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerAuth;
-        }
+        private ComponentUpdateSystem componentUpdateSystem;
 
-        public struct PlayerDataScore
-        {
-            public readonly int Length;
-            [ReadOnly] public ComponentDataArray<Score.Component> Score;
-            [ReadOnly] public ComponentDataArray<Score.ReceivedUpdates> Updates;
-            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerAuth;
-        }
+        private ComponentGroup launcherGroup;
+        private ComponentGroup scoreGroup;
 
-        [Inject] private PlayerDataLauncher playerDataLauncher;
-        [Inject] private PlayerDataScore playerDataScore;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            launcherGroup = GetComponentGroup(
+                ComponentType.ReadOnly<Launcher.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<Launcher.ComponentAuthority>()
+            );
+            launcherGroup.SetFilter(Launcher.ComponentAuthority.Authoritative);
+
+            scoreGroup = GetComponentGroup(
+                ComponentType.ReadOnly<Score.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadOnly<Score.ComponentAuthority>()
+            );
+            scoreGroup.SetFilter(Score.ComponentAuthority.Authoritative);
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < playerDataLauncher.Length; i++)
-            {
-                var launcher = playerDataLauncher.Launcher[i];
+            var launcherSpatialIdData = launcherGroup.GetComponentDataArray<SpatialEntityId>();
+            var launcherData = launcherGroup.GetComponentDataArray<Launcher.Component>();
 
-                UIComponent.Main.TestText.text =
-                    launcher.RechargeTimeLeft > 0.0f ? "Recharging" : $"Energy: {launcher.EnergyLeft}";
+            for (var i = 0; i < launcherData.Length; i++)
+            {
+                var spatialId = launcherSpatialIdData[i].EntityId;
+                var launcherUpdates =
+                    componentUpdateSystem.GetEntityComponentUpdatesReceived<Launcher.Update>(spatialId);
+                if (launcherUpdates.Count > 0)
+                {
+                    var launcher = launcherData[i];
+
+                    UIComponent.Main.TestText.text = launcher.RechargeTimeLeft > 0.0f
+                        ? "Recharging"
+                        : $"Energy: {launcher.EnergyLeft}";
+                }
             }
 
-            for (var i = 0; i < playerDataScore.Length; i++)
+            var scoreSpatialIdData = scoreGroup.GetComponentDataArray<SpatialEntityId>();
+            var scoreData = scoreGroup.GetComponentDataArray<Score.Component>();
+
+            for (var i = 0; i < scoreData.Length; i++)
             {
-                var score = playerDataScore.Score[i];
-                UIComponent.Main.ScoreText.text = $"Score: {score.Score}";
+                var spatialId = scoreSpatialIdData[i].EntityId;
+                var launcherUpdates =
+                    componentUpdateSystem.GetEntityComponentUpdatesReceived<Score.Update>(spatialId);
+                if (launcherUpdates.Count > 0)
+                {
+                    UIComponent.Main.ScoreText.text = $"Score: {scoreData[i].Score}";
+                }
             }
         }
     }

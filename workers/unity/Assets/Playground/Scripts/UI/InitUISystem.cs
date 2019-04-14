@@ -1,50 +1,53 @@
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
 using Playground.Scripts.UI;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-
-#region Diagnostic control
-
-#pragma warning disable 649
-// ReSharper disable UnassignedReadonlyField
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-
-#endregion
 
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InitUISystem : ComponentSystem
     {
-        private struct Data
-        {
-            public readonly int Length;
-            public EntityArray Entites;
-            [ReadOnly] public ComponentDataArray<Launcher.Component> Launcher;
-            [ReadOnly] public ComponentDataArray<Score.Component> Score;
-            [ReadOnly] public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInput;
-            [ReadOnly] public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthority;
-        }
+        private ComponentUpdateSystem componentUpdateSystem;
+        private ComponentGroup uiInitGroup;
 
-        [Inject] private Data data;
+        protected override void OnCreateManager()
+        {
+            base.OnCreateManager();
+
+            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            uiInitGroup = GetComponentGroup(
+                ComponentType.ReadOnly<Launcher.Component>(),
+                ComponentType.ReadOnly<Score.Component>(),
+                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
+                ComponentType.ReadOnly<SpatialEntityId>()
+            );
+            uiInitGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+        }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < data.Length; i++)
-            {
-                var ui = Resources.Load("Prefabs/UIGameObject");
-                var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
-                var uiComponent = inst.GetComponent<UIComponent>();
-                UIComponent.Main = uiComponent;
-                uiComponent.TestText.text = $"Energy: {data.Launcher[i].EnergyLeft}";
-                uiComponent.ScoreText.text = $"Score: {data.Score[i].Score}";
-            }
+            var launcherData = uiInitGroup.GetComponentDataArray<Launcher.Component>();
+            var scoreData = uiInitGroup.GetComponentDataArray<Score.Component>();
+            var spatialIdData = uiInitGroup.GetComponentDataArray<SpatialEntityId>();
 
-            // Disable system after first run.
-            Enabled = false;
+            for (var i = 0; i < spatialIdData.Length; i++)
+            {
+                var authUpdates =
+                    componentUpdateSystem.GetAuthorityChangesReceived(spatialIdData[i].EntityId,
+                        PlayerInput.ComponentId);
+                if (authUpdates.Count > 0)
+                {
+                    var ui = Resources.Load("Prefabs/UIGameObject");
+                    var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
+                    var uiComponent = inst.GetComponent<UIComponent>();
+                    UIComponent.Main = uiComponent;
+                    uiComponent.TestText.text = $"Energy: {launcherData[i].EnergyLeft}";
+                    uiComponent.ScoreText.text = $"Score: {scoreData[i].Score}";
+
+                    Enabled = false;
+                }
+            }
         }
 
         protected override void OnDestroyManager()

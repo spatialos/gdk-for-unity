@@ -2,6 +2,7 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // ===========
 
+#if !DISABLE_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -29,13 +30,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     List<FirstCommand.ReceivedRequest> requests;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity))
                     {
-                        requests = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity).Requests;
+                        requests = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand>(entity).Requests;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand
+                        var data = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.FirstCommand
                         {
                             CommandListHandle = ReferenceTypeProviders.FirstCommandRequestsProvider.Allocate(world)
                         };
@@ -60,13 +61,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     List<FirstCommand.ReceivedResponse> responses;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(response.SendingEntity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(response.SendingEntity))
                     {
-                        responses = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(response.SendingEntity).Responses;
+                        responses = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand>(response.SendingEntity).Responses;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand
+                        var data = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.FirstCommand
                         {
                             CommandListHandle = ReferenceTypeProviders.FirstCommandResponsesProvider.Allocate(world)
                         };
@@ -98,16 +99,16 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     ? entityManager.GetComponentData<SpatialEntityId>(entity).EntityId
                     : new EntityId(0);
 
-                var commandSender = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand();
-                commandSender.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Allocate(world);
-                commandSender.RequestsToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request>();
+                var commandSender = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.FirstCommand();
+                commandSender.CommandListHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandSenderProvider.Allocate(world);
+                commandSender.RequestsToSend = new List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Request>();
 
                 entityManager.AddComponentData(entity, commandSender);
 
-                var commandResponder = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand();
+                var commandResponder = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.FirstCommand();
                 commandResponder.CommandListHandle =
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Allocate(world);
-                commandResponder.ResponsesToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response>();
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.FirstCommandResponderProvider.Allocate(world);
+                commandResponder.ResponsesToSend = new List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.FirstCommand.Response>();
 
                 entityManager.AddComponentData(entity, commandResponder);
 
@@ -158,13 +159,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     List<SecondCommand.ReceivedRequest> requests;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity))
                     {
-                        requests = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity).Requests;
+                        requests = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand>(entity).Requests;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand
+                        var data = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandRequests.SecondCommand
                         {
                             CommandListHandle = ReferenceTypeProviders.SecondCommandRequestsProvider.Allocate(world)
                         };
@@ -189,13 +190,13 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
 
                     List<SecondCommand.ReceivedResponse> responses;
-                    if (entityManager.HasComponent<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(response.SendingEntity))
+                    if (entityManager.HasComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(response.SendingEntity))
                     {
-                        responses = entityManager.GetComponentData<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(response.SendingEntity).Responses;
+                        responses = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand>(response.SendingEntity).Responses;
                     }
                     else
                     {
-                        var data = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand
+                        var data = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponses.SecondCommand
                         {
                             CommandListHandle = ReferenceTypeProviders.SecondCommandResponsesProvider.Allocate(world)
                         };
@@ -227,16 +228,16 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     ? entityManager.GetComponentData<SpatialEntityId>(entity).EntityId
                     : new EntityId(0);
 
-                var commandSender = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand();
-                commandSender.CommandListHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Allocate(world);
-                commandSender.RequestsToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request>();
+                var commandSender = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandSenders.SecondCommand();
+                commandSender.CommandListHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandSenderProvider.Allocate(world);
+                commandSender.RequestsToSend = new List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Request>();
 
                 entityManager.AddComponentData(entity, commandSender);
 
-                var commandResponder = new Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand();
+                var commandResponder = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.CommandResponders.SecondCommand();
                 commandResponder.CommandListHandle =
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Allocate(world);
-                commandResponder.ResponsesToSend = new List<Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response>();
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.SecondCommandResponderProvider.Allocate(world);
+                commandResponder.ResponsesToSend = new List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.SecondCommand.Response>();
 
                 entityManager.AddComponentData(entity, commandResponder);
 
@@ -275,3 +276,4 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
     }
 }
+#endif

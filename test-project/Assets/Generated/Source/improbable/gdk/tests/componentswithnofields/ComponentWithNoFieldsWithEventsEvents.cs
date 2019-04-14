@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             }
         }
 
+
+#if !DISABLE_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct Evt : IComponentData
@@ -32,8 +34,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
                 {
-                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
                 }
             }
 
@@ -47,11 +49,12 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
                 public List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty> Events
                 {
-                    get => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
-                    internal set => Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
+                    get => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Get(handle);
+                    internal set => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.EvtProvider.Set(handle, value);
                 }
             }
 
         }
+#endif
     }
 }

@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Subscriptions
         private CommandCallbackSystem commandCallbackSystem;
         private ComponentCallbackSystem componentCallbackSystem;
         private ComponentConstraintsCallbackSystem componentConstraintsCallbackSystem;
+        private WorkerFlagCallbackSystem workerFlagCallbackSystem;
 
         // todo make this order the behaviours somehow
         internal void EnableMonoBehaviour(MonoBehaviour behaviour)
@@ -34,6 +35,7 @@ namespace Improbable.Gdk.Subscriptions
             commandCallbackSystem = World.GetExistingManager<CommandCallbackSystem>();
             componentCallbackSystem = World.GetExistingManager<ComponentCallbackSystem>();
             componentConstraintsCallbackSystem = World.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            workerFlagCallbackSystem = World.GetExistingManager<WorkerFlagCallbackSystem>();
         }
 
         protected override void OnUpdate()
@@ -57,6 +59,7 @@ namespace Improbable.Gdk.Subscriptions
             componentCallbackSystem.InvokeLossImminent();
 
             commandCallbackSystem.InvokeCallbacks();
+            workerFlagCallbackSystem.InvokeCallbacks();
         }
     }
 }

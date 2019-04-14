@@ -2,18 +2,13 @@
 using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
-#region Diagnostic control
-
-// Disable the "variable is never assigned" for injected fields.
-#pragma warning disable 649
-
-#endregion
-
 namespace Playground.MonoBehaviours
 {
     public class UpdateSpinnerColor : MonoBehaviour
     {
+#pragma warning disable 649
         [Require] private SpinnerColorWriter spinnerColorWriter;
+#pragma warning restore 649
 
         private Array colorValues;
         private int colorIndex;

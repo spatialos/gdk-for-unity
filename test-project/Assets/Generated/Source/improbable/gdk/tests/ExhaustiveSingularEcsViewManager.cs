@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Tests
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
 
-                var component = new Improbable.Gdk.Tests.ExhaustiveSingular.Component();
+                var component = new global::Improbable.Gdk.Tests.ExhaustiveSingular.Component();
 
                 component.field3Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 component.field7Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
@@ -99,11 +99,11 @@ namespace Improbable.Gdk.Tests
                 workerSystem.TryGetEntity(entityId, out var entity);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
-                var data = entityManager.GetComponentData<Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
+                var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
                 ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
                 ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
 
-                entityManager.RemoveComponent<Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
+                entityManager.RemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
             }
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
