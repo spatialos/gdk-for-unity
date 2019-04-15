@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.1` - 2019-04-15
+
 ### Breaking Changes
 
 - Removed `clientAccess` from the `AddPlayerLifecycleComponents` signature. We now construct the client access attribute within the helper.
@@ -20,13 +22,13 @@
 - Added a `WorkerFlagReader` which you can subscribe and `Require`. This allows you to:
     - Add callbacks for changes to worker flags.
     - Read the value of worker flags.
-- Expose `GetWorkerFlag(string name)` on the `View`.
 
 ### Changed
 
 - The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
 - Removed the `Type` suffix from player lifecycle schema types.
 - `RedirectedProcess.RunAsync()` now takes a `CancellationToken?` as a parameter. This token can be used to cancel the underlying process.
+- Updated the Unity version to `2018.3.11`
 
 ### Fixed
 
@@ -40,6 +42,7 @@
 - Updated default snapshot to have more than one PlayerCreator entity.
 - Fixed package dependencies.
 - Worker flag changes are propagated to the `ViewDiff`.
+- Exposed `GetWorkerFlag(string name)` on the `View`.
 
 ## `0.2.0` - 2019-03-18
 
