@@ -1,11 +1,11 @@
 {
-  "PackageName": "gdk-for-unity",
-  "Version": "0.2.1",
-  "GitPackages": [
+  "package_name": "gdk-for-unity",
+  "version": "0.2.1",
+  "git_packages": [
     {
-      "CloneUrl": "git@github.com:spatialos/gdk-for-unity.git",
-      "CloneDir": "gdk-for-unity",
-      "ExcludePaths": [
+      "clone_url": "git@github.com:spatialos/gdk-for-unity.git",
+      "clone_dir": "gdk-for-unity",
+      "exclude_paths": [
         ".git",
         ".github",
         "ci",
