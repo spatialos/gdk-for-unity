@@ -11,6 +11,8 @@
     - [Core]({{urlRoot}}/api/core-index)
         - [CodegenAdapters]({{urlRoot}}/api/core/codegen-adapters-index)
             - <a href="{{urlRoot}}/api/core/codegen-adapters/i-component-replication-handler">IComponentReplicationHandler</a>
+        - [Collections]({{urlRoot}}/api/core/collections-index)
+            - <a href="{{urlRoot}}/api/core/collections/result">Result</a>
         - [Commands]({{urlRoot}}/api/core/commands-index)
             - <a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-response">ICommandResponse</a>
@@ -122,6 +124,8 @@
         - <a href="{{urlRoot}}/api/core/worker-connector">WorkerConnector</a>
         - <a href="{{urlRoot}}/api/core/worker-disconnect-callback-system">WorkerDisconnectCallbackSystem</a>
         - <a href="{{urlRoot}}/api/core/worker-entity-tag">WorkerEntityTag</a>
+        - <a href="{{urlRoot}}/api/core/worker-flag-reader">WorkerFlagReader</a>
+        - <a href="{{urlRoot}}/api/core/worker-flag-subscription-manager">WorkerFlagSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/core/worker-system">WorkerSystem</a>
         - <a href="{{urlRoot}}/api/core/world-command-meta-data-storage">WorldCommandMetaDataStorage</a>
         - <a href="{{urlRoot}}/api/core/world-command-sender">WorldCommandSender</a>
@@ -210,6 +214,8 @@
         - <a href="{{urlRoot}}/api/subscriptions/subscription-manager">SubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/subscription-manager-base">SubscriptionManagerBase</a>
         - <a href="{{urlRoot}}/api/subscriptions/subscription-system">SubscriptionSystem</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-manager">WorkerFlagCallbackManager</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-system">WorkerFlagCallbackSystem</a>
         - <a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/world-subscription-manager">WorldSubscriptionManager</a>
     - [TestUtils]({{urlRoot}}/api/test-utils-index)

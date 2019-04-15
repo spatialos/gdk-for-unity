@@ -112,6 +112,8 @@
     - [Core]({{urlRoot}}/api/core-index)
         - [CodegenAdapters]({{urlRoot}}/api/core/codegen-adapters-index)
             - <a href="{{urlRoot}}/api/core/codegen-adapters/i-component-replication-handler">IComponentReplicationHandler</a>
+        - [Collections]({{urlRoot}}/api/core/collections-index)
+            - <a href="{{urlRoot}}/api/core/collections/result">Result</a>
         - [Commands]({{urlRoot}}/api/core/commands-index)
             - <a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-response">ICommandResponse</a>
@@ -223,6 +225,8 @@
         - <a href="{{urlRoot}}/api/core/worker-connector">WorkerConnector</a>
         - <a href="{{urlRoot}}/api/core/worker-disconnect-callback-system">WorkerDisconnectCallbackSystem</a>
         - <a href="{{urlRoot}}/api/core/worker-entity-tag">WorkerEntityTag</a>
+        - <a href="{{urlRoot}}/api/core/worker-flag-reader">WorkerFlagReader</a>
+        - <a href="{{urlRoot}}/api/core/worker-flag-subscription-manager">WorkerFlagSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/core/worker-system">WorkerSystem</a>
         - <a href="{{urlRoot}}/api/core/world-command-meta-data-storage">WorldCommandMetaDataStorage</a>
         - <a href="{{urlRoot}}/api/core/world-command-sender">WorldCommandSender</a>
@@ -257,9 +261,9 @@
         - <a href="{{urlRoot}}/api/player-lifecycle/send-create-player-request-system">SendCreatePlayerRequestSystem</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/send-player-heartbeat-request-system">SendPlayerHeartbeatRequestSystem</a>
     - [QueryBasedInterest]({{urlRoot}}/api/query-based-interest-index)
-        - <a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a>
-        - <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a>
         - <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a>
     - [ReactiveComponents]({{urlRoot}}/api/reactive-components-index)
         - <a href="{{urlRoot}}/api/reactive-components/abstract-acknowledge-authority-loss-handler">AbstractAcknowledgeAuthorityLossHandler</a>
         - <a href="{{urlRoot}}/api/reactive-components/acknowledge-authority-loss-system">AcknowledgeAuthorityLossSystem</a>
@@ -311,6 +315,8 @@
         - <a href="{{urlRoot}}/api/subscriptions/subscription-manager">SubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/subscription-manager-base">SubscriptionManagerBase</a>
         - <a href="{{urlRoot}}/api/subscriptions/subscription-system">SubscriptionSystem</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-manager">WorkerFlagCallbackManager</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-system">WorkerFlagCallbackSystem</a>
         - <a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/world-subscription-manager">WorldSubscriptionManager</a>
     - [TestUtils]({{urlRoot}}/api/test-utils-index)
