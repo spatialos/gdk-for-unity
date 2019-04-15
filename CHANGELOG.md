@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.1` - 2019-04-15
+
 ### Breaking Changes
 
 - Removed `clientAccess` from the `AddPlayerLifecycleComponents` signature. We now construct the client access attribute within the helper.
