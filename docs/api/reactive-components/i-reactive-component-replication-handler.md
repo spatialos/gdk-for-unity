@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/reactive-components-index">ReactiveComponents</a><br/>
 GDK package: ReactiveComponents<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L9">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -55,7 +55,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>EventQuery</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -71,7 +71,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CommandQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -101,7 +101,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendEvents</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -131,7 +131,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendCommands</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/CodegenAdapters/IReactiveComponentReplicationHandler.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
