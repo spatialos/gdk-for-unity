@@ -39,7 +39,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private BuildConfigEditorStyle style;
         private int invalidateCachedContent;
         private WorkerChoicePopup workerChooser;
-        private UiStateManager stateManager = new UiStateManager();
+        private UIStateManager stateManager = new UIStateManager();
 
         private static string[] allWorkers;
 
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             var workerType = configurationForWorker.WorkerType;
 
-            var foldoutState = stateManager.GetStateObject<FoldoutState>(configurationForWorker.WorkerType.GetHashCode());
+            var foldoutState = stateManager.GetStateObjectOrDefault<FoldoutState>(configurationForWorker.WorkerType.GetHashCode());
 
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -229,7 +229,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 EditorGUILayout.LabelField("Scenes to include (in order)");
                 var workerControlId = configurationForWorker.WorkerType.GetHashCode() ^ typeof(DragAndDrop).GetHashCode();
-                dragState = stateManager.GetStateObject<DragAndDropInfo>(workerControlId);
+                dragState = stateManager.GetStateObjectOrDefault<DragAndDropInfo>(workerControlId);
 
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button(style.AddSceneButtonContents, EditorStyles.miniButton))
@@ -556,7 +556,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 configurationForWorker.GetEnvironmentConfig(environment);
 
             var hash = configurationForWorker.WorkerType.GetHashCode() ^ environment.GetHashCode() ^ typeof(FoldoutState).GetHashCode();
-            var foldoutState = stateManager.GetStateObject<FoldoutState>(hash);
+            var foldoutState = stateManager.GetStateObjectOrDefault<FoldoutState>(hash);
 
             if (foldoutState.Content == null || invalidateCachedContent > 0)
             {
@@ -629,7 +629,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
         {
             // Init cached UI state.
-            var selectedBuildTarget = stateManager.GetStateObject<BuildTargetState>(hash ^ typeof(BuildTargetState).GetHashCode());
+            var selectedBuildTarget = stateManager.GetStateObjectOrDefault<BuildTargetState>(hash ^ typeof(BuildTargetState).GetHashCode());
 
             if (selectedBuildTarget.Choices == null || invalidateCachedContent > 0)
             {
