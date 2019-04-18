@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for Windows x86 builds.
+- Added a user-friendly error message when the build system fails to find a SpatialOS Build Configuration instance.
 
 ### Changed
 
