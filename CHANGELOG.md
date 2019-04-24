@@ -16,7 +16,7 @@
 
 ### Changed
 
-- Exceptions in callbacks now no longer break the system that called it, but get logged instead.
+- Exceptions thrown in user-code callbacks no longer cause other callbacks scheduled for that frame to not fire. Instead, the exceptions are caught and logged with Debug.LogException.
 
 ### Breaking Changes
 
