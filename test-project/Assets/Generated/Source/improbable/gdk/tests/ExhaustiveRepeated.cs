@@ -372,7 +372,7 @@ namespace Improbable.Gdk.Tests
             }
         }
 
-        [System.Serializable]
+        [global::System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 197717;

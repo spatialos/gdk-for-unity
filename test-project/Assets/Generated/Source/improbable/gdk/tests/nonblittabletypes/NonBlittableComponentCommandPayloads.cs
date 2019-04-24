@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 public readonly StatusCode StatusCode;
                 public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? ResponsePayload;
                 public readonly global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -114,7 +114,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandResponse? response,
                     global::Improbable.Gdk.Tests.NonblittableTypes.FirstCommandRequest request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;
@@ -249,7 +249,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 public readonly StatusCode StatusCode;
                 public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? ResponsePayload;
                 public readonly global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -259,7 +259,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandResponse? response,
                     global::Improbable.Gdk.Tests.NonblittableTypes.SecondCommandRequest request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;
