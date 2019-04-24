@@ -6,6 +6,10 @@
 
 - Upgraded the Worker SDK version to `13.7.1`.
 
+### Fixed
+
+- Fixed a bug where if an entity received an event and was removed from your worker's view in the same ops list, the event would not be removed.
+
 ## `0.2.1` - 2019-04-15
 
 ### Breaking Changes

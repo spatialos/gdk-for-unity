@@ -101,6 +101,9 @@ namespace <#= qualifiedNamespace #>
                 {
                     updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
                     authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
+<# foreach (var ev in eventDetailsList) { #>
+                    <#= ev.CamelCaseEventName #>EventStorage.RemoveAll(change => change.EntityId.Id == entityId);
+<# } #>
                 }
 
                 if (!componentsAdded.Remove(id))
