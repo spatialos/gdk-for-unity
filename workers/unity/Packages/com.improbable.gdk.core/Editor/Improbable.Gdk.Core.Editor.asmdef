@@ -1,10 +1,6 @@
 {
-    "name": "Improbable.Gdk.BuildSystem",
-    "references": [
-        "Improbable.Gdk.Tools",
-        "Improbable.Gdk.Core",
-        "Improbable.Gdk.Core.Editor"
-    ],
+    "name": "Improbable.Gdk.Core.Editor",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
