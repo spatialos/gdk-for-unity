@@ -6,6 +6,12 @@
 
 - Added support for Windows x86 builds.
 
+### Changed
+
+- Added a `Improbable.Gdk.Core.Editor` asmdef.
+    - Moved `SingletonScriptableObject<T>` from the build system feature module into this assembly and made it public.
+    - Pulled out the `UiStateManager` from the `BuildConfigEditor` into this assembly and made it public.
+
 ### Fixed
 
 - Fixed a bug where if an entity received an event and was removed from your worker's view in the same ops list, the event would not be removed.
