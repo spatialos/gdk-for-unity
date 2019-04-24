@@ -6,7 +6,7 @@
     var hasPartial = PartialDatabase.TryGetPartial(typeDetails.GetPartialResourceTypeName(), out var partial);
 #>
 
-[System.Serializable]
+[global::System.Serializable]
 public struct <#= typeDetails.CapitalisedName #>
 {
 <# foreach (var fieldDetails in fieldDetailsList) { #>

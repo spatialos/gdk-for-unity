@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Upgraded the Worker SDK version to `13.7.1`.
+
 ## `0.2.1` - 2019-04-15
 
 ### Breaking Changes

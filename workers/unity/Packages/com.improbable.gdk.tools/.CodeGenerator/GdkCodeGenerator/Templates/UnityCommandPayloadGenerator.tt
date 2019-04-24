@@ -110,7 +110,7 @@ namespace <#= qualifiedNamespace #>
                 public readonly StatusCode StatusCode;
                 public readonly <#= commandDetails.FqnResponseType #>? ResponsePayload;
                 public readonly <#= commandDetails.FqnRequestType #> RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -120,7 +120,7 @@ namespace <#= qualifiedNamespace #>
                     StatusCode statusCode,
                     <#= commandDetails.FqnResponseType #>? response,
                     <#= commandDetails.FqnRequestType #> request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;
