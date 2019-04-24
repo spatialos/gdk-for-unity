@@ -81,6 +81,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 {
                     updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
                     authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
+                    myEventEventStorage.RemoveAll(change => change.EntityId.Id == entityId);
                 }
 
                 if (!componentsAdded.Remove(id))

@@ -91,6 +91,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
                     authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
+                    firstEventEventStorage.RemoveAll(change => change.EntityId.Id == entityId);
+                    secondEventEventStorage.RemoveAll(change => change.EntityId.Id == entityId);
                 }
 
                 if (!componentsAdded.Remove(id))
