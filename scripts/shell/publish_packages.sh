@@ -13,12 +13,7 @@ pushd $PKG_ROOT
     do
         echo $dir
         pushd $dir
-            npm unpublish --registry="$REGISTRY" --force
             npm publish --registry="$REGISTRY"
         popd
     done
 popd
-
-# remove local unity cache
-rm -rf "$LOCALAPPDATA/Unity/cache/npm/localhost_4873"
-rm -rf "$LOCALAPPDATA/Unity/cache/packages/localhost_4873"
