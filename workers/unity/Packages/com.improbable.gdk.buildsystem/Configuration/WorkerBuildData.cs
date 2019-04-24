@@ -52,7 +52,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetNames =
             new Dictionary<BuildTarget, string>
             {
-                { BuildTarget.StandaloneWindows, "Windows" },
+                { BuildTarget.StandaloneWindows, "Windows86" },
                 { BuildTarget.StandaloneWindows64, "Windows" },
                 { BuildTarget.StandaloneLinux64, "Linux" },
                 { BuildTarget.StandaloneOSX, "Mac" },
