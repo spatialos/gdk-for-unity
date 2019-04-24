@@ -4,9 +4,18 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.BuildSystem.Configuration
+namespace Improbable.Gdk.Core.Editor
 {
-    internal abstract class SingletonScriptableObject<TSelf> : ScriptableObject
+    /// <summary>
+    ///     Base object for a singleton scriptable object.
+    /// </summary>
+    /// <remarks>
+    ///     This differs from Unity's <see cref="ScriptableSingleton{T}"/> in that: null is returned if no instance of
+    ///     <see cref="TSelf"/> is found. In Unity's implementation, an instance of <see cref="TSelf"/> will be created
+    ///     for you.
+    /// </remarks>
+    /// <typeparam name="TSelf">The type to make a singleton scriptable object.</typeparam>
+    public abstract class SingletonScriptableObject<TSelf> : ScriptableObject
         where TSelf : SingletonScriptableObject<TSelf>
     {
         private static readonly List<TSelf> Instances =
@@ -59,6 +68,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static readonly Type SelfType = typeof(TSelf);
 
+        /// <summary>
+        ///     Finds the instance of <see cref="TSelf"/>
+        /// </summary>
+        /// <remarks>
+        ///     An error will be logged if more than one instance is found. If more than one instance is found, only
+        ///     the first is returned.
+        /// </remarks>
+        /// <returns>The instance of <see cref="TSelf"/> if one exists, null otherwise.</returns>
         public static TSelf GetInstance()
         {
             // Clean up dead ones.

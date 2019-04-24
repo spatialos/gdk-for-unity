@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Added a `Improbable.Gdk.Core.Editor` asmdef.
+    - Moved `SingletonScriptableObject<T>` from the build system feature module into this assembly and made it public.
+    - Pulled out the `UiStateManager` from the `BuildConfigEditor` into this assembly and made it public.
 - Upgraded the Worker SDK version to `13.7.1`.
 
 ### Fixed
