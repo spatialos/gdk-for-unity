@@ -114,7 +114,7 @@ namespace Improbable.Gdk.BuildSystem
             if (BuildConfig.GetInstance() == null)
             {
                 const string errorMessage =
-                    "Could not find an instance of the SpatialOS Build Configuration.\n\nPlease create one via Assets > Create > SpatialOS > SpatialOS Build Configuration.\n\nIf you already have an instance of the SpatialOS Build Configuration in your project, please open it in the Unity Inspector to force the asset to load and retry.";
+                    "Could not find an instance of the SpatialOS Build Configuration.\n\nPlease create one via Assets > Create > SpatialOS > SpatialOS Build Configuration.\n\nIf you already have an instance of the SpatialOS Build Configuration in your project, please open it in the Unity Inspector to force the asset to load and retry the build.";
 
                 if (Application.isEditor)
                 {
@@ -122,7 +122,7 @@ namespace Improbable.Gdk.BuildSystem
                     {
                         EditorUtility.DisplayDialog("Could not find SpatialOS Build Configuration",
                             errorMessage,
-                            "Okay");
+                            "OK");
                     };
                 }
 
