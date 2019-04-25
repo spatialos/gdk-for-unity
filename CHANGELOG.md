@@ -2,12 +2,17 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for Windows x86 builds.
+
 ### Changed
 
 - Added a `Improbable.Gdk.Core.Editor` asmdef.
     - Moved `SingletonScriptableObject<T>` from the build system feature module into this assembly and made it public.
     - Pulled out the `UiStateManager` from the `BuildConfigEditor` into this assembly and made it public.
 - Exceptions thrown in user-code callbacks no longer cause other callbacks scheduled for that frame to not fire. Instead, the exceptions are caught and logged with Debug.LogException.
+- Upgraded the Worker SDK version to `13.7.1`.
 
 ### Fixed
 
@@ -39,7 +44,7 @@
 - The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
 - Removed the `Type` suffix from player lifecycle schema types.
 - `RedirectedProcess.RunAsync()` now takes a `CancellationToken?` as a parameter. This token can be used to cancel the underlying process.
-- Updated the Unity version to `2018.3.11`
+- Updated the Unity version to `2018.3.11`.
 
 ### Fixed
 

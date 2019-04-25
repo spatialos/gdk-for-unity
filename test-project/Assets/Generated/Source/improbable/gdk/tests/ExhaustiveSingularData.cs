@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct ExhaustiveSingularData
     {
         public BlittableBool Field1;

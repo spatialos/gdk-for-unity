@@ -194,7 +194,7 @@ var fieldDetails = fieldDetailsList[i]; #>
             }
         }
 
-        [System.Serializable]
+        [global::System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;

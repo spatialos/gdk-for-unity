@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.NonblittableTypes
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct FirstEventPayload
     {
         public BlittableBool Field1;

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.BlittableTypes
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct SecondEventPayload
     {
         public float Field1;

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct SomeType
     {
         public static class Serialization

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct RandomDataType
     {
         public int Value;

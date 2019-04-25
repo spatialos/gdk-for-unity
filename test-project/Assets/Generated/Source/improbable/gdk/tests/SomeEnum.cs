@@ -6,7 +6,7 @@
 namespace Improbable.Gdk.Tests
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public enum SomeEnum : uint
     {
         FIRST_VALUE = 0,

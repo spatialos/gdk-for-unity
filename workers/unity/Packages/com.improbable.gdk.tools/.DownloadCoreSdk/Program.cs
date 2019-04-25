@@ -28,14 +28,15 @@ namespace Improbable
 
             var packages = new List<Package>
             {
+                new Package(tempPath, "worker_sdk", "core-dynamic-x86-win32", $"{nativeDependenciesPath}/Windows/x86", new List<string> {"include", "CoreSdkDll.lib"}),
                 new Package(tempPath, "worker_sdk", "core-dynamic-x86_64-win32", $"{nativeDependenciesPath}/Windows/x86_64", new List<string> {"include", "CoreSdkDll.lib"}),
                 new Package(tempPath, "worker_sdk", "core-dynamic-x86_64-linux", $"{nativeDependenciesPath}/Linux/x86_64", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "core-bundle-x86_64-macos", $"{nativeDependenciesPath}/OSX", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "core-static-fullylinked-arm-ios", $"{nativeDependenciesPath}/iOS/arm", new List<string> {"include", "libCoreSdkStatic.a.pic", "CoreSdkStatic.lib"}, postprocessCallback:PostProcess_iOS_Arm),
                 new Package(tempPath, "worker_sdk", "core-static-fullylinked-x86_64-ios", $"{nativeDependenciesPath}/iOS/x86_64", new List<string> {"include", "libCoreSdkStatic.a.pic", "CoreSdkStatic.lib"}, postprocessCallback:PostProcess_iOS_x86_64),
-                new Package(tempPath, "worker_sdk", "core-dynamic-arm64-android", $"{nativeDependenciesPath}/Android/arm64", new List<string> {"include"}),
-                new Package(tempPath, "worker_sdk", "core-dynamic-armeabi_v7a-android", $"{nativeDependenciesPath}/Android/armv7", new List<string> {"include"}),
-                new Package(tempPath, "worker_sdk", "core-dynamic-x86-android-android", $"{nativeDependenciesPath}/Android/x86", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "core-dynamic-arm64v8a-android", $"{nativeDependenciesPath}/Android/arm64", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "core-dynamic-armv7a-android", $"{nativeDependenciesPath}/Android/armv7", new List<string> {"include"}),
+                new Package(tempPath, "worker_sdk", "core-dynamic-x86-android", $"{nativeDependenciesPath}/Android/x86", new List<string> {"include"}),
                 new Package(tempPath, "worker_sdk", "csharp-c-interop", $"{managedDependenciesPath}/Common"),
                 new Package(tempPath, "worker_sdk", "csharp-c-interop-static", $"{managedDependenciesPath}/iOS"),
                 new Package(tempPath, "schema", "standard_library", schemaStdLibDir),
