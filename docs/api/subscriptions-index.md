@@ -120,6 +120,14 @@ GDK package: Subscriptions<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-manager">WorkerFlagCallbackManager</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-system">WorkerFlagCallbackSystem</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a></td>
 <td style="padding: 14px; border: none;">Marks MonoBehaviours which want to be enabled only for particular worker types. </td>
 </tr>

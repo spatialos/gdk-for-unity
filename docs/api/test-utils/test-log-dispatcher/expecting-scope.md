@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/test-utils-index">TestUtils</a>.<a href="{{urlRoot}}/api/test-utils/test-log-dispatcher">TestLogDispatcher</a><br/>
 GDK package: TestUtils<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L72">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L72">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Expect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L84">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L84">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -76,7 +76,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/f54d7cdc/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L89">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.testutils/TestLogDispatcher.cs/#L89">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
