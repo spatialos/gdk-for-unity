@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
     internal class Callbacks<T>
     {
-        private List<WrappedCallback> callbacks = new List<WrappedCallback>();
-        private HashSet<ulong> currentKeys = new HashSet<ulong>();
+        private readonly List<WrappedCallback> callbacks = new List<WrappedCallback>();
+        private readonly HashSet<ulong> currentKeys = new HashSet<ulong>();
 
         // These can be lists as we expect the number of callbacks added/removed during invocation of other callbacks
         // to be low.
-        private List<ulong> toRemove = new List<ulong>();
-        private List<WrappedCallback> toAdd = new List<WrappedCallback>();
+        private readonly List<ulong> toRemove = new List<ulong>();
+        private readonly List<WrappedCallback> toAdd = new List<WrappedCallback>();
 
         private bool isInInvoke = false;
 
@@ -46,24 +47,26 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             currentKeys.Remove(key);
-            return callbacks.RemoveAll(callback => callback.Key == key) == 1;
+            return callbacks.Remove(new WrappedCallback(key, default));
         }
 
         public void InvokeAll(T op)
         {
             isInInvoke = true;
 
-            try
+            for (var i = 0; i < callbacks.Count; i++)
             {
-                for (int i = 0; i < callbacks.Count; i++)
+                try
                 {
-                    callbacks[i].Action(op);
+                    callbacks[i].Invoke(op);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
                 }
             }
-            finally
-            {
-                isInInvoke = false;
-            }
+
+            isInInvoke = false;
 
             FlushDeferredOperations();
         }
@@ -72,48 +75,84 @@ namespace Improbable.Gdk.Subscriptions
         {
             isInInvoke = true;
 
-            try
+            for (var i = callbacks.Count - 1; i >= 0; i--)
             {
-                for (int i = callbacks.Count - 1; i >= 0; i--)
+                try
                 {
-                    callbacks[i].Action(op);
+                    callbacks[i].Invoke(op);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
                 }
             }
-            finally
-            {
-                isInInvoke = false;
-            }
+
+            isInInvoke = false;
 
             FlushDeferredOperations();
         }
 
         private void FlushDeferredOperations()
         {
-            callbacks.RemoveAll(callback => toRemove.Contains(callback.Key));
-
-            foreach (var key in toRemove)
+            if (toRemove.Count > 0)
             {
-                currentKeys.Remove(key);
+                for (var i = callbacks.Count - 1; i >= 0; i--)
+                {
+                    if (toRemove.Contains(callbacks[i].Key))
+                    {
+                        callbacks.RemoveAt(i);
+                    }
+                }
+
+                foreach (var key in toRemove)
+                {
+                    currentKeys.Remove(key);
+                }
+
+                toRemove.Clear();
             }
 
-            foreach (var callback in toAdd)
+            if (toAdd.Count > 0)
             {
-                callbacks.Add(callback);
-            }
+                foreach (var callback in toAdd)
+                {
+                    callbacks.Add(callback);
+                    currentKeys.Add(callback.Key);
+                }
 
-            toRemove.Clear();
-            toAdd.Clear();
+                toAdd.Clear();
+            }
         }
 
-        private struct WrappedCallback
+        private struct WrappedCallback : IEquatable<WrappedCallback>
         {
-            public ulong Key;
-            public Action<T> Action;
+            public readonly ulong Key;
+            private readonly Action<T> action;
 
-            public WrappedCallback(ulong key, Action<T> action)
+            public WrappedCallback(ulong key, Action<T> callback)
             {
                 Key = key;
-                Action = action;
+                action = callback;
+            }
+
+            public void Invoke(T arg)
+            {
+                action(arg);
+            }
+
+            public bool Equals(WrappedCallback other)
+            {
+                return Key == other.Key;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is WrappedCallback other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return Key.GetHashCode();
             }
         }
     }
@@ -184,10 +223,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void RemoveAllCallbacksForIndex(long index)
         {
-            if (callbacks.ContainsKey(index))
-            {
-                callbacks.Remove(index);
-            }
+            callbacks.Remove(index);
         }
 
         public bool Remove(ulong callbackKey)
@@ -205,17 +241,17 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeAll(long index, T op)
         {
-            if (callbacks.ContainsKey(index))
+            if (callbacks.TryGetValue(index, out var callback))
             {
-                callbacks[index].InvokeAll(op);
+                callback.InvokeAll(op);
             }
         }
 
         public void InvokeAllReverse(long index, T op)
         {
-            if (callbacks.ContainsKey(index))
+            if (callbacks.TryGetValue(index, out var callback))
             {
-                callbacks[index].InvokeAllReverse(op);
+                callback.InvokeAllReverse(op);
             }
         }
     }
