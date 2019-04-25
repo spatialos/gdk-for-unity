@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 public readonly StatusCode StatusCode;
                 public readonly global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? ResponsePayload;
                 public readonly global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -114,7 +114,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty? response,
                     global::Improbable.Gdk.Tests.ComponentsWithNoFields.Empty request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;

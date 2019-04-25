@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 {
     
-    [System.Serializable]
+    [global::System.Serializable]
     public struct Empty
     {
         public static class Serialization

@@ -200,7 +200,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             }
         }
 
-        [System.Serializable]
+        [global::System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
             public uint ComponentId => 1001;

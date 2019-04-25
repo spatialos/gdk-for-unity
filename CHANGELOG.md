@@ -12,6 +12,7 @@
     - Moved `SingletonScriptableObject<T>` from the build system feature module into this assembly and made it public.
     - Pulled out the `UiStateManager` from the `BuildConfigEditor` into this assembly and made it public.
 - Exceptions thrown in user-code callbacks no longer cause other callbacks scheduled for that frame to not fire. Instead, the exceptions are caught and logged with Debug.LogException.
+- Upgraded the Worker SDK version to `13.7.1`.
 
 ### Fixed
 

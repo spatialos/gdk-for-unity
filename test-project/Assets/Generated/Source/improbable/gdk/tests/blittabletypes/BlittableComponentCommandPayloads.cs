@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 public readonly StatusCode StatusCode;
                 public readonly global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? ResponsePayload;
                 public readonly global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -114,7 +114,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandResponse? response,
                     global::Improbable.Gdk.Tests.BlittableTypes.FirstCommandRequest request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;
@@ -249,7 +249,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 public readonly StatusCode StatusCode;
                 public readonly global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? ResponsePayload;
                 public readonly global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest RequestPayload;
-                public readonly System.Object Context;
+                public readonly global::System.Object Context;
                 public readonly long RequestId;
 
                 public ReceivedResponse(
@@ -259,7 +259,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     StatusCode statusCode,
                     global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandResponse? response,
                     global::Improbable.Gdk.Tests.BlittableTypes.SecondCommandRequest request,
-                    System.Object context,
+                    global::System.Object context,
                     long requestId)
                 {
                     SendingEntity = sendingEntity;

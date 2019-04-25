@@ -252,7 +252,7 @@ namespace Improbable.Gdk.Core
                 RuntimeConfigDefaults.AnonymousAuthenticationPort,
                 new PlayerIdentityTokenRequest
                 {
-                    DevelopmentAuthenticationTokenId = authToken,
+                    DevelopmentAuthenticationToken = authToken,
                     PlayerId = playerId,
                     DisplayName = displayName,
                 }
