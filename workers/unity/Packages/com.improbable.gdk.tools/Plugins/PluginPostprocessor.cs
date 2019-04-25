@@ -12,50 +12,51 @@ namespace Improbable.Gdk.Tools
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneOSX
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneLinux64
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows64,
                 CpuType.X86_64
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.StandaloneWindows,
-                CpuType.X86
-                ),
+                CpuType.X86,
+                compatibleWithEditor: false
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CpuType.Arm64
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CpuType.ARMv7
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.Android,
                 CpuType.X86
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Core,
                 BuildTarget.iOS
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Sdk,
                 new List<BuildTarget> { BuildTarget.iOS }
-                ),
+            ),
             new PluginCompatibilitySetting(
                 PluginType.Sdk,
                 BuildTarget.iOS,
                 CpuType.Agnostic,
                 compatibleWithEditor: false
-                ),
+            ),
         };
 
         internal static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)

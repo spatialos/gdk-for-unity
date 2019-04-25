@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for Windows x86 builds.
+
 ### Changed
 
 - Added a `Improbable.Gdk.Core.Editor` asmdef.
@@ -39,7 +43,7 @@
 - The player lifecycle module now dynamically queries for PlayerCreator entities, and sends requests to a random one each time. This removes the reliance on a hardcoded PlayerCreator Entity ID.
 - Removed the `Type` suffix from player lifecycle schema types.
 - `RedirectedProcess.RunAsync()` now takes a `CancellationToken?` as a parameter. This token can be used to cancel the underlying process.
-- Updated the Unity version to `2018.3.11`
+- Updated the Unity version to `2018.3.11`.
 
 ### Fixed
 
