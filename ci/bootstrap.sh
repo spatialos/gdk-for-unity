@@ -12,5 +12,6 @@ if [[ -d "${SHARED_CI_DIR}" ]]; then
     rm -rf "${SHARED_CI_DIR}"
 fi
 
-env
+env | sort
+git config --global --system --includes --list | sort
 GIT_TRACE=1 GIT_TRACE_PACKET=1 GIT_TRACE_SETUP=1 GIT_CURL_VERBOSE=1 git clone --verbose "${CLONE_URL}" "${SHARED_CI_DIR}"
