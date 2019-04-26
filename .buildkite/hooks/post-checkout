@@ -2,4 +2,11 @@
 set -euo pipefail
 [[ -n "${DEBUG:-}" ]] && set -x
 
-ci/bootstrap.sh
+if [[ -z "${BUILDKITE-}" ]]; then
+  # Local workstations
+  ci/bootstrap.sh
+  exit 0
+fi
+if [[ "${BUILDKITE_AGENT_META_DATA_QUEUE}" != "trigger-pipelines" ]]; then
+  ci/bootstrap.sh
+fi
