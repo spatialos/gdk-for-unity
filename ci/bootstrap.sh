@@ -14,4 +14,4 @@ fi
 
 env | sort
 git config --global --includes --list | sort
-GIT_TRACE=1 GIT_TRACE_PACKET=1 GIT_TRACE_SETUP=1 GIT_CURL_VERBOSE=1 git clone --verbose "${CLONE_URL}" "${SHARED_CI_DIR}"
+GIT_TRACE=1 GIT_TRACE_PACKET=1 GIT_TRACE_SETUP=1 GIT_CURL_VERBOSE=1 GIT_SSH_COMMAND='c:/Program Files/OpenSSH-Win64/ssh.exe -vvv' git clone --verbose "${CLONE_URL}" "${SHARED_CI_DIR}"
