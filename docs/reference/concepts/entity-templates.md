@@ -10,7 +10,7 @@ Before reading this document, make sure you are familiar with:
   * [Standard schema library components](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components)
 ")%>
 
-An [`EntityTemplate`]({{urlRoot}}/api/core/entity-template) specifies what [components]({{urlRoot}}/reference/glossary#spatialos-component) a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) will have, the initial values of these components and which [layers](https://docs.improbable.io/reference/latest/shared/glossary#layers) get [write access]({{urlRoot}}/reference//glossary#authority) to each component.
+An [`EntityTemplate`]({{urlRoot}}/api/core/entity-template) specifies what [components]({{urlRoot}}/reference/glossary#spatialos-component) a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) contains, the initial values of these components and which [layers](https://docs.improbable.io/reference/latest/shared/glossary#layers) get [write access]({{urlRoot}}/reference//glossary#authority) to each component.
 
 ## How to define an entity template
 
@@ -26,15 +26,17 @@ An `EntityTemplate` can be mutated and used multiple times.
 
 All SpatialOS entities require the `Position` and `EntityAcl` components.
 
-The `Position` component must be added to the entity template manually. It is used by SpatialOS for load-balancing purposes and some types of queries.
+The `Position` component must be added to the entity template manually. It is used by SpatialOS for [load-balancing](https://docs.improbable.io/reference/latest/shared/worker-configuration/load-balancing) purposes and [relative constraints in query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#relative-constraints).
 
-The `EntityAcl` component is automatically handled by the `EntityTemplate` class. It is this component that determines which types of workers have read access to an entity and, for each component, which type of worker can have write access.
+The `EntityAcl` component is automatically handled by the `EntityTemplate` class. This component determines which types of workers have read access to an entity and, for each component, which type of worker can have write access. Note that at any point in time, only instance of a worker can be authoritative over an entity's component.
 
-> Understand more about the standard schema library components [here](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components).
+> To learn more about the standard schema library components, [go to this documentation](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components).
 
-To add components to the entity template, use the `AddComponent` method. For example, to add a `Position` component with [write access]({{urlRoot}}/reference//glossary#authority) given to UnityGameLogic workers:
+To add components to the entity template and specify which worker type has write access over the component, use the `AddComponent` method.
 
 ```csharp
+// Adds the Position component to the template and specifies that
+// only a UnityGameLogic worker can have write access
 entityTemplate.AddComponent(new Position.Snapshot(coords), "UnityGameLogic");
 ```
 
