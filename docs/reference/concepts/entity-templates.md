@@ -1,67 +1,63 @@
-[//]: # (Doc of docs reference 22)
-
 <%(TOC)%>
+
 # Entity templates
-_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
-Before reading this document, make sure you are familiar with the documentation on the [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow) and the [workers in the GDK]({{urlRoot}}/reference/concepts/worker) overview.
+<%(Callout message="
+Before reading this document, make sure you are familiar with:
 
-Whether you are using the MonoBehaviour workflow or the ECS workflow, you need to set up entity templates to create a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity). You use the `EntityTemplate` class to specify all the [components]({{urlRoot}}/reference/glossary#spatialos-component) that a SpatialOS entity has, the initial values of those components, and which workers have [write access]({{urlRoot}}/reference//glossary#authority) to each component.
+  * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
+  * [Standard schema library components](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components)
+")%>
 
-For information on how to create SpatialOS entities once you have set up entity templates, see the documentation on [creating entities (MonoBehaviour workflow)]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) and [ECS World commands (ECS workflow)]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
+An [`EntityTemplate`]({{urlRoot}}/api/core/entity-template) specifies what [components]({{urlRoot}}/reference/glossary#spatialos-component) a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) contains, the initial values of these components and which [layers](https://docs.improbable.io/reference/latest/shared/glossary#layers) get [write access]({{urlRoot}}/reference//glossary#authority) to each component.
 
-## How to create a SpatialOS entity template
+## How to define an entity template
 
-You have to create an `EntityTemplate` to specify which components a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) has and the initial values of those [components]({{urlRoot}}/reference/glossary#spatialos-component). You have to also specify which type of workers can have write access (also known as ”[authority]({{urlRoot}}/reference/glossary#authority)”) on a per-component basis.
-
-You use the `EntityTemplate` class.
-
-There are examples of how to use this class below.
-
-
-### Create component snapshots
-For each [schema component]({{urlRoot}}/reference/glossary#schema) you define, the `code generator` creates a struct which inherits from `ISpatialComponentSnapshot`, the generated [snapshot struct]({{urlRoot}}/reference/concepts/code-generation#snapshot). For example, for the following schema:
-
-```
-component Health {
-  id = 1;
-  int32 current_health = 1;
-}
-```
-
-The code generator creates:
+To define an entity template, you must first construct an `EntityTemplate`.
 
 ```csharp
-public partial class Health
-{
-    public struct Snapshot
-    {
-        int CurrentHealth;
-    }
-}
+var entityTemplate = new EntityTemplate();
 ```
 
-The following code snippet shows an example of how to define an `EntityTemplate`. You can use this `EntityTemplate` to spawn a SpatialOS `creature` entity via either the [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands) or [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands), depending on your [workflow]({{urlRoot}}/reference/workflows/which-workflow).
+An `EntityTemplate` can be mutated and used multiple times.
 
-**Example**<br/>
-Example defining a template for a SpatialOS entity `creature`.
+### Add components to entity template
+
+All SpatialOS entities require the `Position` and `EntityAcl` components.
+
+The `Position` component must be added to the entity template manually. It is used by SpatialOS for [load-balancing](https://docs.improbable.io/reference/latest/shared/worker-configuration/load-balancing) purposes and [relative constraints in query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#relative-constraints).
+
+The `EntityAcl` component is automatically handled by the `EntityTemplate` class. This component determines which types of workers have read access to an entity and, for each component, which type of worker can have write access. Note that at any point in time, only instance of a worker can be authoritative over an entity's component.
+
+> To learn more about the standard schema library components, [go to this documentation](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components).
+
+To add components to the entity template and specify which worker type has write access over the component, use the `AddComponent` method.
 
 ```csharp
-public static class CreatureTemplate
-{
-
-    public static EntityTemplate CreateCreatureEntityTemplate(Coordinates coords)
-    {
-        var entityTemplate = new EntityTemplate();
-
-        entityTemplate.AddComponent(new Position.Snapshot { Coords = coords }, "UnityGameLogic");
-        entityTemplate.AddComponent(new Metadata.Snapshot { EntityType = "Creature"}, "UnityGameLogic");
-        entityTemplate.AddComponent(new Persistence.Snapshot(), "UnityGameLogic");
-        entityTemplate.AddComponent(new Health.Snapshot { CurrentHealth = 100 }, "UnityGameLogic");
-        entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
-        entityTemplate.SetComponentWriteAccess(EntityAcl.ComponentId, "UnityGameLogic");
-
-        return entityTemplate;
-    }
-}
+// Adds the Position component to the template and specifies that
+// only a UnityGameLogic worker can have write access
+entityTemplate.AddComponent(new Position.Snapshot(coords), "UnityGameLogic");
 ```
+
+The `AddComponent` method updates the write access attribute for the given component in the `EntityAcl`.
+
+### Set read access
+
+To ensure that interested workers can read the components and values of an entity, the read access must be set in the `EntityAcl` component.
+
+This is done by calling the `SetReadAccess` method.
+
+```csharp
+// Ensures that any UnityGameLogic and UnityClient worker can read all components on an entity
+entityTemplate.SetReadAccess("UnityGameLogic", "UnityClient");
+```
+
+## Advanced usage
+
+In addition to adding components and setting read access, the `EntityTemplate` class provides other utility methods for:
+
+* getting, overriding or removing component snapshots from the template
+* getting or overriding component write access attributes for a given component in the template
+* creating an `Entity` instance from the template
+
+You can find more information about these methods in the [API reference documentation]({{urlRoot}}/api/core/entity-template#entitytemplate-class).
