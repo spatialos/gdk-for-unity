@@ -5,7 +5,6 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-  * [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
   * [Standard schema library components](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components)
 ")%>
