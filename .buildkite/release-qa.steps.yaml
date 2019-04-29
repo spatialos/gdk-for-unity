@@ -13,7 +13,7 @@ common: &common
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=v2-1556292135-1a8a06968e781364-------z"
+    - "queue=v2-1556548819-32d66bca3227c14a-------z"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -22,6 +22,9 @@ common: &common
         limit: 3
         # This is designed to trap and retry failures because of a buildkite bug.
       - exit_status: 255
+        limit: 3
+        # Workaround for flaky Git clones, likely due to - https://github.com/PowerShell/Win32-OpenSSH/issues/1322
+      - exit_status: 128
         limit: 3
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
