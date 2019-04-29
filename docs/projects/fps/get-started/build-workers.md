@@ -8,10 +8,10 @@ This tutorial takes you through the steps to set up a cloud deployment. However,
 <br/>
 To run workers in the Unity Editor with the FPS Starter Project:
 <br/>
-<br/>
-1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).<br/>
-2. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.<br/>
-3. In your Unity Editor, play the `FPS-Development` Scene.<br/>
+
+1. With your project open in your Unity Editor, on your computer’s keyboard, input Ctrl+L (Windows) or Cmd+L (Mac).
+1. Wait until you see a message in the Editor’s Console window that SpatialOS is ready. The message is: SpatialOS ready. Access the inspector at http://localhost:21000/inspector.
+1. In your Unity Editor, play the `FPS-Development` Scene.
 
 <%(/Expandable)%>
 
@@ -31,7 +31,7 @@ Now build your workers from the Unity Editor's SpatialOS menu by selecting **Spa
   <br/>![SpatialOS menu in Unity]({{assetRoot}}assets/unity-spatialos-menu.png)
   <br/>_The SpatialOS menu in the Unity Editor_
   <br/>
-  
+
 Building workers for the first time may take a while (about 10 minutes). Why not make yourself a cup of tea or check out [our Youtube channel](https://www.youtube.com/channel/UC7BE8B2yUeQxPvZytk47NYw/videos) while you wait?
 
 <%(Callout message="Your workers have finished building when you see the following message in your Unity Editor's Console window:<br/><br/>**Completed build for Cloud target**")%>
@@ -40,7 +40,7 @@ Building workers for the first time may take a while (about 10 minutes). Why not
 
 > **NOTE**: You may get a number of warnings displayed in your Unity Editor Console window. You can ignore the warnings at this stage.
 
-If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch). 
+If your build succeeded, you can now [upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch).
 
 If you got build errors in Unity Editor Console window, check the Common build errors section below.
 

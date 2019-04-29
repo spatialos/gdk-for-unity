@@ -3,7 +3,7 @@
 #  Logs
  _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
-The SpatialOS GDK for Unity uses a custom `ILogDispatcher` interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
+The SpatialOS GDK for Unity uses a custom [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher) interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
 
 *  `LoggingDispatcher`, which simply logs to the Unity console
 *  `ForwardingDispatcher`, which logs to the Unity console and sends it to the SpatialOS Console
@@ -46,7 +46,7 @@ The `LogEvent` class allows construction of enhanced log messages.
 
 ## Creating and using your own dispatcher
 
-To create your own dispatcher, make a new class which implements `ILogDispatcher`:
+To create your own dispatcher, make a new class which implements [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
 
 ```csharp
 public class MyCustomDispatcher: ILogDispatcher
