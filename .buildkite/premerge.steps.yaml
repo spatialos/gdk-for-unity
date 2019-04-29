@@ -23,6 +23,9 @@ common: &common
         # This is designed to trap and retry failures because of a buildkite bug.
       - exit_status: 255
         limit: 3
+        # Workaround for flaky Git clones, likely due to - https://github.com/PowerShell/Win32-OpenSSH/issues/1322
+      - exit_status: 128
+        limit: 3
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
