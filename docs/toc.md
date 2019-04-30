@@ -2,6 +2,7 @@
     - [Welcome]({{urlRoot}}/index)
     - [Setup & installation]({{urlRoot}}/machine-setup)
     - [Roadmap](https://github.com/spatialos/gdk-for-unity/projects/1)
+    - [Pricing]({{urlRoot}}/pricing)
 - <h3>Starter projects</h3>
     - FPS Starter Project
         - [Overview]({{urlRoot}}/projects/fps/overview)
