@@ -16,7 +16,7 @@ Before reading this document, make sure you are familiar with:
 
 We use the following schema for all examples described in this documentation.
 
-```
+```schemalang
 package improbable.examples;
 
 component Health {

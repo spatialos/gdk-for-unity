@@ -35,12 +35,12 @@ You need to add the underlying player lifecycle systems to your worker. Open you
 
 The server-worker responsible for handling requests to spawn player entities needs to know which [entity template]({{urlRoot}}/reference/concepts/entity-templates) to use when sending the entity creation request to the [SpatialOS Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime).
 
-Create a method that returns an `EntityTemplate` object and takes the following parameters:
+Create a method that returns an [`EntityTemplate`]({{urlRoot}}/api/core/entity-template#entitytemplate-class) object and takes the following parameters:
 
 * `string workerId`: The ID of the worker that wants to spawn this player entity.
 *  `byte[] playerCreationArguments`: a serialized byte array of arguments provided by the worker instance sending the player creation request.
 
-When defining the entity template, you need to use the `PlayerLifecycleHelper.AddPlayerLifecycleComponents` method. This method adds the SpatialOS components that are required by the Player Lifecycle Feature Module to the player entity template.
+When defining the entity template, you need to use the [`PlayerLifecycleHelper.AddPlayerLifecycleComponents`]({{urlRoot}}/api/player-lifecycle/player-lifecycle-helper#static-methods) method. This method adds the SpatialOS components that are required by the Player Lifecycle Feature Module to the player entity template.
 
 The following code snippet shows an example on how to implement such a method:
 
@@ -66,7 +66,7 @@ public static class PlayerTemplate
 
 You need to configure the Player Lifecycle Feature Module to use the player entity template function you defined above. To do this, set the `PlayerLifecycleConfig.CreateEntityTemplate` field to the function you defined.
 
-For example, you may wish to set this in the `WorkerConnector`:
+For example, you may wish to set this in the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector):
 
 ```csharp
 private async void Start()

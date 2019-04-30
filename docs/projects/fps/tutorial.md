@@ -1,5 +1,5 @@
 <%(TOC)%>
-# Health Pick-up tutorial for the FPS Starter Project 
+# Health Pick-up tutorial for the FPS Starter Project
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
@@ -46,7 +46,7 @@ We write the definitions for these properties in [schemalang]({{urlRoot}}/refere
 
 **Step 3.** Copy and paste the following definition into the file and save the file:
 
-```
+```schemalang
 package pickups;
 
 component HealthPickup {
@@ -73,7 +73,7 @@ Each field in a component must have a unique id (within the component) which it 
 This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference#components) for more info.
 <%(/Expandable)%>
 
-**Step 4.** Run the code generator. 
+**Step 4.** Run the code generator.
 
 From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
 
@@ -93,7 +93,7 @@ Note that you don’t need to understand the generated code in order to follow t
 
 ## Define a new SpatialOS entity
 
-Now that we've defined and generated the `HealthPickup` component and its properties, let's define the `HealthPickup` entity template! 
+Now that we've defined and generated the `HealthPickup` component and its properties, let's define the `HealthPickup` entity template!
 
 An entity template simply declares which SpatialOS components are present on the entity, the initial values of those components, and which worker types can read from or write to the components.
 
@@ -273,7 +273,7 @@ The Inspector uses the `entity_type` string field from the [schema standard libr
 
 <%(#Expandable title="Where are my snapshots?")%>
 
-All SpatialOS GDK projects contain a directory named `snapshots` in the root of the project. Your snapshots can be found in that directory: 
+All SpatialOS GDK projects contain a directory named `snapshots` in the root of the project. Your snapshots can be found in that directory:
 `gdk-for-unity-fps-starter-project/snapshots`.
 
 <%(/Expandable)%>
@@ -296,7 +296,7 @@ In this section we’re going to decide how to represent the `HealthPickup` enti
 1. After a period of time, the health pack is "respawned" and is available to be picked up again.
 1. Critical interactions like: collision detection between the player and the health pack and granting the health is done on the game logic worker. That is to say, we do not trust the client.
 
-From these we can derive some rules about how the `UnityClient` and `UnityGameLogic` workers should represent the `HealthPickup` entity: 
+From these we can derive some rules about how the `UnityClient` and `UnityGameLogic` workers should represent the `HealthPickup` entity:
 
 * The `UnityClient` client-worker should display a visual representation for each health pack in the world. It should only display health packs that are currently "active". It _should not_ do any collision detection.
 * The `UnityGameLogic` server-worker should have a physical representation for each health pack in order to do the collision detection. The collider on the health pack should be turned off when the health pack is not active. It _does not need to_ visualise the health pack.
@@ -403,7 +403,7 @@ Here, we access the **current** data of the `HealthPickup` component of the unde
 
 No, exactly how entities are represented on each of your workers is up to you.
 
-The GDK also offers an [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow) which represents them as a grouping of Unity ECS entity and components. 
+The GDK also offers an [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow) which represents them as a grouping of Unity ECS entity and components.
 
 If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow) for you.
 
@@ -617,7 +617,7 @@ The game logic is now in place, and we can test if it is working correctly. Foll
 
 **Step 1.** Enable the player health bar.
 
-Modify the `OnScreenUI` prefab by enabling the **OnScreenUI** > **InGameHud** > **HealthBar** game object. 
+Modify the `OnScreenUI` prefab by enabling the **OnScreenUI** > **InGameHud** > **HealthBar** game object.
 
 This will display a health bar in the top left corner to make it easier for you to see how the health of a player changes.
 

@@ -1,3 +1,5 @@
+<%(TOC)%>
+
 # Set up tranform synchronization for an entity
 
 ## Set up your worker connector
@@ -27,7 +29,7 @@ We provide a helper method that does this for you: `TransformSynchronizationHelp
 ```csharp
 var serverAttribute = "UnityGameLogic";
 var clientAttribute = "UnityClient";
- 
+
 var entityTemplate = new EntityTemplate();
 entityTemplate.AddComponent(new Position.Snapshot(), serverAttribute);
 entityTemplate.AddComponent(new Metadata.Snapshot("Monster"), serverAttribute);
@@ -44,7 +46,7 @@ TransformSynchronizationHelper.AddTransformSynchronizationComponents(entityTempl
 
 <%(Callout message="As the Transform Synchronization Feature Module supports GameObjects only, you need to ensure that you have a linked GameObject to your SpatialOS entity.<br/><br/>See our [GameObject Creation Feature Module documentation]({{urlRoot}}/modules/game-object-creation/overview) to get this set up.")%>
 
-Open the prefab that you want to be linked to your SpatialOS entity and add the `TransformSynchronization` MonoBehaviour to that prefab. It should look like the following:
+Open the prefab that you want to be linked to your SpatialOS entity and add the [`TransformSynchronization`]({{urlRoot}}/api/transform-synchronization/transform-synchronization) MonoBehaviour to that prefab. It should look like the following:
 
 ![]({{assetRoot}}assets/image-transform-feature-module-md-0.png)
 
@@ -56,7 +58,7 @@ When authority is re-gained the Rigidbody returns to the state it was in before.
 
 ## Add transform strategies to the `TransformSynchronization` MonoBehaviour
 
-The behaviour of the Transform Synchronization Feature Module is dictated by which strategies are attached to the `TransformSynchronization` MonoBehaviour. Each strategy can be classified as either a "receive strategy" or a "send strategy". See our complete documentation on the [transform strategies]({{urlRoot}}/modules/transform-sync/strategies) to learn what each of them do.
+The behaviour of the Transform Synchronization Feature Module is dictated by which strategies are attached to the [`TransformSynchronization`]({{urlRoot}}/api/transform-synchronization/transform-synchronization) MonoBehaviour. Each strategy can be classified as either a "receive strategy" or a "send strategy". See our complete documentation on the [transform strategies]({{urlRoot}}/modules/transform-sync/strategies) to learn what each of them do.
 
 You may need to create instances of these strategies as they are scriptable objects. Select **Assets** > **Create** > **SpatialOS** > **Transforms** to see the available strategies.
 
@@ -66,9 +68,9 @@ An arbritrary number of strategies can be specified, but only one per worker typ
 
 **Our recommended receive strategy setup**
 
-* For client-workers, use the `InterpolationReceiveStrategy`.
-* For server-workers, use the `DirectReceiveStrategy`.
+* For client-workers, use the [`InterpolationReceiveStrategy`]({{urlRoot}}/api/transform-synchronization/interpolation-receive-strategy).
+* For server-workers, use the [`DirectReceiveStrategy`]({{urlRoot}}/api/transform-synchronization/direct-receive-strategy).
 
 **Our recommended send strategy setup**
 
-Currently only the `RateLimitedSendStrategy` is available and thus is the recommended strategy.
+Currently only the [`RateLimitedSendStrategy`]({{urlRoot}}/api/transform-synchronization/rate-limited-send-strategy) is available and thus is the recommended strategy.

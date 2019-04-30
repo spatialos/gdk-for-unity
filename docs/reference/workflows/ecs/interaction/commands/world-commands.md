@@ -6,7 +6,7 @@ World commands are special commands that are sent to the SpatialOS runtime to as
 
 World command requests can be created through the `CommandSystem`, which also handles received responses.
 
-## 1. Reserve an entity ID
+## Reserve an entity ID
 
 You can use the [`ReserveEntityIds`]({{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids) world command to reserve groups of entity IDs that you can use in entity creation.
 
@@ -26,7 +26,7 @@ You can get responses by calling `GetResponses` on the `CommandSystem` with the 
 commandSystem.GetResponses<WorldCommands.ReserveEntityIds.ReceivedResponse>();
 ```
 
-## 2. Create an entity
+## Create an entity
 
 The [`CreateEntity`]({{urlRoot}}/api/core/commands/world-commands/create-entity) world command is used to request the creation of a new SpatialOS entity, specified using an [entity template]({{urlRoot}}/reference/concepts/entity-templates).
 
@@ -46,7 +46,7 @@ You can get responses by calling `GetResponses` on the `CommandSystem` with the 
 commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
 ```
 
-## 3. Delete an entity
+## Delete an entity
 
 You can delete entities via the [`DeleteEntity`]({{urlRoot}}/api/core/commands/world-commands/delete-entity) world command. You need to know the SpatialOS entity ID of the entity you want to delete.
 
@@ -65,7 +65,7 @@ You can get responses by calling `GetResponses` on the `CommandSystem` with the 
 commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
 ```
 
-## 4. Entity query
+## Entity query
 
 You can use entity queries to get information about entities in the world. For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
 

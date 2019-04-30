@@ -27,7 +27,7 @@ All SpatialOS entities require the `Position` and `EntityAcl` components.
 
 The `Position` component must be added to the entity template manually. It is used by SpatialOS for [load-balancing](https://docs.improbable.io/reference/latest/shared/worker-configuration/load-balancing) purposes and [relative constraints in query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#relative-constraints).
 
-The `EntityAcl` component is automatically handled by the `EntityTemplate` class. This component determines which types of workers have read access to an entity and, for each component, which type of worker can have write access. Note that at any point in time, only instance of a worker can be authoritative over an entity's component.
+The `EntityAcl` component is automatically handled by the [`EntityTemplate`]({{urlRoot}}/api/core/entity-template) class. This component determines which types of workers have read access to an entity and, for each component, which type of worker can have write access. Note that at any point in time, only instance of a worker can be authoritative over an entity's component.
 
 > To learn more about the standard schema library components, [go to this documentation](https://docs.improbable.io/reference/latest/shared/glossary#standard-schema-library-components).
 

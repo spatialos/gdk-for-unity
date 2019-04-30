@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with
 
 The following schema file is used for the examples described below.
 
-```
+```schemalang
 package improbable.examples;
 
 component Health {
@@ -59,7 +59,7 @@ Simply adding or removing elements to a `List<T>` or a `Dictionary<K, V>` field 
 
 Given the following schema:
 
-```
+```schemalang
 package improbable.examples;
 
 type Foo {
@@ -97,7 +97,7 @@ public class ExampleSystem : ComponentSystem
             bar.SomeInts.Add(10);
             // Setting the field back to itself marks it as dirty.
             bar.SomeInts = bar.SomeInts;
-            
+
             data.BarComponents[i] = bar;
         }
 
@@ -110,7 +110,7 @@ public class ExampleSystem : ComponentSystem
             bar.SomeFoo.SomeFloats.Add(10);
             // Setting the field back to itself marks it as dirty.
             bar.SomeFoo = bar.SomeFoo;
-            
+
             data.BarComponents[i] = bar;
         }
     }

@@ -45,7 +45,7 @@ Any worker can send command requests and handle command responses for any comman
 ### Examples
 
 We use the following [schema]({{urlRoot}}/reference/glossary#schema) for all examples described in this documentation.
-```
+```schemalang
 package playground;
 
 component CubeSpawner

@@ -1,4 +1,5 @@
 <%(TOC max="4")%>
+
 # Transform synchronization strategies
 
 An instance of each of the following strategies can be created from the **Assets** > **Create** > **SpatialOS** > **Transform** menu in your Unity Editor.

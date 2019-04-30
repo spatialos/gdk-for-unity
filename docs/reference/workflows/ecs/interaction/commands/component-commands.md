@@ -33,7 +33,7 @@ The GDK generates the following ECS components to allow you to send and receive 
 * Command request and response structs
 
 We use the following schema for all examples described in this documentation.
-```
+```schemalang
 package playground;
 
 component CubeSpawner

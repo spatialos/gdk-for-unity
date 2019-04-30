@@ -18,7 +18,7 @@ We provide code-generated Readers and Writers for sending and receiving SpatialO
 
 We use the following [schema]({{urlRoot}}/reference/glossary#schema) for all examples described in this documentation.
 
-```schema
+```schemalang
 package playground;
 
 type Location

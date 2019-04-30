@@ -19,7 +19,7 @@ For each event in the SpatialOS component, there will be a corresponding method 
 
 Example schema:
 
-```
+```schemalang
 package playground;
 
 enum Color {
