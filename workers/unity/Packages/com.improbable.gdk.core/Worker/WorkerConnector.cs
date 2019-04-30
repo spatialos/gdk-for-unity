@@ -232,7 +232,8 @@ namespace Improbable.Gdk.Core
             }
             else
             {
-                throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder.");
+                throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder. " +
+                    "You can generate one via SpatialOS > Generate Dev Authentication Token.");
             }
         }
 
