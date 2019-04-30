@@ -61,6 +61,8 @@ namespace Improbable.Gdk.Tools
             }
 
             Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");
+            AssetDatabase.ImportAsset(devAuthTokenFilePath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.Refresh();
         }
     }
 }

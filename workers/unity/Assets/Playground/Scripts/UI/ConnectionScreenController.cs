@@ -57,7 +57,7 @@ namespace Playground
         {
             UnityObjectDestroyer.Destroy(worker);
             errorMessage.text =
-                $"Connection failed. Please check the IP address entered.\nSpatialOS error message:\n{connectionError}";
+                $"Connection failed.\nSpatialOS error message:\n{connectionError}";
         }
 
         public void OnDisconnected(string disconnectReason)
