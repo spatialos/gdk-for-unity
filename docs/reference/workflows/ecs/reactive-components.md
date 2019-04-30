@@ -22,8 +22,8 @@ These are the types of reactive component available:
 
 There are tags for handling the addition and removal of components:
 
-1. `ComponentAdded`: SpatialOS component has been added to the local view of a SpatialOS entity due to checkout of an entity or a change in interest.
-1. `ComponentRemoved`: SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
+1. [`ComponentAdded`]({{urlRoot}}/api/reactive-components/component-added): SpatialOS component has been added to the local view of a SpatialOS entity due to checkout of an entity or a change in interest.
+1. [`ComponentRemoved`]({{urlRoot}}/api/reactive-components/component-removed): SpatialOS component has been removed from the local view of a SpatialOS entity due to a change in interest.
 
 ## Example of a system using a reactive component
 
@@ -57,4 +57,4 @@ public class ReactiveSystem : ComponentSystem
 
 ## Removal of reactive components
 
-The GDK automatically removes reactive components from the ECS entity as soon as `CleanReactiveComponentsSystem` is run. This means that you must run any logic processing that reactive component _before_ `CleanReactiveComponentsSystem`. (This system is run at the end of each frame.)
+The GDK automatically removes reactive components from the ECS entity as soon as [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run. This means that you must run any logic processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system). (This system is run at the end of each frame.)

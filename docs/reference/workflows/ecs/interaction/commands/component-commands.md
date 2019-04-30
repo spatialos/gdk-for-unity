@@ -134,7 +134,8 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
                     new Empty()
                 );
 
-                // add it to the list of command responses to be sent at the end of the current update loop
+                // add it to the list of command responses to be sent
+                // at the end of the current update loop
                 responder.ResponsesToSend.Add(spawnCubeResponse);
             }
 

@@ -7,14 +7,14 @@ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/whi
 
 Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/reference/concepts/worker).
 
-Each of the workers in your project must have exactly one [ECS entity]({{urlRoot}}/reference/glossary#unity-ecs-entity) in its [worker-ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) at any point in time. To uniquely identify the worker entity of your current worker, the worker entity has the `WorkerEntityTag` component attached to it.
+Each of the workers in your project must have exactly one [ECS entity]({{urlRoot}}/reference/glossary#unity-ecs-entity) in its [worker-ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) at any point in time. To uniquely identify the worker entity of your current worker, the worker entity has the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
 
 The worker’s worker entity performs certain tasks:
 
   * send and receive [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
   * register changes to the state of the Runtime connection (that is whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not) by filtering for the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components):
-     * `OnConnected`: the worker just connected to the SpatialOS Runtime.
-     * `OnDisconnected`: the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
+     * [`OnConnected`]({{urlRoot}}/api/core/on-connected): the worker just connected to the SpatialOS Runtime.
+     * [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected): the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
 ## How to run logic when the worker has just connected
 
@@ -97,10 +97,7 @@ public class CreateCreatureSystem : ComponentSystem
     {
         var requestSender = data.CreateEntitySender[0];
         var entity = CreatureTemplate.CreateCreatureEntityTemplate(new Coordinates(0, 0, 0));
-        requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
-        (
-            entity
-        ));
+        requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request(entity));
         data.CreateEntitySender[0] = requestSender;
     }
 }

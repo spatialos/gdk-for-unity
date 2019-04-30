@@ -16,9 +16,9 @@ The following schema file is used for the examples described below.
 package improbable.examples;
 
 component Health {
-  id = 10000;
-  int32 current_health = 1;
-  int32 damage_taken = 2;
+    id = 10000;
+    int32 current_health = 1;
+    int32 damage_taken = 2;
 }
 ```
 
@@ -67,9 +67,9 @@ type Foo {
 }
 
 component Bar {
-  id = 10001;
-  list<int32> some_ints = 1;
-  Foo some_foo = 2;
+    id = 10001;
+    list<int32> some_ints = 1;
+    Foo some_foo = 2;
 }
 ```
 
