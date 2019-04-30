@@ -22,45 +22,30 @@ There are two types of commands in SpatialOS:
 
 The commands documentation is:
 
-* [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+* MonoBehaviour world commands - this document
 * [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
 * [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-* ECS component commands - this document
+* [ECS component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
 * Both workflows - [world commands API reference]({{urlRoot}}/api/core/commands/world-commands)
 
 
 ## How to send and receive world commands
 We provide the following type for sending and receiving world commands:
 
-  * `WorldCommandSender`
+  * [`WorldCommandSender`]({{urlRoot}}/api/core/world-command-sender)
 
 > We do not provide a `WorldCommandReceiver` as the SpatialOS Runtime directly handles the command.
 
-The `WorldCommandSender` can be injected without any condition. A MonoBehaviour that requires only this will be enabled as soon as the associated GameObject is created.
+The [`WorldCommandSender`]({{urlRoot}}/api/core/world-command-sender) can be injected without any condition. A MonoBehaviour that requires only this will be enabled as soon as the associated GameObject is created.
 
 If you would like to see how you can use these world commands to create or delete entities, we recommend you to read the [how to create and delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) document.
 
-### CreateEntity
-You can use the `WorldCommandSender.SendCreateEntityCommand` method to request the creation of a new SpatialOS entity. It has the following signature:
+### Reserve an entity ID
 
-```csharp
-void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request, Action<WorldCommands.CreateEntity.ReceivedResponse> callback = null);
-```
-
-Parameters:
-
-  * `WorldCommands.CreateEntity.Request request`: The command request payload.
-  * `Action<WorldCommands.CreateEntity.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
-
-[//]: # (TODO - explain what “handling the response based on the information contained in this object” means)
-
-### ReserveEntityIds
-
-Like other commands, a `CreateEntity` command response can time out, but the entity might still be created. As we do not know which ID was used by the SpatialOS Runtime to create this entity, the worker needs to retry the `CreateEntity` command request. This might lead to creating multiple entities as a new entity ID will be used by the SpatialOS Runtime, if the previous `CreateEntity` command did succeed.
-To avoid this, the worker can reserve an entity ID before sending the `CreateEntity` command request. Depending on the command response, you should do the following:
+A worker can reserve an entity ID before sending the `CreateEntity` command request. Depending on the command response, you should do the following:
 
   * The command succeeded: The entity got successfully created.
-  * The command failed with the status code `ApplicationError` and the following message: `Entity reservation failed. The entity with Id <{id}> could not be found. The reservation might have expired or never existed`. 
+  * The command failed with the status code `ApplicationError` and the following message: `Entity reservation failed. The entity with Id <{id}> could not be found. The reservation might have expired or never existed`.
   <br/>If you have used the entity ID that you received from the `ReserveEntityIds` command response for sending the `CreateEntity` commands, then your entity has already been created and you don’t need to retry it anymore.
   * The command timed out or another error appeared: retry the command.
 [//]: # (TODO - link to status codes for error messages.)
@@ -76,7 +61,22 @@ Parameters:
   * `WorldCommands.ReserveEntityIds.Request request`: The command request payload.
   * `Action<WorldCommands.ReserveEntityIds.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
 
-### DeleteEntity
+### Create an entity
+
+You can use the `WorldCommandSender.SendCreateEntityCommand` method to request the creation of a new SpatialOS entity. It has the following signature:
+
+```csharp
+void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request, Action<WorldCommands.CreateEntity.ReceivedResponse> callback = null);
+```
+
+Parameters:
+
+  * `WorldCommands.CreateEntity.Request request`: The command request payload.
+  * `Action<WorldCommands.CreateEntity.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
+
+[//]: # (TODO - explain what “handling the response based on the information contained in this object” means)
+
+### Delete an entity
 
 You can use the `SendDeleteEntityCommand` method to request the deletion of a SpatialOS entity given its SpatialOS entity ID. It has the following signature:
 
@@ -92,11 +92,9 @@ Parameters:
 > Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. You should wait until you receive a callback on the [`IEntityGameObjectCreator` instance]({{urlRoot}}/modules/game-object-creation/custom-usage#onentityremoved).
 
 
-### EntityQuery
+### Entity query
 
-You can use entity queries to get information about entities in the SpatialOS game world.
-
-You can use the `SendEntityQueryCommand` method to request information about the entities.It has the following signature:
+You can use the `SendEntityQueryCommand` method to request information about the entities through an entity query. It has the following signature:
 
 ```csharp
 void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request, Action<WorldCommands.EntityQuery.ReceivedResponse> callback = null)

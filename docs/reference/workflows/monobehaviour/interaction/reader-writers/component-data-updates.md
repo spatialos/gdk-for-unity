@@ -40,7 +40,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 {
     [Require] private HealthReader healthReader;
 
-private int ReadHealthValue()
+    private int ReadHealthValue()
     {
         // Read the current health value of your entity’s Health component.
         return healthReader.Data.CurrentHealth;

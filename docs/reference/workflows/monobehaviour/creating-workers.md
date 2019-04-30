@@ -44,35 +44,35 @@ Showing what your implementation, inheriting from [`DefaultWorkerConnector`]({{u
 ```csharp
 public class ClientWorkerConnector : DefaultWorkerConnector
 {
-  private async void Start()
-  {
-    // Try to connect as a worker of type UnityClient.
-    await Connect("UnityClient", new ForwardingDispatcher()).ConfigureAwait(false);
-  }
+    private async void Start()
+    {
+        // Try to connect as a worker of type UnityClient.
+        await Connect("UnityClient", new ForwardingDispatcher()).ConfigureAwait(false);
+    }
 
-  protected override string SelectDeploymentName(DeploymentList deployments)
-  {
-    // Return the name of the first active deployment that you can find.
-    return deployments.Deployments[0].DeploymentName;
-  }
+    protected override string SelectDeploymentName(DeploymentList deployments)
+    {
+        // Return the name of the first active deployment that you can find.
+        return deployments.Deployments[0].DeploymentName;
+    }
 
-  protected override void HandleWorkerConnectionEstablished()
-  {
-    // Add all the systems that you want on your workers.
-    Worker.World.GetOrCreateManager<YourSystem>();
-  }
+    protected override void HandleWorkerConnectionEstablished()
+    {
+        // Add all the systems that you want on your workers.
+        Worker.World.GetOrCreateManager<YourSystem>();
+    }
 
-  protected override void HandleWorkerConnectionFailure()
-  {
-    Debug.Log("Failed to create worker.");
-  }
+    protected override void HandleWorkerConnectionFailure()
+    {
+        Debug.Log("Failed to create worker.");
+    }
 
-  public override void Dispose()
-  {
-    // Need to call base.Dispose() to properly clean up.
-    // The ECS world and the connection.
-    base.Dispose();
-  }
+    public override void Dispose()
+    {
+        // Need to call base.Dispose() to properly clean up.
+        // The ECS world and the connection.
+        base.Dispose();
+    }
 }
 ```
 
@@ -88,12 +88,12 @@ Overriding the Receptionist connection flow configuration.
 ```csharp
 protected override ReceptionistConfig GetReceptionistConfig(string workerType)
 {
-  return new ReceptionistConfig
-  {
-    WorkerType = workerType,
-    WorkerId = CreateNewWorkerId(workerType),
-    UseExternalIp = UseExternalIp
-  };
+    return new ReceptionistConfig
+    {
+        WorkerType = workerType,
+        WorkerId = CreateNewWorkerId(workerType),
+        UseExternalIp = UseExternalIp
+    };
 }
 ```
 
@@ -108,9 +108,9 @@ Overriding which connection service to choose.
 ```csharp
 protected override ConnectionService GetConnectionService()
 {
-  // Your worker will always connect via the Receptionist.
-  // This is the expected behavior for any server-worker.
-  return ConnectionService.Receptionist;
+    // Your worker will always connect via the Receptionist.
+    // This is the expected behavior for any server-worker.
+    return ConnectionService.Receptionist;
 }
 ```
 
@@ -127,22 +127,22 @@ How to override use the development authentication flow without using the new v1
 ```csharp
 protected override AlphaLocatorConfig GetAlphaLocatorConfig(string workerType)
 {
-  var pit = GetDevelopmentPlayerIdentityToken(DevelopmentAuthToken, GetPlayerId(), GetDisplayName());
-  var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
-  var loginToken = SelectLoginToken(loginTokenDetails);
+    var pit = GetDevelopmentPlayerIdentityToken(DevelopmentAuthToken, GetPlayerId(), GetDisplayName());
+    var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
+    var loginToken = SelectLoginToken(loginTokenDetails);
 
-  return new AlphaLocatorConfig
-  {
-    LocatorHost = RuntimeConfigDefaults.LocatorHost,
-    LocatorParameters = new Worker.CInterop.Alpha.LocatorParameters
+    return new AlphaLocatorConfig
     {
-      PlayerIdentity = new PlayerIdentityCredentials
-      {
-        PlayerIdentityToken  = pit,
-        LoginToken = loginToken,
-      },
-      UseInsecureConnection = false,
-    }
-  };
+        LocatorHost = RuntimeConfigDefaults.LocatorHost,
+        LocatorParameters = new Worker.CInterop.Alpha.LocatorParameters
+        {
+            PlayerIdentity = new PlayerIdentityCredentials
+            {
+                PlayerIdentityToken  = pit,
+                LoginToken = loginToken,
+            },
+            UseInsecureConnection = false,
+        }
+    };
 }
 ```

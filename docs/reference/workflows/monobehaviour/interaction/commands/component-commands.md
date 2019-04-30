@@ -86,7 +86,8 @@ public class BuildCommandSenderBehaviour : MonoBehaviour
         }
     }
 
-    private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response) {
+    private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
+    {
         // Do something with the response.
     }
 }
