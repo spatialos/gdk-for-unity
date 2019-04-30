@@ -186,6 +186,32 @@ namespace Improbable.Gdk.Core
         protected abstract AlphaLocatorConfig GetAlphaLocatorConfig(string workerType);
 
         /// <summary>
+        /// Retrieves the configuration needed to connect via the Alpha Locator service using the development authentication flow.
+        /// </summary>
+        /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
+        protected AlphaLocatorConfig GetAlphaLocatorConfigViaDevAuthFlow(string workerType)
+        {
+            var token = GetDevAuthToken();
+            var pit = GetDevelopmentPlayerIdentityToken(token, GetPlayerId(), GetDisplayName());
+            var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
+            var loginToken = SelectLoginToken(loginTokenDetails);
+
+            return new AlphaLocatorConfig
+            {
+                LocatorHost = RuntimeConfigDefaults.LocatorHost,
+                LocatorParameters = new Improbable.Worker.CInterop.Alpha.LocatorParameters
+                {
+                    PlayerIdentity = new PlayerIdentityCredentials
+                    {
+                        PlayerIdentityToken = pit,
+                        LoginToken = loginToken,
+                    },
+                    UseInsecureConnection = false,
+                }
+            };
+        }
+
+        /// <summary>
         /// Retrieves the configuration needed to connect via the Receptionist service.
         /// </summary>
         /// <param name="workerType">The type of worker you want to connect.</param>
