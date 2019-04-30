@@ -20,6 +20,7 @@
 
 - Fixed a bug where if an entity received an event and was removed from your worker's view in the same ops list, the event would not be removed.
 - Fixed a bug where clicking on `SpatialOS` > `Generate Dev Authentication Token` would not always refresh the asset database correctly.
+- Fixed a bug where requireables on a GameObject linked to the worker entity were not injected properly.
 
 ## `0.2.1` - 2019-04-15
 
