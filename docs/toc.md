@@ -101,9 +101,6 @@
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
     - [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
-
-***
-
 - <h3>API reference</h3>
     - [BuildSystem]({{urlRoot}}/api/build-system-index)
         - [Configuration]({{urlRoot}}/api/build-system/configuration-index)
@@ -380,9 +377,6 @@
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-to-send">TransformToSend</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-to-set">TransformToSet</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-utils">TransformUtils</a>
-
-***
-
 - <h3>Get involved</h3>
     - Our Github
         - [Issue log](https://github.com/spatialos/UnityGDK/issues)
