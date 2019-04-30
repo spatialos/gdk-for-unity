@@ -31,8 +31,6 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public Worker Worker;
 
-        [SerializeField] protected string DevelopmentAuthToken;
-
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
@@ -188,6 +186,32 @@ namespace Improbable.Gdk.Core
         protected abstract AlphaLocatorConfig GetAlphaLocatorConfig(string workerType);
 
         /// <summary>
+        /// Retrieves the configuration needed to connect via the Alpha Locator service using the development authentication flow.
+        /// </summary>
+        /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
+        protected AlphaLocatorConfig GetAlphaLocatorConfigViaDevAuthFlow(string workerType)
+        {
+            var token = GetDevAuthToken();
+            var pit = GetDevelopmentPlayerIdentityToken(token, GetPlayerId(), GetDisplayName());
+            var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
+            var loginToken = SelectLoginToken(loginTokenDetails);
+
+            return new AlphaLocatorConfig
+            {
+                LocatorHost = RuntimeConfigDefaults.LocatorHost,
+                LocatorParameters = new Improbable.Worker.CInterop.Alpha.LocatorParameters
+                {
+                    PlayerIdentity = new PlayerIdentityCredentials
+                    {
+                        PlayerIdentityToken = pit,
+                        LoginToken = loginToken,
+                    },
+                    UseInsecureConnection = false,
+                }
+            };
+        }
+
+        /// <summary>
         /// Retrieves the configuration needed to connect via the Receptionist service.
         /// </summary>
         /// <param name="workerType">The type of worker you want to connect.</param>
@@ -220,6 +244,23 @@ namespace Improbable.Gdk.Core
         protected virtual string SelectDeploymentName(DeploymentList deployments)
         {
             return null;
+        }
+
+        /// <summary>
+        /// Loads the development authentication token and stores it in the DevelopmentAuthToken field.
+        /// </summary>
+        protected virtual string GetDevAuthToken()
+        {
+            var textAsset = Resources.Load<TextAsset>("DevAuthToken");
+            if (textAsset != null)
+            {
+                return textAsset.text.Trim();
+            }
+            else
+            {
+                throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder. " +
+                    "You can generate one via SpatialOS > Generate Dev Authentication Token.");
+            }
         }
 
         /// <summary>

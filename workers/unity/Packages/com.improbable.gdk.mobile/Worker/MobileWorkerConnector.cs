@@ -50,23 +50,7 @@ namespace Improbable.Gdk.Mobile
 
         protected override AlphaLocatorConfig GetAlphaLocatorConfig(string workerType)
         {
-            var pit = GetDevelopmentPlayerIdentityToken(DevelopmentAuthToken, GetPlayerId(), GetDisplayName());
-            var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
-            var loginToken = SelectLoginToken(loginTokenDetails);
-
-            return new AlphaLocatorConfig
-            {
-                LocatorHost = RuntimeConfigDefaults.LocatorHost,
-                LocatorParameters = new Worker.CInterop.Alpha.LocatorParameters
-                {
-                    PlayerIdentity = new PlayerIdentityCredentials
-                    {
-                        PlayerIdentityToken = pit,
-                        LoginToken = loginToken,
-                    },
-                    UseInsecureConnection = false,
-                }
-            };
+            return GetAlphaLocatorConfigViaDevAuthFlow(workerType);
         }
     }
 }

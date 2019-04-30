@@ -14,10 +14,12 @@
     - Pulled out the `UiStateManager` from the `BuildConfigEditor` into this assembly and made it public.
 - Exceptions thrown in user-code callbacks no longer cause other callbacks scheduled for that frame to not fire. Instead, the exceptions are caught and logged with Debug.LogException.
 - Upgraded the Worker SDK version to `13.7.1`.
+- Updated the default method of loading a Development Authentication Token to search for a `DevAuthToken.txt` asset at the root of any `Resources` folder.
 
 ### Fixed
 
 - Fixed a bug where if an entity received an event and was removed from your worker's view in the same ops list, the event would not be removed.
+- Fixed a bug where clicking on `SpatialOS` > `Generate Dev Authentication Token` would not always refresh the asset database correctly.
 
 ## `0.2.1` - 2019-04-15
 
