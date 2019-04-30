@@ -31,11 +31,6 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public Worker Worker;
 
-        /// <summary>
-        ///    The token needed to connect via the development authentication flow.
-        /// </summary>
-        protected string DevelopmentAuthToken;
-
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
@@ -228,16 +223,16 @@ namespace Improbable.Gdk.Core
         /// <summary>
         /// Loads the development authentication token and stores it in the DevelopmentAuthToken field.
         /// </summary>
-        protected virtual void LoadDevAuthToken()
+        protected virtual string GetDevAuthToken()
         {
             var textAsset = Resources.Load<TextAsset>("DevAuthToken");
             if (textAsset != null)
             {
-                DevelopmentAuthToken = textAsset.text.Trim();
+                return textAsset.text.Trim();
             }
             else
             {
-                Debug.LogWarning("Unable to find DevAuthToken.txt in the Resources folder.");
+                throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder.");
             }
         }
 
