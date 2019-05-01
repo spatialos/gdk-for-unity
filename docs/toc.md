@@ -24,6 +24,11 @@
         - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
         - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
+    - Deployment Launcher
+        - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
+        - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)
+        - [Launch deployments]({{urlRoot}}/modules/deployment-launcher/launch-deployments)
+        - [Manage deployments]({{urlRoot}}/modules/deployment-launcher/manage-deployments)
     - Game Object Creation
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
         - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
