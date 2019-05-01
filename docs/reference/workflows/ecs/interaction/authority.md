@@ -25,12 +25,12 @@ For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-compone
 The authority tags in the GDK are (where `T` is a [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component)):
 
 * Whether or not the worker instance has authority:
-    * `Authoritative<T>`: the worker instance has authority over the SpatialOS component
-    * `NotAuthoritative<T>`: the worker instance does not have authority over the SpatialOS component
+    * [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative): the worker instance has authority over the SpatialOS component
+    * [`NotAuthoritative<T>`]({{urlRoot}}/api/reactive-components/not-authoritative): the worker instance does not have authority over the SpatialOS component
 
     > For each SpatialOS component, there will only be one of these tags at a time
-* If you're using `AuthorityLossImminent` notifications, when there is an `Authoritative<T>` tag, you could also have:
-    * `AuthorityLossImminent<T>`: the worker instance will shortly lose authority over the SpatialOS component
+* If you're using `AuthorityLossImminent` notifications, when there is an [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative) tag, you could also have:
+    * [`AuthorityLostImminent<T>`]({{urlRoot}}/api/reactive-components/authority-loss-imminent): the worker instance will shortly lose authority over the SpatialOS component
 
         For more information on `AuthorityLossImminent`, [see the SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/design/understanding-access#enabling-and-configuring-authoritylossimminent-notifications).
 
@@ -44,20 +44,19 @@ public class AuthoritativePositionSystem : ComponentSystem
     public struct Data
     {
         public readonly int Length;
-        // An ECS component representing the SpatialOS component Position.
+        // ECS component representing the SpatialOS component Position.
         public ComponentDataArray<Position.Component> Position;
-        // An ECS component tag representing the worker's authority over the SpatialOS component Position.
+        // ECS component tag representing the worker's authority over the SpatialOS Position component.
         public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
     }
 
     [Inject] Data data;
 
-    // This system will only run where the worker instance has authority over the SpatialOS component Position.
     protected override void OnUpdate()
     {
         for(var i = 0; i < data.Length; i++)
         {
-            // This will run when the worker instance is authoritative over a Position component.
+            // This will only run when the worker instance is authoritative over a Position component.
         }
     }
 }
@@ -72,15 +71,15 @@ When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/referenc
 - creates an ECS entity to correspond to that SpatialOS entity
 - for each SpatialOS component `T` on the SpatialOS entity:
     - attaches an ECS component to the ECS entity representing the SpatialOS component `T`
-    - attaches  a `NotAuthoritative<T>` authority tag to represent the worker instance's authority over the SpatialOS component `T`
+    - attaches a [`NotAuthoritative<T>`]({{urlRoot}}/api/reactive-components/not-authoritative) authority tag to represent the worker instance's authority over the SpatialOS component `T`
 
-This means entities _may_ initially have `NotAuthoritative<T>` attached for a tick, even when the worker instance is actually authoritative over `T`, because the `AuthorityChangeOp` hasn't arrived yet.
+This means entities _may_ initially have [`NotAuthoritative<T>`]({{urlRoot}}/api/reactive-components/not-authoritative) attached for a tick, even when the worker instance is actually authoritative over `T`, because the `AuthorityChangeOp` hasn't arrived yet.
 
 ### What happens when a worker instance gains or loses authority over a SpatialOS entity
 
-When authority changes over a SpatialOS component the GDK automatically adds an `AuthorityChanges<T>` reactive ECS component to the corresponding ECS entity (where `T` is the component that changed authority).
+When authority changes over a SpatialOS component the GDK automatically adds an [`AuthorityChanges<T>`]({{urlRoot}}/api/reactive-components/authority-changes) reactive ECS component to the corresponding ECS entity (where `T` is the component that changed authority).
 
-`AuthorityChanges<T>` holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
+[`AuthorityChanges<T>`]({{urlRoot}}/api/reactive-components/authority-changes) holds a list of all authority changes that have happened to that SpatialOS component since the last tick.
 
 Here's an example of doing something when a worker instance gets authority over a SpatialOS component:
 
@@ -92,7 +91,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
         public readonly int Length;
         public ComponentDataArray<PlayerInput.Component> PlayerInput;
         public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-        // This system  only runs when there has been a change of authority over PlayerInput in the last tick
+        // ECS component tag representing a change of authority over PlayerInput in the last tick.
         public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthorityChange;
     }
 
@@ -102,9 +101,9 @@ public class OnPlayerSpawnSystem : ComponentSystem
     {
         for(var i = 0; i < data.Length; i++)
         {
-            // The data being injected is for being authoritative over the 
+            // The data being injected is for being authoritative over the
             // SpatialOS component PlayerInput, and for changes to authority.
-            // So, write code here that you want to run when the worker instance 
+            // So, write code here that you want to run when the worker instance
             // receives authority over PlayerInput
         }
     }

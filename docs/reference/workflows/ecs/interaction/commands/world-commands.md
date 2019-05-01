@@ -1,115 +1,90 @@
 <%(TOC)%>
+
 # ECS: World commands
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
 
 World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
 
-Each ECS entity that represents a SpatialOS entity has a set of components for sending world commands. For each world command, there is a component to send the command and receive the response.
+World command requests can be sent with the `CommandSystem`, which also handles received responses.
 
-## 1. Reserve an entity ID
+## Reserve an entity ID
 
-You can use the `ReserveEntityIds` world command to reserve groups of entity IDs that you can use in entity creation.
+You can use the [`ReserveEntityIds`]({{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids) world command to reserve groups of entity IDs that you can use in entity creation.
 
-To send a request use a `WorldCommands.ReserveEntityIds.CommandSender` component. This contains a list of `WorldCommands.ReserveEntityIds.Request` structs. Add a struct to the list to send the command.
+Create a [`WorldCommands.ReserveEntityIds.Request`]({{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids/request) and pass in the number of Entity IDs you wish to reserve. The `TimeoutMillis` field is optional.
 
-- `TimeoutMillis` is optional.
-
-To receive a response use `WorldCommands.ReserveEntityIds.CommandResponses`. This contains a list of `WorldCommands.ReserveEntityIds.ReceivedResponse` structs.
-
-## 2. Create an entity
-
-You can use the `CreateEntity` world command to request the creation of a new SpatialOS entity which you specified using an [entity template]({{urlRoot}}/reference/concepts/entity-templates).
-
-To send a request use a `WorldCommands.CreateEntity.CommandSender` component. This contains a list of `WorldCommands.CreateEntity.Request` structs. Add a struct to the list to send the command.
-
-- `EntityId` and `TimeoutMillis` are optional.
-- If you do specify an `EntityId`, you need to get this from a `ReserveEntityIds` command.
-
-To receive a response use `WorldCommands.CreateEntity.CommandResponses`. This contains a list of `WorldCommands.CreateEntity.ReceivedResponse`.
-
-Below is an example of creating a SpatialOS entity. For more information on how to create a `CreatureTemplate`, see the [creating entity templates]({{urlRoot}}/reference/concepts/entity-templates) page.
+To send the request, call the `SendCommand` method on the `CommandSystem`.
 
 ```csharp
-public class CreateCreatureSystem : ComponentSystem
-{
-    public struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public ComponentDataArray<Foo> Foo;
-        public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
-    }
-
-    [Inject] Data data;
-
-    protected override void OnUpdate()
-    {
-        for (var i = 0; i < data.Length; i++)
-        {
-            var requestSender = data.CreateEntitySender[i];
-            var entity = CreatureTemplate.CreateCreatureEntityTemplate(
-                new Coordinates(0, 0, 0));
-
-            requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request
-            (
-                entity
-            ));
-            data.CreateEntitySender[i] = requestSender;
-        }
-    }
-}
+var numIdsToReserve = 10;
+var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request(numIdsToReserve);
+commandSystem.SendCommand(reserveEntityIdsRequest);
 ```
 
-This system iterates through every entity with a `Foo` component and sends a create entity request.
-
-## 3. Delete an entity
-
-You can delete entities via the `DeleteEntity` world command. You need to know the SpatialOS entity ID of the entity you want to delete.
-
-To send a request use a `WorldCommands.DeleteEntity.CommandSender` component. This contains a list of `WorldCommands.DeleteEntity.Request` structs. Add a struct to the list to send the command.
-
-- `TimeoutMillis` is optional.
-
-To receive a response use `WorldCommands.DeleteEntity.CommandResponses`. This contains a list of `WorldCommands.DeleteEntity.ReceivedResponse`.
+You can get responses by calling `GetResponses` on the `CommandSystem` with the [`WorldCommands.ReserveEntityIds.ReceivedResponse`]({{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids/received-response) type parameter.
 
 ```csharp
-public class DeleteCreatureSystem : ComponentSystem
-{
-    public struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public ComponentDataArray<Bar> Bar;
-        [ReadOnly] public ComponentDataArray<SpatialEntityId> SpatialEntityIds;
-        public ComponentDataArray<WorldCommands.DeleteEntity.CommandSender> DeleteEntitySender;
-    }
-
-    [Inject] Data data;
-
-    protected override void OnUpdate()
-    {
-        for (var i = 0; i < data.Length; i++)
-        {
-            var requestSender = data.DeleteEntitySender[i];
-            var entityId = data.SpatialEntityIds[i].EntityId;
-
-            requestSender.RequestsToSend.Add(new WorldCommands.DeleteEntity.Request
-            (
-                entityId
-            ));
-            data.DeleteEntitySender[i] = requestSender;
-        }
-    }
-}
+commandSystem.GetResponses<WorldCommands.ReserveEntityIds.ReceivedResponse>();
 ```
 
-This system iterates through every entity with a `Bar` and a SpatialEntityId component and sends a delete entity request.
+## Create an entity
 
-## 4. Entity query
+The [`CreateEntity`]({{urlRoot}}/api/core/commands/world-commands/create-entity) world command is used to request the creation of a new SpatialOS entity, specified using an [entity template]({{urlRoot}}/reference/concepts/entity-templates).
 
-You can use entity queries to get information about entities in the world.
+You must construct a [`WorldCommands.CreateEntity.Request`]({{urlRoot}}/api/core/commands/world-commands/create-entity/request) struct and provide an entity template. The `EntityId` and `TimeoutMillis` fields are optional. If you do specify an `EntityId`, you need to get this from a [`ReserveEntityIds`]({{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids) command.
 
-To send a request use a `WorldCommands.EntityQuery.CommandSender` component. This contains a list of `WorldCommands.EntityQuery.Request` structs. Add a struct to the list to send the command.
+To send the request, call the `SendCommand` method on the `CommandSystem`.
 
-  * For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
-  * `TimeoutMillis` is optional.
+```csharp
+var entity = Creatures.CreatureEntityTemplate(new Coordinates(0, 0, 0));
+var createEntityRequest = new WorldCommands.CreateEntity.Request(entity);
+commandSystem.SendCommand(createEntityRequest);
+```
 
-To receive a response use `WorldCommands.EntityQuery.CommandResponses`. This contains a list of `WorldCommands.EntityQuery.ReceivedResponse`.
+You can get responses by calling `GetResponses` on the `CommandSystem` with the [`WorldCommands.CreateEntity.ReceivedResponse`]({{urlRoot}}/api/core/commands/world-commands/create-entity/received-response) type parameter.
+
+```csharp
+commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
+```
+
+## Delete an entity
+
+You can delete entities via the [`DeleteEntity`]({{urlRoot}}/api/core/commands/world-commands/delete-entity) world command. You need to know the SpatialOS entity ID of the entity you want to delete.
+
+Create a [`WorldCommands.DeleteEntity.Request`]({{urlRoot}}/api/core/commands/world-commands/delete-entity/request) struct with the EntityId of the entity you want to delete. The `TimeoutMillis` field is optional.
+
+To send the request, call the `SendCommand` method on the `CommandSystem`.
+
+```csharp
+var deleteEntityRequest = new WorldCommands.DeleteEntity.Request(targetEntityId);
+commandSystem.SendCommand(deleteEntityRequest);
+```
+
+You can get responses by calling `GetResponses` on the `CommandSystem` with the [`WorldCommands.DeleteEntity.ReceivedResponse`]({{urlRoot}}/api/core/commands/world-commands/delete-entity/received-response) type parameter.
+
+```csharp
+commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
+```
+
+## Entity query
+
+You can use entity queries to get information about entities in the world. For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
+
+Create a [`WorldCommands.EntityQuery.Request`]({{urlRoot}}/api/core/commands/world-commands/entity-query/request) struct with the [`EntityQuery`]({{urlRoot}}/api/core/commands/world-commands/entity-query#entityquery-class). The `TimeoutMillis` field is optional.
+
+To send the request, call the `SendCommand` method on the `CommandSystem`.
+
+```csharp
+var playerCreatorQuery = new EntityQuery
+{
+    Constraint = new ComponentConstraint(PlayerCreator.ComponentId),
+    ResultType = new SnapshotResultType()
+};
+var entityQueryRequest = new WorldCommands.EntityQuery.Request(playerCreatorQuery);
+commandSystem.SendCommand(entityQueryRequest);
+```
+
+You can get responses by calling `GetResponses` on the `CommandSystem` with the [`WorldCommands.EntityQuery.ReceivedResponse`]({{urlRoot}}/api/core/commands/world-commands/entity-query/received-response) type parameter.
+
+```csharp
+commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
+```

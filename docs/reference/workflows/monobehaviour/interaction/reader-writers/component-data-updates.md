@@ -16,7 +16,7 @@ Before reading this document, make sure you are familiar with:
 
 We use the following schema for all examples described in this documentation.
 
-```
+```schemalang
 package improbable.examples;
 
 component Health {
@@ -40,7 +40,7 @@ public class ReadHealthBehaviour : MonoBehaviour
 {
     [Require] private HealthReader healthReader;
 
-private int ReadHealthValue()
+    private int ReadHealthValue()
     {
         // Read the current health value of your entity’s Health component.
         return healthReader.Data.CurrentHealth;

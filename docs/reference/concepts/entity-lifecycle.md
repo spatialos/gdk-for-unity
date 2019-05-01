@@ -5,8 +5,10 @@
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow)._
 
 The [SpatialOS runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) manages the lifecycle of [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) in your [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view), or the part of the [game world]({{urlRoot}}/reference/glossary#spatialos-world) that your worker has access to. The SpatialOS GDK for Unity interacts with the SpatialOS runtime through [Operations](https://docs.improbable.io/reference/latest/shared/design/operations#operations-how-workers-communicate-with-spatialos) and integrates the lifecycle natively into Unity.
+
 This means that interacting with the entity lifecycle outside of the provided APIs can cause runtime errors or undefined behaviour.
-> Warning: Manually deleting entities locally will cause runtime errors. Use the [`DeleteEntity` world command]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands) instead.
+
+> Warning: Manually deleting entities locally will cause runtime errors. Use the [`DeleteEntity` world command]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands#delete-an-entity) instead.
 
 ## What happens when an entity enters your view
 

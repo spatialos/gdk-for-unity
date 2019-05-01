@@ -1,3 +1,5 @@
+<%(TOC)%>
+
 # How the Transform Synchronization Feature Module works
 
 ## What is transform
@@ -6,7 +8,7 @@ The transform of an entity describes its location and rotation. Worker-instances
 
 In the Transform Synchronization Feature Module, we represent the Transform as:
 
-```
+```schemalang
 package improbable.transform;
 
 type Location {

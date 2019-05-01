@@ -53,7 +53,7 @@ To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers supp
 
 This module consists of:
 
-* `MobileWorkerConnector` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).<br/>
+* [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector)<br/>
 Inherit from this class to define your custom mobile worker connectors.
 
 * `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).

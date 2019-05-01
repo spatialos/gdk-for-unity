@@ -1,4 +1,3 @@
-<%(TOC)%>
 # Player Lifecycle Feature Module
 
 The Player Lifecycle Feature Module provides player creation functionality and simple player lifecycle management.

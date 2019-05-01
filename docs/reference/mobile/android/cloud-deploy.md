@@ -18,7 +18,7 @@ To connect your Android device to a cloud deployment, you need a mobile connecto
 
 If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
 
-1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/AndroidClientWorkerConnector.cs) in our Blank Starter Project.
+1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/AndroidClientWorkerConnector.cs) in our Blank Starter Project.
 1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
 1. In your Unity Editor, navigate to your Android client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is **not** checked in the script's drop-down window of the Inspector window.
 
@@ -44,7 +44,7 @@ To do this:
   * In the **OVERVIEW** screen, there’s a **Tag** field, add `dev_login` to the field.
 1. [Create a Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance).<br>
 Be sure to note down the `id` that is output when you create this, you will need it in a moment.
-1. In your Unity Editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Packages/com.improbable.gdk.mobile/Worker/MobileWorkerConnector.cs).<br>
+1. In your Unity Editor, locate the mobile connector script which inherits from the [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector).<br>
 If you're using the FPS Starter Project, you can locate this script in `Assets/FPS/Prefabs/AndroidClientWorker`.<br>
 If you added the GDK to an existing project, then you created this script in the **Create a mobile connector script** section [above](#prepare).<br>
 1. Still in your Unity Editor, in the Inspector, in the `Android Worker Connector` section, there is a **Development Auth Token** field.<br>

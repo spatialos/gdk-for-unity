@@ -2,7 +2,7 @@
 
 The Game Object Creation Feature Module offers you a simple way to customize how GameObjects are created. You must:
 
-1. Implement a class which inherits from the `IEntityGameObjectCreator` interface.
+1. Implement a class which inherits from the [`IEntityGameObjectCreator`]({{urlRoot}}/api/game-object-creation/i-entity-game-object-creator) interface.
 2. Tell the GDK to use this implementation.
 
 ## Implement the `IEntityGameObjectCreator` interface
@@ -11,13 +11,13 @@ A good reference implementation of this interface can be found in the [`GameObje
 
 ### OnEntityCreated
 
-This method is called by the `GameObjectInitializationSystem` whenever a SpatialOS entity enters your view. 
+This method is called by the `GameObjectInitializationSystem` whenever a SpatialOS entity enters your view.
 
 The system gives you an instance of a [`SpatialOSEntity`]({{urlRoot}}/api/game-object-creation/spatial-os-entity) class to represent the entity and an instance of the [`EntityGameObjectLinker`]({{urlRoot}}/api/subscriptions/entity-game-object-linker) class as parameters.
 
 > **Note:** You should not rely on the authority of any of the components on the SpatialOS entity to conditionally create _or_ pick a GameObject to spawn. At the time this method is called, there is no guarantee that your worker has been delegated authority.
 
-If you wish to create a GameObject to represent the SpatialOS entity, you must instantiate the GameObject yourself and call `EntityGameObjectLinker.LinkGameObjectToSpatialOSEntity` with the entity ID and that GameObject.
+If you wish to create a GameObject to represent the SpatialOS entity, you must instantiate the GameObject yourself and call [`EntityGameObjectLinker.LinkGameObjectToSpatialOSEntity`]({{urlRoot}}/api/subscriptions/entity-game-object-linker#methods) with the entity ID and that GameObject.
 
 The `LinkGameObjectToSpatialOS` call has a third parameter: `params Type[] componentTypesToAdd`. These are the types of MonoBehaviour components that you want the linker to copy references onto the underlying ECS entity.
 
@@ -33,7 +33,7 @@ It is your responsibility to destroy the GameObjects that have been linked to th
 
 ## Use your custom `IEntityGameObjectCreator` implementation
 
-Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add the following line to the `HandleWorkerConnectionEstablished` method. 
+Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add the following line to the `HandleWorkerConnectionEstablished` method.
 
 ```csharp
     GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, new MyGameObjectCreator());
