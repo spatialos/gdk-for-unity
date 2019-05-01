@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using UnityEngine;
 
-namespace Improbable.Gdk.Mobile.Android
+namespace Improbable.Gdk.Mobile
 {
     public static class LaunchArguments
     {
@@ -14,9 +14,10 @@ namespace Improbable.Gdk.Mobile.Android
                 return new Dictionary<string, string>();
             }
 
+#if UNITY_ANDROID
             try
             {
-                using (var unityPlayer = new UnityEngine.AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
                 using (var currentActivity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity"))
                 using (var intent = currentActivity.Call<UnityEngine.AndroidJavaObject>("getIntent"))
                 {
@@ -35,6 +36,7 @@ namespace Improbable.Gdk.Mobile.Android
             {
                 Debug.LogException(e);
             }
+#endif
 
             return new Dictionary<string, string>();
         }
