@@ -15,7 +15,7 @@ You need to add the underlying systems to your worker. Open your [`WorkerConnect
 **If this is a server-worker:**
 
 ```csharp
-    TransformSynchronizationHelper.AddServerWorkers(Worker.World);
+    TransformSynchronizationHelper.AddServerSystems(Worker.World);
 ```
 
 > **Note:** You may need to override the `HandleWorkerConnectionEstablished` method in your `WorkerConnector` implementation if you haven't already.
