@@ -1,5 +1,3 @@
-<%(TOC)%>
-
 # Transform Synchronization Feature Module
 
 This feature module contains functionality that synchronizes your entities' SpatialOS transform by reading from or writing to the native Unity transform representation.

@@ -16,16 +16,8 @@ There are two types of commands in SpatialOS:
 * **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity).
 * **Component commands** you set up in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
 
-This document is about MonoBehaviour component commands. The commands documentation is:
-
-* [MonoBehaviour world commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
-* [ECS world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
-* [MonoBehaviour component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-* ECS component commands - this document
-* Both workflows - [world commands API reference]({{urlRoot}}/api/core/commands/world-commands)
-
-
 ## How to send and receive component commands
+
 The GDK generates the following ECS components to allow you to send and receive commands using the ECS flow:
 
 * `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
