@@ -7,7 +7,7 @@
       },
       {
         "name": "build",
-        "steps": [{"name": "** Open Unity to build for Android **", "command": "echo", "arguments": ["No-op."]}]
+        "steps": [{"name": "** Open Unity to build for Android/iOS **", "command": "echo", "arguments": ["No-op."]}]
       },
       {
         "name": "clean",
@@ -18,7 +18,7 @@
   "bridge": {
     "worker_attribute_set": {
       "attributes": [
-        "AndroidClient"
+        "MobileClient"
       ]
     },
     "entity_interest": {
@@ -38,16 +38,16 @@
         "command": "echo",
         "arguments": [
           "+workerType",
-          "AndroidClient",
-          "This worker can only be run on Android."
+          "MobileClient",
+          "This worker can only be run on a mobile platform."
         ]
       },
       "macos": {
         "command": "echo",
         "arguments": [
           "+workerType",
-          "AndroidClient",
-          "This worker can only be run on Android."
+          "MobileClient",
+          "This worker can only be run on a mobile platform."
         ]
       }
     }

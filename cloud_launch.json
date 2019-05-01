@@ -43,20 +43,7 @@
       ]
     },
     {
-      "worker_type": "AndroidClient",
-      "permissions": [
-        {
-          "entity_query": {
-            "allow": true,
-            "components": [
-              "*"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "worker_type": "iOSClient",
+      "worker_type": "MobileClient",
       "permissions": [
         {
           "entity_query": {
