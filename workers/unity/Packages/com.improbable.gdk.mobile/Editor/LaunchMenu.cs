@@ -77,8 +77,13 @@ namespace Improbable.Gdk.Mobile
                 // Use this to pass through the local ip to connect to
                 var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
                 var arguments = new StringBuilder();
-                if (shouldConnectLocally && !string.IsNullOrEmpty(runtimeIp))
+                if (shouldConnectLocally)
                 {
+                    if (string.IsNullOrEmpty(runtimeIp))
+                    {
+                        Debug.LogWarning("No local runtime IP was specified. Ensure you set one in SpatialOS > GDK tools configuration.");
+                    }
+
                     arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.LocalEnvironment} ");
                     arguments.Append($"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp} ");
                 }
