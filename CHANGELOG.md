@@ -2,10 +2,14 @@
 
 ## Unreleased
 
+### Breaking Changes
+- Removed the `Improbable.Gdk.Mobile.Android` and `Improbable.Gdk.Mobile.iOS` packages. All functionality is now available inside the `Improbable.Gdk.Mobile` package.
+
 ### Added
 
 - Added support for Windows x86 builds.
 - Added a user-friendly error message when the build system fails to find a SpatialOS Build Configuration instance.
+- Added two menu items: `SpatialOS > Launch mobile device > Android on local` and `SpatialOS > Launch mobile device > Android on cloud`.
 
 ### Changed
 
@@ -15,6 +19,7 @@
 - Exceptions thrown in user-code callbacks no longer cause other callbacks scheduled for that frame to not fire. Instead, the exceptions are caught and logged with Debug.LogException.
 - Upgraded the Worker SDK version to `13.7.1`.
 - Updated the default method of loading a Development Authentication Token to search for a `DevAuthToken.txt` asset at the root of any `Resources` folder.
+- Removed the `AndroidClientWorkerConnector` and `iOSClientWorkerConnector` and their specific scenes. You can now use the `MobileClientWorkerConnector` and its `MobileClientScene` to connect to a mobile device.
 
 ### Fixed
 
