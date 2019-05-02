@@ -11,6 +11,8 @@ namespace Improbable.Gdk.Core
         public const NetworkConnectionType LinkProtocol = NetworkConnectionType.RakNet;
         public const string LocatorHost = "locator.improbable.io";
         public const string ReceptionistHost = "127.0.0.1";
+        public const string LocalEnvironment = "local";
+        public const string CloudEnvironment = "cloud";
         public const ushort ReceptionistPort = 7777;
         public const ushort AnonymousAuthenticationPort = 444;
     }

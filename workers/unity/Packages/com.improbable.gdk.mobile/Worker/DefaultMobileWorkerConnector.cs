@@ -32,7 +32,11 @@ namespace Improbable.Gdk.Mobile
                 PlayerPrefs.SetString(RuntimeConfigNames.Environment, environment);
             }
 
-            ShouldConnectLocally = environment == "local";
+            if (!string.IsNullOrEmpty(environment))
+            {
+                ShouldConnectLocally = environment == RuntimeConfigDefaults.LocalEnvironment;
+            }
+
             if (ShouldConnectLocally)
             {
                 IpAddress = GetHostIp();
@@ -46,6 +50,15 @@ namespace Improbable.Gdk.Mobile
             PlayerPrefs.Save();
         }
 
+        /// <summary>
+        /// Extracts the Ip address that should be used to connect via the receptionist. The order is as follows:
+        /// 1. Try to extract the ip address from command line arguments passed in. This currently only works for Android.
+        /// 2. If we are running on an Android Emulator: Use the Ip address necessary to connect locally.
+        /// 3. If we are on a physical device (Android & iOS): Try to extract the value from the stored player preferences.
+        /// 4. Check if we stored anything inside the IpAddress field and use it, if we have.
+        /// 5. Return the default ReceptionistHost (localhost).
+        /// </summary>
+        /// <returns></returns>
         protected virtual string GetHostIp()
         {
             var arguments = LaunchArguments.GetArguments();
@@ -61,9 +74,13 @@ namespace Improbable.Gdk.Mobile
                 switch (DeviceInfo.ActiveDeviceType)
                 {
                     case MobileDeviceType.Virtual:
+#if UNITY_ANDROID
                         return DeviceInfo.AndroidEmulatorDefaultCallbackIp;
+#else
+                        break;
+#endif
                     case MobileDeviceType.Physical:
-                        return PlayerPrefs.GetString(HostIpPlayerPrefsKey);
+                        return PlayerPrefs.GetString(HostIpPlayerPrefsKey, IpAddress);
                 }
             }
 

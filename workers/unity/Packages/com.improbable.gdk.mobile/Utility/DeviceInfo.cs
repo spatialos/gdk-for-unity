@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Mobile
                     ? MobileDeviceType.Virtual
                     : MobileDeviceType.Physical;
 #else
-                throw new PlatformNotSupportedException($"{nameof(DeviceInfo)} is only supported using the iOS platform.");
+                throw new PlatformNotSupportedException($"{nameof(DeviceInfo)} is only supported while using the iOS or Android platform.");
 #endif
                 return activeDeviceType;
             }

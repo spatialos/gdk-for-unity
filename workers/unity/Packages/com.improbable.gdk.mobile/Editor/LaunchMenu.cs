@@ -79,12 +79,12 @@ namespace Improbable.Gdk.Mobile
                 var arguments = new StringBuilder();
                 if (shouldConnectLocally && !string.IsNullOrEmpty(runtimeIp))
                 {
-                    arguments.Append($"+{RuntimeConfigNames.Environment} local ");
+                    arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.LocalEnvironment} ");
                     arguments.Append($"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp} ");
                 }
                 else
                 {
-                    arguments.Append($"+{RuntimeConfigNames.Environment} cloud ");
+                    arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.CloudEnvironment} ");
                 }
 
                 // Get chosen android package id and launch
