@@ -7,7 +7,6 @@
 Before starting with mobile development, make sure you are familiar with
 
   * [The SpatialOS GDK for Unity]({{urlRoot}}/reference/overview)
-  * [The different workflows]({{urlRoot}}/reference/workflows/overview)
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 
 ## Developing SpatialOS games for Android and iOS

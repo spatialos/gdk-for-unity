@@ -14,7 +14,8 @@ If you are new to SpatialOS, you can check out the SpatialOS concept documentati
 
 We recommend you take a look at the following three pages first:
 
-* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/overview.md). <br/>
+* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/overview.md).
+
 You can choose to work with either the traditional Unity MonoBehaviour approach or the new Unity Entity Component System (ECS) approach.
 
 * The background document on [workers in the GDK]({{urlRoot}}/reference/concepts/worker.md).
@@ -29,7 +30,7 @@ If you are using the MonoBehaviour workflow, you should look at [the GameObject 
 
 #### ECS
 
-The GDK currently uses Unity's `0.0.12-preview.18` version of the entities preview packages. This GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
+The GDK currently uses Unity's `0.0.12-preview.21` version of the entities preview packages. This GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
 
 For information on the ECS system, see:
 
