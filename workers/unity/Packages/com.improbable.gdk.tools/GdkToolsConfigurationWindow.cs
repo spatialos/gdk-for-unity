@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Tools
         internal const string MobileSectionLabel = "Mobile Settings";
         internal const string RuntimeIpLabel = "Local runtime IP";
         internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
-        internal const string DevAuthTokenDirLabel = "Dir to store token in";
+        internal const string DevAuthTokenDirLabel = "Directory to store token in";
         internal const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
 
         private const string CodeGeneratorLabel = "Code generator";
@@ -104,6 +104,9 @@ namespace Improbable.Gdk.Tools
 
         private void DrawCodeGenerationOptions()
         {
+            var previousWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 180;
+
             GUILayout.Label(CodeGeneratorLabel, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
@@ -160,6 +163,8 @@ namespace Improbable.Gdk.Tools
 
                 GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
             }
+
+            EditorGUIUtility.labelWidth = previousWidth;
         }
     }
 }
