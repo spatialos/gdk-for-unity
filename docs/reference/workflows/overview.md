@@ -5,7 +5,7 @@ The SpatialOS GDK for Unity provides functionality to develop games in both of U
 * Object-oriented: MonoBehaviours and GameObjects
 * Data-oriented: Entity-Component-System (ECS)
 
-You can stick to familiar MonoBehaviour-based development, check out the new ECS workflow or try a combination of both.
+You can stick to familiar MonoBehaviour-based development, check out the new ECS workflow, or try a combination of both.
 
 > However you choose to develop your game, it is important to understand what [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) are and how they relate to each workflow.
 

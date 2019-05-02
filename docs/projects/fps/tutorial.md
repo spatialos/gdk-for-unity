@@ -303,7 +303,7 @@ From these we can derive some rules about how the `UnityClient` and `UnityGameLo
 
 ---
 
-The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
+The FPS Starter Project uses the SpatialOS GDK's [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow). In this workflow SpatialOS entities are represented by Unity prefabs. Crucially, you can use different prefabs to represent the same type of entity on different types of workers. This allows you to separate client-side and server-side entity representation, as we planned above.
 
 <%(#Expandable title="How does the FPS Starter Project pair SpatialOS entities with Unity prefabs?")%>
 
@@ -405,7 +405,7 @@ No, exactly how entities are represented on each of your workers is up to you.
 
 The GDK also offers an [ECS workflow]({{urlRoot}}/reference/workflows/overview) which represents them as a grouping of Unity ECS entity and components.
 
-If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview) for you.
+If you are more familiar with the traditional Unity GameObject style of development then the GDK provides a [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow) for you.
 
 You are not limited to these options either, and can configure your worker to create something very custom when it encounters a particular entity type.
 
