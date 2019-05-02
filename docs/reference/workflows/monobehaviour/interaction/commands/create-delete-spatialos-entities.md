@@ -1,9 +1,7 @@
-[//]: # (Doc of docs reference 26)
-[//]: # (TODO - technical author pass)
-
 <%(TOC)%>
+
 # How to create and delete entities
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
 

@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # View your game world
 
 Let’s take a look at how many simulated player-clients are now running around this world and how our deployment is performing, using the World Inspector accessible from the Deployment Overview page of the SpatialOS [web Console](https://console.improbable.io) (shown below).

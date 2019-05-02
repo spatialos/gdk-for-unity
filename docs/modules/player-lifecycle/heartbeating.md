@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Heartbeats
 
 Heartbeating is a technique used to ensure that client-workers are still connected. Unresponsive or disconnected clients are periodically removed from the game world.

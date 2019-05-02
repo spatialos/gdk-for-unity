@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Welcome to the SpatialOS GDK for Unity
 
 With the SpatialOS Game Development Kit (GDK) for Unity, you can quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
@@ -17,7 +18,7 @@ The GDK is composed of three layers:
 
 ### Looking for a little more inspiration before jumping in?
 
-* Check out our **blogs** on **<a href="https://improbable.io/games/blog/category/featured-games" data-track-link="Featured Games Clicked|product=Docs" target="_blank">SpatialOS games</a>** currently in development and the **<a href="https://improbable.io/games/blog/category/game-design" data-track-link="Game Design Clicked|product=Docs" target="_blank">game design</a>** opportunities and challenges associated with working with SpatialOS. 
+* Check out our **blogs** on **<a href="https://improbable.io/games/blog/category/featured-games" data-track-link="Featured Games Clicked|product=Docs" target="_blank">SpatialOS games</a>** currently in development and the **<a href="https://improbable.io/games/blog/category/game-design" data-track-link="Game Design Clicked|product=Docs" target="_blank">game design</a>** opportunities and challenges associated with working with SpatialOS.
 <br/>
 <br/>
 * We’d love to hear your game ideas and answer any questions you have about making games on SpatialOS. <br/>

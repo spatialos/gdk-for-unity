@@ -1,6 +1,7 @@
 <%(TOC)%>
+
 # Creating workers
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 First see the documentation on:
 

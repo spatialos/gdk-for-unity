@@ -1,10 +1,8 @@
-[//]: # (Doc of docs reference 7)
-[//]: # (TODO - Tech writer pass)
-
 <%(TOC)%>
+
 # Readers and Writers: Events
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
 

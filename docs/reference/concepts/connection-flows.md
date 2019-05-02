@@ -1,6 +1,5 @@
-[//]: # (TODO: Add examples of additional data you might add)
-
 <%(TOC)%>
+
 # Connection flows
 
 <%(Callout message="

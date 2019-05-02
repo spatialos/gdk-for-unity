@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Connect to a local deployment
 
 This page describes how to connect an iOS client to a local deployment of SpatialOS. You can do this using either; just your[Unity Editor](#in-editor), the [Unity Remote](#unity-remote) app, the [iOS Simulator](#ios-simulator), or your own [iOS device](#ios-device).

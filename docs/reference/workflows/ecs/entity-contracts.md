@@ -1,9 +1,7 @@
-[//]: # (Doc of docs reference 4)
-[//]: # (TODO - Tech writer pass)
-
 <%(TOC)%>
+
 # ECS entity contracts
-  _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+  _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
 

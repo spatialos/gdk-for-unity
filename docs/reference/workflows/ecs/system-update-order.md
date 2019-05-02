@@ -1,10 +1,7 @@
-[//]: # (Doc of docs reference 31.1)
-[//]: # (TODO - Tech writer review)
-[//]: # (TODO - use discussions about content in here https://docs.google.com/document/d/1MPTP1qEo9LaYxFGLQFEN2SqEzu9MxlKjVfOYKPUbTXg/edit)
-
 <%(TOC)%>
+
 # System update order
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+ _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Unity provides attributes to define the [update order of systems (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail.md#system-update-order). These attributes are: `UpdateInGroup`, `UpdateBefore` and `UpdateAfter`.
 

@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Overview
 
 ### New to the GDK?
@@ -13,7 +14,7 @@ If you are new to SpatialOS, you can check out the SpatialOS concept documentati
 
 We recommend you take a look at the following three pages first:
 
-* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/which-workflow.md). <br/>
+* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/overview.md). <br/>
 You can choose to work with either the traditional Unity MonoBehaviour approach or the new Unity Entity Component System (ECS) approach.
 
 * The background document on [workers in the GDK]({{urlRoot}}/reference/concepts/worker.md).

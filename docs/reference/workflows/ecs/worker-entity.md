@@ -1,9 +1,7 @@
-[//]: # (Doc of docs reference 15.2a)
-[//]: # (TODO: Move to the ecs folder)
-
 <%(TOC)%>
+
 # Worker entity
-_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/reference/concepts/worker).
 

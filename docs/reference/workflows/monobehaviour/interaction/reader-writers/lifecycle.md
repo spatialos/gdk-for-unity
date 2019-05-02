@@ -1,8 +1,7 @@
-[//]: # (Doc of docs reference 5.2)
-[//]: # (TODO - tech writer review)
 <%(TOC)%>
+
 # Readers and Writers: Lifecycle
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with
 

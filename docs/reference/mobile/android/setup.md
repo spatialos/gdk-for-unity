@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Setting up Android support for the GDK
 
 ## Get the dependencies for developing Android games
