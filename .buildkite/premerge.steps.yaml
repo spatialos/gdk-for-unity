@@ -52,7 +52,7 @@ steps:
       - logs/**/*
       - workers/unity/build/worker/**/*
     env:
-      WORKER_TYPE: "AndroidClient"
+      WORKER_TYPE: "MobileClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "mono"
 
