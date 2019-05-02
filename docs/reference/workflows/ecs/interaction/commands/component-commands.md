@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # ECS: Component commands
+
  _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
@@ -8,6 +9,7 @@ Before reading this document, make sure you are familiar with:
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ## About commands
+
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview).<br/>
 
 There are two types of commands in SpatialOS:

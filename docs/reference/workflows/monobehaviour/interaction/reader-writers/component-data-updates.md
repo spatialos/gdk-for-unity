@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # Readers and Writers: Component data and updates
+
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
@@ -9,7 +10,6 @@ Before reading this document, make sure you are familiar with:
 * [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Schema]({{urlRoot}}/reference/glossary#schema)
-
 
 We use the following schema for all examples described in this documentation.
 

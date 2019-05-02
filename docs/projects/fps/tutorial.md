@@ -151,7 +151,6 @@ Some component data should be editable by the player's client, but not by the cl
 To find out about how to do this, read up about [layers](https://docs.improbable.io/reference/latest/shared/worker-configuration/layers#layers).
 <%(/Expandable)%>
 
-
 ## Add your new entity to the snapshot
 
 In this section we’re going to add a health pack entity to the SpatialOS world. There are two ways to do this:

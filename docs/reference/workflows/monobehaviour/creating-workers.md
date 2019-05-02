@@ -1,26 +1,26 @@
 <%(TOC)%>
 
 # Creating workers
+
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 First see the documentation on:
 
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 
-To demonstrate the use of the [`Worker`]({{urlRoot}}/api/core/worker) class, the GDK contains an example implementation
-of how to create a worker instance (server-worker or client-worker) as a [`Worker`]({{urlRoot}}/api/core/worker) object and connect to SpatialOS. We provide an abstract [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class and a [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) child class implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it.
+To demonstrate the use of the [`Worker`]({{urlRoot}}/api/core/worker) class, the GDK contains an example implementation of how to create a worker instance (server-worker or client-worker) as a [`Worker`]({{urlRoot}}/api/core/worker) object and connect to SpatialOS. We provide an abstract [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class and a [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) child class implementing the abstract methods to get you started quickly. You can extend it further by creating classes which inherit from it.
 
 The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) is a MonoBehaviour script. You can use it to create multiple server-worker or client-worker instances in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker instance.
 
 **ECS entity translation** <br/>
 When you have multiple worker instances represented as GameObjects in a Scene, you are likely to have multiple ECS entities [checked out]({{urlRoot}}/reference/glossary#authority) to each worker instance/GameObject. To make sure you don’t have all the ECS entities which are checked out to a worker instance/GameObject in the same (x, y, z) location, we use an offset for each ECS entity against the origin of the worker instance/GameObject.  We call the offset of the worker instance/GameObject origin, the “translation”.
 
-
 ## How to use worker prefabs
 
 In the GDK’s [Blank project](https://github.com/spatialos/gdk-for-unity-blank-project), we provide an example implementation of a server-worker and client-worker on different platforms connecting using the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector). There are four example scripts and five example Scenes.
 
 #### Scripts
+
 The scripts are stored inside `workers/unity/Assets/Scripts/Workers`:
 
 * `UnityClientConnector`: This is a sample implementation to connect as a client-worker on Windows or MacOS. (Note that the client-worker is sometimes called `UnityClient`.)
@@ -37,6 +37,7 @@ The scripts are stored inside `workers/unity/Assets/Scripts/Workers`:
 * `DevelopmentScene`: This Scene contains both the `ClientWorker` GameObject representing the client-worker instance and the `GameLogicWorker` GameObject representing the server-worker instance and starts both worker instances as soon as you load the Scene.
 
 ## How to create your own WorkerConnector
+
 You can inherit from the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class to create your own connection logic, dependent on the [type of the worker]({{urlRoot}}/reference/glossary#worker-types) that you want to create.
 
 **Example**</br>
@@ -99,6 +100,7 @@ protected override ReceptionistConfig GetReceptionistConfig(string workerType)
 ```
 
 ## How to decide which connect service to use
+
 First, see [Connecting to SpatialOS]({{urlRoot}}/reference/concepts/connection-flows) to find out more about the connection flows for client-workers and server-workers).
 
 The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) provides a default implementation which automatically decides which connection flow to use based on whether the application is running in your Unity Editor and whether it can find a login token. You can change the behavior by overriding the `GetConnectionService` method.
@@ -116,6 +118,7 @@ protected override ConnectionService GetConnectionService()
 ```
 
 ## How to connect using the development authentication flow
+
 We provide an integration with the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance) that you can use to connect your client-workers to a cloud deployment. This is especially important when working with [client-workers for mobile devices]({{urlRoot}}/reference/mobile/overview).
 
 The [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) already provides an implementation to use the development authentication flow connecting via the [new v13.5+ Locator connection flow]({{urlRoot}}/reference/concepts/connection-flows#locator-connection-flow).

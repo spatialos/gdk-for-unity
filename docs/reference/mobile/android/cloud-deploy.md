@@ -27,8 +27,8 @@ If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity proj
 
 ## Android device or Android emulator
 
-To connect your mobile application to a cloud deployment, you need to authenticate against our services.
-This guide describes how to authenticate using the development authentication flow which we provide for the early stages of game development.
+To connect your mobile application to a cloud deployment, you need to authenticate against our services. This guide describes how to authenticate using the development authentication flow which we provide for the early stages of game development.
+
 Altenatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.

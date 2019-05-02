@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # How to create and delete entities
+
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
@@ -13,7 +14,9 @@ Before reading this document, make sure you are familiar with:
 
 
 To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+
 ### How to create a SpatialOS entity
+
 To create an entity, you
 
   * [define an entity template]({{urlRoot}}/reference/concepts/entity-templates)

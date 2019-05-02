@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-  * [Query-based interest](https://docs.improbable.io/reference/latest/shared/reference/query-based-interest)
+  * [Query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#query-based-interest-beta)
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 

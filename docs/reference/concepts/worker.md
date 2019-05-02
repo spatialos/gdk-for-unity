@@ -27,7 +27,6 @@ This means that, along with a SpatialOS game world and SpatialOS entities, there
 
 You add the systems to the ECS world using `worker.World.GetOrCreateManager<YourSystem>()`.
 
-
 ## Further information
 
 To learn about a workers’ connection to the SpatialOS Runtime, see:

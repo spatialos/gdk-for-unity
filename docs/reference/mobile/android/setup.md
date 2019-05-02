@@ -3,6 +3,7 @@
 # Setting up Android support for the GDK
 
 ## Get the dependencies for developing Android games
+
 1. Follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and be sure to select the **iOS build support** component during your Unity installation.
 1. Install [Android Studio](https://developer.android.com/studio/):<br>
   At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
@@ -24,7 +25,7 @@ Most of your interactions with the GDK happen inside your Unity Editor. To get s
 If you don’t have a SpatialOS Unity project you can use the [FPS Starter Project]({{urlRoot}}/projects/fps/get-started/get-started) or the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) to get started.
 1. In your Unity Editor, go to **File** > **Build Settings**. Select **Android** and then **Switch Platform**.
 1. Still in your Unity Editor, add the file paths Unity needs via the **External Tools** window. To do this:
-    * on Windows, go to **Edit** > **Preferences** 
+    * on Windows, go to **Edit** > **Preferences**
     * on MacOS, go to **Unity** > **Preferences**.
 
     In the **Android** section of the **External Tools** window,  input the paths to the SDK, JDK and NDK. The easiest way to ensure that Unity reads the file path correctly is to use the browse option:

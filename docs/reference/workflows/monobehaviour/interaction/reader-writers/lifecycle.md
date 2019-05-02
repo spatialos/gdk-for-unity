@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # Readers and Writers: Lifecycle
+
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with

@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # World commands
+
 _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with
@@ -9,6 +10,7 @@ Before reading this document, make sure you are familiar with
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
 ## About commands
+
 Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview).<br/>
 
 There are two types of commands in SpatialOS:
@@ -78,7 +80,6 @@ Parameters:
   * `Action<WorldCommands.DeleteEntity.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
 
 > Do not manually delete GameObjects representing entities after sending a `DeleteEntity` command. You should wait until you receive a callback on the [`IEntityGameObjectCreator` instance]({{urlRoot}}/modules/game-object-creation/custom-usage#onentityremoved).
-
 
 ### Entity query
 

@@ -1,7 +1,8 @@
 <%(TOC)%>
 
 #  ECS: Component updates
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
+
+_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with
 

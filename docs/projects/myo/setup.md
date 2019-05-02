@@ -1,4 +1,5 @@
 <%(TOC max="2")%>
+
 # Project setup
 
 _Make sure you have followed the [Setup & installation]({{urlRoot}}/machine-setup) before following this guide._
@@ -172,7 +173,7 @@ Copy these files into `workers/my-unity-project/`.
 
 **Step 1.** Create a `asmdef` for generated code.
 
-In order to ensure that the generated code can access its dependencies, you will need to create an `asmdef` for the generated code. We recommend that you reuse the following file: 
+In order to ensure that the generated code can access its dependencies, you will need to create an `asmdef` for the generated code. We recommend that you reuse the following file:
 
 * [Improbable.Gdk.Generated.asmdef](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Generated/Improbable.Gdk.Generated.asmdef)
 
@@ -204,7 +205,7 @@ Replace `<path-to-the-gdk>` with the _relative path_ from the `manifest.json` to
 <%(Callout message="The packages listed above are just the **minimum** set required to get started with the GDK.<br/><br/>You can add additional feature module packages by referencing them the same way.")%>
 
 <%(#Expandable title="What is sideloading?")%>
-Sideloading is the mechanism by which we load packages in the GDK (for now!). 
+Sideloading is the mechanism by which we load packages in the GDK (for now!).
 
 Unity allows you to reference a package with a file path instead of fetching a versioned package from a registry.
 
@@ -224,7 +225,7 @@ Copy this file into `workers/my-unity-project/Assets/Config/GdkToolsConfiguratio
 **Step 4.** Open your Unity project.
 
 Open your Unity project located at `workers/my-unity-project`. This triggers a few actions:
-  
+
 * Unity downloads several required SpatialOS libraries.
 
 > This may result in opening a browser windows prompting you to log in to your SpatialOS account.

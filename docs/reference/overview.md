@@ -3,12 +3,12 @@
 # Overview
 
 ### New to the GDK?
+
 If you are new to the GDK, the best place to start is with the [Get started]({{urlRoot}}/projects/fps/get-started/get-started) guide. This guides you through setting up SpatialOS with Unity using the FPS Starter Project, which you can use as both a learning tool and a starter for your own game.
 
 ### SpatialOS concepts
 
 If you are new to SpatialOS, you can check out the SpatialOS concept documentation on the SpatialOS [main documentation site](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
-
 
 ### Where to start with the GDK reference documentation
 
@@ -27,7 +27,7 @@ You can choose to work with either the traditional Unity MonoBehaviour approach 
 
 If you are using the MonoBehaviour workflow, you should look at [the GameObject Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview) documentation to learn how to link GameObjects to SpatialOS entities.
 
-#### ECS 
+#### ECS
 
 The GDK currently uses Unity's `0.0.12-preview.18` version of the entities preview packages. This GDK documentation assumes you are familiar with the Unity Entity Component System (ECS).
 

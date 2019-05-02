@@ -1,6 +1,7 @@
 <%(TOC)%>
 
 # Worker entity
+
 _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/reference/concepts/worker).

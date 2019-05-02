@@ -29,8 +29,8 @@ If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity proj
 
 **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
 
-To connect your mobile application to a cloud deployment, you need to authenticate against our services.
-This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+To connect your mobile application to a cloud deployment, you need to authenticate against our services. This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+
 Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 1. Open your project in your Unity Editor.
@@ -71,8 +71,8 @@ Note: You don’t need to enter anything in the text field.
 
 ## iOS device{#ios-device}
 
-To connect your mobile application to a cloud deployment, you need to authenticate against our services.
-This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+To connect your mobile application to a cloud deployment, you need to authenticate against our services. This guide describes how to authenticate using the development authentication flow which we provide for early stages in development.
+
 Alternatively, if you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 1. Make sure your computer and your mobile device are both connected to the same network.
