@@ -37,14 +37,17 @@ namespace Improbable.Gdk.Mobile
                         ? MobileDeviceType.Virtual
                         : MobileDeviceType.Physical;
                 }
+
+                return activeDeviceType;
 #elif UNITY_IOS
                 activeDeviceType = SystemInfo.deviceModel.Equals("x86_64")
                     ? MobileDeviceType.Virtual
                     : MobileDeviceType.Physical;
+
+                return activeDeviceType;
 #else
                 throw new PlatformNotSupportedException($"{nameof(DeviceInfo)} is only supported while using the iOS or Android platform.");
 #endif
-                return activeDeviceType;
             }
         }
     }
