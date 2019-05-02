@@ -38,7 +38,7 @@ steps:
       - logs/**/*
       - build/assembly/**/*
     env:
-      WORKER_TYPE: "AndroidClient"
+      WORKER_TYPE: "MobileClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "mono"
 
