@@ -19,12 +19,12 @@ namespace Improbable.Gdk.Mobile
             {
                 using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
                 using (var currentActivity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity"))
-                using (var intent = currentActivity.Call<UnityEngine.AndroidJavaObject>("getIntent"))
+                using (var intent = currentActivity.Call<AndroidJavaObject>("getIntent"))
                 {
                     var hasExtra = intent.Call<bool>("hasExtra", "arguments");
                     if (hasExtra)
                     {
-                        using (var extras = intent.Call<UnityEngine.AndroidJavaObject>("getExtras"))
+                        using (var extras = intent.Call<AndroidJavaObject>("getExtras"))
                         {
                             var arguments = extras.Call<string>("getString", "arguments").Split(' ');
                             return CommandLineUtility.ParseCommandLineArgs(arguments);

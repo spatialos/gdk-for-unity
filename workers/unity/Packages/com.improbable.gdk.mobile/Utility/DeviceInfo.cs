@@ -5,6 +5,9 @@ namespace Improbable.Gdk.Mobile
 {
     public static class DeviceInfo
     {
+        /// <summary>
+        ///     The default IP address to connect your Android Studio emulator to localhost.
+        /// </summary>
         public const string AndroidEmulatorDefaultCallbackIp = "10.0.2.2";
 
         private static MobileDeviceType activeDeviceType = MobileDeviceType.Unknown;
