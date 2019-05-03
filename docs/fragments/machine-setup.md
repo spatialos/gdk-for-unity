@@ -1,4 +1,4 @@
-### 1. Sign up or log in 
+### 1. Sign up or log in
 
 If you have not signed up before, you can do this [here](https://improbable.io/get-spatialos).
 <br/>
@@ -27,15 +27,15 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 | Android Build Support | No | Only required if you wish to build mobile clients for Android. |
 | iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
 
-**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
+**Step 2.** Install **<a href="https://dotnet.microsoft.com/download/dotnet-core/2.2" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Win|label=Win" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
-- Verified with versions `2.1.3xx` and `2.1.4xx`
+- Verified with version `2.2.2xx`.
 
 > **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
 **Step 3.** Run the **<a href="https://console.improbable.io/installer/download/stable/latest/win" data-track-link="SpatialOS Installer Downloaded|product=Docs|platform=Win|label=Win" target="_blank">SpatialOS Installer</a>**
 
-- This installs the [SpatialOS CLI]({{urlRoot}}/reference/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/reference/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables
+- This installs the [SpatialOS CLI]({{urlRoot}}/reference/glossary#spatial-command-line-tool-cli) , the [SpatialOS Launcher]({{urlRoot}}/reference/glossary#launcher), and 32-bit and 64-bit Visual C++ Redistributables.
 
 **Step 4.** Install a **code editor** if you don't have one already
 
@@ -43,9 +43,9 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 
 **Step 5.** Install Git
 
-The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories.
 
-> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository. 
+> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository.
 
 **Step 6.** Restart your machine.
 
@@ -95,9 +95,9 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 | Android Build Support | No | Only required if you wish to build mobile clients for Android. |
 | iOS Build Support | No | Only required if you wish to build mobile clients for iOS. |
 
-**Step 2.** Install **<a href="https://www.microsoft.com/net/download/dotnet-core/2.1" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
+**Step 2.** Install **<a href="https://dotnet.microsoft.com/download/dotnet-core/2.2" data-track-link=".NET Core Download Link Clicked|product=Docs|platform=Mac|label=Mac" target="_blank"><strong>.NET Core SDK (x64)</strong></a>**
 
-- Verified with versions `2.1.3xx` and `2.1.4xx`
+- Verified with version `2.2.1xx`.
 
 > **Note:** After installing the .NET Core SDK, you should restart any Unity and Unity Hub processes. This will prevent errors where Unity cannot find the `dotnet` executable.
 
@@ -111,9 +111,9 @@ Make sure you download the **Installer** version, and refer to the matrix below 
 
 **Step 5.** Install Git
 
-The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories. 
+The SpatialOS GDK for Unity source code is hosted on GitHub. You need to download and install [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/) in order to clone the GDK repositories.
 
-> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository. 
+> If you do not want to use Git you can also download a .zip file containing the GDK repo from the [GDK GitHub Page](https://github.com/spatialos/gdk-for-unity). However, you will not be able to easily download updates to the GDK if you do not use Git to clone the repository.
 
 **Step 6.** Restart your machine.
 
