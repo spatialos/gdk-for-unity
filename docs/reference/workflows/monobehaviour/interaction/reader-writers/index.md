@@ -1,10 +1,8 @@
-[//]: # (Doc of docs reference 6.1)
-[//]: # (TODO - Tech writer pass)
-[//]: # (TODO - See if `option` struct needs defining)
-
 <%(TOC)%>
+
 # Readers and Writers
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
+
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -93,7 +91,7 @@ event Action<TEventPayload> On{Name of TEvent}Event;
 Register to this event to receive a callback whenever the corresponding SpatialOS event is triggered on this SpatialOS entity.
 
 Callback parameter:
-  
+
   * `TEventPayload`: The type of the event payload for `TEvent`. This type depends on the schema definition of the event. It will contain the event payload.
 
 

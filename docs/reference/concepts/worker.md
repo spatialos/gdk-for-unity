@@ -1,8 +1,6 @@
-[//]: # (Doc of docs reference 15)
 <%(TOC)%>
-# Workers
 
-Before reading this document, make sure you are familiar with the [MonoBehaviour and  ECS workflow]({{urlRoot}}/reference/workflows/which-workflow).
+# Workers
 
 ## What is a SpatialOS worker?
 
@@ -17,16 +15,15 @@ We differentiate between [client-workers]({{urlRoot}}/reference/glossary#client-
 
 ## Workers and ECS worlds
 
-As described in the [MonoBehaviour and  ECS workflow]({{urlRoot}}/reference/workflows/which-workflow) document, the GDK uses ECS under the hood, even if you are using the MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
+As mentioned in the [MonoBehaviour and ECS workflow]({{urlRoot}}/reference/workflows/overview) document, the GDK uses ECS under the hood, even if you are using the MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
 
 In the GDK, any server-worker or client-worker essentially consists of its connection to the SpatialOS Runtime and a list of ECS systems - which hold the logic relevant to the game world. When your GDK-created game runs and creates either a client-worker or server-worker, that worker tries to connect to the SpatialOS Runtime.
 
 When it connects, the worker creates an ECS world to keep track of all SpatialOS entities that are in its view and adds all systems that are defined inside it to its ECS world. These systems contain the logic necessary to simulate your game and synchronize changes with the SpatialOS Runtime.
 
-This means that, along with a SpatialOS game world and SpatialOS entities, there is an ECS world with ECS entities. However, while the SpatialOS world is game-wide and represents all SpatialOS entities, the ECS world is much narrower; it’s worker-specific and represents only the ECS entities which are currently in a [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view).   Of course, this means that you have as many ECS worlds in your game as you have workers.
+This means that, along with a SpatialOS game world and SpatialOS entities, there is an ECS world with ECS entities. However, while the SpatialOS world is game-wide and represents all SpatialOS entities, the ECS world is much narrower; it’s worker-specific and represents only the ECS entities which are currently in a [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view). Of course, this means that you have as many ECS worlds in your game as you have workers.
 
 You add the systems to the ECS world using `worker.World.GetOrCreateManager<YourSystem>()`.
-
 
 ## Further information
 

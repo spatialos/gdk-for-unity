@@ -1,10 +1,8 @@
-[//]: # (Doc of docs reference 6.2)
-[//]: # (TODO - Tech writer pass)
-[//]: # (TODO - Remove “> Currently updating any field of the component will trigger the callback for all <component property name>Updated`.” line if if this PR gets merged in: https://github.com/spatialos/UnityGDK/pull/438 )
-
 <%(TOC)%>
+
 # Readers and Writers: Component data and updates
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
+
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -12,7 +10,6 @@ Before reading this document, make sure you are familiar with:
 * [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Schema]({{urlRoot}}/reference/glossary#schema)
-
 
 We use the following schema for all examples described in this documentation.
 

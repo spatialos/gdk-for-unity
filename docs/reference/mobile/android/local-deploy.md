@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Connect to a local deployment
 
 This page explains how to connect an Android client to a local deployment of SpatialOS. You can do this from inside your [Unity Editor](#in-editor), using the [Unity Remote](#unity-remote) app, using an [Android Emulator](#android-emulator) or using your own [Android device](#android-device).
@@ -30,6 +31,7 @@ If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity proj
 <%(/Expandable)%>
 
 ## Unity Editor{#in-editor}
+
 1. In your Unity Editor, Select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>

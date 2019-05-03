@@ -1,7 +1,5 @@
-[//]: # (Document the options UTY-1168)
-[//]: # (Document the options UTY-1170)
-
 <%(TOC)%>
+
 # Deploy your game
 
 When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. Once the deployment is running, you can connect clients to it in order to play the game. You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
@@ -76,8 +74,8 @@ where:
   1. Open the SpatialOS [Console](https://console.improbable.io/projects). You’ll see the project and the deployment you just created.
   1. In the SpatialOS Console, select the deployment’s name to open the overview page.
   1. Select **Launch**.
-  
+
   > You can ignore the prompt to install the Launcher, as it’s installed as part of the SpatialOS Installer.
-  
+
   1. To get links to share the game with others, select **Share**.
   1. Once you’ve finished playing, select **Stop** in the Console.

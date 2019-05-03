@@ -1,13 +1,8 @@
-[//]: # (Doc of docs reference 8.2)
-[//]: # (TODO - Tech writer pass)
-[//]: # (TODO - Callback on what note below)
-[//]: # (TODO - split API section into a different doc)
-[//]: # (TODO - add how to do spawn logic in code example below)
-
 <%(TOC)%>
+
 # Component commands
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/which-workflow#spatialos-entities)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -16,7 +11,7 @@ Before reading this document, make sure you are familiar with:
 
 ### About commands
 
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/which-workflow).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview).<br/>
 
 There are two types of commands in SpatialOS:
 

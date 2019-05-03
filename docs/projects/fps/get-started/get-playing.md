@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Get playing
 
 Back in your SpatialOS [Console](https://console.improbable.io/projects), you should now see the two deployments that you just created appear under your project. Select the one without the `_sim_players` suffix to get to the Overview page:
@@ -54,6 +55,7 @@ Back in the game, you will soon see the new simulated player-clients running. Tr
 <img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; display: block;" />
 
 ## Job done!
+
 Now you can take a look at your SpatialOS deployment to see what’s happening in your game world.
 
 #### Next: [View your game world]({{urlRoot}}/projects/fps/get-started/view-game-world.md)

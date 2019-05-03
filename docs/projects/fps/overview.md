@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # FPS Starter Project: Overview
 
 <img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; width: 100%; display: block;" />

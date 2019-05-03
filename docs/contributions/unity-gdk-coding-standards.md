@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # SpatialOS GDK for Unity C# coding standards
 
 ![Header Image]({{assetRoot}}assets/unity-gdk-header-cartoon.png)

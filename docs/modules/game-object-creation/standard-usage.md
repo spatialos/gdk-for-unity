@@ -1,4 +1,5 @@
-<%(Toc)%>
+<%(TOC)%>
+
 # Set up basic spawning
 
 ## Set up your GameObject prefabs

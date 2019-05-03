@@ -1,4 +1,5 @@
 <%(TOC)%>
+
 # Connect to a local deployment
 
 This page describes how to connect an iOS client to a local deployment of SpatialOS. You can do this using either; just your[Unity Editor](#in-editor), the [Unity Remote](#unity-remote) app, the [iOS Simulator](#ios-simulator), or your own [iOS device](#ios-device).
@@ -30,11 +31,13 @@ If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity proj
 <%(/Expandable)%>
 
 ## Unity Editor{#in-editor}
+
 1. In your Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
 1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
 ## Unity Remote{#unity-remote}
+
 You need the Unity Remote app installed on your iOS device in order to follow steps below. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
 1. Open your project in your Unity Editor.

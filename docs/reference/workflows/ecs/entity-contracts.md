@@ -1,9 +1,8 @@
-[//]: # (Doc of docs reference 4)
-[//]: # (TODO - Tech writer pass)
-
 <%(TOC)%>
+
 # ECS entity contracts
-  _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/which-workflow)._
+
+_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -16,9 +15,11 @@ Before reading this document, make sure you are familiar with:
 This documentation describes the guarantees we provide for the components that an ECS Entity has.
 
 ## Temporary components
+
 Temporary components are components that only exist for one frame. We guarantee that all temporary components are removed from all ECS Entities when `InternalSpatialOSCleanGroup` is run.
 
 ## Reactive components
+
 A reactive component is implemented as a temporary component, and so has the same guarantees as a temporary component.
 
 ## Components on ECS Entities that represent SpatialOS entities
@@ -41,6 +42,7 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
     * [`AuthorityLostImminent<T>`]({{urlRoot}}/api/reactive-components/authority-loss-imminent): If the worker is about to lose write access to the component. Note that the [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative) component is still attached to these entities.
 
 ### Guarantees when receiving updates or messages
+
 Whenever a component update or message is received by the worker, the following holds for the entity that the worker received it for:
 
   * All updates received are stored as a list in a reactive component called `{name of component}.ReceivedUpdates`.
@@ -50,6 +52,7 @@ Whenever a component update or message is received by the worker, the following 
   * All command responses received are stored as a list in a reactive component called `{name of component}.{name of command}.CommandResponses`.
 
 ### Guarantees when sending updates or messages
+
 Whenever a component update or message is sent by the worker, the following holds for the entity that the worker sends it from:
 
   * Whenever a field inside a `{name of component}.Component` changes, the component update will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
@@ -58,6 +61,7 @@ Whenever a component update or message is sent by the worker, the following hold
   * All command responses added to the `{name of component}.CommandResponders.{name of command}.ResponsesToSend`  will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
 
 ## Components on worker entities
+
 A worker entity is created for each ECS World that is associated with a [worker]({{urlRoot}}/reference/concepts/worker).
 We guarantee the following:
 
