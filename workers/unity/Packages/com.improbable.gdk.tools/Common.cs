@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Tools
             builder.AppendLine("If these exist on your PATH, restart Unity and Unity Hub.");
             builder.AppendLine();
             builder.AppendLine("Otherwise, install them by following our setup guide:");
-            builder.AppendLine("https://docs.improbable.io/unity/alpha/content/get-started/set-up");
+            builder.AppendLine("https://docs.improbable.io/unity/alpha/machine-setup#2-install-the-gdk-dependencies");
 
             EditorApplication.delayCall += () =>
             {
