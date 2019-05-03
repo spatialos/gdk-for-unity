@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Subscriptions
 
             var injectors = gameObjectToInjectors[gameObject];
 
-            if (workerSystem.TryGetEntity(entityId, out var entity))
+            if (entityId.IsValid() && workerSystem.TryGetEntity(entityId, out var entity))
             {
                 foreach (var componentType in gameObjectToComponentsAdded[gameObject])
                 {
