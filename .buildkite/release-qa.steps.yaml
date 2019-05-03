@@ -31,7 +31,7 @@ common: &common
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
 steps:
-  - label: "build :android:"
+  - label: "build :android: and iOS"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:

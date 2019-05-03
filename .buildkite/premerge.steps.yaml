@@ -45,7 +45,7 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: "build :android:"
+  - label: "build :android: and iOS"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
