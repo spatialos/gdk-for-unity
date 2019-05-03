@@ -11,13 +11,13 @@ You can stick to familiar MonoBehaviour-based development, check out the new ECS
 
 ## MonoBehaviour-centric workflow
 
-In the GDK, SpatialOS entities can be linked to GameObjects. [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) allow you to inspect and change the state of components on SpatialOS entities using MonoBehaviours that you add to their linked GameObjects.
+In the GDK, SpatialOS entities can be linked to GameObjects by using the [Game Object Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview). [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) allow you to inspect and change the state of components on SpatialOS entities using MonoBehaviours that you add to their linked GameObjects.
 
-You may find that not all SpatialOS entities need to be represented as a GameObjects. The [Game Object Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview) allows you to customise the GameObject creation and linking process.
+You may find that not all SpatialOS entities need to be represented as GameObjects. The [Game Object Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview) allows you to customise the GameObject creation and linking process.
 
 ## ECS-centric workflow
 
-ECS is a new Unity development paradigm, introduced by Unity in early 2018.
+ECS is an architectural pattern adopted by Unity in early 2018, allowing you to design your Unity game in a data-oriented fashion.
 
 In the GDK, each SpatialOS entity checked out by a worker has a corresponding ECS entity. To inspect or change the state of components on SpatialOS entities, you must read or write to the components on corresponding ECS entities.
 
