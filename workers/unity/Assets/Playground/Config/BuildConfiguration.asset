@@ -81,41 +81,7 @@ MonoBehaviour:
       - Options: 0
         Enabled: 0
         Required: 0
-  - WorkerType: iOSClient
-    ScenesForWorker:
-    - {fileID: 102900000, guid: 424c4b2c090874512badc5e7ee757d5f, type: 3}
-    LocalBuildConfig:
-      BuildTargets:
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 1
-        Enabled: 1
-        Required: 0
-    CloudBuildConfig:
-      BuildTargets:
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 16384
-        Enabled: 0
-        Required: 0
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 0
-        Enabled: 0
-        Required: 0
-      - Options: 0
-        Enabled: 1
-        Required: 0
-  - WorkerType: AndroidClient
+  - WorkerType: MobileClient
     ScenesForWorker:
     - {fileID: 102900000, guid: 82ccd0fd96a2ba24f88d0c7d01592f2e, type: 3}
     LocalBuildConfig:
@@ -126,8 +92,8 @@ MonoBehaviour:
       - Options: 1
         Enabled: 1
         Required: 0
-      - Options: 0
-        Enabled: 0
+      - Options: 1
+        Enabled: 1
         Required: 0
     CloudBuildConfig:
       BuildTargets:
@@ -147,6 +113,6 @@ MonoBehaviour:
         Enabled: 1
         Required: 0
       - Options: 0
-        Enabled: 0
+        Enabled: 1
         Required: 0
   isInitialised: 1

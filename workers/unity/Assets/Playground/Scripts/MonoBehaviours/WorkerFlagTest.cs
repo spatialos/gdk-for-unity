@@ -11,8 +11,6 @@ namespace Playground
         [Require] private WorkerFlagReader workerFlagReader;
 #pragma warning restore 649
 
-        #pragma warning restore 649
-
         private void OnEnable()
         {
             workerFlagReader.OnWorkerFlagChange += (name, value) =>

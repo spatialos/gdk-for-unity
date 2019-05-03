@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tools
         internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string CodegenOutputDirLabel = "Code generator output";
         internal const string SchemaSourceDirsLabel = "Schema sources";
+        internal const string MobileSectionLabel = "Mobile Settings";
         internal const string RuntimeIpLabel = "Local runtime IP";
         internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
         internal const string DevAuthTokenDirLabel = "Directory to store token in";
@@ -103,6 +104,9 @@ namespace Improbable.Gdk.Tools
 
         private void DrawCodeGenerationOptions()
         {
+            var previousWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 180;
+
             GUILayout.Label(CodeGeneratorLabel, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
@@ -123,7 +127,8 @@ namespace Improbable.Gdk.Tools
                         toolsConfig.SchemaSourceDirs[i] =
                             EditorGUILayout.TextField($"Schema dir [{i}]", toolsConfig.SchemaSourceDirs[i]);
 
-                        if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton,
+                            GUILayout.ExpandWidth(false)))
                         {
                             toolsConfig.SchemaSourceDirs.RemoveAt(i);
                         }
@@ -139,21 +144,27 @@ namespace Improbable.Gdk.Tools
                         toolsConfig.SchemaSourceDirs.Add(string.Empty);
                     }
                 }
+            }
 
-                GUILayout.Label(RuntimeIpLabel, EditorStyles.boldLabel);
-                toolsConfig.RuntimeIp = GUILayout.TextField(toolsConfig.RuntimeIp);
+            GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                toolsConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, toolsConfig.RuntimeIp);
+            }
 
-                GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
 
-                GUILayout.Label(DevAuthTokenDirLabel, EditorStyles.label);
-                toolsConfig.DevAuthTokenDir = GUILayout.TextField(toolsConfig.DevAuthTokenDir);
+            GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                toolsConfig.DevAuthTokenLifetimeDays =
+                    EditorGUILayout.IntSlider(DevAuthTokenLifetimeLabel, toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
+
+                toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
 
                 GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
-
-                GUILayout.Label(DevAuthTokenLifetimeLabel, EditorStyles.label);
-                toolsConfig.DevAuthTokenLifetimeDays =
-                    EditorGUILayout.IntSlider(toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
             }
+
+            EditorGUIUtility.labelWidth = previousWidth;
         }
     }
 }

@@ -194,7 +194,7 @@ namespace Improbable.Gdk.BuildSystem
                 var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
                 try
                 {
-                    if (scriptingBackend != null)
+                    if (scriptingBackend != null && config.Target != BuildTarget.iOS)
                     {
                         Debug.Log($"Setting scripting backend to {scriptingBackend.Value}");
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);

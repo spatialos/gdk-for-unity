@@ -189,7 +189,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d4e3c9d4646410429b49892bdf0b52c, type: 2}
   - {fileID: 11400000, guid: 7e00873dd53438245919187ebd00e937, type: 2}
   - {fileID: 11400000, guid: d3eeea3be1ea96949b63c46a6353d4d1, type: 2}
-  - {fileID: 11400000, guid: 511304a26155d2f4ba98f4eb2003f326, type: 2}
   SendStrategies:
   - {fileID: 11400000, guid: c214826e4a2dee44d961e287ec697350, type: 2}
   SetKinematicWhenNotAuthoritative: 1

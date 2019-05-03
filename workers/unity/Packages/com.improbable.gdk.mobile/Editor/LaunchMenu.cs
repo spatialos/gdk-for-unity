@@ -12,10 +12,24 @@ namespace Improbable.Gdk.Mobile
         private const string rootApkPath = "build";
         private static string AbsoluteApkPath => Path.GetFullPath(Path.Combine(Application.dataPath, Path.Combine("..", rootApkPath)));
 
-        private const string MenuLaunchAndroid = "SpatialOS/Launch mobile client/Android Device";
+        private const string MenuLaunchMobile = "SpatialOS/Launch mobile client";
+        private const string MenuLaunchAndroidLocal = "/Android for local";
+        private const string MenuLaunchAndroidCloud = "/Android for cloud";
 
-        [MenuItem(MenuLaunchAndroid, false, 73)]
-        private static void LaunchMobileClient()
+
+        [MenuItem(MenuLaunchMobile + MenuLaunchAndroidLocal, false, 73)]
+        private static void LaunchAndroidLocal()
+        {
+            LaunchAndroid(true);
+        }
+
+        [MenuItem(MenuLaunchMobile + MenuLaunchAndroidCloud, false, 74)]
+        private static void LaunchAndroidCloud()
+        {
+            LaunchAndroid(false);
+        }
+
+        private static void LaunchAndroid(bool shouldConnectLocally)
         {
             try
             {
@@ -63,9 +77,19 @@ namespace Improbable.Gdk.Mobile
                 // Use this to pass through the local ip to connect to
                 var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
                 var arguments = new StringBuilder();
-                if (!string.IsNullOrEmpty(runtimeIp))
+                if (shouldConnectLocally)
                 {
-                    arguments.Append($"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp}");
+                    if (string.IsNullOrEmpty(runtimeIp))
+                    {
+                        Debug.LogWarning("No local runtime IP was specified. Ensure you set one in SpatialOS > GDK tools configuration.");
+                    }
+
+                    arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.LocalEnvironment} ");
+                    arguments.Append($"+{RuntimeConfigNames.ReceptionistHost} {runtimeIp} ");
+                }
+                else
+                {
+                    arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.CloudEnvironment} ");
                 }
 
                 // Get chosen android package id and launch

@@ -17,11 +17,7 @@ fi
 
 
 ci/test.sh
-.shared-ci/scripts/build.sh "workers/unity" AndroidClient local mono "$(pwd)/logs/AndroidClientBuild.log"
+.shared-ci/scripts/build.sh "workers/unity" MobileClient local mono "$(pwd)/logs/MobileClientBuild-mono.log"
 .shared-ci/scripts/build.sh "workers/unity" UnityClient local il2cpp "$(pwd)/logs/UnityClientBuild-il2cpp.log"
 .shared-ci/scripts/build.sh "workers/unity" UnityClient cloud mono "$(pwd)/logs/UnityClientBuild-mono.log"
 .shared-ci/scripts/build.sh "workers/unity" UnityGameLogic cloud mono "$(pwd)/logs/UnityGameLogicBuild.log"
-
-if isMacOS; then
-  .shared-ci/scripts/build.sh "workers/unity" iOSClient local il2cpp "$(pwd)/logs/iOSClientBuild.log"
-fi

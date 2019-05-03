@@ -4,13 +4,14 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b5b675e2313118478421584cfc11b15, type: 3}
-  m_Name: iOSClientInterpolation
+  m_Name: MobileClientInterpolation
   m_EditorClassIdentifier: 
-  WorkerType: iOSClient
+  WorkerType: MobileClient
   TargetBufferSize: 10
   MaxBufferSize: 20

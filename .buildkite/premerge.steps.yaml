@@ -45,14 +45,14 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: "build :android:"
+  - label: "build :android: and iOS"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
       - logs/**/*
       - workers/unity/build/worker/**/*
     env:
-      WORKER_TYPE: "AndroidClient"
+      WORKER_TYPE: "MobileClient"
       BUILD_TARGET: "local"
       SCRIPTING_TYPE: "mono"
 
