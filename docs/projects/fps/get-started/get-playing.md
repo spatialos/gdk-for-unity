@@ -12,7 +12,7 @@ Select the **Launch** button on the left, and then select **Launch** (you can sk
 
 Once the client has launched, enter the game and fire a few celebratory shots - you are now playing in your first SpatialOS cloud deployment!
 
-<img src="{{assetRoot}}assets/fps/by-yourself.png" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/fps/fps-starter-headline.png" style="margin: 0 auto; display: block;" />
 
 It’s a bit lonely in there isn’t it? Keep your client running while we get this world populated.
 
@@ -52,7 +52,7 @@ What this will do is start up 10 simulated player-clients per Simulated Player C
 
 Back in the game, you will soon see the new simulated player-clients running. Try to find them before they find you…
 
-<img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; display: block;" />
+<img src="{{assetRoot}}assets/fps/fps-starter-enemies.png" style="margin: 0 auto; display: block;" />
 
 ## Job done!
 
