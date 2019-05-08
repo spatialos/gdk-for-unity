@@ -84,18 +84,15 @@
             - [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
     - Mobile
         - [Overview]({{urlRoot}}/reference/mobile/overview)
+        - [Ways to run your mobile client]({{urlRoot}}/reference/mobile/run-client)
         - Android
             - [Set up]({{urlRoot}}/reference/mobile/android/setup)
-            - [Run your Android client]({{urlRoot}}/reference/mobile/android/run-client)
-            - Connection flows
-                - [Local deployment]({{urlRoot}}/reference/mobile/android/local-deploy)
-                - [Cloud deployment]({{urlRoot}}/reference/mobile/android/cloud-deploy)
+            - [Connect to a local deployment]({{urlRoot}}/reference/mobile/android/local-deploy)
+            - [Connect to a cloud deployment]({{urlRoot}}/reference/mobile/android/cloud-deploy)
         - iOS
             - [Set up]({{urlRoot}}/reference/mobile/ios/setup)
-            - [Run your iOS client]({{urlRoot}}/reference/mobile/ios/run-client)
-            - Connection flows
-                - [Local deployment]({{urlRoot}}/reference/mobile/ios/local-deploy)
-                - [Cloud deployment]({{urlRoot}}/reference/mobile/ios/cloud-deploy)
+            - [Connect to a local deployment]({{urlRoot}}/reference/mobile/ios/local-deploy)
+            - [Connect to a cloud deployment]({{urlRoot}}/reference/mobile/ios/cloud-deploy)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
