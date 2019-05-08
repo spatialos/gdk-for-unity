@@ -2,78 +2,35 @@
 
 # Connect to a local deployment
 
-This page explains how to connect an Android client to a local deployment of SpatialOS. You can do this from inside your [Unity Editor](#in-editor), using the [Unity Remote](#unity-remote) app, using an [Android Emulator](#android-emulator) or using your own [Android device](#android-device).
-
 Before reading this document, make sure you are familiar with:
 
-* [Setting up Android Support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
-* [Ways to test your Android client]({{urlRoot}}/reference/mobile/android/run-client)
+* [Setting up Android support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
+* [Ways to test your mobile client]({{urlRoot}}/reference/mobile/run-client)
 
-## Prepare your project to connect to a local deployment {#prepare}
+## Start a local deployment
 
-To connect your Android device to a local deployment, you need to prepare its configuration. Follow the steps below to ensure any local deployment you launch via your Unity Editor is correctly set up.
-
-1. Open your project in your Unity Editor.
-1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
-1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
-1. Select **Save** and close the window.
-
-**Note:** If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section below, as you already have one in your project.
-
-<%(#Expandable title="Create a mobile connector script")%>
-
-If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your Android client-worker GameObject. To do this:
-
-1. Create a MonoBehaviour script which inherits from the [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) and include the functionality you want. You can base your implementation on [the one](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/AndroidClientWorkerConnector.cs) in our Blank Starter Project.
-1. In your Unity Editor, add the MonoBehaviour script to your Android client-worker GameObject.
-1. In your Unity Editor, navigate to your Android client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is checked in the script's drop-down window of the Inspector window.
-
-<%(/Expandable)%>
-
-## Unity Editor{#in-editor}
-
-1. In your Unity Editor, Select **SpatialOS** > **Local launch**.<br>
+Before connecting your Android client-worker you need to start a local deployment.<br/>
+In your Unity Editor, select **SpatialOS** > **Local launch**.<br>
 It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. In your Unity Editor, open the `FPS-Development` Scene and select the Play button.<br/>
 
-## Unity Remote{#unity-remote}
+## Unity Editor or Unity Remote{#in-editor}
 
-You need your Unity Remote app for this. See the [Unity documentation](https://docs.unity3d.com/Manual/UnityRemote5.html) for details.
 
-1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
-1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
-1. In your Unity Editor, open the project that you want to deploy and go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window.
-1. In the **Editor Settings** window's **Unity Remote** section, set the **Device** setting to **Any Android Device**.
-1. Open the Scene that starts both your [client-workers]({{urlRoot}}/reference/glossary#client-worker) and [server-workers]({{urlRoot}}/reference/glossary#server-worker).
-1. On your mobile device, open the **Unity Remote** app. Make sure you allow it permissions for location and camera.
-1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
-It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. In your Unity Editor’s Game view, select **Play**.
+1. In your Unity Editor, open the scene that contains your mobile client worker and your server-workers.
+1. Navigate to your mobile client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is checked in the script’s drop-down window of the Inspector window.
+1. (Optional) If you want to use Unity Remote, open the Unity Remote app on your Android device that is connected to your development machine.
+1. Click the Play button.
 
-    > **TIP:** You can change the resolution of the Game view in your Unity Editor to make sure it does not appear stretched on your mobile device. Choose the resolution that’s identical to your mobile device to produce the best results.
+## Android emulator or device{#android-device}
 
-1. You should now see your Unity Editor's game view mirrored on your Android device.
+1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds) or connect your Android device to your development machine.
 
-## Android Emulator{#android-emulator}
+    > If you start an emulator, ensure you choose the same CPU architecture for your virtual machine as your development computer. Using a different architecture might affect the performance of your emulator.
 
-1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds).
+1. In your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your mobile worker, and wait for the build to complete.
+1. In your Unity Editor, navigate to your server-worker Scene and start it via the Editor.
+1. Select **SpatialOS** > **Launch mobile client** > **Android for local** to start your Android client.<br/>
+You know it’s complete when it says `Completed build for Cloud target` in your Unity Editor’s Console window.
+1. Play the game on your device or emulator.
 
-    > Ensure you choose the same CPU architecture for your virtual machine as your development computer. If you don’t, you will get warning messages as mismatched CPU architecture affects performance.
-1. [Set up your local deployment](#prepare).
-1. [Build your server-workers]({{urlRoot}}/projects/myo/build).
-1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
-It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. Still in your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.
-1. Select **SpatialOS** > **Launch mobile client** > **Android Device**.
-1. Play the game on the Emulator.
-
-## Android device{#android-device}
-
-1. Enable USB debugging on your mobile device. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
-1. Make sure your computer and your mobile device are both connected to the same network.
-1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
-1. In your Unity Editor, select **SpatialOS** > **Local launch** to start your local deployment.<br>
-It’s done when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
-1. Still in your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your Android worker, and wait for the build to complete.
-1. Select **SpatialOS** > **Launch mobile client** > **Android Device** to start your Android client.
-1. Play the game on your device.
+    > If you have followed the setup guide and have built out your mobile client-worker at least once, you can launch your application for either local or cloud deployments without having to re-build it.
