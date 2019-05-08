@@ -45,19 +45,4 @@ This feature module contains functionality that will automatically synchronize y
 
 ### Mobile support module
 
-To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS.
-
-`Improbable.Gdk.Mobile` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).
-
-This module consists of:
-
-* [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector)<br/>
-Inherit from this class to define your custom mobile worker connectors.
-
-* `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).
-<br/>It provides additional functionality that you might need when developing for Android.
-
-* `Improbable.Gdk.Mobile.iOS` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/iOS).
-<br/>It provides additional functionality that you might need when developing for iOS.
-
-Find out more in the [Mobile support]({{urlRoot}}/reference/mobile/overview) documentation.
+This feature module offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS. See our [Mobile Support documentation]({{urlRoot}}/reference/mobile/overview) for more details on installation and usage.
