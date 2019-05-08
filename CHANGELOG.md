@@ -10,6 +10,10 @@
 - Added support for Windows x86 builds.
 - Added a user-friendly error message when the build system fails to find a SpatialOS Build Configuration instance.
 - Added two menu items: `SpatialOS > Launch mobile device > Android on local` and `SpatialOS > Launch mobile device > Android on cloud`.
+- Added a new, project-generic, deployment launcher feature module, `com.improbable.gdk.deploymentlauncher`. This editor-only module includes functionality to:
+    - Upload assemblies from the editor.
+    - Launch and stop deployments from the editor.
+    - View basic information about live deployments (start time, region, number of connected workers) in the editor.
 
 ### Changed
 
