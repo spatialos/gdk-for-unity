@@ -19,7 +19,7 @@ Before reading this document, make sure you have read:
 
 ## Prepare your physical device
 
-If you want to launch your game on a physical device, you need to 
+If you want to launch your game on a physical device, you need to:
 
 1. Connect your iOS device to your computer using a USB cable. Accept the **Trust This Computer** alert if it appears.
 1. If you want to connect your device to a local deployment, ensure your computer and your mobile device are connected to the same network.

@@ -25,7 +25,7 @@ Before reading this document, make sure you have read:
 
 ## Prepare your physical device
 
-If you want to launch your game on a physical device, you need to 
+If you want to launch your game on a physical device, you need to:
 
 1. Ensure you have USB debugging enabled on it. See the [Android developer documentation](https://developer.android.com/studio/debug/dev-options#enable) for guidance.
 1. Connect the mobile device to your computer using a USB cable. You might get a pop-up window on the device asking you to allow USB debugging. Select **Yes**.
