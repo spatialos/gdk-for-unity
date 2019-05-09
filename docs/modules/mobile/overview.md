@@ -19,7 +19,7 @@ The SpatialOS GDK for Unity contains a [mobile feature module]({{urlRoot}}/modul
 
 Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
 
-The Build System Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
+The Mobile Support Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
 
 ```text
 workers/unity/Packages/com.improbable.gdk.mobile/package.json
@@ -27,8 +27,8 @@ workers/unity/Packages/com.improbable.gdk.mobile/package.json
 
 ## Getting started with your mobile client-worker
 
-  * [Set up Android support for the GDK]({{urlRoot}}/reference/mobile/setup-android)
-  * [Set up iOS support for the GDK]({{urlRoot}}/reference/mobile/setup-ios)
-  * [Choose how you want to run your mobile client-worker]({{urlRoot}}/reference/mobile/run-client)
-  * [Connect your mobile client-worker to a local deployment]({{urlRoot}}/reference/mobile/local-deploy)
-  * [Connect your mobile client-worker to a cloud deployment]({{urlRoot}}/reference/mobile/cloud-deploy)
+  * [Set up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
+  * [Set up iOS support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
+  * [Choose how you want to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client)
+  * [Connect your mobile client-worker to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
+  * [Connect your mobile client-worker to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)

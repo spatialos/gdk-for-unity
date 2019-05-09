@@ -45,4 +45,4 @@ This feature module contains functionality that will automatically synchronize y
 
 ### Mobile support module
 
-This feature module offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS. See our [Mobile Support documentation]({{urlRoot}}/reference/mobile/overview) for more details on installation and usage.
+This feature module offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS. See our [Mobile Support documentation]({{urlRoot}}/modules/mobile/overview) for more details on installation and usage.

@@ -43,8 +43,7 @@ The scripts are stored inside `workers/unity/Assets/Scripts/Workers`:
 
 You can inherit from the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class to create your own connection logic, dependent on the [type of the worker]({{urlRoot}}/reference/glossary#worker-types) that you want to create.
 
-**Example**</br>
-Showing what your implementation, inheriting from the [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector), could look like.
+<%(#Expandable title="Example worker connector implementation")%>
 
 ```csharp
 public class ClientWorkerConnector : DefaultWorkerConnector
@@ -81,6 +80,8 @@ public class ClientWorkerConnector : DefaultWorkerConnector
 }
 ```
 
+<%(/Expandable)%>
+
 ## How to modify the connection configuration
 
 When inheriting from the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector), you can override `GetAlphaLocatorConfig`, `GetLocatorConfig` and
@@ -91,10 +92,10 @@ Locator or Receptionist. See [Connecting to SpatialOS]({{urlRoot}}/reference/con
 
 First, see [Connecting to SpatialOS]({{urlRoot}}/reference/concepts/connection-flows) to find out more about the connection flows for client-workers and server-workers).
 
-The [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) provides a default implementation on how to decide which connection flow to use based on the received command line arguments. You can change the behavior by overriding the `GetConnectionService` method.
+The [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) provides a default implementation on how to decide which connection flow to use based on the command line arguments defined in your [worker launch configuration](https://docs.improbable.io/reference/13.7/shared/project-layout/launch-configuration). These arguments are used by SpatialOS to start your workers. You can change the behavior by overriding the `GetConnectionService` method.
 
 ## How to connect using the development authentication flow
 
-We provide an integration with the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance) that you can use to connect your client-workers to a cloud deployment. This is especially important when working with [client-workers for mobile devices]({{urlRoot}}/reference/mobile/overview) or when you want your client to be able to choose the deployment it connects to.
+We provide an integration with the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance) that you can use to connect your client-workers to a cloud deployment. This is especially important when working with [client-workers for mobile devices]({{urlRoot}}/modules/mobile/overview) or when you want your client to be able to choose the deployment it connects to.
 
 The [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) provides an example implementation on how to use the development authentication flow connecting via the [new v13.5+ Locator connection flow]({{urlRoot}}/reference/concepts/connection-flows#locator-connection-flow).
