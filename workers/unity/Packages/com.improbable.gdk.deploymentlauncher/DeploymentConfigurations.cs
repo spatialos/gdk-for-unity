@@ -140,11 +140,17 @@ namespace Improbable.Gdk.DeploymentLauncher
         /// </summary>
         public string WorkerType;
 
+        /// <summary>
+        ///    The index of the simulated player coordinator worker type in the list of all workers.
+        /// </summary>
+        public int WorkerTypeId;
+
         public SimulatedPlayerDeploymentConfig()
         {
             TargetDeploymentName = string.Empty;
             FlagPrefix = string.Empty;
             WorkerType = string.Empty;
+            WorkerTypeId = 0;
         }
 
         internal new SimulatedPlayerDeploymentConfig DeepCopy()
@@ -159,7 +165,8 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                 TargetDeploymentName = TargetDeploymentName,
                 FlagPrefix = FlagPrefix,
-                WorkerType = WorkerType
+                WorkerType = WorkerType,
+                WorkerTypeId = WorkerTypeId
             };
         }
 

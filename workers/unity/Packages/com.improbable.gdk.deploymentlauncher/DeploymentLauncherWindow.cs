@@ -29,6 +29,8 @@ namespace Improbable.Gdk.DeploymentLauncher
         private readonly TaskManager manager = new TaskManager();
         private readonly UIStateManager stateManager = new UIStateManager();
 
+        private string[] allWorkers;
+
         private DeploymentLauncherConfig launcherConfig;
         private int selectedDeploymentIndex;
         private Vector2 scrollPos;
@@ -609,7 +611,21 @@ namespace Improbable.Gdk.DeploymentLauncher
                     {
                         RenderBaseDeploymentConfig(config, copy);
                         copy.FlagPrefix = EditorGUILayout.TextField("Flag Prefix", config.FlagPrefix);
-                        copy.WorkerType = EditorGUILayout.TextField("Worker Type", config.WorkerType);
+
+                        if (!ValidAllWorkersList() && !RefreshAllWorkersList())
+                        {
+                            copy.WorkerTypeId = 0;
+                            copy.WorkerType = string.Empty;
+                        }
+                        else
+                        {
+                            copy.WorkerTypeId = EditorGUILayout.Popup(
+                                new GUIContent("Worker Type"),
+                                copy.WorkerTypeId,
+                                allWorkers);
+
+                            copy.WorkerType = allWorkers[copy.WorkerTypeId];
+                        }
                     }
                 }
 
@@ -620,6 +636,34 @@ namespace Improbable.Gdk.DeploymentLauncher
             }
 
             return (false, copy);
+        }
+
+        private bool ValidAllWorkersList()
+        {
+            return allWorkers != null && allWorkers.Length > 0;
+        }
+
+        private bool RefreshAllWorkersList()
+        {
+            try
+            {
+                var guids = AssetDatabase.FindAssets("WorkerMenu");
+                var textFile = guids.Select(AssetDatabase.GUIDToAssetPath)
+                    .FirstOrDefault(f => Path.GetExtension(f) == ".txt");
+                if (string.IsNullOrEmpty(textFile))
+                {
+                    throw new Exception("Could not find WorkerMenu.txt - you may need to regenerate code.");
+                }
+
+                allWorkers = File.ReadAllLines(Path.Combine(Application.dataPath, "..", textFile));
+                return true;
+            }
+            catch (Exception e)
+            {
+                allWorkers = new string[0];
+                Debug.LogException(e);
+                return false;
+            }
         }
 
         private void DrawDeploymentList()
