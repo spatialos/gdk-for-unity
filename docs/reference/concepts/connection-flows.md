@@ -44,7 +44,7 @@ From SpatialOS v13.5 onwards, there are two versions of the Locator connection. 
 Use this Locator connection flow for:
 
 * Connecting a client-worker to a cloud deployment via the [SpatialOS Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher).
-* Connecting a mobile worker-instance to a cloud deployment. See either the [iOS]({{urlRoot}}/reference/mobile/ios/cloud-deploy) or [Android]({{urlRoot}}/reference/mobile/android/cloud-deploy) docs for more info.
+* [Connecting a mobile worker-instance to a cloud deployment]({{urlRoot}}/reference/mobile/cloud-deploy).
 * (For debugging) Connecting a server-worker or client-worker instance to a cloud deployment from your local machine.
 
 #### v10.4+ Locator connection flow (stable version)

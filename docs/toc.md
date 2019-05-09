@@ -85,14 +85,10 @@
     - Mobile
         - [Overview]({{urlRoot}}/reference/mobile/overview)
         - [Ways to run your mobile client]({{urlRoot}}/reference/mobile/run-client)
-        - Android
-            - [Set up]({{urlRoot}}/reference/mobile/android/setup)
-            - [Connect to a local deployment]({{urlRoot}}/reference/mobile/android/local-deploy)
-            - [Connect to a cloud deployment]({{urlRoot}}/reference/mobile/android/cloud-deploy)
-        - iOS
-            - [Set up]({{urlRoot}}/reference/mobile/ios/setup)
-            - [Connect to a local deployment]({{urlRoot}}/reference/mobile/ios/local-deploy)
-            - [Connect to a cloud deployment]({{urlRoot}}/reference/mobile/ios/cloud-deploy)
+        - [Set up Android development]({{urlRoot}}/reference/mobile/setup-android)
+        - [Set up iOS development]({{urlRoot}}/reference/mobile/setup-ios)
+        - [Connect to a local deployment]({{urlRoot}}/reference/mobile/local-deploy)
+        - [Connect to a cloud deployment]({{urlRoot}}/reference/mobile/cloud-deploy)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)

@@ -25,15 +25,10 @@ The Build System Feature Module `package.json` can be found in the [`gdk-for-uni
 workers/unity/Packages/com.improbable.gdk.mobile/package.json
 ```
 
+## Getting started with your mobile client-worker
 
-## Getting started with your Android client-worker
-
-  * [Setting up Android support for the GDK]({{urlRoot}}/reference/mobile/android/setup)
-  * [Connect your Android client-worker to a local deployment]({{urlRoot}}/reference/mobile/android/local-deploy)
-  * [Connect your Android client-worker to a cloud deployment]({{urlRoot}}/reference/mobile/android/cloud-deploy)
-
-## Getting started with your iOS client-worker
-
-  * [Setting up iOS support for the GDK]({{urlRoot}}/reference/mobile/ios/setup)
-  * [Connect your iOS client-worker to a local deployment]({{urlRoot}}/reference/mobile/ios/local-deploy)
-  * [Connect your iOS client-worker to a cloud deployment]({{urlRoot}}/reference/mobile/ios/cloud-deploy)
+  * [Set up Android support for the GDK]({{urlRoot}}/reference/mobile/setup-android)
+  * [Set up iOS support for the GDK]({{urlRoot}}/reference/mobile/setup-ios)
+  * [Choose how you want to run your mobile client-worker]({{urlRoot}}/reference/mobile/run-client)
+  * [Connect your mobile client-worker to a local deployment]({{urlRoot}}/reference/mobile/local-deploy)
+  * [Connect your mobile client-worker to a cloud deployment]({{urlRoot}}/reference/mobile/cloud-deploy)
