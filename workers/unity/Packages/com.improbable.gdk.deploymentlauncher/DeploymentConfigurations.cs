@@ -174,6 +174,66 @@ namespace Improbable.Gdk.DeploymentLauncher
 
             return args;
         }
+
+        internal new IEnumerable<string> GetErrors()
+        {
+            {
+                foreach (var error in base.GetErrors())
+                {
+                    yield return error;
+                }
+            }
+
+            {
+                if (!ValidateFlagPrefix(out var message))
+                {
+                    yield return message;
+                }
+            }
+
+            {
+                if (!ValidateWorkerType(out var message))
+                {
+                    yield return message;
+                }
+            }
+        }
+
+        private bool ValidateFlagPrefix(out string message)
+        {
+            if (string.IsNullOrEmpty(FlagPrefix))
+            {
+                message = "Flag Prefix cannot be empty.";
+                return false;
+            }
+
+            if (FlagPrefix.Contains("."))
+            {
+                message = "Flag Prefix cannot contain full stops.";
+                return false;
+            }
+
+            if (FlagPrefix.Contains(" "))
+            {
+                message = "Flag Prefix cannot contain spaces.";
+                return false;
+            }
+
+            message = null;
+            return true;
+        }
+
+        private bool ValidateWorkerType(out string message)
+        {
+            if (string.IsNullOrEmpty(WorkerType))
+            {
+                message = "Worker Type cannot be empty.";
+                return false;
+            }
+
+            message = null;
+            return true;
+        }
     }
 
     [Serializable]
@@ -405,7 +465,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 ProjectName = projectName,
                 Name = (string) json["Name"],
                 Id = (string) json["Id"],
-                StartTime = DateTimeOffset.FromUnixTimeSeconds((long) json["StartTime"]).DateTime,
+                StartTime = DateTimeOffset.FromUnixTimeSeconds((long) json["StartTime"]).ToLocalTime().DateTime,
                 Region = (string) json["Region"],
                 Tags = new HashSet<string>(((List<object>) json["Tags"]).Select(str => (string) str)),
                 Workers = workers

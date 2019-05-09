@@ -147,6 +147,15 @@ namespace Improbable.Gdk.DeploymentLauncher
                 if (result.IsOkay)
                 {
                     Debug.Log($"Stopped deployment: \"{info.Name}\" successfully.");
+
+                    for (var i = 0; i < listedDeployments.Count; i++)
+                    {
+                        if (listedDeployments[i].Name == info.Name)
+                        {
+                            listedDeployments.RemoveAt(i);
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -378,7 +387,8 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                     if (GUILayout.Button("Generate", GUILayout.ExpandWidth(false)))
                     {
-                        copy.AssemblyName = $"{projectName}_{DateTime.Now.ToString("MMdd_hhmm")}";
+                        copy.AssemblyName = $"{projectName}_{DateTime.Now:MMdd_HHmm}";
+                        GUI.FocusControl(null);
                     }
                 }
 

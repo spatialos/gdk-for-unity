@@ -126,6 +126,11 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
             {
                 if (launchConfig.workers[i].worker_type == options.SimulatedCoordinatorWorkerType)
                 {
+                    if (launchConfig.workers[i].flags == null)
+                    {
+                        launchConfig.workers[i].Add(new JProperty("flags"));
+                    }
+
                     launchConfig.workers[i].flags.Add(devAuthTokenIdFlag);
                     launchConfig.workers[i].flags.Add(targetDeploymentFlag);
                 }
