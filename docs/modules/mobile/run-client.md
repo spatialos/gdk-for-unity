@@ -10,11 +10,11 @@ Before reading this document, make sure you have read:
   * [Setting up iOS Support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
 ")%>
 
-Unity provides multiple ways to run your mobile [client-worker]({{urlRoot}}/reference/glossary#client-worker).Each option works with [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime). Below we describe the benefits and drawbacks of each option.
+Unity provides multiple ways to run your mobile [client-worker]({{urlRoot}}/reference/glossary#client-worker). Each option works with [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime). Below we describe the benefits and drawbacks of each option.
 
 ## In the Editor
 
-For standard workflows and minor changes, we recommend that you run your game in the Editor to speed up your iteration time. You can set your build platform to **Android** or **iOS**. This allows Unity to compile and execute sections of code marked with the [platform #define directive](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) `#if UNITY_ANDROID` or `#if UNITY_IOS`.
+For standard workflows and minor changes, we recommend that you run your game in the Editor to speed up your iteration time. You can set your build platform to **Android** or **iOS**. This allows Unity to compile and execute sections of code contained within [platform #define directive](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html): `#if UNITY_ANDROID` or `#if UNITY_IOS`.
 
 ## Unity Remote
 
@@ -22,7 +22,7 @@ With the Unity Remote app, you don’t have to spend time building and deploying
 
 For more information, see the following documentation:
 
-  * [Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
+* [Unity documentation on Unity Remote](https://docs.unity3d.com/Manual/UnityRemote5.html)
 
 ## Android Emulator or iOS Simulator
 
@@ -30,8 +30,8 @@ Use an emulator or simulator to test your game on a variety of devices and targe
 
 For more information, see the following documentation:
 
-  * [The Android Developer documentation](https://developer.android.com/studio/run/emulator)
-  * [The Apple Developer documentation](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html)
+* [The Android Developer documentation](https://developer.android.com/studio/run/emulator)
+* [The Apple Developer documentation](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html)
 
 ## Android or iOS device
 
