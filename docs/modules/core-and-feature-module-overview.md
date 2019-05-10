@@ -43,6 +43,6 @@ This feature module contains methods that enable you to easily define the `Inter
 
 This feature module contains functionality that will automatically synchronize your entities' transform. See our [Transform Synchronization documentation]({{urlRoot}}/modules/transform-sync/overview) for more details on installation and usage.
 
-### Mobile support module
+### Mobile
 
 This feature module offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS. See our [Mobile Support documentation]({{urlRoot}}/modules/mobile/overview) for more details on installation and usage.

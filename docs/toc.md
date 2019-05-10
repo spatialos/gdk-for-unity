@@ -30,11 +30,11 @@
         - [Set up custom spawning]({{urlRoot}}/modules/game-object-creation/custom-usage)
     - Mobile
         - [Overview]({{urlRoot}}/modules/mobile/overview)
-        - [How to run your mobile client]({{urlRoot}}/modules/mobile/run-client)
-        - Set up mobile development
+        - [Ways to run your client]({{urlRoot}}/modules/mobile/run-client)
+        - Setup & Installation
             - [Android]({{urlRoot}}/modules/mobile/setup-android)
             - [iOS]({{urlRoot}}/modules/mobile/setup-ios)
-        - [Create a mobile worker connector]({{urlRoot}}/modules/mobile/worker-connector)
+        - [Create a worker connector]({{urlRoot}}/modules/mobile/worker-connector)
         - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
         - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
     - Player Lifecycle

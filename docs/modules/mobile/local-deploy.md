@@ -12,7 +12,7 @@ Before starting with mobile development, make sure you have read:
 
 ## Prepare your project to connect to a local deployment
 
-To connect your mobile device to a local deployment, you need to configure the Runtime IP parameter:
+To connect your mobile device to a local deployment, you need to configure the Runtime IP parameter. This ensures that your mobile device is able to connect to local deployments running on your machine.
 
 1. Open your project in your Unity Editor.
 1. Select **SpatialOS** > **GDK Tools configuration** to open the configuration window.
@@ -21,11 +21,14 @@ To connect your mobile device to a local deployment, you need to configure the R
 
 ## Start a local deployment
 
-Before connecting your mobile client-worker you need to start a local deployment. In your Unity Editor, select **SpatialOS** > **Local launch**. Your deployment is ready when you see the following message in the terminal: `SpatialOS ready. Access the Inspector at http://localhost:21000/inspector`.
+Before connecting your mobile client-worker you need to start a local deployment. In your Unity Editor, select **SpatialOS** > **Local launch**. Your deployment is ready when you see the following message in the terminal: 
+```
+SpatialOS ready. Access the Inspector at http://localhost:21000/inspector.
+```
 
 ## Choose how to run your mobile client-worker
 
-See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client) for more information.
+See [Ways to run your client]({{urlRoot}}/modules/mobile/run-client) for more information.
 
 ### Unity Editor or Unity Remote{#in-editor}
 
@@ -55,6 +58,6 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 1. If you want to run it on a physical device, you need to follow these additional steps:
     * Connect your device to your development machine.
     * Go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
-    * Still in the Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
+    * Still in the Xcode Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the Play button in the top left of the window. This builds and install the game on your device or Simulator.
-1. Play the game on your iOS device or Simulator.
+1. Play the game on your device or simulator.

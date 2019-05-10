@@ -10,11 +10,14 @@ Before reading this document, make sure you have read:
 * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 ")%>
 
-## Prepare your project to connect to a cloud deployment
-
 To connect your mobile device to a cloud deployment, you need to authenticate with our services. 
 
-This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development. The GDK for Unity provides tooling around it to help you iterate faster on your mobile application.
+
+This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development.
+
+## Prepare your project to connect to a cloud deployment
+
+ The GDK for Unity provides tooling around the development authentication flow to help you iterate faster on your mobile application.
 
 1. Open your project in your Unity Editor.
 1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
@@ -31,7 +34,7 @@ If you want to create your own authentication server, follow [this guide](https:
 
 ## Start a cloud deployment
 
-To connect your mobile device to a cloud deployment, you need to use the development authentication flow. This flow allows you to connect deployments that have the deployment tag `dev_login`. The following steps explain how to start such a cloud deployment:
+The development authentication flow allows you to connect deployments that have the deployment tag `dev_login`. The following steps explain how to start such a cloud deployment:
 
 1. In your Unity Editor, select **SpatialOS** > **Build for cloud** > **All workers** to build all your workers and wait for the build to finish.
 1. Upload your workers by running the following command in the terminal: `spatial cloud upload <assembly name>`
@@ -43,7 +46,7 @@ spatial cloud launch --tags=dev_login --snapshot==<path to your snapshot> <assem
 
 ## Choose how to run your mobile client-worker
 
-See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client) for more information.
+See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on the different ways to run your client.
 
 ### Unity Editor or Unity Remote
 
@@ -56,7 +59,7 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 
 1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds) or connect your Android device to your development machine.
 1. In your Unity Editor, select **SpatialOS** > **Launch mobile client** > **Android for cloud**.
-1. Play the game on your Android device or emulator.
+1. Play the game on your device or emulator.
 
 ### iOS Simulator or iOS device
 
@@ -69,7 +72,7 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 1. If you want to run it on a physical device, you need to follow these additional steps:
     * Connect your device to your development machine.
     * Go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
-    * Still in the Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
+    * Still in the Xcode Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the **Play** button in the top left of the window.
-1. Play the game on your iOS device or Simulator.
+1. Play the game on your device or simulator.
 

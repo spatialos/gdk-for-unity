@@ -13,14 +13,12 @@ Before reading this document, make sure you have read:
 1. Install **Android build support** for Unity:
     * If you have not used the GDK for Unity before, please follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and additionally select **Android build support** when installing Unity.
     * If you have Unity already installed and followed the [Setup & installation]({{urlRoot}}/machine-setup), open your Unity Hub and add the **Android build support** to your existing installation.
-1. Follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and be sure to select the **Android build support** component during your Unity installation.
-
 1. Install [Android Studio](https://developer.android.com/studio/). At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
 1. Open Android Studio and select **Configure** > **SDK Manager**.
 1. Select the version you intend to develop your game for.
 1. Select **Apply** to download and install the matching **Android SDK** version.
 1. (Optional) Create an Android emulator by going to **Tools** > **AVD Manager** > **Create Virtual Device**. Ensure you choose the same CPU architecture for your virtual machine as your development machine to get the best performance.
-1. (Optional) Download and unzip [Android NDK r16b](https://developer.android.com/ndk/downloads/older_releases).<br>
+1. (Optional) Download and unzip [Android NDK r16b](https://developer.android.com/ndk/downloads/older_releases). Our supported Unity version requires you to use NDK r16b. Older or newer versions of the NDK are not supported.
 
     > **Note:** This is only needed if you want to build Android using [IL2CPP](https://docs.unity3d.com/Manual/IL2CPP.html). Extract it to a directory of your choice. Note down the directory path as you must specify the path in your Unity Editor later.
 
