@@ -47,7 +47,7 @@ See [Ways to run your client]({{urlRoot}}/modules/mobile/run-client) for more in
 
 ### iOS Simulator or iOS device
 
-> **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
+> **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS Simulator.
 
 1. In your Unity Editor, go to your mobile client game object
     * Enter your local IP address in the **IP Address** field.
@@ -60,4 +60,4 @@ See [Ways to run your client]({{urlRoot}}/modules/mobile/run-client) for more in
     * Go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
     * Still in the Xcode Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the Play button in the top left of the window. This builds and install the game on your device or Simulator.
-1. Play the game on your device or simulator.
+1. Play the game on your device or Simulator.

@@ -63,7 +63,7 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
 
 ### iOS Simulator or iOS device
 
-> **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
+> **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS Simulator.
 
 1. In your Unity Editor, go to your mobile client game object and ensure that the checkbox **Should Connect Locally** is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your mobile client-worker, and wait for the build to complete.
@@ -74,5 +74,5 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
     * Go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
     * Still in the Xcode Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the **Play** button in the top left of the window.
-1. Play the game on your device or simulator.
+1. Play the game on your device or Simulator.
 
