@@ -183,21 +183,17 @@ private static void AddHealthPacks(Snapshot snapshot)
 
 > In your own game may want to consider moving default values (such as health pack positions, and health values) into a settings file. But for now, we will keep this example simple.
 
-**Step 4.** Copy and paste the below snippet inside `GenerateFpsSnapshot()` to call your new function.
+**Step 4.** Copy and paste the below snippet inside `GenerateDefaultSnapshot()` and `GenerateSessionSnapshot()` to call your new function.
 
 ```csharp
-    AddHealthPacks(localSnapshot);
-    AddHealthPacks(cloudSnapshot);
+    AddHealthPacks(snapshot);
 ```
-
-> Be sure to paste this **below** the `GenerateSnapshot` lines and **above** the `SaveSnapshot` lines, so that it's run during snapshot generation.
 
 <%(#Expandable title="What should <code>SnapshotMenu</code> look like when its done?")%>
 ```csharp
 using System.IO;
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.DeploymentManager;
 using UnityEditor;
 using UnityEngine;
 
@@ -205,37 +201,38 @@ namespace Fps
 {
     public class SnapshotMenu : MonoBehaviour
     {
-        public static readonly string DefaultSnapshotPath =
+        private static readonly string DefaultSnapshotPath =
             Path.Combine(Application.dataPath, "../../../snapshots/default.snapshot");
 
-        public static readonly string CloudSnapshotPath =
+        private static readonly string CloudSnapshotPath =
             Path.Combine(Application.dataPath, "../../../snapshots/cloud.snapshot");
 
-        private static void GenerateSnapshot(Snapshot snapshot)
-        {
-            var spawner = FpsEntityTemplates.Spawner();
-            snapshot.AddEntity(spawner);
-        }
+        private static readonly string SessionSnapshotPath =
+            Path.Combine(Application.dataPath, "../../../snapshots/session.snapshot");
 
         [MenuItem("SpatialOS/Generate FPS Snapshot")]
         private static void GenerateFpsSnapshot()
         {
-            var localSnapshot = new Snapshot();
-            var cloudSnapshot = new Snapshot();
+            SaveSnapshot(DefaultSnapshotPath, GenerateDefaultSnapshot());
+            SaveSnapshot(CloudSnapshotPath, GenerateDefaultSnapshot());
+            SaveSnapshot(SessionSnapshotPath, GenerateSessionSnapshot());
+        }
 
-            GenerateSnapshot(localSnapshot);
-            GenerateSnapshot(cloudSnapshot);
+        private static Snapshot GenerateDefaultSnapshot()
+        {
+            var snapshot = new Snapshot();
+            snapshot.AddEntity(FpsEntityTemplates.Spawner(Coordinates.Zero));
+            AddHealthPacks(snapshot);
+            return snapshot;
+        }
 
-            AddHealthPacks(localSnapshot);
-            AddHealthPacks(cloudSnapshot);
-
-            // The local snapshot is identical to the cloud snapshot, but also includes a simulated player coordinator
-            // trigger.
-            var simulatedPlayerCoordinatorTrigger = FpsEntityTemplates.SimulatedPlayerCoordinatorTrigger();
-            localSnapshot.AddEntity(simulatedPlayerCoordinatorTrigger);
-
-            SaveSnapshot(DefaultSnapshotPath, localSnapshot);
-            SaveSnapshot(CloudSnapshotPath, cloudSnapshot);
+        private static Snapshot GenerateSessionSnapshot()
+        {
+            var snapshot = new Snapshot();
+            snapshot.AddEntity(FpsEntityTemplates.Spawner(Coordinates.Zero));
+            snapshot.AddEntity(FpsEntityTemplates.DeploymentState());
+            AddHealthPacks(snapshot);
+            return snapshot;
         }
 
         private static void SaveSnapshot(string path, Snapshot snapshot)
@@ -617,11 +614,9 @@ The game logic is now in place, and we can test if it is working correctly. Foll
 
 **Step 1.** Enable the player health bar.
 
-Modify the `OnScreenUI` prefab by enabling the **OnScreenUI** > **InGameHud** > **HealthBar** game object.
+Modify the `OnScreenUI` prefab by enabling the **OnScreenUI** > **InGameScreens** > **InGameHud** > **HealthBar** game object.
 
 This will display a health bar in the top left corner to make it easier for you to see how the health of a player changes.
-
-![A GIF showing the steps to enable the health bar UI]({{assetRoot}}assets/health-pickups-tutorial/health-bar-enable.gif)
 
 **Step 2.** Build your workers.
 
