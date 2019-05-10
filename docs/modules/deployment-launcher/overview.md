@@ -23,11 +23,11 @@ Please refer to the detailed documentation for each of the functions of the Depl
 * [Configure and launch a deployment]({{urlRoot}}/modules/deployment-launcher/launch-deployments)
 * [Manage live deployments]({{urlRoot}}/modules/deployment-launcher/manage-deployments)
 
-### Change my project in the Deployment Launcher 
+### Change my project in the Deployment Launcher
 
-The Deployment Launcher reads your SpatialOS project name from the `spatialos.json` file in the root of your SpatialOS project. To change which project the Deployment Launcher uses: 
+The Deployment Launcher reads your SpatialOS project name from the `spatialos.json` file in the root of your SpatialOS project. To change which project the Deployment Launcher uses:
 
 1. Change the project name in your `spatialos.json`.
 2. Press the refresh button in the Deployment Launcher window, next to the **Project Name** label to reload the project name.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/refresh-button.png" style="margin: 0 auto; width: auto; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/refresh-button.png" style="margin: 0 auto; width: 100%; display: block;" />
