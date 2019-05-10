@@ -42,6 +42,6 @@ If you don't have an assembly definition file in your project, Unity will automa
   * [Ways to run your client]({{urlRoot}}/modules/mobile/run-client)
   * [Set up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
   * [Set up iOS support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
-  * [Create a worker connector]({{urlRoot}}/modules/mobile/worker-connector)
+  * [Prepare your project]({{urlRoot}}/modules/mobile/prepare-project)
   * [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
   * [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)

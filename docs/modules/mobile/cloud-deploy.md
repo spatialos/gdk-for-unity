@@ -5,32 +5,14 @@
 <%(Callout message="
 Before reading this document, make sure you have read:
 
-* [Setting up Android Support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
-* [Setting up iOS Support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
+* [Setting up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
+* [Setting up iOS support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
 * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 ")%>
 
 To connect your mobile device to a cloud deployment, you need to authenticate with our services. 
 
-
 This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development.
-
-## Prepare your project to connect to a cloud deployment
-
- The GDK for Unity provides tooling around the development authentication flow to help you iterate faster on your mobile application.
-
-1. Open your project in your Unity Editor.
-1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
-1. In the **Dev Auth Token Settings** specify the lifetime of the token and the path to the [Resources folder](https://unity3d.com/learn/tutorials/topics/best-practices/resources-folder) that you would like to store the generated token in.
-
-    > Your token expires after the amount of days that you specified in the configuration window. Regenerate the token whenever that happens.
-
-1. Select **Save** and close the window.
-1. Select **SpatialOS** > **Generate Dev Authentication Token**. This generates a `DevAuthToken.txt` asset in the folder you specified in the configuration window. 
-
-    > If your worker connector inherits from the `DefaultMobileWorkerConnector` script, it will automatically read that token when running the application and authenticate against our services. See [this documentation]({{urlRoot}}/modules/mobile/worker-connector) to learn how to create a mobile worker connector.
-
-If you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
 ## Start a cloud deployment
 
@@ -61,6 +43,8 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
 1. In your Unity Editor, select **SpatialOS** > **Launch mobile client** > **Android for cloud**.
 1. Play the game on your device or emulator.
 
+> As soon as you have built your Android app once, you are able to launch your app for either local or cloud deployments.
+
 ### iOS Simulator or iOS device
 
 > **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS Simulator.
@@ -71,8 +55,9 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
 1. Open the project in XCode
 1. If you want to run it on a physical device, you need to follow these additional steps:
     * Connect your device to your development machine.
-    * Go to **Build Settings** > **Packaging** > **Project Bundle Identifier** and input a unique string.
-    * Still in the Xcode Editor Area, select **General** > **Signing** and sign the project. For more information, see [Code signing and provisioning [Apple Documentation]](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
+    * In XCode, click on your project. This should open the **General** tab for your project.
+    * In the **General** tab, navigate to the **Identity** section and enter a unique string for the **Project Bundle Identifier**.
+    * In the **General** tab, navigate to the **Signing** section and sign the project. For more information, see [Apple's documentation on code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the **Play** button in the top left of the window.
 1. Play the game on your device or Simulator.
 

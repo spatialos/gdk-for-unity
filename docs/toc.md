@@ -34,7 +34,7 @@
         - Setup & Installation
             - [Android]({{urlRoot}}/modules/mobile/setup-android)
             - [iOS]({{urlRoot}}/modules/mobile/setup-ios)
-        - [Create a worker connector]({{urlRoot}}/modules/mobile/worker-connector)
+        - [Prepare your project]({{urlRoot}}/modules/mobile/prepare-project)
         - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
         - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
     - Player Lifecycle

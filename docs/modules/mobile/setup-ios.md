@@ -2,12 +2,6 @@
 
 # Setting up iOS support for the GDK
 
-<%(Callout message="
-Before reading this document, make sure you have read:
-
-  * [Mobile support overview]({{urlRoot}}/modules/mobile/overview)
-")%>
-
 ## Get the dependencies for developing iOS games
 
 > **Note:** iOS development is only supported on macOS.
