@@ -19,10 +19,13 @@ This guide describes how to authenticate using the [development authentication f
 1. Open your project in your Unity Editor.
 1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
 1. In the **Dev Auth Token Settings** specify the lifetime of the token and the path to the [Resources folder](https://unity3d.com/learn/tutorials/topics/best-practices/resources-folder) that you would like to store the generated token in.
+
+    > Your token expires after the amount of days that you specified in the configuration window. Regenerate the token whenever that happens.
+
 1. Select **Save** and close the window.
 1. Select **SpatialOS** > **Generate Dev Authentication Token**. This generates a `DevAuthToken.txt` asset in the folder you specified in the configuration window. 
 
-    > If your worker connector inherits from the `DefaultMobileWorkerConnector` script, it will automatically read that token when running the application and authenticate against our services. Your token expires after the amount of days that you specified in the configuration window. Regenerate the token whenever that happens.
+    > If your worker connector inherits from the `DefaultMobileWorkerConnector` script, it will automatically read that token when running the application and authenticate against our services. See [this documentation]({{urlRoot}}/modules/mobile/worker-connector) to learn how to create a mobile worker connector.
 
 If you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
 
@@ -45,7 +48,7 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 ### Unity Editor or Unity Remote
 
 1. In your Unity Editor, open the scene that contains your mobile client-worker.
-1. Navigate to your mobile client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is **not** checked in the script’s drop-down window of the Inspector window.
+1. Navigate to your mobile client-worker GameObject and ensure the **Should Connect Locally** checkbox is **not** checked in the script’s drop-down window of the Inspector window.
 1. (Optional) If you want to use Unity Remote, open the Unity Remote app on your Android device that is connected to your development machine.
 1. Click the Play button.
 
@@ -59,7 +62,7 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 
 > **Note:** You cannot run the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) on the iOS Simulator. This is due to an incompatibility between the [Metal Graphics API](https://developer.apple.com/metal/) used by the project and the iOS simulator.
 
-1. In your Unity Editor, go to your mobile client game object and ensure that the checkbox `ShouldConnectLocally` is not checked.
+1. In your Unity Editor, go to your mobile client game object and ensure that the checkbox **Should Connect Locally** is not checked.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your mobile client-worker, and wait for the build to complete.
 1. In Finder, navigate to `/workers/unity/build/worker/` and locate the `.xcodeproj` that corresponds to your iOS client-worker, it may be in a sub-folder.
 1. Open the project in XCode

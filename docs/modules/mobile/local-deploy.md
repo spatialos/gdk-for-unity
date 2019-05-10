@@ -15,7 +15,7 @@ Before starting with mobile development, make sure you have read:
 To connect your mobile device to a local deployment, you need to configure the Runtime IP parameter:
 
 1. Open your project in your Unity Editor.
-1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
+1. Select **SpatialOS** > **GDK Tools configuration** to open the configuration window.
 1. In the **Runtime IP for local deployment** field, enter your local machine's IP address. (You can find how to do this on the [Lifehacker website](https://lifehacker.com/5833108/how-to-find-your-local-and-external-ip-address).)
 1. Select **Save** and close the window.
 
@@ -30,7 +30,7 @@ See [How to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client
 ### Unity Editor or Unity Remote{#in-editor}
 
 1. In your Unity Editor, open the Scene that contains your mobile client worker and your server-workers.
-1. Navigate to your mobile client-worker GameObject and ensure the `ShouldConnectLocally` checkbox is checked in the script’s drop-down window of the Inspector window.
+1. Navigate to your mobile client-worker GameObject and ensure the **Should Connect Locally**  checkbox is checked in the script’s drop-down window of the Inspector window.
 1. (Optional) If you want to use Unity Remote, open the Unity Remote app on your mobile device that is connected to your development machine.
 1. Click the Play button.
 

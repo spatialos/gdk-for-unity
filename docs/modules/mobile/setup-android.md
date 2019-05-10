@@ -6,13 +6,16 @@
 Before reading this document, make sure you have read:
 
   * [Mobile support overview]({{urlRoot}}/modules/mobile/overview)
-  * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
 ")%>
 
 ## Get the dependencies for developing Android games
 
+1. Install **Android build support** for Unity:
+    * If you have not used the GDK for Unity before, please follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and additionally select **Android build support** when installing Unity.
+    * If you have Unity already installed and followed the [Setup & installation]({{urlRoot}}/machine-setup), open your Unity Hub and add the **Android build support** to your existing installation.
 1. Follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and be sure to select the **Android build support** component during your Unity installation.
-1. Install [Android Studio](https://developer.android.com/studio/): At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
+
+1. Install [Android Studio](https://developer.android.com/studio/). At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
 1. Open Android Studio and select **Configure** > **SDK Manager**.
 1. Select the version you intend to develop your game for.
 1. Select **Apply** to download and install the matching **Android SDK** version.
@@ -37,10 +40,10 @@ If you want to launch your game on a physical device, you need to:
 
 Most of your interactions with the GDK happen inside your Unity Editor. To get started:
 
-1. Open your project inside the Unity Editor.
+1. Open your project inside your Unity Editor.
 1. In your Unity Editor, go to the **External Tools** window. To do this:
-    * on Windows, go to **Edit** > **Preferences** > **External Tools**
-    * on MacOS, go to **Unity** > **Preferences** > **External Tools**
+    * On Windows, go to **Edit** > **Preferences** > **External Tools**.
+    * On MacOS, go to **Unity** > **Preferences** > **External Tools**.
 
 1. In the **Android** section of the **External Tools** window, tick the **Use embedded JDK** checkbox to use the JDK that Unity provides. 
 1. Input the following paths into the **Android Section**:
@@ -48,12 +51,3 @@ Most of your interactions with the GDK happen inside your Unity Editor. To get s
     * **NDK:** (Optional) Use the directory path that you noted down earlier when extracting the Android NDK.
 
 1. (Optional, if you want to use Unity Remote) Go to **Edit** > **Project Settings** > **Editor** to bring up the **Editor Settings** window and navigate to the **Unity Remote** section. Set the **Device** setting to **Any Android Device**.
-
-## Set up your project
-
-> If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#starter-project), you can skip the **Create a mobile connector script** section, as you already have one in your project.
-
-If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you also need to create and add a MonoBehaviour script to your mobile client-worker GameObject. To do this:
-
-1. Create a MonoBehaviour script which inherits from the [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) and include the functionality you want. This scripts contains support for both Android and iOS. You can base your implementation on the one in our [Blank Starter Project](https://github.com/spatialos/gdk-for-unity-blank-project/blob/develop/workers/unity/Assets/Scripts/Workers/MobileClientWorkerConnector.cs).
-1. In your Unity Editor, add the MonoBehaviour script to your mobile client-worker GameObject.

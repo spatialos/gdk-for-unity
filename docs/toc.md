@@ -31,8 +31,10 @@
     - Mobile
         - [Overview]({{urlRoot}}/modules/mobile/overview)
         - [How to run your mobile client]({{urlRoot}}/modules/mobile/run-client)
-        - [Set up Android development]({{urlRoot}}/modules/mobile/setup-android)
-        - [Set up iOS development]({{urlRoot}}/modules/mobile/setup-ios)
+        - Set up mobile development
+            - [Android]({{urlRoot}}/modules/mobile/setup-android)
+            - [iOS]({{urlRoot}}/modules/mobile/setup-ios)
+        - [Create a mobile worker connector]({{urlRoot}}/modules/mobile/worker-connector)
         - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
         - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
     - Player Lifecycle

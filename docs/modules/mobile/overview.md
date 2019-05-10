@@ -29,6 +29,7 @@ workers/unity/Packages/com.improbable.gdk.mobile/package.json
 
   * [Set up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
   * [Set up iOS support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
+  * [Create a mobile worker connector]({{urlRoot}}/modules/mobile/worker-connector)
   * [Choose how you want to run your mobile client-worker]({{urlRoot}}/modules/mobile/run-client)
   * [Connect your mobile client-worker to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
   * [Connect your mobile client-worker to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)

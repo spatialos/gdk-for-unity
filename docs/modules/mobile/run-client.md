@@ -9,7 +9,7 @@ Before reading this document, make sure you have read:
   * [Mobile support overview]({{urlRoot}}/modules/mobile/overview)
 ")%>
 
-Unity provides multiple ways to test your mobile [client-worker]({{urlRoot}}/reference/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime). This documentation describes the benefits of the different options.
+Unity provides multiple ways to test your mobile [client-worker]({{urlRoot}}/reference/glossary#client-worker). We integrated them all to work with [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime). Below we describe the benefits and drawbacks of each option.
 
 ## In the Editor
 
@@ -25,7 +25,7 @@ For more information, see the following documentation:
 
 ## Android Emulator / iOS Simulator
 
-An emulator or simulator allows you to emulate / simulate a physical device on your development machine so that you can test your game on a variety of devices and APIs without needing a physical device.
+Use an emulator or simulator to test your game on a variety of devices and target versions without needing a physical device.
 
 For more information, see the following documentation:
 
