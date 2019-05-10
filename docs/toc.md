@@ -28,6 +28,15 @@
         - [Overview]({{urlRoot}}/modules/game-object-creation/overview)
         - [Set up basic spawning]({{urlRoot}}/modules/game-object-creation/standard-usage)
         - [Set up custom spawning]({{urlRoot}}/modules/game-object-creation/custom-usage)
+    - Mobile
+        - [Overview]({{urlRoot}}/modules/mobile/overview)
+        - [Ways to run your client]({{urlRoot}}/modules/mobile/run-client)
+        - Setup & Installation
+            - [Android]({{urlRoot}}/modules/mobile/setup-android)
+            - [iOS]({{urlRoot}}/modules/mobile/setup-ios)
+        - [Prepare your project]({{urlRoot}}/modules/mobile/prepare-project)
+        - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
+        - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
     - Player Lifecycle
         - [Overview]({{urlRoot}}/modules/player-lifecycle/overview)
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
@@ -82,20 +91,6 @@
                     - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
             - [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
             - [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
-    - Mobile
-        - [Overview]({{urlRoot}}/reference/mobile/overview)
-        - Android
-            - [Set up]({{urlRoot}}/reference/mobile/android/setup)
-            - [Run your Android client]({{urlRoot}}/reference/mobile/android/run-client)
-            - Connection flows
-                - [Local deployment]({{urlRoot}}/reference/mobile/android/local-deploy)
-                - [Cloud deployment]({{urlRoot}}/reference/mobile/android/cloud-deploy)
-        - iOS
-            - [Set up]({{urlRoot}}/reference/mobile/ios/setup)
-            - [Run your iOS client]({{urlRoot}}/reference/mobile/ios/run-client)
-            - Connection flows
-                - [Local deployment]({{urlRoot}}/reference/mobile/ios/local-deploy)
-                - [Cloud deployment]({{urlRoot}}/reference/mobile/ios/cloud-deploy)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)

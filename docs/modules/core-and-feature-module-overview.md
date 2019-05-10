@@ -31,6 +31,10 @@ This feature module provides tooling for building your GDK for Unity workers ins
 
 This feature module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customize that process. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/game-object-creation/overview).
 
+### Mobile
+
+This feature module offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS. See our [Mobile Support documentation]({{urlRoot}}/modules/mobile/overview) for more details on installation and usage.
+
 ### Player Lifecycle
 
 This feature module provides player creation functionality and a simple player lifecycle management implementation. See the [detailed documentation for set up and usage instructions]({{urlRoot}}/modules/player-lifecycle/overview).
@@ -42,22 +46,3 @@ This feature module contains methods that enable you to easily define the `Inter
 ### Transform Synchronization
 
 This feature module contains functionality that will automatically synchronize your entities' transform. See our [Transform Synchronization documentation]({{urlRoot}}/modules/transform-sync/overview) for more details on installation and usage.
-
-### Mobile support module
-
-To access this module, use the `Improbable.Gdk.Mobile` namespace. It offers support to connect mobile [client-workers]({{urlRoot}}/reference/glossary#client-worker) to SpatialOS.
-
-`Improbable.Gdk.Mobile` is in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile).
-
-This module consists of:
-
-* [`MobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector)<br/>
-Inherit from this class to define your custom mobile worker connectors.
-
-* `Improbable.Gdk.Mobile.Android` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/Android).
-<br/>It provides additional functionality that you might need when developing for Android.
-
-* `Improbable.Gdk.Mobile.iOS` - in the repository [here](https://github.com/spatialos/gdk-for-unity/tree/master/workers/unity/Packages/com.improbable.gdk.mobile/iOS).
-<br/>It provides additional functionality that you might need when developing for iOS.
-
-Find out more in the [Mobile support]({{urlRoot}}/reference/mobile/overview) documentation.
