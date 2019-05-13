@@ -20,7 +20,6 @@
 
 # Upload and launch your game
 
-<br/>
 ### 1. Set your SpatialOS project name
 
 When you signed up for SpatialOS, your account was automatically associated with an organisation and a project, both of which have the same generated name.
@@ -52,12 +51,11 @@ Your `spatialos.json` should look something like this:
 ```
 
 <br/>
-**Step 3.** Reference your Unity project in the Deployments window.
+**Step 3.** Reference your Unity project in the Deployment Launcher window.
 
-  - To open the Deployments window, in your Unity Editor, select **SpatialOS** > **Deployment Launcher**.
-  - Enter your project name in the `Project Name` field at the top of the window. (Use the one you just located in the SpatialOS Console.)
+Open the Deployment Launcher window in your Unity Editor by selecting **SpatialOS** > **Deployment Launcher**.
 
-<%(Callout message="The Deployments window is currently only available as part of the FPS Starter Project.")%>
+Ensure the `Project Name` matches the one specified in your `spatialos.json`. If it does not match, [press the refresh button at the top of the Deployment Launcher window]({{urlRoot}}/modules/deployment-launcher/overview#change-my-project-in-the-deployment-launcher) to update the project name.
 
 <br/>
 
@@ -65,61 +63,51 @@ Your `spatialos.json` should look something like this:
 
 An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
-To run a deployment in the cloud, you need to upload the worker assemblies to your SpatialOS project. <br/>
+To run a deployment in the cloud, you need to upload the worker assemblies to your SpatialOS project.
 
-**Step 1.** Fill out the **Assembly** section of the **Deployments** window
+Ensure that the `Assembly Name` is set in the `Assembly Upload` section of your Deployment Launcher window. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`. For example, `my_assembly`.
 
-In the **Assembly** section of the Deployments window, enter the **Assembly Name** field. 
+<img src="{{assetRoot}}assets/upload-assembly.png" style="margin: 0 auto; width: 100%; display: block;" />
+_Example Deployment Launcher window showing the Assembly Upload section completed_
 
-The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`; for example `my_assembly`.
-
-![]({{assetRoot}}assets/deployment-window.png)
-<br/> _Example Deployments window showing the Assembly section completed_
-
-<br/>
-**Step 2.** Select **Upload Assembly** to start the upload.
+Select **Upload assembly** to start the upload.
 
 > **TIP**: If you want to overwrite an existing assembly, ensure the `Force Upload` option is enabled.
 
-<p/>
+</p>
 
 > **TIP:** Depending on your network speed, the upload may take a little while (1-10 minutes) to complete.
 
-<%(Callout message="It’s finished uploading when You see an upload report printed in your Unity Console, for example:<br/><br/>**Uploaded assembly my_assembly to project unity_gdk successfully.**")%>
+<%(Callout message="
+It’s finished uploading when You see an upload report printed in your Unity Console, for example:
 
-<br/>
+**Uploaded assembly my_assembly to project unity_gdk successfully.**
+")%>
 
 ### 3. Launch a cloud deployment
 
 The next step is to start a cloud deployment using the assembly that you just uploaded.
 
-<br/>
-**Step 1.** Enter the parameters in the **Deployment Launcher** section of the Deployments window.
-<br/>
+You should find that the `my_deployment` configuration is already pre-completed in the FPS Starter Project. Ensure that you have chosen to launch the `my_deployment` configuration, then select **Launch deployment**.
 
-| Setting name | Setting value | Notes |
-| --- | --- | --- |
-| **Assembly Name** | The name you gave the assembly above - for example: `myassembly`. | The name needs to conform to the following regex: `[a-zA-Z0-9_.-]{5,64}`.|
-| **Deployment Name** | A name of your choice - for example: `shootyshooty`. | The name needs to conform to the following regex: `[a-z0-9_]{2,32}`. |
-| **Snapshot File** | `snapshots/cloud.snapshot` | This is a relative path from the root of your SpatialOS project. |
-| **Launch Config File** | `cloud_launch_large.json`| This is a relative path from the root of your SpatialOS project. |
-| **Deployment Region** | Select the geographical location closest to you for lower latencies when connecting clients. | You can set this to `US` for the USA (default) or `EU` for Europe. <br/> Note that the simulated players deployment deploys to the same region - you will find out more about simulated players in later steps. |
-| **Enable Simulated Players** | Ensure this is checked.| This starts a second deployment for your simulated players. |
-|**Override Name**| Leave this unchecked. | This allows you to change the name of the simulated players deployment - more about simulated players in the next steps. |
-| **Deployment Name**<br/> (The second Deployment Name listed) | N/A | This field should be un-editable. You can edit this if you check **Override Name** |
-| **Launch Config File**<br/> (The second config listed) |`cloud_launch_large_sim_players.json` | This is a relative path from the root of your SpatialOS project. |
+<img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: 100%; display: block;" />
 
-![]({{assetRoot}}assets/deployment-window.png)
-<br/>_Example completed Deployments window_
-<br/>
+<%(#Expandable title="What should my Deployment Launcher window look like?")%>
+<img src="{{assetRoot}}assets/full-dpl-launcher-window.png" style="margin: 0 auto; width: 100%; display: block;" />
+<%(/Expandable)%>
 
-> **Note:** You will see that there are two Deployment Names and two Launch Config Files listed in the Deployment window; the first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
-
-<br/>
-**Step 2.** In the **Deployments** window, select **Launch deployments**.
+> **Note:** You will see that there is configuration with two deployments listed in the Deployment Launcher window. The first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
 
 This starts the process of launching your deployments. This may take a few minutes.
-<%(Callout message="It’s finished when the Console pages for both deployments open automatically in your browser.<br/><br/>You should also see two messages printed in your Unity Console indicating both deployments have started:<br/><br/>**Successfully created the main deployment.**<br/><br/>**Successfully created the simulated player deployment.**")%>
+
+<%(Callout message="
+It’s finished when the Console pages for both deployments open automatically in your browser.
+
+You should also see two messages printed in your Unity Console indicating both deployments have started:
+
+* **Successfully created the main deployment.**
+* **Successfully created the simulated player deployment.**
+")%>
 
 <br/>
 ## Well done getting set up!
