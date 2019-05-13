@@ -67,7 +67,7 @@ To run a deployment in the cloud, you need to upload the worker assemblies to yo
 
 Ensure that the `Assembly Name` is set in the `Assembly Upload` section of your Deployment Launcher window. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`. For example, `my_assembly`.
 
-<img src="{{assetRoot}}assets/upload-assembly.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/upload-assembly.png" style="margin: 0 auto; width: auto; display: block;" />
 _Example Deployment Launcher window showing the Assembly Upload section completed_
 
 Select **Upload assembly** to start the upload.
@@ -90,10 +90,10 @@ The next step is to start a cloud deployment using the assembly that you just up
 
 You should find that the `my_deployment` configuration is already pre-completed in the FPS Starter Project. Ensure that you have chosen to launch the `my_deployment` configuration, then select **Launch deployment**.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: auto; display: block;" />
 
 <%(#Expandable title="What should my Deployment Launcher window look like?")%>
-<img src="{{assetRoot}}assets/full-dpl-launcher-window.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/full-dpl-launcher-window.png" style="margin: 0 auto; width: auto; display: block;" />
 <%(/Expandable)%>
 
 > **Note:** You will see that there is configuration with two deployments listed in the Deployment Launcher window. The first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.

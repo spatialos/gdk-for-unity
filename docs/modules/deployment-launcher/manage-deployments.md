@@ -10,7 +10,7 @@ The section of the Deployment Launcher window that you use to manage live deploy
 
 Initially, the Deployment Launcher does not know of any deployments.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments-empty.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments-empty.png" style="margin: 0 auto; width: auto; display: block;" />
 
 | Button name | Description |
 | --- | --- |
@@ -20,7 +20,7 @@ Initially, the Deployment Launcher does not know of any deployments.
 
 When there are live cloud deployments running, this section is updated with a list of these live deployments and some metadata about them. Deployment metadata is **read-only**.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments.png" style="margin: 0 auto; width: auto; display: block;" />
 
 | Metadata | Example |
 | --- | --- |
@@ -60,7 +60,7 @@ A list of deployments has been retrieved successfully when:
 
 When you press the `Stop deployment` button, the Deployment Launcher sends a request to stop the deployment chosen from the adjacent drop-down option.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/stop-deployments-choice.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/stop-deployments-choice.png" style="margin: 0 auto; width: auto; display: block;" />
 
 <%(Callout type="warn" message="
 

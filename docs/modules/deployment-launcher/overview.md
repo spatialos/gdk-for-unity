@@ -30,4 +30,4 @@ The Deployment Launcher reads your SpatialOS project name from the `spatialos.js
 1. Change the project name in your `spatialos.json`.
 2. Press the refresh button in the Deployment Launcher window, next to the **Project Name** label to reload the project name.
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/refresh-button.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/refresh-button.png" style="margin: 0 auto; width: auto; display: block;" />

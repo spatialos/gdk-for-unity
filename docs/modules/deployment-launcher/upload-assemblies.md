@@ -8,7 +8,7 @@ Open the Deployment Launcher window by selecting **SpatialOS** > **Deployment La
 
 The section of the Deployment Launcher window that you use to upload assemblies can be found under the **Assembly Upload** label:
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/assembly-upload.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/modules/deployment-launcher/assembly-upload.png" style="margin: 0 auto; width: auto; display: block;" />
 
 There are two settings that you can edit:
 
@@ -29,14 +29,15 @@ There are also three buttons:
 
 ### Input validation
 
-The Deployment Launcher will validate your chosen assembly name to ensure that it is properly formed. Your assembly name must:
+The Deployment Launcher validates your chosen assembly name to ensure that it is properly formed. Your assembly name:
 
 * Must contain at least 5 characters.
 * Must contain at most 64 characters.
-* Not contain invalid characters.
-  * `_`, `.`, and `-` are accepted characters.
+* Can contain alphanumeric characters.
+* Can contain the following special characters:
+  * `_`, `.`, and `-`.
 
-If validation fails, the **Upload assembly** button will be disabled and you will see an error similar to below:
+If validation fails, the **Upload assembly** button is disabled and an error similar to below is displayed:
 
 ```text
 Assembly Name "<invalid_name>" is invalid. Must conform to the regex: ^[a-zA-Z0-9_.-]{5,64}
