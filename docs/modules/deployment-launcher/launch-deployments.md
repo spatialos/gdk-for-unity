@@ -204,3 +204,13 @@ When a deployment successfully launches:
 * The [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the deployment automatically opens in your browser.
 * The notification at the bottom of the Deployment Launcher window disappears.
 ")%>
+
+<%(#Expandable title="Cancel the deployment launching operation")%>
+
+When a deployment is being launched, you can cancel the operation by pressing the **Cancel** button shown next to the notification at the bottom of your Deployment Launcher window.
+
+<%(Callout type="warn" message="
+Cancelling the operation does not prevent the deployment from launching, and may result in a new deployment starting with an unknown state.
+")%>
+
+<%(/Expandable)%>

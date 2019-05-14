@@ -66,6 +66,12 @@ A list of deployments has been retrieved successfully when:
 * The notification at the bottom of the Deployment Launcher window has disappeared.
 ")%>
 
+<%(#Expandable title="Cancel the deployment listing operation")%>
+
+You can stop the Deployment Launcher retrieving an updated list of deployments by pressing the **Cancel** button shown next to the notification at the bottom of your Deployment Launcher window.
+
+<%(/Expandable)%>
+
 ### Stopping deployments
 
 When you press the **Stop deployment** button, the Deployment Launcher sends a request to stop the deployment chosen from the adjacent drop-down option.
@@ -92,3 +98,13 @@ The deployment has stopped successfully when:
 * The stopped deployment has been removed from the list of live deployments.
 * The notification at the bottom of the Deployment Launcher window has disappeared.
 ")%>
+
+<%(#Expandable title="Cancel the deployment stopping operation")%>
+
+When a deployment is being stopped, you can cancel the operation by pressing the **Cancel** button shown next to the notification at the bottom of your Deployment Launcher window.
+
+<%(Callout type="warn" message="
+Cancelling the operation does not prevent the deployment being stopped, and may leave it in an unknown state.
+")%>
+
+<%(/Expandable)%>

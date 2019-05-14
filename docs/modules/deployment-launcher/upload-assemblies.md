@@ -63,3 +63,14 @@ The assembly has finished uploading when:
 * You see the following message in your Unity Editor Console window: `Upload of <assembly_name> succeeded.`
 * The notification at the bottom of the Deployment Launcher window has disappeared.
 ")%>
+
+<%(#Expandable title="Cancel an assembly upload")%>
+
+When the upload is in progress, you can cancel the operation by pressing the **Cancel** button shown next to the notification at the bottom of your Deployment Launcher window.
+
+<%(Callout type="warn" message="
+Cancelling an assembly upload while in progress may have unintended side-effects.
+
+")%>
+
+<%(/Expandable)%>
