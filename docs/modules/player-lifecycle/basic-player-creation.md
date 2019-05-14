@@ -54,7 +54,7 @@ public static class PlayerTemplate
         var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
 
         var entityTemplate = new EntityTemplate();
-        entityTemplate.AddPosition(new Position.Snapshot(new Coordinates()), "UnityGameLogic");
+        entityTemplate.AddComponent(new Position.Snapshot(new Coordinates()), "UnityGameLogic");
         // add all components that you want the player entity to have
         PlayerLifecycleHelper.AddPlayerLifecycleComponents(entityTemplate, workerId, "UnityGameLogic");
 
