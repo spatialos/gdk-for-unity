@@ -10,20 +10,24 @@ The section of the Deployment Launcher window that you use to upload assemblies 
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/assembly-upload.png" style="margin: 0 auto; width: auto; display: block;" />
 
-There are two settings that you can edit:
+<%(#Expandable title="Fields")%>
 
 | Field | Description |
 | --- | --- |
-| Assembly Name | This is an identifier for the assembly you will upload.<br/><br/>You can use this to reference an assembly when launching a deployment or to find the assembly in the SpatialOS Console. |
+| Assembly Name | This is an identifier for the assembly you will upload.<br/><br/>You can use this to reference an assembly when launching a deployment or to find the assembly in the [SpatialOS Console](https://docs.improbable.io/reference/latest/shared/glossary#console). |
 | Force Upload | Denotes whether to force upload this assembly.<br/><br/>If this is checked, an assembly that previously was uploaded with the same assembly name will be overwritten. |
 
-There are also three buttons:
+<%(/Expandable)%>
+
+<%(#Expandable title="Buttons")%>
 
 | Button name | Description |
 | --- | --- |
 | Generate | When pressed, this generates an **Assembly Name** for you based on your SpatialOS project name and a timestamp. |
 | Assign assembly name to deployments | When pressed, this copies the current value of **Assembly Name** to _all_ deployments you currently have [configured in the next section]({{urlRoot}}/modules/deployment-launcher/launch-deployments). |
 | Upload assembly | When pressed, this initiates the assembly upload process. |
+
+<%(/Expandable)%>
 
 ## Expected behaviour
 
@@ -34,8 +38,7 @@ The Deployment Launcher validates your chosen assembly name to ensure that it is
 * Must contain at least 5 characters.
 * Must contain at most 64 characters.
 * Can contain alphanumeric characters.
-* Can contain the following special characters:
-  * `_`, `.`, and `-`.
+* Can contain the following special characters: `_`, `.`, and `-`.
 
 If validation fails, the **Upload assembly** button is disabled and an error similar to below is displayed:
 

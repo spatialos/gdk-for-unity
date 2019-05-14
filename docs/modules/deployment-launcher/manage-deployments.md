@@ -8,19 +8,25 @@ Open the Deployment Launcher window by selecting **SpatialOS** > **Deployment La
 
 The section of the Deployment Launcher window that you use to manage live deployments can be found under the **Live Deployments** label.
 
-Initially, the Deployment Launcher does not know of any deployments.
+Initially, the Deployment Launcher does not know of any deployments. It will only update its known list of deployments when requested.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments-empty.png" style="margin: 0 auto; width: auto; display: block;" />
+
+<%(#Expandable title="Buttons")%>
 
 | Button name | Description |
 | --- | --- |
 | Refresh | When pressed, the Deployment Launcher retrieves a list of cloud deployments currently running in your SpatialOS project. |
+
+<%(/Expandable)%>
 
 ### Listed deployments
 
 When there are live cloud deployments running, this section is updated with a list of these live deployments and some metadata about them. The deployment metadata is **read-only**.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments.png" style="margin: 0 auto; width: auto; display: block;" />
+
+<%(#Expandable title="Metadata")%>
 
 | Metadata | Example |
 | --- | --- |
@@ -30,10 +36,16 @@ When there are live cloud deployments running, this section is updated with a li
 | Connected Workers | A list of worker types and how many are connected to the deployment. |
 | Tags | A list of metadata tags added to the deployment. |
 
+<%(/Expandable)%>
+
+<%(#Expandable title="Buttons")%>
+
 | Button name | Description |
 | --- | --- |
-| Open the SpatialOS Console (🌐) | When pressed, the Console page for the selected cloud deployment opens in your browser. |
+| Open the SpatialOS Console (🌐) | When pressed, the [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the selected cloud deployment opens in your browser. |
 | Stop deployment | When pressed, this begins to stop a deployment chosen from the list of running cloud deployments. |
+
+<%(/Expandable)%>
 
 ## Expected behaviour
 

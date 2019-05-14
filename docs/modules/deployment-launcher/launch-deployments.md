@@ -18,9 +18,9 @@ The section of the Deployment Launcher window that you use to launch deployments
 
 A deployment configuration is used to describe what parameters a deployment should be launched with.
 
-Each deployment configuration contains seven fields that you can edit:
-
 <img src="{{assetRoot}}assets/modules/deployment-launcher/dpl-configs.png" style="margin: 0 auto; width: auto; display: block;" />
+
+<%(#Expandable title="Fields")%>
 
 | Field | Required? | Description |
 | --- | --- | --- |
@@ -32,11 +32,17 @@ Each deployment configuration contains seven fields that you can edit:
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
 | Simulated Player Deployments | ❌ | A set of child deployments responsible for running simulated players that connect into the parent deployment. These deployments are launched after the parent deployment has successfully started. |
 
+<%(/Expandable)%>
+
+<%(#Expandable title="Buttons")%>
+
 | Button name | Description |
 | --- | --- |
 | Add new deployment configuration | When pressed, this creates a new deployment configuration. |
 | Add simulated player deployment | When pressed, this creates a new simulated player deployment configuration as a child of a parent deployment. |
 | Remove (➖) | When pressed, this removes a deployment from the list of configurations. |
+
+<%(/Expandable)%>
 
 <%(Callout message="
 
@@ -51,12 +57,12 @@ The remove button (➖) is used to either:
 
 ### Simulated player deployment configuration
 
-<img src="{{assetRoot}}assets/modules/deployment-launcher/dpl-configs-sim.png" style="margin: 0 auto; width: auto; display: block;" />
-
 Simulated player deployments inherit the following fields from their parent deployment:
 
 * Assembly name
 * Region
+
+<img src="{{assetRoot}}assets/modules/deployment-launcher/dpl-configs-sim.png" style="margin: 0 auto; width: auto; display: block;" />
 
 In addition, each simulated player deployment is assigned a deployment name based on its parent. For example, given a `parent_deployment_name`, a simulated player deployment is given a name of the format:
 
@@ -66,7 +72,7 @@ In addition, each simulated player deployment is assigned a deployment name base
 Where N is in range [1, number of simulated player deployments]
 ```
 
-A simulated player deployment configuration exposes six additional fields:
+<%(#Expandable title="Additional fields")%>
 
 | Field | Required? | Description |
 | --- | --- | --- |
@@ -76,6 +82,8 @@ A simulated player deployment configuration exposes six additional fields:
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
 | Flag Prefix | ✔️ |  |
 | Worker Type | ✔️ |  |
+
+<%(/Expandable)%>
 
 ### Launch deployments
 
@@ -96,8 +104,7 @@ Your assembly name:
 * Must contain at least 5 characters.
 * Must contain at most 64 characters.
 * Can contain alphanumeric characters.
-* Can contain the following special characters:
-  * `_`, `.`, and `-`.
+* Can contain the following special characters: `_`, `.`, and `-`.
 
 If validation fails, an error similar to below is shown:
 
@@ -113,8 +120,7 @@ Your deployment name:
 * Must contain at most 32 characters.
 * Must be in lowercase.
 * Can contain alphanumeric characters.
-* Can contain the following special characters:
-  * `_`.
+* Can contain underscores.
 
 If validation fails, an error similar to below is shown:
 
@@ -150,10 +156,10 @@ At present, you can select either `EU` or `US` as the region to launch your depl
 
 Each tag:
 
+* Must begin with an alphanumeric character.
 * Must contain at least 2 characters.
 * Must contain at most 32 characters.
 * Can contain underscores after the first character.
-  * The first character **must** be alphanumeric.
 
 If validation fails, an error similar to below is shown:
 
@@ -197,6 +203,6 @@ The standard output and standard error from the command is forwarded to the Unit
 <%(Callout message="
 When a deployment successfully launches:
 
-* The Console page for the deployment automatically opens in your browser.
+* The [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the deployment automatically opens in your browser.
 * The notification at the bottom of the Deployment Launcher window will disappear.
 ")%>
