@@ -43,9 +43,9 @@ Your `spatialos.json` should look something like this:
 {
   "name": "beta_yankee_hawaii_621",
   "project_version": "0.0.1",
-  "sdk_version": "13.6.2-gdk-for-unity",
+  "sdk_version": "13.7.1-gdk-for-unity",
   "dependencies": [
-      {"name": "standard_library", "version": "13.6.2-gdk-for-unity"}
+      {"name": "standard_library", "version": "13.7.1-gdk-for-unity"}
   ]
 }
 ```

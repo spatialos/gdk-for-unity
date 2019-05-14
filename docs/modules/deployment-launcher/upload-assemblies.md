@@ -31,7 +31,7 @@ The section of the Deployment Launcher window that you use to upload assemblies 
 
 ## Expected behaviour
 
-### Input validation
+<%(#Expandable title="<b>Input validation</b>")%>
 
 The Deployment Launcher validates your chosen assembly name to ensure that it is properly formed. Your assembly name:
 
@@ -45,6 +45,8 @@ If validation fails, the **Upload assembly** button is disabled and an error sim
 ```text
 Assembly Name "<invalid_name>" is invalid. Must conform to the regex: ^[a-zA-Z0-9_.-]{5,64}
 ```
+
+<%(/Expandable)%>
 
 ### The upload process
 

@@ -1,4 +1,23 @@
-<%( TOC )%>
+<nav id="pageToc" class="page-toc">
+    <ul>
+        <li>
+            <a href="#ui-walkthrough">UI walkthrough</a>
+            <ul>
+                <li>
+                    <a href="#deployment-configuration">Deployment configuration</a>
+                    <a href="#simulated-player-deployment-configuration">Simulated player deployment configuration</a>
+                    <a href="#launch-deployments">Launch deployments</a>
+                </li>
+            </ul>
+            <a href="#expected-behaviour">Expected behaviour</a>
+            <ul>
+                <li>
+                    <a href="#launching-a-deployment">Launching a deployment</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
 # Launch deployments
 
@@ -28,7 +47,7 @@ A deployment configuration is used to describe what parameters a deployment shou
 | Deployment Name | ✔️ | The name you wish to give to the deployment. |
 | Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
-| Region | ✔️ | The geographical location in which your deployment launches. |
+| Region | ✔️ | The geographical region code that the deployment is running in. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
 | Simulated Player Deployments | ❌ | A set of child deployments responsible for running simulated players that connect into the parent deployment. These deployments are launched after the parent deployment has successfully started. |
 
@@ -78,7 +97,7 @@ Where N is in range [1, number of simulated player deployments]
 | --- | --- | --- |
 | Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
-| Region | ✔️ | The geographical location in which your deployment launches. |
+| Region | ✔️ | The geographical region code that the deployment is running in. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
 | Flag Prefix | ✔️ | The prefix to include on worker flags that the Deployment Launcher adds to simulated player deployments. This should follow [worker flag naming conventions](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#naming-conventions). |
 | Worker Type | ✔️ | The worker type of the simulated player coordinator, responsible for managing simulated players in the child deployment and connecting them to the parent deployment. |
@@ -87,13 +106,13 @@ Where N is in range [1, number of simulated player deployments]
 
 ### Launch deployments
 
-At the bottom of the deployment configurations panel, there is a **Launch deployment** button. You can select which which deployment configuration you wish to launch and then select **Launch deployment**.
+At the bottom of the deployment configurations panel, there is a **Launch deployment** button. You can select which deployment configuration you wish to launch and then select **Launch deployment**.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: auto; display: block;" />
 
 ## Expected behaviour
 
-### Input validation
+<%(#Expandable title="<b>Input validation</b>")%>
 
 The deployment launcher validates your deployment configurations as you edit them in the Unity Editor. If any field fails validation, errors similar to those highlighted below are shown and the **Launch deployment** button is disabled until you resolve all the errors.
 
@@ -184,6 +203,8 @@ Flag Prefix cannot contain spaces.
 #### Worker Type
 
 The simulated player coordinator worker type can be chosen from a drop-down list of workers in the project.
+
+<%(/Expandable)%>
 
 ### Launching a deployment
 
