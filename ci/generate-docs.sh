@@ -58,6 +58,7 @@ dotnet run -p "${DOCGEN_DIR}/Docgen/Docgen.csproj" -- \
     --target-namespace="Improbable.Gdk" \
     --output-directory="${DOCS_DIR}/docs/api" \
     --namespace-filter=".*EditmodeTests" \
+    --namespace-filter=".*DeploymentLauncher" \
     --namespace-filter=".*PlaymodeTests" \
     --api-path="api" \
     --git-tag="${TAG}"

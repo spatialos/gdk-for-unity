@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Mobile
         /// 4. Check if we stored anything inside the IpAddress field and use it, if we have.
         /// 5. Return the default ReceptionistHost (localhost).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the Host IP.</returns>
         protected virtual string GetHostIp()
         {
             var arguments = LaunchArguments.GetArguments();
