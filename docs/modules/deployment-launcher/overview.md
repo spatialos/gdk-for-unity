@@ -1,6 +1,6 @@
 # Deployment Launcher Feature Module
 
-This feature module contains Unity Editor tooling for uploading assemblies, launching SpatialOS deployments, and managing SpatialOS deployments.
+This feature module contains Unity Editor tooling for uploading assemblies, and managing SpatialOS deployments.
 
 ## Installation
 

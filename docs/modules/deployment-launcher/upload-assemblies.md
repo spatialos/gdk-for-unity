@@ -12,7 +12,7 @@ The section of the Deployment Launcher window that you use to upload assemblies 
 
 There are two settings that you can edit:
 
-| Setting | Description |
+| Field | Description |
 | --- | --- |
 | Assembly Name | This is an identifier for the assembly you will upload.<br/><br/>You can use this to reference an assembly when launching a deployment or to find the assembly in the SpatialOS Console. |
 | Force Upload | Denotes whether to force upload this assembly.<br/><br/>If this is checked, an assembly that previously was uploaded with the same assembly name will be overwritten. |
@@ -45,7 +45,7 @@ Assembly Name "<invalid_name>" is invalid. Must conform to the regex: ^[a-zA-Z0-
 
 ### The upload process
 
-When you press the upload assembly button, the Deployment Launcher starts a `spatial cloud upload` process under the hood. You should see a notification similar to the following at the bottom of the deployment launcher window:
+When you press the **Upload Assembly** button, the Deployment Launcher starts a `spatial cloud upload` process under the hood. You should see a notification similar to the following at the bottom of the deployment launcher window:
 
 ```text
 Uploading assembly "<assembly_name>".

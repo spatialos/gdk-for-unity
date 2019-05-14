@@ -22,7 +22,7 @@ Each deployment configuration contains seven fields that you can edit:
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/dpl-configs.png" style="margin: 0 auto; width: auto; display: block;" />
 
-| Setting | Required? | Description |
+| Field | Required? | Description |
 | --- | --- | --- |
 | Assembly Name | ✔️ | The identifier of an assembly you have uploaded. |
 | Deployment Name | ✔️ | The name you wish to give to the deployment. |
@@ -68,7 +68,7 @@ Where N is in range [1, number of simulated player deployments]
 
 A simulated player deployment configuration exposes six additional fields:
 
-| Setting | Required? | Description |
+| Field | Required? | Description |
 | --- | --- | --- |
 | Snapshot Path | ❌ | Path to the snapshot you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
@@ -79,7 +79,7 @@ A simulated player deployment configuration exposes six additional fields:
 
 ### Launch deployments
 
-At the bottom of the deployment configurations panel, there is a `Launch deployment` button. Use the option to select which deployment configuration you wish to launch.
+At the bottom of the deployment configurations panel, there is a **Launch deployment** button. You can select which which deployment configuration you wish to launch and then select **Launch deployment**.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: auto; display: block;" />
 
@@ -87,7 +87,7 @@ At the bottom of the deployment configurations panel, there is a `Launch deploym
 
 ### Input validation
 
-The deployment launcher validates your deployment configurations as you edit them in the Unity editor. If any field fails validation, errors similar to those highlighted below are shown and the **Launch deployment** button is disabled.
+The deployment launcher validates your deployment configurations as you edit them in the Unity Editor. If any field fails validation, errors similar to those highlighted below are shown and the **Launch deployment** button is disabled.
 
 #### Assembly name
 
@@ -165,7 +165,7 @@ Tag "<tag>" invalid. Must conform to the regex: ^[A-Za-z0-9][A-Za-z0-9_]{2,32}$
 
 A flag prefix is not allowed to be empty and cannot contain full stops or spaces.
 
-If validation fails, you will see an error similar to one of the below:
+If validation fails, an error similar to below is shown:
 
 ```text
 Flag Prefix cannot be empty.
@@ -181,7 +181,7 @@ The simulated player worker type can be chosen from a drop-down list of workers 
 
 ### Launching a deployment
 
-When you press the `Launch deployment` button, the Deployment Launcher starts launching the deployments specified in the configuration chosen in the adjacent drop-down menu.
+When you press the **Launch deployment** button, the Deployment Launcher starts launching the deployments specified in the configuration chosen in the adjacent drop-down menu.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: auto; display: block;" />
 
@@ -197,6 +197,6 @@ The standard output and standard error from the command is forwarded to the Unit
 <%(Callout message="
 When a deployment successfully launches:
 
-* The Console page for the deployment will automatically open in your browser.
+* The Console page for the deployment automatically opens in your browser.
 * The notification at the bottom of the Deployment Launcher window will disappear.
 ")%>

@@ -14,11 +14,11 @@ Initially, the Deployment Launcher does not know of any deployments.
 
 | Button name | Description |
 | --- | --- |
-| Refresh | When pressed, the Deployment Launcher retrieves a list of cloud deployments currently running in the SpatialOS project. |
+| Refresh | When pressed, the Deployment Launcher retrieves a list of cloud deployments currently running in your SpatialOS project. |
 
 ### Listed deployments
 
-When there are live cloud deployments running, this section is updated with a list of these live deployments and some metadata about them. Deployment metadata is **read-only**.
+When there are live cloud deployments running, this section is updated with a list of these live deployments and some metadata about them. The deployment metadata is **read-only**.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments.png" style="margin: 0 auto; width: auto; display: block;" />
 
@@ -32,14 +32,14 @@ When there are live cloud deployments running, this section is updated with a li
 
 | Button name | Description |
 | --- | --- |
-| 🌐 | When pressed, the Console page for the selected cloud deployment opens in your browser. |
+| Open the SpatialOS Console (🌐) | When pressed, the Console page for the selected cloud deployment opens in your browser. |
 | Stop deployment | When pressed, this begins to stop a deployment chosen from the list of running cloud deployments. |
 
 ## Expected behaviour
 
 ### Listing deployments
 
-When you press the `Refresh` button, the Deployment Launcher gathers a list of running cloud deployments within the SpatialOS project.
+When you press the **Refresh** button, the Deployment Launcher gathers a list of live cloud deployments within the SpatialOS project.
 
 You should see a notification similar to the following at the bottom of the deployment launcher window:
 
@@ -58,7 +58,7 @@ A list of deployments has been retrieved successfully when:
 
 ### Stopping deployments
 
-When you press the `Stop deployment` button, the Deployment Launcher sends a request to stop the deployment chosen from the adjacent drop-down option.
+When you press the **Stop deployment** button, the Deployment Launcher sends a request to stop the deployment chosen from the adjacent drop-down option.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/stop-deployments-choice.png" style="margin: 0 auto; width: auto; display: block;" />
 

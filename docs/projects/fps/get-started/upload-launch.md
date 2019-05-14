@@ -53,9 +53,9 @@ Your `spatialos.json` should look something like this:
 <br/>
 **Step 3.** Reference your Unity project in the Deployment Launcher window.
 
-Open the Deployment Launcher window in your Unity Editor by selecting **SpatialOS** > **Deployment Launcher**.
+Open the [Deployment Launcher]({{urlRoot}}/modules/deployment-launcher/overview#change-my-project-in-the-deployment-launcher) window in your Unity Editor by selecting **SpatialOS** > **Deployment Launcher**.
 
-Ensure the `Project Name` matches the one specified in your `spatialos.json`. If it does not match, [press the refresh button at the top of the Deployment Launcher window]({{urlRoot}}/modules/deployment-launcher/overview#change-my-project-in-the-deployment-launcher) to update the project name.
+Ensure the `Project Name` matches the one specified in your `spatialos.json`. If it does not match, press the refresh button at the top of the Deployment Launcher window to update the project name.
 
 <br/>
 
@@ -65,7 +65,7 @@ An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assemb
 
 To run a deployment in the cloud, you need to upload the worker assemblies to your SpatialOS project.
 
-Ensure that the `Assembly Name` is set in the `Assembly Upload` section of your Deployment Launcher window. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`. For example, `my_assembly`.
+Ensure that the `Assembly Name` is set in the **Assembly Upload** section of your Deployment Launcher window. The assembly name is a string you choose made up of alphanumeric characters, `_`, `.`, and `-`. For example, `my_assembly`.
 
 <img src="{{assetRoot}}assets/upload-assembly.png" style="margin: 0 auto; width: auto; display: block;" />
 _Example Deployment Launcher window showing the Assembly Upload section completed_
@@ -79,7 +79,7 @@ Select **Upload assembly** to start the upload.
 > **TIP:** Depending on your network speed, the upload may take a little while (1-10 minutes) to complete.
 
 <%(Callout message="
-It’s finished uploading when You see an upload report printed in your Unity Console, for example:
+It’s finished uploading when you see an upload report printed in your Unity Console, for example:
 
 **Uploaded assembly my_assembly to project unity_gdk successfully.**
 ")%>
