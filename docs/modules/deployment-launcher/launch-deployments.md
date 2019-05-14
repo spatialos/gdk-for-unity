@@ -80,8 +80,8 @@ Where N is in range [1, number of simulated player deployments]
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical location in which your deployment launches. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
-| Flag Prefix | ✔️ |  |
-| Worker Type | ✔️ |  |
+| Flag Prefix | ✔️ | The prefix to include on worker flags that the Deployment Launcher adds to simulated player deployments. This should follow [worker flag naming conventions](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#naming-conventions). |
+| Worker Type | ✔️ | The worker type of the simulated player coordinator, responsible for managing simulated players in the child deployment and connecting them to the parent deployment. |
 
 <%(/Expandable)%>
 
@@ -183,7 +183,7 @@ Flag Prefix cannot contain spaces.
 
 #### Worker Type
 
-The simulated player worker type can be chosen from a drop-down list of workers in the project.
+The simulated player coordinator worker type can be chosen from a drop-down list of workers in the project.
 
 ### Launching a deployment
 
