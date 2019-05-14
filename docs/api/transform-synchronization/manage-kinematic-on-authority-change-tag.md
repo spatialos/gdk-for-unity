@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.transformsynchronization/Components/ManageKinematicOnAuthorityChangeTag.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.transformsynchronization/Components/ManageKinematicOnAuthorityChangeTag.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;

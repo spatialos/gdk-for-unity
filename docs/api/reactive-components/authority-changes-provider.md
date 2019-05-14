@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/reactive-components-index">ReactiveComponents</a><br/>
 GDK package: ReactiveComponents<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Allocate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Get</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,7 +95,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Set</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Free</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L46">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -152,7 +152,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CleanDataInWorld</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L52">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/ReactiveComponents/Authority/AuthorityChangesProvider.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

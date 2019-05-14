@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a><br/>
 GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.tools/Plugins/PluginCompatibilitySetting.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.tools/Plugins/PluginCompatibilitySetting.cs/#L7">Source</a>
 </sup>
 
 

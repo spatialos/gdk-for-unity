@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L123">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L162">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Add</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L128">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L167">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -71,7 +71,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Remove</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L140">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L179">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -99,7 +99,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>InvokeAll</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L152">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L191">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -128,7 +128,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>InvokeAllReverse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L160">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/b136dc2b/workers/unity/Packages/com.improbable.gdk.core/Subscriptions/Callbacks.cs/#L199">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
