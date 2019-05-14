@@ -2,7 +2,7 @@
 
 # FPS Starter Project: Overview
 
-<img src="{{assetRoot}}assets/fps/enemies.png" style="margin: 0 auto; width: 100%; display: block;" />
+<img src="{{assetRoot}}assets/fps/fps-starter-headline.png" style="margin: 0 auto; width: 100%; display: block;" />
 
 The FPS (First-person Shooter) Starter Project is a great starting point for working with the SpatialOS GDK for Unity. Many projects, whatever their genre, share some core elements and this starter project can get you off to a good start.
 

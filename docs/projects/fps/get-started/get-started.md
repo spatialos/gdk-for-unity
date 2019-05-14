@@ -13,4 +13,4 @@ We recommend starting with the FPS Starter Project by going to the next step: [S
 
 #### Next: [Set up]({{urlRoot}}/projects/fps/get-started/set-up.md)
 
-![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/headline.png)
+![Instant action in the FPS Starter Project]({{assetRoot}}assets/fps/fps-starter-enemies.png)
