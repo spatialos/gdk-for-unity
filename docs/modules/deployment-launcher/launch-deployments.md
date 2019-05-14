@@ -26,7 +26,7 @@ A deployment configuration is used to describe what parameters a deployment shou
 | --- | --- | --- |
 | Assembly Name | ✔️ | The identifier of an assembly you have uploaded. |
 | Deployment Name | ✔️ | The name you wish to give to the deployment. |
-| Snapshot Path | ❌ | Path to the snapshot you wish to start the deployment with, relative from the root of your SpatialOS project. |
+| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical location in which your deployment launches. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
@@ -76,7 +76,7 @@ Where N is in range [1, number of simulated player deployments]
 
 | Field | Required? | Description |
 | --- | --- | --- |
-| Snapshot Path | ❌ | Path to the snapshot you wish to start the deployment with, relative from the root of your SpatialOS project. |
+| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical location in which your deployment launches. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
@@ -95,7 +95,7 @@ At the bottom of the deployment configurations panel, there is a **Launch deploy
 
 ### Input validation
 
-The deployment launcher validates your deployment configurations as you edit them in the Unity Editor. If any field fails validation, errors similar to those highlighted below are shown and the **Launch deployment** button is disabled.
+The deployment launcher validates your deployment configurations as you edit them in the Unity Editor. If any field fails validation, errors similar to those highlighted below are shown and the **Launch deployment** button is disabled until you resolve all the errors.
 
 #### Assembly name
 
@@ -198,11 +198,9 @@ Launching deployment "<deployment_name>" in project "<project_name>".
 Assembly reloading locked.
 ```
 
-The standard output and standard error from the command is forwarded to the Unity Console.
-
 <%(Callout message="
 When a deployment successfully launches:
 
 * The [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the deployment automatically opens in your browser.
-* The notification at the bottom of the Deployment Launcher window will disappear.
+* The notification at the bottom of the Deployment Launcher window disappears.
 ")%>

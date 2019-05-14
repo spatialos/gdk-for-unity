@@ -101,12 +101,7 @@ You should find that the `my_deployment` configuration is already pre-completed 
 This starts the process of launching your deployments. This may take a few minutes.
 
 <%(Callout message="
-It’s finished when the Console pages for both deployments open automatically in your browser.
-
-You should also see two messages printed in your Unity Console indicating both deployments have started:
-
-* **Successfully created the main deployment.**
-* **Successfully created the simulated player deployment.**
+It’s finished when the notification at the bottom of the Deployment Launcher window disappears and the Console pages for both deployments open automatically in your browser.
 ")%>
 
 <br/>

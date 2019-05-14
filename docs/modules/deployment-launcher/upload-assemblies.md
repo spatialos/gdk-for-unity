@@ -24,7 +24,7 @@ The section of the Deployment Launcher window that you use to upload assemblies 
 | Button name | Description |
 | --- | --- |
 | Generate | When pressed, this generates an **Assembly Name** for you based on your SpatialOS project name and a timestamp. |
-| Assign assembly name to deployments | When pressed, this copies the current value of **Assembly Name** to _all_ deployments you currently have [configured in the next section]({{urlRoot}}/modules/deployment-launcher/launch-deployments). |
+| Assign assembly name to deployments | When pressed, this copies the current value of **Assembly Name** to _all_ deployments you have configured as described in the [next section]({{urlRoot}}/modules/deployment-launcher/launch-deployments). |
 | Upload assembly | When pressed, this initiates the assembly upload process. |
 
 <%(/Expandable)%>

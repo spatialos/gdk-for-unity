@@ -8,7 +8,7 @@ Open the Deployment Launcher window by selecting **SpatialOS** > **Deployment La
 
 The section of the Deployment Launcher window that you use to manage live deployments can be found under the **Live Deployments** label.
 
-Initially, the Deployment Launcher does not know of any deployments. It will only update its known list of deployments when requested.
+Initially, the Deployment Launcher does not know of any deployments. It only updates its known list of deployments when requested.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/manage-deployments-empty.png" style="margin: 0 auto; width: auto; display: block;" />
 
@@ -30,7 +30,7 @@ When there are live cloud deployments running, this section is updated with a li
 
 | Metadata | Example |
 | --- | --- |
-| Deployment name | The name of the given cloud deployment. For example, `testmobile13052019`. |
+| Deployment name | The name of the given cloud deployment. For example, `my_deployment`. |
 | Start Time | The local time that the deployment was started. |
 | Region | The geographical region that the deployment is running in. |
 | Connected Workers | A list of worker types and how many are connected to the deployment. |
@@ -60,8 +60,6 @@ Listing deployments in project "<project_name>".
 Assembly reloading locked.
 ```
 
-The standard output and standard error from the command is forwarded to the Unity Console.
-
 <%(Callout message="
 A list of deployments has been retrieved successfully when:
 
@@ -86,8 +84,6 @@ You should see a notification similar to the following at the bottom of the depl
 Stopping deployment "<deployment_name>".
 Assembly reloading locked.
 ```
-
-The standard output and standard error from the command is forwarded to the Unity Console.
 
 <%(Callout message="
 The deployment has stopped successfully when:
