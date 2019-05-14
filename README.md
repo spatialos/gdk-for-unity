@@ -1,4 +1,4 @@
-# The SpatialOS GDK for Unity (alpha)
+![](spatialos_gdk_for_unity_header.png)
 
 ![](https://img.shields.io/badge/license-MIT-brightgreen.svg) ![](https://badge.buildkite.com/fec962a4df6e6705871bffa4dfcdea4f2ff7efcd737e5186ea.svg?branch=develop)
 
@@ -30,7 +30,7 @@ The GDK is composed of three layers:
 
 ## Recommended use
 
-This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback. 
+This is the alpha release of the SpatialOS GDK for Unity. We invite projects to start using it but warn that all APIs are subject to change as we learn from feedback.
 
 ## Contributions
 
