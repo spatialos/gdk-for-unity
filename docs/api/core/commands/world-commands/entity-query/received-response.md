@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands/entity-query">EntityQuery</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L48">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L48">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -49,7 +49,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendingEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -64,7 +64,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>StatusCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L56">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L56">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ The status code of the command response. If equal to StatusCode.Success then the
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Message</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L61">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L61">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,7 +94,7 @@ The failure message of the command. Will only be non-null if the command failed.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Result</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L67">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L67">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -109,7 +109,7 @@ A dictionary that represents the results of a SnapshotResultType entity query. T
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ResultCount</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L72">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L72">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ The number of entities that matched the entity query constraints.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RequestPayload</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L77">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L77">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -139,7 +139,7 @@ The request payload that was originally sent with this command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L82">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L82">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -154,7 +154,7 @@ The context object that was provided when sending the command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L87">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L87">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -185,7 +185,7 @@ The unique request ID of this command. Will match the request ID in the correspo
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L112">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L112">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

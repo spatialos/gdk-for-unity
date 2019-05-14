@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/player-lifecycle-index">PlayerLifecycle</a><br/>
 GDK package: PlayerLifecycle<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddPlayerLifecycleComponents</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L18">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L18">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -69,7 +69,7 @@ Adds the SpatialOS components used by the player lifecycle module to an entity t
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>IsOwningWorker</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L41">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L41">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ Returns whether an entity is owned by a worker. It can be used to determine whet
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddClientSystems</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L72">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L72">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -127,7 +127,7 @@ Adds all the systems a client-worker requires for the player lifecycle module.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddServerSystems</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L83">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

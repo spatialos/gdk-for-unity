@@ -28,6 +28,10 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/commands-index">Commands</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
+<tr>
+<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/editor-index">Editor</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
 </table>
 
 
