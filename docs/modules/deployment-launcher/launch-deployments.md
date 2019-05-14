@@ -49,7 +49,7 @@ A deployment configuration is used to describe what parameters a deployment shou
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical region code that the deployment is running in. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
-| Simulated Player Deployments | ❌ | A set of child deployments responsible for running simulated players that connect into the parent deployment. These deployments are launched after the parent deployment has successfully started. |
+| Simulated Player Deployments | ❌ | A set of child deployments responsible for running [simulated players]({{urlRoot}}/reference/glossary#simulated-player) that connect into the parent deployment. These deployments are launched after the parent deployment has successfully started. |
 
 <%(/Expandable)%>
 
@@ -58,7 +58,7 @@ A deployment configuration is used to describe what parameters a deployment shou
 | Button name | Description |
 | --- | --- |
 | Add new deployment configuration | When pressed, this creates a new deployment configuration. |
-| Add simulated player deployment | When pressed, this creates a new simulated player deployment configuration as a child of a parent deployment. |
+| Add simulated player deployment | When pressed, this creates a new [simulated player]({{urlRoot}}/reference/glossary#simulated-player) deployment configuration as a child of a parent deployment. |
 | Remove (➖) | When pressed, this removes a deployment from the list of configurations. |
 
 <%(/Expandable)%>
@@ -68,7 +68,7 @@ A deployment configuration is used to describe what parameters a deployment shou
 The remove button (➖) is used to either:
 
 * Remove a full deployment configuration.
-* Remove a simulated player deployment from its parent deployment configuration.
+* Remove a [simulated player]({{urlRoot}}/reference/glossary#simulated-player) deployment from its parent deployment configuration.
 
 ![]({{assetRoot}}assets/modules/deployment-launcher/remove-simplayer-dpl-config.png)
 
@@ -100,7 +100,7 @@ Where N is in range [1, number of simulated player deployments]
 | Region | ✔️ | The geographical region code that the deployment is running in. |
 | Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
 | Flag Prefix | ✔️ | The prefix to include on worker flags that the Deployment Launcher adds to simulated player deployments. This should follow [worker flag naming conventions](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#naming-conventions). |
-| Worker Type | ✔️ | The worker type of the simulated player coordinator, responsible for managing simulated players in the child deployment and connecting them to the parent deployment. |
+| Worker Type | ✔️ | The worker type of the [simulated player coordinator]({{urlRoot}}/reference/glossary#simulated-player-coordinator), responsible for managing [simulated players]({{urlRoot}}/reference/glossary#simulated-player) in the child deployment and connecting them to the parent deployment. |
 
 <%(/Expandable)%>
 
