@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L76">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L79">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -42,7 +42,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ReceptionistHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L81">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L84">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -57,7 +57,7 @@ The host used to connect to the Receptionist.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ReceptionistPort</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L86">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L89">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,7 +72,7 @@ The port used to connect to the Receptionist.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L91">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L94">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

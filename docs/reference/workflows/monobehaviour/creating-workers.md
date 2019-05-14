@@ -13,7 +13,7 @@ Before reading this document, make sure you have read:
 To demonstrate the use of the [`Worker`]({{urlRoot}}/api/core/worker) class, the GDK contains an example implementation of how to create a worker instance (server-worker or client-worker) and connect to SpatialOS. We provide an abstract [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class and two child classes implementing the abstract methods to get you started quickly:
 
   * The [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) for your server-workers or client-workers on Windows or MacOS.
-  * The [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) for your client-workers on Android or iOS.
+  * The [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/default-mobile-worker-connector) for your client-workers on Android or iOS.
 
 The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) is a MonoBehaviour script. You can use it to create multiple server-worker or client-worker instances in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker instance.
 
@@ -98,4 +98,4 @@ The [`DefaultWorkerConnector`]({{urlRoot}}/api/core/default-worker-connector) pr
 
 We provide an integration with the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication#developmentauthenticationtoken-maintenance) that you can use to connect your client-workers to a cloud deployment. This is especially important when working with [client-workers for mobile devices]({{urlRoot}}/modules/mobile/overview) or when you want your client to be able to choose the deployment it connects to.
 
-The [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/mobile-worker-connector) provides an example implementation on how to use the development authentication flow connecting via the [new v13.5+ Locator connection flow]({{urlRoot}}/reference/concepts/connection-flows#locator-connection-flow).
+The [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/default-mobile-worker-connector) provides an example implementation on how to use the development authentication flow connecting via the [new v13.5+ Locator connection flow]({{urlRoot}}/reference/concepts/connection-flows#locator-connection-flow).

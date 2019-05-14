@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L17">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L17">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -52,7 +52,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>MaxConnectionAttempts</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ The number of connection attempts before giving up.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Worker</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L32">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -81,21 +81,6 @@ Represents a SpatialOS worker.
 <ul>
 <li>Only safe to access after the connection has succeeded. </li>
 </ul>
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>DevelopmentAuthToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L34">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> string DevelopmentAuthToken</code></p>
 
 
 </td>
@@ -119,7 +104,7 @@ Represents a SpatialOS worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnWorkerCreationFinished</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L41">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -147,7 +132,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CreateNewWorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L343">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L384">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -188,7 +173,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnApplicationQuit</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L57">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L55">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -207,7 +192,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnDestroy</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L62">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -226,7 +211,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionService</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L165">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L163">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -245,7 +230,7 @@ Determines which <a href="{{urlRoot}}/api/core/connection-service">ConnectionSer
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L173">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L171">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -274,7 +259,7 @@ Retrieves the ConnectionParameters needed to be able to connect to any connectio
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L179">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L177">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -293,7 +278,7 @@ Retrieves the configuration needed to connect via the Locator service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAlphaLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L188">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L186">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -329,8 +314,36 @@ Retrieves the configuration needed to connect via the Alpha Locator service.
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><b>GetAlphaLocatorConfigViaDevAuthFlow</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L192">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code><a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a> GetAlphaLocatorConfigViaDevAuthFlow(string workerType)</code></p>
+Retrieves the configuration needed to connect via the Alpha Locator service using the development authentication flow. 
+</p><b>Returns:</b></br>A <a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a> object.
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>string workerType</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><b>GetReceptionistConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L195">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L219">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -358,7 +371,7 @@ Retrieves the configuration needed to connect via the Receptionist service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetPlayerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L201">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L225">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -377,7 +390,7 @@ Retrieves the player id for the player trying to connect via the anonymous authe
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDisplayName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L210">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L234">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -396,7 +409,7 @@ Retrieves the display name for the player trying to connect via the anonymous au
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SelectDeploymentName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L220">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L244">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -423,8 +436,27 @@ Selects which deployment to connect to.
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><b>GetDevAuthToken</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L252">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>string GetDevAuthToken()</code></p>
+Loads the development authentication token and stores it in the DevelopmentAuthToken field. 
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><b>SelectLoginToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L230">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L271">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -452,7 +484,7 @@ Selects which login token to use to connect via the anonymous authentication flo
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDevelopmentPlayerIdentityToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L248">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L289">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -482,7 +514,7 @@ Retrieves the player identity token needed to generate a login token when using 
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDevelopmentLoginTokens</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L282">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L323">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -511,7 +543,7 @@ Retrieves the login tokens for all active deployments that the player can connec
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HandleWorkerConnectionEstablished</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L310">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L351">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -530,7 +562,7 @@ Retrieves the login tokens for all active deployments that the player can connec
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HandleWorkerConnectionFailure</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L314">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L355">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -558,7 +590,7 @@ Retrieves the login tokens for all active deployments that the player can connec
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Connect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L77">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L75">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -596,7 +628,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L363">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/WorkerConnector.cs/#L404">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

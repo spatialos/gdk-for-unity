@@ -118,6 +118,9 @@
             - <a href="{{urlRoot}}/api/core/commands/i-received-command-request">IReceivedCommandRequest</a>
             - <a href="{{urlRoot}}/api/core/commands/i-received-command-response">IReceivedCommandResponse</a>
             - <a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>
+        - [Editor]({{urlRoot}}/api/core/editor-index)
+            - <a href="{{urlRoot}}/api/core/editor/singleton-scriptable-object">SingletonScriptableObject</a>
+            - <a href="{{urlRoot}}/api/core/editor/ui-state-manager">UIStateManager</a>
         - <a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a>
         - <a href="{{urlRoot}}/api/core/authentication-failed-exception">AuthenticationFailedException</a>
         - <a href="{{urlRoot}}/api/core/authority-change-received">AuthorityChangeReceived</a>
@@ -239,14 +242,11 @@
         - <a href="{{urlRoot}}/api/game-object-creation/i-entity-game-object-creator">IEntityGameObjectCreator</a>
         - <a href="{{urlRoot}}/api/game-object-creation/spatial-os-entity">SpatialOSEntity</a>
     - [Mobile]({{urlRoot}}/api/mobile-index)
-        - [Android]({{urlRoot}}/api/mobile/android-index)
-            - <a href="{{urlRoot}}/api/mobile/android/android-device-info">AndroidDeviceInfo</a>
-            - <a href="{{urlRoot}}/api/mobile/android/launch-arguments">LaunchArguments</a>
-        - [iOS]({{urlRoot}}/api/mobile/i-os-index)
-            - <a href="{{urlRoot}}/api/mobile/i-os/i-os-device-info">iOSDeviceInfo</a>
+        - <a href="{{urlRoot}}/api/mobile/default-mobile-worker-connector">DefaultMobileWorkerConnector</a>
+        - <a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a>
+        - <a href="{{urlRoot}}/api/mobile/launch-arguments">LaunchArguments</a>
         - <a href="{{urlRoot}}/api/mobile/launch-menu">LaunchMenu</a>
         - <a href="{{urlRoot}}/api/mobile/mobile-device-type">MobileDeviceType</a>
-        - <a href="{{urlRoot}}/api/mobile/mobile-worker-connector">MobileWorkerConnector</a>
     - [PlayerLifecycle]({{urlRoot}}/api/player-lifecycle-index)
         - <a href="{{urlRoot}}/api/player-lifecycle/handle-create-player-request-system">HandleCreatePlayerRequestSystem</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/handle-player-heartbeat-request-system">HandlePlayerHeartbeatRequestSystem</a>

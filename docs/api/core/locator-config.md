@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L38">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L41">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -42,7 +42,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -57,7 +57,7 @@ The host to connect to the Locator.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L51">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,7 +72,7 @@ The parameters needed to connect to the Locator.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DeploymentListCallback</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Config/RuntimeConfig.cs/#L57">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

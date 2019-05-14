@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -61,7 +61,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>BlittableBool</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -101,7 +101,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -141,7 +141,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -169,7 +169,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetHashCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L45">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L45">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -188,7 +188,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToString</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -219,7 +219,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>operator bool</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -247,7 +247,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>operator BlittableBool</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -275,7 +275,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>operator==</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -304,7 +304,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>operator!=</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.1/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L55">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Utility/BlittableBool.cs/#L55">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
