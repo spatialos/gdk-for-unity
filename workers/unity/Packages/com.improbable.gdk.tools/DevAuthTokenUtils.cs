@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Tools
         {
             var devAuthToken = string.Empty;
             var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
-            var devAuthTokenDir = gdkToolsConfiguration.DevAuthTokenFullDir;
+            var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
             var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
             var devAuthTokenLifetimeHours = $"{gdkToolsConfiguration.DevAuthTokenLifetimeHours}h";
 
@@ -45,9 +45,9 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            if (!Directory.Exists(devAuthTokenDir))
+            if (!Directory.Exists(devAuthTokenFullDir))
             {
-                Directory.CreateDirectory(devAuthTokenDir);
+                Directory.CreateDirectory(devAuthTokenFullDir);
             }
 
             try
@@ -61,7 +61,9 @@ namespace Improbable.Gdk.Tools
             }
 
             Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");
-            AssetDatabase.ImportAsset(devAuthTokenFilePath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(
+                Path.Combine("Assets", gdkToolsConfiguration.DevAuthTokenDir, "DevAuthToken.txt"),
+                ImportAssetOptions.ForceUpdate);
             AssetDatabase.Refresh();
         }
     }
