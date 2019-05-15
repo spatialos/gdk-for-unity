@@ -106,7 +106,7 @@ Where N is in range [1, number of simulated player deployments]
 
 ### Launch deployments
 
-In the deployment configuration panel, select which deployment you wish to launch from the drop-down list. To start your chosen deployment, press **Launch deployment**.
+In the deployment configuration panel, select which deployment you wish to launch from the drop-down list. Start your deployment by selecting **Launch deployment**.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/choose-launch-config.png" style="margin: 0 auto; width: auto; display: block;" />
 
