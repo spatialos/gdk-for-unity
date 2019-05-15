@@ -79,9 +79,10 @@ Select **Upload assembly** to start the upload.
 > **TIP:** Depending on your network speed, the upload may take a little while (1-10 minutes) to complete.
 
 <%(Callout message="
-It’s finished uploading when you see an upload report printed in your Unity Console, for example:
+The assembly has finished uploading when:
 
-**Uploaded assembly my_assembly to project unity_gdk successfully.**
+* You see the following message in your Unity Editor Console window: `Upload of <assembly_name> succeeded.`
+* The notification at the bottom of the Deployment Launcher window has disappeared.
 ")%>
 
 ### 3. Launch a cloud deployment
@@ -96,7 +97,7 @@ You should find that the `my_deployment` configuration is already pre-completed 
 <img src="{{assetRoot}}assets/full-dpl-launcher-window.png" style="margin: 0 auto; width: auto; display: block;" />
 <%(/Expandable)%>
 
-> **Note:** You will see that there is configuration with two deployments listed in the Deployment Launcher window. The first listed is your FPS Starter Project, the second is a deployment for simulated players. You will find out more about simulated players in later steps.
+> **Note:** You will see that there is a configuration with two deployments listed in the Deployment Launcher window. The first listed is your FPS Starter Project, the second is a deployment for [simulated players]({{urlRoot}}/reference/glossary#simulated-player). You will find out more about simulated players in later steps.
 
 This starts the process of launching your deployments. This may take a few minutes.
 
