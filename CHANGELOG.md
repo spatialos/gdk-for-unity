@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.2` - 2019-05-15
+
 ### Breaking Changes
 - Removed the `Improbable.Gdk.Mobile.Android` and `Improbable.Gdk.Mobile.iOS` packages. All functionality is now available inside the `Improbable.Gdk.Mobile` package.
 
