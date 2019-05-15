@@ -339,6 +339,16 @@ SpatialOS uses the schema to [generate code](#code-generation). You can use this
 > * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
 > * [Schema reference](https://docs.improbable.io/reference/latest/shared/schema/reference)
 
+### Simulated Player
+
+Simulated players are client-worker instances running in the cloud, mimicking real players of your game from a connection-flow and server-worker load perspective. To SpatialOS they are indistinguishable from real players, so this is the recommended approach to regular scale testing.
+
+In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [Simulated Player Coordinator](#simulated-player-coordinator) worker-instances.
+
+### Simulated Player Coordinator
+
+A simulated player coordinator is a server-worker responsible for launching simulated players, connecting them into a game deployment, and managing their lifetime.
+
 ### Snapshot
 
 A snapshot is a representation of the state of a [SpatialOS world](#spatialos-world) at some point in time. It stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)' [properties](https://docs.improbable.io/reference/latest/shared/glossary#property).

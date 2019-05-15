@@ -32,8 +32,8 @@ When there are live cloud deployments running, this section is updated with a li
 | --- | --- |
 | Deployment name | The name of the given cloud deployment. For example, `my_deployment`. |
 | Start Time | The local time that the deployment was started. |
-| Region | The geographical region that the deployment is running in. |
-| Connected Workers | A list of worker types and how many are connected to the deployment. |
+| Region | The geographical region code that the deployment is running in. |
+| Connected Workers | A table of connected worker instances, grouped by worker type. |
 | Tags | A list of metadata tags added to the deployment. |
 
 <%(/Expandable)%>
