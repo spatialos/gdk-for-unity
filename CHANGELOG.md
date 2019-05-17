@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Upgraded the project to be compatible with `2019.1.3f1`.
+
 ## `0.2.2` - 2019-05-15
 
 ### Breaking Changes
