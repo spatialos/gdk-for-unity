@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
@@ -94,14 +95,10 @@ namespace Improbable.Gdk.Core
         private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
             string workerType,
             ILogDispatcher logger,
-            Vector3 origin)
+            Vector3 origin,
+            CancellationToken token)
         {
-            var connection = await Task.Run(() => connectionFuture.Get());
-            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
-            {
-                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                    ConnectionErrorReason.CannotEstablishConnection);
-            }
+            var connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(token);
 
             // A check is needed for the case that play mode is exited before the connection can complete.
             if (!Application.isPlaying)
@@ -109,6 +106,12 @@ namespace Improbable.Gdk.Core
                 connection.Dispose();
                 throw new ConnectionFailedException("Editor application stopped",
                     ConnectionErrorReason.EditorApplicationStopped);
+            }
+
+            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
+            {
+                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
+                    ConnectionErrorReason.CannotEstablishConnection);
             }
 
             var worker = new Worker(workerType, connection, logger, origin);
@@ -135,13 +138,15 @@ namespace Improbable.Gdk.Core
         public static async Task<Worker> CreateWorkerAsync(
             ReceptionistConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin,
+            CancellationToken token)
         {
             using (var connectionFuture =
                 Connection.ConnectAsync(parameters.ReceptionistHost, parameters.ReceptionistPort, parameters.WorkerId,
                     connectionParameters))
             {
-                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
             }
         }
 
@@ -163,7 +168,9 @@ namespace Improbable.Gdk.Core
         public static async Task<Worker> CreateWorkerAsync(
             LocatorConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin,
+            CancellationToken token)
         {
             using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
             {
@@ -178,7 +185,7 @@ namespace Improbable.Gdk.Core
 
                 using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
                 {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
                 }
             }
         }
@@ -201,13 +208,15 @@ namespace Improbable.Gdk.Core
         public static async Task<Worker> CreateWorkerAsync(
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin,
+            CancellationToken token)
         {
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
                 {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
                 }
             }
         }

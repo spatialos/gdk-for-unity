@@ -8,6 +8,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Improbable.Gdk.Core
 {
@@ -33,6 +34,8 @@ namespace Improbable.Gdk.Core
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+
         /// <summary>
         ///     An event that triggers when the worker has been fully created.
         /// </summary>
@@ -54,6 +57,8 @@ namespace Improbable.Gdk.Core
         // Important run in this step as otherwise it can interfere with the the domain unloading logic.
         protected void OnApplicationQuit()
         {
+            Debug.Log("cancelling");
+            tokenSource.Cancel();
             Dispose();
         }
 
@@ -93,18 +98,18 @@ namespace Improbable.Gdk.Core
                 {
                     case ConnectionService.Receptionist:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin)
+                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin, tokenSource.Token)
                                 .ConfigureAwait(false);
                         break;
                     case ConnectionService.Locator:
                         connectionDelegate = async () =>
                             await Worker
-                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin)
+                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin, tokenSource.Token)
                                 .ConfigureAwait(false);
                         break;
                     case ConnectionService.AlphaLocator:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
+                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin, tokenSource.Token)
                                 .ConfigureAwait(false);
                         break;
                     default:
@@ -370,6 +375,11 @@ namespace Improbable.Gdk.Core
                 }
                 catch (ConnectionFailedException e)
                 {
+                    if (e.Reason == ConnectionErrorReason.EditorApplicationStopped)
+                    {
+                        throw;
+                    }
+
                     --remainingAttempts;
                     logger.HandleLog(LogType.Error,
                         new LogEvent($"Failed attempt {maxAttempts - remainingAttempts} to create worker")
