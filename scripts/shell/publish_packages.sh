@@ -13,7 +13,7 @@ pushd $PKG_ROOT
     do
         echo $dir
         pushd $dir
-            npm publish --registry="$REGISTRY"
+            npm publish --registry="${REGISTRY}"
         popd
     done
 popd
