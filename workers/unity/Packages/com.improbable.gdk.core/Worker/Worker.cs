@@ -270,7 +270,7 @@ namespace Improbable.Gdk.Core
         {
             if (World != null && World.IsCreated)
             {
-                World?.Dispose();
+                World.Dispose();
             }
 
             World = null;

@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Fixed a bug where the `World` would get disposed multiple times, if you stopped the application inside the Editor while the worker still gets created.
+- Fixed a bug where a worker's `World` could get disposed multiple times if you stopped the application inside the Editor while the worker is being created.
 
 ## `0.2.2` - 2019-05-15
 
