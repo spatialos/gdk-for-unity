@@ -28,7 +28,7 @@ update_package worker_sdk core-dynamic-x86_64-linux "$SDK_PATH/Plugins/Improbabl
 update_package worker_sdk core-bundle-x86_64-macos "$SDK_PATH/Plugins/Improbable/Core/OSX"
 update_package worker_sdk core-dynamic-x86_64-win32 "$SDK_PATH/Plugins/Improbable/Core/Windows/x86_64" "CoreSdkDll.lib"
 
-update_package worker_sdk csharp-c-interop "$SDK_PATH/Plugins/Improbable/Sdk/Common"
+update_package worker_sdk csharp-c-interop "$SDK_PATH/Plugins/Improbable/Sdk/Common" "Improbable.Worker.CInterop.pdb"
 
 update_package schema standard_library "$SDK_PATH/.schema"
 
@@ -44,4 +44,4 @@ update_package worker_sdk core-dynamic-arm64v8a-android "$SDK_MOBILE_PATH/Plugin
 update_package worker_sdk core-dynamic-armv7a-android "$SDK_MOBILE_PATH/Plugins/Improbable/Core/Android/armv7"
 update_package worker_sdk core-dynamic-x86-android "$SDK_MOBILE_PATH/Plugins/Improbable/Core/Android/x86"
 
-update_package worker_sdk csharp-c-interop-static "$SDK_MOBILE_PATH/Plugins/Improbable/Sdk/iOS"
+update_package worker_sdk csharp-c-interop-static "$SDK_MOBILE_PATH/Plugins/Improbable/Sdk/iOS" "Improbable.Worker.CInteropStatic.pdb"
