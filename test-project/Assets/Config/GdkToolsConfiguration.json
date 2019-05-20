@@ -1,4 +1,5 @@
 {
+    "SchemaStdLibDir": "../../build/dependencies/schema/standard_library",
     "SchemaSourceDirs": [
         "Assets/.Schema"
     ],
