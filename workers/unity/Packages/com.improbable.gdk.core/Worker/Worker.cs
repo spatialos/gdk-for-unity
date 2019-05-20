@@ -268,7 +268,6 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
-
             if (World != null && World.IsCreated)
             {
                 World?.Dispose();
