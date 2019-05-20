@@ -118,6 +118,8 @@ namespace Improbable.Gdk.Core
                 if (!Application.isPlaying)
                 {
                     Dispose();
+                    throw new ConnectionFailedException("Editor application stopped",
+                        ConnectionErrorReason.EditorApplicationStopped);
                 }
 
                 HandleWorkerConnectionEstablished();
@@ -405,7 +407,7 @@ namespace Improbable.Gdk.Core
         {
             Worker?.Dispose();
             Worker = null;
-            Destroy(this);
+            UnityObjectDestroyer.Destroy(this);
         }
     }
 }
