@@ -44,7 +44,6 @@ workers/unity/Assets/Generated/Source/**/*.*
 workers/unity/Assets/Plugins/Improbable/
 workers/unity/Assets/Plugins/Improbable.meta
 
-# Schema from Unity Package Manager Packages (Copied via tools/CopySchema)
 _ReSharper.Caches
 
 workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Generated
