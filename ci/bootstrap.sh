@@ -7,7 +7,9 @@ PINNED_SHARED_CI_VERSION=$(cat ./ci/shared-ci.pinned)
 
 # Clone the HEAD of the shared CI repo into ".shared-ci"
 
-rm -rf "${SHARED_CI_DIR}"
+if [[ -d "${SHARED_CI_DIR}" ]]; then
+    rm -rf "${SHARED_CI_DIR}"
+fi
 
 mkdir "${SHARED_CI_DIR}"
 
