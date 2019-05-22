@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Schema from packages are no longer copied into the root `schema` directory.
+    - Renamed the `Schema` directory within packages to `.schema`, to avoid generating unecessary `.meta` files.
+    - Update feature module schema to the correct namespaces and folders within `.schema`.
+
 ### Changed
 
 - Upgraded the project to be compatible with `2019.1.3f1`.
@@ -13,6 +19,7 @@
 ## `0.2.2` - 2019-05-15
 
 ### Breaking Changes
+
 - Removed the `Improbable.Gdk.Mobile.Android` and `Improbable.Gdk.Mobile.iOS` packages. All functionality is now available inside the `Improbable.Gdk.Mobile` package.
 
 ### Added
