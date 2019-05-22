@@ -154,7 +154,9 @@ namespace Improbable.Gdk.Tools
             GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
             {
-                toolsConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, toolsConfig.RuntimeIp);
+                EditorPrefs.SetString(
+                    toolsConfig.RuntimeIpEditorPrefKey,
+                    EditorGUILayout.TextField(RuntimeIpLabel, toolsConfig.RuntimeIp));
             }
 
             GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
