@@ -191,19 +191,13 @@ namespace Improbable.Gdk.Tools
             baseArgs.Add($"--schema-path=\"{toolsConfig.SchemaStdLibDir}\"");
 
             // Add user defined schema directories
-            foreach (var schemaSourceDir in toolsConfig.SchemaSourceDirs)
-            {
-                if (Directory.Exists(schemaSourceDir))
-                {
-                    baseArgs.Add($"--schema-path=\"{schemaSourceDir}\"");
-                }
-            }
+            baseArgs.AddRange(toolsConfig.SchemaSourceDirs
+                .Where(Directory.Exists)
+                .Select(directory => $"--schema-path=\"{directory}\""));
 
             // Add package schema directories
-            foreach (var directory in GetSchemaDirectories())
-            {
-                baseArgs.Add($"--schema-path=\"{directory}\"");
-            }
+            baseArgs.AddRange(GetSchemaDirectories()
+                .Select(directory => $"--schema-path=\"{directory}\""));
 
             // Schema Descriptor
             baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
@@ -238,9 +232,13 @@ namespace Improbable.Gdk.Tools
                 // Wait for the request to complete
             }
 
-            var packagePathsWithSchema = request.Result.Select(package => Path.Combine(package.resolvedPath, SchemaPackageDir)).Where(Directory.Exists);
+            var packagePathsWithSchema = request.Result
+                .Select(package => Path.Combine(package.resolvedPath, SchemaPackageDir))
+                .Where(Directory.Exists);
 
-            var cachedPackagePathsWithSchema = Directory.GetDirectories("Library/PackageCache").Select(path => Path.GetFullPath(Path.Combine(path, SchemaPackageDir))).Where(Directory.Exists);
+            var cachedPackagePathsWithSchema = Directory.GetDirectories("Library/PackageCache")
+                .Select(path => Path.GetFullPath(Path.Combine(path, SchemaPackageDir)))
+                .Where(Directory.Exists);
 
             return packagePathsWithSchema.Union(cachedPackagePathsWithSchema).Distinct();
         }

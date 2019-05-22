@@ -24,6 +24,8 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
+        private string unityProjectRoot = Path.Combine(Application.dataPath, "..");
+
         private GdkToolsConfiguration()
         {
             ResetToDefault();
@@ -42,6 +44,14 @@ namespace Improbable.Gdk.Tools
             {
                 errors.Add($"{GdkToolsConfigurationWindow.SchemaStdLibDirLabel} cannot be empty.");
             }
+            else
+            {
+                var fullSchemaStdLibDirPath = Path.Combine(unityProjectRoot, SchemaStdLibDir);
+                if (!Directory.Exists(fullSchemaStdLibDirPath))
+                {
+                    errors.Add($"{fullSchemaStdLibDirPath} cannot be found.");
+                }
+            }
 
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
@@ -53,7 +63,24 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"{GdkToolsConfigurationWindow.DescriptorOutputDirLabel} cannot be empty.");
             }
 
-            if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
+            var emptySchemaSourceDir = false;
+            foreach (var schemaSourceDir in SchemaSourceDirs)
+            {
+                if (!string.IsNullOrEmpty(schemaSourceDir))
+                {
+                    var fullSchemaSourceDirPath = Path.Combine(unityProjectRoot, schemaSourceDir);
+                    if (!Directory.Exists(fullSchemaSourceDirPath))
+                    {
+                        errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
+                    }
+
+                    continue;
+                }
+
+                emptySchemaSourceDir = true;
+            }
+
+            if (emptySchemaSourceDir)
             {
                 errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
             }

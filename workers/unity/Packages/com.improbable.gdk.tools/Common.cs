@@ -13,10 +13,10 @@ namespace Improbable.Gdk.Tools
     /// </summary>
     public static class Common
     {
-        /// <summary>	
+        /// <summary>
         ///     The version of the CoreSdk the GDK is pinned to.
-        ///     Modify the core-sdk.version file in this source file's directory to change the version.	
-        /// </summary>	
+        ///     Modify the core-sdk.version file in this source file's directory to change the version.
+        /// </summary>
         public static string CoreSdkVersion { get; }
 
         /// <summary>
@@ -44,17 +44,17 @@ namespace Improbable.Gdk.Tools
             return GetPackagePath("com.improbable.gdk.tools");
         }
 
-        static Common()	
-        {	
-            try	
-            {	
-                var versionFile = Path.Combine(GetThisPackagePath(), "core-sdk.version");	
-                CoreSdkVersion = File.ReadAllText(versionFile, Encoding.UTF8).Trim();	
-            }	
-            catch (Exception e)	
-            {	
-                Debug.LogException(e);	
-            }	
+        static Common()
+        {
+            try
+            {
+                var versionFile = Path.Combine(GetThisPackagePath(), "core-sdk.version");
+                CoreSdkVersion = File.ReadAllText(versionFile, Encoding.UTF8).Trim();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
 
         /// <summary>
@@ -80,8 +80,9 @@ namespace Improbable.Gdk.Tools
             // Package indirectly referenced (dependency)
             var cachedPackage = Directory
                 .GetDirectories("Library/PackageCache")
+                .Where(path => !string.IsNullOrEmpty(path))
                 .FirstOrDefault(path => Path.GetFileName(path).StartsWith($"{packageName}@"));
-            if (cachedPackage != null)
+            if (!string.IsNullOrEmpty(cachedPackage))
             {
                 return Path.GetFullPath(cachedPackage);
             }
