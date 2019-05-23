@@ -97,12 +97,14 @@ namespace Improbable.Gdk.Core
             ILogDispatcher logger,
             Vector3 origin)
         {
-            var tokenSource = new CancellationTokenSource();
-            Action cancelTask = delegate { tokenSource?.Cancel(); };
-            Application.quitting += cancelTask;
-            var connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(tokenSource.Token);
-            Application.quitting -= cancelTask;
-            tokenSource.Dispose();
+            Connection connection;
+            using (var tokenSource = new CancellationTokenSource())
+            {
+                Action cancelTask = delegate { tokenSource?.Cancel(); };
+                Application.quitting += cancelTask;
+                connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(tokenSource.Token);
+                Application.quitting -= cancelTask;
+            }
 
             // A check is needed for the case that play mode is exited before the connection can complete.
             if (!Application.isPlaying)
