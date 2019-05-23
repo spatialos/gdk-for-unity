@@ -8,6 +8,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Improbable.Gdk.Core
 {
@@ -118,6 +119,8 @@ namespace Improbable.Gdk.Core
                 if (!Application.isPlaying)
                 {
                     Dispose();
+                    throw new ConnectionFailedException("Editor application stopped",
+                        ConnectionErrorReason.EditorApplicationStopped);
                 }
 
                 HandleWorkerConnectionEstablished();
@@ -368,6 +371,11 @@ namespace Improbable.Gdk.Core
                 }
                 catch (ConnectionFailedException e)
                 {
+                    if (e.Reason == ConnectionErrorReason.EditorApplicationStopped)
+                    {
+                        throw;
+                    }
+
                     --remainingAttempts;
                     logger.HandleLog(LogType.Error,
                         new LogEvent($"Failed attempt {maxAttempts - remainingAttempts} to create worker")
@@ -405,7 +413,7 @@ namespace Improbable.Gdk.Core
         {
             Worker?.Dispose();
             Worker = null;
-            Destroy(this);
+            UnityObjectDestroyer.Destroy(this);
         }
     }
 }

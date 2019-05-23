@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
@@ -96,11 +97,13 @@ namespace Improbable.Gdk.Core
             ILogDispatcher logger,
             Vector3 origin)
         {
-            var connection = await Task.Run(() => connectionFuture.Get());
-            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
+            Connection connection;
+            using (var tokenSource = new CancellationTokenSource())
             {
-                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                    ConnectionErrorReason.CannotEstablishConnection);
+                Action cancelTask = delegate { tokenSource?.Cancel(); };
+                Application.quitting += cancelTask;
+                connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(tokenSource.Token);
+                Application.quitting -= cancelTask;
             }
 
             // A check is needed for the case that play mode is exited before the connection can complete.
@@ -109,6 +112,12 @@ namespace Improbable.Gdk.Core
                 connection.Dispose();
                 throw new ConnectionFailedException("Editor application stopped",
                     ConnectionErrorReason.EditorApplicationStopped);
+            }
+
+            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
+            {
+                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
+                    ConnectionErrorReason.CannotEstablishConnection);
             }
 
             var worker = new Worker(workerType, connection, logger, origin);
@@ -121,7 +130,7 @@ namespace Improbable.Gdk.Core
         ///     Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker" /> object
         ///     asynchronously.
         /// </summary>
-        /// <param name="config">
+        /// <param name="parameters">
         ///     The <see cref="ReceptionistConfig" /> object stores the configuration needed to connect via the
         ///     Receptionist Service.
         /// </param>
@@ -133,12 +142,13 @@ namespace Improbable.Gdk.Core
         ///     <see cref="Worker" /> object upon connecting successfully.
         /// </returns>
         public static async Task<Worker> CreateWorkerAsync(
-            ReceptionistConfig config,
+            ReceptionistConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin)
         {
             using (var connectionFuture =
-                Connection.ConnectAsync(config.ReceptionistHost, config.ReceptionistPort, config.WorkerId,
+                Connection.ConnectAsync(parameters.ReceptionistHost, parameters.ReceptionistPort, parameters.WorkerId,
                     connectionParameters))
             {
                 return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
@@ -149,7 +159,7 @@ namespace Improbable.Gdk.Core
         ///     Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker" /> object
         ///     asynchronously.
         /// </summary>
-        /// <param name="config">
+        /// <param name="parameters">
         ///     The <see cref="LocatorConfig" /> object stores the configuration needed to connect via the
         ///     Receptionist Service.
         /// </param>
@@ -163,7 +173,8 @@ namespace Improbable.Gdk.Core
         public static async Task<Worker> CreateWorkerAsync(
             LocatorConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin)
         {
             using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
             {
@@ -187,7 +198,7 @@ namespace Improbable.Gdk.Core
         ///     Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker" /> object
         ///     asynchronously.
         /// </summary>
-        /// <param name="config">
+        /// <param name="parameters">
         ///     The <see cref="AlphaLocatorConfig" /> object stores the configuration needed to connect via the
         ///     Receptionist Service.
         /// </param>
@@ -201,7 +212,8 @@ namespace Improbable.Gdk.Core
         public static async Task<Worker> CreateWorkerAsync(
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,
-            ILogDispatcher logger, Vector3 origin)
+            ILogDispatcher logger,
+            Vector3 origin)
         {
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
@@ -268,7 +280,11 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
-            World?.Dispose();
+            if (World != null && World.IsCreated)
+            {
+                World.Dispose();
+            }
+
             World = null;
             LogDispatcher?.Dispose();
             LogDispatcher = null;
