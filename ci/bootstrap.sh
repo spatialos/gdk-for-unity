@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e -u -x -o pipefail
 
+cd "$(dirname "$0")/../"
+
 SHARED_CI_DIR="$(pwd)/.shared-ci"
 CLONE_URL="git@github.com:spatialos/gdk-for-unity-shared-ci.git"
 PINNED_SHARED_CI_VERSION=$(cat ./ci/shared-ci.pinned)

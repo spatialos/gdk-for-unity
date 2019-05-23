@@ -7,6 +7,8 @@
 - Schema from packages are no longer copied into the root `schema` directory.
     - Renamed the `Schema` directory within packages to `.schema`, to avoid generating unecessary `.meta` files.
     - Update feature module schema to the correct namespaces and folders within `.schema`.
+    - To update schema that imports from GDK packages, change the import from `import "from_gdk_packages/...";` to `import "improbable/gdk/core/common.schema";`.
+        - For example, `import "from_gdk_packages/com.improbable.gdk.core/common.schema";` now becomes `import "improbable/gdk/core/common.schema";`.
 
 ### Changed
 
