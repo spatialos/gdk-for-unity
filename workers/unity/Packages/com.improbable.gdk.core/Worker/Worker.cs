@@ -95,10 +95,14 @@ namespace Improbable.Gdk.Core
         private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
             string workerType,
             ILogDispatcher logger,
-            Vector3 origin,
-            CancellationToken token)
+            Vector3 origin)
         {
-            var connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(token);
+            var tokenSource = new CancellationTokenSource();
+            Action cancelTask = delegate { tokenSource?.Cancel(); };
+            Application.quitting += cancelTask;
+            var connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(tokenSource.Token);
+            Application.quitting -= cancelTask;
+            tokenSource.Dispose();
 
             // A check is needed for the case that play mode is exited before the connection can complete.
             if (!Application.isPlaying)
@@ -139,14 +143,13 @@ namespace Improbable.Gdk.Core
             ReceptionistConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger,
-            Vector3 origin,
-            CancellationToken token)
+            Vector3 origin)
         {
             using (var connectionFuture =
                 Connection.ConnectAsync(parameters.ReceptionistHost, parameters.ReceptionistPort, parameters.WorkerId,
                     connectionParameters))
             {
-                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
+                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
             }
         }
 
@@ -169,8 +172,7 @@ namespace Improbable.Gdk.Core
             LocatorConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger,
-            Vector3 origin,
-            CancellationToken token)
+            Vector3 origin)
         {
             using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
             {
@@ -185,7 +187,7 @@ namespace Improbable.Gdk.Core
 
                 using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
                 {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }
@@ -209,14 +211,13 @@ namespace Improbable.Gdk.Core
             AlphaLocatorConfig parameters,
             ConnectionParameters connectionParameters,
             ILogDispatcher logger,
-            Vector3 origin,
-            CancellationToken token)
+            Vector3 origin)
         {
             using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(connectionParameters))
                 {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin, token);
+                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
                 }
             }
         }

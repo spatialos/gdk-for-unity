@@ -34,8 +34,6 @@ namespace Improbable.Gdk.Core
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
-        private CancellationTokenSource tokenSource;
-
         /// <summary>
         ///     An event that triggers when the worker has been fully created.
         /// </summary>
@@ -57,7 +55,6 @@ namespace Improbable.Gdk.Core
         // Important run in this step as otherwise it can interfere with the the domain unloading logic.
         protected void OnApplicationQuit()
         {
-            tokenSource?.Cancel();
             Dispose();
         }
 
@@ -81,7 +78,6 @@ namespace Improbable.Gdk.Core
             // Check that other workers have finished trying to connect before this one starts.
             // This prevents races on the workers starting and races on when we start ticking systems.
             await WorkerConnectionSemaphore.WaitAsync();
-            tokenSource = new CancellationTokenSource();
             try
             {
                 // A check is needed for the case that play mode is exited before the semaphore was released.
@@ -98,18 +94,18 @@ namespace Improbable.Gdk.Core
                 {
                     case ConnectionService.Receptionist:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin, tokenSource.Token)
+                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin)
                                 .ConfigureAwait(false);
                         break;
                     case ConnectionService.Locator:
                         connectionDelegate = async () =>
                             await Worker
-                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin, tokenSource.Token)
+                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin)
                                 .ConfigureAwait(false);
                         break;
                     case ConnectionService.AlphaLocator:
                         connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin, tokenSource.Token)
+                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
                                 .ConfigureAwait(false);
                         break;
                     default:
@@ -154,8 +150,6 @@ namespace Improbable.Gdk.Core
             }
             finally
             {
-                tokenSource.Dispose();
-                tokenSource = null;
                 WorkerConnectionSemaphore.Release();
             }
 
