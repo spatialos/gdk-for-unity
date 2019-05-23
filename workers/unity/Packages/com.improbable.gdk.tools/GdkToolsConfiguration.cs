@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
-        private string unityProjectRoot = Path.Combine(Application.dataPath, "..");
+        private static readonly string UnityProjectRoot = Path.Combine(Application.dataPath, "..");
 
         private GdkToolsConfiguration()
         {
@@ -44,14 +44,6 @@ namespace Improbable.Gdk.Tools
             {
                 errors.Add($"{GdkToolsConfigurationWindow.SchemaStdLibDirLabel} cannot be empty.");
             }
-            else
-            {
-                var fullSchemaStdLibDirPath = Path.Combine(unityProjectRoot, SchemaStdLibDir);
-                if (!Directory.Exists(fullSchemaStdLibDirPath))
-                {
-                    errors.Add($"{fullSchemaStdLibDirPath} cannot be found.");
-                }
-            }
 
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
@@ -68,7 +60,7 @@ namespace Improbable.Gdk.Tools
             {
                 if (!string.IsNullOrEmpty(schemaSourceDir))
                 {
-                    var fullSchemaSourceDirPath = Path.Combine(unityProjectRoot, schemaSourceDir);
+                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
                     if (!Directory.Exists(fullSchemaSourceDirPath))
                     {
                         errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
