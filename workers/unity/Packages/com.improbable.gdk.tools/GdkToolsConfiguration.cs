@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using UnityEngine;
 
@@ -55,26 +54,32 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"{GdkToolsConfigurationWindow.DescriptorOutputDirLabel} cannot be empty.");
             }
 
-            var emptySchemaSourceDir = false;
-            foreach (var schemaSourceDir in SchemaSourceDirs)
+            for (var i = 0; i < SchemaSourceDirs.Count; i++)
             {
+                var schemaSourceDir = SchemaSourceDirs[i];
+
                 if (!string.IsNullOrEmpty(schemaSourceDir))
                 {
-                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
+                    string fullSchemaSourceDirPath;
+                    try
+                    {
+                        fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
+                    }
+                    catch (ArgumentException)
+                    {
+                        errors.Add($"Schema path [{i}] contains one or more invalid characters.");
+                        continue;
+                    }
+
                     if (!Directory.Exists(fullSchemaSourceDirPath))
                     {
                         errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
                     }
-
-                    continue;
                 }
-
-                emptySchemaSourceDir = true;
-            }
-
-            if (emptySchemaSourceDir)
-            {
-                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
+                else
+                {
+                    errors.Add($"Schema path [{i}] is empty. You must provide a valid path.");
+                }
             }
 
             if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
