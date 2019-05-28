@@ -58,27 +58,23 @@ namespace Improbable.Gdk.Tools
             {
                 var schemaSourceDir = SchemaSourceDirs[i];
 
-                if (!string.IsNullOrEmpty(schemaSourceDir))
+                if (string.IsNullOrEmpty(schemaSourceDir))
                 {
-                    string fullSchemaSourceDirPath;
-                    try
-                    {
-                        fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
-                    }
-                    catch (ArgumentException)
-                    {
-                        errors.Add($"Schema path [{i}] contains one or more invalid characters.");
-                        continue;
-                    }
+                    errors.Add($"Schema path [{i}] is empty. You must provide a valid path.");
+                    continue;
+                }
 
+                try
+                {
+                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
                     if (!Directory.Exists(fullSchemaSourceDirPath))
                     {
                         errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
                     }
                 }
-                else
+                catch (ArgumentException)
                 {
-                    errors.Add($"Schema path [{i}] is empty. You must provide a valid path.");
+                    errors.Add($"Schema path [{i}] contains one or more invalid characters.");
                 }
             }
 
