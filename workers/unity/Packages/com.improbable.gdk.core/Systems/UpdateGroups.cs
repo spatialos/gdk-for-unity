@@ -4,38 +4,38 @@ using UnityEngine.Experimental.PlayerLoop;
 namespace Improbable.Gdk.Core
 {
     [UpdateBefore(typeof(Update))]
-    public class SpatialOSReceiveGroup
+    public class SpatialOSReceiveGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        public class InternalSpatialOSReceiveGroup
+        public class InternalSpatialOSReceiveGroup : ComponentSystemGroup
         {
         }
     }
 
     [UpdateAfter(typeof(PostLateUpdate))]
-    public class SpatialOSSendGroup
+    public class SpatialOSSendGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        public class CustomSpatialOSSendGroup
+        public class CustomSpatialOSSendGroup : ComponentSystemGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
         [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
-        public class InternalSpatialOSSendGroup
+        public class InternalSpatialOSSendGroup : ComponentSystemGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
         [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
-        public class InternalSpatialOSCleanGroup
+        public class InternalSpatialOSCleanGroup : ComponentSystemGroup
         {
         }
     }
 
     [UpdateAfter(typeof(SpatialOSReceiveGroup))]
     [UpdateBefore(typeof(SpatialOSSendGroup))]
-    public class SpatialOSUpdateGroup
+    public class SpatialOSUpdateGroup : ComponentSystemGroup
     {
     }
 }

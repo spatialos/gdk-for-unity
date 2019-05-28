@@ -19,8 +19,8 @@ namespace Improbable.Gdk.TransformSynchronization
             updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             interpolationGroup = GetComponentGroup(
-                ComponentType.Create<BufferedTransform>(),
-                ComponentType.Create<DeferredUpdateTransform>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.ReadWrite<DeferredUpdateTransform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<InterpolationConfig>(),

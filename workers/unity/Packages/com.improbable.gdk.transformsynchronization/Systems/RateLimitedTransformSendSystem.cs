@@ -21,9 +21,9 @@ namespace Improbable.Gdk.TransformSynchronization
             tickRate = World.GetExistingManager<TickRateEstimationSystem>();
 
             transformGroup = GetComponentGroup(
-                ComponentType.Create<LastTransformSentData>(),
-                ComponentType.Create<TransformInternal.Component>(),
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<LastTransformSentData>(),
+                ComponentType.ReadWrite<TransformInternal.Component>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformToSend>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());

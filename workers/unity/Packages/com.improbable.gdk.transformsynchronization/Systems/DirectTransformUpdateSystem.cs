@@ -21,7 +21,7 @@ namespace Improbable.Gdk.TransformSynchronization
             updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             transformGroup = GetComponentGroup(
-                ComponentType.Create<TransformToSet>(),
+                ComponentType.ReadWrite<TransformToSet>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<DirectReceiveTag>(),

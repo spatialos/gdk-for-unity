@@ -36,7 +36,7 @@ namespace <#= qualifiedNamespace #>
                 All = new[]
                 {
 <# foreach (var eventDetail in eventDetailsList) { #>
-                    ComponentType.Create<EventSender.<#= eventDetail.EventName #>>(),
+                    ComponentType.ReadWrite<EventSender.<#= eventDetail.EventName #>>(),
 <# } #>
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
@@ -51,8 +51,8 @@ namespace <#= qualifiedNamespace #>
                 {
                     All = new[]
                     {
-                        ComponentType.Create<<#= componentNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(),
-                        ComponentType.Create<<#= componentNamespace #>.CommandResponders.<#= commandDetails.CommandName #>>(),
+                        ComponentType.ReadWrite<<#= componentNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(),
+                        ComponentType.ReadWrite<<#= componentNamespace #>.CommandResponders.<#= commandDetails.CommandName #>>(),
                     },
                     Any = Array.Empty<ComponentType>(),
                     None = Array.Empty<ComponentType>(),
@@ -168,16 +168,16 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                 All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
-                    ComponentType.Create<ComponentAdded<<#= componentNamespace #>.Component>>(),
-                    ComponentType.Create<ComponentRemoved<<#= componentNamespace #>.Component>>(),
-                    ComponentType.Create<<#= componentNamespace #>.ReceivedUpdates>(),
-                    ComponentType.Create<AuthorityChanges<<#= componentNamespace #>.Component>>(),
+                    ComponentType.ReadWrite<ComponentAdded<<#= componentNamespace #>.Component>>(),
+                    ComponentType.ReadWrite<ComponentRemoved<<#= componentNamespace #>.Component>>(),
+                    ComponentType.ReadWrite<<#= componentNamespace #>.ReceivedUpdates>(),
+                    ComponentType.ReadWrite<AuthorityChanges<<#= componentNamespace #>.Component>>(),
 <# foreach (var eventDetails in eventDetailsList) { #>
-                    ComponentType.Create<ReceivedEvents.<#= eventDetails.EventName #>>(),
+                    ComponentType.ReadWrite<ReceivedEvents.<#= eventDetails.EventName #>>(),
 <# } #>
 <# foreach (var commandDetails in commandDetailsList) { #>
-                    ComponentType.Create<CommandRequests.<#= commandDetails.CommandName #>>(),
-                    ComponentType.Create<CommandResponses.<#= commandDetails.CommandName #>>(),
+                    ComponentType.ReadWrite<CommandRequests.<#= commandDetails.CommandName #>>(),
+                    ComponentType.ReadWrite<CommandResponses.<#= commandDetails.CommandName #>>(),
 <# } #>
                 },
                 None = Array.Empty<ComponentType>(),

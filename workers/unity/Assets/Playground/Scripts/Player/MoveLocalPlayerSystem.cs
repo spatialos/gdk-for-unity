@@ -39,8 +39,8 @@ namespace Playground
             newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
 
             playerInputGroup = GetComponentGroup(
-                ComponentType.Create<Rigidbody>(),
-                ComponentType.Create<Speed>(),
+                ComponentType.ReadWrite<Rigidbody>(),
+                ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );

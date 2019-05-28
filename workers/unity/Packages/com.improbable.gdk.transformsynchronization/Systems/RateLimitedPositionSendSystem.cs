@@ -18,8 +18,8 @@ namespace Improbable.Gdk.TransformSynchronization
             base.OnCreateManager();
 
             positionGroup = GetComponentGroup(
-                ComponentType.Create<LastPositionSentData>(),
-                ComponentType.Create<Position.Component>(),
+                ComponentType.ReadWrite<LastPositionSentData>(),
+                ComponentType.ReadWrite<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
                 ComponentType.ReadOnly<Position.ComponentAuthority>()

@@ -24,7 +24,7 @@ namespace Improbable.Gdk.TransformSynchronization
             updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
 
             newEntityGroup = GetComponentGroup(
-                ComponentType.Create<KinematicStateWhenAuth>(),
+                ComponentType.ReadWrite<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.TransformSynchronization
             newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             authChangeGroup = GetComponentGroup(
-                ComponentType.Create<KinematicStateWhenAuth>(),
+                ComponentType.ReadWrite<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.Subtractive<NewlyAddedSpatialOSEntity>()

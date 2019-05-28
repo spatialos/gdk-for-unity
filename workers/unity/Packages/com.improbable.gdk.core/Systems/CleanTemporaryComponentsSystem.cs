@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
@@ -43,10 +44,12 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
-                var entityArray = componentGroup.GetEntityArray();
-                for (var i = 0; i < entityArray.Length; i++)
+                using (var entityArray = componentGroup.ToEntityArray(Allocator.Temp))
                 {
-                    PostUpdateCommands.RemoveComponent(entityArray[i], componentType);
+                    foreach (var entity in entityArray)
+                    {
+                        PostUpdateCommands.RemoveComponent(entity, componentType);
+                    }
                 }
             }
 

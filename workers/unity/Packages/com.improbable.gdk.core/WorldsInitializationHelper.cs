@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Core
         public static void DomainUnloadShutdown()
         {
             World.DisposeAllWorlds();
-            ScriptBehaviourUpdateOrder.UpdatePlayerLoop();
+            ScriptBehaviourUpdateOrder.UpdatePlayerLoop(null);
         }
     }
 }

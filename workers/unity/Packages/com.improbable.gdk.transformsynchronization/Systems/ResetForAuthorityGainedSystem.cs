@@ -26,8 +26,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
-                ComponentType.Create<BufferedTransform>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
                 ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
@@ -37,8 +37,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
-                ComponentType.Create<BufferedTransform>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
                 ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
                 ComponentType.Subtractive<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()

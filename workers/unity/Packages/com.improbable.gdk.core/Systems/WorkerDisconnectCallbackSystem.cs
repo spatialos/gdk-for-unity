@@ -31,15 +31,16 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var disconnectData = group.GetSharedComponentDataArray<OnDisconnected>();
-
-            if (disconnectData.Length != 1)
+            if (group.CalculateLength() != 1)
             {
                 worker.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"{typeof(WorkerEntityTag)} should only be present on a single entity"));
             }
 
-            OnDisconnected?.Invoke(disconnectData[0].ReasonForDisconnect);
+            Entities.With(group).ForEach((OnDisconnected data) =>
+            {
+                OnDisconnected?.Invoke(data.ReasonForDisconnect);
+            });
         }
     }
 }

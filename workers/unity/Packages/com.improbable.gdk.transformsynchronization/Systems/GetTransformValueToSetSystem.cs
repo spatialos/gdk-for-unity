@@ -19,8 +19,8 @@ namespace Improbable.Gdk.TransformSynchronization
             worker = World.GetExistingManager<WorkerSystem>();
 
             transformGroup = GetComponentGroup(
-                ComponentType.Create<BufferedTransform>(),
-                ComponentType.Create<TransformToSet>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.ReadWrite<TransformToSet>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);

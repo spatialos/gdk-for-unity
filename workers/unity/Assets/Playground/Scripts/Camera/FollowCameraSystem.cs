@@ -34,8 +34,8 @@ namespace Playground
             base.OnCreateManager();
 
             group = GetComponentGroup(
-                ComponentType.Create<CameraInput>(),
-                ComponentType.Create<CameraTransform>(),
+                ComponentType.ReadWrite<CameraInput>(),
+                ComponentType.ReadWrite<CameraTransform>(),
                 ComponentType.ReadOnly<Rigidbody>()
             );
         }

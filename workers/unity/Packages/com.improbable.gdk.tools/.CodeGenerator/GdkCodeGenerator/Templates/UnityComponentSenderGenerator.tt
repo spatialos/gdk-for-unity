@@ -32,8 +32,8 @@ namespace <#= qualifiedNamespace #>
             {
                 All = new[]
                 {
-                    ComponentType.Create<<#= componentNamespace #>.Component>(),
-                    ComponentType.Create<<#= componentNamespace #>.ComponentAuthority>(),
+                    ComponentType.ReadWrite<<#= componentNamespace #>.Component>(),
+                    ComponentType.ReadWrite<<#= componentNamespace #>.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),

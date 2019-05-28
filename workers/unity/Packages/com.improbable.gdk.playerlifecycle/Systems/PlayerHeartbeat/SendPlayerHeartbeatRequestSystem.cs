@@ -19,7 +19,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             group = GetComponentGroup(
                 ComponentType.ReadOnly<PlayerHeartbeatServer.ComponentAuthority>(),
-                ComponentType.Create<HeartbeatData>(),
+                ComponentType.ReadWrite<HeartbeatData>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
             group.SetFilter(PlayerHeartbeatServer.ComponentAuthority.Authoritative);

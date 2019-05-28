@@ -15,7 +15,7 @@ namespace Improbable.Gdk.TransformSynchronization
             base.OnCreateManager();
 
             transformGroup = GetComponentGroup(
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );

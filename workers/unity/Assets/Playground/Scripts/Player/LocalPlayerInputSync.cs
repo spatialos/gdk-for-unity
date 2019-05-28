@@ -17,8 +17,8 @@ namespace Playground
             base.OnCreateManager();
 
             inputGroup = GetComponentGroup(
-                ComponentType.Create<PlayerInput.Component>(),
-                ComponentType.Create<CameraTransform>(),
+                ComponentType.ReadWrite<PlayerInput.Component>(),
+                ComponentType.ReadWrite<CameraTransform>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
             );
             inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);

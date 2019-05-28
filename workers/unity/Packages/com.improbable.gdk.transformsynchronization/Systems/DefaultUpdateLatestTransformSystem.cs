@@ -18,7 +18,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             rigidbodyGroup = GetComponentGroup(
                 ComponentType.ReadOnly<Rigidbody>(),
-                ComponentType.Create<TransformToSend>(),
+                ComponentType.ReadWrite<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
@@ -27,7 +27,7 @@ namespace Improbable.Gdk.TransformSynchronization
             transformGroup = GetComponentGroup(
                 ComponentType.Subtractive<Rigidbody>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
-                ComponentType.Create<TransformToSend>(),
+                ComponentType.ReadWrite<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );

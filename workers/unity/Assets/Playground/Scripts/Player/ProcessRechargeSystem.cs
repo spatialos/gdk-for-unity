@@ -18,7 +18,7 @@ namespace Playground
             base.OnCreateManager();
 
             group = GetComponentGroup(
-                ComponentType.Create<Launcher.Component>(),
+                ComponentType.ReadWrite<Launcher.Component>(),
                 ComponentType.ReadOnly<Recharging>()
             );
         }

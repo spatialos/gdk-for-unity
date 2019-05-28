@@ -19,10 +19,10 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             All = new[]
             {
-                ComponentType.Create<WorldCommands.CreateEntity.CommandSender>(),
-                ComponentType.Create<WorldCommands.DeleteEntity.CommandSender>(),
-                ComponentType.Create<WorldCommands.ReserveEntityIds.CommandSender>(),
-                ComponentType.Create<WorldCommands.EntityQuery.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.CreateEntity.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.DeleteEntity.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.ReserveEntityIds.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.EntityQuery.CommandSender>(),
             },
             Any = Array.Empty<ComponentType>(),
             None = Array.Empty<ComponentType>(),

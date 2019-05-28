@@ -22,9 +22,9 @@ namespace Playground
             origin = World.GetExistingManager<WorkerSystem>().Origin;
 
             cubeGroup = GetComponentGroup(
-                ComponentType.Create<CubeTargetVelocity.Component>(),
+                ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
                 ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
-                ComponentType.Create<Rigidbody>()
+                ComponentType.ReadWrite<Rigidbody>()
             );
             cubeGroup.SetFilter(CubeTargetVelocity.ComponentAuthority.Authoritative);
         }
