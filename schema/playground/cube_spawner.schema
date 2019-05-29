@@ -1,6 +1,6 @@
 package playground;
 
-import "from_gdk_packages/com.improbable.gdk.core/common.schema";
+import "improbable/gdk/core/common.schema";
 
 type DeleteCubeRequest
 {
@@ -12,6 +12,6 @@ component CubeSpawner
     id = 12011;
     list<EntityId> spawned_cubes = 1;
 
-    command improbable.common.Empty spawn_cube(improbable.common.Empty);
-    command improbable.common.Empty delete_spawned_cube(DeleteCubeRequest);
+    command improbable.gdk.core.Empty spawn_cube(improbable.gdk.core.Empty);
+    command improbable.gdk.core.Empty delete_spawned_cube(DeleteCubeRequest);
 }

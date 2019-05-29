@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Improbable.Gdk.Core;
-using Improbable.PlayerLifecycle;
+using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
 
 namespace Improbable.Gdk.PlayerLifecycle

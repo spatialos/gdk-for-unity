@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Schema from packages are no longer copied into the root `schema` directory.
+    - Renamed the `Schema` directory within packages to `.schema`, to avoid generating unecessary `.meta` files.
+    - Update feature module schema to the correct namespaces and folders within `.schema`.
+    - If you use schema that imports from GDK packages, you will need to change how you import GDK schema.
+        - Schema file Y in package `improbable.gdk.X` is imported using `import "improbable/gdk/X/Y.schema"`.
+        - For example, `import "from_gdk_packages/com.improbable.gdk.core/common.schema";` now becomes `import "improbable/gdk/core/common.schema";`.
+
 ### Changed
 
 - Upgraded the project to be compatible with `2019.1.3f1`.
@@ -13,6 +22,7 @@
 ## `0.2.2` - 2019-05-15
 
 ### Breaking Changes
+
 - Removed the `Improbable.Gdk.Mobile.Android` and `Improbable.Gdk.Mobile.iOS` packages. All functionality is now available inside the `Improbable.Gdk.Mobile` package.
 
 ### Added

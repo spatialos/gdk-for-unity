@@ -69,18 +69,20 @@ namespace Improbable.Gdk.CodeGenerator
 
         private string GenerateBundle()
         {
-            var files = options.SchemaInputDirs.SelectMany(dir =>
-                Directory.GetFiles(dir, "*.schema", SearchOption.AllDirectories));
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path={dir}");
 
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
 
+            var descriptorPath = Path.Join(options.DescriptorDirectory, "schema.descriptor");
+
             var arguments = new[]
             {
-                $@"--bundle_json_out={bundlePath}"
-            }.Union(inputPaths).Union(files).ToList();
+                "--load_all_schema_on_schema_path",
+                $@"--bundle_json_out={bundlePath}",
+                $@"--descriptor_set_out={descriptorPath}"
+            }.Union(inputPaths).ToList();
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 

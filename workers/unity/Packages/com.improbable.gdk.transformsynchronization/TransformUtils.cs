@@ -1,6 +1,4 @@
-﻿using Improbable.Transform;
-using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
+﻿using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -19,23 +17,23 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         // Checking for no change, so exact equality is fine
-        public static bool HasChanged(Improbable.Transform.Quaternion a, Improbable.Transform.Quaternion b)
+        public static bool HasChanged(Quaternion a, Quaternion b)
         {
             return a.W != b.W || a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
 
-        public static Quaternion ToUnityQuaternion(this Improbable.Transform.Quaternion quaternion)
+        public static UnityEngine.Quaternion ToUnityQuaternion(this Quaternion quaternion)
         {
-            return new Quaternion(quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);
+            return new UnityEngine.Quaternion(quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);
         }
 
-        public static Improbable.Transform.Quaternion ToImprobableQuaternion(this Quaternion quaternion)
+        public static Quaternion ToImprobableQuaternion(this UnityEngine.Quaternion quaternion)
         {
-            return new Improbable.Transform.Quaternion(quaternion.w, quaternion.x, quaternion.y,
+            return new Quaternion(quaternion.w, quaternion.x, quaternion.y,
                 quaternion.z);
         }
 
-        public static Vector3 ToUnityVector3(this Location location)
+        public static UnityEngine.Vector3 ToUnityVector3(this Location location)
         {
             return new Vector3(location.X, location.Y, location.Z);
         }
@@ -45,7 +43,7 @@ namespace Improbable.Gdk.TransformSynchronization
             return new Location(vector.x, vector.y, vector.z);
         }
 
-        public static Vector3 ToUnityVector3(this Velocity velocity)
+        public static UnityEngine.Vector3 ToUnityVector3(this Velocity velocity)
         {
             return new Vector3(velocity.X, velocity.Y, velocity.Z);
         }

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -36,12 +34,15 @@ namespace Improbable.Gdk.Tools
 
         public const string ProductName = "SpatialOS for Unity";
 
-        public const string PackagesDir = "Packages";
-
         private const string UsrLocalBinDir = "/usr/local/bin";
         private const string UsrLocalShareDir = "/usr/local/share";
 
         private static readonly string[] MacPaths = { UsrLocalBinDir, UsrLocalShareDir };
+
+        internal static string GetThisPackagePath()
+        {
+            return GetPackagePath("com.improbable.gdk.tools");
+        }
 
         static Common()
         {
@@ -56,13 +57,9 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        internal static string GetThisPackagePath()
-        {
-            return GetPackagePath("com.improbable.gdk.tools");
-        }
-
         /// <summary>
-        ///     Finds the "file:" reference path from the package manifest.
+        ///     Finds the path for a given package referenced directly in the manifest.json,
+        ///     or indirectly referenced as a package dependency.
         /// </summary>
         public static string GetPackagePath(string packageName)
         {
@@ -73,14 +70,26 @@ namespace Improbable.Gdk.Tools
                 // Wait for the request to complete
             }
 
+            // Package directly referenced
             var package = request.Result.FirstOrDefault(info => info.name.Equals(packageName));
-
-            if (package == null)
+            if (package != null)
             {
-                throw new Exception($"Could not find '{packageName}', is it in your project's manifest?\n{request.Error.message}");
+                return package.resolvedPath;
             }
 
-            return package.resolvedPath;
+            // Package indirectly referenced (dependency)
+            var cachedPackage = Directory
+                .GetDirectories("Library/PackageCache")
+                .Where(path => !string.IsNullOrEmpty(path))
+                .FirstOrDefault(path => Path.GetFileName(path).StartsWith($"{packageName}@"));
+            if (!string.IsNullOrEmpty(cachedPackage))
+            {
+                return Path.GetFullPath(cachedPackage);
+            }
+
+            // Unable to find given package
+            throw new ArgumentException(
+                $"Could not find '{packageName}', is it in your project's manifest?\n{request.Error?.message}");
         }
 
         /// <summary>

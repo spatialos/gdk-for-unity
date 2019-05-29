@@ -1,8 +1,6 @@
 using Improbable.Gdk.Core;
-using Improbable.Transform;
 using Unity.Entities;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -14,14 +12,14 @@ namespace Improbable.Gdk.TransformSynchronization
             Vector3 velocity = default(Vector3))
         {
             AddTransformSynchronizationComponents(template, writeAccess,
-                Quaternion.identity,
+                UnityEngine.Quaternion.identity,
                 location,
                 velocity);
         }
 
         public static void AddTransformSynchronizationComponents(EntityTemplate template,
             string writeAccess,
-            Quaternion rotation,
+            UnityEngine.Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {

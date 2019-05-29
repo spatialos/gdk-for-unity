@@ -1,10 +1,10 @@
 using System;
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.PlayerLifecycle;
-using Improbable.Transform;
+using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
-using Quaternion = Improbable.Transform.Quaternion;
+using Quaternion = Improbable.Gdk.TransformSynchronization.Quaternion;
 
 namespace Playground.Editor.SnapshotGenerator
 {

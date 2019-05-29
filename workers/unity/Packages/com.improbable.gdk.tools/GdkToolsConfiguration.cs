@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using UnityEngine;
 
@@ -13,6 +12,7 @@ namespace Improbable.Gdk.Tools
         public string SchemaStdLibDir;
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
+        public string DescriptorOutputDir;
         public string RuntimeIp;
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
@@ -22,6 +22,8 @@ namespace Improbable.Gdk.Tools
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
+
+        private static readonly string UnityProjectRoot = Path.Combine(Application.dataPath, "..");
 
         private GdkToolsConfiguration()
         {
@@ -47,9 +49,33 @@ namespace Improbable.Gdk.Tools
                 errors.Add($"{GdkToolsConfigurationWindow.CodegenOutputDirLabel} cannot be empty.");
             }
 
-            if (SchemaSourceDirs.Any(string.IsNullOrEmpty))
+            if (string.IsNullOrEmpty(DescriptorOutputDir))
             {
-                errors.Add($"Cannot have any empty entry in {GdkToolsConfigurationWindow.SchemaSourceDirsLabel}.");
+                errors.Add($"{GdkToolsConfigurationWindow.DescriptorOutputDirLabel} cannot be empty.");
+            }
+
+            for (var i = 0; i < SchemaSourceDirs.Count; i++)
+            {
+                var schemaSourceDir = SchemaSourceDirs[i];
+
+                if (string.IsNullOrEmpty(schemaSourceDir))
+                {
+                    errors.Add($"Schema path [{i}] is empty. You must provide a valid path.");
+                    continue;
+                }
+
+                try
+                {
+                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
+                    if (!Directory.Exists(fullSchemaSourceDirPath))
+                    {
+                        errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    errors.Add($"Schema path [{i}] contains one or more invalid characters.");
+                }
             }
 
             if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
@@ -74,6 +100,7 @@ namespace Improbable.Gdk.Tools
         {
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
+            DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             RuntimeIp = DefaultValues.RuntimeIp;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
@@ -105,6 +132,7 @@ namespace Improbable.Gdk.Tools
         {
             public const string SchemaStdLibDir = "../../build/dependencies/schema/standard_library";
             public const string CodegenOutputDir = "Assets/Generated/Source";
+            public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
             public const string RuntimeIp = null;
             public const string DevAuthTokenDir = "Resources";

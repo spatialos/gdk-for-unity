@@ -1,9 +1,7 @@
 using Improbable.Gdk.Core;
-using Improbable.Transform;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -185,7 +183,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 Position = Vector3.Lerp(first.Position, second.Position, t),
                 Velocity = Vector3.Lerp(first.Velocity, second.Velocity, t),
-                Orientation = Quaternion.Slerp(first.Orientation, second.Orientation, t),
+                Orientation = UnityEngine.Quaternion.Slerp(first.Orientation, second.Orientation, t),
                 PhysicsTick = first.PhysicsTick + ticksAfterFirst
             };
         }

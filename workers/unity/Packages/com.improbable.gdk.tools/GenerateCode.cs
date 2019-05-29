@@ -12,15 +12,8 @@ namespace Improbable.Gdk.Tools
     internal static class GenerateCode
     {
         private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
-        private const string FromGdkPackagesDir = "from_gdk_packages";
         private const string ImprobableJsonDir = "build/ImprobableJson";
-
-        private static string SchemaWarningMessage =
-            "// ------------------------------------------------------------------------" + Environment.NewLine +
-            "// WARNING: DO NOT EDIT." + Environment.NewLine +
-            "// Any changes made to this file will be overwritten by the Code Generator." + Environment.NewLine +
-            "// ------------------------------------------------------------------------" + Environment.NewLine +
-            Environment.NewLine;
+        private const string SchemaPackageDir = ".schema";
 
         private static readonly string SchemaCompilerRelativePath =
             $"../build/CoreSdk/{Common.CoreSdkVersion}/schema_compiler/schema_compiler";
@@ -80,13 +73,15 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.LockReloadAssemblies();
 
-                // Ensure that all dependencies are in place.
                 if (DownloadCoreSdk.TryDownload() == DownloadResult.Error)
                 {
                     return;
                 }
 
-                CopySchema();
+                if (!Common.CheckDependencies())
+                {
+                    return;
+                }
 
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     CsProjectFile));
@@ -195,10 +190,17 @@ namespace Improbable.Gdk.Tools
             baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
             baseArgs.Add($"--schema-path=\"{toolsConfig.SchemaStdLibDir}\"");
 
-            foreach (var schemaSourceDir in toolsConfig.SchemaSourceDirs)
-            {
-                baseArgs.Add($"--schema-path=\"{schemaSourceDir}\"");
-            }
+            // Add user defined schema directories
+            baseArgs.AddRange(toolsConfig.SchemaSourceDirs
+                .Where(Directory.Exists)
+                .Select(directory => $"--schema-path=\"{directory}\""));
+
+            // Add package schema directories
+            baseArgs.AddRange(GetSchemaDirectories()
+                .Select(directory => $"--schema-path=\"{directory}\""));
+
+            // Schema Descriptor
+            baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
 
             return baseArgs.ToArray();
         }
@@ -221,75 +223,24 @@ namespace Improbable.Gdk.Tools
             Generate();
         }
 
-        private static void CopySchema()
+        private static IEnumerable<string> GetSchemaDirectories()
         {
-            try
+            // Get all packages we depend on
+            var request = Client.List(offlineMode: true);
+            while (!request.IsCompleted)
             {
-                var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-                // Safe as we validate there is at least one entry.
-                var schemaRoot = toolsConfig.SchemaSourceDirs[0];
-                CleanDestination(schemaRoot);
-
-                // Get all packages we depend on
-                var request = Client.List(offlineMode: true);
-                while (!request.IsCompleted)
-                {
-                    // Wait for the request to complete
-                }
-
-                var schemaSources = request.Result.ToDictionary(package => package.name,
-                        package => Path.Combine(package.resolvedPath, "Schema"))
-                    .Where(kv => Directory.Exists(kv.Value));
-
-                foreach (var source in schemaSources)
-                {
-                    CopySchemaFiles(schemaRoot, source.Key, source.Value);
-                }
+                // Wait for the request to complete
             }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                Environment.Exit(1);
-            }
-        }
 
-        private static void CopySchemaFiles(string schemaRoot, string packageName, string packageSchemaPath)
-        {
-            var files = Directory.GetFiles(packageSchemaPath, "*.schema", SearchOption.AllDirectories);
-            foreach (var file in files)
-            {
-                var relativeFilePath =
-                    file.Replace(packageSchemaPath, string.Empty).TrimStart(Path.DirectorySeparatorChar);
-                var fileCopy = Path.Combine(schemaRoot, FromGdkPackagesDir, packageName, relativeFilePath);
+            var packagePathsWithSchema = request.Result
+                .Select(package => Path.Combine(package.resolvedPath, SchemaPackageDir))
+                .Where(Directory.Exists);
 
-                var directoryName = Path.GetDirectoryName(fileCopy);
-                if (!string.IsNullOrEmpty(directoryName))
-                {
-                    if (!Directory.Exists(directoryName))
-                    {
-                        Directory.CreateDirectory(directoryName);
-                    }
-                }
+            var cachedPackagePathsWithSchema = Directory.GetDirectories("Library/PackageCache")
+                .Select(path => Path.GetFullPath(Path.Combine(path, SchemaPackageDir)))
+                .Where(Directory.Exists);
 
-                using (var output = File.OpenWrite(fileCopy))
-                using (var outputText = new StreamWriter(output))
-                {
-                    outputText.Write(SchemaWarningMessage);
-                    using (var inputText = File.OpenRead(file))
-                    {
-                        inputText.CopyTo(outputText.BaseStream);
-                    }
-                }
-            }
-        }
-
-        private static void CleanDestination(string schemaDirectory)
-        {
-            var destination = Path.Combine(schemaDirectory, FromGdkPackagesDir);
-            if (Directory.Exists(destination))
-            {
-                Directory.Delete(destination, true);
-            }
+            return packagePathsWithSchema.Union(cachedPackagePathsWithSchema).Distinct();
         }
     }
 }

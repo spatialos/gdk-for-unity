@@ -1,0 +1,3 @@
+package improbable.gdk.core;
+
+type Empty {}
