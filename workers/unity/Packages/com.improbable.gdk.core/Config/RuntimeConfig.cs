@@ -25,6 +25,7 @@ namespace Improbable.Gdk.Core
         public const string LinkProtocol = "linkProtocol";
         public const string LocatorHost = "locatorHost";
         public const string LoginToken = "loginToken";
+        public const string DevAuthTokenKey = "devAuthTokenSecret";
         public const string PlayerIdentityToken = "playerIdentityToken";
         public const string ProjectName = "projectName";
         public const string ReceptionistHost = "receptionistHost";
@@ -36,7 +37,7 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Stores the configuration needed to connect via the Lcoator.
+    ///     Stores the configuration needed to connect via the Locator.
     /// </summary>
     public struct LocatorConfig
     {

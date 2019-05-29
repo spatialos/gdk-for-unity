@@ -165,9 +165,12 @@ namespace Improbable.Gdk.Tools
                 toolsConfig.DevAuthTokenLifetimeDays =
                     EditorGUILayout.IntSlider(DevAuthTokenLifetimeLabel, toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
 
-                toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
-
-                GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
+                toolsConfig.SaveDevAuthTokenToFile = EditorGUILayout.Toggle("Save token to file", toolsConfig.SaveDevAuthTokenToFile);
+                using (new EditorGUI.DisabledScope(!toolsConfig.SaveDevAuthTokenToFile))
+                {
+                    toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
+                    GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
+                }
             }
 
             EditorGUIUtility.labelWidth = previousWidth;

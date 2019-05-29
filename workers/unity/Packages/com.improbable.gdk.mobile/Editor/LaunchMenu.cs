@@ -90,6 +90,26 @@ namespace Improbable.Gdk.Mobile
                 else
                 {
                     arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.CloudEnvironment} ");
+
+                    var gdkToolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
+                    // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
+                    if (!EditorPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.Generate())
+                    {
+                        Debug.LogError("Failed to generate a Dev Auth Token to launch mobile client.");
+                        return;
+                    }
+
+                    // Returns error if DevAuthToken.txt does not exists AND fails to save new DevAuthToken.txt.
+                    // Ignores if GdkToolsConfiguration does not require DevAuthToken to be saved as text file
+                    if (gdkToolsConfig.SaveDevAuthTokenToFile &&
+                        (!File.Exists(gdkToolsConfig.DevAuthTokenFilepath) || !DevAuthTokenUtils.SaveTokenToFile()))
+                    {
+                        Debug.LogError("Failed to save DevAuthToken.txt asset.");
+                        return;
+                    }
+
+                    arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken}");
                 }
 
                 // Get chosen android package id and launch

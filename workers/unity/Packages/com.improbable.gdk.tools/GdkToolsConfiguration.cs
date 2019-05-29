@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Tools
         public string DescriptorOutputDir;
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
+        public bool SaveDevAuthTokenToFile;
 
         internal string RuntimeIpEditorPrefKey = "RuntimeIp";
         public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
@@ -84,6 +85,11 @@ namespace Improbable.Gdk.Tools
             if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
             {
                 errors.Add($"Runtime IP \"{RuntimeIp}\" is not a valid IP address.");
+            }
+
+            if (!SaveDevAuthTokenToFile)
+            {
+                return errors;
             }
 
             if (string.IsNullOrEmpty(DevAuthTokenDir))

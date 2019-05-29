@@ -9,16 +9,26 @@ namespace Improbable.Gdk.Tools
 {
     public static class DevAuthTokenUtils
     {
-        private static readonly string JsonDataKey = "json_data";
-        private static readonly string TokenSecretKey = "token_secret";
+        public static string DevAuthToken => EditorPrefs.GetString(DevAuthTokenKey);
 
-        [MenuItem("SpatialOS/Generate Dev Authentication Token", false, MenuPriorities.GenerateDevAuthToken)]
-        private static void Generate()
+        private static string DevAuthTokenAssetPath =>
+            Path.Combine("Assets", GdkToolsConfiguration.GetOrCreateInstance().DevAuthTokenDir, "DevAuthToken.txt");
+
+        private static readonly string JsonDataKey = "json_data";
+        private static readonly string ErrorKey = "error";
+        private static readonly string TokenSecretKey = "token_secret";
+        private static readonly string DevAuthTokenKey = "devAuthTokenSecret";
+
+        private const string DevAuthMenuPrefix = "SpatialOS/Dev Authentication Token";
+        private const string DevAuthMenuGenerateToken = "/Generate Token";
+        private const string DevAuthMenuClearToken = "/Clear Token";
+
+        [MenuItem(DevAuthMenuPrefix + DevAuthMenuGenerateToken, false, MenuPriorities.GenerateDevAuthToken)]
+        public static bool Generate()
         {
             var devAuthToken = string.Empty;
             var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
-            var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
-            var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
+
             var devAuthTokenLifetimeHours = $"{gdkToolsConfiguration.DevAuthTokenLifetimeHours}h";
 
             var receivedMessage = string.Empty;
@@ -33,17 +43,47 @@ namespace Improbable.Gdk.Tools
 
             try
             {
-                if (Json.Deserialize(receivedMessage).TryGetValue(JsonDataKey, out var jsonData) &&
+                var deserializedMessage = Json.Deserialize(receivedMessage);
+                if (deserializedMessage.TryGetValue(JsonDataKey, out var jsonData) &&
                     ((Dictionary<string, object>) jsonData).TryGetValue(TokenSecretKey, out var tokenSecret))
                 {
                     devAuthToken = (string) tokenSecret;
+                }
+                else
+                {
+                    throw new Exception(
+                        $@"{(deserializedMessage.TryGetValue(ErrorKey, out var errorMessage)
+                            ? errorMessage
+                            : string.Empty)}");
                 }
             }
             catch (Exception e)
             {
                 Debug.LogError($"Unable to generate Dev Auth Token. {e.Message}");
-                return;
+                return false;
             }
+
+            Debug.Log($"Saving token {devAuthToken} to Editor Preferences.");
+            EditorPrefs.SetString(DevAuthTokenKey, devAuthToken);
+
+            return !gdkToolsConfiguration.SaveDevAuthTokenToFile || SaveTokenToFile();
+        }
+
+        public static bool SaveTokenToFile()
+        {
+            var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
+            var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
+            var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
+
+            if (!EditorPrefs.HasKey(DevAuthTokenKey))
+            {
+                // Given we call SaveTokenToFile after successfully generating a Dev Auth Token,
+                // we should never see the following warning.
+                Debug.LogWarning("Cannot save Development Authentication Token, as it has not been generated.");
+                return false;
+            }
+
+            var devAuthToken = EditorPrefs.GetString(DevAuthTokenKey);
 
             if (!Directory.Exists(devAuthTokenFullDir))
             {
@@ -57,13 +97,21 @@ namespace Improbable.Gdk.Tools
             catch (Exception e)
             {
                 Debug.LogError($"Unable to save Dev Auth Token asset. {e.Message}");
-                return;
+                return false;
             }
 
             Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");
-            AssetDatabase.ImportAsset(
-                Path.Combine("Assets", gdkToolsConfiguration.DevAuthTokenDir, "DevAuthToken.txt"),
-                ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(DevAuthTokenAssetPath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.Refresh();
+
+            return true;
+        }
+
+        [MenuItem(DevAuthMenuPrefix + DevAuthMenuClearToken, false, MenuPriorities.ClearDevAuthToken)]
+        private static void ClearToken()
+        {
+            EditorPrefs.DeleteKey(DevAuthTokenKey);
+            AssetDatabase.DeleteAsset(DevAuthTokenAssetPath);
             AssetDatabase.Refresh();
         }
     }
