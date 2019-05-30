@@ -102,11 +102,9 @@ namespace Improbable.Gdk.Mobile
 
                     // Returns error if DevAuthToken.txt does not exists AND fails to save new DevAuthToken.txt.
                     // Ignores if GdkToolsConfiguration does not require DevAuthToken to be saved as text file
-                    if (gdkToolsConfig.SaveDevAuthTokenToFile &&
-                        (!File.Exists(gdkToolsConfig.DevAuthTokenFilepath) || !DevAuthTokenUtils.SaveTokenToFile()))
+                    if (gdkToolsConfig.SaveDevAuthTokenToFile && !File.Exists(gdkToolsConfig.DevAuthTokenFilepath))
                     {
-                        Debug.LogError("Failed to save DevAuthToken.txt asset.");
-                        return;
+                        Debug.LogWarning("Launching Android client without a DevAuthToken.txt asset.");
                     }
 
                     arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken}");

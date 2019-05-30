@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Tools
             return !gdkToolsConfiguration.SaveDevAuthTokenToFile || SaveTokenToFile();
         }
 
-        public static bool SaveTokenToFile()
+        private static bool SaveTokenToFile()
         {
             var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
             var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
