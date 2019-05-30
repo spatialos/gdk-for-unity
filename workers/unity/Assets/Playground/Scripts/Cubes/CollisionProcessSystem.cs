@@ -34,51 +34,46 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var entities = collisionGroup.GetEntityArray();
-            var launchableData = collisionGroup.GetComponentDataArray<Launchable.Component>();
-            var collisionData = collisionGroup.GetComponentDataArray<CollisionComponent>();
             var launchableForEntity = GetComponentDataFromEntity<Launchable.Component>(true);
 
-            for (var i = 0; i < entities.Length; i++)
-            {
-                // Handle all the different possible outcomes of the collision.
-                // This requires looking at their most recent launchers.
-                var launchable = launchableData[i];
-                var collision = collisionData[i];
-
-                var otherLaunchable = launchableForEntity[collision.OtherEntity];
-                var ourOwner = launchable.MostRecentLauncher;
-                var otherOwner = otherLaunchable.MostRecentLauncher;
-
-                if (ourOwner == otherOwner)
+            Entities.With(collisionGroup).ForEach(
+                (Entity entity, ref Launchable.Component launchable, ref CollisionComponent collision) =>
                 {
-                    if (ourOwner.IsValid())
+                    // Handle all the different possible outcomes of the collision.
+                    // This requires looking at their most recent launchers.
+                    var otherLaunchable = launchableForEntity[collision.OtherEntity];
+                    var ourOwner = launchable.MostRecentLauncher;
+                    var otherOwner = otherLaunchable.MostRecentLauncher;
+
+                    if (ourOwner == otherOwner)
                     {
-                        var request = new Launcher.IncreaseScore.Request(
-                            ourOwner, new ScoreIncreaseRequest(1));
+                        if (ourOwner.IsValid())
+                        {
+                            var request = new Launcher.IncreaseScore.Request(
+                                ourOwner, new ScoreIncreaseRequest(1));
 
-                        commandSystem.SendCommand(request, entities[i]);
+                            commandSystem.SendCommand(request, entity);
+                        }
                     }
-                }
-                else if (otherOwner.IsValid())
-                {
-                    if (!ourOwner.IsValid())
+                    else if (otherOwner.IsValid())
                     {
-                        var request = new Launcher.IncreaseScore.Request(otherOwner,
-                            new ScoreIncreaseRequest(1));
+                        if (!ourOwner.IsValid())
+                        {
+                            var request = new Launcher.IncreaseScore.Request(otherOwner,
+                                new ScoreIncreaseRequest(1));
 
-                        commandSystem.SendCommand(request, entities[i]);
+                            commandSystem.SendCommand(request, entity);
 
-                        launchable.MostRecentLauncher = otherOwner;
+                            launchable.MostRecentLauncher = otherOwner;
+                        }
+                        else
+                        {
+                            launchable.MostRecentLauncher = InvalidEntityId;
+                        }
+
+                        PostUpdateCommands.SetComponent(entity, launchable);
                     }
-                    else
-                    {
-                        launchable.MostRecentLauncher = InvalidEntityId;
-                    }
-
-                    PostUpdateCommands.SetComponent(entities[i], launchable);
-                }
-            }
+                });
         }
     }
 }

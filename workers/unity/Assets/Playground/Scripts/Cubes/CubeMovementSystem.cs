@@ -28,27 +28,19 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var entities = cubeGroup.GetEntityArray();
-            var cubeVelocityData = cubeGroup.GetComponentDataArray<CubeTargetVelocity.Component>();
-
-            for (var i = 0; i < cubeVelocityData.Length; i++)
+            Entities.With(cubeGroup).ForEach((Entity entity, ref CubeTargetVelocity.Component cubeComponent, Rigidbody rigidbody) =>
             {
-                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entities[i]);
-                var cubeComponent = cubeVelocityData[i];
-
                 if (cubeComponent.TargetVelocity.X > 0 && rigidbody.position.x - origin.x > 10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = -2.0f };
-                    cubeVelocityData[i] = cubeComponent;
                 }
                 else if (cubeComponent.TargetVelocity.X < 0 && rigidbody.position.x - origin.x < -10)
                 {
                     cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
-                    cubeVelocityData[i] = cubeComponent;
                 }
 
                 rigidbody.MovePosition(rigidbody.position + cubeComponent.TargetVelocity.ToUnityVector() * Time.fixedDeltaTime);
-            }
+            });
         }
     }
 }

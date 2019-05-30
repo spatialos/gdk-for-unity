@@ -39,18 +39,15 @@ namespace Playground
 
             nextColorChange = Time.time + 2;
 
-            var spatialEntityIdData = group.GetComponentDataArray<SpatialEntityId>();
-
             var colorEventData = new ColorData
             {
                 Color = (Color) colorValues.GetValue(colorIndex),
             };
 
-            for (var i = 0; i < spatialEntityIdData.Length; i++)
+            Entities.With(group).ForEach((ref SpatialEntityId spatialEntityId) =>
             {
-                updateSystem.SendEvent(new CubeColor.ChangeColor.Event(colorEventData),
-                    spatialEntityIdData[i].EntityId);
-            }
+                updateSystem.SendEvent(new CubeColor.ChangeColor.Event(colorEventData), spatialEntityId.EntityId);
+            });
 
             colorIndex = (colorIndex + 1) % colorValues.Length;
         }

@@ -42,20 +42,17 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var cameraInputData = group.GetComponentDataArray<CameraInput>();
-            var cameraTransformData = group.GetComponentDataArray<CameraTransform>();
-            var rigidbodyData = group.GetComponentArray<Rigidbody>();
-
-            for (var i = 0; i < cameraInputData.Length; i++)
+            Entities.With(group).ForEach((Entity entity, ref CameraInput cameraInput, ref CameraTransform cameraTransform) =>
             {
-                var input = UpdateCameraInput(cameraInputData[i]);
-                var transform = UpdateCameraTransform(input, rigidbodyData[i].position);
+                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
+                var input = UpdateCameraInput(cameraInput);
+                var transform = UpdateCameraTransform(input, rigidbody.position);
 
                 UpdateCamera(transform);
 
-                cameraInputData[i] = input;
-                cameraTransformData[i] = transform;
-            }
+                cameraInput = input;
+                cameraTransform = transform;
+            });
         }
 
         private static CameraInput UpdateCameraInput(CameraInput input)

@@ -26,23 +26,17 @@ namespace Playground
         protected override void OnUpdate()
         {
             var dt = Time.deltaTime;
-            var launcherData = group.GetComponentDataArray<Launcher.Component>();
-            var entities = group.GetEntityArray();
 
-            for (var i = 0; i < entities.Length; i++)
+            Entities.With(group).ForEach((Entity entity, ref Launcher.Component launcher) =>
             {
-                var launcher = launcherData[i];
-
                 launcher.RechargeTimeLeft -= dt;
                 if (launcher.RechargeTimeLeft < 0.0f)
                 {
                     launcher.RechargeTimeLeft = 0.0f;
                     launcher.EnergyLeft = 100;
-                    PostUpdateCommands.RemoveComponent<Recharging>(entities[i]);
+                    PostUpdateCommands.RemoveComponent<Recharging>(entity);
                 }
-
-                launcherData[i] = launcher;
-            }
+            });
         }
     }
 }

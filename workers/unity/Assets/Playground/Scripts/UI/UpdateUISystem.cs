@@ -34,37 +34,30 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var launcherSpatialIdData = launcherGroup.GetComponentDataArray<SpatialEntityId>();
-            var launcherData = launcherGroup.GetComponentDataArray<Launcher.Component>();
-
-            for (var i = 0; i < launcherData.Length; i++)
-            {
-                var spatialId = launcherSpatialIdData[i].EntityId;
-                var launcherUpdates =
-                    componentUpdateSystem.GetEntityComponentUpdatesReceived<Launcher.Update>(spatialId);
-                if (launcherUpdates.Count > 0)
+            Entities.With(launcherGroup).ForEach(
+                (ref SpatialEntityId spatialEntityId, ref Launcher.Component launcher) =>
                 {
-                    var launcher = launcherData[i];
+                    var spatialId = spatialEntityId.EntityId;
+                    var launcherUpdates =
+                        componentUpdateSystem.GetEntityComponentUpdatesReceived<Launcher.Update>(spatialId);
+                    if (launcherUpdates.Count > 0)
+                    {
+                        UIComponent.Main.TestText.text = launcher.RechargeTimeLeft > 0.0f
+                            ? "Recharging"
+                            : $"Energy: {launcher.EnergyLeft}";
+                    }
+                });
 
-                    UIComponent.Main.TestText.text = launcher.RechargeTimeLeft > 0.0f
-                        ? "Recharging"
-                        : $"Energy: {launcher.EnergyLeft}";
-                }
-            }
-
-            var scoreSpatialIdData = scoreGroup.GetComponentDataArray<SpatialEntityId>();
-            var scoreData = scoreGroup.GetComponentDataArray<Score.Component>();
-
-            for (var i = 0; i < scoreData.Length; i++)
+            Entities.With(scoreGroup).ForEach((ref SpatialEntityId spatialEntityId, ref Score.Component score) =>
             {
-                var spatialId = scoreSpatialIdData[i].EntityId;
+                var spatialId = spatialEntityId.EntityId;
                 var launcherUpdates =
                     componentUpdateSystem.GetEntityComponentUpdatesReceived<Score.Update>(spatialId);
                 if (launcherUpdates.Count > 0)
                 {
-                    UIComponent.Main.ScoreText.text = $"Score: {scoreData[i].Score}";
+                    UIComponent.Main.ScoreText.text = $"Score: {score.Score}";
                 }
-            }
+            });
         }
     }
 }

@@ -21,10 +21,11 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var disconnectData = group.GetSharedComponentDataArray<OnDisconnected>();
-
-            Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
-                disconnectData[0].ReasonForDisconnect);
+            Entities.With(group).ForEach((OnDisconnected data) =>
+            {
+                Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
+                    data.ReasonForDisconnect);
+            });
         }
     }
 }
