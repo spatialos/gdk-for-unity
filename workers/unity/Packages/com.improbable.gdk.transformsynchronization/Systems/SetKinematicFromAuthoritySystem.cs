@@ -35,7 +35,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>()
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>()
             );
         }
 

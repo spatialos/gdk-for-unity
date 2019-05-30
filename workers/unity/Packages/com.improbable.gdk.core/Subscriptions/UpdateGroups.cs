@@ -5,7 +5,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
     [UpdateAfter(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    public class RequireLifecycleGroup
+    public class RequireLifecycleGroup : ComponentSystemGroup
     {
     }
 }

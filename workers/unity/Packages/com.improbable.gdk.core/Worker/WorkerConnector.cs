@@ -125,7 +125,10 @@ namespace Improbable.Gdk.Core
 
                 HandleWorkerConnectionEstablished();
                 World.Active = World.Active ?? Worker.World;
-                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(World.AllWorlds.ToArray());
+
+                // Update PlayerLoop
+                PlayerLoopUtils.ResolveSystemGroups(Worker.World);
+                PlayerLoopUtils.AddToPlayerLoop(Worker.World);
             }
             catch (Exception e)
             {

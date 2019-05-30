@@ -1,14 +1,11 @@
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.ReactiveComponents;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Playground
 {
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     internal class CubeMovementSystem : ComponentSystem
     {
         private ComponentGroup cubeGroup;

@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
-                using (var entityArray = componentGroup.ToEntityArray(Allocator.Temp))
+                using (var entityArray = componentGroup.ToEntityArray(Allocator.TempJob))
                 {
                     foreach (var entity in entityArray)
                     {

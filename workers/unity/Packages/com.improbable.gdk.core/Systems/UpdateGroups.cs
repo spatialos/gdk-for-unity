@@ -1,9 +1,10 @@
 using Unity.Entities;
+using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.Core
 {
-    [UpdateBefore(typeof(Update))]
+    [UpdateInGroup(typeof(InitializationSystemGroup))]
     public class SpatialOSReceiveGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
@@ -12,7 +13,7 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    [UpdateAfter(typeof(PostLateUpdate))]
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public class SpatialOSSendGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
@@ -33,9 +34,13 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    [UpdateAfter(typeof(SpatialOSReceiveGroup))]
-    [UpdateBefore(typeof(SpatialOSSendGroup))]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class SpatialOSUpdateGroup : ComponentSystemGroup
+    {
+    }
+
+    [PlayerLoopUtils.UpdateInSubSystemAttribute(typeof(FixedUpdate))]
+    public class FixedUpdateSystemGroup : ComponentSystemGroup
     {
     }
 }

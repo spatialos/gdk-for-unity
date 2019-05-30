@@ -28,7 +28,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadWrite<BufferedTransform>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
@@ -39,8 +39,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadWrite<BufferedTransform>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
-                ComponentType.Subtractive<Rigidbody>(),
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
+                ComponentType.Exclude<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);

@@ -1,3 +1,4 @@
+using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
@@ -34,13 +35,14 @@ namespace Playground
             TransformSynchronizationHelper.AddServerSystems(world);
             PlayerLifecycleHelper.AddServerSystems(world);
             GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
-            world.GetOrCreateManager<CubeMovementSystem>();
+
             world.GetOrCreateManager<TriggerColorChangeSystem>();
             world.GetOrCreateManager<ProcessLaunchCommandSystem>();
             world.GetOrCreateManager<ProcessRechargeSystem>();
             world.GetOrCreateManager<MetricSendSystem>();
             world.GetOrCreateManager<ProcessScoresSystem>();
             world.GetOrCreateManager<CollisionProcessSystem>();
+            world.GetOrCreateManager<CubeMovementSystem>();
         }
 
         private static void AddLifecycleSystems(World world)

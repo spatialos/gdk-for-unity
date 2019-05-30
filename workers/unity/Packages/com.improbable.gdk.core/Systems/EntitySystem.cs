@@ -5,6 +5,7 @@ namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateBefore(typeof(SpatialOSReceiveSystem))]
     public class EntitySystem : ComponentSystem
     {

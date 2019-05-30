@@ -25,7 +25,7 @@ namespace Improbable.Gdk.TransformSynchronization
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             transformGroup = GetComponentGroup(
-                ComponentType.Subtractive<Rigidbody>(),
+                ComponentType.Exclude<Rigidbody>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadOnly<TransformToSet>(),
                 ComponentType.ReadOnly<SetTransformToGameObjectTag>(),

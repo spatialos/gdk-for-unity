@@ -34,7 +34,7 @@ namespace Playground
             newPlayerGroup = GetComponentGroup(
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
-                ComponentType.Subtractive<Speed>()
+                ComponentType.Exclude<Speed>()
             );
             newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
 
