@@ -1,12 +1,11 @@
 ﻿using Improbable.Gdk.TransformSynchronization;
-using Unity.Entities;
+using Improbable.Gdk.Core;using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class DefaultApplyLatestTransformSystem : ComponentSystem
     {
         private ComponentGroup rigidbodyGroup;

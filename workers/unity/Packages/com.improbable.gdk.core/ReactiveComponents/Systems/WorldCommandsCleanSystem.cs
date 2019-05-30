@@ -11,7 +11,7 @@ namespace Improbable.Gdk.ReactiveComponents
     /// </summary>
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
+    [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
     public class WorldCommandsCleanSystem : ComponentSystem
     {
         private readonly EntityArchetypeQuery worldCommandResponseQuery = new EntityArchetypeQuery()

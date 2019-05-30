@@ -1,5 +1,4 @@
 using Unity.Entities;
-using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.Core
@@ -26,12 +25,12 @@ namespace Improbable.Gdk.Core
         public class InternalSpatialOSSendGroup : ComponentSystemGroup
         {
         }
+    }
 
-        [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
-        public class InternalSpatialOSCleanGroup : ComponentSystemGroup
-        {
-        }
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [UpdateAfter(typeof(SpatialOSSendGroup))]
+    public class InternalSpatialOSCleanGroup : ComponentSystemGroup
+    {
     }
 
     [UpdateInGroup(typeof(SimulationSystemGroup))]

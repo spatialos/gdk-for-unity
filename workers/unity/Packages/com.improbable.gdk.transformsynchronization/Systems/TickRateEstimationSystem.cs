@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class TickRateEstimationSystem : ComponentSystem
     {
         // Estimate of the the number of physics ticks that happen per second according the the system clock

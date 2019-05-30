@@ -1,11 +1,10 @@
-using Improbable.Gdk.TransformSynchronization;
-using Unity.Entities;
-using UnityEngine.Experimental.PlayerLoop;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.TransformSynchronization;using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class TickSystem : ComponentSystem
     {
         private ComponentGroup transformGroup;

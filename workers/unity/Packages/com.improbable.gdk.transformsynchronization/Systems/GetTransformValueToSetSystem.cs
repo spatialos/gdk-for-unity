@@ -1,11 +1,10 @@
 ﻿using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class GetTransformValueToSetSystem : ComponentSystem
     {
         private WorkerSystem worker;
