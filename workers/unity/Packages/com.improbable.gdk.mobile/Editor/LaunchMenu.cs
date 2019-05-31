@@ -99,13 +99,6 @@ namespace Improbable.Gdk.Mobile
                         return;
                     }
 
-                    // Prints a warning if DevAuthToken.txt does not exist, if GdkToolsConfiguration is configured
-                    // to save a DAT to file.
-                    if (gdkToolsConfig.SaveDevAuthTokenToFile && !File.Exists(gdkToolsConfig.DevAuthTokenFilepath))
-                    {
-                        Debug.LogWarning("Launching Android client without a DevAuthToken.txt asset.");
-                    }
-
                     arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken} ");
                 }
 

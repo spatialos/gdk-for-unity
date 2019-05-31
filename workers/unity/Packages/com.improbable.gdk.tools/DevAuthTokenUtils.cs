@@ -83,8 +83,8 @@ namespace Improbable.Gdk.Tools
             if (!PlayerPrefs.HasKey(PlayerPrefDevAuthTokenKey))
             {
                 // Given we call SaveTokenToFile after successfully generating a Dev Auth Token,
-                // we should never see the following warning.
-                Debug.LogWarning("Cannot save Development Authentication Token, as it has not been generated.");
+                // we should never see the following error.
+                Debug.LogError("Cannot save Development Authentication Token, as it has not been generated.");
                 return false;
             }
 
