@@ -51,10 +51,12 @@ namespace Improbable.Gdk.Tools
                 }
                 else
                 {
-                    throw new Exception(
-                        $@"{(deserializedMessage.TryGetValue(JsonErrorKey, out var errorMessage)
-                            ? errorMessage
-                            : string.Empty)}");
+                    if (deserializedMessage.TryGetValue(JsonErrorKey, out var errorMessage))
+                    {
+                        throw new Exception(errorMessage.ToString());
+                    }
+
+                    throw new Exception(string.Empty);
                 }
             }
             catch (Exception e)
