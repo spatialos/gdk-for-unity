@@ -27,8 +27,6 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
-        private static readonly string UnityProjectRoot = Path.Combine(Application.dataPath, "..");
-
         private GdkToolsConfiguration()
         {
             ResetToDefault();
@@ -70,7 +68,7 @@ namespace Improbable.Gdk.Tools
 
                 try
                 {
-                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
+                    var fullSchemaSourceDirPath = Path.Combine(Application.dataPath, "..", schemaSourceDir);
                     if (!Directory.Exists(fullSchemaSourceDirPath))
                     {
                         errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
