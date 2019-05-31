@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     {
         public static void DomainUnloadShutdown()
         {
-            //World.DisposeAllWorlds();
+            World.DisposeAllWorlds();
             ScriptBehaviourUpdateOrder.UpdatePlayerLoop(null);
         }
     }

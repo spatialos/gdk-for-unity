@@ -280,14 +280,15 @@ namespace Improbable.Gdk.Core
 
         public void Dispose()
         {
+            LogDispatcher?.Dispose();
+            LogDispatcher = null;
+
             if (World != null && World.IsCreated)
             {
                 World.Dispose();
+                World = null;
             }
 
-            World = null;
-            LogDispatcher?.Dispose();
-            LogDispatcher = null;
             Connection?.Dispose();
             Connection = null;
         }
