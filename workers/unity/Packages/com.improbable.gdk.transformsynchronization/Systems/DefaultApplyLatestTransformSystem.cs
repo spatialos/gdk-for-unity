@@ -41,32 +41,22 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateRigidbodyData()
         {
-            var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
-            var transformToSetArray = rigidbodyGroup.GetComponentDataArray<TransformToSet>();
-
-            for (int i = 0; i < rigidbodyArray.Length; ++i)
+            Entities.With(rigidbodyGroup).ForEach((Rigidbody rigidbody, ref TransformToSet transformToSet) =>
             {
-                var transform = transformToSetArray[i];
-                var rigidbody = rigidbodyArray[i];
-                rigidbody.MovePosition(transform.Position);
-                rigidbody.MoveRotation(transform.Orientation);
-                rigidbody.AddForce(transform.Velocity - rigidbody.velocity, ForceMode.VelocityChange);
-            }
+                rigidbody.MovePosition(transformToSet.Position);
+                rigidbody.MoveRotation(transformToSet.Orientation);
+                rigidbody.AddForce(transformToSet.Velocity - rigidbody.velocity, ForceMode.VelocityChange);
+            });
         }
 
         private void UpdateTransformData()
         {
-            var transformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
-            var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
-
-            for (int i = 0; i < transformArray.Length; ++i)
-            {
-                var transformToSet = transformToSetArray[i];
-                var transform = transformArray[i];
-
-                transform.localPosition = transformToSet.Position;
-                transform.localRotation = transformToSet.Orientation;
-            }
+            Entities.With(transformGroup)
+                .ForEach((UnityEngine.Transform transform, ref TransformToSet transformToSet) =>
+                {
+                    transform.localPosition = transformToSet.Position;
+                    transform.localRotation = transformToSet.Orientation;
+                });
         }
     }
 }

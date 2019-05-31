@@ -32,29 +32,25 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
-            var spatialEntityIdArray = transformGroup.GetComponentDataArray<SpatialEntityId>();
-            var transformComponentArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
-
-            for (int i = 0; i < transformToSetArray.Length; ++i)
-            {
-                var entityId = spatialEntityIdArray[i];
-                var updates =
-                    updateSystem.GetEntityComponentUpdatesReceived<TransformInternal.Update>(entityId.EntityId);
-
-                if (updates.Count == 0)
+            Entities.With(transformGroup).ForEach(
+                (ref TransformToSet transformToSet, ref SpatialEntityId spatialEntityId,
+                    ref TransformInternal.Component transformInternal) =>
                 {
-                    continue;
-                }
+                    var updates =
+                        updateSystem.GetEntityComponentUpdatesReceived<TransformInternal.Update>(spatialEntityId.EntityId);
 
-                var t = transformComponentArray[i];
-                transformToSetArray[i] = new TransformToSet
-                {
-                    Position = t.Location.ToUnityVector3() + worker.Origin,
-                    Velocity = t.Velocity.ToUnityVector3(),
-                    Orientation = t.Rotation.ToUnityQuaternion()
-                };
-            }
+                    if (updates.Count == 0)
+                    {
+                        return;
+                    }
+
+                    transformToSet = new TransformToSet
+                    {
+                        Position = transformInternal.Location.ToUnityVector3() + worker.Origin,
+                        Velocity = transformInternal.Velocity.ToUnityVector3(),
+                        Orientation = transformInternal.Rotation.ToUnityQuaternion()
+                    };
+                });
         }
     }
 }

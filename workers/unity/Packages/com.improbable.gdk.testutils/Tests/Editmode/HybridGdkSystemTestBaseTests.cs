@@ -15,23 +15,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
-#pragma warning disable 649       
-            private struct PreparationData
-            {
-                public readonly int Length;
-
-                /*
-                The ComponentArray<> here makes this a hybrid system.
-                For this test, the GameObjectRigidBody[i] will always be null,
-                but we are only testing that this struct can be injected even if
-                it has ComponentArray<> fields, and not its contents.
-                */
-                public ComponentArray<Rigidbody> GameObjectRigidBody;
-                public ComponentDataArray<TestPreparation> PreparationStruct;
-            }
-
-            [Inject] private PreparationData testDataToPrepare;
-#pragma warning restore 649          
+            private ComponentGroup testGroup;
 
             public void TestInjection(World world)
             {
@@ -45,16 +29,22 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
                 OnAfterDestroyManagerInternal();
             }
 
+            protected override void OnCreateManager()
+            {
+                base.OnCreateManager();
+
+                testGroup = GetComponentGroup(
+                    ComponentType.ReadWrite<Rigidbody>(),
+                    ComponentType.ReadWrite<TestPreparation>()
+                );
+            }
+
             protected override void OnUpdate()
             {
-                for (var i = 0; i < testDataToPrepare.Length; ++i)
+                Entities.With(testGroup).ForEach((ref TestPreparation testPreparation) =>
                 {
-                    var preparation = testDataToPrepare.PreparationStruct[i];
-
-                    preparation.Value = 1;
-
-                    testDataToPrepare.PreparationStruct[i] = preparation;
-                }
+                    testPreparation.Value = 1;
+                });
             }
         }
 

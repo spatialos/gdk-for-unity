@@ -23,14 +23,10 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
-
-            for (int i = 0; i < ticksSinceLastUpdateArray.Length; ++i)
+            Entities.With(transformGroup).ForEach((ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate) =>
             {
-                var t = ticksSinceLastUpdateArray[i];
-                t.NumberOfTicks += 1;
-                ticksSinceLastUpdateArray[i] = t;
-            }
+                ticksSinceLastTransformUpdate.NumberOfTicks += 1;
+            });
         }
     }
 }

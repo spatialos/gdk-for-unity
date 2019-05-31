@@ -42,38 +42,28 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateRigidbodyData()
         {
-            var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
-            var transformToSendArray = rigidbodyGroup.GetComponentDataArray<TransformToSend>();
-
-            for (int i = 0; i < rigidbodyArray.Length; ++i)
+            Entities.With(rigidbodyGroup).ForEach((ref TransformToSend transformToSend, Rigidbody rigidbody) =>
             {
-                var rigidbody = rigidbodyArray[i];
-                var transformToSend = new TransformToSend
+                transformToSend = new TransformToSend
                 {
                     Position = rigidbody.position,
                     Velocity = rigidbody.velocity,
                     Orientation = rigidbody.rotation
                 };
-                transformToSendArray[i] = transformToSend;
-            }
+            });
         }
 
         private void UpdateTransformData()
         {
-            var transformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
-            var transformToSendArray = transformGroup.GetComponentDataArray<TransformToSend>();
-
-            for (int i = 0; i < transformArray.Length; ++i)
+            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, UnityEngine.Transform transform) =>
             {
-                var transform = transformArray[i];
-                var transformToSend = new TransformToSend
+                transformToSend = new TransformToSend
                 {
                     Position = transform.position,
                     Velocity = Vector3.zero,
                     Orientation = transform.rotation
                 };
-                transformToSendArray[i] = transformToSend;
-            }
+            });
         }
     }
 }

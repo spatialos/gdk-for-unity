@@ -33,54 +33,43 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
-            var rateLimitedConfigArray = transformGroup.GetSharedComponentDataArray<RateLimitedSendConfig>();
-            var transformArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
-            var transformToSendArray = transformGroup.GetComponentDataArray<TransformToSend>();
-            var lastTransformSentArray = transformGroup.GetComponentDataArray<LastTransformSentData>();
-            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
-
-            for (int i = 0; i < transformArray.Length; ++i)
-            {
-                var lastTransformSent = lastTransformSentArray[i];
-                lastTransformSent.TimeSinceLastUpdate += Time.deltaTime;
-                lastTransformSentArray[i] = lastTransformSent;
-
-                if (lastTransformSent.TimeSinceLastUpdate <
-                    1.0f / rateLimitedConfigArray[i].MaxTransformUpdateRateHz)
+            Entities.With(transformGroup).ForEach(
+                (RateLimitedSendConfig config, ref TransformInternal.Component transform,
+                    ref TransformToSend transformToSend, ref LastTransformSentData lastTransformSent,
+                    ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate) =>
                 {
-                    continue;
-                }
+                    lastTransformSent.TimeSinceLastUpdate += Time.deltaTime;
 
-                var transform = transformArray[i];
+                    if (lastTransformSent.TimeSinceLastUpdate < 1.0f / config.MaxTransformUpdateRateHz)
+                    {
+                        return;
+                    }
 
-                var transformToSend = transformToSendArray[i];
+                    var currentTransform = new TransformInternal.Component
+                    {
+                        Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
+                        Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
+                        Velocity = transformToSend.Velocity.ToImprobableVelocity(),
+                        PhysicsTick = transform.PhysicsTick + ticksSinceLastTransformUpdate.NumberOfTicks,
+                        TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
+                    };
 
-                var currentTransform = new TransformInternal.Component
-                {
-                    Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
-                    Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
-                    Velocity = transformToSend.Velocity.ToImprobableVelocity(),
-                    PhysicsTick = transform.PhysicsTick + ticksSinceLastUpdateArray[i].NumberOfTicks,
-                    TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
-                };
+                    if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||
+                        TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation)))
+                    {
+                        return;
+                    }
 
-                if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||
-                    TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation)))
-                {
-                    continue;
-                }
+                    lastTransformSent.TimeSinceLastUpdate = 0.0f;
+                    lastTransformSent.Transform = transform;
 
-                lastTransformSent.TimeSinceLastUpdate = 0.0f;
-                lastTransformSent.Transform = transform;
-                lastTransformSentArray[i] = lastTransformSent;
+                    transform = currentTransform;
 
-                transformArray[i] = currentTransform;
-
-                ticksSinceLastUpdateArray[i] = new TicksSinceLastTransformUpdate
-                {
-                    NumberOfTicks = 0
-                };
-            }
+                    ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate
+                    {
+                        NumberOfTicks = 0
+                    };
+                });
         }
     }
 }

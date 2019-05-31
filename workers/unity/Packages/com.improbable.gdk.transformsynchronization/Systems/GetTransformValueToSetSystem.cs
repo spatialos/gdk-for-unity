@@ -27,30 +27,27 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            var transformToSetArray = transformGroup.GetComponentDataArray<TransformToSet>();
-            var transformBufferArray = transformGroup.GetBufferArray<BufferedTransform>();
-
-            for (int i = 0; i < transformToSetArray.Length; ++i)
-            {
-                var buffer = transformBufferArray[i];
-                if (buffer.Length == 0)
+            Entities.With(transformGroup).ForEach(
+                (DynamicBuffer<BufferedTransform> buffer, ref TransformToSet transformToSet) =>
                 {
-                    continue;
-                }
+                    if (buffer.Length == 0)
+                    {
+                        return;
+                    }
 
-                var bufferHead = buffer[0];
+                    var bufferHead = buffer[0];
 
-                var currentTransform = new TransformToSet
-                {
-                    Position = bufferHead.Position + worker.Origin,
-                    Orientation = bufferHead.Orientation,
-                    Velocity = bufferHead.Velocity,
-                    ApproximateRemoteTick = bufferHead.PhysicsTick
-                };
+                    var currentTransform = new TransformToSet
+                    {
+                        Position = bufferHead.Position + worker.Origin,
+                        Orientation = bufferHead.Orientation,
+                        Velocity = bufferHead.Velocity,
+                        ApproximateRemoteTick = bufferHead.PhysicsTick
+                    };
 
-                transformToSetArray[i] = currentTransform;
-                buffer.RemoveAt(0);
-            }
+                    transformToSet = currentTransform;
+                    buffer.RemoveAt(0);
+                });
         }
     }
 }

@@ -42,9 +42,8 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            Entities.With(group).ForEach((Entity entity, ref CameraInput cameraInput, ref CameraTransform cameraTransform) =>
+            Entities.With(group).ForEach((Entity entity, Rigidbody rigidbody, ref CameraInput cameraInput, ref CameraTransform cameraTransform) =>
             {
-                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
                 var input = UpdateCameraInput(cameraInput);
                 var transform = UpdateCameraTransform(input, rigidbody.position);
 

@@ -35,13 +35,12 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
 
             timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
-            var spatialIDData = group.GetComponentDataArray<SpatialEntityId>();
 
-            for (var i = 0; i < spatialIDData.Length; i++)
+            Entities.With(group).ForEach((ref SpatialEntityId spatialEntityId) =>
             {
                 commandSystem.SendCommand(
-                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIDData[i].EntityId, new Empty()));
-            }
+                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialEntityId.EntityId, new Empty()));
+            });
         }
     }
 }
