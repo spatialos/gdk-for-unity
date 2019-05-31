@@ -16,7 +16,6 @@ namespace Improbable.Gdk.Mobile
         private const string MenuLaunchAndroidLocal = "/Android for local";
         private const string MenuLaunchAndroidCloud = "/Android for cloud";
 
-
         [MenuItem(MenuLaunchMobile + MenuLaunchAndroidLocal, false, 73)]
         private static void LaunchAndroidLocal()
         {
@@ -94,14 +93,14 @@ namespace Improbable.Gdk.Mobile
                     var gdkToolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
                     // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
-                    if (!EditorPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.Generate())
+                    if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.Generate())
                     {
                         Debug.LogError("Failed to generate a Dev Auth Token to launch mobile client.");
                         return;
                     }
 
-                    // Returns error if DevAuthToken.txt does not exists AND fails to save new DevAuthToken.txt.
-                    // Ignores if GdkToolsConfiguration does not require DevAuthToken to be saved as text file
+                    // Prints a warning if DevAuthToken.txt does not exist, if GdkToolsConfiguration is configured
+                    // to save a DAT to file.
                     if (gdkToolsConfig.SaveDevAuthTokenToFile && !File.Exists(gdkToolsConfig.DevAuthTokenFilepath))
                     {
                         Debug.LogWarning("Launching Android client without a DevAuthToken.txt asset.");

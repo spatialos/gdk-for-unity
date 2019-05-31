@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Tools
 {
     public static class DevAuthTokenUtils
     {
-        public static string DevAuthToken => EditorPrefs.GetString(DevAuthTokenKey);
+        public static string DevAuthToken => PlayerPrefs.GetString(DevAuthTokenKey);
 
         private static string DevAuthTokenAssetPath =>
             Path.Combine("Assets", GdkToolsConfiguration.GetOrCreateInstance().DevAuthTokenDir, "DevAuthToken.txt");
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Tools
             }
 
             Debug.Log($"Saving token {devAuthToken} to Editor Preferences.");
-            EditorPrefs.SetString(DevAuthTokenKey, devAuthToken);
+            PlayerPrefs.SetString(DevAuthTokenKey, devAuthToken);
 
             return !gdkToolsConfiguration.SaveDevAuthTokenToFile || SaveTokenToFile();
         }
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Tools
             var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
             var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
 
-            if (!EditorPrefs.HasKey(DevAuthTokenKey))
+            if (!PlayerPrefs.HasKey(DevAuthTokenKey))
             {
                 // Given we call SaveTokenToFile after successfully generating a Dev Auth Token,
                 // we should never see the following warning.
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Tools
                 return false;
             }
 
-            var devAuthToken = EditorPrefs.GetString(DevAuthTokenKey);
+            var devAuthToken = PlayerPrefs.GetString(DevAuthTokenKey);
 
             if (!Directory.Exists(devAuthTokenFullDir))
             {
@@ -110,7 +110,7 @@ namespace Improbable.Gdk.Tools
         [MenuItem(DevAuthMenuPrefix + DevAuthMenuClearToken, false, MenuPriorities.ClearDevAuthToken)]
         private static void ClearToken()
         {
-            EditorPrefs.DeleteKey(DevAuthTokenKey);
+            PlayerPrefs.DeleteKey(DevAuthTokenKey);
             AssetDatabase.DeleteAsset(DevAuthTokenAssetPath);
             AssetDatabase.Refresh();
         }
