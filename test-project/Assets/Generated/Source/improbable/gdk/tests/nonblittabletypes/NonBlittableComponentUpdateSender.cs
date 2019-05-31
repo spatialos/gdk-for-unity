@@ -20,12 +20,12 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             public uint ComponentId => 1002;
 
-            public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
-                    ComponentType.Create<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
-                    ComponentType.Create<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ComponentAuthority>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),

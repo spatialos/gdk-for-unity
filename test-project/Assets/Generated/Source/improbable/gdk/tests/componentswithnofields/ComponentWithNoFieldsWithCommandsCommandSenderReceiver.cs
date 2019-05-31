@@ -28,9 +28,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             this.world = world;
 
             // Check that these are there
-            workerSystem = world.GetExistingManager<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
 
-            var constraintSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintSystem.RegisterEntityAddedCallback(entityId =>
             {
@@ -144,10 +144,10 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
             this.world = world;
 
             // Check that these are there
-            workerSystem = world.GetExistingManager<WorkerSystem>();
-            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
+            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
-            var constraintSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintSystem.RegisterAuthorityCallback(ComponentWithNoFieldsWithCommands.ComponentId, authorityChange =>
             {
@@ -263,9 +263,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         internal ComponentWithNoFieldsWithCommandsCommandSender(Entity entity, World world)
         {
             this.entity = entity;
-            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
             // todo check that this exists
-            commandSender = world.GetExistingManager<CommandSystem>();
+            commandSender = world.GetExistingSystem<CommandSystem>();
 
             IsValid = true;
         }
@@ -338,8 +338,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         internal ComponentWithNoFieldsWithCommandsCommandReceiver(World world, Entity entity, EntityId entityId)
         {
             this.entityId = entityId;
-            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
-            commandSystem = world.GetExistingManager<CommandSystem>();
+            callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
+            commandSystem = world.GetExistingSystem<CommandSystem>();
             // should check the system actually exists
 
             IsValid = true;

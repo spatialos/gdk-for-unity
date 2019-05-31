@@ -19,8 +19,8 @@ namespace Improbable.Gdk.Tests
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
-                ComponentType.Create<Component>(),
-                ComponentType.Create<ComponentAuthority>(),
+                ComponentType.ReadWrite<Component>(),
+                ComponentType.ReadWrite<ComponentAuthority>(),
             };
 
             public uint GetComponentId()
@@ -65,9 +65,9 @@ namespace Improbable.Gdk.Tests
             public void Init(World world)
             {
                 this.world = world;
-                entityManager = world.GetOrCreateManager<EntityManager>();
+                entityManager = world.EntityManager;
 
-                workerSystem = world.GetExistingManager<WorkerSystem>();
+                workerSystem = world.GetExistingSystem<WorkerSystem>();
 
                 if (workerSystem == null)
                 {

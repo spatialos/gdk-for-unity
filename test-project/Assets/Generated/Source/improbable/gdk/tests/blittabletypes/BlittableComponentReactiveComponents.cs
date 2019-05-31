@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         entityManager.RemoveComponent<ComponentRemoved<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentAdded<Component>>());
                 }
             }
 
@@ -98,7 +98,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         entityManager.RemoveComponent<ComponentAdded<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentRemoved<Component>>());
                 }
             }
 
@@ -294,11 +294,11 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             {
                 var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
 
-                foreach (var entityId in world.GetExistingManager<EntitySystem>().GetEntitiesAdded())
+                foreach (var entityId in world.GetExistingSystem<EntitySystem>().GetEntitiesAdded())
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,
-                        ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
+                        ComponentType.ReadWrite<NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                 }
 
                 for (int i = 0; i < authorityChanges.Count; ++i)
@@ -329,7 +329,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<Authoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
 
                         break;
                     case Authority.AuthorityLossImminent:
@@ -339,7 +339,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<AuthorityLossImminent<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity))
@@ -354,7 +354,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         }
 
                         entityManager.RemoveComponent<Authoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>());
                         break;
                 }
             }

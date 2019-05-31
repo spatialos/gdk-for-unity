@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void RemoveComponents(EntityId entityId, EntityManager entityManager, World world)
             {
-                var workerSystem = world.GetExistingManager<WorkerSystem>();
+                var workerSystem = world.GetExistingSystem<WorkerSystem>();
 
                 workerSystem.TryGetEntity(entityId, out var entity);
 
@@ -246,7 +246,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void RemoveComponents(EntityId entityId, EntityManager entityManager, World world)
             {
-                var workerSystem = world.GetExistingManager<WorkerSystem>();
+                var workerSystem = world.GetExistingSystem<WorkerSystem>();
 
                 workerSystem.TryGetEntity(entityId, out var entity);
 

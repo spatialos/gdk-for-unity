@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197717;
 
-            public EntityArchetypeQuery EventQuery => new EntityArchetypeQuery
+            public EntityQueryDesc EventQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Tests
                 None = Array.Empty<ComponentType>(),
             };
 
-            public EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
+            public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
             {
             };
 
@@ -47,15 +47,15 @@ namespace Improbable.Gdk.Tests
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
                 All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
-                    ComponentType.Create<ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
-                    ComponentType.Create<ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
-                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveRepeated.ReceivedUpdates>(),
-                    ComponentType.Create<AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
+                    ComponentType.ReadWrite<ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
+                    ComponentType.ReadWrite<ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ExhaustiveRepeated.ReceivedUpdates>(),
+                    ComponentType.ReadWrite<AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveRepeated.Component>>(),
                 },
                 None = Array.Empty<ComponentType>(),
             };
@@ -125,7 +125,7 @@ namespace Improbable.Gdk.Tests
 
         internal class AcknowledgeAuthorityLossHandler : AbstractAcknowledgeAuthorityLossHandler
        {
-            public override EntityArchetypeQuery Query => new EntityArchetypeQuery
+            public override EntityQueryDesc Query => new EntityQueryDesc
             {
                 All = new ComponentType[]
                 {

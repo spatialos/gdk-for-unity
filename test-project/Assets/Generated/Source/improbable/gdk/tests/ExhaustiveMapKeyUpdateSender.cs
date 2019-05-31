@@ -20,12 +20,12 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197719;
 
-            public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
-                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>(),
-                    ComponentType.Create<global::Improbable.Gdk.Tests.ExhaustiveMapKey.ComponentAuthority>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ExhaustiveMapKey.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
                 Any = Array.Empty<ComponentType>(),

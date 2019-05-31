@@ -17,14 +17,14 @@ namespace Improbable.Gdk.ReactiveComponents
 
         internal static void AddCommonSystems(World world)
         {
-            world.GetOrCreateManager<ReactiveComponentSendSystem>();
-            world.GetOrCreateManager<ReactiveCommandComponentSystem>();
-            world.GetOrCreateManager<ReactiveComponentSystem>();
-            world.GetOrCreateManager<CommandSenderComponentSystem>();
-            world.GetOrCreateManager<AcknowledgeAuthorityLossSystem>();
-            world.GetOrCreateManager<CleanReactiveComponentsSystem>();
-            world.GetOrCreateManager<WorldCommandsCleanSystem>();
-            world.GetOrCreateManager<WorldCommandsSendSystem>();
+            world.GetOrCreateSystem<ReactiveComponentSendSystem>();
+            world.GetOrCreateSystem<ReactiveCommandComponentSystem>();
+            world.GetOrCreateSystem<ReactiveComponentSystem>();
+            world.GetOrCreateSystem<CommandSenderComponentSystem>();
+            world.GetOrCreateSystem<AcknowledgeAuthorityLossSystem>();
+            world.GetOrCreateSystem<CleanReactiveComponentsSystem>();
+            world.GetOrCreateSystem<WorldCommandsCleanSystem>();
+            world.GetOrCreateSystem<WorldCommandsSendSystem>();
         }
     }
 }
