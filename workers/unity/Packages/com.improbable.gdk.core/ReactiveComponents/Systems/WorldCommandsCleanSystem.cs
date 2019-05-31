@@ -14,7 +14,7 @@ namespace Improbable.Gdk.ReactiveComponents
     [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
     public class WorldCommandsCleanSystem : ComponentSystem
     {
-        private readonly EntityArchetypeQuery worldCommandResponseQuery = new EntityArchetypeQuery()
+        private readonly EntityQueryDesc worldCommandResponseQuery = new EntityQueryDesc()
         {
             All = Array.Empty<ComponentType>(),
             Any = new[]
@@ -27,12 +27,12 @@ namespace Improbable.Gdk.ReactiveComponents
             None = Array.Empty<ComponentType>(),
         };
 
-        private ComponentGroup worldCommandResponseGroup;
+        private EntityQuery worldCommandResponseGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            worldCommandResponseGroup = GetComponentGroup(worldCommandResponseQuery);
+            worldCommandResponseGroup = GetEntityQuery(worldCommandResponseQuery);
         }
 
         protected override void OnUpdate()

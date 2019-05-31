@@ -24,8 +24,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             base.OnCreateManager();
 
-            workerSystem = World.GetExistingManager<WorkerSystem>();
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
             logger = workerSystem.LogDispatcher;
         }
 

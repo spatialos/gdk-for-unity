@@ -11,13 +11,13 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class RateLimitedPositionSendSystem : ComponentSystem
     {
-        private ComponentGroup positionGroup;
+        private EntityQuery positionGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            positionGroup = GetComponentGroup(
+            positionGroup = GetEntityQuery(
                 ComponentType.ReadWrite<LastPositionSentData>(),
                 ComponentType.ReadWrite<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),

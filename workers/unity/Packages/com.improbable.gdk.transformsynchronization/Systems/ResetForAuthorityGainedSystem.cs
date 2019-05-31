@@ -12,17 +12,17 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
-        private ComponentGroup rigidbodyGroup;
-        private ComponentGroup transformGroup;
+        private EntityQuery rigidbodyGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            rigidbodyGroup = GetComponentGroup(
+            rigidbodyGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.TransformSynchronization
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),

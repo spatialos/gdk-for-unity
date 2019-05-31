@@ -74,7 +74,7 @@ namespace Improbable.Gdk.Core
             AddCoreSystems();
 
             // This isn't a core system, this is for an easy disconnect event
-            disconnectCallbackSystem = World.GetOrCreateManager<WorkerDisconnectCallbackSystem>();
+            disconnectCallbackSystem = World.GetOrCreateSystem<WorkerDisconnectCallbackSystem>();
         }
 
         /// <summary>
@@ -254,23 +254,23 @@ namespace Improbable.Gdk.Core
         private void AddCoreSystems()
         {
             var connectionHandler = new SpatialOSConnectionHandler(Connection);
-            World.CreateManager<WorkerSystem>(connectionHandler, Connection, LogDispatcher, WorkerType, Origin);
-            World.GetOrCreateManager<CommandSystem>();
-            World.GetOrCreateManager<ComponentUpdateSystem>();
-            World.GetOrCreateManager<EntitySystem>();
-            World.GetOrCreateManager<ComponentSendSystem>();
-            World.GetOrCreateManager<SpatialOSReceiveSystem>();
-            World.GetOrCreateManager<SpatialOSSendSystem>();
-            World.GetOrCreateManager<EcsViewSystem>();
-            World.GetOrCreateManager<CleanTemporaryComponentsSystem>();
+            World.CreateSystem<WorkerSystem>(connectionHandler, Connection, LogDispatcher, WorkerType, Origin);
+            World.GetOrCreateSystem<CommandSystem>();
+            World.GetOrCreateSystem<ComponentUpdateSystem>();
+            World.GetOrCreateSystem<EntitySystem>();
+            World.GetOrCreateSystem<ComponentSendSystem>();
+            World.GetOrCreateSystem<SpatialOSReceiveSystem>();
+            World.GetOrCreateSystem<SpatialOSSendSystem>();
+            World.GetOrCreateSystem<EcsViewSystem>();
+            World.GetOrCreateSystem<CleanTemporaryComponentsSystem>();
 
             // Subscriptions systems
-            World.GetOrCreateManager<WorkerFlagCallbackSystem>();
-            World.GetOrCreateManager<CommandCallbackSystem>();
-            World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
-            World.GetOrCreateManager<ComponentCallbackSystem>();
-            World.GetOrCreateManager<RequireLifecycleSystem>();
-            World.GetOrCreateManager<SubscriptionSystem>();
+            World.GetOrCreateSystem<WorkerFlagCallbackSystem>();
+            World.GetOrCreateSystem<CommandCallbackSystem>();
+            World.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
+            World.GetOrCreateSystem<ComponentCallbackSystem>();
+            World.GetOrCreateSystem<RequireLifecycleSystem>();
+            World.GetOrCreateSystem<SubscriptionSystem>();
 
 #if !DISABLE_REACTIVE_COMPONENTS
             // Reactive components

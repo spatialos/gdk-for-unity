@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IEcsViewManager)))
             {

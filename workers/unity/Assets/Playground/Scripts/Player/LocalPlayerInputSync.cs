@@ -10,13 +10,13 @@ namespace Playground
     {
         private const float MinInputChange = 0.01f;
 
-        private ComponentGroup inputGroup;
+        private EntityQuery inputGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            inputGroup = GetComponentGroup(
+            inputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<PlayerInput.Component>(),
                 ComponentType.ReadWrite<CameraTransform>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()

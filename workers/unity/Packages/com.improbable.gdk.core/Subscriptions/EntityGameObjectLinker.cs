@@ -29,21 +29,21 @@ namespace Improbable.Gdk.Subscriptions
         public EntityGameObjectLinker(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
+            entityManager = world.EntityManager;
 
-            workerSystem = world.GetExistingManager<WorkerSystem>();
-            lifecycleSystem = world.GetExistingManager<RequireLifecycleSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
+            lifecycleSystem = world.GetExistingSystem<RequireLifecycleSystem>();
 
             viewCommandBuffer = new ViewCommandBuffer(entityManager, workerSystem.LogDispatcher);
 
-            workerSystem = world.GetExistingManager<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
             if (workerSystem == null)
             {
                 throw new ArgumentException(
                     $"Can not create {nameof(EntityGameObjectLinker)}. {world.Name} does not contain a {nameof(workerSystem)}");
             }
 
-            subscriptionSystem = world.GetExistingManager<SubscriptionSystem>();
+            subscriptionSystem = world.GetExistingSystem<SubscriptionSystem>();
 
             if (subscriptionSystem == null)
             {

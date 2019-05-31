@@ -92,7 +92,7 @@ namespace Improbable.Gdk.Core
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            var entityManager = World.GetOrCreateManager<EntityManager>();
+            var entityManager = World.EntityManager;
             WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
             EntityIdToEntity.Add(new EntityId(0), WorkerEntity);
             Enabled = false;

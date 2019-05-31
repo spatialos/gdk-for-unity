@@ -9,14 +9,14 @@ namespace Playground
     public class InitUISystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;
-        private ComponentGroup uiInitGroup;
+        private EntityQuery uiInitGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            uiInitGroup = GetComponentGroup(
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            uiInitGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),

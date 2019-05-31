@@ -44,7 +44,7 @@ namespace Improbable.Gdk.ReactiveComponents
                 componentCleanups.Add(new ComponentCleanup
                 {
                     Handler = componentCleanupHandler,
-                    Group = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
+                    Group = GetEntityQuery(componentCleanupHandler.CleanupArchetypeQuery)
                 });
             }
         }
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.ReactiveComponents
         private struct ComponentCleanup
         {
             public ComponentCleanupHandler Handler;
-            public ComponentGroup Group;
+            public EntityQuery Group;
         }
     }
 }

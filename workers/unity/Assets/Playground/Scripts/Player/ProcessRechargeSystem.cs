@@ -11,13 +11,13 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class ProcessRechargeSystem : ComponentSystem
     {
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadWrite<Launcher.Component>(),
                 ComponentType.ReadOnly<Recharging>()
             );

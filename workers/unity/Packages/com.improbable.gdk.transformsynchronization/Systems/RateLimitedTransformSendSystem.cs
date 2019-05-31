@@ -11,16 +11,16 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private WorkerSystem worker;
         private TickRateEstimationSystem tickRate;
-        private ComponentGroup transformGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
-            tickRate = World.GetExistingManager<TickRateEstimationSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
+            tickRate = World.GetExistingSystem<TickRateEstimationSystem>();
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.ReadWrite<LastTransformSentData>(),
                 ComponentType.ReadWrite<TransformInternal.Component>(),
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),

@@ -13,8 +13,8 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
     public class CleanTemporaryComponentsSystem : ComponentSystem
     {
-        private readonly List<(ComponentGroup, ComponentType)> componentGroupsToRemove =
-            new List<(ComponentGroup, ComponentType)>();
+        private readonly List<(EntityQuery, ComponentType)> componentGroupsToRemove =
+            new List<(EntityQuery, ComponentType)>();
 
         protected override void OnCreateManager()
         {
@@ -24,20 +24,20 @@ namespace Improbable.Gdk.Core
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentData),
                 typeof(RemoveAtEndOfTickAttribute)))
             {
-                componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
+                componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
             }
 
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ISharedComponentData),
                 typeof(RemoveAtEndOfTickAttribute)))
             {
-                componentGroupsToRemove.Add((GetComponentGroup(ComponentType.ReadOnly(type)), type));
+                componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
             }
         }
 
         protected override void OnUpdate()
         {
             Profiler.BeginSample("RemoveRemoveAtEndOfTick");
-            foreach ((var componentGroup, var componentType) in componentGroupsToRemove)
+            foreach ((EntityQuery componentGroup, var componentType) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
                 {

@@ -15,18 +15,18 @@ namespace Improbable.Gdk.Core
         public event Action<string> OnDisconnected;
 
         private WorkerSystem worker;
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<OnDisconnected>(),
                 ComponentType.ReadOnly<WorkerEntityTag>()
             );
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
         }
 
         protected override void OnUpdate()

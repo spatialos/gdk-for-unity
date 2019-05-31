@@ -33,8 +33,8 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             base.OnCreateManager();
 
-            entitySystem = World.GetExistingManager<EntitySystem>();
-            workerSystem = World.GetExistingManager<WorkerSystem>();
+            entitySystem = World.GetExistingSystem<EntitySystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
 
             linker = new EntityGameObjectLinker(World);
 

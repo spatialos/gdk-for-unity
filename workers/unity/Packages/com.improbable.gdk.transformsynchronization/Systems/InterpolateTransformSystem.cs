@@ -10,15 +10,15 @@ namespace Improbable.Gdk.TransformSynchronization
     public class InterpolateTransformSystem : ComponentSystem
     {
         private ComponentUpdateSystem updateSystem;
-        private ComponentGroup interpolationGroup;
+        private EntityQuery interpolationGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            interpolationGroup = GetComponentGroup(
+            interpolationGroup = GetEntityQuery(
                 ComponentType.ReadWrite<BufferedTransform>(),
                 ComponentType.ReadWrite<DeferredUpdateTransform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),

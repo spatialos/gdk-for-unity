@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core.CodegenAdapters
     public interface IComponentReplicationHandler
     {
         uint ComponentId { get; }
-        EntityArchetypeQuery ComponentUpdateQuery { get; }
+        EntityQueryDesc ComponentUpdateQuery { get; }
 
         void SendUpdates(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             EntityManager entityManager, ComponentUpdateSystem componentUpdateSystem);

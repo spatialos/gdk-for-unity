@@ -15,16 +15,16 @@ namespace Playground
     {
         private static readonly EntityId InvalidEntityId = new EntityId(0);
 
-        private ComponentGroup collisionGroup;
+        private EntityQuery collisionGroup;
         private CommandSystem commandSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
 
-            collisionGroup = GetComponentGroup(
+            collisionGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launchable.Component>(),
                 ComponentType.ReadOnly<Launchable.ComponentAuthority>(),
                 ComponentType.ReadOnly<CollisionComponent>()

@@ -28,7 +28,7 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
             {
                 All = new[]
                 {

@@ -32,10 +32,10 @@ namespace Improbable.Gdk.Subscriptions
         {
             base.OnCreateManager();
 
-            commandCallbackSystem = World.GetExistingManager<CommandCallbackSystem>();
-            componentCallbackSystem = World.GetExistingManager<ComponentCallbackSystem>();
-            componentConstraintsCallbackSystem = World.GetExistingManager<ComponentConstraintsCallbackSystem>();
-            workerFlagCallbackSystem = World.GetExistingManager<WorkerFlagCallbackSystem>();
+            commandCallbackSystem = World.GetExistingSystem<CommandCallbackSystem>();
+            componentCallbackSystem = World.GetExistingSystem<ComponentCallbackSystem>();
+            componentConstraintsCallbackSystem = World.GetExistingSystem<ComponentConstraintsCallbackSystem>();
+            workerFlagCallbackSystem = World.GetExistingSystem<WorkerFlagCallbackSystem>();
         }
 
         protected override void OnUpdate()

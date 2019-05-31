@@ -32,7 +32,7 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate

@@ -31,7 +31,7 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public EntityArchetypeQuery EventQuery => new EntityArchetypeQuery
+            public EntityQueryDesc EventQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
@@ -44,10 +44,10 @@ namespace <#= qualifiedNamespace #>
                 None = Array.Empty<ComponentType>(),
             };
 
-            public EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
+            public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
-                new EntityArchetypeQuery()
+                new EntityQueryDesc()
                 {
                     All = new[]
                     {
@@ -163,7 +163,7 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
                 All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
@@ -303,7 +303,7 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
 
         internal class AcknowledgeAuthorityLossHandler : AbstractAcknowledgeAuthorityLossHandler
        {
-            public override EntityArchetypeQuery Query => new EntityArchetypeQuery
+            public override EntityQueryDesc Query => new EntityQueryDesc
             {
                 All = new ComponentType[]
                 {

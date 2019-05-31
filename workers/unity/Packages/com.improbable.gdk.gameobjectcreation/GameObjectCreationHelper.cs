@@ -12,7 +12,7 @@ namespace Improbable.Gdk.GameObjectCreation
 
         public static void EnableStandardGameObjectCreation(World world, GameObject workerGameObject = null)
         {
-            var workerSystem = world.GetExistingManager<WorkerSystem>();
+            var workerSystem = world.GetExistingSystem<WorkerSystem>();
             if (workerSystem == null)
             {
                 throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
@@ -26,13 +26,13 @@ namespace Improbable.Gdk.GameObjectCreation
         public static void EnableStandardGameObjectCreation(World world, IEntityGameObjectCreator creator,
             GameObject workerGameObject = null)
         {
-            var workerSystem = world.GetExistingManager<WorkerSystem>();
+            var workerSystem = world.GetExistingSystem<WorkerSystem>();
             if (workerSystem == null)
             {
                 throw new InvalidOperationException(WorkerNotCreatedErrorMessage);
             }
 
-            if (world.GetExistingManager<GameObjectInitializationSystem>() != null)
+            if (world.GetExistingSystem<GameObjectInitializationSystem>() != null)
             {
                 workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
                         "You should only call EnableStandardGameobjectCreation() once on worker setup")
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return;
             }
 
-            world.CreateManager<GameObjectInitializationSystem>(creator, workerGameObject);
+            world.CreateSystem<GameObjectInitializationSystem>(creator, workerGameObject);
         }
     }
 }

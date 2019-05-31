@@ -20,8 +20,8 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             base.OnCreateManager();
 
-            workerSystem = World.GetExistingManager<WorkerSystem>();
-            entitySystem = World.GetExistingManager<EntitySystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
+            entitySystem = World.GetExistingSystem<EntitySystem>();
 
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSenderComponentManager)))
             {

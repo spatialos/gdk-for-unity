@@ -8,7 +8,7 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class TriggerColorChangeSystem : ComponentSystem
     {
-        private ComponentGroup group;
+        private EntityQuery group;
         private ComponentUpdateSystem updateSystem;
 
         private Array colorValues;
@@ -19,9 +19,9 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<CubeColor.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );

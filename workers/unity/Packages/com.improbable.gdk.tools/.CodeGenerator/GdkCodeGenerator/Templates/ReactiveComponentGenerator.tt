@@ -235,7 +235,7 @@ namespace <#= qualifiedNamespace #>
             {
                 var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
 
-                foreach (var entityId in world.GetExistingManager<EntitySystem>().GetEntitiesAdded())
+                foreach (var entityId in world.GetExistingSystem<EntitySystem>().GetEntitiesAdded())
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,

@@ -22,8 +22,8 @@ namespace Improbable.Gdk.Core
             this.world = world;
 
             // Check that these are there
-            workerSystem = world.GetExistingManager<WorkerSystem>();
-            var constraintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
+            var constraintsSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintsSystem.RegisterEntityAddedCallback(entityId =>
             {
@@ -111,9 +111,9 @@ namespace Improbable.Gdk.Core
         {
             this.entity = entity;
             IsValid = true;
-            callbackSystem = world.GetOrCreateManager<CommandCallbackSystem>();
+            callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
             // todo check if this exists probably put getting this in a static function that does it in one place
-            commandSystem = world.GetExistingManager<CommandSystem>();
+            commandSystem = world.GetExistingSystem<CommandSystem>();
         }
 
         public void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request,

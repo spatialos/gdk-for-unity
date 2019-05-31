@@ -16,8 +16,8 @@ namespace Playground
             public float SpeedSmoothVelocity;
         }
 
-        private ComponentGroup newPlayerGroup;
-        private ComponentGroup playerInputGroup;
+        private EntityQuery newPlayerGroup;
+        private EntityQuery playerInputGroup;
 
         private const float WalkSpeed = 2.0f;
         private const float RunSpeed = 6.0f;
@@ -32,14 +32,14 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            newPlayerGroup = GetComponentGroup(
+            newPlayerGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.Exclude<Speed>()
             );
             newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
 
-            playerInputGroup = GetComponentGroup(
+            playerInputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<Rigidbody>(),
                 ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadOnly<PlayerInput.Component>(),

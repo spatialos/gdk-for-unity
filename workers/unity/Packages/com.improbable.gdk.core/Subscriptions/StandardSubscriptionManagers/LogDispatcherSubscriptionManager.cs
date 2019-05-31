@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public LogDispatcherSubscriptionManager(World world)
         {
-            logger = world.GetExistingManager<WorkerSystem>().LogDispatcher;
+            logger = world.GetExistingSystem<WorkerSystem>().LogDispatcher;
         }
 
         public override Subscription<ILogDispatcher> Subscribe(EntityId entityId)

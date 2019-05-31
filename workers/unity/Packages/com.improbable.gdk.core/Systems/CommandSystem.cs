@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnCreateManager()
         {
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             Enabled = false;
         }

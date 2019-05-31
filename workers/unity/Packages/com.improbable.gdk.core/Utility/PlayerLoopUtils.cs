@@ -35,11 +35,11 @@ namespace Improbable.Gdk.Core
 
         public static void ResolveSystemGroups(World world)
         {
-            var systems = world.BehaviourManagers.ToList();
+            var systems = world.Systems.ToList();
             var uniqueGroup = new HashSet<Type>(systems.Select(s => s.GetType()));
 
             // create presentation system and simulation system
-            var simulationSystemGroup = world.GetOrCreateManager<SimulationSystemGroup>();
+            var simulationSystemGroup = world.GetOrCreateSystem<SimulationSystemGroup>();
 
             // Add systems to their groups, based on the [UpdateInGroup] attribute.
             for (var i = 0; i < systems.Count; i++)
@@ -79,10 +79,10 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    var groupMgr = world.GetOrCreateManager(groupAttribute.GroupType);
+                    var groupMgr = world.GetOrCreateSystem(groupAttribute.GroupType);
                     if (groupMgr is ComponentSystemGroup groupSys)
                     {
-                        groupSys.AddSystemToUpdateList(world.GetOrCreateManager(type) as ComponentSystemBase);
+                        groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type) as ComponentSystemBase);
                         if (!uniqueGroup.Contains(groupAttribute.GroupType))
                         {
                             uniqueGroup.Add(groupAttribute.GroupType);
@@ -109,7 +109,7 @@ namespace Improbable.Gdk.Core
 
         public static void AddToPlayerLoop(World world)
         {
-            var systemGroups = world.BehaviourManagers.OfType<ComponentSystemGroup>();
+            var systemGroups = world.Systems.OfType<ComponentSystemGroup>();
             var subSystemToGroup = new Dictionary<Type, List<ComponentSystemGroup>>();
 
             // Build lookup for PlayerLoop

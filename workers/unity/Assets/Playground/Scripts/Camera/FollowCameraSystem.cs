@@ -27,13 +27,13 @@ namespace Playground
         // Origin offset to make camera orbit character's head rather than their feet.
         private static readonly Vector3 TargetOffset = new Vector3(0, 1, 0);
 
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadWrite<CameraInput>(),
                 ComponentType.ReadWrite<CameraTransform>(),
                 ComponentType.ReadOnly<Rigidbody>()

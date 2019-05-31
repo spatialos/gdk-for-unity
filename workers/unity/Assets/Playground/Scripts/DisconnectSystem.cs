@@ -7,13 +7,13 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class DisconnectSystem : ComponentSystem
     {
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<OnDisconnected>(),
                 ComponentType.ReadOnly<WorkerEntityTag>()
             );

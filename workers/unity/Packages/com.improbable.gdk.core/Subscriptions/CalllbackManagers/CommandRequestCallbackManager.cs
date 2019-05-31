@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public CommandRequestCallbackManager(World world)
         {
-            commandSystem = world.GetExistingManager<CommandSystem>();
+            commandSystem = world.GetExistingSystem<CommandSystem>();
         }
 
         public void InvokeCallbacks()

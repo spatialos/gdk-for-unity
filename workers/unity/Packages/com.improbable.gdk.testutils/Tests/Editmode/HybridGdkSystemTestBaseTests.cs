@@ -15,25 +15,13 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         [DisableAutoCreation]
         private class ExampleHybridSystem : ComponentSystem
         {
-            private ComponentGroup testGroup;
-
-            public void TestInjection(World world)
-            {
-                OnBeforeCreateManagerInternal(world);
-            }
-
-            public void ManualDispose()
-            {
-                OnBeforeDestroyManagerInternal();
-                OnDestroyManager();
-                OnAfterDestroyManagerInternal();
-            }
+            private EntityQuery testGroup;
 
             protected override void OnCreateManager()
             {
                 base.OnCreateManager();
 
-                testGroup = GetComponentGroup(
+                testGroup = GetEntityQuery(
                     ComponentType.ReadWrite<Rigidbody>(),
                     ComponentType.ReadWrite<TestPreparation>()
                 );
@@ -49,48 +37,6 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         }
 
         [TestFixture]
-        private class FixtureNotImplementingHybridTestBase
-        {
-            // If this test fails, then we can get rid of HybridGdkSystemTestBase!
-            [Test]
-            public static void
-                HybridSystems_will_result_in_errors_when_created_if_fixture_does_not_extend_HybridGdkSystemTestBase()
-            {
-                // Need to clean up hooks here because this file does not clean up hooks:
-                // Packages/com.unity.entities@0.0.12-preview.8/Unity.Entities.Hybrid.Tests/DefaultWorldInitializationTests.cs:22
-                //   (Initialize_ShouldLogNothing)
-                HybridGdkSystemTestBase.CleanupAllInjectionHooks();
-
-                using (var world = new World("test-world"))
-                {
-                    var system = new ExampleHybridSystem();
-
-                    try
-                    {
-                        var argumentException = Assert.Throws<ArgumentException>(() =>
-                            {
-                                // This is basically the same action as world.GetOrCreateManager<ExampleHybridSystem>();
-                                // However, if we actually called the above it would cause memory leaks and make other tests fail.
-                                system.TestInjection(world);
-                            },
-                            "The `{0}` class may no longer be necessary, since an `{1}` system could be created without InjectionHooks.",
-                            nameof(HybridGdkSystemTestBase),
-                            nameof(ExampleHybridSystem));
-
-                        Assert.IsTrue(argumentException.Message.Contains("[Inject]"),
-                            "The error message ({0}) was not about an injection annotation.",
-                            argumentException.Message);
-                    }
-                    finally
-                    {
-                        // Ensure that the system does not leak.
-                        system.ManualDispose();
-                    }
-                }
-            }
-        }
-
-        [TestFixture]
         private class FixtureImplementingHybridTestBase : HybridGdkSystemTestBase
         {
             [Test]
@@ -98,7 +44,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
             {
                 using (var world = new World("test-world"))
                 {
-                    var entityManager = world.GetOrCreateManager<EntityManager>();
+                    var entityManager = world.EntityManager;
 
                     var entity = entityManager.CreateEntity(
                         typeof(Rigidbody)
@@ -106,7 +52,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
 
                     entityManager.AddComponentData(entity, new TestPreparation { Value = 0 });
 
-                    var testSystem = world.GetOrCreateManager<ExampleHybridSystem>();
+                    var testSystem = world.GetOrCreateSystem<ExampleHybridSystem>();
 
                     testSystem.Update();
 

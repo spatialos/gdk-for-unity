@@ -7,6 +7,7 @@ using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
 using Unity.Entities;
 using UnityEngine;
+using EntityQuery = Improbable.Worker.CInterop.Query.EntityQuery;
 using Random = UnityEngine.Random;
 
 namespace Improbable.Gdk.PlayerLifecycle
@@ -42,8 +43,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             base.OnCreateManager();
 
-            workerSystem = World.GetExistingManager<WorkerSystem>();
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
             logDispatcher = workerSystem.LogDispatcher;
 
             SendPlayerCreatorEntityQuery();

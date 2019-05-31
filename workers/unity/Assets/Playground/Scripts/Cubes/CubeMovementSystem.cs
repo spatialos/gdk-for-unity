@@ -8,7 +8,7 @@ namespace Playground
     [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     internal class CubeMovementSystem : ComponentSystem
     {
-        private ComponentGroup cubeGroup;
+        private EntityQuery cubeGroup;
 
         private Vector3 origin;
 
@@ -16,9 +16,9 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            origin = World.GetExistingManager<WorkerSystem>().Origin;
+            origin = World.GetExistingSystem<WorkerSystem>().Origin;
 
-            cubeGroup = GetComponentGroup(
+            cubeGroup = GetEntityQuery(
                 ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
                 ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
                 ComponentType.ReadWrite<Rigidbody>()

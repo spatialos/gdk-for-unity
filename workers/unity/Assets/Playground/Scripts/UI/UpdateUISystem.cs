@@ -9,22 +9,22 @@ namespace Playground
     {
         private ComponentUpdateSystem componentUpdateSystem;
 
-        private ComponentGroup launcherGroup;
-        private ComponentGroup scoreGroup;
+        private EntityQuery launcherGroup;
+        private EntityQuery scoreGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            launcherGroup = GetComponentGroup(
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            launcherGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Launcher.ComponentAuthority>()
             );
             launcherGroup.SetFilter(Launcher.ComponentAuthority.Authoritative);
 
-            scoreGroup = GetComponentGroup(
+            scoreGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Score.ComponentAuthority>()

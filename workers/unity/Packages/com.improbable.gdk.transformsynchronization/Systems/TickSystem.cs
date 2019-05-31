@@ -7,13 +7,13 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class TickSystem : ComponentSystem
     {
-        private ComponentGroup transformGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()

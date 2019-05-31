@@ -28,7 +28,7 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             base.OnCreateManager();
 
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
+            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
@@ -72,7 +72,7 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private void ReplicateEvents()
         {
-            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             for (var i = 0; i < componentReplicators.Count; i++)
             {
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private void ReplicateCommands()
         {
-            var commandSystem = World.GetExistingManager<CommandSystem>();
+            var commandSystem = World.GetExistingSystem<CommandSystem>();
 
             for (var i = 0; i < componentReplicators.Count; i++)
             {
@@ -103,8 +103,8 @@ namespace Improbable.Gdk.ReactiveComponents
             componentReplicators.Add(new ComponentReplicator
             {
                 Handler = reactiveComponentReplicationHandler,
-                EventGroup = GetComponentGroup(reactiveComponentReplicationHandler.EventQuery),
-                CommandGroup = GetComponentGroup(reactiveComponentReplicationHandler.CommandQueries),
+                EventGroup = GetEntityQuery(reactiveComponentReplicationHandler.EventQuery),
+                CommandGroup = GetEntityQuery(reactiveComponentReplicationHandler.CommandQueries),
             });
         }
 
@@ -128,8 +128,8 @@ namespace Improbable.Gdk.ReactiveComponents
         private struct ComponentReplicator
         {
             public IReactiveComponentReplicationHandler Handler;
-            public ComponentGroup EventGroup;
-            public ComponentGroup CommandGroup;
+            public EntityQuery EventGroup;
+            public EntityQuery CommandGroup;
         }
     }
 }

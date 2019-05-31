@@ -15,7 +15,7 @@ namespace Improbable.Gdk.ReactiveComponents
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
     {
-        private readonly EntityArchetypeQuery worldCommandSendersQuery = new EntityArchetypeQuery
+        private readonly EntityQueryDesc worldCommandSendersQuery = new EntityQueryDesc
         {
             All = new[]
             {
@@ -30,14 +30,14 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private IConnectionHandler connection;
         private CommandSystem commandSystem;
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
-            commandSystem = World.GetExistingManager<CommandSystem>();
-            group = GetComponentGroup(worldCommandSendersQuery);
+            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
+            commandSystem = World.GetExistingSystem<CommandSystem>();
+            group = GetEntityQuery(worldCommandSendersQuery);
         }
 
         protected override void OnUpdate()

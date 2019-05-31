@@ -9,15 +9,15 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private WorkerSystem worker;
 
-        private ComponentGroup transformGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.ReadWrite<BufferedTransform>(),
                 ComponentType.ReadWrite<TransformToSet>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()

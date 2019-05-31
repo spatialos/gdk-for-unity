@@ -10,21 +10,21 @@ namespace Improbable.Gdk.PlayerLifecycle
     public class SendPlayerHeartbeatRequestSystem : ComponentSystem
     {
         private float timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
-        private ComponentGroup group;
+        private EntityQuery group;
         private CommandSystem commandSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerHeartbeatServer.ComponentAuthority>(),
                 ComponentType.ReadWrite<HeartbeatData>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
             group.SetFilter(PlayerHeartbeatServer.ComponentAuthority.Authoritative);
 
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
         }
 
         protected override void OnUpdate()

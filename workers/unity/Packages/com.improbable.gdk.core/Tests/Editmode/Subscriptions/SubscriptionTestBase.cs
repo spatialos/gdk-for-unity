@@ -19,10 +19,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
             // This is the minimal set required for subscriptions to work.
             // TODO: Look into untangling these!
             World = new World("test-world");
-            Worker = World.CreateManager<WorkerSystem>(new MockConnectionHandler(), null, new TestLogDispatcher(), "TestWorkerType", Vector3.zero);
-            World.CreateManager<SpatialOSReceiveSystem>();
-            World.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
-            SubscriptionSystem = World.CreateManager<SubscriptionSystem>();
+            Worker = World.CreateSystem<WorkerSystem>(new MockConnectionHandler(), null, new TestLogDispatcher(), "TestWorkerType", Vector3.zero);
+            World.CreateSystem<SpatialOSReceiveSystem>();
+            World.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
+            SubscriptionSystem = World.CreateSystem<SubscriptionSystem>();
 
             LogDispatcher = Worker.LogDispatcher;
         }

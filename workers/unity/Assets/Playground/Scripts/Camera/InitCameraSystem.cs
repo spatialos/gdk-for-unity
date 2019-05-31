@@ -8,15 +8,15 @@ namespace Playground
     public class InitCameraSystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;
-        private ComponentGroup inputGroup;
+        private EntityQuery inputGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            inputGroup = GetComponentGroup(
+            inputGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );

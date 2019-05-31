@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
         }
 
         protected override void OnUpdate()

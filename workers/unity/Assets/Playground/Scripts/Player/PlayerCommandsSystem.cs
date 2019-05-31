@@ -23,14 +23,14 @@ namespace Playground
         private const float SmallEnergy = 10.0f;
 
         private CommandSystem commandSystem;
-        private ComponentGroup launchGroup;
+        private EntityQuery launchGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            commandSystem = World.GetExistingManager<CommandSystem>();
-            launchGroup = GetComponentGroup(
+            commandSystem = World.GetExistingSystem<CommandSystem>();
+            launchGroup = GetEntityQuery(
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
             );

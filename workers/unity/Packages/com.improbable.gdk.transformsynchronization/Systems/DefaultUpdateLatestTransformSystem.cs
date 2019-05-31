@@ -9,14 +9,14 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class DefaultUpdateLatestTransformSystem : ComponentSystem
     {
-        private ComponentGroup rigidbodyGroup;
-        private ComponentGroup transformGroup;
+        private EntityQuery rigidbodyGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            rigidbodyGroup = GetComponentGroup(
+            rigidbodyGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadWrite<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
@@ -24,7 +24,7 @@ namespace Improbable.Gdk.TransformSynchronization
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.Exclude<Rigidbody>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadWrite<TransformToSend>(),

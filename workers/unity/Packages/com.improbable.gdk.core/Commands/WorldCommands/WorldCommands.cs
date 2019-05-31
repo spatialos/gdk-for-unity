@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Core.Commands
 
             public void RemoveComponents(EntityId entityId, EntityManager entityManager, World world)
             {
-                var workerSystem = world.GetExistingManager<WorkerSystem>();
+                var workerSystem = world.GetExistingSystem<WorkerSystem>();
 
                 workerSystem.TryGetEntity(entityId, out var entity);
 
