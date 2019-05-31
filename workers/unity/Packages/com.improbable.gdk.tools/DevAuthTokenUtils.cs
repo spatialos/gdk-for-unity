@@ -9,22 +9,22 @@ namespace Improbable.Gdk.Tools
 {
     public static class DevAuthTokenUtils
     {
-        public static string DevAuthToken => PlayerPrefs.GetString(DevAuthTokenKey);
+        public static string DevAuthToken => PlayerPrefs.GetString(PlayerPrefDevAuthTokenKey);
 
         private static string DevAuthTokenAssetPath =>
             Path.Combine("Assets", GdkToolsConfiguration.GetOrCreateInstance().DevAuthTokenDir, "DevAuthToken.txt");
 
         private static readonly string JsonDataKey = "json_data";
-        private static readonly string ErrorKey = "error";
-        private static readonly string TokenSecretKey = "token_secret";
-        private static readonly string DevAuthTokenKey = "devAuthTokenSecret";
+        private static readonly string JsonErrorKey = "error";
+        private static readonly string JsonTokenSecretKey = "token_secret";
+        private static readonly string PlayerPrefDevAuthTokenKey = "devAuthTokenSecret";
 
         private const string DevAuthMenuPrefix = "SpatialOS/Dev Authentication Token";
         private const string DevAuthMenuGenerateToken = "/Generate Token";
         private const string DevAuthMenuClearToken = "/Clear Token";
 
         [MenuItem(DevAuthMenuPrefix + DevAuthMenuGenerateToken, false, MenuPriorities.GenerateDevAuthToken)]
-        public static bool Generate()
+        public static bool TryGenerate()
         {
             var devAuthToken = string.Empty;
             var gdkToolsConfiguration = GdkToolsConfiguration.GetOrCreateInstance();
@@ -45,14 +45,14 @@ namespace Improbable.Gdk.Tools
             {
                 var deserializedMessage = Json.Deserialize(receivedMessage);
                 if (deserializedMessage.TryGetValue(JsonDataKey, out var jsonData) &&
-                    ((Dictionary<string, object>) jsonData).TryGetValue(TokenSecretKey, out var tokenSecret))
+                    ((Dictionary<string, object>) jsonData).TryGetValue(JsonTokenSecretKey, out var tokenSecret))
                 {
                     devAuthToken = (string) tokenSecret;
                 }
                 else
                 {
                     throw new Exception(
-                        $@"{(deserializedMessage.TryGetValue(ErrorKey, out var errorMessage)
+                        $@"{(deserializedMessage.TryGetValue(JsonErrorKey, out var errorMessage)
                             ? errorMessage
                             : string.Empty)}");
                 }
@@ -63,10 +63,15 @@ namespace Improbable.Gdk.Tools
                 return false;
             }
 
-            Debug.Log($"Saving token {devAuthToken} to Editor Preferences.");
-            PlayerPrefs.SetString(DevAuthTokenKey, devAuthToken);
+            Debug.Log($"Saving token to Player Preferences.");
+            PlayerPrefs.SetString(PlayerPrefDevAuthTokenKey, devAuthToken);
 
-            return !gdkToolsConfiguration.SaveDevAuthTokenToFile || SaveTokenToFile();
+            if (gdkToolsConfiguration.SaveDevAuthTokenToFile)
+            {
+                return SaveTokenToFile();
+            }
+
+            return true;
         }
 
         private static bool SaveTokenToFile()
@@ -75,7 +80,7 @@ namespace Improbable.Gdk.Tools
             var devAuthTokenFullDir = gdkToolsConfiguration.DevAuthTokenFullDir;
             var devAuthTokenFilePath = gdkToolsConfiguration.DevAuthTokenFilepath;
 
-            if (!PlayerPrefs.HasKey(DevAuthTokenKey))
+            if (!PlayerPrefs.HasKey(PlayerPrefDevAuthTokenKey))
             {
                 // Given we call SaveTokenToFile after successfully generating a Dev Auth Token,
                 // we should never see the following warning.
@@ -83,7 +88,7 @@ namespace Improbable.Gdk.Tools
                 return false;
             }
 
-            var devAuthToken = PlayerPrefs.GetString(DevAuthTokenKey);
+            var devAuthToken = PlayerPrefs.GetString(PlayerPrefDevAuthTokenKey);
 
             if (!Directory.Exists(devAuthTokenFullDir))
             {
@@ -100,7 +105,7 @@ namespace Improbable.Gdk.Tools
                 return false;
             }
 
-            Debug.Log($"Saving token {devAuthToken} to {devAuthTokenFilePath}.");
+            Debug.Log($"Saving token to {devAuthTokenFilePath}.");
             AssetDatabase.ImportAsset(DevAuthTokenAssetPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.Refresh();
 
@@ -110,7 +115,7 @@ namespace Improbable.Gdk.Tools
         [MenuItem(DevAuthMenuPrefix + DevAuthMenuClearToken, false, MenuPriorities.ClearDevAuthToken)]
         private static void ClearToken()
         {
-            PlayerPrefs.DeleteKey(DevAuthTokenKey);
+            PlayerPrefs.DeleteKey(PlayerPrefDevAuthTokenKey);
             AssetDatabase.DeleteAsset(DevAuthTokenAssetPath);
             AssetDatabase.Refresh();
         }

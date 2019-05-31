@@ -93,7 +93,7 @@ namespace Improbable.Gdk.Mobile
                     var gdkToolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
                     // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
-                    if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.Generate())
+                    if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.TryGenerate())
                     {
                         Debug.LogError("Failed to generate a Dev Auth Token to launch mobile client.");
                         return;
@@ -106,7 +106,7 @@ namespace Improbable.Gdk.Mobile
                         Debug.LogWarning("Launching Android client without a DevAuthToken.txt asset.");
                     }
 
-                    arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken}");
+                    arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken} ");
                 }
 
                 // Get chosen android package id and launch
