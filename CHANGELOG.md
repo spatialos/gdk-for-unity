@@ -14,6 +14,10 @@
 ### Changed
 
 - Upgraded the project to be compatible with `2019.1.3f1`.
+- Moved Runtime IP from the `GdkToolsConfiguration.json` to an Editor Preference.
+- Moved Dev Auth Token to a PlayerPref.
+    - Added a setting in `GdkToolsConfiguration` to let users configure whether a DevAuthToken.txt should be generated or not.
+    - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
 
 ### Fixed
 
