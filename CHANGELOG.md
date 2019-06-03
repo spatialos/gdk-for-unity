@@ -18,7 +18,6 @@
 ### Fixed
 
 - Fixed a bug where a worker's `World` could get disposed multiple times if you stopped the application inside the Editor while the worker is being created.
-- Fixed a bug when uploading assemblies with the deployment launcher window, by adding the `--enable_pre_upload_check=false` argument.
 
 ### Internal
 
