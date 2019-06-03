@@ -23,6 +23,10 @@
 
 - Fixed a bug where a worker's `World` could get disposed multiple times if you stopped the application inside the Editor while the worker is being created.
 
+### Internal
+
+- Removed the workaround for a schema component update bug (WRK-1031).
+
 ## `0.2.2` - 2019-05-15
 
 ### Breaking Changes

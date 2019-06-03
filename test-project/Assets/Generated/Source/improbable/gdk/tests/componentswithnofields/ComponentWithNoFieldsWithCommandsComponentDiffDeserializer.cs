@@ -46,8 +46,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 {
                     ref readonly var update = ref updates[i];
                     var schemaUpdate = new SchemaComponentUpdate(ComponentId);
-                    // TODO: UTY-1858 - remove this workaround.
-                    schemaUpdate.GetEvents();
                     var componentUpdate = new ComponentUpdate(schemaUpdate);
                     Serialization.SerializeUpdate(update.Update, schemaUpdate);
                     serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
