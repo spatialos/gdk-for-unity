@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Core
             var systems = world.Systems.ToList();
             var uniqueGroup = new HashSet<Type>(systems.Select(s => s.GetType()));
 
-            // create presentation system and simulation system
+            // Create simulation system for the default group
             var simulationSystemGroup = world.GetOrCreateSystem<SimulationSystemGroup>();
 
             // Add systems to their groups, based on the [UpdateInGroup] attribute.
@@ -57,13 +57,12 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
-                // systems without a group will be added to the SimulationSystemGroup
+                // Add to default group is none is defined
                 var groups = type.GetCustomAttributes(typeof(UpdateInGroupAttribute), true);
                 if (groups.Length == 0)
                 {
-                    simulationSystemGroup.AddSystemToUpdateList(system as ComponentSystemBase);
+                    simulationSystemGroup.AddSystemToUpdateList(system);
                 }
-
 
                 foreach (var group in groups)
                 {
@@ -82,7 +81,7 @@ namespace Improbable.Gdk.Core
                     var groupMgr = world.GetOrCreateSystem(groupAttribute.GroupType);
                     if (groupMgr is ComponentSystemGroup groupSys)
                     {
-                        groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type) as ComponentSystemBase);
+                        groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type));
                         if (!uniqueGroup.Contains(groupAttribute.GroupType))
                         {
                             uniqueGroup.Add(groupAttribute.GroupType);
@@ -118,7 +117,7 @@ namespace Improbable.Gdk.Core
                 var type = systemGroup.GetType();
                 Type subSystemType;
 
-                // HACK: Hardcode the subSystem types for Unity root-systems
+                // Hardcode the subSystem types for Unity root-systems
                 if (type == typeof(InitializationSystemGroup))
                 {
                     subSystemType = typeof(Initialization);
