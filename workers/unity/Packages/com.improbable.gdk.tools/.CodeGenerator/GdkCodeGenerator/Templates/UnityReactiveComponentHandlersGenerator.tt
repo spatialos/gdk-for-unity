@@ -31,6 +31,7 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
+<# if (eventDetailsList.Count > 0) { #>
             public EntityQueryDesc EventQuery => new EntityQueryDesc
             {
                 All = new[]
@@ -40,10 +41,12 @@ namespace <#= qualifiedNamespace #>
 <# } #>
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
+<# } else { #>
+            public EntityQueryDesc EventQuery => null;
+<# } #>
 
+<# if (commandDetailsList.Count > 0) { #>
             public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
             {
 <# foreach (var commandDetails in commandDetailsList) { #>
@@ -54,11 +57,12 @@ namespace <#= qualifiedNamespace #>
                         ComponentType.ReadWrite<<#= componentNamespace #>.CommandSenders.<#= commandDetails.CommandName #>>(),
                         ComponentType.ReadWrite<<#= componentNamespace #>.CommandResponders.<#= commandDetails.CommandName #>>(),
                     },
-                    Any = Array.Empty<ComponentType>(),
-                    None = Array.Empty<ComponentType>(),
                 },
 <# } #>
             };
+<# } else { #>
+            public EntityQueryDesc[] CommandQueries => null;
+<# } #>
 
             public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
@@ -165,7 +169,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
         {
             public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
-                All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
                     ComponentType.ReadWrite<ComponentAdded<<#= componentNamespace #>.Component>>(),
@@ -180,7 +183,6 @@ for (var i = 0; i < commandDetailsList.Count; i++) {
                     ComponentType.ReadWrite<CommandResponses.<#= commandDetails.CommandName #>>(),
 <# } #>
                 },
-                None = Array.Empty<ComponentType>(),
             };
 
             public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
@@ -310,8 +312,6 @@ for (var j = 0; j < commandDetailsList.Count; j++) {
                     ComponentType.ReadOnly<AuthorityLossImminent<<#= componentNamespace #>.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
             };
 
             public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,

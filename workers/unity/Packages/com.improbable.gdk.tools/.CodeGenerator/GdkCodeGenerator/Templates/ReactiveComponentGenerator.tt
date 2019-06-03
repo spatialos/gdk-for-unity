@@ -15,6 +15,13 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 
+[assembly: RegisterGenericComponentType(typeof(ComponentAdded<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(ComponentRemoved<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityChanges<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(Authoritative<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(NotAuthoritative<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityLossImminent<<#= componentNamespace #>.Component>))]
+
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
