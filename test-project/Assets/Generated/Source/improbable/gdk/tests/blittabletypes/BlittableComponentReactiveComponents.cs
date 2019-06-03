@@ -9,6 +9,13 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 
+[assembly: RegisterGenericComponentType(typeof(ComponentAdded<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+[assembly: RegisterGenericComponentType(typeof(ComponentRemoved<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityChanges<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+[assembly: RegisterGenericComponentType(typeof(Authoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+[assembly: RegisterGenericComponentType(typeof(NotAuthoritative<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityLossImminent<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>))]
+
 namespace Improbable.Gdk.Tests.BlittableTypes
 {
     public partial class BlittableComponent

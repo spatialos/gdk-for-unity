@@ -29,13 +29,9 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     ComponentType.ReadWrite<EventSender.Evt>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
 
-            public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
-            {
-            };
+            public EntityQueryDesc[] CommandQueries => null;
 
             public void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system, ComponentUpdateSystem componentUpdateSystem)
             {
@@ -70,7 +66,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
-                All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
                     ComponentType.ReadWrite<ComponentAdded<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>(),
@@ -79,7 +74,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     ComponentType.ReadWrite<AuthorityChanges<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>(),
                     ComponentType.ReadWrite<ReceivedEvents.Evt>(),
                 },
-                None = Array.Empty<ComponentType>(),
             };
 
             public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
@@ -166,8 +160,6 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                     ComponentType.ReadOnly<AuthorityLossImminent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
             };
 
             public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,

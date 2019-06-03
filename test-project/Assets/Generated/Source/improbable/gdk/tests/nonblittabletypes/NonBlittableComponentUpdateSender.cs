@@ -28,8 +28,6 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     ComponentType.ReadWrite<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
 
             public void SendUpdates(

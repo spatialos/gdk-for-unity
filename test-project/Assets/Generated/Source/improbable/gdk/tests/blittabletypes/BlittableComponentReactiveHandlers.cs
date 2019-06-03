@@ -30,8 +30,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     ComponentType.ReadWrite<EventSender.SecondEvent>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
 
             public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
@@ -43,8 +41,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         ComponentType.ReadWrite<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.FirstCommand>(),
                         ComponentType.ReadWrite<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.FirstCommand>(),
                     },
-                    Any = Array.Empty<ComponentType>(),
-                    None = Array.Empty<ComponentType>(),
                 },
                 new EntityQueryDesc()
                 {
@@ -53,8 +49,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                         ComponentType.ReadWrite<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandSenders.SecondCommand>(),
                         ComponentType.ReadWrite<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.CommandResponders.SecondCommand>(),
                     },
-                    Any = Array.Empty<ComponentType>(),
-                    None = Array.Empty<ComponentType>(),
                 },
             };
 
@@ -178,7 +172,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
         {
             public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
-                All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
                     ComponentType.ReadWrite<ComponentAdded<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
@@ -192,7 +185,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     ComponentType.ReadWrite<CommandRequests.SecondCommand>(),
                     ComponentType.ReadWrite<CommandResponses.SecondCommand>(),
                 },
-                None = Array.Empty<ComponentType>(),
             };
 
             public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
@@ -337,8 +329,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     ComponentType.ReadOnly<AuthorityLossImminent<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
             };
 
             public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
