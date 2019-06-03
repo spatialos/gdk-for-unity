@@ -12,5 +12,6 @@ namespace Improbable.Gdk.Tools
 
         internal const int GdkToolsConfiguration = 201;
         internal const int GenerateDevAuthToken = 202;
+        internal const int ClearDevAuthToken = 203;
     }
 }

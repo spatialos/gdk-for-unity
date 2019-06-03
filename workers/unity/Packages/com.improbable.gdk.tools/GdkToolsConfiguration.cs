@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -13,17 +14,18 @@ namespace Improbable.Gdk.Tools
         public List<string> SchemaSourceDirs = new List<string>();
         public string CodegenOutputDir;
         public string DescriptorOutputDir;
-        public string RuntimeIp;
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
+        public bool SaveDevAuthTokenToFile;
+
+        internal string RuntimeIpEditorPrefKey = "RuntimeIp";
+        public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
-
-        private static readonly string UnityProjectRoot = Path.Combine(Application.dataPath, "..");
 
         private GdkToolsConfiguration()
         {
@@ -66,7 +68,7 @@ namespace Improbable.Gdk.Tools
 
                 try
                 {
-                    var fullSchemaSourceDirPath = Path.Combine(UnityProjectRoot, schemaSourceDir);
+                    var fullSchemaSourceDirPath = Path.Combine(Application.dataPath, "..", schemaSourceDir);
                     if (!Directory.Exists(fullSchemaSourceDirPath))
                     {
                         errors.Add($"{fullSchemaSourceDirPath} cannot be found.");
@@ -81,6 +83,11 @@ namespace Improbable.Gdk.Tools
             if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
             {
                 errors.Add($"Runtime IP \"{RuntimeIp}\" is not a valid IP address.");
+            }
+
+            if (!SaveDevAuthTokenToFile)
+            {
+                return errors;
             }
 
             if (string.IsNullOrEmpty(DevAuthTokenDir))
@@ -101,7 +108,6 @@ namespace Improbable.Gdk.Tools
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
-            RuntimeIp = DefaultValues.RuntimeIp;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
 
@@ -134,7 +140,6 @@ namespace Improbable.Gdk.Tools
             public const string CodegenOutputDir = "Assets/Generated/Source";
             public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
-            public const string RuntimeIp = null;
             public const string DevAuthTokenDir = "Resources";
             public const int DevAuthTokenLifetimeDays = 30;
         }

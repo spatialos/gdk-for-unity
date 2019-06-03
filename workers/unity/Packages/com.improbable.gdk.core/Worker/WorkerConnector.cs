@@ -254,16 +254,23 @@ namespace Improbable.Gdk.Core
         /// </summary>
         protected virtual string GetDevAuthToken()
         {
+            if (PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey))
+            {
+                return PlayerPrefs.GetString(RuntimeConfigNames.DevAuthTokenKey);
+            }
+
             var textAsset = Resources.Load<TextAsset>("DevAuthToken");
             if (textAsset != null)
             {
-                return textAsset.text.Trim();
+                PlayerPrefs.SetString(RuntimeConfigNames.DevAuthTokenKey, textAsset.text.Trim());
             }
             else
             {
                 throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder. " +
                     "You can generate one via SpatialOS > Generate Dev Authentication Token.");
             }
+
+            return PlayerPrefs.GetString(RuntimeConfigNames.DevAuthTokenKey);
         }
 
         /// <summary>

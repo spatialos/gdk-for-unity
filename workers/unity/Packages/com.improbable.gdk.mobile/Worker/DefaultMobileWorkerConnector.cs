@@ -47,6 +47,12 @@ namespace Improbable.Gdk.Mobile
                 PlayerPrefs.DeleteKey(HostIpPlayerPrefsKey);
             }
 
+            var devAuthToken = CommandLineUtility.GetCommandLineValue(arguments, RuntimeConfigNames.DevAuthTokenKey, string.Empty);
+            if (!string.IsNullOrEmpty(devAuthToken))
+            {
+                PlayerPrefs.SetString(RuntimeConfigNames.DevAuthTokenKey, devAuthToken);
+            }
+
             PlayerPrefs.Save();
         }
 

@@ -16,7 +16,6 @@ namespace Improbable.Gdk.Mobile
         private const string MenuLaunchAndroidLocal = "/Android for local";
         private const string MenuLaunchAndroidCloud = "/Android for cloud";
 
-
         [MenuItem(MenuLaunchMobile + MenuLaunchAndroidLocal, false, 73)]
         private static void LaunchAndroidLocal()
         {
@@ -90,6 +89,17 @@ namespace Improbable.Gdk.Mobile
                 else
                 {
                     arguments.Append($"+{RuntimeConfigNames.Environment} {RuntimeConfigDefaults.CloudEnvironment} ");
+
+                    var gdkToolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
+                    // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
+                    if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.TryGenerate())
+                    {
+                        Debug.LogError("Failed to generate a Dev Auth Token to launch mobile client.");
+                        return;
+                    }
+
+                    arguments.Append($"+{RuntimeConfigNames.DevAuthTokenKey} {DevAuthTokenUtils.DevAuthToken} ");
                 }
 
                 // Get chosen android package id and launch
