@@ -73,8 +73,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 {
                     ref readonly var update = ref updates[i];
                     var schemaUpdate = new SchemaComponentUpdate(ComponentId);
-                    // TODO: UTY-1858 - remove this workaround.
-                    schemaUpdate.GetEvents();
                     var componentUpdate = new ComponentUpdate(schemaUpdate);
                     Serialization.SerializeUpdate(update.Update, schemaUpdate);
                     serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
@@ -88,8 +86,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     {
                         ref readonly var ev = ref events[i];
                         var schemaUpdate = new SchemaComponentUpdate(ComponentId);
-                        // TODO: UTY-1858 - remove this workaround.
-                        schemaUpdate.GetFields();
                         var componentUpdate = new ComponentUpdate(schemaUpdate);
                         var obj = schemaUpdate.GetEvents().AddObject(1);
                         global::Improbable.Gdk.Tests.BlittableTypes.FirstEventPayload.Serialization.Serialize(ev.Event.Payload, obj);
@@ -105,8 +101,6 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                     {
                         ref readonly var ev = ref events[i];
                         var schemaUpdate = new SchemaComponentUpdate(ComponentId);
-                        // TODO: UTY-1858 - remove this workaround.
-                        schemaUpdate.GetFields();
                         var componentUpdate = new ComponentUpdate(schemaUpdate);
                         var obj = schemaUpdate.GetEvents().AddObject(2);
                         global::Improbable.Gdk.Tests.BlittableTypes.SecondEventPayload.Serialization.Serialize(ev.Event.Payload, obj);

@@ -19,7 +19,8 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                 config.AssemblyName,
                 "--project_name",
                 config.ProjectName,
-                "--json_output"
+                "--json_output",
+                "--enable_pre_upload_check=false",
             };
 
             if (config.ShouldForceUpload)
