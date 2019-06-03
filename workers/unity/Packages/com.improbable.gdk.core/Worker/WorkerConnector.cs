@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Improbable.Gdk.Core
 {
@@ -415,6 +413,11 @@ namespace Improbable.Gdk.Core
 
         private IEnumerator DeferredDisposeWorker()
         {
+            if (Worker?.World != null)
+            {
+                PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
+            }
+
             yield return null;
             Dispose();
         }

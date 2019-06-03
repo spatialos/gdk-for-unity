@@ -201,5 +201,39 @@ namespace Improbable.Gdk.Core
                 }
             }
         }
+
+        public static void RemoveFromPlayerLoop(World world)
+        {
+            var playerLoop = ScriptBehaviourUpdateOrder.CurrentPlayerLoop;
+            if (playerLoop.subSystemList == null)
+            {
+                Debug.LogWarning("Cannot remove a world from default PlayerLoop.");
+                return;
+            }
+
+            //Reflection to get world from PlayerLoopSystem
+            var wrapperType =
+                typeof(ScriptBehaviourUpdateOrder).Assembly.GetType(
+                    "Unity.Entities.ScriptBehaviourUpdateOrder+DummyDelegateWrapper");
+            var systemField = wrapperType.GetField("m_System", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            for (var i = 0; i < playerLoop.subSystemList.Length; ++i)
+            {
+                ref var subSystem = ref playerLoop.subSystemList[i];
+                subSystem.subSystemList = subSystem.subSystemList.Where(s =>
+                {
+                    if (s.updateDelegate != null && s.updateDelegate.Target.GetType() == wrapperType)
+                    {
+                        var system = systemField.GetValue(s.updateDelegate.Target) as ComponentSystemBase;
+                        return system.World != world;
+                    }
+
+                    return false;
+                }).ToArray();
+            }
+
+            // Update PlayerLoop
+            ScriptBehaviourUpdateOrder.SetPlayerLoop(playerLoop);
+        }
     }
 }
