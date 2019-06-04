@@ -37,7 +37,7 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         }
 
         [TestFixture]
-        private class FixtureImplementingHybridTestBase : HybridGdkSystemTestBase
+        private class FixtureImplementingHybridTestBase
         {
             [Test]
             public static void ExampleHybridSystem_can_be_created_and_updated()
