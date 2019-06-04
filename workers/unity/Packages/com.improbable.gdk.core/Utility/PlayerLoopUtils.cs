@@ -9,20 +9,20 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.Core
 {
-    public static class PlayerLoopUtils
+    internal static class PlayerLoopUtils
     {
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
         public class UpdateInSubSystemAttribute : Attribute
         {
+            public Type SubSystemType { get; }
+
             public UpdateInSubSystemAttribute(Type subSystemType)
             {
                 SubSystemType = subSystemType;
             }
-
-            public Type SubSystemType { get; }
         }
 
-        // HACK: We need to call this specific private method to ensure the EntityDebugger shows our groups in the PlayerLoop
+        // UTY-2059: We need to call this specific private method to ensure the EntityDebugger shows our groups in the PlayerLoop
         // No need to cache these methods, as each type will almost always be called once.
         private static void InsertManagerIntoSubsystemList(PlayerLoopSystem[] subsystemList, int insertIndex,
             ComponentSystemBase mgr, Type type)
@@ -35,11 +35,11 @@ namespace Improbable.Gdk.Core
 
         public static void ResolveSystemGroups(World world)
         {
-            var systems = world.Systems.ToList();
-            var uniqueGroup = new HashSet<Type>(systems.Select(s => s.GetType()));
-
             // Create simulation system for the default group
             var simulationSystemGroup = world.GetOrCreateSystem<SimulationSystemGroup>();
+
+            var systems = world.Systems.ToList();
+            var uniqueSystemTypes = new HashSet<Type>(systems.Select(s => s.GetType()));
 
             // Add systems to their groups, based on the [UpdateInGroup] attribute.
             for (var i = 0; i < systems.Count; i++)
@@ -53,7 +53,6 @@ namespace Improbable.Gdk.Core
                     type == typeof(PresentationSystemGroup) ||
                     type.GetCustomAttribute<UpdateInSubSystemAttribute>() != null)
                 {
-                    uniqueGroup.Add(type);
                     continue;
                 }
 
@@ -64,29 +63,21 @@ namespace Improbable.Gdk.Core
                     simulationSystemGroup.AddSystemToUpdateList(system);
                 }
 
-                foreach (var group in groups)
+                foreach (UpdateInGroupAttribute groupAttr in groups)
                 {
-                    if (!(group is UpdateInGroupAttribute groupAttribute))
-                    {
-                        continue;
-                    }
-
-                    if (!typeof(ComponentSystemGroup).IsAssignableFrom(groupAttribute.GroupType))
+                    if (!typeof(ComponentSystemGroup).IsAssignableFrom(groupAttr.GroupType))
                     {
                         Debug.LogError(
-                            $"Invalid [UpdateInGroup] attribute for {type}: {groupAttribute.GroupType} must be derived from ComponentSystemGroup.");
+                            $"Invalid [UpdateInGroup] attribute for {type}: {groupAttr.GroupType} must be derived from ComponentSystemGroup.");
                         continue;
                     }
 
-                    var groupMgr = world.GetOrCreateSystem(groupAttribute.GroupType);
-                    if (groupMgr is ComponentSystemGroup groupSys)
+                    var groupSys = world.GetOrCreateSystem(groupAttr.GroupType) as ComponentSystemGroup;
+                    groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type));
+                    if (!uniqueSystemTypes.Contains(groupAttr.GroupType))
                     {
-                        groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type));
-                        if (!uniqueGroup.Contains(groupAttribute.GroupType))
-                        {
-                            uniqueGroup.Add(groupAttribute.GroupType);
-                            systems.Add(groupMgr);
-                        }
+                        uniqueSystemTypes.Add(groupAttr.GroupType);
+                        systems.Add(groupSys);
                     }
                 }
             }

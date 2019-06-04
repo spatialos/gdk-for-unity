@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Profiling;
@@ -37,7 +36,7 @@ namespace Improbable.Gdk.Core
         protected override void OnUpdate()
         {
             Profiler.BeginSample("RemoveRemoveAtEndOfTick");
-            foreach ((EntityQuery componentGroup, var componentType) in componentGroupsToRemove)
+            foreach (var (componentGroup, componentType) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
                 {
