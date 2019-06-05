@@ -42,15 +42,13 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            Entities.With(group).ForEach((Entity entity, Rigidbody rigidbody, ref CameraInput cameraInput, ref CameraTransform cameraTransform) =>
+            Entities.With(group).ForEach((Entity entity, Rigidbody rigidbody, ref CameraInput cameraInput,
+                ref CameraTransform cameraTransform) =>
             {
-                var input = UpdateCameraInput(cameraInput);
-                var transform = UpdateCameraTransform(input, rigidbody.position);
+                cameraInput = UpdateCameraInput(cameraInput);
+                cameraTransform = UpdateCameraTransform(cameraInput, rigidbody.position);
 
-                UpdateCamera(transform);
-
-                cameraInput = input;
-                cameraTransform = transform;
+                UpdateCamera(cameraTransform);
             });
         }
 
