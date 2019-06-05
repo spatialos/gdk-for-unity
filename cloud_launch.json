@@ -1,21 +1,22 @@
 {
   "template": "small",
   "world": {
-    "chunkEdgeLengthMeters": 50,
+    "chunkEdgeLengthMeters": 5,
     "snapshots": {
       "snapshotWritePeriodSeconds": 0
     },
     "dimensions": {
-      "xMeters": 5000,
-      "zMeters": 5000
+      "xMeters": 500,
+      "zMeters": 500
     }
   },
   "load_balancing": {
     "layer_configurations": [
       {
         "layer": "UnityGameLogic",
-        "hex_grid": {
-          "num_workers": 2
+        "rectangle_grid": {
+          "cols": 2,
+          "rows": 1
         }
       }
     ]
