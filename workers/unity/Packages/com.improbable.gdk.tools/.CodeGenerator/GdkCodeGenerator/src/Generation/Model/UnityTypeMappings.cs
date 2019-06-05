@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
                 { BuiltInSchemaTypes.BuiltInFixed64, "ulong" },
                 { BuiltInSchemaTypes.BuiltInSfixed32, "int" },
                 { BuiltInSchemaTypes.BuiltInSfixed64, "long" },
-                { BuiltInSchemaTypes.BuiltInBool, "BlittableBool" },
+                { BuiltInSchemaTypes.BuiltInBool, "bool" },
                 { BuiltInSchemaTypes.BuiltInString, "string" },
                 { BuiltInSchemaTypes.BuiltInBytes, "byte[]" },
                 { BuiltInSchemaTypes.BuiltInEntityId, "global::Improbable.Gdk.Core.EntityId" }

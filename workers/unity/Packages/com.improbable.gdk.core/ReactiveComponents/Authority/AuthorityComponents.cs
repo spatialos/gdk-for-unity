@@ -30,7 +30,7 @@ namespace Improbable.Gdk.ReactiveComponents
     /// <typeparam name="T">The SpatialOS component.</typeparam>
     public struct AuthorityLossImminent<T> : IComponentData where T : ISpatialComponentData
     {
-        public BlittableBool AcknowledgeAuthorityLoss;
+        public bool AcknowledgeAuthorityLoss;
     }
 }
 #endif
