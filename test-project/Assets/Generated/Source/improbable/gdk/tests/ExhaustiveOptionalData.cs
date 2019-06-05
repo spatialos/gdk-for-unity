@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Tests
     [global::System.Serializable]
     public struct ExhaustiveOptionalData
     {
-        public BlittableBool? Field1;
+        public bool? Field1;
         public float? Field2;
         public global::Improbable.Gdk.Core.Option<byte[]> Field3;
         public int? Field4;
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests
         public global::Improbable.Gdk.Tests.SomeType? Field17;
         public global::Improbable.Gdk.Tests.SomeEnum? Field18;
     
-        public ExhaustiveOptionalData(BlittableBool? field1, float? field2, global::Improbable.Gdk.Core.Option<byte[]> field3, int? field4, long? field5, double? field6, global::Improbable.Gdk.Core.Option<string> field7, uint? field8, ulong? field9, int? field10, long? field11, uint? field12, ulong? field13, int? field14, long? field15, global::Improbable.Gdk.Core.EntityId? field16, global::Improbable.Gdk.Tests.SomeType? field17, global::Improbable.Gdk.Tests.SomeEnum? field18)
+        public ExhaustiveOptionalData(bool? field1, float? field2, global::Improbable.Gdk.Core.Option<byte[]> field3, int? field4, long? field5, double? field6, global::Improbable.Gdk.Core.Option<string> field7, uint? field8, ulong? field9, int? field10, long? field11, uint? field12, ulong? field13, int? field14, long? field15, global::Improbable.Gdk.Core.EntityId? field16, global::Improbable.Gdk.Tests.SomeType? field17, global::Improbable.Gdk.Tests.SomeEnum? field18)
         {
             Field1 = field1;
             Field2 = field2;
@@ -190,7 +190,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
-                        instance.Field1 = new BlittableBool?(obj.GetBool(1));
+                        instance.Field1 = new bool?(obj.GetBool(1));
                     }
                     
                 }

@@ -352,14 +352,14 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             }
         }
 
-        private Dictionary<Action<BlittableBool>, ulong> boolFieldUpdateCallbackToCallbackKey;
-        public event Action<BlittableBool> OnBoolFieldUpdate
+        private Dictionary<Action<bool>, ulong> boolFieldUpdateCallbackToCallbackKey;
+        public event Action<bool> OnBoolFieldUpdate
         {
             add
             {
                 if (boolFieldUpdateCallbackToCallbackKey == null)
                 {
-                    boolFieldUpdateCallbackToCallbackKey = new Dictionary<Action<BlittableBool>, ulong>();
+                    boolFieldUpdateCallbackToCallbackKey = new Dictionary<Action<bool>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<NonBlittableComponent.Update>(EntityId, update =>

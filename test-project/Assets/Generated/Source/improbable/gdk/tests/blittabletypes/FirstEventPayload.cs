@@ -12,10 +12,10 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     [global::System.Serializable]
     public struct FirstEventPayload
     {
-        public BlittableBool Field1;
+        public bool Field1;
         public int Field2;
     
-        public FirstEventPayload(BlittableBool field1, int field2)
+        public FirstEventPayload(bool field1, int field2)
         {
             Field1 = field1;
             Field2 = field2;

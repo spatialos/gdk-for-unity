@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field1Handle;
 
-            public global::System.Collections.Generic.Dictionary<BlittableBool,string> Field1
+            public global::System.Collections.Generic.Dictionary<bool,string> Field1
             {
                 get => Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
@@ -377,7 +377,7 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197719;
 
-            public global::System.Collections.Generic.Dictionary<BlittableBool,string> Field1;
+            public global::System.Collections.Generic.Dictionary<bool,string> Field1;
             public global::System.Collections.Generic.Dictionary<float,string> Field2;
             public global::System.Collections.Generic.Dictionary<byte[],string> Field3;
             public global::System.Collections.Generic.Dictionary<int,string> Field4;
@@ -396,7 +396,7 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> Field17;
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> Field18;
 
-            public Snapshot(global::System.Collections.Generic.Dictionary<BlittableBool,string> field1, global::System.Collections.Generic.Dictionary<float,string> field2, global::System.Collections.Generic.Dictionary<byte[],string> field3, global::System.Collections.Generic.Dictionary<int,string> field4, global::System.Collections.Generic.Dictionary<long,string> field5, global::System.Collections.Generic.Dictionary<double,string> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<uint,string> field8, global::System.Collections.Generic.Dictionary<ulong,string> field9, global::System.Collections.Generic.Dictionary<int,string> field10, global::System.Collections.Generic.Dictionary<long,string> field11, global::System.Collections.Generic.Dictionary<uint,string> field12, global::System.Collections.Generic.Dictionary<ulong,string> field13, global::System.Collections.Generic.Dictionary<int,string> field14, global::System.Collections.Generic.Dictionary<long,string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> field18)
+            public Snapshot(global::System.Collections.Generic.Dictionary<bool,string> field1, global::System.Collections.Generic.Dictionary<float,string> field2, global::System.Collections.Generic.Dictionary<byte[],string> field3, global::System.Collections.Generic.Dictionary<int,string> field4, global::System.Collections.Generic.Dictionary<long,string> field5, global::System.Collections.Generic.Dictionary<double,string> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<uint,string> field8, global::System.Collections.Generic.Dictionary<ulong,string> field9, global::System.Collections.Generic.Dictionary<int,string> field10, global::System.Collections.Generic.Dictionary<long,string> field11, global::System.Collections.Generic.Dictionary<uint,string> field12, global::System.Collections.Generic.Dictionary<ulong,string> field13, global::System.Collections.Generic.Dictionary<int,string> field14, global::System.Collections.Generic.Dictionary<long,string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> field18)
             {
                 Field1 = field1;
                 Field2 = field2;
@@ -1417,7 +1417,7 @@ namespace Improbable.Gdk.Tests
 
                 component.field1Handle = Improbable.Gdk.Tests.ExhaustiveMapKey.ReferenceTypeProviders.Field1Provider.Allocate(world);
                 {
-                    component.Field1 = new global::System.Collections.Generic.Dictionary<BlittableBool,string>();
+                    component.Field1 = new global::System.Collections.Generic.Dictionary<bool,string>();
                     var map = component.Field1;
                     var mapSize = obj.GetObjectCount(1);
                     for (var i = 0; i < mapSize; i++)
@@ -1690,7 +1690,7 @@ namespace Improbable.Gdk.Tests
                     }
                     if (mapSize > 0 || isCleared)
                     {
-                        update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<BlittableBool,string>>(new global::System.Collections.Generic.Dictionary<BlittableBool,string>());
+                        update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<bool,string>>(new global::System.Collections.Generic.Dictionary<bool,string>());
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -2119,7 +2119,7 @@ namespace Improbable.Gdk.Tests
 
                 {
                     var mapSize = obj.GetObjectCount(1);
-                    update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<BlittableBool,string>>(new global::System.Collections.Generic.Dictionary<BlittableBool,string>());
+                    update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<bool,string>>(new global::System.Collections.Generic.Dictionary<bool,string>());
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(1, (uint) i);
@@ -2341,7 +2341,7 @@ namespace Improbable.Gdk.Tests
                 var component = new global::Improbable.Gdk.Tests.ExhaustiveMapKey.Snapshot();
 
                 {
-                    component.Field1 = new global::System.Collections.Generic.Dictionary<BlittableBool,string>();
+                    component.Field1 = new global::System.Collections.Generic.Dictionary<bool,string>();
                     var map = component.Field1;
                     var mapSize = obj.GetObjectCount(1);
                     for (var i = 0; i < mapSize; i++)
@@ -3480,7 +3480,7 @@ namespace Improbable.Gdk.Tests
         {
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
-            public Option<global::System.Collections.Generic.Dictionary<BlittableBool,string>> Field1;
+            public Option<global::System.Collections.Generic.Dictionary<bool,string>> Field1;
             public Option<global::System.Collections.Generic.Dictionary<float,string>> Field2;
             public Option<global::System.Collections.Generic.Dictionary<byte[],string>> Field3;
             public Option<global::System.Collections.Generic.Dictionary<int,string>> Field4;
@@ -3560,7 +3560,7 @@ namespace Improbable.Gdk.Tests
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
                 var update = new Update();
-                update.Field1 = new Option<global::System.Collections.Generic.Dictionary<BlittableBool,string>>(snapshot.Field1);
+                update.Field1 = new Option<global::System.Collections.Generic.Dictionary<bool,string>>(snapshot.Field1);
                 update.Field2 = new Option<global::System.Collections.Generic.Dictionary<float,string>>(snapshot.Field2);
                 update.Field3 = new Option<global::System.Collections.Generic.Dictionary<byte[],string>>(snapshot.Field3);
                 update.Field4 = new Option<global::System.Collections.Generic.Dictionary<int,string>>(snapshot.Field4);

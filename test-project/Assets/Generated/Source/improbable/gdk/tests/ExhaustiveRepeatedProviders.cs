@@ -82,7 +82,7 @@ namespace Improbable.Gdk.Tests
 
             public static class Field1Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.List<BlittableBool>> Storage = new Dictionary<uint, global::System.Collections.Generic.List<BlittableBool>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.List<bool>> Storage = new Dictionary<uint, global::System.Collections.Generic.List<bool>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -91,13 +91,13 @@ namespace Improbable.Gdk.Tests
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.List<BlittableBool>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.List<bool>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.List<BlittableBool> Get(uint handle)
+                public static global::System.Collections.Generic.List<bool> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Tests
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.List<BlittableBool> value)
+                public static void Set(uint handle, global::System.Collections.Generic.List<bool> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

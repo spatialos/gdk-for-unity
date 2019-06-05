@@ -107,9 +107,9 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 return snapshot;
             }
 
-            private BlittableBool boolField;
+            private bool boolField;
 
-            public BlittableBool BoolField
+            public bool BoolField
             {
                 get => boolField;
                 set
@@ -261,7 +261,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             public uint ComponentId => 1002;
 
-            public BlittableBool BoolField;
+            public bool BoolField;
             public int IntField;
             public long LongField;
             public float FloatField;
@@ -271,7 +271,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public global::System.Collections.Generic.List<int> ListField;
             public global::System.Collections.Generic.Dictionary<int,string> MapField;
 
-            public Snapshot(BlittableBool boolField, int intField, long longField, float floatField, double doubleField, string stringField, int? optionalField, global::System.Collections.Generic.List<int> listField, global::System.Collections.Generic.Dictionary<int,string> mapField)
+            public Snapshot(bool boolField, int intField, long longField, float floatField, double doubleField, string stringField, int? optionalField, global::System.Collections.Generic.List<int> listField, global::System.Collections.Generic.Dictionary<int,string> mapField)
             {
                 BoolField = boolField;
                 IntField = intField;
@@ -653,7 +653,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        update.BoolField = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
+                        update.BoolField = new global::Improbable.Gdk.Core.Option<bool>(value);
                     }
                     
                 }
@@ -774,7 +774,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 {
                     var value = obj.GetBool(1);
-                    update.BoolField = new global::Improbable.Gdk.Core.Option<BlittableBool>(value);
+                    update.BoolField = new global::Improbable.Gdk.Core.Option<bool>(value);
                     
                 }
                 {
@@ -1150,7 +1150,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
         {
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
-            public Option<BlittableBool> BoolField;
+            public Option<bool> BoolField;
             public Option<int> IntField;
             public Option<long> LongField;
             public Option<float> FloatField;
@@ -1221,7 +1221,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
                 var update = new Update();
-                update.BoolField = new Option<BlittableBool>(snapshot.BoolField);
+                update.BoolField = new Option<bool>(snapshot.BoolField);
                 update.IntField = new Option<int>(snapshot.IntField);
                 update.LongField = new Option<long>(snapshot.LongField);
                 update.FloatField = new Option<float>(snapshot.FloatField);

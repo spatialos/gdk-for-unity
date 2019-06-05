@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field1Handle;
 
-            public global::System.Collections.Generic.List<BlittableBool> Field1
+            public global::System.Collections.Generic.List<bool> Field1
             {
                 get => Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
@@ -377,7 +377,7 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197717;
 
-            public global::System.Collections.Generic.List<BlittableBool> Field1;
+            public global::System.Collections.Generic.List<bool> Field1;
             public global::System.Collections.Generic.List<float> Field2;
             public global::System.Collections.Generic.List<byte[]> Field3;
             public global::System.Collections.Generic.List<int> Field4;
@@ -396,7 +396,7 @@ namespace Improbable.Gdk.Tests
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> Field17;
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> Field18;
 
-            public Snapshot(global::System.Collections.Generic.List<BlittableBool> field1, global::System.Collections.Generic.List<float> field2, global::System.Collections.Generic.List<byte[]> field3, global::System.Collections.Generic.List<int> field4, global::System.Collections.Generic.List<long> field5, global::System.Collections.Generic.List<double> field6, global::System.Collections.Generic.List<string> field7, global::System.Collections.Generic.List<uint> field8, global::System.Collections.Generic.List<ulong> field9, global::System.Collections.Generic.List<int> field10, global::System.Collections.Generic.List<long> field11, global::System.Collections.Generic.List<uint> field12, global::System.Collections.Generic.List<ulong> field13, global::System.Collections.Generic.List<int> field14, global::System.Collections.Generic.List<long> field15, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> field18)
+            public Snapshot(global::System.Collections.Generic.List<bool> field1, global::System.Collections.Generic.List<float> field2, global::System.Collections.Generic.List<byte[]> field3, global::System.Collections.Generic.List<int> field4, global::System.Collections.Generic.List<long> field5, global::System.Collections.Generic.List<double> field6, global::System.Collections.Generic.List<string> field7, global::System.Collections.Generic.List<uint> field8, global::System.Collections.Generic.List<ulong> field9, global::System.Collections.Generic.List<int> field10, global::System.Collections.Generic.List<long> field11, global::System.Collections.Generic.List<uint> field12, global::System.Collections.Generic.List<ulong> field13, global::System.Collections.Generic.List<int> field14, global::System.Collections.Generic.List<long> field15, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> field18)
             {
                 Field1 = field1;
                 Field2 = field2;
@@ -1273,7 +1273,7 @@ namespace Improbable.Gdk.Tests
 
                 component.field1Handle = Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Allocate(world);
                 {
-                    component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    component.Field1 = new global::System.Collections.Generic.List<bool>();
                     var list = component.Field1;
                     var listLength = obj.GetBoolCount(1);
                     for (var i = 0; i < listLength; i++)
@@ -1492,7 +1492,7 @@ namespace Improbable.Gdk.Tests
                     }
                     if (listSize > 0 || isCleared)
                     {
-                        update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<BlittableBool>>(new global::System.Collections.Generic.List<BlittableBool>());
+                        update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<bool>>(new global::System.Collections.Generic.List<bool>());
                     }
                     for (var i = 0; i < listSize; i++)
                     {
@@ -1885,7 +1885,7 @@ namespace Improbable.Gdk.Tests
 
                 {
                     var listSize = obj.GetBoolCount(1);
-                    update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<BlittableBool>>(new global::System.Collections.Generic.List<BlittableBool>());
+                    update.Field1 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<bool>>(new global::System.Collections.Generic.List<bool>());
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexBool(1, (uint) i);
@@ -2071,7 +2071,7 @@ namespace Improbable.Gdk.Tests
                 var component = new global::Improbable.Gdk.Tests.ExhaustiveRepeated.Snapshot();
 
                 {
-                    component.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    component.Field1 = new global::System.Collections.Generic.List<bool>();
                     var list = component.Field1;
                     var listLength = obj.GetBoolCount(1);
                     for (var i = 0; i < listLength; i++)
@@ -3084,7 +3084,7 @@ namespace Improbable.Gdk.Tests
         {
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
-            public Option<global::System.Collections.Generic.List<BlittableBool>> Field1;
+            public Option<global::System.Collections.Generic.List<bool>> Field1;
             public Option<global::System.Collections.Generic.List<float>> Field2;
             public Option<global::System.Collections.Generic.List<byte[]>> Field3;
             public Option<global::System.Collections.Generic.List<int>> Field4;
@@ -3164,7 +3164,7 @@ namespace Improbable.Gdk.Tests
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
                 var update = new Update();
-                update.Field1 = new Option<global::System.Collections.Generic.List<BlittableBool>>(snapshot.Field1);
+                update.Field1 = new Option<global::System.Collections.Generic.List<bool>>(snapshot.Field1);
                 update.Field2 = new Option<global::System.Collections.Generic.List<float>>(snapshot.Field2);
                 update.Field3 = new Option<global::System.Collections.Generic.List<byte[]>>(snapshot.Field3);
                 update.Field4 = new Option<global::System.Collections.Generic.List<int>>(snapshot.Field4);

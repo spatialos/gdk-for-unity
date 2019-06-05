@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Tests
     [global::System.Serializable]
     public struct ExhaustiveMapKeyData
     {
-        public global::System.Collections.Generic.Dictionary<BlittableBool,string> Field1;
+        public global::System.Collections.Generic.Dictionary<bool,string> Field1;
         public global::System.Collections.Generic.Dictionary<float,string> Field2;
         public global::System.Collections.Generic.Dictionary<byte[],string> Field3;
         public global::System.Collections.Generic.Dictionary<int,string> Field4;
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests
         public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> Field17;
         public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> Field18;
     
-        public ExhaustiveMapKeyData(global::System.Collections.Generic.Dictionary<BlittableBool,string> field1, global::System.Collections.Generic.Dictionary<float,string> field2, global::System.Collections.Generic.Dictionary<byte[],string> field3, global::System.Collections.Generic.Dictionary<int,string> field4, global::System.Collections.Generic.Dictionary<long,string> field5, global::System.Collections.Generic.Dictionary<double,string> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<uint,string> field8, global::System.Collections.Generic.Dictionary<ulong,string> field9, global::System.Collections.Generic.Dictionary<int,string> field10, global::System.Collections.Generic.Dictionary<long,string> field11, global::System.Collections.Generic.Dictionary<uint,string> field12, global::System.Collections.Generic.Dictionary<ulong,string> field13, global::System.Collections.Generic.Dictionary<int,string> field14, global::System.Collections.Generic.Dictionary<long,string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> field18)
+        public ExhaustiveMapKeyData(global::System.Collections.Generic.Dictionary<bool,string> field1, global::System.Collections.Generic.Dictionary<float,string> field2, global::System.Collections.Generic.Dictionary<byte[],string> field3, global::System.Collections.Generic.Dictionary<int,string> field4, global::System.Collections.Generic.Dictionary<long,string> field5, global::System.Collections.Generic.Dictionary<double,string> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<uint,string> field8, global::System.Collections.Generic.Dictionary<ulong,string> field9, global::System.Collections.Generic.Dictionary<int,string> field10, global::System.Collections.Generic.Dictionary<long,string> field11, global::System.Collections.Generic.Dictionary<uint,string> field12, global::System.Collections.Generic.Dictionary<ulong,string> field13, global::System.Collections.Generic.Dictionary<int,string> field14, global::System.Collections.Generic.Dictionary<long,string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeType,string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Tests.SomeEnum,string> field18)
         {
             Field1 = field1;
             Field2 = field2;
@@ -224,7 +224,7 @@ namespace Improbable.Gdk.Tests
             {
                 var instance = new ExhaustiveMapKeyData();
                 {
-                    instance.Field1 = new global::System.Collections.Generic.Dictionary<BlittableBool,string>();
+                    instance.Field1 = new global::System.Collections.Generic.Dictionary<bool,string>();
                     var map = instance.Field1;
                     var mapSize = obj.GetObjectCount(1);
                     for (var i = 0; i < mapSize; i++)

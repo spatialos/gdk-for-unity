@@ -352,14 +352,14 @@ namespace Improbable.Gdk.Tests
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.List<BlittableBool>>, ulong> field1UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.List<BlittableBool>> OnField1Update
+        private Dictionary<Action<global::System.Collections.Generic.List<bool>>, ulong> field1UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.List<bool>> OnField1Update
         {
             add
             {
                 if (field1UpdateCallbackToCallbackKey == null)
                 {
-                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.List<BlittableBool>>, ulong>();
+                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.List<bool>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveRepeated.Update>(EntityId, update =>

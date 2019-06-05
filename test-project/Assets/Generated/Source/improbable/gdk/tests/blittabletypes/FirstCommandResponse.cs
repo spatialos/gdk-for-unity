@@ -12,9 +12,9 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     [global::System.Serializable]
     public struct FirstCommandResponse
     {
-        public BlittableBool Response;
+        public bool Response;
     
-        public FirstCommandResponse(BlittableBool response)
+        public FirstCommandResponse(bool response)
         {
             Response = response;
         }
