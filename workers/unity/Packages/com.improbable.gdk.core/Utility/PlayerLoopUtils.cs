@@ -56,14 +56,14 @@ namespace Improbable.Gdk.Core
                     continue;
                 }
 
-                // Add to default group is none is defined
-                var groups = type.GetCustomAttributes(typeof(UpdateInGroupAttribute), true);
-                if (groups.Length == 0)
+                // Add to default group if none is defined
+                var groupAttributes = type.GetCustomAttributes(typeof(UpdateInGroupAttribute), true);
+                if (groupAttributes.Length == 0)
                 {
                     simulationSystemGroup.AddSystemToUpdateList(system);
                 }
 
-                foreach (UpdateInGroupAttribute groupAttr in groups)
+                foreach (UpdateInGroupAttribute groupAttr in groupAttributes)
                 {
                     if (!typeof(ComponentSystemGroup).IsAssignableFrom(groupAttr.GroupType))
                     {
@@ -72,12 +72,12 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    var groupSys = world.GetOrCreateSystem(groupAttr.GroupType) as ComponentSystemGroup;
-                    groupSys.AddSystemToUpdateList(world.GetOrCreateSystem(type));
+                    var systemGroup = world.GetOrCreateSystem(groupAttr.GroupType) as ComponentSystemGroup;
+                    systemGroup.AddSystemToUpdateList(world.GetOrCreateSystem(type));
                     if (!uniqueSystemTypes.Contains(groupAttr.GroupType))
                     {
                         uniqueSystemTypes.Add(groupAttr.GroupType);
-                        systems.Add(groupSys);
+                        systems.Add(systemGroup);
                     }
                 }
             }

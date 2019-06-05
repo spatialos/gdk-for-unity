@@ -415,6 +415,8 @@ namespace Improbable.Gdk.Core
         {
             if (Worker?.World != null)
             {
+                // Remove root systems from the disposing world from the PlayerLoop
+                // This only affects the loop next frame
                 PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
             }
 
