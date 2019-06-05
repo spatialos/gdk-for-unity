@@ -13,7 +13,7 @@
 - Upgraded the Unity Entities package to `preview.33` from `preview.21`.
     - See the Unity Entities package [changelog](https://docs.unity3d.com/Packages/com.unity.entities@0.0/changelog/CHANGELOG.html) for more information.
     - This has removed several API's such as `[Inject]` and `ComponentDataArray`.
-    - If you used Generic IComponentData types, please view their example on `RegisterGenericComponentType`.
+    - If you used Generic `IComponentData` types, please view their example on `RegisterGenericComponentType`.
     - System groups API has changed, systems without a group are automatically added to the `SimulationSystemGroup` which runs on `Update`.
         - The Unity Editor will print helpful warnings if any systems are not grouped properly.
 
