@@ -43,23 +43,25 @@ Here's an example of how to write a system that runs when a worker instance has 
 ```csharp
 public class AuthoritativePositionSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        // ECS component representing the SpatialOS component Position.
-        public ComponentDataArray<Position.Component> Position;
-        // ECS component tag representing the worker's authority over the SpatialOS Position component.
-        public ComponentDataArray<Authoritative<Position.Component>> PositionAuthority;
-    }
+    private EntityQuery query;
 
-    [Inject] Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadWrite<Position.Component>(),
+            ComponentType.ReadOnly<Position.ComponentAuthority>()
+        );
+        query.SetFilter(Position.ComponentAuthority.Authoritative);
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
+        Entities.With(query).ForEach((ref Position.Component position) =>
         {
             // This will only run when the worker instance is authoritative over a Position component.
-        }
+        });
     }
 }
 ```
@@ -88,26 +90,48 @@ Here's an example of doing something when a worker instance gets authority over 
 ```csharp
 public class OnPlayerSpawnSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<PlayerInput.Component> PlayerInput;
-        public ComponentDataArray<Authoritative<PlayerInput.Component>> PlayerInputAuthority;
-        // ECS component tag representing a change of authority over PlayerInput in the last tick.
-        public ComponentDataArray<AuthorityChanges<PlayerInput.Component>> PlayerInputAuthorityChange;
-    }
+    private ComponentUpdateSystem updateSystem;
 
-    [Inject] Data data;
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<SpatialEntityId>(),
+            ComponentType.ReadWrite<PlayerInput.Component>(),
+            ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
+        );
+        query.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
-        {
-            // The data being injected is for being authoritative over the
-            // SpatialOS component PlayerInput, and for changes to authority.
-            // So, write code here that you want to run when the worker instance
-            // receives authority over PlayerInput
-        }
+        // We iterate over all entities with the PlayerInput Component that we are authoritative over.
+        Entities.With(query).ForEach(
+            (ref SpatialEntityId spatialEntityId, ref PlayerInput.Component playerInput) =>
+            {
+                var authorityChanges = updateSystem.GetAuthorityChangesReceived(
+                    spatialEntityId.EntityId,
+                    PlayerInput.ComponentId);
+
+                // Skip if there were no authority changes.
+                if (authorityChanges.Count <= 0)
+                {
+                    return;
+                }
+
+                for (var i = 0; i < authorityChanges.Count; i++)
+                {
+                    // In here we iterate through entities with a PlayerInput component
+                    // which we have authority over, and where there have been changes
+                    // of authority. Therefore, write code here that you want to run
+                    // when the worker instance receives authority over PlayerInput.
+                }
+            });
     }
 }
 ```

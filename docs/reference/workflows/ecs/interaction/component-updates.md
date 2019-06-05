@@ -9,43 +9,33 @@ Before reading this document, make sure you are familiar with
   * [ECS component generation]({{urlRoot}}/reference/concepts/code-generation)
   * [ECS system update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
 
-The following schema file is used for the examples described below.
-
-```schemalang
-package improbable.examples;
-
-component Health {
-    id = 10000;
-    int32 current_health = 1;
-    int32 damage_taken = 2;
-}
-```
-
 When a SpatialOS entity is [checked out]({{urlRoot}}/reference/glossary#checking-out), its components are added to the corresponding ECS entity as part of the entity's check out process.
 
 ### How to send a component update
 
-To send a component update, change the value of at least one field of the component . A component update is constructed and sent at the end of the current update loop.
+To send a component update, change the value of at least one field of the component. A component update is constructed and sent at the end of the current update loop.
 
 ```csharp
-public class SendHealthUpdateSystem : ComponentSystem
+public class SendExampleUpdateSystem : ComponentSystem
 {
-    private struct Data
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
     {
-        public readonly int Length;
-        public ComponentDataArray<Health.Component> HealthComponents;
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadWrite<Example.Component>()
+        );
     }
 
-    [Inject] private Data data;
-
-    protected void OnUpdate()
+    protected override void OnUpdate()
     {
-        for (var i = 0; i < data.Length; ++i)
-        {
-            var exampleComponent = data.ExampleComponents[i];
-            exampleComponent.Value = 10;
-            data.ExampleComponents[i] = exampleComponent;
-        }
+        Entities.With(query).ForEach(
+            (ref Example.Component exampleComponent) =>
+            {
+                exampleComponent.Value = 10;
+            });
     }
 }
 ```
@@ -77,41 +67,34 @@ The following is the correct way to trigger an automatic update for a `List<T>` 
 ```csharp
 public class ExampleSystem : ComponentSystem
 {
-    private struct Data
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
     {
-        public readonly int Length;
-        public ComponentDataArray<Bar.Component> BarComponents;
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadWrite<Bar.Component>()
+        );
     }
 
-    [Inject] private Data data;
-
-    protected void OnUpdate()
+    protected override void OnUpdate()
     {
-        // For a top level list or dictionary field, this is how you trigger an automatic update.
-        for (var i = 0; i < data.Length; ++i)
-        {
-            var bar = data.BarComponents[i];
+        Entities.With(query).ForEach(
+            (ref Bar.Component barComponent) =>
+            {
+                // Mutate the list or dictionary field.
+                // This is not sufficient to trigger an update.
+                barComponent.SomeInts.Add(10);
+                // Setting the field back to itself marks it as dirty.
+                barComponent.SomeInts = barComponent.SomeInts;
 
-            // Mutate the list. This is not sufficient to trigger an update.
-            bar.SomeInts.Add(10);
-            // Setting the field back to itself marks it as dirty.
-            bar.SomeInts = bar.SomeInts;
-
-            data.BarComponents[i] = bar;
-        }
-
-        // For a nested list or dictionary field, this is how you trigger an automatic update.
-        for (var i = 0; i < data.Length; ++i)
-        {
-            var bar = data.BarComponents[i];
-
-            // Mutate the list. This is not sufficient to trigger an update.
-            bar.SomeFoo.SomeFloats.Add(10);
-            // Setting the field back to itself marks it as dirty.
-            bar.SomeFoo = bar.SomeFoo;
-
-            data.BarComponents[i] = bar;
-        }
+                // Mutate the nest list or dictionary field.
+                // This is not sufficient to trigger an update.
+                barComponent.SomeFoo.SomeFloats.Add(10);
+                // Setting the field back to itself marks it as dirty.
+                barComponent.SomeFoo = barComponent.SomeFoo;
+            });
     }
 }
 ```
@@ -125,28 +108,29 @@ If you only want the latest values, you can access the `Health.Component` direct
 ```csharp
 public class ProcessChangedHealthSystem : ComponentSystem
 {
-    private struct Data
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
     {
-        public readonly int Length;
-        // the component has already been updated to the latest values
-        [ReadOnly] public ComponentDataArray<Health.Component> HealthComponents;
-        // inject the ReceivedUpdates component to ensure this system only runs when the
-        // component has changed
-        [ReadOnly] public ComponentDataArray<Health.ReceivedUpdates> Updates;
+        base.OnCreateManager();
+
+        // Set up a query for Example components that have received updates.
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<Example.ReceivedUpdates>()
+        );
     }
 
-    [Inject] private Data data;
-
-    protected void OnUpdate()
+    protected override void OnUpdate()
     {
-        for (var i = 0; i < data.Length; ++i)
-        {
-            var updates = data.Updates[i].Updates;
-            foreach (var update in updates)
+        // Iterate through components that have received updates.
+        Entities.With(query).ForEach(
+            (ref Example.ReceivedUpdates exampleUpdates) =>
             {
-                // process received updates
-            }
-        }
+                foreach (var update in exampleUpdates.Updates)
+                {
+                    // Process received updates.
+                }
+            });
     }
 }
 ```

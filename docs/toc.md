@@ -86,6 +86,8 @@
         - ECS
             - [Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
             - [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+            - [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
+            - [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
             - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/entity-contracts)
             - Interacting with SpatialOS
                 - [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority)
@@ -94,8 +96,6 @@
                 - Commands
                     - [Component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
                     - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
-            - [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
-            - [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)

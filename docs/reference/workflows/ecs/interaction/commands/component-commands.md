@@ -53,38 +53,45 @@ The following code snippet provides an example on how to send a command request.
 This example ECS system would run on any worker that has this system added to its ECS world.
 
 ```csharp
-// This ensures all command requests that you want to send are added before the
-// SpatialOSSendSystem in which all commands will be sent
+// This ensures all command requests that you want to send are added before
+// the GDK send systems are run.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class SendSpawnCubeRequestSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public ComponentDataArray<SpatialEntityId> EntityIds;
-        // This is a non-SpatialOS ECS component to trigger the spawning
-        [ReadOnly] public ComponentDataArray<ShouldSpawnCube> DenotesShouldSpawnCube;
-        public ComponentDataArray<CubeSpawner.CommandSenders.SpawnCube> SpawnCubeSenders;
-    }
+    private CommandSystem commandSystem;
 
-    [Inject] private Data data;
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        commandSystem = World.GetExistingSystem<CommandSystem>();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<SpatialEntityId>(),
+            ComponentType.ReadOnly<ShouldSpawnCube>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        for (var i = 0; i < data.Length; i++)
-        {
-            var requestSender = data.SpawnCubeSenders[i];
-            var targetEntityId = data.EntityIds[i];
-            // create the request you want to send
-            var request = new CubeSpawner.SpawnCube.Request
-            (
-                targetEntityId,
-                new Empty()
-            );
-            // add it to the list of command requests to be sent at the end of the current update loop
-            requestSender.RequestsToSend.Add(request);
-            data.SpawnCubeSenders[i] = requestSender;
-        }
+        Entities.With(query).ForEach(
+            (ref SpatialEntityId spatialEntityId, ref ShouldSpawnCube cubeTrigger) =>
+            {
+                var targetEntityId = spatialEntityId.EntityId;
+
+                // Create the request you want to send
+                var cubeSpawnRequest = new CubeSpawner.SpawnCube.Request
+                (
+                    targetEntityId,
+                    new Empty()
+                );
+
+                // Add to the set of command requests that the GDK
+                // will send at the end of the current update loop
+                commandSystem.SendCommand(cubeSpawnRequest);
+            });
     }
 }
 ```
@@ -95,44 +102,41 @@ The following code snippet provides an example on how to process and respond to 
 This example ECS system would run only on workers that have this system added to their ECS world and have write access over the corresponding component.
 
 ```csharp
-// This ensures all command requests that you want to handle are processed before the
-// CleanReactiveComponentsSystem cleans them up.
+// This ensures all command requests that you want to handle are processed
+// before they get cleaned up.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeRequestSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<CubeSpawner.CommandRequests.SpawnCube> ReceivedSpawnCubeRequests;
-        public ComponentDataArray<CubeSpawner.CommandResponders.SpawnCube> CommandResponders;
-    }
+    private CommandSystem commandSystem;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        commandSystem = World.GetExistingSystem<CommandSystem>();
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
+        var spawnCubeRequests = commandSystem.GetRequests<CubeSpawner.SpawnCube.ReceivedRequest>();
+
+        for (var i = 0; i < spawnCubeRequests.Count; i++)
         {
-            var spawnCubeRequests = data.ReceivedSpawnCubeRequests[i];
-            var responder = data.CommandResponders[i];
+            var spawnCubeRequest = spawnCubeRequests[i];
 
-            foreach (var spawnCubeRequest in requests.Requests)
-            {
-                // handle each SpawnCube request you received
-                // ...
-                // create a SpawnCube response
-                var spawnCubeResponse = new CubeSpawner.SpawnCube.Response
-                (
-                    spawnCubeRequest.RequestId,
-                    new Empty()
-                );
+            // Handle each SpawnCube request you received
+            // ...
 
-                // add it to the list of command responses to be sent
-                // at the end of the current update loop
-                responder.ResponsesToSend.Add(spawnCubeResponse);
-            }
+            // Create a SpawnCube response
+            var spawnCubeResponse = new CubeSpawner.SpawnCube.Response
+            (
+                spawnCubeRequest.RequestId,
+                new Empty()
+            );
 
-            data.CommandResponders[i] = responder;
+            // Add to the set of command responses that the GDK
+            // will send at the end of the current update loop
+            commandSystem.SendResponse(spawnCubeResponse);
         }
     }
 }
@@ -144,37 +148,38 @@ The following code snippet provides an example on how to handle a command respon
 This example ECS system would run on any worker that has this system added to its ECS world.
 
 ```csharp
-// This ensures all command responses that you want to handle are processed before the
-// CleanReactiveComponentsSystem cleans them up.
+// This ensures all command responses that you want to handle are processed
+// before they get cleaned up.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeResponseSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<CubeSpawner.CommandResponses.SpawnCube> ReceivedSpawnCubeResponses;
-    }
+    private CommandSystem commandSystem;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        commandSystem = World.GetExistingSystem<CommandSystem>();
+    }
 
     protected override void OnUpdate()
     {
-        for (var i = 0; i < data.Length; i++)
+        var spawnCubeResponses = commandSystem.GetResponses<CubeSpawner.SpawnCube.ReceivedResponse>();
+
+        for (var i = 0; i < spawnCubeResponses.Count; i++)
         {
-            var responses = data.ReceivedSpawnCubeResponses[i];
+            var spawnCubeResponse = spawnCubeResponses[i];
 
-            foreach (var response in responses.Responses)
+            if (spawnCubeResponse.StatusCode != StatusCode.Success)
             {
-                if (response.StatusCode != StatusCode.Success)
-                {
-                    // Handle command failure
-                    continue;
-                }
-
-                var responsePayload = response.ResponsePayload;
-                var requestPayload = response.RequestPayload;
-                // Handle SpawnCube response
+                // Handle command failure
+                continue;
             }
+
+            var responsePayload = spawnCubeResponse.ResponsePayload;
+            var requestPayload = spawnCubeResponse.RequestPayload;
+
+            // Handle SpawnCube response
         }
     }
 }

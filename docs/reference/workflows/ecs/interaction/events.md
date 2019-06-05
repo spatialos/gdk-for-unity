@@ -52,28 +52,31 @@ On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of ty
 ```csharp
 public class SendChangeColorEvent : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<CubeColor> Color;
-        public ComponentDataArray<CubeColor.EventSenders.ChangeColor> ChangeColorEventSender;
-    }
+    private ComponentUpdateSystem componentUpdateSystem;
 
-    [Inject] Data data;
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<SpatialEntityId>(),
+            ComponentType.ReadOnly<CubeColor>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
-        {
-            var eventSender = data.CubeColorEventSender[i];
-
-            var colorData = new ColorData
+        Entities.With(query).ForEach(
+            (ref SpatialEntityId entityId, CubeColor cubeColor) =>
             {
-                Color = Color.GREEN
-            };
-
-            eventSender.Events.Add(colorData);
-        }
+                componentUpdateSystem.SendEvent(
+                    new CubeColor.ChangeColor.Event(new ColorData(Color.GREEN)),
+                    entityId.EntityId);
+            });
     }
 }
 ```
@@ -93,24 +96,24 @@ Here's an example of receiving an event so the worker instance can handle it:
 ```csharp
 public class ChangeColorEventReceiveSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<CubeColor.ReceivedEvents.ChangeColor> ChangeColorEvents;
-    }
+    private ComponentUpdateSystem componentUpdateSystem;
 
-    [Inject] Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
-        {
-            var events = data.ChangeColorEvents[i];
+        var changeColorEvents = componentUpdateSystem.GetEventsReceived<CubeColor.ChangeColor.Event>();
 
-            foreach (var colorData in events.Events)
-            {
-                // Do something with the payload
-            }
+        for (var i = 0; i < changeColorEvents.Count; i++)
+        {
+            var colorData = changeColorEvents[i]olorEvent.Event.Payload;
+
+            // Do something with the payload
         }
     }
 }

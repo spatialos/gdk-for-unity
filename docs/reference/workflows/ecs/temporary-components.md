@@ -19,46 +19,73 @@ struct SomeTemporaryComponent : IComponentData
 
 When using temporary components, you must consider the ordering of your systems carefully. Any system which runs logic predicated on the temporary component should be ran after the temporary component may be added and before it will be removed (in `InternalSpatialOSCleanGroup`).
 
-The following code snippet shows an example how you can annotate your system to ensure it is run in the correct order.
-`AddComponentSystem` is the system that adds `SomeTemporaryComponent ` to your entities, while `ReadComponentSystem` filters for all entities containing `SomeTemporaryComponent `.
+The following code snippets shows an example how you can annotate your system to ensure it is run in the correct order.
+`AddComponentSystem` is a system that adds `SomeTemporaryComponent ` to your entities, while `ReadComponentSystem` filters for all entities containing `SomeTemporaryComponent`.
 
 ```csharp
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class AddComponentSystem : ComponentSystem
 {
-    private struct Data
-    {
-        public readonly int Length;
-        public EntityArray Entities;
-    }
+    private CommandSystem commandSystem;
+    private WorkerSystem workerSystem;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        commandSystem = World.GetExistingSystem<CommandSystem>();
+        workerSystem = World.GetExistingSystem<WorkerSystem>();
+    }
 
     protected override void OnUpdate()
     {
-        PostUpdateCommands.AddComponent(data.Entities[i], new SomeTemporaryComponent());
+        var requests = commandSystem.GetRequests<Launcher.LaunchEntity.ReceivedRequest>();
+
+        // Add `SomeTemporaryComponent` to an entity if the request has `RechargeNow` enabled
+        for (var i = 0; i < requests.Count; i++)
+        {
+            ref readonly var request = ref requests[i];
+            if (!workerSystem.TryGetEntity(request.EntityId, out var entity))
+            {
+                continue;
+            }
+
+            if (request.RechargeNow)
+            {
+                PostUpdateCommands.AddComponent(entity, new SomeTemporaryComponent());
+            }
+        }
     }
 }
+```
 
-// ensure that the temporary component has already been
-// added by running this system after AddComponentSystem
+```csharp
+// Ensure that the temporary component has already been added
+// by running this system after AddComponentSystem
 [UpdateAfter(typeof(AddComponentSystem))]
 // By running this system during the SpatialOSUpdateGroup, it will
-// definitely run before the InternalSpatialOSCleanGroup group.
+// definitely be run before the InternalSpatialOSCleanGroup group.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class ReadComponentSystem : ComponentSystem
 {
-    private struct Data
-    {
-        public readonly int Length;
-        [Readonly] public ComponentDataArray<SomeTemporaryComponent> TemporaryComponent;
-    }
+    private EntityQuery query;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<SomeTemporaryComponent>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        // perform work related to the temporary component
+        Entities.With(query).ForEach(
+            (ref SomeTemporaryComponent someTemporaryComponent) =>
+            {
+                // perform work related to your temporary component
+            });
     }
 }
 ```

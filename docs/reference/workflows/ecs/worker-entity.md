@@ -29,18 +29,25 @@ using UnityEngine;
 
 public class HandleConnectSystem : ComponentSystem
 {
-    private struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public ComponentDataArray<OnConnected> OnConnected;
-        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-    }
+    private EntityQuery query;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<OnConnected>(),
+            ComponentType.ReadOnly<WorkerEntityTag>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        Debug.Log("Worker just connected!");
+        Entities.With(query).ForEach(
+            (ref OnConnected onConnected, ref WorkerEntityTag workerEntityTag) =>
+            {
+                Debug.Log("Worker just connected!");
+            });
     }
 }
 ```
@@ -58,46 +65,25 @@ using UnityEngine;
 
 public class HandleDisconnectSystem : ComponentSystem
 {
-    private struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public SharedComponentDataArray<OnDisconnected> OnDisconnected;
-        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-    }
+    private EntityQuery query;
 
-    [Inject] private Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<OnDisconnected>(),
+            ComponentType.ReadOnly<WorkerEntityTag>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        var reasonForDisconnect = data.OnDisconnected[0].ReasonForDisconnect;
-        Debug.Log($"Got disconnected: {reasonForDisconnect}");
-    }
-}
-```
-
-## How to send a command using the worker entity
-
-The worker entity has all [command sender components]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands) attached to it.
-By filtering for these components, you are able to send commands even if you don't have any [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) which is [checked out]({{urlRoot}}/reference/glossary#checking-out).
-
-```csharp
-public class CreateCreatureSystem : ComponentSystem
-{
-    private struct Data
-    {
-        public readonly int Length;
-        [ReadOnly] public ComponentDataArray<WorkerEntityTag> DenotesWorkerEntity;
-        public ComponentDataArray<WorldCommands.CreateEntity.CommandSender> CreateEntitySender;
-    }
-
-    [Inject] private Data data;
-
-    protected override void OnUpdate()
-    {
-        var requestSender = data.CreateEntitySender[0];
-        var entity = CreatureTemplate.CreateCreatureEntityTemplate(new Coordinates(0, 0, 0));
-        requestSender.RequestsToSend.Add(new WorldCommands.CreateEntity.Request(entity));
-        data.CreateEntitySender[0] = requestSender;
+        Entities.With(query).ForEach(
+            (OnDisconnected onDisconnected, ref WorkerEntityTag workerEntityTag) =>
+            {
+                Debug.Log($"Got disconnected: {onDisconnected.ReasonForDisconnect}");
+            });
     }
 }
 ```

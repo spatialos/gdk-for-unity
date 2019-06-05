@@ -14,8 +14,7 @@ At the end of the tick, the GDK removes the reactive component.
 
 These are the types of reactive component available:
 
-1. `ReceivedUpdates`:  All local and received [SpatialOS component updates](https://docs.improbable.io/reference/latest/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-1. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/13.2/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority) for information on how this works.
+1. `AuthorityChanges`: Updates to the [authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component. See [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority) for information on how this works.
 1. `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity. See [Events]({{urlRoot}}/reference/workflows/ecs/interaction/events) for information on how this works.
 1. `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests. See [Commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands) for information on how this works.
 1. `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses. See [Commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands) for information on how this works.
@@ -29,30 +28,32 @@ There are tags for handling the addition and removal of components:
 
 ## Example of a system using a reactive component
 
+The following snippet shows how to retrieve and iterate through all the `PlayerCollided` events received in a frame.
+
 ```csharp
 public class ReactiveSystem : ComponentSystem
 {
-    public struct Data
-    {
-        public readonly int Length;
-        public ComponentDataArray<Position.ReceivedUpdates> PositionUpdates;
-    }
+    private EntityQuery query;
 
-    [Inject] Data data;
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadWrite<Collisions.ReceivedEvents.PlayerCollided>()
+        );
+    }
 
     protected override void OnUpdate()
     {
-        for(var i = 0; i < data.Length; i++)
-        {
-            var updates = data.PositionUpdates[i].Updates;
-            foreach (var update in updates)
+        Entities.With(query).ForEach(
+            (ref Collisions.ReceivedEvents.PlayerCollided playerCollisionEvents) =>
             {
-                if (update.Coords.HasValue)
+                foreach (var playerCollision in playerCollisionEvents.Events)
                 {
                     // Do something
                 }
-            }            
-        }
+            });
     }
 }
 ```
