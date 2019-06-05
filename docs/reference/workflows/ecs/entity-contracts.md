@@ -1,9 +1,8 @@
 <%(TOC)%>
 
-# ECS entity contracts
+# ECS: Entity contracts
 
-_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
-
+<%(Callout message="
 Before reading this document, make sure you are familiar with:
 
   * [SpatialOS entities: update entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
@@ -11,6 +10,8 @@ Before reading this document, make sure you are familiar with:
   * [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
   * [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
   * [Workers: Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
+")%>
+
 
 This documentation describes the guarantees we provide for the components that an ECS Entity has.
 

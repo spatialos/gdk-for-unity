@@ -1,8 +1,6 @@
 <%(TOC)%>
 
-# Reactive components
-
-_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
+# ECS: Reactive components
 
 To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
 

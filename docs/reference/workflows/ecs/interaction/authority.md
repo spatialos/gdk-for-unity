@@ -2,7 +2,9 @@
 
 # ECS: Authority
 
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview.md)._
+<%(Callout message="
+_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
+")%>
 
 **Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).
 

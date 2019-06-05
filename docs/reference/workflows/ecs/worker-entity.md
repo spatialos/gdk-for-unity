@@ -1,10 +1,12 @@
 <%(TOC)%>
 
-# Worker entity
+# ECS: Worker entity
 
-_This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
+<%(Callout message="
+Before reading this document, make sure you have read:
 
-Before reading this document, see the documentation on [workers in the GDK]({{urlRoot}}/reference/concepts/worker).
+* [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
+")%>
 
 Each of the workers in your project must have exactly one [ECS entity]({{urlRoot}}/reference/glossary#unity-ecs-entity) in its [worker-ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) at any point in time. To uniquely identify the worker entity of your current worker, the worker entity has the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
 

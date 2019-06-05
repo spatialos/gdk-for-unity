@@ -2,11 +2,12 @@
 
 # ECS: Component commands
 
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
-
+<%(Callout message="
 Before reading this document, make sure you are familiar with:
 
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
+")%>
+
 
 ## About commands
 

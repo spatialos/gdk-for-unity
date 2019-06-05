@@ -2,8 +2,6 @@
 
 # ECS: Events
 
- _This document relates to the [ECS workflow]({{urlRoot}}/reference/workflows/overview)._
-
 Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
 Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event.
