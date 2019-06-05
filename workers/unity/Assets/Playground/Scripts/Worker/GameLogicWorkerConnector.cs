@@ -13,6 +13,7 @@ namespace Playground
 
         private async void Start()
         {
+            Application.targetFrameRate = 60;
             await Connect(WorkerUtils.UnityGameLogic, new ForwardingDispatcher()).ConfigureAwait(false);
         }
 
