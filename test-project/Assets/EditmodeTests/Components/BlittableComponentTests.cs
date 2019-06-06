@@ -11,7 +11,7 @@ namespace Improbable.Gdk.EditmodeTests.Ecs
         private const long LongValue = 5678L;
         private const float FloatValue = 1.2345f;
         private const double DoubleValue = 3.14159;
-        private static readonly BlittableBool BoolValue = true;
+        private const bool BoolValue = true;
 
         [Test]
         public void component_should_implement_ISpatialComponentData()

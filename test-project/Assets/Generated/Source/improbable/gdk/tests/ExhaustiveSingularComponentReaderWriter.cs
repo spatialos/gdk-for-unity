@@ -352,14 +352,14 @@ namespace Improbable.Gdk.Tests
             }
         }
 
-        private Dictionary<Action<BlittableBool>, ulong> field1UpdateCallbackToCallbackKey;
-        public event Action<BlittableBool> OnField1Update
+        private Dictionary<Action<bool>, ulong> field1UpdateCallbackToCallbackKey;
+        public event Action<bool> OnField1Update
         {
             add
             {
                 if (field1UpdateCallbackToCallbackKey == null)
                 {
-                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<BlittableBool>, ulong>();
+                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<bool>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveSingular.Update>(EntityId, update =>

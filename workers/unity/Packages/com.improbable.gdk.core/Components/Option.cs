@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     True if the Option contains a value, false if not.
         /// </summary>
-        public BlittableBool HasValue { get; }
+        public bool HasValue { get; }
 
         private readonly T value;
 

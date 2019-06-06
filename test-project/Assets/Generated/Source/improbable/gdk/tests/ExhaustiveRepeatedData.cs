@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Tests
     [global::System.Serializable]
     public struct ExhaustiveRepeatedData
     {
-        public global::System.Collections.Generic.List<BlittableBool> Field1;
+        public global::System.Collections.Generic.List<bool> Field1;
         public global::System.Collections.Generic.List<float> Field2;
         public global::System.Collections.Generic.List<byte[]> Field3;
         public global::System.Collections.Generic.List<int> Field4;
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests
         public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> Field17;
         public global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> Field18;
     
-        public ExhaustiveRepeatedData(global::System.Collections.Generic.List<BlittableBool> field1, global::System.Collections.Generic.List<float> field2, global::System.Collections.Generic.List<byte[]> field3, global::System.Collections.Generic.List<int> field4, global::System.Collections.Generic.List<long> field5, global::System.Collections.Generic.List<double> field6, global::System.Collections.Generic.List<string> field7, global::System.Collections.Generic.List<uint> field8, global::System.Collections.Generic.List<ulong> field9, global::System.Collections.Generic.List<int> field10, global::System.Collections.Generic.List<long> field11, global::System.Collections.Generic.List<uint> field12, global::System.Collections.Generic.List<ulong> field13, global::System.Collections.Generic.List<int> field14, global::System.Collections.Generic.List<long> field15, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> field18)
+        public ExhaustiveRepeatedData(global::System.Collections.Generic.List<bool> field1, global::System.Collections.Generic.List<float> field2, global::System.Collections.Generic.List<byte[]> field3, global::System.Collections.Generic.List<int> field4, global::System.Collections.Generic.List<long> field5, global::System.Collections.Generic.List<double> field6, global::System.Collections.Generic.List<string> field7, global::System.Collections.Generic.List<uint> field8, global::System.Collections.Generic.List<ulong> field9, global::System.Collections.Generic.List<int> field10, global::System.Collections.Generic.List<long> field11, global::System.Collections.Generic.List<uint> field12, global::System.Collections.Generic.List<ulong> field13, global::System.Collections.Generic.List<int> field14, global::System.Collections.Generic.List<long> field15, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum> field18)
         {
             Field1 = field1;
             Field2 = field2;
@@ -188,7 +188,7 @@ namespace Improbable.Gdk.Tests
             {
                 var instance = new ExhaustiveRepeatedData();
                 {
-                    instance.Field1 = new global::System.Collections.Generic.List<BlittableBool>();
+                    instance.Field1 = new global::System.Collections.Generic.List<bool>();
                     var list = instance.Field1;
                     var listLength = obj.GetBoolCount(1);
                     for (var i = 0; i < listLength; i++)

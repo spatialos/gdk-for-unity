@@ -117,7 +117,7 @@ namespace Improbable.Gdk.Tests
 
             internal uint field1Handle;
 
-            public BlittableBool? Field1
+            public bool? Field1
             {
                 get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
@@ -377,7 +377,7 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => 197716;
 
-            public BlittableBool? Field1;
+            public bool? Field1;
             public float? Field2;
             public global::Improbable.Gdk.Core.Option<byte[]> Field3;
             public int? Field4;
@@ -396,7 +396,7 @@ namespace Improbable.Gdk.Tests
             public global::Improbable.Gdk.Tests.SomeType? Field17;
             public global::Improbable.Gdk.Tests.SomeEnum? Field18;
 
-            public Snapshot(BlittableBool? field1, float? field2, global::Improbable.Gdk.Core.Option<byte[]> field3, int? field4, long? field5, double? field6, global::Improbable.Gdk.Core.Option<string> field7, uint? field8, ulong? field9, int? field10, long? field11, uint? field12, ulong? field13, int? field14, long? field15, global::Improbable.Gdk.Core.EntityId? field16, global::Improbable.Gdk.Tests.SomeType? field17, global::Improbable.Gdk.Tests.SomeEnum? field18)
+            public Snapshot(bool? field1, float? field2, global::Improbable.Gdk.Core.Option<byte[]> field3, int? field4, long? field5, double? field6, global::Improbable.Gdk.Core.Option<string> field7, uint? field8, ulong? field9, int? field10, long? field11, uint? field12, ulong? field13, int? field14, long? field15, global::Improbable.Gdk.Core.EntityId? field16, global::Improbable.Gdk.Tests.SomeType? field17, global::Improbable.Gdk.Tests.SomeEnum? field18)
             {
                 Field1 = field1;
                 Field2 = field2;
@@ -1275,7 +1275,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
-                        component.Field1 = new BlittableBool?(obj.GetBool(1));
+                        component.Field1 = new bool?(obj.GetBool(1));
                     }
                     
                 }
@@ -1437,12 +1437,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (isCleared)
                     {
-                        update.Field1 = new global::Improbable.Gdk.Core.Option<BlittableBool?>(new BlittableBool?());
+                        update.Field1 = new global::Improbable.Gdk.Core.Option<bool?>(new bool?());
                     }
                     else if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        update.Field1 = new global::Improbable.Gdk.Core.Option<BlittableBool?>(new BlittableBool?(value));
+                        update.Field1 = new global::Improbable.Gdk.Core.Option<bool?>(new bool?(value));
                     }
                     
                 }
@@ -1815,7 +1815,7 @@ namespace Improbable.Gdk.Tests
                     if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        update.Field1 = new global::Improbable.Gdk.Core.Option<BlittableBool?>(new BlittableBool?(value));
+                        update.Field1 = new global::Improbable.Gdk.Core.Option<bool?>(new bool?(value));
                     }
                     
                 }
@@ -1965,7 +1965,7 @@ namespace Improbable.Gdk.Tests
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
-                        component.Field1 = new BlittableBool?(obj.GetBool(1));
+                        component.Field1 = new bool?(obj.GetBool(1));
                     }
                     
                 }
@@ -2127,12 +2127,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (isCleared)
                     {
-                        component.Field1 = new BlittableBool?();
+                        component.Field1 = new bool?();
                     }
                     else if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        component.Field1 = new BlittableBool?(value);
+                        component.Field1 = new bool?(value);
                     }
                     
                 }
@@ -2513,12 +2513,12 @@ namespace Improbable.Gdk.Tests
                     }
                     if (isCleared)
                     {
-                        snapshot.Field1 = new BlittableBool?();
+                        snapshot.Field1 = new bool?();
                     }
                     else if (obj.GetBoolCount(1) == 1)
                     {
                         var value = obj.GetBool(1);
-                        snapshot.Field1 = new BlittableBool?(value);
+                        snapshot.Field1 = new bool?(value);
                     }
                     
                 }
@@ -2886,7 +2886,7 @@ namespace Improbable.Gdk.Tests
         {
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
 
-            public Option<BlittableBool?> Field1;
+            public Option<bool?> Field1;
             public Option<float?> Field2;
             public Option<global::Improbable.Gdk.Core.Option<byte[]>> Field3;
             public Option<int?> Field4;
@@ -2966,7 +2966,7 @@ namespace Improbable.Gdk.Tests
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
                 var update = new Update();
-                update.Field1 = new Option<BlittableBool?>(snapshot.Field1);
+                update.Field1 = new Option<bool?>(snapshot.Field1);
                 update.Field2 = new Option<float?>(snapshot.Field2);
                 update.Field3 = new Option<global::Improbable.Gdk.Core.Option<byte[]>>(snapshot.Field3);
                 update.Field4 = new Option<int?>(snapshot.Field4);

@@ -16,6 +16,7 @@
     - If you use generic `IComponentData` types, you must explicitly register them. Please view Unity's example on `RegisterGenericComponentType` in the changelog linked above.
     - System groups API has changed, systems without a group are automatically added to the `SimulationSystemGroup` which runs on `Update`.
         - The Unity Editor will print helpful warnings if any systems are not grouped properly.
+- Removed `BlittableBool`, as `bool` is now blittable.
 
 ### Changed
 

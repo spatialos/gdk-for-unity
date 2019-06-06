@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Tests
     [global::System.Serializable]
     public struct ExhaustiveMapValueData
     {
-        public global::System.Collections.Generic.Dictionary<string,BlittableBool> Field1;
+        public global::System.Collections.Generic.Dictionary<string,bool> Field1;
         public global::System.Collections.Generic.Dictionary<string,float> Field2;
         public global::System.Collections.Generic.Dictionary<string,byte[]> Field3;
         public global::System.Collections.Generic.Dictionary<string,int> Field4;
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tests
         public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> Field17;
         public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum> Field18;
     
-        public ExhaustiveMapValueData(global::System.Collections.Generic.Dictionary<string,BlittableBool> field1, global::System.Collections.Generic.Dictionary<string,float> field2, global::System.Collections.Generic.Dictionary<string,byte[]> field3, global::System.Collections.Generic.Dictionary<string,int> field4, global::System.Collections.Generic.Dictionary<string,long> field5, global::System.Collections.Generic.Dictionary<string,double> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<string,uint> field8, global::System.Collections.Generic.Dictionary<string,ulong> field9, global::System.Collections.Generic.Dictionary<string,int> field10, global::System.Collections.Generic.Dictionary<string,long> field11, global::System.Collections.Generic.Dictionary<string,uint> field12, global::System.Collections.Generic.Dictionary<string,ulong> field13, global::System.Collections.Generic.Dictionary<string,int> field14, global::System.Collections.Generic.Dictionary<string,long> field15, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum> field18)
+        public ExhaustiveMapValueData(global::System.Collections.Generic.Dictionary<string,bool> field1, global::System.Collections.Generic.Dictionary<string,float> field2, global::System.Collections.Generic.Dictionary<string,byte[]> field3, global::System.Collections.Generic.Dictionary<string,int> field4, global::System.Collections.Generic.Dictionary<string,long> field5, global::System.Collections.Generic.Dictionary<string,double> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<string,uint> field8, global::System.Collections.Generic.Dictionary<string,ulong> field9, global::System.Collections.Generic.Dictionary<string,int> field10, global::System.Collections.Generic.Dictionary<string,long> field11, global::System.Collections.Generic.Dictionary<string,uint> field12, global::System.Collections.Generic.Dictionary<string,ulong> field13, global::System.Collections.Generic.Dictionary<string,int> field14, global::System.Collections.Generic.Dictionary<string,long> field15, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> field16, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeType> field17, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Tests.SomeEnum> field18)
         {
             Field1 = field1;
             Field2 = field2;
@@ -224,7 +224,7 @@ namespace Improbable.Gdk.Tests
             {
                 var instance = new ExhaustiveMapValueData();
                 {
-                    instance.Field1 = new global::System.Collections.Generic.Dictionary<string,BlittableBool>();
+                    instance.Field1 = new global::System.Collections.Generic.Dictionary<string,bool>();
                     var map = instance.Field1;
                     var mapSize = obj.GetObjectCount(1);
                     for (var i = 0; i < mapSize; i++)
