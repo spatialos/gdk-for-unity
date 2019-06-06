@@ -16,6 +16,7 @@
     - If you use generic `IComponentData` types, you must explicitly register them. Please view Unity's example on `RegisterGenericComponentType` in the changelog linked above.
     - System groups API has changed, systems without a group are automatically added to the `SimulationSystemGroup` which runs on `Update`.
         - The Unity Editor will print helpful warnings if any systems are not grouped properly.
+- Removed `BlittableBool`, as `bool` is now blittable.
 
 ### Changed
 
@@ -24,7 +25,6 @@
 - Moved Dev Auth Token to the Player Preferences.
     - Added a setting in `GdkToolsConfiguration` to let users configure whether a `DevAuthToken.txt` should be generated or not.
     - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
-- Removed `BlittableBool`, as `bool` is now blittable.
 
 ### Fixed
 
