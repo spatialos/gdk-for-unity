@@ -97,7 +97,7 @@
                     - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
                 - Reactive components
                     - [Overview]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
-                    - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/entity-contracts)
+                    - [Entity contracts]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/entity-contracts)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)

@@ -83,11 +83,10 @@ public class ReadComponentSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref SomeTemporaryComponent someTemporaryComponent) =>
-            {
-                // perform work related to your temporary component
-            });
+        Entities.With(query).ForEach((ref SomeTemporaryComponent someTemporaryComponent) =>
+        {
+            // perform work related to your temporary component
+        });
     }
 }
 ```

@@ -1,11 +1,26 @@
-# Reactive component entity contracts
+<%(TOC)%>
+
+# ECS: Reactive component entity contracts
+
+<%(Callout message="
+Before reading this document, make sure you are familiar with:
+
+* [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
+* [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
+")%>
+
+This documentation describes the guarantees we provide for the reactive components that an ECS entity can have.
 
 ## ECS entities representing SpatialOS entities
 
 * `{name of component}.CommandSenders.{name of command}` components are always available on these entities for every single command defined in your schema.
 * `{name of component}.CommandResponders.{name of command}` components are available on these entities for all components ands that the worker is authoritative over.
 * `{name of component}.EventSender.{name of event}` components are available on these entities for all components that the worker is authoritative over.
-* At least one authority component is available on these entities based on the worker's component write access
+
+## Authority
+
+At least one authority component is available on these entities based on the worker's component write access.
+
 * [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative): If the worker has write access to the component.
 * [`NotAuthoritative<T>`]({{urlRoot}}/api/reactive-components/not-authoritative): If the worker only has read access to the component.
 * [`AuthorityLostImminent<T>`]({{urlRoot}}/api/reactive-components/authority-loss-imminent): If the worker is about to lose write access to the component. Note that the [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative) component is still attached to these entities.

@@ -31,36 +31,19 @@ public class SendExampleUpdateSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref Example.Component exampleComponent) =>
-            {
-                exampleComponent.Value = 10;
-            });
+        Entities.With(query).ForEach((ref Example.Component exampleComponent) =>
+        {
+            exampleComponent.Value = 10;
+        });
     }
 }
 ```
 
 #### Component update edge case
 
-There is one edge case that you need to be careful about: this is a result of how component changes are tracked and [C# reference type](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) semantics.
+As a result of how component changes are tracked and [C# reference type](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) semantics, there is one edge case that you need to be careful about.
 
-Simply adding or removing elements to a `List<T>` or a `Dictionary<K, V>` field in a component is not sufficient to trigger a component update. Instead, you need to set the field back to itself to trigger the update, as shown in the example below. This applies to `List<T>` and `Dictionary<K, V>` fields within types as well.
-
-Given the following schema:
-
-```schemalang
-package improbable.examples;
-
-type Foo {
-    list<float> some_floats = 1;
-}
-
-component Bar {
-    id = 10001;
-    list<int32> some_ints = 1;
-    Foo some_foo = 2;
-}
-```
+Simply adding or removing elements to a `List<T>` or a `Dictionary<K, V>` field in a component is not sufficient to trigger a component update. Instead, you need to **set the field back to itself to trigger the update**, as shown in the example below. This applies to `List<T>` and `Dictionary<K, V>` fields within types as well.
 
 The following is the correct way to trigger an automatic update for a `List<T>` or a `Dictionary<K, V>`.
 
@@ -74,35 +57,36 @@ public class ExampleSystem : ComponentSystem
         base.OnCreateManager();
 
         query = GetEntityQuery(
-            ComponentType.ReadWrite<Bar.Component>()
+            ComponentType.ReadWrite<Example.Component>()
         );
     }
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref Bar.Component barComponent) =>
-            {
-                // Mutate the list or dictionary field.
-                // This is not sufficient to trigger an update.
-                barComponent.SomeInts.Add(10);
-                // Setting the field back to itself marks it as dirty.
-                barComponent.SomeInts = barComponent.SomeInts;
+        Entities.With(query).ForEach((ref Example.Component exampleComponent) =>
+        {
+            // Mutate the list or dictionary field.
+            // This is not sufficient to trigger an update.
+            exampleComponent.SomeInts.Add(10);
+            // Setting the field back to itself marks it as dirty.
+            exampleComponent.SomeInts = exampleComponent.SomeInts;
 
-                // Mutate the nest list or dictionary field.
-                // This is not sufficient to trigger an update.
-                barComponent.SomeFoo.SomeFloats.Add(10);
-                // Setting the field back to itself marks it as dirty.
-                barComponent.SomeFoo = barComponent.SomeFoo;
-            });
+            // Mutate the nest list or dictionary field.
+            // This is not sufficient to trigger an update.
+            exampleComponent.SomeTypeField.SomeNestedFloats.Add(10);
+            // Setting the field back to itself marks it as dirty.
+            exampleComponent.SomeTypeField = exampleComponent.SomeTypeField;
+        });
     }
 }
 ```
 
 ### How to react to a component update
 
-When a component update is received this will be added as a [reactive component]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview).
-To access all component updates for the `Health` component that have happened since the last frame, access `Health.ReceivedUpdates.Updates`.
+To access all component updates for the component that have happened since the last frame, access the `Updates` field on the `ComponentName.ReceivedUpdates` component, where ComponentName is the name of your component.
+
+> Note that the `ComponentName.ReceivedUpdates` component is not temporary. You can identify if there were no component updates by checking if the `Updates` list is empty in a given tick.
+
 If you only want the latest values, you can access the `Health.Component` directly.
 
 ```csharp
@@ -123,14 +107,13 @@ public class ProcessChangedHealthSystem : ComponentSystem
     protected override void OnUpdate()
     {
         // Iterate through components that have received updates.
-        Entities.With(query).ForEach(
-            (ref Example.ReceivedUpdates exampleUpdates) =>
+        Entities.With(query).ForEach((ref Example.ReceivedUpdates exampleUpdates) =>
+        {
+            foreach (var update in exampleUpdates.Updates)
             {
-                foreach (var update in exampleUpdates.Updates)
-                {
-                    // Process received updates.
-                }
-            });
+                // Process received updates.
+            }
+        });
     }
 }
 ```

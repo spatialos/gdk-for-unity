@@ -4,19 +4,20 @@
 
 Events are one of the possible things contained in a [SpatialOS component](https://docs.improbable.io/reference/latest/shared/glossary#component). Unlike properties, they're transient, so (effectively) they let a SpatialOS entity broadcast a transient message about something that has happened to it.
 
-Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event.
+Events are for broadcasting information between worker instances about a transient occurrence relating to a particular SpatialOS entity. Only the worker instance with authority over the relevant SpatialOS component can send an event, but any worker instance interested in the component receives the event.
 
 > For more information about what events are and what their purpose is, see [this section on events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) in the SpatialOS documentation.
 
+
 ## Sending events
 
-A worker instance can send an event using a `ComponentName.EventSenders.EventName` ECS component, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
+A worker instance can send an event using the `SendEvent` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system).
 
-For each SpatialOS component containing an event, the SpatialOS GDK for Unity (GDK) attaches a `ComponentName.EventSenders.EventName` ECS component when (and only when) the worker instance has authority over the SpatialOS component `ComponentName`.
+It requires you to pass in a populated event struct of type `{component name}.{event name}.Event`, and the entity ID of the entity that you want to trigger the event on.
 
-For each event in the SpatialOS component, there will be a corresponding method to send that event.
+<%(#Expandable title="Example schema")%>
 
-Example schema:
+The code generated from the below schema will define a `CubeColor.ChangeColor.Event` struct, which needs to be constructed when sending `change_color` events. The struct type can also be used to determine the type of events to watch for by event receivers.
 
 ```schemalang
 package playground;
@@ -38,16 +39,11 @@ component CubeColor {
 }
 ```
 
-Given the example schema, the GDK generates these types:
-
-* `ColorData` - Equivalent of the schema type.
-* `CubeColor.EventSenders.ChangeColor` - The event sender type.
-
-The GDK attaches `CubeColor.EventSenders.ChangeColor` to all ECS entities that have a `CubeColor` SpatialOS component that the worker instance has authority over. See [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority) for more on how authority works in the GDK.
-
-On the `CubeColor.EventSenders.ChangeColor` ECS component, there is a list of type `ColorData`. To send an event, add a `ColorData` struct to the list.
+<%(/Expandable)%>
 
 ```csharp
+
+
 public class SendChangeColorEvent : ComponentSystem
 {
     private ComponentUpdateSystem componentUpdateSystem;
@@ -68,13 +64,12 @@ public class SendChangeColorEvent : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref SpatialEntityId entityId, CubeColor cubeColor) =>
-            {
-                componentUpdateSystem.SendEvent(
-                    new CubeColor.ChangeColor.Event(new ColorData(Color.GREEN)),
-                    entityId.EntityId);
-            });
+        Entities.With(query).ForEach((ref SpatialEntityId entityId, CubeColor cubeColor) =>
+        {
+            componentUpdateSystem.SendEvent(
+                new CubeColor.ChangeColor.Event(new ColorData(Color.GREEN)),
+                entityId.EntityId);
+        });
     }
 }
 ```
@@ -83,13 +78,9 @@ public class SendChangeColorEvent : ComponentSystem
 
 <!-- TODO explain that events are propagated? -->
 
-When a worker instance receives an event, this is represented with reactive ECS components.
+The `GetEventsReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the events of a given type that have been received since the last tick.
 
-For the SpatialOS entity that the event was sent on, the GDK attaches a `ComponentName.ReceivedEvents.EventName` component to the corresponding ECS entity, where `ComponentName` is the name of the component that the event is defined in, and `EventName` is the name of the event in schema.
-
-Given the same schema as above, `change_color` events are stored in a list of `ColorData`s on a `CubeColor.ReceivedEvents.ChangeColor` component.
-
-Here's an example of receiving an event so the worker instance can handle it:
+The example below shows how to use this method to handle events a worker receives.
 
 ```csharp
 public class ChangeColorEventReceiveSystem : ComponentSystem
@@ -109,7 +100,7 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 
         for (var i = 0; i < changeColorEvents.Count; i++)
         {
-            var colorData = changeColorEvents[i]olorEvent.Event.Payload;
+            var colorData = changeColorEvents[i].Event.Payload;
 
             // Do something with the payload
         }
