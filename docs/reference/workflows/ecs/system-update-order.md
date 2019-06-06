@@ -29,7 +29,7 @@ The groups are executed in the following order:
 * `SpatialOSUpdateGroup` - Most systems which use SpatialOS components should run in this group.
 * `SpatialOSSendGroup` - This group contains all systems related to sending data to SpatialOS .
   * `InternalSpatialOSSendGroup` - This group is used by the `SpatialOSSendSystem` to handle sending all replicated components to SpatialOS. **(Internal use only)**
-  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/reference/workflows/ecs/reactive-components) and [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
+  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview) and [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components) at the end of each update loop. **(Internal use only)**
 
 ## Update vs FixedUpdate
 

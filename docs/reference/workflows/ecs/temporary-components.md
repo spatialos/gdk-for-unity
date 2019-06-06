@@ -2,7 +2,9 @@
 
 # ECS: Temporary components
 
-When working with entities, you might need components that only exist for one frame to execute certain logic depending on those components. For this purpose, we introduce the concept of temporary components. If a temporary component is added to an entity, the component will be removed at the end of the update loop, i.e. when the systems inside the `InternalSpatialOSCleanGroup` have been run. See [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order) for more details on the different update groups.
+When working with entities, you might need components that only exist for one frame to execute certain logic depending on those components. For this purpose, we introduce the concept of temporary components.
+
+If a temporary component is added to an entity, the component will be removed at the end of the update loop, i.e. when the systems inside the `InternalSpatialOSCleanGroup` have been run. See [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order) for more details on the different update groups.
 
 To create a temporary component, we provide you with the [`Improbable.Gdk.Core.RemoveAtEndOfTick`]({{urlRoot}}/api/core/remove-at-end-of-tick-attribute) attribute, which can be applied to any ECS component, extending either `IComponentData` or `ISharedComponentData`.
 
@@ -15,10 +17,11 @@ struct SomeTemporaryComponent : IComponentData
 }
 ```
 
-When using temporary components, you must consider the ordering of your systems carefully. Any system which runs logic predicated on the temporary component should be ran after the temporary component may be added and before it will be removed (in `InternalSpatialOSCleanGroup`).
+When using temporary components, you must consider the ordering of your systems carefully. Any system which runs logic predicated on the temporary component should be run after the temporary component is added and before it is removed (in `InternalSpatialOSCleanGroup`).
 
-The following code snippets shows an example how you can annotate your system to ensure it is run in the correct order.
-`AddComponentSystem` is a system that adds `SomeTemporaryComponent ` to your entities, while `ReadComponentSystem` filters for all entities containing `SomeTemporaryComponent`.
+The following code snippets shows an example of how you can annotate your system to ensure it is run in the correct order. `AddComponentSystem` is a system that adds `SomeTemporaryComponent ` to your entities, while `ReadComponentSystem` filters for all entities containing `SomeTemporaryComponent`.
+
+**Example of how to add a temporary component to entities**
 
 ```csharp
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
@@ -57,6 +60,7 @@ public class AddComponentSystem : ComponentSystem
 }
 ```
 
+**Example of how to filter for all entities with a temporary component**
 ```csharp
 // Ensure that the temporary component has already been added
 // by running this system after AddComponentSystem

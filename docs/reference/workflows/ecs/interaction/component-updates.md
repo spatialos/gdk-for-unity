@@ -101,7 +101,7 @@ public class ExampleSystem : ComponentSystem
 
 ### How to react to a component update
 
-When a component update is received this will be added as a [reactive component]({{urlRoot}}/reference/workflows/ecs/reactive-components).
+When a component update is received this will be added as a [reactive component]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview).
 To access all component updates for the `Health` component that have happened since the last frame, access `Health.ReceivedUpdates.Updates`.
 If you only want the latest values, you can access the `Health.Component` directly.
 

@@ -138,4 +138,4 @@ public class OnPlayerSpawnSystem : ComponentSystem
 }
 ```
 
-The GDK automatically adds and removes authority tags: see [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components) for more information.
+The GDK automatically adds and removes authority tags: see [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/entity-contracts) for more information.

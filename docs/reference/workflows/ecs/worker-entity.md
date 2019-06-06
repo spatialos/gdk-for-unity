@@ -8,21 +8,18 @@ Before reading this document, make sure you have read:
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-Each of the workers in your project must have exactly one [ECS entity]({{urlRoot}}/reference/glossary#unity-ecs-entity) in its [worker-ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) at any point in time. To uniquely identify the worker entity of your current worker, the worker entity has the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
+Each worker has an ECS world to represent the entities currently in a [worker's view]({{urlRoot}}/reference/glossary#worker-s-view). Each [worker's ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) contains a worker entity, which can be uniquely identified by the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
 
-The worker’s worker entity performs certain tasks:
+The worker entity enables you to register changes to the state of the Runtime connection. That is, whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not. This can be done by filtering for the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components):
 
-  * send and receive [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) before the worker has checked out any SpatialOS entities.
-  * register changes to the state of the Runtime connection (that is whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not) by filtering for the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components):
-     * [`OnConnected`]({{urlRoot}}/api/core/on-connected): the worker just connected to the SpatialOS Runtime.
-     * [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected): the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
+* [`OnConnected`]({{urlRoot}}/api/core/on-connected): the worker just connected to the SpatialOS Runtime.
+* [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected): the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
 ## How to run logic when the worker has just connected
 
-You can use the worker to check in an ECS system to see whether the worker just
-connected. This allows you to handle any initialization logic necessary.
+When the worker has just connected, a temporary `OnConnected` component is added to the worker entity.
 
-**Example**
+**Example usage**
 
 ```csharp
 using Improbable.Gdk.Core;
@@ -56,9 +53,9 @@ public class HandleConnectSystem : ComponentSystem
 
 ## How to run logic when the worker has just disconnected
 
-You can use the worker to check in an ECS system to see whether the worker just disconnected. This allows you to handle any clean-up logic necessary.
+When the worker has just disconnected, a temporary `OnDisconnected` component is added to the worker entity containt. The `ReasonForDisconnect` field on the component stores the reason why the worker disconnected.
 
-**Example**
+**Example usage**
 
 ```csharp
 using Improbable.Gdk.Core;
