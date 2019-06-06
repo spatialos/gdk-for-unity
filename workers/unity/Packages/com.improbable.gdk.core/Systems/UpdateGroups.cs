@@ -3,39 +3,51 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.Core
 {
-    [UpdateBefore(typeof(Update))]
-    public class SpatialOSReceiveGroup
+    [UpdateInGroup(typeof(InitializationSystemGroup))]
+    [DisableAutoCreation]
+    public class SpatialOSReceiveGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-        public class InternalSpatialOSReceiveGroup
+        [DisableAutoCreation]
+        public class InternalSpatialOSReceiveGroup : ComponentSystemGroup
         {
         }
     }
 
-    [UpdateAfter(typeof(PostLateUpdate))]
-    public class SpatialOSSendGroup
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [DisableAutoCreation]
+    public class SpatialOSSendGroup : ComponentSystemGroup
     {
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        public class CustomSpatialOSSendGroup
+        [UpdateBefore(typeof(InternalSpatialOSSendGroup))]
+        [DisableAutoCreation]
+        public class CustomSpatialOSSendGroup : ComponentSystemGroup
         {
         }
 
         [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
-        public class InternalSpatialOSSendGroup
-        {
-        }
-
-        [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [UpdateAfter(typeof(CustomSpatialOSSendGroup))]
-        public class InternalSpatialOSCleanGroup
+        [DisableAutoCreation]
+        public class InternalSpatialOSSendGroup : ComponentSystemGroup
         {
         }
     }
 
-    [UpdateAfter(typeof(SpatialOSReceiveGroup))]
-    [UpdateBefore(typeof(SpatialOSSendGroup))]
-    public class SpatialOSUpdateGroup
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [UpdateAfter(typeof(SpatialOSSendGroup))]
+    [DisableAutoCreation]
+    public class InternalSpatialOSCleanGroup : ComponentSystemGroup
+    {
+    }
+
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [DisableAutoCreation]
+    public class SpatialOSUpdateGroup : ComponentSystemGroup
+    {
+    }
+
+    [PlayerLoopUtils.UpdateInSubSystemAttribute(typeof(FixedUpdate))]
+    [DisableAutoCreation]
+    public class FixedUpdateSystemGroup : ComponentSystemGroup
     {
     }
 }

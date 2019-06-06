@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Subscriptions
     {
         public static Subscription<T> Subscribe<T>(EntityId entityId, World world)
         {
-            var subscriptionSystem = world.GetExistingManager<SubscriptionSystem>();
+            var subscriptionSystem = world.GetExistingSystem<SubscriptionSystem>();
             if (subscriptionSystem == null)
             {
                 throw new ArgumentException("No subscription system");
@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public static void TryRegisterManager(Type type, SubscriptionManagerBase manager, World world)
         {
-            var subscriptionSystem = world.GetExistingManager<SubscriptionSystem>();
+            var subscriptionSystem = world.GetExistingSystem<SubscriptionSystem>();
             if (subscriptionSystem == null)
             {
                 throw new ArgumentException("No subscription system");

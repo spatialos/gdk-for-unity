@@ -6,7 +6,7 @@ namespace Improbable.Gdk.ReactiveComponents
 {
     public abstract class AbstractAcknowledgeAuthorityLossHandler
     {
-        public abstract EntityArchetypeQuery Query { get; }
+        public abstract EntityQueryDesc Query { get; }
 
         public abstract void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             ComponentUpdateSystem updateSystem);

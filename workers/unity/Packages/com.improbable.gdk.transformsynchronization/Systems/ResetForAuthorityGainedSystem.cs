@@ -12,35 +12,35 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
-        private ComponentGroup rigidbodyGroup;
-        private ComponentGroup transformGroup;
+        private EntityQuery rigidbodyGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            rigidbodyGroup = GetComponentGroup(
+            rigidbodyGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
-                ComponentType.Create<BufferedTransform>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
-            transformGroup = GetComponentGroup(
+            transformGroup = GetEntityQuery(
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
-                ComponentType.Create<BufferedTransform>(),
-                ComponentType.Subtractive<NewlyAddedSpatialOSEntity>(),
-                ComponentType.Subtractive<Rigidbody>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
+                ComponentType.Exclude<Rigidbody>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
@@ -52,59 +52,56 @@ namespace Improbable.Gdk.TransformSynchronization
             UpdateTransformData();
         }
 
-        private void UpdateTransformData()
-        {
-            var ticksSinceLastUpdateArray = rigidbodyGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
-            var transformComponentArray = rigidbodyGroup.GetComponentDataArray<TransformInternal.Component>();
-            var bufferedTransformArray = rigidbodyGroup.GetBufferArray<BufferedTransform>();
-            var rigidbodyArray = rigidbodyGroup.GetComponentArray<Rigidbody>();
-            var spatialEntityIdArray = rigidbodyGroup.GetComponentDataArray<SpatialEntityId>();
-
-            for (int i = 0; i < transformComponentArray.Length; ++i)
-            {
-                // todo this is not a correct constraint. Needs a the auth loss temporary exposed to correctly do this
-                // alternatively this needs an authority changed component that is filled at the beginning of the tick
-                if (updateSystem
-                    .GetAuthorityChangesReceived(spatialEntityIdArray[i].EntityId, TransformInternal.ComponentId)
-                    .Count == 0)
-                {
-                    continue;
-                }
-
-                var t = transformComponentArray[i];
-                var rigidbody = rigidbodyArray[i];
-                rigidbody.MovePosition(t.Location.ToUnityVector3() + worker.Origin);
-                rigidbody.MoveRotation(t.Rotation.ToUnityQuaternion());
-                rigidbody.AddForce(t.Velocity.ToUnityVector3() - rigidbody.velocity, ForceMode.VelocityChange);
-                bufferedTransformArray[i].Clear();
-                ticksSinceLastUpdateArray[i] = new TicksSinceLastTransformUpdate();
-            }
-        }
-
         private void UpdateRigidbodyData()
         {
-            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
-            var transformComponentArray = transformGroup.GetComponentDataArray<TransformInternal.Component>();
-            var bufferedTransformArray = transformGroup.GetBufferArray<BufferedTransform>();
-            var unityTransformArray = transformGroup.GetComponentArray<UnityEngine.Transform>();
-            var spatialEntityIdArray = transformGroup.GetComponentDataArray<SpatialEntityId>();
+            Entities.With(rigidbodyGroup).ForEach(
+                (Entity entity, DynamicBuffer<BufferedTransform> buffer,
+                    ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate,
+                    ref TransformInternal.Component transformInternal,
+                    ref SpatialEntityId spatialEntityId) =>
+                {
+                    // todo this is not a correct constraint. Needs a the auth loss temporary exposed to correctly do this
+                    // alternatively this needs an authority changed component that is filled at the beginning of the tick
+                    if (updateSystem
+                        .GetAuthorityChangesReceived(spatialEntityId.EntityId, TransformInternal.ComponentId)
+                        .Count == 0)
+                    {
+                        return;
+                    }
 
-            for (int i = 0; i < transformComponentArray.Length; ++i)
+                    var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
+                    rigidbody.MovePosition(transformInternal.Location.ToUnityVector3() + worker.Origin);
+                    rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
+                    rigidbody.AddForce(transformInternal.Velocity.ToUnityVector3() - rigidbody.velocity,
+                        ForceMode.VelocityChange);
+
+                    buffer.Clear();
+                    ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
+                });
+        }
+
+        private void UpdateTransformData()
+        {
+            Entities.With(transformGroup).ForEach((Entity entity,
+                DynamicBuffer<BufferedTransform> buffer,
+                ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate,
+                ref TransformInternal.Component transformInternal,
+                ref SpatialEntityId spatialEntityId) =>
             {
                 if (updateSystem
-                    .GetAuthorityChangesReceived(spatialEntityIdArray[i].EntityId, TransformInternal.ComponentId)
+                    .GetAuthorityChangesReceived(spatialEntityId.EntityId, TransformInternal.ComponentId)
                     .Count == 0)
                 {
-                    continue;
+                    return;
                 }
 
-                var t = transformComponentArray[i];
-                var unityTransform = unityTransformArray[i];
-                unityTransform.position = t.Location.ToUnityVector3() + worker.Origin;
-                unityTransform.rotation = t.Rotation.ToUnityQuaternion();
-                bufferedTransformArray[i].Clear();
-                ticksSinceLastUpdateArray[i] = new TicksSinceLastTransformUpdate();
-            }
+                var unityTransform = EntityManager.GetComponentObject<UnityEngine.Transform>(entity);
+                unityTransform.position = transformInternal.Location.ToUnityVector3() + worker.Origin;
+                unityTransform.rotation = transformInternal.Rotation.ToUnityQuaternion();
+
+                buffer.Clear();
+                ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
+            });
         }
     }
 }

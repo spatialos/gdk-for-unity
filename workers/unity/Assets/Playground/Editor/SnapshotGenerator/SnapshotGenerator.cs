@@ -29,10 +29,10 @@ namespace Playground.Editor.SnapshotGenerator
         {
             var snapshot = new Snapshot();
 
-            AddPlayerSpawner(snapshot, new Coordinates(2000, 0, 2000));
-            AddPlayerSpawner(snapshot, new Coordinates(2000, 0, -2000));
-            AddPlayerSpawner(snapshot, new Coordinates(-2000, 0, -2000));
-            AddPlayerSpawner(snapshot, new Coordinates(-2000, 0, 2000));
+            AddPlayerSpawner(snapshot, new Coordinates(200, 0, 200));
+            AddPlayerSpawner(snapshot, new Coordinates(200, 0, -200));
+            AddPlayerSpawner(snapshot, new Coordinates(-200, 0, -200));
+            AddPlayerSpawner(snapshot, new Coordinates(-200, 0, 200));
 
             AddCubeGrid(snapshot, cubeCount);
             CreateSpinner(snapshot, new Coordinates { X = 5.5, Y = 0.5f, Z = 0.0 });

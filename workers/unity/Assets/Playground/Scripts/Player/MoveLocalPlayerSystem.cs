@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.TransformSynchronization;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -15,8 +16,8 @@ namespace Playground
             public float SpeedSmoothVelocity;
         }
 
-        private ComponentGroup newPlayerGroup;
-        private ComponentGroup playerInputGroup;
+        private EntityQuery newPlayerGroup;
+        private EntityQuery playerInputGroup;
 
         private const float WalkSpeed = 2.0f;
         private const float RunSpeed = 6.0f;
@@ -31,16 +32,16 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            newPlayerGroup = GetComponentGroup(
+            newPlayerGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
-                ComponentType.Subtractive<Speed>()
+                ComponentType.Exclude<Speed>()
             );
             newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
 
-            playerInputGroup = GetComponentGroup(
-                ComponentType.Create<Rigidbody>(),
-                ComponentType.Create<Speed>(),
+            playerInputGroup = GetEntityQuery(
+                ComponentType.ReadWrite<Rigidbody>(),
+                ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
@@ -49,57 +50,51 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var newSpeedEntities = newPlayerGroup.GetEntityArray();
-
-            for (var i = 0; i < newSpeedEntities.Length; i++)
+            using (var newSpeedEntities = newPlayerGroup.ToEntityArray(Allocator.TempJob))
             {
-                var speed = new Speed
+                foreach (var entity in newSpeedEntities)
                 {
-                    CurrentSpeed = 0f,
-                    SpeedSmoothVelocity = 0f
-                };
+                    var speed = new Speed
+                    {
+                        CurrentSpeed = 0f,
+                        SpeedSmoothVelocity = 0f
+                    };
 
-                PostUpdateCommands.AddComponent(newSpeedEntities[i], speed);
-            }
-
-            var entities = playerInputGroup.GetEntityArray();
-            var playerInputData = playerInputGroup.GetComponentDataArray<PlayerInput.Component>();
-            var speedData = playerInputGroup.GetComponentDataArray<Speed>();
-
-            for (var i = 0; i < playerInputData.Length; i++)
-            {
-                var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entities[i]);
-                var playerInput = playerInputData[i];
-
-                var inputDir = new Vector2(playerInput.Horizontal, playerInput.Vertical).normalized;
-                if (inputDir != Vector2.zero)
-                {
-                    var targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
-                    rigidbody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
-                        rigidbody.transform.eulerAngles.y, targetRotation,
-                        ref turnSmoothVelocity, TurnSmoothTime);
+                    PostUpdateCommands.AddComponent(entity, speed);
                 }
-
-                var targetSpeed = (playerInput.Running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
-
-                var speed = speedData[i];
-                var currentSpeed = speed.CurrentSpeed;
-                var speedSmoothVelocity = speed.SpeedSmoothVelocity;
-
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime,
-                    MaxSpeed, Time.deltaTime);
-                var newSpeed = new Speed
-                {
-                    CurrentSpeed = currentSpeed,
-                    SpeedSmoothVelocity = speedSmoothVelocity
-                };
-
-                speedData[i] = newSpeed;
-
-                // This needs to be used instead of add force because this is running in update.
-                // It would be better to store this in another component and have something else use it on fixed update.
-                rigidbody.velocity = rigidbody.transform.forward * currentSpeed;
             }
+
+            Entities.With(playerInputGroup).ForEach(
+                (Entity entity, ref PlayerInput.Component playerInput, ref Speed speed) =>
+                {
+                    var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
+
+                    var inputDir = new Vector2(playerInput.Horizontal, playerInput.Vertical).normalized;
+                    if (inputDir != Vector2.zero)
+                    {
+                        var targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
+                        rigidbody.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
+                            rigidbody.transform.eulerAngles.y, targetRotation,
+                            ref turnSmoothVelocity, TurnSmoothTime);
+                    }
+
+                    var targetSpeed = (playerInput.Running ? RunSpeed : WalkSpeed) * inputDir.magnitude;
+
+                    var currentSpeed = speed.CurrentSpeed;
+                    var speedSmoothVelocity = speed.SpeedSmoothVelocity;
+
+                    currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime,
+                        MaxSpeed, Time.deltaTime);
+                    speed = new Speed
+                    {
+                        CurrentSpeed = currentSpeed,
+                        SpeedSmoothVelocity = speedSmoothVelocity
+                    };
+
+                    // This needs to be used instead of add force because this is running in update.
+                    // It would be better to store this in another component and have something else use it on fixed update.
+                    rigidbody.velocity = rigidbody.transform.forward * currentSpeed;
+                });
         }
     }
 }

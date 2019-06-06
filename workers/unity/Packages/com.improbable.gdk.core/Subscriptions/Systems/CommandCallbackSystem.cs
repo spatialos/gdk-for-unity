@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Subscriptions
     // for example a more efficient callback thing might have functors that can be reused to remove allocation
     // could also use this to create tasks out of commands rather than callbacks
     [DisableAutoCreation]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class CommandCallbackSystem : ComponentSystem
     {
         private readonly GuardedCallbackManagerSet<Type, ICallbackManager> callbackManagers =

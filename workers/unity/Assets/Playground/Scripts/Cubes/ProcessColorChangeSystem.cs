@@ -17,8 +17,8 @@ namespace Playground
         {
             base.OnCreateManager();
 
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            workerSystem = World.GetExistingManager<WorkerSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
 
             ColorTranslationUtil.PopulateMaterialPropertyBlockMap(out materialPropertyBlocks);
         }

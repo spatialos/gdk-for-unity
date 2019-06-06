@@ -9,6 +9,13 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 
+[assembly: RegisterGenericComponentType(typeof(ComponentAdded<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+[assembly: RegisterGenericComponentType(typeof(ComponentRemoved<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityChanges<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+[assembly: RegisterGenericComponentType(typeof(Authoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+[assembly: RegisterGenericComponentType(typeof(NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>))]
+
 namespace Improbable.Gdk.Tests
 {
     public partial class ExhaustiveMapKey
@@ -71,7 +78,7 @@ namespace Improbable.Gdk.Tests
                         entityManager.RemoveComponent<ComponentRemoved<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentAdded<Component>>());
                 }
             }
 
@@ -98,7 +105,7 @@ namespace Improbable.Gdk.Tests
                         entityManager.RemoveComponent<ComponentAdded<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentRemoved<Component>>());
                 }
             }
 
@@ -154,11 +161,11 @@ namespace Improbable.Gdk.Tests
             {
                 var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
 
-                foreach (var entityId in world.GetExistingManager<EntitySystem>().GetEntitiesAdded())
+                foreach (var entityId in world.GetExistingSystem<EntitySystem>().GetEntitiesAdded())
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,
-                        ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
+                        ComponentType.ReadWrite<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
                 }
 
                 for (int i = 0; i < authorityChanges.Count; ++i)
@@ -189,7 +196,7 @@ namespace Improbable.Gdk.Tests
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
 
                         break;
                     case Authority.AuthorityLossImminent:
@@ -199,7 +206,7 @@ namespace Improbable.Gdk.Tests
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<AuthorityLossImminent<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>(entity))
@@ -214,7 +221,7 @@ namespace Improbable.Gdk.Tests
                         }
 
                         entityManager.RemoveComponent<Authoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<NotAuthoritative<global::Improbable.Gdk.Tests.ExhaustiveMapKey.Component>>());
                         break;
                 }
             }

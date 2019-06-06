@@ -26,9 +26,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         {
             world = new World("test-world");
             logDispatcher = new TestLogDispatcher();
-            world.CreateManager<WorkerSystem>(new MockConnectionHandler(), null, logDispatcher, TestWorkerType, Vector3.zero);
+            world.CreateSystem<WorkerSystem>(new MockConnectionHandler(), null, logDispatcher, TestWorkerType, Vector3.zero);
 
-            sendSystem = world.GetOrCreateManager<ComponentSendSystem>();
+            sendSystem = world.GetOrCreateSystem<ComponentSendSystem>();
 
             var testHandler = new TestComponentReplicationHandler();
             sendSystem.AddComponentReplicator(testHandler);
@@ -60,7 +60,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     {
         public uint ComponentId => SpatialOSSendSystemTests.TestComponentId;
 
-        public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+        public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
         {
             All = Array.Empty<ComponentType>(),
             Any = Array.Empty<ComponentType>(),

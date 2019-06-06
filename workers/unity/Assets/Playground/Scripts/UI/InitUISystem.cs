@@ -9,14 +9,14 @@ namespace Playground
     public class InitUISystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;
-        private ComponentGroup uiInitGroup;
+        private EntityQuery uiInitGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            uiInitGroup = GetComponentGroup(
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            uiInitGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
@@ -27,27 +27,24 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var launcherData = uiInitGroup.GetComponentDataArray<Launcher.Component>();
-            var scoreData = uiInitGroup.GetComponentDataArray<Score.Component>();
-            var spatialIdData = uiInitGroup.GetComponentDataArray<SpatialEntityId>();
-
-            for (var i = 0; i < spatialIdData.Length; i++)
-            {
-                var authUpdates =
-                    componentUpdateSystem.GetAuthorityChangesReceived(spatialIdData[i].EntityId,
-                        PlayerInput.ComponentId);
-                if (authUpdates.Count > 0)
+            Entities.With(uiInitGroup).ForEach(
+                (ref SpatialEntityId spatialEntityId, ref Launcher.Component launcher, ref Score.Component score) =>
                 {
-                    var ui = Resources.Load("Prefabs/UIGameObject");
-                    var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
-                    var uiComponent = inst.GetComponent<UIComponent>();
-                    UIComponent.Main = uiComponent;
-                    uiComponent.TestText.text = $"Energy: {launcherData[i].EnergyLeft}";
-                    uiComponent.ScoreText.text = $"Score: {scoreData[i].Score}";
+                    var authUpdates =
+                        componentUpdateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
+                            PlayerInput.ComponentId);
+                    if (authUpdates.Count > 0)
+                    {
+                        var ui = Resources.Load("Prefabs/UIGameObject");
+                        var inst = (GameObject) Object.Instantiate(ui, Vector3.zero, Quaternion.identity);
+                        var uiComponent = inst.GetComponent<UIComponent>();
+                        UIComponent.Main = uiComponent;
+                        uiComponent.TestText.text = $"Energy: {launcher.EnergyLeft}";
+                        uiComponent.ScoreText.text = $"Score: {score.Score}";
 
-                    Enabled = false;
-                }
-            }
+                        Enabled = false;
+                    }
+                });
         }
 
         protected override void OnDestroyManager()

@@ -56,8 +56,8 @@ namespace Improbable.Gdk.Core
         public WorkerFlagReader(World world)
         {
             IsValid = true;
-            callbackSystem = world.GetExistingManager<WorkerFlagCallbackSystem>();
-            view = world.GetExistingManager<WorkerSystem>().View;
+            callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
+            view = world.GetExistingSystem<WorkerSystem>().View;
         }
 
         public event Action<string, string> OnWorkerFlagChange

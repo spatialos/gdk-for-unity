@@ -30,16 +30,16 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
         {
             world = new World("TestWorld");
             connectionHandler = new MockConnectionHandler();
-            world.CreateManager<WorkerSystem>(connectionHandler, null,
+            world.CreateSystem<WorkerSystem>(connectionHandler, null,
                 new LoggingDispatcher(), "TestWorkerType", Vector3.zero);
-            receiveSystem = world.CreateManager<SpatialOSReceiveSystem>();
-            world.GetOrCreateManager<WorkerFlagCallbackSystem>();
-            world.GetOrCreateManager<ComponentUpdateSystem>();
-            world.GetOrCreateManager<ComponentConstraintsCallbackSystem>();
-            world.CreateManager<SubscriptionSystem>();
-            world.CreateManager<CommandCallbackSystem>();
-            world.CreateManager<ComponentCallbackSystem>();
-            requireLifecycleSystem = world.CreateManager<RequireLifecycleSystem>();
+            receiveSystem = world.CreateSystem<SpatialOSReceiveSystem>();
+            world.GetOrCreateSystem<WorkerFlagCallbackSystem>();
+            world.GetOrCreateSystem<ComponentUpdateSystem>();
+            world.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
+            world.CreateSystem<SubscriptionSystem>();
+            world.CreateSystem<CommandCallbackSystem>();
+            world.CreateSystem<ComponentCallbackSystem>();
+            requireLifecycleSystem = world.CreateSystem<RequireLifecycleSystem>();
 
             linker = new EntityGameObjectLinker(world);
 

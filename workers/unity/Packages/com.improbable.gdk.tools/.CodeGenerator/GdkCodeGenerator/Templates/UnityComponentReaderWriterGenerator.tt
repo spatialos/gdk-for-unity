@@ -36,12 +36,12 @@ namespace <#= qualifiedNamespace #>
         public <#= componentDetails.ComponentName #>ReaderSubscriptionManager(World world)
         {
             this.world = world;
-            entityManager = world.GetOrCreateManager<EntityManager>();
+            entityManager = world.EntityManager;
 
             // todo Check that these are there
-            workerSystem = world.GetExistingManager<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
 
-            var constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintCallbackSystem.RegisterComponentAddedCallback(<#= componentDetails.ComponentName #>.ComponentId, entityId =>
             {
@@ -166,10 +166,10 @@ namespace <#= qualifiedNamespace #>
             this.world = world;
 
             // todo Check that these are there
-            workerSystem = world.GetExistingManager<WorkerSystem>();
-            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
+            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
-            var constraintCallbackSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintCallbackSystem.RegisterAuthorityCallback(<#= componentDetails.ComponentName #>.ComponentId, authorityChange =>
             {
@@ -428,9 +428,9 @@ namespace <#= qualifiedNamespace #>
 
             IsValid = true;
 
-            ComponentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
-            CallbackSystem = world.GetExistingManager<ComponentCallbackSystem>();
-            EntityManager = world.GetExistingManager<EntityManager>();
+            ComponentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
+            CallbackSystem = world.GetExistingSystem<ComponentCallbackSystem>();
+            EntityManager = world.EntityManager;
         }
 
         public void RemoveAllCallbacks()

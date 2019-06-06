@@ -28,16 +28,14 @@ namespace <#= qualifiedNamespace #>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
 
-            public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
-                    ComponentType.Create<<#= componentNamespace #>.Component>(),
-                    ComponentType.Create<<#= componentNamespace #>.ComponentAuthority>(),
+                    ComponentType.ReadWrite<<#= componentNamespace #>.Component>(),
+                    ComponentType.ReadWrite<<#= componentNamespace #>.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
 
             public void SendUpdates(

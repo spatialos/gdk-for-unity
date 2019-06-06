@@ -11,7 +11,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         internal override void Apply(Entity entity, World world, EntityCommandBuffer commandBuffer)
         {
-            var manager = world.GetExistingManager<EntityManager>();
+            var manager = world.EntityManager;
             manager.AddSharedComponentData(entity, new RateLimitedSendConfig
             {
                 MaxTransformUpdateRateHz = MaxTransformUpdateRateHz,

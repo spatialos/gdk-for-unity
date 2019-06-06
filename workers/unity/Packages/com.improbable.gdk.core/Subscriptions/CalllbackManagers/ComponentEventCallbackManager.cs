@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public ComponentEventCallbackManager(World world)
         {
-            componentUpdateSystem = world.GetExistingManager<ComponentUpdateSystem>();
+            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
         }
 
         public void InvokeCallbacks()

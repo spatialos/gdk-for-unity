@@ -15,7 +15,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
         }
 
         private class PlayerCreationRequestContext

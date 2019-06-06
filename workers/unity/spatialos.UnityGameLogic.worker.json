@@ -23,7 +23,7 @@
     },
     "entity_interest": {
       "range_entity_interest": {
-        "radius": 500
+        "radius": 25
       }
     },
     "component_delivery": {

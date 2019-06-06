@@ -10,17 +10,17 @@ namespace Improbable.Gdk.TransformSynchronization
     public class InterpolateTransformSystem : ComponentSystem
     {
         private ComponentUpdateSystem updateSystem;
-        private ComponentGroup interpolationGroup;
+        private EntityQuery interpolationGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            interpolationGroup = GetComponentGroup(
-                ComponentType.Create<BufferedTransform>(),
-                ComponentType.Create<DeferredUpdateTransform>(),
+            interpolationGroup = GetEntityQuery(
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.ReadWrite<DeferredUpdateTransform>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<InterpolationConfig>(),
@@ -31,101 +31,101 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            var interpolationConfigArray = interpolationGroup.GetSharedComponentDataArray<InterpolationConfig>();
-            var bufferedTransformArray = interpolationGroup.GetBufferArray<BufferedTransform>();
-            var spatialEntityIdArray = interpolationGroup.GetComponentDataArray<SpatialEntityId>();
-            var transformComponentArray = interpolationGroup.GetComponentDataArray<TransformInternal.Component>();
-            var lastTransformArray = interpolationGroup.GetComponentDataArray<DeferredUpdateTransform>();
-
-            for (int i = 0; i < transformComponentArray.Length; ++i)
-            {
-                var config = interpolationConfigArray[i];
-                var transformBuffer = bufferedTransformArray[i];
-                var lastTransformApplied = lastTransformArray[i].Transform;
-
-                if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
+            Entities.With(interpolationGroup).ForEach(
+                (Entity entity,
+                    InterpolationConfig config,
+                    ref SpatialEntityId spatialEntityId,
+                    ref TransformInternal.Component transformInternal,
+                    ref DeferredUpdateTransform deferredUpdateTransform) =>
                 {
-                    transformBuffer.Clear();
-                }
+                    var transformBuffer = EntityManager.GetBuffer<BufferedTransform>(entity);
+                    var lastTransformApplied = deferredUpdateTransform.Transform;
 
-                if (transformBuffer.Length == 0)
-                {
-                    var currentTransformComponent = transformComponentArray[i];
-                    if (currentTransformComponent.PhysicsTick <= lastTransformApplied.PhysicsTick)
+                    if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                     {
-                        continue;
+                        transformBuffer.Clear();
                     }
 
-                    lastTransformArray[i] = new DeferredUpdateTransform
+                    if (transformBuffer.Length == 0)
                     {
-                        Transform = currentTransformComponent
-                    };
+                        var currentTransformComponent = transformInternal;
+                        if (currentTransformComponent.PhysicsTick <= lastTransformApplied.PhysicsTick)
+                        {
+                            return;
+                        }
 
-                    var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
+                        deferredUpdateTransform = new DeferredUpdateTransform
+                        {
+                            Transform = currentTransformComponent
+                        };
 
-                    uint ticksToFill = math.max((uint) config.TargetBufferSize, 1);
+                        var transformToInterpolateTo = ToBufferedTransform(currentTransformComponent);
 
-                    if (ticksToFill > 1)
+                        var ticksToFill = math.max((uint) config.TargetBufferSize, 1);
+
+                        if (ticksToFill > 1)
+                        {
+                            var transformToInterpolateFrom = ToBufferedTransformAtTick(lastTransformApplied,
+                                transformToInterpolateTo.PhysicsTick - ticksToFill + 1);
+
+                            transformBuffer.Add(transformToInterpolateFrom);
+
+                            for (uint j = 0; j < ticksToFill - 2; ++j)
+                            {
+                                transformBuffer.Add(InterpolateValues(transformToInterpolateFrom,
+                                    transformToInterpolateTo,
+                                    j + 1));
+                            }
+                        }
+
+                        transformBuffer.Add(transformToInterpolateTo);
+                        return;
+                    }
+
+                    var updates =
+                        updateSystem
+                            .GetEntityComponentUpdatesReceived<TransformInternal.Update>(spatialEntityId.EntityId);
+
+                    for (var j = 0; j < updates.Count; ++j)
                     {
-                        var transformToInterpolateFrom = ToBufferedTransformAtTick(lastTransformApplied,
-                            transformToInterpolateTo.PhysicsTick - ticksToFill + 1);
+                        var update = updates[j].Update;
+                        UpdateLastTransform(ref lastTransformApplied, update);
+                        deferredUpdateTransform = new DeferredUpdateTransform
+                        {
+                            Transform = lastTransformApplied
+                        };
 
-                        transformBuffer.Add(transformToInterpolateFrom);
+                        if (!update.PhysicsTick.HasValue)
+                        {
+                            continue;
+                        }
 
-                        for (uint j = 0; j < ticksToFill - 2; ++j)
+                        var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
+
+                        var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
+                        var lastTickId = transformToInterpolateFrom.PhysicsTick;
+
+                        // This could go backwards if authority changes quickly between two workers with different loads
+                        if (lastTickId >= transformToInterpolateTo.PhysicsTick)
+                        {
+                            continue;
+                        }
+
+                        var ticksToFill = math.max(transformToInterpolateTo.PhysicsTick - lastTickId, 1);
+
+                        for (uint k = 0; k < ticksToFill - 1; ++k)
                         {
                             transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
-                                j + 1));
+                                k + 1));
                         }
+
+                        transformBuffer.Add(transformToInterpolateTo);
                     }
-
-                    transformBuffer.Add(transformToInterpolateTo);
-                    continue;
-                }
-
-                var updates =
-                    updateSystem
-                        .GetEntityComponentUpdatesReceived<TransformInternal.Update>(spatialEntityIdArray[i].EntityId);
-
-                for (int j = 0; j < updates.Count; ++j)
-                {
-                    var update = updates[j].Update;
-                    UpdateLastTransform(ref lastTransformApplied, update);
-                    lastTransformArray[i] = new DeferredUpdateTransform
-                    {
-                        Transform = lastTransformApplied
-                    };
-
-                    if (!update.PhysicsTick.HasValue)
-                    {
-                        continue;
-                    }
-
-                    var transformToInterpolateTo = ToBufferedTransform(lastTransformApplied);
-
-                    var transformToInterpolateFrom = transformBuffer[transformBuffer.Length - 1];
-                    uint lastTickId = transformToInterpolateFrom.PhysicsTick;
-
-                    // This could go backwards if authority changes quickly between two workers with different loads
-                    if (lastTickId >= transformToInterpolateTo.PhysicsTick)
-                    {
-                        continue;
-                    }
-
-                    uint ticksToFill = math.max(transformToInterpolateTo.PhysicsTick - lastTickId, 1);
-
-                    for (uint k = 0; k < ticksToFill - 1; ++k)
-                    {
-                        transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
-                            k + 1));
-                    }
-
-                    transformBuffer.Add(transformToInterpolateTo);
-                }
-            }
+                });
         }
 
-        private static void UpdateLastTransform(ref TransformInternal.Component lastTransform, TransformInternal.Update update)
+        private static void UpdateLastTransform(ref TransformInternal.Component lastTransform,
+            TransformInternal.Update update)
         {
             if (update.Location.HasValue)
             {
@@ -178,7 +178,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private static BufferedTransform InterpolateValues(BufferedTransform first, BufferedTransform second,
             uint ticksAfterFirst)
         {
-            float t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
+            var t = (float) ticksAfterFirst / (float) (second.PhysicsTick - first.PhysicsTick);
             return new BufferedTransform
             {
                 Position = Vector3.Lerp(first.Position, second.Position, t),

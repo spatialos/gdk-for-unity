@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public WorkerFlagCallbackManager(World world)
         {
-            workerSystem = world.GetExistingManager<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
         }
 
         public ulong RegisterCallback(Action<(string, string)> callback)

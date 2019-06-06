@@ -22,27 +22,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
         {
             public uint ComponentId => 1005;
 
-            public EntityArchetypeQuery EventQuery => new EntityArchetypeQuery
-            {
-                All = new[]
-                {
-                    ComponentType.ReadOnly<SpatialEntityId>()
-                },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
-            };
+            public EntityQueryDesc EventQuery => null;
 
-            public EntityArchetypeQuery[] CommandQueries => new EntityArchetypeQuery[]
+            public EntityQueryDesc[] CommandQueries => new EntityQueryDesc[]
             {
-                new EntityArchetypeQuery()
+                new EntityQueryDesc()
                 {
                     All = new[]
                     {
-                        ComponentType.Create<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
-                        ComponentType.Create<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
+                        ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandSenders.Cmd>(),
+                        ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.CommandResponders.Cmd>(),
                     },
-                    Any = Array.Empty<ComponentType>(),
-                    None = Array.Empty<ComponentType>(),
                 },
             };
 
@@ -101,19 +91,17 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         internal class ComponentCleanup : ComponentCleanupHandler
         {
-            public override EntityArchetypeQuery CleanupArchetypeQuery => new EntityArchetypeQuery
+            public override EntityQueryDesc CleanupArchetypeQuery => new EntityQueryDesc
             {
-                All = Array.Empty<ComponentType>(),
                 Any = new ComponentType[]
                 {
-                    ComponentType.Create<ComponentAdded<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
-                    ComponentType.Create<ComponentRemoved<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
-                    ComponentType.Create<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(),
-                    ComponentType.Create<AuthorityChanges<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
-                    ComponentType.Create<CommandRequests.Cmd>(),
-                    ComponentType.Create<CommandResponses.Cmd>(),
+                    ComponentType.ReadWrite<ComponentAdded<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.ReadWrite<ComponentRemoved<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.ReceivedUpdates>(),
+                    ComponentType.ReadWrite<AuthorityChanges<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
+                    ComponentType.ReadWrite<CommandRequests.Cmd>(),
+                    ComponentType.ReadWrite<CommandResponses.Cmd>(),
                 },
-                None = Array.Empty<ComponentType>(),
             };
 
             public override void CleanComponents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
@@ -204,15 +192,13 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         internal class AcknowledgeAuthorityLossHandler : AbstractAcknowledgeAuthorityLossHandler
        {
-            public override EntityArchetypeQuery Query => new EntityArchetypeQuery
+            public override EntityQueryDesc Query => new EntityQueryDesc
             {
                 All = new ComponentType[]
                 {
                     ComponentType.ReadOnly<AuthorityLossImminent<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithCommands.Component>>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>()
             };
 
             public override void AcknowledgeAuthorityLoss(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,

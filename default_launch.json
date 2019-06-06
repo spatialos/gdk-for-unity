@@ -1,13 +1,13 @@
 {
   "template": "small",
   "world": {
-    "chunkEdgeLengthMeters": 50,
+    "chunkEdgeLengthMeters": 5,
     "snapshots": {
       "snapshotWritePeriodSeconds": 0
     },
     "dimensions": {
-      "xMeters": 5000,
-      "zMeters": 5000
+      "xMeters": 500,
+      "zMeters": 500
     },
     "legacy_flags": [
       {

@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
+            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count];
@@ -62,7 +62,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             Profiler.BeginSample("GatherChunks");
             for (var i = 0; i < componentReplicators.Count; i++)
@@ -95,7 +95,7 @@ namespace Improbable.Gdk.Core
             {
                 ComponentId = componentReplicationHandler.ComponentId,
                 Handler = componentReplicationHandler,
-                Group = GetComponentGroup(componentReplicationHandler.ComponentUpdateQuery)
+                Group = GetEntityQuery(componentReplicationHandler.ComponentUpdateQuery)
             });
         }
 
@@ -120,7 +120,7 @@ namespace Improbable.Gdk.Core
         {
             public uint ComponentId;
             public IComponentReplicationHandler Handler;
-            public ComponentGroup Group;
+            public EntityQuery Group;
         }
     }
 }

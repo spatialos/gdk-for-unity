@@ -10,21 +10,21 @@ namespace Improbable.Gdk.PlayerLifecycle
     public class SendPlayerHeartbeatRequestSystem : ComponentSystem
     {
         private float timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
-        private ComponentGroup group;
+        private EntityQuery group;
         private CommandSystem commandSystem;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerHeartbeatServer.ComponentAuthority>(),
-                ComponentType.Create<HeartbeatData>(),
+                ComponentType.ReadWrite<HeartbeatData>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
             group.SetFilter(PlayerHeartbeatServer.ComponentAuthority.Authoritative);
 
-            commandSystem = World.GetExistingManager<CommandSystem>();
+            commandSystem = World.GetExistingSystem<CommandSystem>();
         }
 
         protected override void OnUpdate()
@@ -35,13 +35,12 @@ namespace Improbable.Gdk.PlayerLifecycle
             }
 
             timeOfNextHeartbeat = Time.time + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
-            var spatialIDData = group.GetComponentDataArray<SpatialEntityId>();
 
-            for (var i = 0; i < spatialIDData.Length; i++)
+            Entities.With(group).ForEach((ref SpatialEntityId spatialEntityId) =>
             {
                 commandSystem.SendCommand(
-                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialIDData[i].EntityId, new Empty()));
-            }
+                    new PlayerHeartbeatClient.PlayerHeartbeat.Request(spatialEntityId.EntityId, new Empty()));
+            });
         }
     }
 }

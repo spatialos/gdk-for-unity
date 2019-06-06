@@ -8,15 +8,15 @@ namespace Playground
     public class InitCameraSystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;
-        private ComponentGroup inputGroup;
+        private EntityQuery inputGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            inputGroup = GetComponentGroup(
+            inputGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
@@ -25,15 +25,13 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var entities = inputGroup.GetEntityArray();
-            var spatialIdData = inputGroup.GetComponentDataArray<SpatialEntityId>();
-
-            for (var i = 0; i < entities.Length; i++)
+            Entities.With(inputGroup).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
             {
-                var authChanges = componentUpdateSystem.GetAuthorityChangesReceived(spatialIdData[i].EntityId, PlayerInput.ComponentId);
+                var authChanges =
+                    componentUpdateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
+                        PlayerInput.ComponentId);
                 if (authChanges.Count > 0)
                 {
-                    var entity = entities[i];
                     PostUpdateCommands.AddComponent(entity, CameraComponentDefaults.Input);
                     PostUpdateCommands.AddComponent(entity, CameraComponentDefaults.Transform);
 
@@ -42,7 +40,7 @@ namespace Playground
                     // Disable system after first run.
                     Enabled = false;
                 }
-            }
+            });
         }
 
         protected override void OnDestroyManager()

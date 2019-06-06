@@ -40,8 +40,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// </returns>
         public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
         {
-            var entityManager = workerWorld.GetOrCreateManager<EntityManager>();
-            var worker = workerWorld.GetExistingManager<WorkerSystem>();
+            var entityManager = workerWorld.EntityManager;
+            var worker = workerWorld.GetExistingSystem<WorkerSystem>();
 
             if (worker == null)
             {
@@ -72,8 +72,8 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static void AddClientSystems(World world, bool autoRequestPlayerCreation = true)
         {
             PlayerLifecycleConfig.AutoRequestPlayerCreation = autoRequestPlayerCreation;
-            world.GetOrCreateManager<SendCreatePlayerRequestSystem>();
-            world.GetOrCreateManager<HandlePlayerHeartbeatRequestSystem>();
+            world.GetOrCreateSystem<SendCreatePlayerRequestSystem>();
+            world.GetOrCreateSystem<HandlePlayerHeartbeatRequestSystem>();
         }
 
         /// <summary>
@@ -82,10 +82,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// <param name="world">A world that belongs to a server-worker.</param>
         public static void AddServerSystems(World world)
         {
-            world.GetOrCreateManager<HandleCreatePlayerRequestSystem>();
-            world.GetOrCreateManager<PlayerHeartbeatInitializationSystem>();
-            world.GetOrCreateManager<SendPlayerHeartbeatRequestSystem>();
-            world.GetOrCreateManager<HandlePlayerHeartbeatResponseSystem>();
+            world.GetOrCreateSystem<HandleCreatePlayerRequestSystem>();
+            world.GetOrCreateSystem<PlayerHeartbeatInitializationSystem>();
+            world.GetOrCreateSystem<SendPlayerHeartbeatRequestSystem>();
+            world.GetOrCreateSystem<HandlePlayerHeartbeatResponseSystem>();
         }
     }
 }

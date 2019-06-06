@@ -15,7 +15,6 @@ namespace Improbable.Gdk.ReactiveComponents
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
-    [UpdateBefore(typeof(ComponentUpdateSystem))]
     public class ReactiveComponentSendSystem : ComponentSystem
     {
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
@@ -28,7 +27,7 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             base.OnCreateManager();
 
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
+            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count * 2];
@@ -55,8 +54,27 @@ namespace Improbable.Gdk.ReactiveComponents
                 var eventIndex = i;
                 var commandIndex = componentReplicators.Count + i;
 
-                chunkArrayCache[eventIndex] = replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var eventJobHandle);
-                chunkArrayCache[commandIndex] = replicator.CommandGroup.CreateArchetypeChunkArray(Allocator.TempJob, out var commandJobHandle);
+                var eventJobHandle = new JobHandle();
+                if (replicator.EventGroup != null)
+                {
+                    chunkArrayCache[eventIndex] =
+                        replicator.EventGroup.CreateArchetypeChunkArray(Allocator.TempJob, out eventJobHandle);
+                }
+                else
+                {
+                    chunkArrayCache[eventIndex] = new NativeArray<ArchetypeChunk>();
+                }
+
+                var commandJobHandle = new JobHandle();
+                if (replicator.CommandGroup != null)
+                {
+                    chunkArrayCache[commandIndex] =
+                        replicator.CommandGroup.CreateArchetypeChunkArray(Allocator.TempJob, out commandJobHandle);
+                }
+                else
+                {
+                    chunkArrayCache[commandIndex] = new NativeArray<ArchetypeChunk>();
+                }
 
                 gatheringJobs[eventIndex] = eventJobHandle;
                 gatheringJobs[commandIndex] = commandJobHandle;
@@ -72,40 +90,57 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private void ReplicateEvents()
         {
-            var componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
+            var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             for (var i = 0; i < componentReplicators.Count; i++)
             {
                 var eventIndex = i;
-                Profiler.BeginSample("SendEvents");
-                componentReplicators[i].Handler.SendEvents(chunkArrayCache[eventIndex], this, componentUpdateSystem);
-                chunkArrayCache[eventIndex].Dispose();
-                Profiler.EndSample();
+                if (chunkArrayCache[eventIndex].IsCreated)
+                {
+                    Profiler.BeginSample("SendEvents");
+                    componentReplicators[i].Handler
+                        .SendEvents(chunkArrayCache[eventIndex], this, componentUpdateSystem);
+                    chunkArrayCache[eventIndex].Dispose();
+                    Profiler.EndSample();
+                }
             }
         }
 
         private void ReplicateCommands()
         {
-            var commandSystem = World.GetExistingManager<CommandSystem>();
+            var commandSystem = World.GetExistingSystem<CommandSystem>();
 
             for (var i = 0; i < componentReplicators.Count; i++)
             {
                 var commandIndex = componentReplicators.Count + i;
-                Profiler.BeginSample("SendCommands");
-                componentReplicators[i].Handler.SendCommands(chunkArrayCache[commandIndex], this, commandSystem);
-                chunkArrayCache[commandIndex].Dispose();
-                Profiler.EndSample();
+                if (chunkArrayCache[commandIndex].IsCreated)
+                {
+                    Profiler.BeginSample("SendCommands");
+                    componentReplicators[i].Handler.SendCommands(chunkArrayCache[commandIndex], this, commandSystem);
+                    chunkArrayCache[commandIndex].Dispose();
+                    Profiler.EndSample();
+                }
             }
         }
 
         internal void AddComponentReplicator(IReactiveComponentReplicationHandler reactiveComponentReplicationHandler)
         {
-            componentReplicators.Add(new ComponentReplicator
+            var replicator = new ComponentReplicator
             {
                 Handler = reactiveComponentReplicationHandler,
-                EventGroup = GetComponentGroup(reactiveComponentReplicationHandler.EventQuery),
-                CommandGroup = GetComponentGroup(reactiveComponentReplicationHandler.CommandQueries),
-            });
+            };
+
+            if (reactiveComponentReplicationHandler.EventQuery != null)
+            {
+                replicator.EventGroup = GetEntityQuery(reactiveComponentReplicationHandler.EventQuery);
+            }
+
+            if (reactiveComponentReplicationHandler.CommandQueries != null)
+            {
+                replicator.CommandGroup = GetEntityQuery(reactiveComponentReplicationHandler.CommandQueries);
+            }
+
+            componentReplicators.Add(replicator);
         }
 
         private void PopulateDefaultComponentReplicators()
@@ -128,8 +163,8 @@ namespace Improbable.Gdk.ReactiveComponents
         private struct ComponentReplicator
         {
             public IReactiveComponentReplicationHandler Handler;
-            public ComponentGroup EventGroup;
-            public ComponentGroup CommandGroup;
+            public EntityQuery EventGroup;
+            public EntityQuery CommandGroup;
         }
     }
 }

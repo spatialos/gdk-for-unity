@@ -37,7 +37,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     return 0;
                 }
 
-                var manager = world.GetOrCreateManager<EntityManager>();
+                var manager = world.EntityManager;
 
                 if (transformReader.Authority != Authority.NotAuthoritative)
                 {
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     $"on {gameObject.name} must be provided a transform receive strategy");
             }
 
-            entityManager = world.GetOrCreateManager<EntityManager>();
+            entityManager = world.EntityManager;
 
             StartCoroutine(DelayedApply());
         }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in ReceiveStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingManager<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
                 {
                     continue;
                 }
@@ -121,7 +121,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in SendStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingManager<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
                 {
                     continue;
                 }
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             var defaultToSet = new TransformToSet
             {
-                Position = transformComponent.Location.ToUnityVector3() + world.GetExistingManager<WorkerSystem>().Origin,
+                Position = transformComponent.Location.ToUnityVector3() + world.GetExistingSystem<WorkerSystem>().Origin,
                 Velocity = transformComponent.Velocity.ToUnityVector3(),
                 Orientation = transformComponent.Rotation.ToUnityQuaternion(),
                 ApproximateRemoteTick = 0
@@ -162,7 +162,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             var defaultToSend = new TransformToSend
             {
-                Position = transformComponent.Location.ToUnityVector3() - world.GetExistingManager<WorkerSystem>().Origin,
+                Position = transformComponent.Location.ToUnityVector3() - world.GetExistingSystem<WorkerSystem>().Origin,
                 Velocity = transformComponent.Velocity.ToUnityVector3(),
                 Orientation = transformComponent.Rotation.ToUnityQuaternion()
             };

@@ -14,6 +14,7 @@ namespace Playground
 
         private async void Start()
         {
+            Application.targetFrameRate = 60;
             await Connect(WorkerUtils.UnityClient, new ForwardingDispatcher()).ConfigureAwait(false);
         }
 

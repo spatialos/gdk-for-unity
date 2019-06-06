@@ -27,9 +27,9 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            WorkerSystem = World.GetExistingManager<WorkerSystem>();
+            WorkerSystem = World.GetExistingSystem<WorkerSystem>();
 
-            componentSendSystem = World.GetOrCreateManager<ComponentSendSystem>();
+            componentSendSystem = World.GetOrCreateSystem<ComponentSendSystem>();
 
             var component = new T();
 

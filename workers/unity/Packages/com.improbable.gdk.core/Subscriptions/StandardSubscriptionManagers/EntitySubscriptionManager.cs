@@ -15,19 +15,19 @@ namespace Improbable.Gdk.Subscriptions
 
         public EntitySubscriptionManager(World world)
         {
-            workerSystem = world.GetExistingManager<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
             if (workerSystem == null)
             {
                 throw new ArgumentException("No worker");
             }
 
-            var receiveSystem = world.GetExistingManager<SpatialOSReceiveSystem>();
+            var receiveSystem = world.GetExistingSystem<SpatialOSReceiveSystem>();
             if (receiveSystem == null)
             {
                 throw new ArgumentException("No worker");
             }
 
-            var constraintsSystem = world.GetExistingManager<ComponentConstraintsCallbackSystem>();
+            var constraintsSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
             if (constraintsSystem == null)
             {
                 // todo real error messages

@@ -7,8 +7,8 @@ namespace Improbable.Gdk.ReactiveComponents
     public interface IReactiveComponentReplicationHandler
     {
         uint ComponentId { get; }
-        EntityArchetypeQuery EventQuery { get; }
-        EntityArchetypeQuery[] CommandQueries { get; }
+        EntityQueryDesc EventQuery { get; }
+        EntityQueryDesc[] CommandQueries { get; }
 
         void SendEvents(NativeArray<ArchetypeChunk> chunkArray, ComponentSystemBase system,
             ComponentUpdateSystem componentUpdateSystem);

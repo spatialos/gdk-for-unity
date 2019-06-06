@@ -15,14 +15,14 @@ namespace Improbable.Gdk.ReactiveComponents
     [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
     public class WorldCommandsSendSystem : ComponentSystem
     {
-        private readonly EntityArchetypeQuery worldCommandSendersQuery = new EntityArchetypeQuery
+        private readonly EntityQueryDesc worldCommandSendersQuery = new EntityQueryDesc
         {
             All = new[]
             {
-                ComponentType.Create<WorldCommands.CreateEntity.CommandSender>(),
-                ComponentType.Create<WorldCommands.DeleteEntity.CommandSender>(),
-                ComponentType.Create<WorldCommands.ReserveEntityIds.CommandSender>(),
-                ComponentType.Create<WorldCommands.EntityQuery.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.CreateEntity.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.DeleteEntity.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.ReserveEntityIds.CommandSender>(),
+                ComponentType.ReadWrite<WorldCommands.EntityQuery.CommandSender>(),
             },
             Any = Array.Empty<ComponentType>(),
             None = Array.Empty<ComponentType>(),
@@ -30,14 +30,14 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private IConnectionHandler connection;
         private CommandSystem commandSystem;
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().ConnectionHandler;
-            commandSystem = World.GetExistingManager<CommandSystem>();
-            group = GetComponentGroup(worldCommandSendersQuery);
+            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
+            commandSystem = World.GetExistingSystem<CommandSystem>();
+            group = GetEntityQuery(worldCommandSendersQuery);
         }
 
         protected override void OnUpdate()

@@ -15,31 +15,32 @@ namespace Improbable.Gdk.Core
         public event Action<string> OnDisconnected;
 
         private WorkerSystem worker;
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<OnDisconnected>(),
                 ComponentType.ReadOnly<WorkerEntityTag>()
             );
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
         }
 
         protected override void OnUpdate()
         {
-            var disconnectData = group.GetSharedComponentDataArray<OnDisconnected>();
-
-            if (disconnectData.Length != 1)
+            if (group.CalculateLength() != 1)
             {
                 worker.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"{typeof(WorkerEntityTag)} should only be present on a single entity"));
             }
 
-            OnDisconnected?.Invoke(disconnectData[0].ReasonForDisconnect);
+            Entities.With(group).ForEach((OnDisconnected data) =>
+            {
+                OnDisconnected?.Invoke(data.ReasonForDisconnect);
+            });
         }
     }
 }

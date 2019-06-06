@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Core
         /// <typeparam name="T">The type of the component.</typeparam>
         public void AddComponent<T>(Entity entity, T component) where T : Component
         {
-            AddComponent(entity, ComponentType.Create<T>(), component);
+            AddComponent(entity, ComponentType.ReadWrite<T>(), component);
         }
 
         /// <summary>

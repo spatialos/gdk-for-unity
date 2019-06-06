@@ -11,13 +11,13 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateBefore(typeof(HandlePlayerHeartbeatResponseSystem))]
     public class PlayerHeartbeatInitializationSystem : ComponentSystem
     {
-        private ComponentGroup initializerGroup;
+        private EntityQuery initializerGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            var initializerQuery = new EntityArchetypeQuery
+            var initializerQuery = new EntityQueryDesc
             {
                 All = new[]
                 {
@@ -26,11 +26,11 @@ namespace Improbable.Gdk.PlayerLifecycle
                 Any = Array.Empty<ComponentType>(),
                 None = new[]
                 {
-                    ComponentType.Create<HeartbeatData>(),
+                    ComponentType.ReadWrite<HeartbeatData>(),
                 },
             };
 
-            initializerGroup = GetComponentGroup(initializerQuery);
+            initializerGroup = GetEntityQuery(initializerQuery);
         }
 
         protected override void OnUpdate()

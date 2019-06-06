@@ -1,3 +1,4 @@
+using System;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -29,11 +30,26 @@ namespace Improbable.Gdk.Core
     ///    remove it at the end of the frame.
     /// </remarks>
     [RemoveAtEndOfTick]
-    public struct OnDisconnected : ISharedComponentData
+    public struct OnDisconnected : ISharedComponentData, IEquatable<OnDisconnected>
     {
         /// <summary>
         ///     The reported reason for disconnecting
         /// </summary>
         public string ReasonForDisconnect;
+
+        public bool Equals(OnDisconnected other)
+        {
+            return string.Equals(ReasonForDisconnect, other.ReasonForDisconnect);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is OnDisconnected other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (ReasonForDisconnect != null ? ReasonForDisconnect.GetHashCode() : 0);
+        }
     }
 }

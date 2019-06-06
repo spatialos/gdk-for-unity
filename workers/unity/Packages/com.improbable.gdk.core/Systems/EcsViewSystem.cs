@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IEcsViewManager)))
             {
@@ -99,7 +99,7 @@ namespace Improbable.Gdk.Core
                 EntityId = entityId
             });
 
-            EntityManager.AddComponent(entity, ComponentType.Create<NewlyAddedSpatialOSEntity>());
+            EntityManager.AddComponent(entity, ComponentType.ReadWrite<NewlyAddedSpatialOSEntity>());
 
             worker.EntityIdToEntity.Add(entityId, entity);
             Profiler.EndSample();

@@ -20,16 +20,14 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
         {
             public uint ComponentId => 1105;
 
-            public EntityArchetypeQuery ComponentUpdateQuery => new EntityArchetypeQuery
+            public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
             {
                 All = new[]
                 {
-                    ComponentType.Create<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
-                    ComponentType.Create<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ComponentAuthority>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.Component>(),
+                    ComponentType.ReadWrite<global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ComponentAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
-                Any = Array.Empty<ComponentType>(),
-                None = Array.Empty<ComponentType>(),
             };
 
             public void SendUpdates(

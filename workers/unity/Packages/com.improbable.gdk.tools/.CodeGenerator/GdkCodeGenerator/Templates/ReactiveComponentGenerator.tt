@@ -15,6 +15,13 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
 
+[assembly: RegisterGenericComponentType(typeof(ComponentAdded<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(ComponentRemoved<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityChanges<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(Authoritative<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(NotAuthoritative<<#= componentNamespace #>.Component>))]
+[assembly: RegisterGenericComponentType(typeof(AuthorityLossImminent<<#= componentNamespace #>.Component>))]
+
 namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
@@ -77,7 +84,7 @@ namespace <#= qualifiedNamespace #>
                         entityManager.RemoveComponent<ComponentRemoved<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentAdded<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentAdded<Component>>());
                 }
             }
 
@@ -104,7 +111,7 @@ namespace <#= qualifiedNamespace #>
                         entityManager.RemoveComponent<ComponentAdded<Component>>(entity);
                     }
 
-                    entityManager.AddComponent(entity, ComponentType.Create<ComponentRemoved<Component>>());
+                    entityManager.AddComponent(entity, ComponentType.ReadWrite<ComponentRemoved<Component>>());
                 }
             }
 
@@ -235,11 +242,11 @@ namespace <#= qualifiedNamespace #>
             {
                 var authorityChanges = updateSystem.GetAuthorityChangesReceived(ComponentId);
 
-                foreach (var entityId in world.GetExistingManager<EntitySystem>().GetEntitiesAdded())
+                foreach (var entityId in world.GetExistingSystem<EntitySystem>().GetEntitiesAdded())
                 {
                     workerSystem.TryGetEntity(entityId, out var entity);
                     entityManager.AddComponent(entity,
-                        ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
+                        ComponentType.ReadWrite<NotAuthoritative<<#= componentNamespace #>.Component>>());
                 }
 
                 for (int i = 0; i < authorityChanges.Count; ++i)
@@ -270,7 +277,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         entityManager.RemoveComponent<NotAuthoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<Authoritative<<#= componentNamespace #>.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<Authoritative<<#= componentNamespace #>.Component>>());
 
                         break;
                     case Authority.AuthorityLossImminent:
@@ -280,7 +287,7 @@ namespace <#= qualifiedNamespace #>
                             return;
                         }
 
-                        entityManager.AddComponent(entity, ComponentType.Create<AuthorityLossImminent<<#= componentNamespace #>.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<AuthorityLossImminent<<#= componentNamespace #>.Component>>());
                         break;
                     case Authority.NotAuthoritative:
                         if (!entityManager.HasComponent<Authoritative<<#= componentNamespace #>.Component>>(entity))
@@ -295,7 +302,7 @@ namespace <#= qualifiedNamespace #>
                         }
 
                         entityManager.RemoveComponent<Authoritative<<#= componentNamespace #>.Component>>(entity);
-                        entityManager.AddComponent(entity, ComponentType.Create<NotAuthoritative<<#= componentNamespace #>.Component>>());
+                        entityManager.AddComponent(entity, ComponentType.ReadWrite<NotAuthoritative<<#= componentNamespace #>.Component>>());
                         break;
                 }
             }

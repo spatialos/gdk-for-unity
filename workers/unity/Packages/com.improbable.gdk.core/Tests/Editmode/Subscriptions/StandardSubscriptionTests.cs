@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         [Test]
         public void Subscribe_to_ecs_entity_should_be_available_if_the_entity_exists()
         {
-            var entity = World.GetExistingManager<EntityManager>().CreateEntity();
+            var entity = World.EntityManager.CreateEntity();
             Worker.EntityIdToEntity.Add(entityId, entity);
 
             var ecsEntitySubscription = SubscriptionSystem.Subscribe<Entity>(entityId);
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         [Test]
         public void Subscribe_to_world_commands_should_be_available_if_the_entity_exists()
         {
-            var entity = World.GetExistingManager<EntityManager>().CreateEntity();
+            var entity = World.EntityManager.CreateEntity();
             Worker.EntityIdToEntity.Add(entityId, entity);
 
             var worldCommandSub = SubscriptionSystem.Subscribe<WorldCommandSender>(entityId);

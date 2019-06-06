@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public EntityRemovedCallbackManager(World world)
         {
-            entitySystem = world.GetExistingManager<EntitySystem>();
+            entitySystem = world.GetExistingSystem<EntitySystem>();
         }
 
         public void InvokeCallbacks()

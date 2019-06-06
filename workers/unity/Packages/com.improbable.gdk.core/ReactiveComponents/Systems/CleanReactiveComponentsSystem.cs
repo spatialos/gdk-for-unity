@@ -13,7 +13,7 @@ namespace Improbable.Gdk.ReactiveComponents
     ///     Removes GDK reactive components from all entities
     /// </summary>
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
+    [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
     public class CleanReactiveComponentsSystem : ComponentSystem
     {
         private readonly List<ComponentCleanup> componentCleanups = new List<ComponentCleanup>();
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.ReactiveComponents
                 componentCleanups.Add(new ComponentCleanup
                 {
                     Handler = componentCleanupHandler,
-                    Group = GetComponentGroup(componentCleanupHandler.CleanupArchetypeQuery)
+                    Group = GetEntityQuery(componentCleanupHandler.CleanupArchetypeQuery)
                 });
             }
         }
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.ReactiveComponents
         private struct ComponentCleanup
         {
             public ComponentCleanupHandler Handler;
-            public ComponentGroup Group;
+            public EntityQuery Group;
         }
     }
 }

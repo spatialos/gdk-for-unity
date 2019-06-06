@@ -96,7 +96,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreateManager();
 
-            worker = World.GetExistingManager<WorkerSystem>();
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             Enabled = false;
         }

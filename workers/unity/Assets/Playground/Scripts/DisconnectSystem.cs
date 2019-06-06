@@ -7,13 +7,13 @@ namespace Playground
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     internal class DisconnectSystem : ComponentSystem
     {
-        private ComponentGroup group;
+        private EntityQuery group;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            group = GetComponentGroup(
+            group = GetEntityQuery(
                 ComponentType.ReadOnly<OnDisconnected>(),
                 ComponentType.ReadOnly<WorkerEntityTag>()
             );
@@ -21,10 +21,11 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var disconnectData = group.GetSharedComponentDataArray<OnDisconnected>();
-
-            Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
-                disconnectData[0].ReasonForDisconnect);
+            Entities.With(group).ForEach((OnDisconnected data) =>
+            {
+                Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
+                    data.ReasonForDisconnect);
+            });
         }
     }
 }

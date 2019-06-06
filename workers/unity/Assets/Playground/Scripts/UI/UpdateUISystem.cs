@@ -9,22 +9,22 @@ namespace Playground
     {
         private ComponentUpdateSystem componentUpdateSystem;
 
-        private ComponentGroup launcherGroup;
-        private ComponentGroup scoreGroup;
+        private EntityQuery launcherGroup;
+        private EntityQuery scoreGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            componentUpdateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            launcherGroup = GetComponentGroup(
+            componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            launcherGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Launcher.ComponentAuthority>()
             );
             launcherGroup.SetFilter(Launcher.ComponentAuthority.Authoritative);
 
-            scoreGroup = GetComponentGroup(
+            scoreGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Score.ComponentAuthority>()
@@ -34,37 +34,30 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var launcherSpatialIdData = launcherGroup.GetComponentDataArray<SpatialEntityId>();
-            var launcherData = launcherGroup.GetComponentDataArray<Launcher.Component>();
-
-            for (var i = 0; i < launcherData.Length; i++)
-            {
-                var spatialId = launcherSpatialIdData[i].EntityId;
-                var launcherUpdates =
-                    componentUpdateSystem.GetEntityComponentUpdatesReceived<Launcher.Update>(spatialId);
-                if (launcherUpdates.Count > 0)
+            Entities.With(launcherGroup).ForEach(
+                (ref SpatialEntityId spatialEntityId, ref Launcher.Component launcher) =>
                 {
-                    var launcher = launcherData[i];
+                    var spatialId = spatialEntityId.EntityId;
+                    var launcherUpdates =
+                        componentUpdateSystem.GetEntityComponentUpdatesReceived<Launcher.Update>(spatialId);
+                    if (launcherUpdates.Count > 0)
+                    {
+                        UIComponent.Main.TestText.text = launcher.RechargeTimeLeft > 0.0f
+                            ? "Recharging"
+                            : $"Energy: {launcher.EnergyLeft}";
+                    }
+                });
 
-                    UIComponent.Main.TestText.text = launcher.RechargeTimeLeft > 0.0f
-                        ? "Recharging"
-                        : $"Energy: {launcher.EnergyLeft}";
-                }
-            }
-
-            var scoreSpatialIdData = scoreGroup.GetComponentDataArray<SpatialEntityId>();
-            var scoreData = scoreGroup.GetComponentDataArray<Score.Component>();
-
-            for (var i = 0; i < scoreData.Length; i++)
+            Entities.With(scoreGroup).ForEach((ref SpatialEntityId spatialEntityId, ref Score.Component score) =>
             {
-                var spatialId = scoreSpatialIdData[i].EntityId;
+                var spatialId = spatialEntityId.EntityId;
                 var launcherUpdates =
                     componentUpdateSystem.GetEntityComponentUpdatesReceived<Score.Update>(spatialId);
                 if (launcherUpdates.Count > 0)
                 {
-                    UIComponent.Main.ScoreText.text = $"Score: {scoreData[i].Score}";
+                    UIComponent.Main.ScoreText.text = $"Score: {score.Score}";
                 }
-            }
+            });
         }
     }
 }

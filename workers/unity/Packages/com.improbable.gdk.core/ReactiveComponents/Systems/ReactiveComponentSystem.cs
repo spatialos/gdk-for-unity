@@ -21,9 +21,9 @@ namespace Improbable.Gdk.ReactiveComponents
         {
             base.OnCreateManager();
 
-            entityManager = World.GetExistingManager<EntityManager>();
-            updateSystem = World.GetExistingManager<ComponentUpdateSystem>();
-            workerSystem = World.GetExistingManager<WorkerSystem>();
+            entityManager = World.EntityManager;
+            updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
 
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IReactiveComponentManager)))
             {

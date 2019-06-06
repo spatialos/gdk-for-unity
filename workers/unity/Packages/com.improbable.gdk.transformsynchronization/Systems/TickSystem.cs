@@ -1,21 +1,20 @@
-using Improbable.Gdk.TransformSynchronization;
+using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
     [DisableAutoCreation]
-    [UpdateBefore(typeof(FixedUpdate.PhysicsFixedUpdate))]
+    [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class TickSystem : ComponentSystem
     {
-        private ComponentGroup transformGroup;
+        private EntityQuery transformGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
 
-            transformGroup = GetComponentGroup(
-                ComponentType.Create<TicksSinceLastTransformUpdate>(),
+            transformGroup = GetEntityQuery(
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
@@ -24,14 +23,10 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            var ticksSinceLastUpdateArray = transformGroup.GetComponentDataArray<TicksSinceLastTransformUpdate>();
-
-            for (int i = 0; i < ticksSinceLastUpdateArray.Length; ++i)
+            Entities.With(transformGroup).ForEach((ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate) =>
             {
-                var t = ticksSinceLastUpdateArray[i];
-                t.NumberOfTicks += 1;
-                ticksSinceLastUpdateArray[i] = t;
-            }
+                ticksSinceLastTransformUpdate.NumberOfTicks += 1;
+            });
         }
     }
 }

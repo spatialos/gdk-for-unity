@@ -11,28 +11,28 @@ namespace Improbable.Gdk.ReactiveComponents
     /// </summary>
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSCleanGroup))]
+    [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
     public class WorldCommandsCleanSystem : ComponentSystem
     {
-        private readonly EntityArchetypeQuery worldCommandResponseQuery = new EntityArchetypeQuery()
+        private readonly EntityQueryDesc worldCommandResponseQuery = new EntityQueryDesc()
         {
             All = Array.Empty<ComponentType>(),
             Any = new[]
             {
-                ComponentType.Create<WorldCommands.CreateEntity.CommandResponses>(),
-                ComponentType.Create<WorldCommands.DeleteEntity.CommandResponses>(),
-                ComponentType.Create<WorldCommands.ReserveEntityIds.CommandResponses>(),
-                ComponentType.Create<WorldCommands.EntityQuery.CommandResponses>(),
+                ComponentType.ReadWrite<WorldCommands.CreateEntity.CommandResponses>(),
+                ComponentType.ReadWrite<WorldCommands.DeleteEntity.CommandResponses>(),
+                ComponentType.ReadWrite<WorldCommands.ReserveEntityIds.CommandResponses>(),
+                ComponentType.ReadWrite<WorldCommands.EntityQuery.CommandResponses>(),
             },
             None = Array.Empty<ComponentType>(),
         };
 
-        private ComponentGroup worldCommandResponseGroup;
+        private EntityQuery worldCommandResponseGroup;
 
         protected override void OnCreateManager()
         {
             base.OnCreateManager();
-            worldCommandResponseGroup = GetComponentGroup(worldCommandResponseQuery);
+            worldCommandResponseGroup = GetEntityQuery(worldCommandResponseQuery);
         }
 
         protected override void OnUpdate()
