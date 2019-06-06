@@ -2,11 +2,15 @@
 
 # ECS: Reactive components
 
-To represent state changes or messages from SpatialOS, the SpatialOS GDK for Unity (GDK) uses something we're calling "reactive components": ECS components that it adds to the relevant ECS entity for the duration of a tick.
+<%(Callout type="warn" message="
+You can enable reactive components and their related systems by removing `DISABLE_REACTIVE_COMPONENTS` from your Scripting Define Symbols.
 
-When the GDK receives an update or message from SpatialOS, it places a "reactive component" on the associated ECS entity until the end of the tick. This reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to react to the change or message.
+However please note that the FPS and Blank starter projects disable this functionality by default, as reactive components have a **significant overhead** and **noticeable performance degradation** over time.
+")%>
 
-At the end of the tick, the GDK removes the reactive component.
+When the GDK receives an update or message from SpatialOS, a _reactive component_  is placed on the associated ECS entity at the start of the tick. A reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to _react_ to the change or message.
+
+Reactive components are removed by the GDK at the end of each tick, as they are a implemented as a [temporary component]({{urlRoot}}/reference/workflows/ecs/temporary-components).
 
 ## Reactive component types
 
@@ -58,4 +62,6 @@ public class ReactiveSystem : ComponentSystem
 
 ## Removal of reactive components
 
-The GDK automatically removes reactive components from the ECS entity as soon as [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run. This means that you must run any logic processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system). (This system is run at the end of each frame.)
+The GDK automatically removes reactive components from the ECS entity as soon as the [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run as part of the `InternalSpatialOSCleanGroup` at the end of each frame. This means that you must run any logic for processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system).
+
+
