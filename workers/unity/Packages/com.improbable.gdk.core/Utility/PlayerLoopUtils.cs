@@ -209,13 +209,13 @@ namespace Improbable.Gdk.Core
 
             for (var i = 0; i < playerLoop.subSystemList.Length; ++i)
             {
-                ref var subSystem = ref playerLoop.subSystemList[i];
-                subSystem.subSystemList = subSystem.subSystemList.Where(s =>
+                ref var playerLoopSubSystem = ref playerLoop.subSystemList[i];
+                playerLoopSubSystem.subSystemList = playerLoopSubSystem.subSystemList.Where(s =>
                 {
                     if (s.updateDelegate != null && s.updateDelegate.Target.GetType() == wrapperType)
                     {
-                        var system = systemField.GetValue(s.updateDelegate.Target) as ComponentSystemBase;
-                        return system.World != world;
+                        var targetSystem = systemField.GetValue(s.updateDelegate.Target) as ComponentSystemBase;
+                        return targetSystem.World != world;
                     }
 
                     return false;
