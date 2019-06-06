@@ -24,6 +24,7 @@
 - Moved Dev Auth Token to the Player Preferences.
     - Added a setting in `GdkToolsConfiguration` to let users configure whether a `DevAuthToken.txt` should be generated or not.
     - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
+- Removed `BlittableBool`, as `bool` is now blittable.
 
 ### Fixed
 
