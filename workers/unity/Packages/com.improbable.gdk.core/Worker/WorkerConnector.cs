@@ -413,22 +413,28 @@ namespace Improbable.Gdk.Core
 
         private IEnumerator DeferredDisposeWorker()
         {
-            if (Worker?.World != null)
-            {
-                // Remove root systems from the disposing world from the PlayerLoop
-                // This only affects the loop next frame
-                PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
-            }
-
+            // Remove the world from the loop early, to avoid errors during the delay frame
+            RemoveFromPlayerLoop();
             yield return null;
             Dispose();
         }
 
         public virtual void Dispose()
         {
+            RemoveFromPlayerLoop();
             Worker?.Dispose();
             Worker = null;
             UnityObjectDestroyer.Destroy(this);
+        }
+
+        private void RemoveFromPlayerLoop()
+        {
+            if (Worker?.World != null)
+            {
+                // Remove root systems from the disposing world from the PlayerLoop
+                // This only affects the loop next frame
+                PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
+            }
         }
     }
 }
