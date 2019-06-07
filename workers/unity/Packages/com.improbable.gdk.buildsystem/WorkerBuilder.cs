@@ -15,11 +15,11 @@ namespace Improbable.Gdk.BuildSystem
     public static class WorkerBuilder
     {
         private static readonly string PlayerBuildDirectory =
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory,
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.SpatialAssemblyDirectory,
                 "worker"));
 
-        private static readonly string AssetDatabaseDirectory =
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.AssetDatabaseDirectory));
+        private static readonly string SpatialAssemblyDirectory =
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.SpatialAssemblyDirectory));
 
         private const string BuildWorkerTypes = "buildWorkerTypes";
 
@@ -217,9 +217,18 @@ namespace Improbable.Gdk.BuildSystem
 
         public static void Clean()
         {
-            if (Directory.Exists(AssetDatabaseDirectory))
+            // Delete all but the schema directory where the schema descriptor is placed.
+            if (Directory.Exists(SpatialAssemblyDirectory))
             {
-                Directory.Delete(AssetDatabaseDirectory, true);
+                var children = new DirectoryInfo(SpatialAssemblyDirectory).GetDirectories();
+
+                foreach (var child in children)
+                {
+                    if (child.Name != "schema")
+                    {
+                        Directory.Delete(child.FullName, true);
+                    }
+                }
             }
 
             if (Directory.Exists(EditorPaths.BuildScratchDirectory))

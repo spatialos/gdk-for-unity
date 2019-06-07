@@ -11,10 +11,16 @@ namespace Improbable.Gdk.BuildSystem
     /// </remarks>
     public static class EditorPaths
     {
+        /// <summary>
+        ///     The path to the Unity project build directory that worker build artifacts are placed into.
+        /// </summary>
         public static readonly string BuildScratchDirectory =
             Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker"));
 
-        public static readonly string AssetDatabaseDirectory =
+        /// <summary>
+        ///     The path to the SpatialOS assembly directory where SpatialOS assembly artifacts are placed.
+        /// </summary>
+        public static readonly string SpatialAssemblyDirectory =
             Path.Combine(Application.dataPath, "..", "..", "..", "build", "assembly");
     }
 }
