@@ -39,19 +39,19 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
 * If a SpatialOS entity gets removed from the worker's view, the corresponding ECS Entity is deleted.
 * A [`NewlyAddedSpatialOSEntity`]({{urlRoot}}/api/core/newly-added-spatial-os-entity) temporary component is added upon creating these entities.
 * A [`SpatialEntityId`]({{urlRoot}}/api/core/spatial-entity-id) component is always available on these entities.
-* `{name of component}.Component` components are always available on these entities for all schema components that belong to these entities.
-* `{name of component}.ComponentAuthority` components are always available on these entities for all schema components that belong to these entities.
+* `{component name}.Component` components are always available on these entities for all schema components that belong to these entities.
+* `{component name}.ComponentAuthority` components are always available on these entities for all schema components that belong to these entities.
 * `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
 
 ### Guarantees when receiving updates or messages
 
 Whenever a component update or message is received by the worker, the following holds for the entity that the worker received it for:
 
-* All updates received are stored as a list in a component called `{name of component}.ReceivedUpdates`.
-* The `{name of component}.Component` component is updated to the values stored in the latest update received.
+* All updates received are stored as a list in a component called `{component name}.ReceivedUpdates`.
+* The `{component name}.Component` component is updated to the values stored in the latest update received.
 
 ### Guarantees when sending updates or messages
 
 Whenever a component update or message is sent by the worker, the following holds for the entity that the worker sends it from:
 
-* Whenever a field inside a `{name of component}.Component` changes, the component update will be sent the next time [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
+* Whenever a field inside a `{component name}.Component` changes, the component update will be sent the next time [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.

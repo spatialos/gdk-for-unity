@@ -71,7 +71,7 @@ public class ExampleSystem : ComponentSystem
             // Setting the field back to itself marks it as dirty.
             exampleComponent.SomeInts = exampleComponent.SomeInts;
 
-            // Mutate the nest list or dictionary field.
+            // Mutate the nested list or dictionary field.
             // This is not sufficient to trigger an update.
             exampleComponent.SomeTypeField.SomeNestedFloats.Add(10);
             // Setting the field back to itself marks it as dirty.
@@ -87,7 +87,7 @@ To access all component updates for the component that have happened since the l
 
 > Note that the `ComponentName.ReceivedUpdates` component is not temporary. You can identify if there were no component updates by checking if the `Updates` list is empty in a given tick.
 
-If you only want the latest values, you can access the `Health.Component` directly.
+If you only want the latest values, you can access the `ComponentName.Component` directly.
 
 ```csharp
 public class ProcessChangedHealthSystem : ComponentSystem

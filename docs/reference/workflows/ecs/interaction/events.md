@@ -13,37 +13,11 @@ Events are for broadcasting information between worker instances about a transie
 
 A worker instance can send an event using the `SendEvent` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system).
 
-It requires you to pass in a populated event struct of type `{component name}.{event name}.Event`, and the entity ID of the entity that you want to trigger the event on.
+The generated code from your schema will include a `{component name}.{event name}.Event` type, which needs to be constructed and given a payload when sending events.
 
-<%(#Expandable title="Example schema")%>
-
-The code generated from the below schema will define a `CubeColor.ChangeColor.Event` struct, which needs to be constructed when sending `change_color` events. The struct type can also be used to determine the type of events to watch for by event receivers.
-
-```schemalang
-package playground;
-
-enum Color {
-    YELLOW = 0;
-    GREEN = 1;
-    BLUE = 2;
-    RED = 3;
-}
-
-type ColorData {
-    Color color = 1;
-}
-
-component CubeColor {
-    id = 12000;
-    event ColorData change_color;
-}
-```
-
-<%(/Expandable)%>
+The `SendEvent` method requires you to pass in a populated event, and the entity ID of the entity that you want to trigger the event on.
 
 ```csharp
-
-
 public class SendChangeColorEvent : ComponentSystem
 {
     private ComponentUpdateSystem componentUpdateSystem;
@@ -78,7 +52,7 @@ public class SendChangeColorEvent : ComponentSystem
 
 <!-- TODO explain that events are propagated? -->
 
-The `GetEventsReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the events of a given type that have been received since the last tick.
+The `GetEventsReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the events, given the type `T`, that have been received since the last tick.
 
 The example below shows how to use this method to handle events a worker receives.
 

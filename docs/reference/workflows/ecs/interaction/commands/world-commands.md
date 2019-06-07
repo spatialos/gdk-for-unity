@@ -2,9 +2,16 @@
 
 # ECS: World commands
 
-World commands are special commands that are sent to the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities. (See the SpatialOS documentation on [world commands](https://docs.improbable.io/reference/latest/shared/design/commands#world-commands) for more information.)
+<%(Callout message="
+Before reading this document, make sure you are familiar with:
 
-World command requests can be sent with the `CommandSystem`, which also handles received responses.
+* [Commands](https://docs.improbable.io/reference/latest/shared/design/commands)
+* [World commands](https://docs.improbable.io/reference/13.8/shared/design/commands#world-commands)
+")%>
+
+World commands are pre-set commands that are used to interact with the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities.
+
+The [`CommandSystem`]({{urlRoot}}/api/core/command-system) used for component commands can also be used for sending and receiving world commands.
 
 ## Reserve an entity ID
 

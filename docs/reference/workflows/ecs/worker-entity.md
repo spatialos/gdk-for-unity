@@ -10,14 +10,14 @@ Before reading this document, make sure you have read:
 
 Each worker has an ECS world to represent the entities currently in a [worker's view]({{urlRoot}}/reference/glossary#worker-s-view). Each [worker's ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) contains a worker entity, which can be uniquely identified by the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
 
-The worker entity enables you to register changes to the state of the Runtime connection. That is, whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not. This can be done by filtering for the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components):
+The worker entity enables you to react to changes to the state of the Runtime connection. That is, whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not. The GDK adds the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components) to your worker entity when these changes occur:
 
 * [`OnConnected`]({{urlRoot}}/api/core/on-connected): the worker just connected to the SpatialOS Runtime.
 * [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected): the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
 
 ## How to run logic when the worker has just connected
 
-When the worker has just connected, a temporary `OnConnected` component is added to the worker entity.
+The GDK adds the `OnConnected` component to your worker entity when it has just connected.
 
 **Example usage**
 
@@ -53,7 +53,7 @@ public class HandleConnectSystem : ComponentSystem
 
 ## How to run logic when the worker has just disconnected
 
-When the worker has just disconnected, a temporary `OnDisconnected` component is added to the worker entity containt. The `ReasonForDisconnect` field on the component stores the reason why the worker disconnected.
+The GDK adds the `OnDisconnected` component to your worker entity when it has just disconnected.
 
 **Example usage**
 

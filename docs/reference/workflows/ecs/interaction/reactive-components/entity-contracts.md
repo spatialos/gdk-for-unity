@@ -13,9 +13,9 @@ This documentation describes the guarantees we provide for the reactive componen
 
 ## ECS entities representing SpatialOS entities
 
-* `{name of component}.CommandSenders.{name of command}` components are always available on these entities for every single command defined in your schema.
-* `{name of component}.CommandResponders.{name of command}` components are available on these entities for all components ands that the worker is authoritative over.
-* `{name of component}.EventSender.{name of event}` components are available on these entities for all components that the worker is authoritative over.
+* `{component name}.CommandSenders.{command name}` components are always available on these entities for every single command defined in your schema.
+* `{component name}.CommandResponders.{command name}` components are available on these entities for all components ands that the worker is authoritative over.
+* `{component name}.EventSender.{event name}` components are available on these entities for all components that the worker is authoritative over.
 
 ## Authority
 
@@ -27,17 +27,17 @@ At least one authority component is available on these entities based on the wor
 
 ## Receiving updates or messages
 
-* All events received are stored as a list in a reactive component called `{name of component}.ReceivedEvents.{name of event}`.
-* All command requests received are stored as a list in a reactive component called `{name of component}.{name of command}.CommandRequests`.
-* All command responses received are stored as a list in a reactive component called `{name of component}.{name of command}.CommandResponses`.
+* All events received are stored as a list in a reactive component called `{component name}.ReceivedEvents.{event name}`.
+* All command requests received are stored as a list in a reactive component called `{component name}.{command name}.CommandRequests`.
+* All command responses received are stored as a list in a reactive component called `{component name}.{command name}.CommandResponses`.
 
 ## Sending updates or messages
 
-* All events added to the `{name of component}.EventSender.{name of event}`.Events list will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
-* All command requests added to the `{name of component}.CommandSenders.{name of command}.RequestsToSend`  will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
-* All command responses added to the `{name of component}.CommandResponders.{name of command}.ResponsesToSend`  will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
+* All events added to the `{component name}.EventSender.{event name}`.Events list will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
+* All command requests added to the `{component name}.CommandSenders.{command name}.RequestsToSend`  will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
+* All command responses added to the `{component name}.CommandResponders.{command name}.ResponsesToSend`  will be sent the next time the [`SpatialOSSendSystem`]({{urlRoot}}/api/core/spatial-os-send-system) is run.
 
 ## Worker entity
 
-* `{name of component}.CommandSenders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
-* `{name of component}.CommandResponders.{name of command}` components are always available on the worker entity for every single command defined in your schema.
+* `{component name}.CommandSenders.{command name}` components are always available on the worker entity for every single command defined in your schema.
+* `{component name}.CommandResponders.{command name}` components are always available on the worker entity for every single command defined in your schema.

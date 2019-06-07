@@ -5,57 +5,29 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Read and write access]({{urlRoot}}/reference/glossary#authority)
+* [Commands](https://docs.improbable.io/reference/latest/shared/design/commands)
 ")%>
 
+Component commands are defined in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity's components.
 
-## About commands
+For each command defined in your schema components, the GDK generates the following types:
 
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview).<br/>
+* `{component name}.{command name}.Request`
+* `{component name}.{command name}.ReceivedRequest`
+* `{component name}.{command name}.Response`
+* `{component name}.{command name}.ReceivedResponse`
 
-There are two types of commands in SpatialOS:
-
-* **World commands** are pre-set commands for reserving, creating, deleting and requesting information about [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity).
-* **Component commands** you set up in your [schema]({{urlRoot}}/reference/glossary#schema) for workers to invoke on any SpatialOS entity’s components.
-
-## How to send and receive component commands
-
-The GDK generates the following ECS components to allow you to send and receive commands using the ECS flow:
-
-* `{name of component}.CommandSenders.{name of command}`: allows you to send command requests
-* `{name of component}.CommandResponders.{name of command}`: allows you to send command responses
-* Command request and response structs
-
-We use the following schema for all examples described in this documentation.
-```schemalang
-package playground;
-
-component CubeSpawner
-{
-    id = 12002;
-    command improbable.common.Empty spawn_cube(improbable.common.Empty);
-}
-```
-
-The GDK generates the following types in the `Playground` namespace:
-
-  * `CubeSpawner.SpawnCube.Request`
-  * `CubeSpawner.SpawnCube.ReceivedRequest`
-  * `CubeSpawner.SpawnCube.Response`
-  * `CubeSpawner.SpawnCube.ReceivedResponse`
-  * `CubeSpawner.CommandRequests.SpawnCube`
-  * `CubeSpawner.CommandResponses.SpawnCube`
-  * `CubeSpawner.CommandSenders.SpawnCube`
-  * `CubeSpawner.CommandResponders.SpawnCube`
+The GDK also includes a [`CommandSystem`]({{urlRoot}}/api/core/command-system) containing several methods that are used for sending and receiving command requests and responses.
 
 ## How to send command requests
 
-The following code snippet provides an example on how to send a command request.
-This example ECS system would run on any worker that has this system added to its ECS world.
+To send a command request, the [`CommandSystem`]({{urlRoot}}/api/core/command-system) provides a `SendRequest` method, which requires a command request object of type `{component name}.{command name}.Request` as its argument.
+
+The example below shows how to send a command request.
 
 ```csharp
-// This ensures all command requests that you want to send are added before
-// the GDK send systems are run.
+// This ensures all command requests that you want to send are
+// created before the `SpatialOSSendSystem` is run.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class SendSpawnCubeRequestSystem : ComponentSystem
 {
@@ -97,14 +69,18 @@ public class SendSpawnCubeRequestSystem : ComponentSystem
 }
 ```
 
-## How to handle received command requests
+## How to handle command requests and send responses
 
-The following code snippet provides an example on how to process and respond to a received command request.
-This example ECS system would run only on workers that have this system added to their ECS world and have write access over the corresponding component.
+The [`CommandSystem`]({{urlRoot}}/api/core/command-system) has a `GetRequests<T>` method, which retrieves a list of received command requests of type T received by the worker. In this case, T must be of type `{component name}.{command name}.ReceivedRequest`. Iterate through the list returned from `GetRequests<T>` to handle each received command request.
+
+To send a response back, the [`CommandSystem`]({{urlRoot}}/api/core/command-system) provides a `SendResponse` method, which requires a response object of type `{component name}.{command name}.Response` as its argument.
+
+The example below shows how to handle a command request and send a command response back.
 
 ```csharp
-// This ensures all command requests that you want to handle are processed
-// before they get cleaned up.
+// This ensures all received command requests are handled before being cleaned up
+// by the `InternalSpatialOSCleanGroup`, and command responses that you want to
+/// send are created before the `SpatialOSSendSystem` is run.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeRequestSystem : ComponentSystem
 {
@@ -143,14 +119,15 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
 }
 ```
 
-## How to handle received command responses
+## How to handle command responses
 
-The following code snippet provides an example on how to handle a command response.
-This example ECS system would run on any worker that has this system added to its ECS world.
+The [`CommandSystem`]({{urlRoot}}/api/core/command-system) has a `GetResponses<T>` method, which retrieves a list of received command responses of type T received by the worker. In this case, T must be of type `{component name}.{command name}.ReceivedResponse`. Iterate through the list returned from `GetResponses<T>` to handle each received command response.
+
+The example below shows how to handle a command response.
 
 ```csharp
-// This ensures all command responses that you want to handle are processed
-// before they get cleaned up.
+// This ensures all received command responses are handled before being cleaned up
+// by the `InternalSpatialOSCleanGroup`.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeResponseSystem : ComponentSystem
 {
