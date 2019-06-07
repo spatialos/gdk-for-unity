@@ -218,7 +218,7 @@ namespace Improbable.Gdk.Core
                         return targetSystem.World != world;
                     }
 
-                    return false;
+                    return true;
                 }).ToArray();
             }
 
