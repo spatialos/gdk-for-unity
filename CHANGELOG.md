@@ -33,6 +33,7 @@
 ### Internal
 
 - Removed the workaround for a schema component update bug (WRK-1031).
+- All playground launch configuration files now use the `w2_r0500_e5` template instead of the `small` template which was deprecated.
 
 ## `0.2.2` - 2019-05-15
 
