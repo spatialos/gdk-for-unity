@@ -19,13 +19,16 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
-        public int SimulatorNameId;
-
+        
         internal string[] simulatorNames;
         internal Dictionary<string, string> availableSimulators = new Dictionary<string, string>();
 
         internal string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
         internal string RuntimeIpEditorPrefKey = "RuntimeIp";
+        internal string SimulatorNamePrefKey = "SimulatorName";
+        
+        public string SimulatorName => PlayerPrefs.GetString(SimulatorNamePrefKey);
+
         public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
@@ -117,8 +120,7 @@ namespace Improbable.Gdk.Tools
 
         public string GetSimulatorUID()
         {
-            var simulatorName = simulatorNames[SimulatorNameId];
-            if (!availableSimulators.TryGetValue(simulatorName, out var simulatorUID))
+            if (!availableSimulators.TryGetValue(SimulatorName, out var simulatorUID))
             {
                 Debug.LogError("Unable to find simulator");
                 return string.Empty;
@@ -156,6 +158,12 @@ namespace Improbable.Gdk.Tools
             File.WriteAllText(JsonFilePath, JsonUtility.ToJson(config, true));
 
             return config;
+        }
+
+        protected void SetChosenSimulator(int index)
+        {
+            var simulatorName = simulatorNames[index];
+            PlayerPrefs.SetString(SimulatorNamePrefKey, simulatorName);
         }
 
         void RetrieveAvailableiOSSimulators()

@@ -36,6 +36,8 @@ namespace Improbable.Gdk.Tools
 
         private Vector2 scrollPosition;
 
+        private int simulatorNameIndex;
+
         [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
         public static void ShowWindow()
         {
@@ -161,7 +163,11 @@ namespace Improbable.Gdk.Tools
                 EditorPrefs.SetString(
                     toolsConfig.DevelopmentTeamIdEditorPrefKey,
                     EditorGUILayout.TextField(DevelopmentTeamIdLabel, toolsConfig.DevelopmentTeamId));
-                toolsConfig.SimulatorNameId = EditorGUILayout.Popup("Simulator Type", toolsConfig.SimulatorNameId, toolsConfig.simulatorNames);
+                var newSimulatorNameIndex = EditorGUILayout.Popup("Simulator Type", simulatorNameIndex, toolsConfig.simulatorNames);
+                if (simulatorNameIndex != newSimulatorNameIndex)
+                {
+                }
+                
             }
 #endif
 
