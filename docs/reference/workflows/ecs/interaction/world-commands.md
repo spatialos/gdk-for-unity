@@ -71,7 +71,7 @@ You can get responses by calling `GetResponses` on the `CommandSystem` with the 
 commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
 ```
 
-## Query for entities
+## Entity queries
 
 You can use entity queries to get information about entities in the world. For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
 
