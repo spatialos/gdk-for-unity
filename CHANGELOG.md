@@ -4,39 +4,39 @@
 
 ### Breaking Changes
 
-- Schema from packages are no longer copied into the root `schema` directory.
+- Schema from packages are no longer copied into the root `schema` directory. [#953](https://github.com/spatialos/gdk-for-unity/pull/953)
     - Renamed the `Schema` directory within packages to `.schema`, to avoid generating unecessary `.meta` files.
     - Update feature module schema to the correct namespaces and folders within `.schema`.
     - If you use schema that imports from GDK packages, you will need to change how you import GDK schema.
         - Schema file Y in package `improbable.gdk.X` is imported using `import "improbable/gdk/X/Y.schema"`.
         - For example, `import "from_gdk_packages/com.improbable.gdk.core/common.schema";` now becomes `import "improbable/gdk/core/common.schema";`.
-- Upgraded the Unity Entities package to `preview.33` from `preview.21`.
+- Upgraded the Unity Entities package to `preview.33` from `preview.21`. [#963](https://github.com/spatialos/gdk-for-unity/pull/963), [#966](https://github.com/spatialos/gdk-for-unity/pull/966), [#967](https://github.com/spatialos/gdk-for-unity/pull/967)
     - See the Unity Entities package [changelog](https://docs.unity3d.com/Packages/com.unity.entities@0.0/changelog/CHANGELOG.html) for more information.
     - This has removed several APIs such as `[Inject]` and `ComponentDataArray`.
     - If you use generic `IComponentData` types, you must explicitly register them. Please view Unity's example on `RegisterGenericComponentType` in the changelog linked above.
     - System groups API has changed, systems without a group are automatically added to the `SimulationSystemGroup` which runs on `Update`.
         - The Unity Editor will print helpful warnings if any systems are not grouped properly.
-- Removed `BlittableBool`, as `bool` is now blittable.
-- Fixed a bug where the generated `ReceivedUpdates` component was not correctly wrapped in the `DISABLED_REACTIVE_COMPONENTS` define. 
+- Removed `BlittableBool`, as `bool` is now blittable. [#965](https://github.com/spatialos/gdk-for-unity/pull/965)
+- Fixed a bug where the generated `ReceivedUpdates` component was not correctly wrapped in the `DISABLED_REACTIVE_COMPONENTS` define. [#971](https://github.com/spatialos/gdk-for-unity/pull/971)
     - This means that if you have `DISABLE_REACTIVE_COMPONENTS` set, the `ReceivedUpdates` types will no longer be available.
 
 ### Changed
 
-- Upgraded the project to be compatible with `2019.1.3f1`.
-- Moved Runtime IP from the `GdkToolsConfiguration.json` to the Editor Preferences.
-- Moved Dev Auth Token to the Player Preferences.
+- Upgraded the project to be compatible with `2019.1.3f1`. [#951](https://github.com/spatialos/gdk-for-unity/pull/951)
+- Moved Runtime IP from the `GdkToolsConfiguration.json` to the Editor Preferences. [#961](https://github.com/spatialos/gdk-for-unity/pull/961)
+- Moved Dev Auth Token to the Player Preferences. [#961](https://github.com/spatialos/gdk-for-unity/pull/961)
     - Added a setting in `GdkToolsConfiguration` to let users configure whether a `DevAuthToken.txt` should be generated or not.
     - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
-- The schema descriptor is no longer deleted when you select `SpatialOS > Clean all workers` from the Unity Editor.
+- The schema descriptor is no longer deleted when you select `SpatialOS > Clean all workers` from the Unity Editor. [#969](https://github.com/spatialos/gdk-for-unity/pull/969)
 
 ### Fixed
 
-- Fixed a bug where a worker's `World` could get disposed multiple times if you stopped the application inside the Editor while the worker is being created.
+- Fixed a bug where a worker's `World` could get disposed multiple times if you stopped the application inside the Editor while the worker is being created. [#952](https://github.com/spatialos/gdk-for-unity/pull/952)
 
 ### Internal
 
-- Removed the workaround for a schema component update bug (WRK-1031).
-- All playground launch configuration files now use the `w2_r0500_e5` template instead of the `small` template which was deprecated.
+- Removed the workaround for a schema component update bug (WRK-1031). [#962](https://github.com/spatialos/gdk-for-unity/pull/962)
+- All playground launch configuration files now use the `w2_r0500_e5` template instead of the `small` template which was deprecated. [#968](https://github.com/spatialos/gdk-for-unity/pull/968)
 
 ## `0.2.2` - 2019-05-15
 
