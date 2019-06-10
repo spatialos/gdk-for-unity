@@ -2907,7 +2907,6 @@ namespace Improbable.Gdk.Tests
         }
 
 #if !DISABLE_REACTIVE_COMPONENTS
-
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;

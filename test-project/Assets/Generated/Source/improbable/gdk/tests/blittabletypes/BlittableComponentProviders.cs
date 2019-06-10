@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
     {
         internal static class ReferenceTypeProviders
         {
+#if !DISABLE_REACTIVE_COMPONENTS
             public static class UpdatesProvider 
             {
                 private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.Update>>();
@@ -79,6 +80,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 }
             }
             
+#endif
 
             public static class FirstEventProvider 
             {

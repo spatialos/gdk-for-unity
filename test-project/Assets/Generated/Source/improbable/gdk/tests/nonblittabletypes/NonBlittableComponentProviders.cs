@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
     {
         internal static class ReferenceTypeProviders
         {
+#if !DISABLE_REACTIVE_COMPONENTS
             public static class UpdatesProvider 
             {
                 private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Update>>();
@@ -79,6 +80,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 }
             }
             
+#endif
 
             public static class StringFieldProvider 
             {

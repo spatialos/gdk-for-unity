@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
     {
         internal static class ReferenceTypeProviders
         {
+#if !DISABLE_REACTIVE_COMPONENTS
             public static class UpdatesProvider 
             {
                 private static readonly Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update>> Storage = new Dictionary<uint, List<global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFields.Update>>();
@@ -79,6 +80,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 }
             }
             
+#endif
 
         }
     }
