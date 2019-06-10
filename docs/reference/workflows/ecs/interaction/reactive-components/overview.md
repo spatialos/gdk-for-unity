@@ -8,9 +8,9 @@ You can enable reactive components and their related systems by removing `DISABL
 However please note that the FPS and Blank starter projects disable this functionality by default, as reactive components have a **significant overhead** and **noticeable performance degradation** over time.
 ")%>
 
-When the GDK receives an update or message from SpatialOS, a _reactive component_  is placed on the associated ECS entity at the start of the tick. A reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to _react_ to the change or message.
+When the GDK receives an update or message from SpatialOS, a _reactive component_  is placed on the associated ECS entity at the start of the frame. A reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to _react_ to the change or message.
 
-Reactive components are removed by the GDK at the end of each tick, as they are a implemented as a [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components).
+Reactive components are removed by the GDK at the end of each frame, as they are implemented as a [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components).
 
 ## Reactive component types
 

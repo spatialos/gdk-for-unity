@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with
 
 A worker instance can send an event using the `SendEvent` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system).
 
-You must instantiante and populate an instance of the event payload, the type of which is `{component name}.{event name}.Event`, when sending the event.
+You must instantiate and populate an instance of the event payload, the type of which is `{component name}.{event name}.Event`, when sending the event.
 
 The `SendEvent` method requires you to pass in this populated event, and the entity ID of the entity that you want to trigger the event on.
 
