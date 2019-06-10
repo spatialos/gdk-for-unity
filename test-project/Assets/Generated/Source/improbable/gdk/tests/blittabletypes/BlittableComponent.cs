@@ -575,6 +575,8 @@ namespace Improbable.Gdk.Tests.BlittableTypes
             public Option<double> DoubleField;
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
+
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -583,6 +585,7 @@ namespace Improbable.Gdk.Tests.BlittableTypes
                 get => global::Improbable.Gdk.Tests.BlittableTypes.BlittableComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class BlittableComponentDynamic : IDynamicInvokable
         {

@@ -1161,6 +1161,8 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
             public Option<global::System.Collections.Generic.Dictionary<int,string>> MapField;
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
+
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -1169,6 +1171,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class NonBlittableComponentDynamic : IDynamicInvokable
         {

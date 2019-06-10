@@ -187,6 +187,8 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
 
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
+
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -195,6 +197,7 @@ namespace Improbable.Gdk.Tests.ComponentsWithNoFields
                 get => global::Improbable.Gdk.Tests.ComponentsWithNoFields.ComponentWithNoFieldsWithEvents.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class ComponentWithNoFieldsWithEventsDynamic : IDynamicInvokable
         {

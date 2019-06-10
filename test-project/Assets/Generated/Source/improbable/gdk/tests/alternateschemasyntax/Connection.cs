@@ -291,6 +291,8 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
             public Option<int> Value;
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
+
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -299,6 +301,7 @@ namespace Improbable.Gdk.Tests.AlternateSchemaSyntax
                 get => global::Improbable.Gdk.Tests.AlternateSchemaSyntax.Connection.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class ConnectionDynamic : IDynamicInvokable
         {
