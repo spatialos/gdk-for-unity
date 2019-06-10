@@ -17,6 +17,8 @@
     - System groups API has changed, systems without a group are automatically added to the `SimulationSystemGroup` which runs on `Update`.
         - The Unity Editor will print helpful warnings if any systems are not grouped properly.
 - Removed `BlittableBool`, as `bool` is now blittable.
+- Fixed a bug where the generated `ReceivedUpdates` component was not correctly wrapped in the `DISABLED_REACTIVE_COMPONENTS` define. 
+    - This means that if you have `DISABLE_REACTIVE_COMPONENTS` set, the `ReceivedUpdates` types will no longer be available.
 
 ### Changed
 
