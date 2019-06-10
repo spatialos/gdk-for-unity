@@ -8,24 +8,17 @@ Before reading this document, make sure you have read:
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
-Each worker has an ECS world to represent the entities currently in a [worker's view]({{urlRoot}}/reference/glossary#worker-s-view). Each [worker's ECS world]({{urlRoot}}/reference/concepts/worker#workers-and-ecs-worlds) contains a worker entity, which can be uniquely identified by the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
+Each worker has an ECS world to represent the entities currently in a [worker's view]({{urlRoot}}/reference/glossary#worker-s-view). This world contains a worker entity, which can be uniquely identified by the [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component attached to it.
 
-The worker entity enables you to react to changes to the state of the Runtime connection. That is, whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not. The GDK adds the following [temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components) to your worker entity when these changes occur:
-
-* [`OnConnected`]({{urlRoot}}/api/core/on-connected): the worker just connected to the SpatialOS Runtime.
-* [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected): the worker just disconnected from the SpatialOS Runtime. This is an `ISharedComponentData` and stores the reason for the disconnection as a `string`.
+The worker entity enables you to react to changes in the connection to the Runtime. That is, whether the worker is connected to the [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) or not.
 
 ## How to run logic when the worker has just connected
 
-The GDK adds the `OnConnected` component to your worker entity when it has just connected.
+The GDK adds the [`OnConnected`]({{urlRoot}}/api/core/on-connected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just connected.
 
 **Example usage**
 
 ```csharp
-using Improbable.Gdk.Core;
-using Unity.Entities;
-using UnityEngine;
-
 public class HandleConnectSystem : ComponentSystem
 {
     private EntityQuery query;
@@ -53,15 +46,11 @@ public class HandleConnectSystem : ComponentSystem
 
 ## How to run logic when the worker has just disconnected
 
-The GDK adds the `OnDisconnected` component to your worker entity when it has just disconnected.
+The GDK adds the [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just disconnected. This component contains a single string field, which contains the reason for disconnection.
 
 **Example usage**
 
 ```csharp
-using Improbable.Gdk.Core;
-using Unity.Entities;
-using UnityEngine;
-
 public class HandleDisconnectSystem : ComponentSystem
 {
     private EntityQuery query;
@@ -79,9 +68,9 @@ public class HandleDisconnectSystem : ComponentSystem
     protected override void OnUpdate()
     {
         Entities.With(query).ForEach(
-            (OnDisconnected onDisconnected, ref WorkerEntityTag workerEntityTag) =>
+            (ref OnConnected onConnected, ref WorkerEntityTag workerEntityTag) =>
             {
-                Debug.Log($"Got disconnected: {onDisconnected.ReasonForDisconnect}");
+                Debug.Log("Worker just connected!");
             });
     }
 }

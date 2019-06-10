@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
+* [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
 * [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
 ")%>
 
@@ -27,6 +27,7 @@ At least one authority component is available on these entities based on the wor
 
 ## Receiving updates or messages
 
+* All component updates received are stored as a list in a reactive component called `{component name}.ReceivedUpdates`.
 * All events received are stored as a list in a reactive component called `{component name}.ReceivedEvents.{event name}`.
 * All command requests received are stored as a list in a reactive component called `{component name}.{command name}.CommandRequests`.
 * All command responses received are stored as a list in a reactive component called `{component name}.{command name}.CommandResponses`.

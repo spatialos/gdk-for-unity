@@ -5,17 +5,12 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
-* [Entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
+* [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
 * [Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
-* [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+* [System update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
 ")%>
 
 This documentation describes the guarantees we provide for the components that an ECS Entity has.
-
-## Temporary components
-
-Temporary components are components that only exist for one frame. We guarantee that all temporary components are removed from all ECS Entities when `InternalSpatialOSCleanGroup` is run.
 
 ## Worker entities
 
@@ -25,7 +20,6 @@ The following guarantees hold for worker entities:
 
 * The worker entity will exist for as long as the ECS World exists.
 * A [`WorkerEntityTag`]({{urlRoot}}/api/core/worker-entity-tag) component is always available on the worker entity.
-* `WorldCommands.{name of world command}.CommandSender` components are always available on the worker entity and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
 * An [`OnConnected`]({{urlRoot}}/api/core/on-connected) temporary component is added upon creating the worker entity.
 * An [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) temporary component is added after the connection to the SpatialOS Runtime has been lost.
 
@@ -41,7 +35,7 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
 * A [`SpatialEntityId`]({{urlRoot}}/api/core/spatial-entity-id) component is always available on these entities.
 * `{component name}.Component` components are always available on these entities for all schema components that belong to these entities.
 * `{component name}.ComponentAuthority` components are always available on these entities for all schema components that belong to these entities.
-* `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands).
+* `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/world-commands).
 
 ### Guarantees when receiving updates or messages
 

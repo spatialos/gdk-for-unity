@@ -5,11 +5,10 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Commands](https://docs.improbable.io/reference/latest/shared/design/commands)
 * [World commands](https://docs.improbable.io/reference/13.8/shared/design/commands#world-commands)
 ")%>
 
-World commands are pre-set commands that are used to interact with the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities.
+World commands are built-in commands that are used to interact with the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities.
 
 The [`CommandSystem`]({{urlRoot}}/api/core/command-system) used for component commands can also be used for sending and receiving world commands.
 

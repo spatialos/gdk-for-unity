@@ -595,7 +595,7 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 > Related:
 >
 > * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail)
-> * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+> * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
 
 ### Worker
 

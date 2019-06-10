@@ -5,21 +5,23 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Understanding access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
-* [Authority](https://docs.improbable.io/reference/latest/shared/concepts/interest-authority#authority-also-known-as-write-access)
+* [Authority in SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/interest-authority#authority-also-known-as-write-access)
+* [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
 ")%>
 
-**Authority** is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).
+Authority is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).
 
-It is crucial to note that at runtime, your worker instance may or may not have authority over a given SpatialOS component.
+## How authority is represented
 
-## How authority is represented in Unity's ECS
-
-For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) attached to a SpatialOS entity, the GDK attaches a shared component (that implements `ISharedComponentData`) to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
+For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on a SpatialOS entity which is checked out, the GDK attaches a component to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
 
 This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
 
 > Note that this component does not contain information about `AuthorityLossImminent` notifications.
+
+## How to interact with authority
+
+The `ComponentAuthority` component described above is a shared component (implements `ISharedComponentData`) which allows you to filter your ECS entity queries by authority.
 
 Below is an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component:
 
@@ -43,22 +45,16 @@ public class AuthoritativePositionSystem : ComponentSystem
     {
         Entities.With(query).ForEach((ref Position.Component position) =>
         {
-            // This will only run when the worker instance is authoritative over a Position component.
+            // This will only run for entities for which the worker instance
+            // is authoritative over the Position component.
         });
     }
 }
 ```
 
-## What happens when a SpatialOS entity enters a worker instance's view
+## How to interact with authority changes
 
-When a SpatialOS entity enters the [worker instance's view]({{urlRoot}}/reference/glossary#worker-s-view), the GDK:
-
-- creates an ECS entity to correspond to that SpatialOS entity
-- attaches an ECS component to the ECS entity for each SpatialOS component on the SpatialOS entity
-
-## What happens when a worker instance gains or loses authority over a SpatialOS entity
-
-The `GetAuthorityChangesReceived` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the authority changes that have occured since the last tick, given an entity ID and a component ID.
+The `GetAuthorityChangesReceived` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the authority changes for an entity-component pair that have occured since the last tick.
 
 Below is an example of doing something when a worker instance gains authority over a SpatialOS component:
 

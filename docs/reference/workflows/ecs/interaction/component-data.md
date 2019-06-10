@@ -1,19 +1,51 @@
 <%(TOC)%>
 
-# ECS: Component updates
+# ECS: Component data
 
 <%(Callout message="
 Before reading this document, make sure you are familiar with
 
   * [ECS component generation]({{urlRoot}}/reference/concepts/code-generation)
-  * [ECS system update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+  * [ECS system update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
 ")%>
 
 When a SpatialOS entity is [checked out]({{urlRoot}}/reference/glossary#checking-out), its components are added to the corresponding ECS entity as part of the entity's check out process.
 
+### How to read component data
+
+The components of an ECS entity contain the latest data that the worker has received of a corresponding SpatialOS entity.
+
+To read an ECS component's data, construct an ECS EntityQuery with a `ReadOnly<T>` constraint on the component you wish to read. You can then iterate through the matching components using the ECS `.ForEach` syntax.
+
+```csharp
+public class ReadExampleComponentSystem : ComponentSystem
+{
+    private EntityQuery query;
+
+    protected override void OnCreateManager()
+    {
+        base.OnCreateManager();
+
+        query = GetEntityQuery(
+            ComponentType.ReadOnly<Example.Component>()
+        );
+    }
+
+    protected override void OnUpdate()
+    {
+        Entities.With(query).ForEach((ref Example.Component exampleComponent) =>
+        {
+            // Read every Example component in the worker's World.
+        });
+    }
+}
+```
+
 ### How to send a component update
 
-To send a component update, change the value of at least one field of the component. A component update is constructed and sent at the end of the current update loop.
+To send a component update, change the value of at least one field of the component. The component tracks these changes, constructing a component update and sending it at the end of the current update loop.
+
+> **Note:** This means that you should be conscious of when you make changes to SpatialOS components as this directly correlates to network bandwidth!
 
 ```csharp
 public class SendExampleUpdateSystem : ComponentSystem
@@ -81,39 +113,34 @@ public class ExampleSystem : ComponentSystem
 }
 ```
 
-### How to react to a component update
+## How to react to a component update
 
-To access all component updates for the component that have happened since the last frame, access the `Updates` field on the `ComponentName.ReceivedUpdates` component, where ComponentName is the name of your component.
+The `GetComponentUpdatesReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the component updates, given the type of the update `T`, that have been received since the last tick.
 
-> Note that the `ComponentName.ReceivedUpdates` component is not temporary. You can identify if there were no component updates by checking if the `Updates` list is empty in a given tick.
-
-If you only want the latest values, you can access the `ComponentName.Component` directly.
+The example below shows how to use this method to handle component updates a worker receives.
 
 ```csharp
 public class ProcessChangedHealthSystem : ComponentSystem
 {
-    private EntityQuery query;
+    private ComponentUpdateSystem updateSystem;
 
     protected override void OnCreateManager()
     {
         base.OnCreateManager();
 
-        // Set up a query for Example components that have received updates.
-        query = GetEntityQuery(
-            ComponentType.ReadOnly<Example.ReceivedUpdates>()
-        );
+        updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
     }
 
     protected override void OnUpdate()
     {
-        // Iterate through components that have received updates.
-        Entities.With(query).ForEach((ref Example.ReceivedUpdates exampleUpdates) =>
+        var exampleUpdates = updateSystem.GetComponentUpdatesReceived<Example.Update>();
+
+        for (var i = 0; i < exampleUpdates.Count; i++)
         {
-            foreach (var update in exampleUpdates.Updates)
-            {
-                // Process received updates.
-            }
-        });
+            var exampleUpdate = exampleUpdates[i];
+
+            // Process a received update.
+        }
     }
 }
 ```

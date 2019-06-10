@@ -65,7 +65,6 @@
         - [Code generator]({{urlRoot}}/reference/concepts/code-generation)
         - [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
         - [Deployments]({{urlRoot}}/reference/concepts/deployments)
-        - [Entity lifecycle]({{urlRoot}}/reference/concepts/entity-lifecycle)
         - [Entity templates]({{urlRoot}}/reference/concepts/entity-templates)
         - [Logs]({{urlRoot}}/reference/concepts/logging)
         - [Snapshots]({{urlRoot}}/reference/concepts/snapshots)
@@ -85,19 +84,19 @@
                     - [Create & delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
         - ECS
             - [Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
-            - [System update order]({{urlRoot}}/reference/workflows/ecs/system-update-order)
-            - [Temporary components]({{urlRoot}}/reference/workflows/ecs/temporary-components)
-            - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/entity-contracts)
             - Interacting with SpatialOS
                 - [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority)
-                - [Component updates]({{urlRoot}}/reference/workflows/ecs/interaction/component-updates)
+                - [Component data]({{urlRoot}}/reference/workflows/ecs/interaction/component-data)
                 - [Events]({{urlRoot}}/reference/workflows/ecs/interaction/events)
-                - Commands
-                    - [Component commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/component-commands)
-                    - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/commands/world-commands)
+                - [Component commands]({{urlRoot}}/reference/workflows/ecs/interaction/component-commands)
+                - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/world-commands)
                 - Reactive components
                     - [Overview]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
                     - [Entity contracts]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/entity-contracts)
+            - Concepts
+                - [System update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
+                - [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
+                - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/concepts/entity-contracts)
     - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
