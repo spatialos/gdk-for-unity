@@ -369,6 +369,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -377,6 +378,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 get => <#= componentNamespace #>.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class <#= componentDetails.ComponentName  #>Dynamic : IDynamicInvokable
         {

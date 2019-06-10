@@ -3104,6 +3104,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Tests.SomeEnum>> Field18;
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -3112,6 +3113,7 @@ namespace Improbable.Gdk.Tests
                 get => global::Improbable.Gdk.Tests.ExhaustiveRepeated.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class ExhaustiveRepeatedDynamic : IDynamicInvokable
         {

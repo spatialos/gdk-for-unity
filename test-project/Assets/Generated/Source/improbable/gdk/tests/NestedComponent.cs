@@ -291,6 +291,7 @@ namespace Improbable.Gdk.Tests
             public Option<global::Improbable.Gdk.Tests.TypeName> NestedType;
         }
 
+#if !DISABLE_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
@@ -299,6 +300,7 @@ namespace Improbable.Gdk.Tests
                 get => global::Improbable.Gdk.Tests.NestedComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
             }
         }
+#endif
 
         internal class NestedComponentDynamic : IDynamicInvokable
         {

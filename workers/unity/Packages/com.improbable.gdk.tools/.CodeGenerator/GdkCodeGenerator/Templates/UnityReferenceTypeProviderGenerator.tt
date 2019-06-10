@@ -22,7 +22,9 @@ namespace <#= qualifiedNamespace #>
     {
         internal static class ReferenceTypeProviders
         {
+#if !DISABLE_REACTIVE_COMPONENTS
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentNamespace}.Update>"), 3) #>
+#endif
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
