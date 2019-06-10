@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +19,12 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
+        public int SimulatorNameId;
 
+        internal string[] simulatorNames;
+        internal Dictionary<string, string> availableSimulators = new Dictionary<string, string>();
+
+        internal string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
         internal string RuntimeIpEditorPrefKey = "RuntimeIp";
         public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
 
@@ -25,10 +32,15 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
+        public string DevelopmentTeamId => EditorPrefs.GetString(DevelopmentTeamIdEditorPrefKey);
+
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()
         {
+#if UNITY_EDITOR_OSX
+            RetrieveAvailableiOSSimulators();
+#endif
             ResetToDefault();
         }
 
@@ -103,6 +115,18 @@ namespace Improbable.Gdk.Tools
             return errors;
         }
 
+        public string GetSimulatorUID()
+        {
+            var simulatorName = simulatorNames[SimulatorNameId];
+            if (!availableSimulators.TryGetValue(simulatorName, out var simulatorUID))
+            {
+                Debug.LogError("Unable to find simulator");
+                return string.Empty;
+            }
+
+            return simulatorUID;
+        }
+
         internal void ResetToDefault()
         {
             SchemaStdLibDir = DefaultValues.SchemaStdLibDir;
@@ -132,6 +156,30 @@ namespace Improbable.Gdk.Tools
             File.WriteAllText(JsonFilePath, JsonUtility.ToJson(config, true));
 
             return config;
+        }
+
+        void RetrieveAvailableiOSSimulators()
+        {
+            var simulatorNameRegex = new Regex("^[a-z|A-Z|\\s|0-9]+");
+            var simulatorUIDRegex = new Regex("\\[([A-Z]|[0-9]|-)+\\]");
+            // Check if we have a physical device connected
+            RedirectedProcess.Command("instruments")
+                .WithArgs("-s", "devices")
+                .AddOutputProcessing(message =>
+                {
+                    // get all simulators
+                    if (message.Contains("iPhone") | message.Contains("iPad"))
+                    {
+                        if (simulatorUIDRegex.IsMatch(message))
+                        {
+                            availableSimulators[simulatorNameRegex.Match(message).Value] =
+                                simulatorUIDRegex.Match(message).Value;
+                        }
+                    }
+                })
+                .Run();
+
+            simulatorNames = availableSimulators.Keys.ToArray();
         }
 
         private static class DefaultValues

@@ -34,6 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.trace
 
 # Generated code
 # We need to include some of the generated code below, which means we can't use a `directory/` ignore.

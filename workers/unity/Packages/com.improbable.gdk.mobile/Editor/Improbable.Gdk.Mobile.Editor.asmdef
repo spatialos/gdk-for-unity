@@ -2,7 +2,8 @@
     "name": "Improbable.Gdk.Mobile.Editor",
     "references": [
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.Tools"
+        "Improbable.Gdk.Tools",
+        "Improbable.Gdk.Mobile"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

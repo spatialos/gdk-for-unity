@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,13 +16,14 @@ namespace Improbable.Gdk.Tools
         internal const string DescriptorOutputDirLabel = "Descriptor directory";
         internal const string SchemaSourceDirsLabel = "Schema sources";
         internal const string MobileSectionLabel = "Mobile Settings";
+        internal const string iOSSectionLabel = "iOS Settings";
+        internal const string DevelopmentTeamIdLabel = "Development Team Id";
         internal const string RuntimeIpLabel = "Local runtime IP";
         internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
         internal const string DevAuthTokenDirLabel = "Token directory";
         internal const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
 
         private const string CodeGeneratorLabel = "Code generator";
-        private const string LocalDeploymentLabel = "Local Deployment";
 
         private static GUIContent AddSchemaDirButton;
         private static GUIContent RemoveSchemaDirButton;
@@ -150,6 +153,17 @@ namespace Improbable.Gdk.Tools
                     }
                 }
             }
+
+#if UNITY_EDITOR_OSX
+            GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                EditorPrefs.SetString(
+                    toolsConfig.DevelopmentTeamIdEditorPrefKey,
+                    EditorGUILayout.TextField(DevelopmentTeamIdLabel, toolsConfig.DevelopmentTeamId));
+                toolsConfig.SimulatorNameId = EditorGUILayout.Popup("Simulator Type", toolsConfig.SimulatorNameId, toolsConfig.simulatorNames);
+            }
+#endif
 
             GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
