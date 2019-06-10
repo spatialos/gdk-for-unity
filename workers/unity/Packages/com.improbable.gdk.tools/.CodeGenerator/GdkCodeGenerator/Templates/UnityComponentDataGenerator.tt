@@ -370,7 +370,6 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 #if !DISABLE_REACTIVE_COMPONENTS
-
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
