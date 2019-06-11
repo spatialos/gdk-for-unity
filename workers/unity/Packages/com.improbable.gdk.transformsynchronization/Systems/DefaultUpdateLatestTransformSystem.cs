@@ -12,9 +12,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private EntityQuery rigidbodyGroup;
         private EntityQuery transformGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             rigidbodyGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Rigidbody>(),

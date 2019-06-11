@@ -13,9 +13,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private TickRateEstimationSystem tickRate;
         private EntityQuery transformGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
             tickRate = World.GetExistingSystem<TickRateEstimationSystem>();
