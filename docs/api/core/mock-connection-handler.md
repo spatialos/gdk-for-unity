@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CreateEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L19">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -76,7 +76,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ChangeAuthority</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -106,7 +106,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>UpdateComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -136,7 +136,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddEvent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -166,7 +166,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>UpdateComponentAndAddEvents&lt;TUpdate, TEvent&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L40">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -197,7 +197,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetMessagesReceived</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L58">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L58">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -225,7 +225,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetMessagesToSendContainer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L69">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L69">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -244,7 +244,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>PushMessagesToSend</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L74">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L74">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -272,7 +272,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>IsConnected</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L79">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L79">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -291,7 +291,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L118">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L118">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

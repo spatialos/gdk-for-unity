@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,7 +48,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>InitializeClient</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetHostIp</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L62">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L68">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ Extracts the Ip address that should be used to connect via the receptionist. The
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionService</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L95">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L101">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -117,7 +117,7 @@ Determines which ConnectionService to use to connect to the SpatialOS Runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L100">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L106">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -146,7 +146,7 @@ Retrieves the ConnectionParameters needed to be able to connect to any connectio
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetReceptionistConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L124">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L130">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -174,7 +174,7 @@ Retrieves the configuration needed to connect via the Receptionist service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L134">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L140">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -193,7 +193,7 @@ Retrieves the configuration needed to connect via the Locator service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAlphaLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L139">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.mobile/Worker/DefaultMobileWorkerConnector.cs/#L145">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

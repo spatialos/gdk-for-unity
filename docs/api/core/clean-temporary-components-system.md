@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L13">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L13">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -53,12 +53,12 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreateManager</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L18">Source</a></td>
+        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L18">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>override void OnCreateManager()</code></p>
+<code>override void OnCreate()</code></p>
 
 
 
@@ -73,7 +73,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Systems/CleanTemporaryComponentsSystem.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

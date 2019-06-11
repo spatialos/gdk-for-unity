@@ -26,7 +26,6 @@
         - <a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a>
         - <a href="{{urlRoot}}/api/core/authentication-failed-exception">AuthenticationFailedException</a>
         - <a href="{{urlRoot}}/api/core/authority-change-received">AuthorityChangeReceived</a>
-        - <a href="{{urlRoot}}/api/core/blittable-bool">BlittableBool</a>
         - <a href="{{urlRoot}}/api/core/called-value-on-empty-option-exception">CalledValueOnEmptyOptionException</a>
         - <a href="{{urlRoot}}/api/core/clean-temporary-components-system">CleanTemporaryComponentsSystem</a>
         - <a href="{{urlRoot}}/api/core/command-context">CommandContext</a>
@@ -57,6 +56,7 @@
         - <a href="{{urlRoot}}/api/core/entity-query-snapshot">EntityQuerySnapshot</a>
         - <a href="{{urlRoot}}/api/core/entity-system">EntitySystem</a>
         - <a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a>
+        - <a href="{{urlRoot}}/api/core/fixed-update-system-group">FixedUpdateSystemGroup</a>
         - <a href="{{urlRoot}}/api/core/forwarding-dispatcher">ForwardingDispatcher</a>
         - <a href="{{urlRoot}}/api/core/i-command-diff-deserializer">ICommandDiffDeserializer</a>
         - <a href="{{urlRoot}}/api/core/i-command-diff-storage">ICommandDiffStorage</a>
@@ -82,6 +82,7 @@
         - <a href="{{urlRoot}}/api/core/i-ecs-view-manager">IEcsViewManager</a>
         - <a href="{{urlRoot}}/api/core/i-event">IEvent</a>
         - <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a>
+        - <a href="{{urlRoot}}/api/core/internal-spatial-os-clean-group">InternalSpatialOSCleanGroup</a>
         - <a href="{{urlRoot}}/api/core/i-received-entity-message">IReceivedEntityMessage</a>
         - <a href="{{urlRoot}}/api/core/i-received-message">IReceivedMessage</a>
         - <a href="{{urlRoot}}/api/core/i-snapshottable">ISnapshottable</a>
@@ -119,6 +120,7 @@
         - <a href="{{urlRoot}}/api/core/spatial-os-send-group">SpatialOSSendGroup</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-send-system">SpatialOSSendSystem</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-update-group">SpatialOSUpdateGroup</a>
+        - <a href="{{urlRoot}}/api/core/task-utility">TaskUtility</a>
         - <a href="{{urlRoot}}/api/core/unity-object-destroyer">UnityObjectDestroyer</a>
         - <a href="{{urlRoot}}/api/core/view">View</a>
         - <a href="{{urlRoot}}/api/core/view-command-buffer">ViewCommandBuffer</a>
@@ -219,7 +221,6 @@
         - <a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/world-subscription-manager">WorldSubscriptionManager</a>
     - [TestUtils]({{urlRoot}}/api/test-utils-index)
-        - <a href="{{urlRoot}}/api/test-utils/hybrid-gdk-system-test-base">HybridGdkSystemTestBase</a>
         - <a href="{{urlRoot}}/api/test-utils/test-log-dispatcher">TestLogDispatcher</a>
         - <a href="{{urlRoot}}/api/test-utils/test-mono-behaviour">TestMonoBehaviour</a>
         - <a href="{{urlRoot}}/api/test-utils/worker-op-factory">WorkerOpFactory</a>
