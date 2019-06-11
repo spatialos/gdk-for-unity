@@ -15,9 +15,9 @@ namespace Playground
         private int colorIndex;
         private float nextColorChange;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 

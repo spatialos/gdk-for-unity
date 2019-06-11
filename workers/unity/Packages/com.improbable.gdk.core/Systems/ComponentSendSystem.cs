@@ -26,9 +26,9 @@ namespace Improbable.Gdk.Core
 
         private IConnectionHandler connection;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
@@ -37,10 +37,10 @@ namespace Improbable.Gdk.Core
             gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count, Allocator.Persistent);
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
-            base.OnDestroyManager();
             gatheringJobs.Dispose();
+            base.OnDestroy();
         }
 
         public bool TryRegisterCustomReplicationSystem(uint componentId)

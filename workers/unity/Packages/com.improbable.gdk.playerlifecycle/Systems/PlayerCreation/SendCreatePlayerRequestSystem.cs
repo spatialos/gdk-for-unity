@@ -39,9 +39,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             ResultType = new SnapshotResultType()
         };
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             workerSystem = World.GetExistingSystem<WorkerSystem>();
             commandSystem = World.GetExistingSystem<CommandSystem>();

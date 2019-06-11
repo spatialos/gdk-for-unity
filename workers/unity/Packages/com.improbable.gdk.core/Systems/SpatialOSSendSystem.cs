@@ -9,9 +9,9 @@ namespace Improbable.Gdk.Core
     {
         private WorkerSystem worker;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
         }

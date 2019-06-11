@@ -50,9 +50,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
 
@@ -68,14 +68,14 @@ namespace Improbable.Gdk.Core
             Enabled = false;
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             foreach (var manager in managers)
             {
                 manager.Clean(World);
             }
 
-            base.OnDestroyManager();
+            base.OnDestroy();
         }
 
         protected override void OnUpdate()

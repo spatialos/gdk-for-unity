@@ -46,9 +46,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             workerSystem = World.GetExistingSystem<WorkerSystem>();
         }

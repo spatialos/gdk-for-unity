@@ -10,9 +10,9 @@ namespace Playground
         private ComponentUpdateSystem componentUpdateSystem;
         private EntityQuery inputGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
@@ -43,9 +43,11 @@ namespace Playground
             });
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             Cursor.lockState = CursorLockMode.None;
+
+            base.OnDestroy();
         }
     }
 }

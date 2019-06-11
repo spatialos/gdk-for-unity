@@ -17,9 +17,9 @@ namespace Improbable.Gdk.Core
         private WorkerSystem worker;
         private EntityQuery group;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             group = GetEntityQuery(
                 ComponentType.ReadOnly<OnDisconnected>(),

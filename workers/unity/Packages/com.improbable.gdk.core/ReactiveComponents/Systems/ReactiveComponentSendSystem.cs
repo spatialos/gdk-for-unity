@@ -23,9 +23,9 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private IConnectionHandler connection;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
@@ -34,10 +34,10 @@ namespace Improbable.Gdk.ReactiveComponents
             gatheringJobs = new NativeArray<JobHandle>(componentReplicators.Count * 2, Allocator.Persistent);
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
-            base.OnDestroyManager();
             gatheringJobs.Dispose();
+            base.OnDestroy();
         }
 
         protected override void OnUpdate()

@@ -8,9 +8,9 @@ namespace Improbable.Gdk.Subscriptions
     {
         private WorkerFlagCallbackManager manager;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             Enabled = false;
 
             manager = new WorkerFlagCallbackManager(World);

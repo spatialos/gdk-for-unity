@@ -23,9 +23,9 @@ namespace Improbable.Gdk.Core
 
         private ComponentSendSystem componentSendSystem;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             WorkerSystem = World.GetExistingSystem<WorkerSystem>();
 

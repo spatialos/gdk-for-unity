@@ -11,9 +11,9 @@ namespace Playground
         private ComponentUpdateSystem componentUpdateSystem;
         private EntityQuery uiInitGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
             uiInitGroup = GetEntityQuery(
@@ -47,12 +47,14 @@ namespace Playground
                 });
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             if (UIComponent.Main != null)
             {
                 UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
             }
+
+            base.OnDestroy();
         }
     }
 }

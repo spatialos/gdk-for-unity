@@ -86,9 +86,9 @@ namespace Improbable.Gdk.Subscriptions
             authorityCallbackManagers.InvokeLossImminentCallbacks();
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             Enabled = false;
         }
 

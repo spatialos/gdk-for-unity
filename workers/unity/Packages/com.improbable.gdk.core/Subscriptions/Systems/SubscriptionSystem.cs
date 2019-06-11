@@ -42,9 +42,9 @@ namespace Improbable.Gdk.Subscriptions
             return manager.SubscribeTypeErased(entity);
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             Enabled = false;
 
             AutoRegisterManagers();

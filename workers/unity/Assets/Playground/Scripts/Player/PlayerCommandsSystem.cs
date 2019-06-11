@@ -25,9 +25,9 @@ namespace Playground
         private CommandSystem commandSystem;
         private EntityQuery launchGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             commandSystem = World.GetExistingSystem<CommandSystem>();
             launchGroup = GetEntityQuery(

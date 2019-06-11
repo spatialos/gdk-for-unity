@@ -110,9 +110,9 @@ namespace Improbable.Gdk.Subscriptions
             authority.InvokeCallbacks();
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             entityAdded = new EntityAddedCallbackManager(World);
             Enabled = false;

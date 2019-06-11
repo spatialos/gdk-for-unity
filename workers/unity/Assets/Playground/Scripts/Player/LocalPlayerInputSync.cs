@@ -12,9 +12,9 @@ namespace Playground
 
         private EntityQuery inputGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             inputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<PlayerInput.Component>(),

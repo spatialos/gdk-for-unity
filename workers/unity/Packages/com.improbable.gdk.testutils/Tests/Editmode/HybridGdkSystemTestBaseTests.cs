@@ -17,9 +17,9 @@ namespace Improbable.Gdk.TestUtils.EditmodeTests
         {
             private EntityQuery testGroup;
 
-            protected override void OnCreateManager()
+            protected override void OnCreate()
             {
-                base.OnCreateManager();
+                base.OnCreate();
 
                 testGroup = GetEntityQuery(
                     ComponentType.ReadWrite<Rigidbody>(),

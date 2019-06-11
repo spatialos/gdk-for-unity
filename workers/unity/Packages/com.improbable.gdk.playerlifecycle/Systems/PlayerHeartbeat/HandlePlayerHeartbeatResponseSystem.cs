@@ -20,9 +20,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         private readonly Dictionary<(EntityId, Entity), bool> respondedCache =
             new Dictionary<(EntityId, Entity), bool>();
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             workerSystem = World.GetExistingSystem<WorkerSystem>();
             commandSystem = World.GetExistingSystem<CommandSystem>();
