@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core
             MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
         }
 
-        public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
+        public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
         {
             MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
         }

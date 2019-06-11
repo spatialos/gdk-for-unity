@@ -14,7 +14,6 @@ namespace Improbable.Gdk.Core
 
         private bool inHandleLog;
 
-        public Connection Connection { get; set; }
         public Worker Worker { get; set; }
         public string WorkerType { get; set; }
 
@@ -31,9 +30,9 @@ namespace Improbable.Gdk.Core
         ///     Constructor for the Forwarding Dispatcher
         /// </summary>
         /// <param name="minimumLogLevel">The minimum log level to forward logs to the SpatialOS runtime.</param>
-        public ForwardingDispatcher(LogLevel minimumLogLevel = LogLevel.Warn)
+        public ForwardingDispatcher(LogType minimumLogLevel = LogType.Warning)
         {
-            this.minimumLogLevel = minimumLogLevel;
+            this.minimumLogLevel = LogTypeMapping[minimumLogLevel];
             Application.logMessageReceived += LogCallback;
         }
 
@@ -49,7 +48,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Worker?.SendLogMessage($"{message}\n{stackTrace}", Connection.GetWorkerId(), LogLevel.Error, null);
+                Worker?.SendLogMessage(LogLevel.Error, $"{message}\n{stackTrace}", Worker?.WorkerId, null);
             }
         }
 
@@ -86,7 +85,7 @@ namespace Improbable.Gdk.Core
 
                 var logLevel = LogTypeMapping[type];
 
-                if (Connection == null || logLevel < minimumLogLevel)
+                if (Worker == null || logLevel < minimumLogLevel)
                 {
                     return;
                 }
@@ -101,7 +100,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId.HasValue ? new long?(entityId.Value.Id) : null);
+                Worker.SendLogMessage(logLevel, message, LoggingUtils.ExtractLoggerName(logEvent.Data), entityId);
             }
             finally
             {
@@ -114,7 +113,6 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public void Dispose()
         {
-            Connection = null;
             Application.logMessageReceived -= LogCallback;
         }
     }
