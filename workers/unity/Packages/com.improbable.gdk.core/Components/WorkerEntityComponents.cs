@@ -13,6 +13,10 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     ECS Component added to the worker entity immediately after establishing a connection to a SpatialOS deployment.
     /// </summary>
+    /// <remarks>
+    ///    This is a temporary component and the <see cref="Improbable.Gdk.Core.CleanTemporaryComponentsSystem"/> will
+    ///    remove it at the end of the frame.
+    /// </remarks>
     [RemoveAtEndOfTick]
     public struct OnConnected : IComponentData
     {
@@ -21,6 +25,8 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     ECS Component added to the worker entity immediately after disconnecting from SpatialOS
     /// </summary>
+    ///    This is a temporary component and the <see cref="Improbable.Gdk.Core.CleanTemporaryComponentsSystem"/> will
+    ///    remove it at the end of the frame.
     [RemoveAtEndOfTick]
     public struct OnDisconnected : ISharedComponentData, IEquatable<OnDisconnected>
     {
