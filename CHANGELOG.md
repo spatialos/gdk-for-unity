@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.3` - 2019-06-12
+
 ### Breaking Changes
 
 - Schema from packages are no longer copied into the root `schema` directory. [#953](https://github.com/spatialos/gdk-for-unity/pull/953)
