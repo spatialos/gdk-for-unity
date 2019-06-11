@@ -13,9 +13,9 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private EntityQuery initializerGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             var initializerQuery = new EntityQueryDesc
             {

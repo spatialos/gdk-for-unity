@@ -18,9 +18,9 @@ namespace Improbable.Gdk.Core
 
         private View view;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();

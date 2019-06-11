@@ -17,9 +17,9 @@ namespace Improbable.Gdk.ReactiveComponents
         private ComponentUpdateSystem updateSystem;
         private WorkerSystem workerSystem;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             entityManager = World.EntityManager;
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
@@ -32,14 +32,14 @@ namespace Improbable.Gdk.ReactiveComponents
             }
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             foreach (var manager in managers)
             {
                 manager.Clean(World);
             }
 
-            base.OnDestroyManager();
+            base.OnDestroy();
         }
 
         protected override void OnUpdate()

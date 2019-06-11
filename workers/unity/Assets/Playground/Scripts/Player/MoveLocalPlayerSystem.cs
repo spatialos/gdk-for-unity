@@ -28,9 +28,9 @@ namespace Playground
 
         private const float SpeedSmoothTime = 0.1f;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             newPlayerGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.Component>(),

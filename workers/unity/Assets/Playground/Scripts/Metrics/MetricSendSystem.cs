@@ -28,9 +28,9 @@ namespace Playground
 
         private static readonly Metrics WorkerMetrics = new Metrics();
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
 

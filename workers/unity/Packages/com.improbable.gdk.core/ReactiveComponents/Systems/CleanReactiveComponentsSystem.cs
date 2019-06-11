@@ -20,18 +20,18 @@ namespace Improbable.Gdk.ReactiveComponents
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
         private NativeArray<JobHandle> gatheringJobs;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             GenerateComponentGroups();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentCleanups.Count];
             gatheringJobs = new NativeArray<JobHandle>(componentCleanups.Count, Allocator.Persistent);
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
-            base.OnDestroyManager();
             gatheringJobs.Dispose();
+            base.OnDestroy();
         }
 
         private void GenerateComponentGroups()

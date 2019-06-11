@@ -29,9 +29,9 @@ namespace Playground
 
         private EntityQuery group;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             group = GetEntityQuery(
                 ComponentType.ReadWrite<CameraInput>(),

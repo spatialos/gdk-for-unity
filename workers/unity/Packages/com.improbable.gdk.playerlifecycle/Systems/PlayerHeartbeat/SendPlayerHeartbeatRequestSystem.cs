@@ -13,9 +13,9 @@ namespace Improbable.Gdk.PlayerLifecycle
         private EntityQuery group;
         private CommandSystem commandSystem;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             group = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerHeartbeatServer.ComponentAuthority>(),

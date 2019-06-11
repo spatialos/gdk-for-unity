@@ -9,9 +9,9 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private EntityQuery transformGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             transformGroup = GetEntityQuery(
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),

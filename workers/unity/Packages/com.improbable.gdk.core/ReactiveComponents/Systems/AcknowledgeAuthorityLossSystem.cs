@@ -24,19 +24,19 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private ComponentUpdateSystem updateSystem;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
             GenerateComponentGroups();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[authorityLossDetails.Count];
             gatheringJobs = new NativeArray<JobHandle>(authorityLossDetails.Count, Allocator.Persistent);
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
-            base.OnDestroyManager();
             gatheringJobs.Dispose();
+            base.OnDestroy();
         }
 
         private void GenerateComponentGroups()

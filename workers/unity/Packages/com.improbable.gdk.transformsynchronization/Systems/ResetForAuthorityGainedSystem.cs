@@ -15,9 +15,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private EntityQuery rigidbodyGroup;
         private EntityQuery transformGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             worker = World.GetExistingSystem<WorkerSystem>();
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();

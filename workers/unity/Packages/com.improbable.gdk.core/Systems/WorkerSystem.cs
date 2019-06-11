@@ -89,19 +89,19 @@ namespace Improbable.Gdk.Core
             MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             var entityManager = World.EntityManager;
             WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
             EntityIdToEntity.Add(new EntityId(0), WorkerEntity);
             Enabled = false;
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             ConnectionHandler.Dispose();
-            base.OnDestroyManager();
+            base.OnDestroy();
         }
 
         protected override void OnUpdate()

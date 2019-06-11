@@ -11,9 +11,9 @@ namespace Improbable.Gdk.PlayerLifecycle
     {
         private CommandSystem commandSystem;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             commandSystem = World.GetExistingSystem<CommandSystem>();
         }

@@ -15,9 +15,9 @@ namespace Improbable.Gdk.Core
         private readonly List<(EntityQuery, ComponentType)> componentGroupsToRemove =
             new List<(EntityQuery, ComponentType)>();
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             // Find all components with the RemoveAtEndOfTick attribute
             foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentData),

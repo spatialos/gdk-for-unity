@@ -65,9 +65,9 @@ namespace Improbable.Gdk.Subscriptions
             callbackManagers.InvokeCallbacks();
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             Enabled = false;
         }
 

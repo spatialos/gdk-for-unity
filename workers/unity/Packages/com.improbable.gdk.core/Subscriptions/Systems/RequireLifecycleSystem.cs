@@ -28,9 +28,9 @@ namespace Improbable.Gdk.Subscriptions
             behavioursToEnable.Remove(behaviour);
         }
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             commandCallbackSystem = World.GetExistingSystem<CommandCallbackSystem>();
             componentCallbackSystem = World.GetExistingSystem<ComponentCallbackSystem>();

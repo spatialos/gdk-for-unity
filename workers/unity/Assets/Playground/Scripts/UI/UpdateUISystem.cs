@@ -12,9 +12,9 @@ namespace Playground
         private EntityQuery launcherGroup;
         private EntityQuery scoreGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
             launcherGroup = GetEntityQuery(

@@ -29,9 +29,9 @@ namespace Improbable.Gdk.ReactiveComponents
 
         private EntityQuery worldCommandResponseGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             worldCommandResponseGroup = GetEntityQuery(worldCommandResponseQuery);
         }
 
