@@ -3,4 +3,7 @@
     <assembly fullname="Improbable.Gdk.GameObjectCreation" preserve="all"/>
     <assembly fullname="Improbable.Gdk.TransformSynchronization" preserve="all"/>
     <assembly fullname="Improbable.Gdk.PlayerLifecycle" preserve="all"/>
+    <assembly fullname="Unity.Entities.Hybrid">
+        <type fullname="Unity.Entities.GameObjectEntity" preserve="all"/>
+    </assembly>
 </linker>
