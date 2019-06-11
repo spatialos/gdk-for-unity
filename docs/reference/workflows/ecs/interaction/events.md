@@ -25,9 +25,9 @@ public class SendChangeColorEvent : ComponentSystem
 
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
@@ -63,9 +63,9 @@ public class ChangeColorEventReceiveSystem : ComponentSystem
 {
     private ComponentUpdateSystem componentUpdateSystem;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
     }

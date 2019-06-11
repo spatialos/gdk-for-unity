@@ -33,9 +33,9 @@ public class SendSpawnCubeRequestSystem : ComponentSystem
 
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         commandSystem = World.GetExistingSystem<CommandSystem>();
 
@@ -84,9 +84,9 @@ public class HandleSpawnCubeRequestSystem : ComponentSystem
 {
     private CommandSystem commandSystem;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         commandSystem = World.GetExistingSystem<CommandSystem>();
     }
@@ -131,9 +131,9 @@ public class HandleSpawnCubeResponseSystem : ComponentSystem
 {
     private CommandSystem commandSystem;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         commandSystem = World.GetExistingSystem<CommandSystem>();
     }

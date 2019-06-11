@@ -30,9 +30,9 @@ public class AuthoritativePositionSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadWrite<Position.Component>(),
@@ -65,9 +65,9 @@ public class OnPlayerSpawnSystem : ComponentSystem
 
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 

@@ -23,9 +23,9 @@ public class HandleConnectSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadOnly<OnConnected>(),
@@ -55,9 +55,9 @@ public class HandleDisconnectSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadOnly<OnDisconnected>(),
@@ -67,11 +67,10 @@ public class HandleDisconnectSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref OnConnected onConnected, ref WorkerEntityTag workerEntityTag) =>
-            {
-                Debug.Log("Worker just connected!");
-            });
+        Entities.With(query).ForEach((OnDisconnected onDisconnected) =>
+        {
+            Debug.Log($"Got disconnected: {onDisconnected.ReasonForDisconnect}");
+        });
     }
 }
 ```

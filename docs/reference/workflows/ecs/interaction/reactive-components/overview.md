@@ -33,9 +33,9 @@ public class ReactiveSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadWrite<Collisions.ReceivedEvents.PlayerCollided>()

@@ -22,9 +22,9 @@ public class ReadExampleComponentSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadOnly<Example.Component>()
@@ -52,9 +52,9 @@ public class SendExampleUpdateSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadWrite<Example.Component>()
@@ -84,9 +84,9 @@ public class ExampleSystem : ComponentSystem
 {
     private EntityQuery query;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         query = GetEntityQuery(
             ComponentType.ReadWrite<Example.Component>()
@@ -124,9 +124,9 @@ public class ProcessChangedHealthSystem : ComponentSystem
 {
     private ComponentUpdateSystem updateSystem;
 
-    protected override void OnCreateManager()
+    protected override void OnCreate()
     {
-        base.OnCreateManager();
+        base.OnCreate();
 
         updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
     }
