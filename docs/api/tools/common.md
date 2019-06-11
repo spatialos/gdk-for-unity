@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a><br/>
 GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L16">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L14">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -43,26 +43,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ProductName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L37">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>const string ProductName = &quot;SpatialOS for Unity&quot;</code></p>
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>PackagesDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L39">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>const string PackagesDir = &quot;Packages&quot;</code></p>
 
 
 </td>
@@ -85,7 +70,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SpatialProjectRootDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L28">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -100,7 +85,7 @@ The absolute path to the root folder of the SpatialOS project.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SpatialBinary</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L33">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -115,7 +100,7 @@ The absolute path to the  binary, or the empty string if it doesn't exist.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DotNetBinary</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L33">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -143,7 +128,7 @@ The absolute path to the  binary, or the empty string if it doesn't exist.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CoreSdkVersion</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -172,12 +157,12 @@ The version of the CoreSdk the GDK is pinned to. Modify the core-sdk.version fil
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetPackagePath</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L67">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L64">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>string GetPackagePath(string packageName)</code></p>
-Finds the "file:" reference path from the package manifest. 
+Finds the path for a given package referenced directly in the manifest.json, or indirectly referenced as a package dependency. 
 
 
 </p>
@@ -200,7 +185,7 @@ Finds the "file:" reference path from the package manifest.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CheckDependencies</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L139">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.tools/Common.cs/#L148">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

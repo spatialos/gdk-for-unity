@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -43,7 +43,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>UseExternalIp</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -75,7 +75,7 @@ Denotes whether to connect using an external IP address.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionService</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,7 +94,7 @@ Determines which <a href="{{urlRoot}}/api/core/connection-service">ConnectionSer
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -123,7 +123,7 @@ Retrieves the ConnectionParameters needed to be able to connect to any connectio
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetReceptionistConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L76">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L76">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -151,7 +151,7 @@ Retrieves the configuration needed to connect via the Receptionist service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L101">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L101">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -170,7 +170,7 @@ Retrieves the configuration needed to connect via the Locator service.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAlphaLocatorConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L158">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/DefaultWorkerConnector.cs/#L158">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
