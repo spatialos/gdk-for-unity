@@ -77,8 +77,8 @@ The example below shows how to handle a command request and send a command respo
 
 ```csharp
 // This ensures all received command requests are handled before being cleaned up
-// by the `InternalSpatialOSCleanGroup`, and command responses that you want to
-/// send are created before the `SpatialOSSendSystem` is run.
+// by the `SpatialOSSendGroup`, and command responses that you want to
+// send are created before the `SpatialOSSendSystem` is run.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeRequestSystem : ComponentSystem
 {
@@ -125,7 +125,7 @@ The example below shows how to handle a command response.
 
 ```csharp
 // This ensures all received command responses are handled before being cleaned up
-// by the `InternalSpatialOSCleanGroup`.
+// by the `SpatialOSSendGroup`.
 [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
 public class HandleSpawnCubeResponseSystem : ComponentSystem
 {
