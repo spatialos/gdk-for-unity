@@ -18,9 +18,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private readonly Queue<long> samples = new Queue<long>();
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             PhysicsTicksPerRealSecond = 1.0f / Time.fixedDeltaTime;
         }
 

@@ -17,9 +17,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private EntityQuery newEntityGroup;
         private EntityQuery authChangeGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 

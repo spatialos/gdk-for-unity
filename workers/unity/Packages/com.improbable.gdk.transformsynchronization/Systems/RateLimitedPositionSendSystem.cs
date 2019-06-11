@@ -13,9 +13,9 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private EntityQuery positionGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             positionGroup = GetEntityQuery(
                 ComponentType.ReadWrite<LastPositionSentData>(),

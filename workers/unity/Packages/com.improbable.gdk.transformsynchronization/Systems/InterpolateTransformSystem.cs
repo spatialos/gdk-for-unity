@@ -12,9 +12,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private ComponentUpdateSystem updateSystem;
         private EntityQuery interpolationGroup;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
