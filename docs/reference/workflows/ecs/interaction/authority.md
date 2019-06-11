@@ -9,11 +9,11 @@ Before reading this document, make sure you are familiar with:
 * [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
 ")%>
 
-Authority is how SpatialOS represents which worker instances can write to each specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).
+Authority is how SpatialOS represents which worker instances can write to a specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).
 
 ## How authority is represented
 
-For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on a SpatialOS entity which is checked out, the GDK attaches a component to the ECS entity. This component is called `ComponentName.ComponentAuthority`, where `ComponentName` is the name of the SpatialOS component.
+For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on a checked out SpatialOS entity, the GDK attaches a component to the ECS entity. This component is called `<ComponentName>.ComponentAuthority`, where `<ComponentName>` is the name of the SpatialOS component.
 
 This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
 
@@ -23,7 +23,7 @@ This component contains a single field, `HasAuthority`, a `bool` that indicates 
 
 The `ComponentAuthority` component described above is a shared component (implements `ISharedComponentData`) which allows you to filter your ECS entity queries by authority.
 
-Below is an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component:
+Below is an example of how to write a system that runs when a worker instance has authority over the `Position` SpatialOS component. You can iterate through the matching components using the ECS `.ForEach` syntax.
 
 ```csharp
 public class AuthoritativePositionSystem : ComponentSystem
@@ -54,9 +54,9 @@ public class AuthoritativePositionSystem : ComponentSystem
 
 ## How to interact with authority changes
 
-The `GetAuthorityChangesReceived` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the authority changes for an entity-component pair that have occured since the last tick.
+The `GetAuthorityChangesReceived` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the authority changes for an entity-component pair that have occured since the previous frame.
 
-Below is an example of doing something when a worker instance gains authority over a SpatialOS component:
+Below is an example of iterating through all `PlayerInput` components that the worker instance has just gained authority over. You can iterate through the matching components using the ECS `.ForEach` syntax.
 
 ```csharp
 public class OnPlayerSpawnSystem : ComponentSystem

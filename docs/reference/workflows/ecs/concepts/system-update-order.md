@@ -15,7 +15,7 @@ The groups are executed in the following order:
 * `SpatialOSUpdateGroup` - **Most systems which use SpatialOS components should run in this group.**
 * `SpatialOSSendGroup` - This group contains all systems related to sending data to SpatialOS .
   * `InternalSpatialOSSendGroup` - This group is used by the `SpatialOSSendSystem` to handle sending all replicated components to SpatialOS.
-  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview) and [temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) at the end of each update loop.
+  * `InternalSpatialOSCleanGroup` - This group is used by the `CleanTemporaryComponentsSystem` and `CleanReactiveComponentsSystem` to remove all [reactive]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview) and [temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) at the end of each update loop.
 
 <%(Callout type="warn" message="
 Don’t use groups which have ``Internal`` in the name - these are for **internal use only**.
@@ -44,4 +44,6 @@ public class ProcessColorChangeSystem : ComponentSystem
 
 ## Update vs FixedUpdate
 
-All of these groups run relative to `PlayerLoop.Update`, but sometimes you might want to run a system on `PlayerLoop.FixedUpdate`. An example of this is moving a GameObject at a fixed speed. You should do this in `PlayerLoop.FixedUpdate` because that will tick at regular intervals. You can find more information on `Update` and `FixedUpdate` [here (Unity documentation)](https://unity3d.com/learn/tutorials/topics/scripting/update-and-fixedupdate).
+All of these groups run relative to `PlayerLoop.Update`, but sometimes you might want to run a system on `PlayerLoop.FixedUpdate` because that will tick at regular intervals. An example of this is moving a GameObject at a fixed speed, which you should do using the given `FixedUpdateSystemGroup`, which runs relative to `PlayerLoop.FixedUpdate`.
+
+You can find more information on `Update` and `FixedUpdate` [here (Unity documentation)](https://unity3d.com/learn/tutorials/topics/scripting/update-and-fixedupdate).

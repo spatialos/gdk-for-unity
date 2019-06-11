@@ -35,18 +35,18 @@ public class HandleConnectSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach(
-            (ref OnConnected onConnected, ref WorkerEntityTag workerEntityTag) =>
-            {
-                Debug.Log("Worker just connected!");
-            });
+        // You can iterate through the matching components using the ECS `.ForEach` syntax.
+        Entities.With(query).ForEach(entity =>
+        {
+            Debug.Log("Worker just connected!");
+        });
     }
 }
 ```
 
 ## How to run logic when the worker has just disconnected
 
-The GDK adds the [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just disconnected. This component contains a single string field, which contains the reason for disconnection.
+The GDK adds the [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just disconnected. This component contains a single string field storing the reason for disconnecting.
 
 **Example usage**
 
@@ -67,6 +67,7 @@ public class HandleDisconnectSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
+        // You can iterate through the matching components using the ECS `.ForEach` syntax.
         Entities.With(query).ForEach((OnDisconnected onDisconnected) =>
         {
             Debug.Log($"Got disconnected: {onDisconnected.ReasonForDisconnect}");

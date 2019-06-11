@@ -43,7 +43,7 @@ public class ReadExampleComponentSystem : ComponentSystem
 
 ### How to send a component update
 
-To send a component update, change the value of at least one field of the component. The component tracks these changes, constructing a component update and sending it at the end of the current update loop.
+To send a component update, change the value of at least one field of the component. The component tracks these changes, and the GDK constructs a component update to send at the end of the current update loop.
 
 > **Note:** This means that you should be conscious of when you make changes to SpatialOS components as this directly correlates to network bandwidth!
 
@@ -115,7 +115,7 @@ public class ExampleSystem : ComponentSystem
 
 ## How to react to a component update
 
-The `GetComponentUpdatesReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the component updates, given the type of the update `T`, that have been received since the last tick.
+The `GetComponentUpdatesReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the component updates, given the type of the update `T`, that have been received since the previous frame.
 
 The example below shows how to use this method to handle component updates a worker receives.
 

@@ -54,7 +54,7 @@ public class SendChangeColorEvent : ComponentSystem
 
 ## Receiving events
 
-The `GetEventsReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the events, given the event type `T`, that have been received since the last tick.
+The `GetEventsReceived<T>` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the events, given the event type `T`, that have been received since the previous frame.
 
 The example below shows how to use this method to handle events a worker receives.
 

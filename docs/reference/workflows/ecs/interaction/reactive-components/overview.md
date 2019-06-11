@@ -3,9 +3,9 @@
 # ECS: Reactive components
 
 <%(Callout type="warn" message="
-You can enable reactive components and their related systems by removing `DISABLE_REACTIVE_COMPONENTS` from your Scripting Define Symbols.
+You can enable reactive components and their related systems by removing `DISABLE_REACTIVE_COMPONENTS` from your **Scripting Define Symbols**.
 
-However please note that the FPS and Blank starter projects disable this functionality by default, as reactive components have a **significant overhead** and **noticeable performance degradation** over time.
+Please note that the FPS and Blank starter projects disable this functionality by default, as reactive components have a **significant overhead** and **noticeable performance degradation** over time.
 ")%>
 
 When the GDK receives an update or message from SpatialOS, a _reactive component_  is placed on the associated ECS entity at the start of the frame. A reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to _react_ to the change or message.
@@ -26,7 +26,7 @@ These are the types of reactive component available:
 
 ## Example of a system using a reactive component
 
-The following snippet shows how to retrieve and iterate through all the `PlayerCollided` events received in a frame.
+The following snippet shows how to retrieve and iterate through all the `PlayerCollided` events received in a frame. You can iterate through the matching components using the ECS `.ForEach` syntax.
 
 ```csharp
 public class ReactiveSystem : ComponentSystem
