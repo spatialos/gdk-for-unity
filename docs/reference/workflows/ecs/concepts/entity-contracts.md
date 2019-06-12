@@ -41,7 +41,6 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
 
 Whenever a component update or message is received by the worker, the following holds for the entity that the worker received it for:
 
-* All updates received are stored as a list in a component called `{component name}.ReceivedUpdates`.
 * The `{component name}.Component` component is updated to the values stored in the latest update received.
 
 ### Guarantees when sending updates or messages

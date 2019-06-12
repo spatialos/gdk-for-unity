@@ -13,9 +13,7 @@ Authority is how SpatialOS represents which worker instances can write to a spec
 
 ## How authority is represented
 
-For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on a checked out SpatialOS entity, the GDK attaches a component to the ECS entity. This component is called `<ComponentName>.ComponentAuthority`, where `<ComponentName>` is the name of the SpatialOS component.
-
-This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
+For every [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) on a checked out SpatialOS entity, the GDK attaches a component to the ECS entity of the type `{component name}.ComponentAuthority`. This component contains a single field, `HasAuthority`, a `bool` that indicates whether the worker instance has authority over the SpatialOS component.
 
 > Note that this component does not contain information about `AuthorityLossImminent` notifications. To get these notifications, iterate through the list of authority changes received from `GetAuthorityChangesReceived`.
 
@@ -58,8 +56,6 @@ public class AuthoritativePositionSystem : ComponentSystem
 ## How to interact with authority changes
 
 The `GetAuthorityChangesReceived` method on the [`ComponentUpdateSystem`]({{urlRoot}}/api/core/component-update-system) allows you to retrieve a list of all the authority changes for an entity-component pair that have occured since the previous frame.
-
-> The list of authority changes retreived by `GetAuthorityChangesReceived` will indicate whether your authority state is either `NotAuthoritative`, `Authoritative` or `AuthorityLossImminent`.
 
 Below is an example of iterating through all `PlayerInput` components that the worker instance has just gained authority over. You can iterate through the matching components using the ECS `.ForEach` syntax.
 
@@ -111,3 +107,7 @@ public class OnPlayerSpawnSystem : ComponentSystem
     }
 }
 ```
+
+### Authority loss imminent
+
+Authority loss imminent notifications can be found in the list of authority changes retrieved by `GetAuthorityChangesReceived`. Each authority change in the list indicates whether your authority state changed to either `NotAuthoritative`, `Authoritative` or `AuthorityLossImminent`.
