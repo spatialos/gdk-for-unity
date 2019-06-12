@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.3` - 2019-06-12
+
 ### Breaking Changes
 
 - Schema from packages are no longer copied into the root `schema` directory. [#953](https://github.com/spatialos/gdk-for-unity/pull/953)
@@ -37,6 +39,8 @@
 
 - Removed the workaround for a schema component update bug (WRK-1031). [#962](https://github.com/spatialos/gdk-for-unity/pull/962)
 - All playground launch configuration files now use the `w2_r0500_e5` template instead of the `small` template which was deprecated. [#968](https://github.com/spatialos/gdk-for-unity/pull/968)
+- Disabled Burst compilation for all platforms except for iOS, because Burst throws benign errors when building workers for other platforms than the one you are currently using. [#199](https://github.com/spatialos/gdk-for-unity-fps-starter-project/pull/199)
+- Enabled Burst compilation for iOS, because disabling results in an invalid XCode project. [#197](https://github.com/spatialos/gdk-for-unity-fps-starter-project/pull/197)
 
 ## `0.2.2` - 2019-05-15
 

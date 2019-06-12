@@ -411,7 +411,7 @@ namespace Improbable.Gdk.Core
             StartCoroutine(DeferredDisposeWorker());
         }
 
-        private IEnumerator DeferredDisposeWorker()
+        protected IEnumerator DeferredDisposeWorker()
         {
             // Remove the world from the loop early, to avoid errors during the delay frame
             RemoveFromPlayerLoop();
