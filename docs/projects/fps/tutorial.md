@@ -76,7 +76,11 @@ Each field in a component must have a unique id (within the component) which it 
 This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference#components) for more info.
 <%(/Expandable)%>
 
-**Step 4.** Run the code generator.
+**Step 5.** Add this folder to the GDK tools configuration.
+
+From your Unity Editor menu, select **SpatialOS** > **Gdk tools configuration**. In the **Schema sources** section inside the **Gdk tools configuration** window, add the path `../../schema` to the list of schema sources.
+
+**Step 6.** Run the code generator.
 
 From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
 
