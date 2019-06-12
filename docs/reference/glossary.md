@@ -278,7 +278,7 @@ Reactive components contain all updates and messages received during the last [u
 
 > Related:
 >
-> * [Reactive components]({{urlRoot}}/reference/workflows/ecs/reactive-components)
+> * [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
 
 ### Receptionist connection flow
 
@@ -595,7 +595,7 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 > Related:
 >
 > * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail)
-> * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/system-update-order)
+> * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
 
 ### Worker
 
@@ -629,7 +629,7 @@ See also the [Workers in the GDK]({{urlRoot}}/reference/concepts/worker) documen
 Worker attributes are used to denote a [worker’s](#worker) capabilities. The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
 
 > Related:
->  
+>
 > * [Worker attributes](https://docs.improbable.io/reference/latest/shared/glossary#worker-attribute)
 > * [Bridge configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets)
 

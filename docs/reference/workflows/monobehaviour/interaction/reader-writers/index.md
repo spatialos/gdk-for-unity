@@ -56,7 +56,6 @@ For the following API, let:
 
 | Field         	| Type               	| Description                	|
 |-------------------|------------------------|--------------------------------|
-| EntityId | `EntityId`                 | The entity ID of the underlying SpatialOS entity of this Reader. |
 | Data  	| `TComponentData`              	| The data stored inside the component that this Reader is associated with. |
 | Authority | `Authority` | The [authority]({{urlRoot}}/reference/glossary#authority) status of the current worker of the component that this Reader is associated with. |
 
