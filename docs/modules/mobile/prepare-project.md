@@ -29,7 +29,7 @@ To connect to a cloud deployment using your mobile device, you need to use the [
     > Your token expires after the amount of days that you specified in the configuration window. Regenerate the token whenever that happens.
 1. (for iOS) Ensure that **Save token to file** is checked.
 1. Select **Save** and close the window.
-1. Select **SpatialOS** > **Generate Dev Authentication Token**. This stores the dev auth token inside the Unity Player Preferences. If **Save token to file** inside the configuration window is checked, it will also generate a `DevAuthToken.txt` asset in the folder you specified in the configuration window. This token is used to authenticate when connecting to a cloud deployment.
+1. Select **SpatialOS** > **Dev Authentication Token** > **Generate Token**. This stores the dev auth token inside the Unity Player Preferences. If **Save token to file** inside the configuration window is checked, it will also generate a `DevAuthToken.txt` asset in the folder you specified in the configuration window. This token is used to authenticate when connecting to a cloud deployment.
 
     > If your worker connector inherits from the `DefaultMobileWorkerConnector` script, it will automatically read the content inside `DevAuthToken.txt` when running the application and authenticate against our services. See the section above to learn how to create a mobile worker connector.
 
