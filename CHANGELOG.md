@@ -30,6 +30,8 @@
     - Added a setting in `GdkToolsConfiguration` to let users configure whether a `DevAuthToken.txt` should be generated or not.
     - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
 - The schema descriptor is no longer deleted when you select `SpatialOS > Clean all workers` from the Unity Editor. [#969](https://github.com/spatialos/gdk-for-unity/pull/969)
+- Disabled Burst compilation for all platformes except for iOS, because Burst throws benign errors when building workers for other platforms than the one you are currently using.
+- Enabled Burst compilation for iOS, because disabling results in an invalid XCode project.
 
 ### Fixed
 
