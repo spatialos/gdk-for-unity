@@ -69,7 +69,7 @@ Once you have navigated to the **Workloads** tab:
   - The SpatialOS GDK for Unity requires **Unity 2019.1.3**, which you already installed in step 1.
   - Make sure **Visual Studio Tools for Unity** is included (there should be a tick next to it).
 
-> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2018.3.11 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
+> **Warning**: Older versions of Visual Studio 2017 have been known to cause some issues with Unity 2019.1.3 - the issues are projects loading and unloading frequently, and Intellisense breaking. If you do experience these issues, try updating to the latest version of Visual Studio 2017.
 
 **Using Rider?**
 
