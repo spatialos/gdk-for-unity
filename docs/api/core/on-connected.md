@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L20">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L21">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -34,7 +34,7 @@ code {
 
 <b>Notes</b>
 
-- This is a reactive component and the Improbable.Gdk.Core.CleanReactiveComponentsSystem will remove it at the end of the frame. 
+- This is a temporary component and the <a href="{{urlRoot}}/api/core/clean-temporary-components-system">Improbable.Gdk.Core.CleanTemporaryComponentsSystem</a> will remove it at the end of the frame. 
 
 
 

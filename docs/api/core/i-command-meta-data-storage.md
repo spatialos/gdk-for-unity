@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L3">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L3">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L5">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L5">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -60,7 +60,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetCommandId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L6">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L6">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RemoveMetaData</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -107,7 +107,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SetInternalRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ICommandMetaDataStorage.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
