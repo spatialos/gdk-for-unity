@@ -58,6 +58,6 @@ public class ReactiveSystem : ComponentSystem
 
 ## Removal of reactive components
 
-The GDK automatically removes reactive components from the ECS entity as soon as the [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run as part of the `InternalSpatialOSCleanGroup` at the end of each frame. This means that you must run any logic for processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system).
+The GDK automatically removes reactive components from the ECS entity as soon as the [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run at the end of each frame. This means that you must run any logic for processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system).
 
 

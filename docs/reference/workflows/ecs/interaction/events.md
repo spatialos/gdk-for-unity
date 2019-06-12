@@ -33,7 +33,7 @@ public class SendChangeColorEvent : ComponentSystem
 
         query = GetEntityQuery(
             ComponentType.ReadOnly<SpatialEntityId>(),
-            ComponentType.ReadOnly<CubeColor>(),
+            ComponentType.ReadOnly<CubeColor.Component>(),
             ComponentType.ReadOnly<CubeColor.ComponentAuthority>()
         );
 
@@ -42,7 +42,7 @@ public class SendChangeColorEvent : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.With(query).ForEach((ref SpatialEntityId entityId, CubeColor cubeColor) =>
+        Entities.With(query).ForEach((ref SpatialEntityId entityId, ref CubeColor.Component cubeColor) =>
         {
             componentUpdateSystem.SendEvent(
                 new CubeColor.ChangeColor.Event(new ColorData(Color.GREEN)),
