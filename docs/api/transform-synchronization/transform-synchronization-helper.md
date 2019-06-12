@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L9">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddTransformSynchronizationComponents</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -70,11 +70,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddTransformSynchronizationComponents</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void AddTransformSynchronizationComponents(<a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a> template, string writeAccess, Quaternion rotation, Vector3 location = default(Vector3), Vector3 velocity = default(Vector3))</code></p>
+<code>void AddTransformSynchronizationComponents(<a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a> template, string writeAccess, UnityEngine.Quaternion rotation, Vector3 location = default(Vector3), Vector3 velocity = default(Vector3))</code></p>
 
 
 
@@ -85,7 +85,7 @@ code {
 <ul>
 <li><code><a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a> template</code> : </li>
 <li><code>string writeAccess</code> : </li>
-<li><code>Quaternion rotation</code> : </li>
+<li><code>UnityEngine.Quaternion rotation</code> : </li>
 <li><code>Vector3 location</code> : </li>
 <li><code>Vector3 velocity</code> : </li>
 </ul>
@@ -102,7 +102,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddClientSystems</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L37">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -130,7 +130,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddServerSystems</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

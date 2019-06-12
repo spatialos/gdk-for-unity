@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasChanged</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -68,7 +68,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasChanged</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -97,11 +97,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasChanged</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>bool HasChanged(Improbable.Transform.Quaternion a, Improbable.Transform.Quaternion b)</code></p>
+<code>bool HasChanged(Quaternion a, Quaternion b)</code></p>
 
 
 
@@ -110,8 +110,8 @@ code {
 <b>Parameters</b>
 
 <ul>
-<li><code>Improbable.Transform.Quaternion a</code> : </li>
-<li><code>Improbable.Transform.Quaternion b</code> : </li>
+<li><code>Quaternion a</code> : </li>
+<li><code>Quaternion b</code> : </li>
 </ul>
 
 
@@ -126,39 +126,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToUnityQuaternion</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L27">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>Quaternion ToUnityQuaternion(this Improbable.Transform.Quaternion quaternion)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code>this Improbable.Transform.Quaternion quaternion</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>ToImprobableQuaternion</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L32">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>Improbable.Transform.Quaternion ToImprobableQuaternion(this Quaternion quaternion)</code></p>
+<code>UnityEngine.Quaternion ToUnityQuaternion(this Quaternion quaternion)</code></p>
 
 
 
@@ -181,12 +153,40 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToUnityVector3</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L38">Source</a></td>
+        <td style="border-right:none"><b>ToImprobableQuaternion</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>Vector3 ToUnityVector3(this Location location)</code></p>
+<code>Quaternion ToImprobableQuaternion(this UnityEngine.Quaternion quaternion)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>this UnityEngine.Quaternion quaternion</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>ToUnityVector3</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L36">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>UnityEngine.Vector3 ToUnityVector3(this Location location)</code></p>
 
 
 
@@ -210,7 +210,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToImprobableLocation</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L41">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -238,11 +238,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToUnityVector3</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>Vector3 ToUnityVector3(this Velocity velocity)</code></p>
+<code>UnityEngine.Vector3 ToUnityVector3(this Velocity velocity)</code></p>
 
 
 
@@ -266,7 +266,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToImprobableVelocity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L53">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L51">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -294,7 +294,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToCoordinates</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.2/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L58">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.transformsynchronization/TransformUtils.cs/#L56">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

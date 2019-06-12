@@ -44,6 +44,6 @@ public class ProcessColorChangeSystem : ComponentSystem
 
 ## Update vs FixedUpdate
 
-All of these groups run relative to `PlayerLoop.Update`, but sometimes you might want to run a system on `PlayerLoop.FixedUpdate` because that will tick at regular intervals. An example of this is moving a GameObject at a fixed speed, which you should do using the given `FixedUpdateSystemGroup`, which runs relative to `PlayerLoop.FixedUpdate`.
+The `SpatialOSUpdateGroup` runs relative to `PlayerLoop.Update`, but sometimes you might want to run a system on `PlayerLoop.FixedUpdate` because that will tick at regular intervals. An example of this is moving a GameObject at a fixed speed, which you should do using the given `FixedUpdateSystemGroup`, which runs relative to `PlayerLoop.FixedUpdate`.
 
 You can find more information on `Update` and `FixedUpdate` [here (Unity documentation)](https://unity3d.com/learn/tutorials/topics/scripting/update-and-fixedupdate).

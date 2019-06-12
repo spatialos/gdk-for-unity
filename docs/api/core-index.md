@@ -126,8 +126,16 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;">Utility class to help build SpatialOS entities. An <a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a> can be mutated be used multiple times. </td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/fixed-update-system-group">FixedUpdateSystemGroup</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/forwarding-dispatcher">ForwardingDispatcher</a></td>
 <td style="padding: 14px; border: none;">Forwards logEvents and exceptions to the SpatialOS Console and logs locally. </td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/internal-spatial-os-clean-group">InternalSpatialOSCleanGroup</a></td>
+<td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/logging-dispatcher">LoggingDispatcher</a></td>
@@ -195,6 +203,10 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/spatial-os-update-group">SpatialOSUpdateGroup</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/task-utility">TaskUtility</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
@@ -283,10 +295,6 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/blittable-bool">BlittableBool</a></td>
-<td style="padding: 14px; border: none;">A blittable bool implementation to use in Unity's ECS. </td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/command-context">CommandContext</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
@@ -320,7 +328,7 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/locator-config">LocatorConfig</a></td>
-<td style="padding: 14px; border: none;">Stores the configuration needed to connect via the Lcoator. </td>
+<td style="padding: 14px; border: none;">Stores the configuration needed to connect via the Locator. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/core/log-event">LogEvent</a></td>

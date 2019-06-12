@@ -36,6 +36,7 @@ public class ReadExampleComponentSystem : ComponentSystem
         Entities.With(query).ForEach((ref Example.Component exampleComponent) =>
         {
             // Read every Example component in the worker's World.
+            var someField = exampleComponent.SomeField;
         });
     }
 }
@@ -65,7 +66,7 @@ public class SendExampleUpdateSystem : ComponentSystem
     {
         Entities.With(query).ForEach((ref Example.Component exampleComponent) =>
         {
-            exampleComponent.Value = 10;
+            exampleComponent.SomeField = 10;
         });
     }
 }
@@ -140,6 +141,7 @@ public class ProcessChangedHealthSystem : ComponentSystem
             var exampleUpdate = exampleUpdates[i];
 
             // Process a received update.
+            Debug.Log($"Received update for entity ID {exampleUpdate.EntityId}");
         }
     }
 }
