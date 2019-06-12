@@ -30,8 +30,6 @@
     - Added a setting in `GdkToolsConfiguration` to let users configure whether a `DevAuthToken.txt` should be generated or not.
     - When launching Android cloud clients from the Editor, the DevAuthToken is now passed in as a command line argument.
 - The schema descriptor is no longer deleted when you select `SpatialOS > Clean all workers` from the Unity Editor. [#969](https://github.com/spatialos/gdk-for-unity/pull/969)
-- Disabled Burst compilation for all platformes except for iOS, because Burst throws benign errors when building workers for other platforms than the one you are currently using.
-- Enabled Burst compilation for iOS, because disabling results in an invalid XCode project.
 
 ### Fixed
 
@@ -41,6 +39,8 @@
 
 - Removed the workaround for a schema component update bug (WRK-1031). [#962](https://github.com/spatialos/gdk-for-unity/pull/962)
 - All playground launch configuration files now use the `w2_r0500_e5` template instead of the `small` template which was deprecated. [#968](https://github.com/spatialos/gdk-for-unity/pull/968)
+- Disabled Burst compilation for all platformes except for iOS, because Burst throws benign errors when building workers for other platforms than the one you are currently using. [#977](https://github.com/spatialos/gdk-for-unity/pull/977)
+- Enabled Burst compilation for iOS, because disabling results in an invalid XCode project. [#975](https://github.com/spatialos/gdk-for-unity/pull/975)
 
 ## `0.2.2` - 2019-05-15
 
