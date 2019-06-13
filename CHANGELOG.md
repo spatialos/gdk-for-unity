@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The constructor for the `ForwardingDispatcher` now accepts a `UnityEngine.LogType` instead of `Improbable.Worker.CInterop.LogLevel` as its parameter. [#987](https://github.com/spatialos/gdk-for-unity/pull/987) 
+
 ### Fixed
 
 - Fixed a bug where invalid characters in your PATH elements would throw exceptions and break code generation. [#986](https://github.com/spatialos/gdk-for-unity/pull/986)
