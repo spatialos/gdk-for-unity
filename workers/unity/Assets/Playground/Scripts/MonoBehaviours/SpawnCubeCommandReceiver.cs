@@ -6,7 +6,6 @@ using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
 using UnityEngine;
-using Quaternion = Improbable.Gdk.TransformSynchronization.Quaternion;
 
 namespace Playground.MonoBehaviours
 {
@@ -58,7 +57,7 @@ namespace Playground.MonoBehaviours
             cubeEntityTemplate.SetComponent(new TransformInternal.Snapshot
             {
                 Location = new Location(location.X, location.Y + 2, location.Z),
-                Rotation = new Quaternion(1, 0, 0, 0)
+                Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToImprobableQuaternion()
             });
             var expectedEntityId = response.FirstEntityId.Value;
 

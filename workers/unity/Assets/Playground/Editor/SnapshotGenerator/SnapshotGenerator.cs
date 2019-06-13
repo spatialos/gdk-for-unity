@@ -4,7 +4,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
-using Quaternion = Improbable.Gdk.TransformSynchronization.Quaternion;
 
 namespace Playground.Editor.SnapshotGenerator
 {
@@ -91,7 +90,7 @@ namespace Playground.Editor.SnapshotGenerator
                     var transformSnapshot = new TransformInternal.Snapshot
                     {
                         Location = new Location(x, 1, z),
-                        Rotation = new Quaternion(1, 0, 0, 0),
+                        Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToImprobableQuaternion(),
                         TicksPerSecond = 1f / Time.fixedDeltaTime
                     };
 
@@ -109,7 +108,7 @@ namespace Playground.Editor.SnapshotGenerator
             var transform = new TransformInternal.Snapshot
             {
                 Location = new Location((float) coords.X, (float) coords.Y, (float) coords.Z),
-                Rotation = new Quaternion(1, 0, 0, 0),
+                Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToImprobableQuaternion(),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
 
@@ -124,7 +123,6 @@ namespace Playground.Editor.SnapshotGenerator
 
             template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
-
 
             snapshot.AddEntity(template);
         }
