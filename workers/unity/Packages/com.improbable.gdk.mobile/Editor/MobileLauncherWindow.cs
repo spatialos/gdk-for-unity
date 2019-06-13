@@ -35,6 +35,7 @@ namespace Improbable.Gdk.Mobile
         {
             launchConfig = new MobileLaunchConfig();
             deviceNames = launchConfig.availableDevices.Keys.ToArray();
+            simulatorNames = launchConfig.availableSimulators.Keys.ToArray();
         }
         
         public void OnGUI()
