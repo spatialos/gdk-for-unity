@@ -128,7 +128,10 @@ namespace Improbable.Gdk.Tools
 
                 if (Application.platform == RuntimePlatform.OSXEditor)
                 {
-                    pathElements = pathElements.Union(MacPaths).ToArray();
+                    pathElements = pathElements
+                        .Union(MacPaths)
+                        .Union(MacPaths.Select(path => Path.Combine(path, binaryBaseName)))
+                        .ToArray();
                 }
 
                 var location = pathElements
