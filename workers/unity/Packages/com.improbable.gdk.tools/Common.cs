@@ -26,18 +26,19 @@ namespace Improbable.Gdk.Tools
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
         /// <summary>
-        ///     The absolute path to the `spatial` binary, or the empty string if it doesn't exist.
+        ///     The absolute path to the `spatial` binary, or an empty string if it doesn't exist.
         /// </summary>
         public static string SpatialBinary => DiscoverLocation("spatial");
 
+        /// <summary>
+        ///     The absolute path to the `dotnet` binary, or an empty string if it doesn't exist.
+        /// </summary>
         public static string DotNetBinary => DiscoverLocation("dotnet");
 
         public const string ProductName = "SpatialOS for Unity";
 
-        private const string UsrLocalBinDir = "/usr/local/bin";
-        private const string UsrLocalShareDir = "/usr/local/share";
-
-        private static readonly string[] MacPaths = { UsrLocalBinDir, UsrLocalShareDir };
+        private static readonly string[] MacPaths = { "/usr/local/bin", "/usr/local/share" };
+        private static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
 
         internal static string GetThisPackagePath()
         {
@@ -94,51 +95,62 @@ namespace Improbable.Gdk.Tools
 
         /// <summary>
         ///     Tries to find the full path to a binary in the system PATH.
-        ///     On MacOS, also looks in `/usr/local/bin` because applications launched from the Finder
-        ///     don't always have that in the PATH provided to them.
         /// </summary>
+        /// <remarks>
+        ///     On MacOS, also looks in `/usr/local/bin` and `/usr/local/share` because applications launched from the Finder
+        ///     don't always have that in the PATH provided to them.
+        /// </remarks>
         /// <param name="binaryBaseName">The base name of the binary to find (without an extension).</param>
-        /// <returns></returns>
+        /// <returns>The full path to the binary, if found, else an empty string.</returns>
         private static string DiscoverLocation(string binaryBaseName)
         {
-            var pathValue = Environment.GetEnvironmentVariable("PATH");
-            if (pathValue == null)
+            if (binaryBaseName == null)
             {
-                Debug.LogError("PATH has not been specified in the system environment.");
-                return string.Empty;
+                throw new ArgumentException(nameof(binaryBaseName));
             }
 
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            try
             {
-                binaryBaseName = Path.ChangeExtension(binaryBaseName, ".exe");
+                var pathValue = Environment.GetEnvironmentVariable("PATH");
 
-                if (binaryBaseName == null)
+                if (pathValue == null)
                 {
+                    Debug.LogError("PATH has not been specified in the system environment.");
                     return string.Empty;
                 }
-            }
 
-            var splitPath = pathValue.Split(Path.PathSeparator);
-
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                foreach (var macPath in MacPaths)
+                if (Application.platform == RuntimePlatform.WindowsEditor)
                 {
-                    if (!splitPath.Contains(macPath))
-                    {
-                        splitPath = splitPath.Union(new[] { macPath, Path.Combine(macPath, binaryBaseName) }).ToArray();
-                    }
+                    binaryBaseName = Path.ChangeExtension(binaryBaseName, ".exe");
                 }
-            }
 
-            var location = splitPath.Select(p => Path.Combine(p, binaryBaseName)).FirstOrDefault(File.Exists);
-            if (location != null)
+                var pathElements = pathValue.Split(Path.PathSeparator);
+
+                if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    pathElements = pathElements
+                        .Union(MacPaths)
+                        .Union(MacPaths.Select(path => Path.Combine(path, binaryBaseName)))
+                        .ToArray();
+                }
+
+                var location = pathElements
+                    .Where(path => !InvalidPathChars.Any(path.Contains))
+                    .Select(p => Path.Combine(p, binaryBaseName))
+                    .FirstOrDefault(File.Exists);
+
+                if (location == null)
+                {
+                    Debug.LogError($"Could not discover location for \"{binaryBaseName}\".");
+                }
+
+                return location ?? string.Empty;
+            }
+            catch (Exception e)
             {
-                return location;
+                Debug.LogException(e);
+                return string.Empty;
             }
-
-            Debug.LogError($"Could not discover location for {binaryBaseName}");
-            return string.Empty;
         }
 
         /// <summary>
@@ -147,8 +159,8 @@ namespace Improbable.Gdk.Tools
         /// <returns></returns>
         public static bool CheckDependencies()
         {
-            var hasDotnet = !string.IsNullOrEmpty(Common.DotNetBinary);
-            var hasSpatial = !string.IsNullOrEmpty(Common.SpatialBinary);
+            var hasDotnet = !string.IsNullOrEmpty(DotNetBinary);
+            var hasSpatial = !string.IsNullOrEmpty(SpatialBinary);
 
             if (hasDotnet && hasSpatial)
             {
