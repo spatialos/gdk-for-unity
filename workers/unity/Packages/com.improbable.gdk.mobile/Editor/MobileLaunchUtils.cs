@@ -5,9 +5,8 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Mobile
 {
-    public class MobileLaunchHelper
+    public class MobileLaunchUtils
     {
-        public const string MenuLaunchMobile = "SpatialOS/Launch mobile client";
         private const string argStructure = "+{0} {1} ";
 
         public static bool TryPrepareArguments(bool shouldConnectLocally, out string builtArguments)

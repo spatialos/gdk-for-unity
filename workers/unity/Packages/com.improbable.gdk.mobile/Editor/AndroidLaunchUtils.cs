@@ -6,29 +6,14 @@ using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Mobile
 {
-    public static class AndroidLaunchMenu
+    public static class AndroidLaunchUtils
     {
         private const string rootApkPath = "build";
 
         private static string AbsoluteApkPath =>
             Path.GetFullPath(Path.Combine(Application.dataPath, "..", rootApkPath));
-        
-        private const string MenuLaunchAndroidLocal = "/Android for local";
-        private const string MenuLaunchAndroidCloud = "/Android for cloud";
 
-        [MenuItem(MobileLaunchHelper.MenuLaunchMobile + MenuLaunchAndroidLocal, false, 73)]
-        private static void LaunchAndroidLocal()
-        {
-            LaunchAndroid(true);
-        }
-
-        [MenuItem(MobileLaunchHelper.MenuLaunchMobile + MenuLaunchAndroidCloud, false, 74)]
-        private static void LaunchAndroidCloud()
-        {
-            LaunchAndroid(false);
-        }
-
-        private static void LaunchAndroid(bool shouldConnectLocally)
+        public static void Launch(bool shouldConnectLocally)
         {
             try
             {
@@ -74,7 +59,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
-                if (!MobileLaunchHelper.TryPrepareArguments(shouldConnectLocally, out var arguments))
+                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, out var arguments))
                 {
                     Debug.LogError("Failed to generate arguments");
                     return;
