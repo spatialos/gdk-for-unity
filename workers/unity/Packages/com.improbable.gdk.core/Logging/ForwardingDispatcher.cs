@@ -30,9 +30,9 @@ namespace Improbable.Gdk.Core
         ///     Constructor for the Forwarding Dispatcher
         /// </summary>
         /// <param name="minimumLogLevel">The minimum log level to forward logs to the SpatialOS runtime.</param>
-        public ForwardingDispatcher(LogLevel minimumLogLevel = LogLevel.Warn)
+        public ForwardingDispatcher(LogType minimumLogLevel = LogType.Warning)
         {
-            this.minimumLogLevel = minimumLogLevel;
+            this.minimumLogLevel = LogTypeMapping[minimumLogLevel];
             Application.logMessageReceived += LogCallback;
         }
 
