@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Mobile
 {
     public static class iOSLaunchUtils
     {
-        private static readonly string XCodeProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker", "MobileClient\\@iOS", "MobileClient\\@iOS"));
+        private static readonly string XCodeProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker", "MobileClient@iOS", "MobileClient@iOS"));
         private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(XCodeProjectPath, "..", "..", "build"));
         private static readonly string XCodeProjectFile = "Unity-iPhone.xcodeproj";
 
@@ -36,7 +36,8 @@ namespace Improbable.Gdk.Mobile
                     {
                         if (simulatorUIDRegex.IsMatch(message))
                         {
-                            availableSimulators[nameRegex.Match(message).Value] = simulatorUIDRegex.Match(message).Value;
+                            var simulatorUID = simulatorUIDRegex.Match(message).Value.Trim('[', ']');
+                            availableSimulators[nameRegex.Match(message).Value] = simulatorUID;
                         }
                     }
                 })
@@ -54,7 +55,8 @@ namespace Improbable.Gdk.Mobile
                 {
                     if (deviceUIDRegex.IsMatch(message))
                     {
-                        availableDevices[nameRegex.Match(message).Value] = deviceUIDRegex.Match(message).Value;
+                        var deviceUID = deviceUIDRegex.Match(message).Value.Trim('[', ']');
+                        availableDevices[nameRegex.Match(message).Value] = deviceUID;
                     }
                 })
                 .Run();
@@ -68,7 +70,8 @@ namespace Improbable.Gdk.Mobile
             {
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Building your XCode project", 0f);
 
-                if (!Directory.Exists(Path.Combine(XCodeProjectPath, XCodeProjectFile)))
+                Debug.Log(XCodeProjectPath);
+                if (!Directory.Exists(XCodeProjectPath))
                 {
                     Debug.LogError("Was not able to find an XCode project. Did you build your iOS worker?");
                     return;
@@ -110,7 +113,7 @@ namespace Improbable.Gdk.Mobile
                     Debug.LogError("Failed to generate arguments");
                     return;
                 }
-
+                
                 if (!TryModifyEnvironmentVariables(xcTestRunPath, arguments))
                 {
                     Debug.LogError($"Was unable to read and modify {xcTestRunPath}.");
@@ -142,6 +145,14 @@ namespace Improbable.Gdk.Mobile
             }
             finally
             {
+                var traceDirectories = Directory
+                    .GetDirectories(Path.Combine(Application.dataPath, ".."), "*.trace")
+                    .Where(s => s.EndsWith(".trace"));
+                foreach (var directory in traceDirectories)
+                {
+                    Directory.Delete(directory, true);
+                }
+                
                 EditorUtility.ClearProgressBar();
             }
         }
@@ -177,17 +188,23 @@ namespace Improbable.Gdk.Mobile
 
             var process = Process.Start(processInfo);
 
-            return process == null;
+            return process != null;
         }
 
         private static bool TryGetXCTestRunPath(bool forSimulator, out string xctestrunPath)
         {
+            if (!Directory.Exists(DerivedDataPath))
+            {
+                xctestrunPath = string.Empty;
+                return false;
+            }
+            
             var files = Directory.GetFiles(DerivedDataPath, "*.xctestrun", SearchOption.AllDirectories);
             xctestrunPath = forSimulator 
                 ? files.FirstOrDefault(file => file.Contains("iphonesimulator")) 
                 : files.FirstOrDefault(file => file.Contains("iphoneos"));
 
-            return string.IsNullOrEmpty(xctestrunPath);
+            return !string.IsNullOrEmpty(xctestrunPath);
         }
 
         private static bool TryModifyEnvironmentVariables(string filePath, string arguments)
@@ -210,7 +227,7 @@ namespace Improbable.Gdk.Mobile
              *     <string>+environment local +receptionistHost 192.168.0.10 </string>
              * </dict>
              */
-
+            
             try
             {
                 var doc = new XmlDocument();
