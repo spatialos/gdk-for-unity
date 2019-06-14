@@ -24,6 +24,11 @@ namespace Improbable.Gdk.TransformSynchronization
             return a.Data != b.Data;
         }
 
+        public static bool HasChanged(Velocity a, Velocity b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
         public static UnityEngine.Quaternion ToUnityQuaternion(this CompressedQuaternion quaternion)
         {
             var compressedValue = quaternion.Data;
