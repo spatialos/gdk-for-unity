@@ -2,16 +2,10 @@ package improbable.gdk.transform_synchronization;
 
 // These are both types to be removed later when we decide on a compression scheme.
 
-type Location {
-    float x = 1;
-    float y = 2;
-    float z = 3;
-}
-
-type Velocity {
-    float x = 1;
-    float y = 2;
-    float z = 3;
+type FixedPointVector3 {
+    sint32 x = 1;
+    sint32 y = 2;
+    sint32 z = 3;
 }
 
 type CompressedQuaternion {
@@ -20,9 +14,9 @@ type CompressedQuaternion {
 
 component TransformInternal {
     id = 11000;
-    Location location = 1;
+    FixedPointVector3 location = 1;
     CompressedQuaternion rotation = 2;
-    Velocity velocity = 3;
+    FixedPointVector3 velocity = 3;
     uint32 physics_tick = 4;
     float ticks_per_second = 5;
 }

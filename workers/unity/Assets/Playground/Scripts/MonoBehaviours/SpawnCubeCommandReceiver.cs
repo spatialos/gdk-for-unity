@@ -56,8 +56,8 @@ namespace Playground.MonoBehaviours
             });
             cubeEntityTemplate.SetComponent(new TransformInternal.Snapshot
             {
-                Location = new Location(location.X, location.Y + 2, location.Z),
-                Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToImprobableQuaternion()
+                Location = new Vector3(location.X, location.Y + 2, location.Z).ToFixedPointVector3(),
+                Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion()
             });
             var expectedEntityId = response.FirstEntityId.Value;
 

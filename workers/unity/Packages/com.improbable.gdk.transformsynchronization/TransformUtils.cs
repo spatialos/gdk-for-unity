@@ -13,18 +13,12 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         // Checking for no change, so exact equality is fine
-        public static bool HasChanged(Location a, Location b)
-        {
-            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
-        }
-
-        // Checking for no change, so exact equality is fine
         public static bool HasChanged(CompressedQuaternion a, CompressedQuaternion b)
         {
             return a.Data != b.Data;
         }
 
-        public static bool HasChanged(Velocity a, Velocity b)
+        public static bool HasChanged(FixedPointVector3 a, FixedPointVector3 b)
         {
             return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
@@ -62,7 +56,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private const float SqrtHalf = 0.70710678118f;
 
-        public static CompressedQuaternion ToImprobableQuaternion(this UnityEngine.Quaternion quaternion)
+        public static CompressedQuaternion ToCompressedQuaternion(this UnityEngine.Quaternion quaternion)
         {
             quaternion = quaternion.normalized;
 
@@ -96,29 +90,46 @@ namespace Improbable.Gdk.TransformSynchronization
             return new CompressedQuaternion(compressedQuaternion);
         }
 
-        public static UnityEngine.Vector3 ToUnityVector3(this Location location)
+        public static UnityEngine.Vector3 ToUnityVector3(this FixedPointVector3 fixedPointVector3)
         {
-            return new Vector3(location.X, location.Y, location.Z);
+            return new Vector3
+            {
+                x = FixedToFloat(fixedPointVector3.X),
+                y = FixedToFloat(fixedPointVector3.Y),
+                z = FixedToFloat(fixedPointVector3.Z)
+            };
         }
 
-        public static Location ToImprobableLocation(this Vector3 vector)
+        public static FixedPointVector3 ToFixedPointVector3(this Vector3 vector3)
         {
-            return new Location(vector.x, vector.y, vector.z);
+            return new FixedPointVector3
+            {
+                X = FloatToFixed(vector3.x),
+                Y = FloatToFixed(vector3.y),
+                Z = FloatToFixed(vector3.z)
+            };
         }
 
-        public static UnityEngine.Vector3 ToUnityVector3(this Velocity velocity)
+        public static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
         {
-            return new Vector3(velocity.X, velocity.Y, velocity.Z);
+            return new Coordinates
+            {
+                X = FixedToFloat(fixedPointVector3.X),
+                Y = FixedToFloat(fixedPointVector3.Y),
+                Z = FixedToFloat(fixedPointVector3.Z)
+            };
         }
 
-        public static Velocity ToImprobableVelocity(this Vector3 velocity)
+        private const int FixedPointOne = 0x00010000;
+
+        private static int FloatToFixed(float a)
         {
-            return new Velocity(velocity.x, velocity.y, velocity.z);
+            return (int) (a * FixedPointOne);
         }
 
-        public static Coordinates ToCoordinates(this Location location)
+        private static float FixedToFloat(int a)
         {
-            return new Coordinates(location.X, location.Y, location.Z);
+            return (float) a / FixedPointOne;
         }
     }
 }
