@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -37,7 +38,7 @@ namespace Improbable.Gdk.Mobile
             deviceNames = launchConfig.availableDevices.Keys.ToArray();
             simulatorNames = launchConfig.availableSimulators.Keys.ToArray();
         }
-        
+
         public void OnGUI()
         {
             GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
@@ -54,7 +55,7 @@ namespace Improbable.Gdk.Mobile
 
             if (GUILayout.Button("Launch Android app"))
             {
-                AndroidLaunchUtils.Launch(launchConfig.shouldConnectLocally);
+                AndroidLaunchUtils.Launch(launchConfig.shouldConnectLocally, launchConfig.RuntimeIp);
             }
 
 #if UNITY_EDITOR_OSX
@@ -105,7 +106,7 @@ namespace Improbable.Gdk.Mobile
                     {
                         var simulatorUID =
                             launchConfig.availableSimulators[simulatorNames[simulatorNameIndex]];
-                        iOSLaunchUtils.Launch(true, simulatorUID, true);
+                        iOSLaunchUtils.Launch(true, simulatorUID, launchConfig.RuntimeIp, true);
                     }
                 }
                 
@@ -131,13 +132,12 @@ namespace Improbable.Gdk.Mobile
                     }
                 }
 
-
                 using (new EditorGUI.DisabledScope(deviceNames.Length == 0))
                 {
                     if (GUILayout.Button("Launch iOS app on device"))
                     {
                         var deviceUID = launchConfig.availableDevices[deviceNames[deviceNameIndex]];
-                        iOSLaunchUtils.Launch(true, deviceUID, false);
+                        iOSLaunchUtils.Launch(true, deviceUID, launchConfig.RuntimeIp, false);
                     }
                 }
             }

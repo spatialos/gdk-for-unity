@@ -95,7 +95,7 @@ namespace Improbable.Gdk.Mobile
             }
         }
         
-        public static void Launch(bool shouldConnectLocally, string deviceId, bool useSimulator)
+        public static void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useSimulator)
         {
             try 
             {
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, out var arguments))
+                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, runtimeIp, out var arguments))
                 {
                     Debug.LogError("Failed to generate arguments");
                     return;

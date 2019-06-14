@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Mobile
         private static string AbsoluteApkPath =>
             Path.GetFullPath(Path.Combine(Application.dataPath, "..", rootApkPath));
 
-        public static void Launch(bool shouldConnectLocally)
+        public static void Launch(bool shouldConnectLocally, string runtimeIp)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
-                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, out var arguments))
+                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, runtimeIp, out var arguments))
                 {
                     Debug.LogError("Failed to generate arguments");
                     return;

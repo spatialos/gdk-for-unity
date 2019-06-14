@@ -19,31 +19,15 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
-        
-        internal string[] simulatorNames;
-        internal Dictionary<string, string> availableSimulators = new Dictionary<string, string>();
-
-        internal string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
-        internal string RuntimeIpEditorPrefKey = "RuntimeIp";
-        internal string SimulatorNamePrefKey = "SimulatorName";
-        
-        public string SimulatorName => PlayerPrefs.GetString(SimulatorNamePrefKey);
-
-        public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
-
-        public string DevelopmentTeamId => EditorPrefs.GetString(DevelopmentTeamIdEditorPrefKey);
-
+        
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()
         {
-#if UNITY_EDITOR_OSX
-            RetrieveAvailableiOSSimulators();
-#endif
             ResetToDefault();
         }
 
@@ -95,11 +79,6 @@ namespace Improbable.Gdk.Tools
                 }
             }
 
-            if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
-            {
-                errors.Add($"Runtime IP \"{RuntimeIp}\" is not a valid IP address.");
-            }
-
             if (!SaveDevAuthTokenToFile)
             {
                 return errors;
@@ -116,17 +95,6 @@ namespace Improbable.Gdk.Tools
             }
 
             return errors;
-        }
-
-        public string GetSimulatorUID()
-        {
-            if (!availableSimulators.TryGetValue(SimulatorName, out var simulatorUID))
-            {
-                Debug.LogError("Unable to find simulator");
-                return string.Empty;
-            }
-
-            return simulatorUID;
         }
 
         internal void ResetToDefault()
@@ -158,36 +126,6 @@ namespace Improbable.Gdk.Tools
             File.WriteAllText(JsonFilePath, JsonUtility.ToJson(config, true));
 
             return config;
-        }
-
-        protected void SetChosenSimulator(int index)
-        {
-            var simulatorName = simulatorNames[index];
-            PlayerPrefs.SetString(SimulatorNamePrefKey, simulatorName);
-        }
-
-        void RetrieveAvailableiOSSimulators()
-        {
-            var simulatorNameRegex = new Regex("^[a-z|A-Z|\\s|0-9]+");
-            var simulatorUIDRegex = new Regex("\\[([A-Z]|[0-9]|-)+\\]");
-            // Check if we have a physical device connected
-            RedirectedProcess.Command("instruments")
-                .WithArgs("-s", "devices")
-                .AddOutputProcessing(message =>
-                {
-                    // get all simulators
-                    if (message.Contains("iPhone") | message.Contains("iPad"))
-                    {
-                        if (simulatorUIDRegex.IsMatch(message))
-                        {
-                            availableSimulators[simulatorNameRegex.Match(message).Value] =
-                                simulatorUIDRegex.Match(message).Value;
-                        }
-                    }
-                })
-                .Run();
-
-            simulatorNames = availableSimulators.Keys.ToArray();
         }
 
         private static class DefaultValues

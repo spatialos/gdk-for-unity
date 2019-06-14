@@ -40,6 +40,8 @@ namespace Improbable.Gdk.Tools
         private static readonly string[] MacPaths = { "/usr/local/bin", "/usr/local/share" };
         private static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
 
+        public static string RuntimeIpEditorPrefKey = "RuntimeIp";
+
         internal static string GetThisPackagePath()
         {
             return GetPackagePath("com.improbable.gdk.tools");

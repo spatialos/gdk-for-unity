@@ -156,29 +156,6 @@ namespace Improbable.Gdk.Tools
                 }
             }
 
-#if UNITY_EDITOR_OSX
-            GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
-            {
-                EditorPrefs.SetString(
-                    toolsConfig.DevelopmentTeamIdEditorPrefKey,
-                    EditorGUILayout.TextField(DevelopmentTeamIdLabel, toolsConfig.DevelopmentTeamId));
-                var newSimulatorNameIndex = EditorGUILayout.Popup("Simulator Type", simulatorNameIndex, toolsConfig.simulatorNames);
-                if (simulatorNameIndex != newSimulatorNameIndex)
-                {
-                }
-                
-            }
-#endif
-
-            GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
-            using (new EditorGUI.IndentLevelScope())
-            {
-                EditorPrefs.SetString(
-                    toolsConfig.RuntimeIpEditorPrefKey,
-                    EditorGUILayout.TextField(RuntimeIpLabel, toolsConfig.RuntimeIp));
-            }
-
             GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
             {

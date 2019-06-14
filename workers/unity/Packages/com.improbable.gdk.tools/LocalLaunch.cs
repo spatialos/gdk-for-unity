@@ -206,7 +206,7 @@ namespace Improbable.Gdk.Tools
             var command = Common.SpatialBinary;
             var commandArgs = "local launch --enable_pre_run_check=false";
 
-            var runtimeIp = GdkToolsConfiguration.GetOrCreateInstance().RuntimeIp;
+            var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))
             {
                 commandArgs = $"{commandArgs} --runtime_ip={runtimeIp}";
