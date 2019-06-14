@@ -9,7 +9,7 @@
 ### Fixed
 
 - Fixed a bug where invalid characters in your PATH elements would throw exceptions and break code generation. [#986](https://github.com/spatialos/gdk-for-unity/pull/986)
-- Fixed a regression in the `SetKinematicFromAuthoritySystem` that failed to toggle a rigidbody's kinematic state on `TransformInternal` authority changes. [#988](https://github.com/spatialos/gdk-for-unity/pull/987)
+- Fixed a regression in the `SetKinematicFromAuthoritySystem` that failed to toggle a rigidbody's kinematic state on `TransformInternal` authority changes. [#988](https://github.com/spatialos/gdk-for-unity/pull/988)
 
 ## `0.2.3` - 2019-06-12
 
