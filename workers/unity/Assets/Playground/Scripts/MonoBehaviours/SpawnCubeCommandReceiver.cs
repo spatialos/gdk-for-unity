@@ -48,15 +48,16 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var location = transformReader.Data.Location;
+            var location = transformReader.Data.Location.ToUnityVector3();
+            location.y += 2;
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
             cubeEntityTemplate.SetComponent(new Position.Snapshot
             {
-                Coords = new Coordinates(location.X, location.Y + 2, location.Z)
+                Coords = location.ToCoordinates()
             });
             cubeEntityTemplate.SetComponent(new TransformInternal.Snapshot
             {
-                Location = new Vector3(location.X, location.Y + 2, location.Z).ToFixedPointVector3(),
+                Location = location.ToFixedPointVector3(),
                 Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion()
             });
             var expectedEntityId = response.FirstEntityId.Value;

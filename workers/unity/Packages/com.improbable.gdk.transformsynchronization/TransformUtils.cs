@@ -1,6 +1,4 @@
-﻿using System;
-using Unity.Mathematics;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -18,11 +16,13 @@ namespace Improbable.Gdk.TransformSynchronization
             return a.Data != b.Data;
         }
 
+        // Checking for no change, so exact equality is fine
         public static bool HasChanged(FixedPointVector3 a, FixedPointVector3 b)
         {
             return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
 
+        // Decompress from uint32 to Unity Quaternion
         public static UnityEngine.Quaternion ToUnityQuaternion(this CompressedQuaternion quaternion)
         {
             var compressedValue = quaternion.Data;
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 {
                     uint magnitude = compressedValue & mask;
                     uint signBit = (compressedValue >> 9) & 0x1;
-                    compressedValue = compressedValue >> 10;
+                    compressedValue >>= 10;
                     q[i] = SqrtHalf * ((float) magnitude) / mask;
                     if (signBit == 1)
                     {
@@ -56,6 +56,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private const float SqrtHalf = 0.70710678118f;
 
+        // Compress from Unity Quaternion to uint32
         public static CompressedQuaternion ToCompressedQuaternion(this UnityEngine.Quaternion quaternion)
         {
             quaternion = quaternion.normalized;
@@ -107,6 +108,26 @@ namespace Improbable.Gdk.TransformSynchronization
                 X = FloatToFixed(vector3.x),
                 Y = FloatToFixed(vector3.y),
                 Z = FloatToFixed(vector3.z)
+            };
+        }
+
+        public static FixedPointVector3 ToFixedPointVector3(this Coordinates coordinates)
+        {
+            return new FixedPointVector3
+            {
+                X = FloatToFixed((float) coordinates.X),
+                Y = FloatToFixed((float) coordinates.Y),
+                Z = FloatToFixed((float) coordinates.Z)
+            };
+        }
+
+        public static Coordinates ToCoordinates(this Vector3 vector3)
+        {
+            return new Coordinates
+            {
+                X = vector3.x,
+                Y = vector3.y,
+                Z = vector3.z
             };
         }
 

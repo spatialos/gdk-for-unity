@@ -83,13 +83,14 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
+                    var location = new Vector3(x, 1, z);
                     var positionSnapshot = new Position.Snapshot
                     {
-                        Coords = new Coordinates(x, 1, z)
+                        Coords = location.ToCoordinates()
                     };
                     var transformSnapshot = new TransformInternal.Snapshot
                     {
-                        Location = new Vector3(x, 1, z).ToFixedPointVector3(),
+                        Location = location.ToFixedPointVector3(),
                         Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion(),
                         TicksPerSecond = 1f / Time.fixedDeltaTime
                     };
@@ -107,18 +108,18 @@ namespace Playground.Editor.SnapshotGenerator
 
             var transform = new TransformInternal.Snapshot
             {
-                Location = new Vector3((float) coords.X, (float) coords.Y, (float) coords.Z).ToFixedPointVector3(),
+                Location = coords.ToFixedPointVector3(),
                 Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion(),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
 
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot { Coords = coords }, WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Metadata.Snapshot { EntityType = entityType }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Metadata.Snapshot(entityType), WorkerUtils.UnityGameLogic);
             template.AddComponent(transform, WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new SpinnerColor.Snapshot { Color = Color.BLUE }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
             template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
