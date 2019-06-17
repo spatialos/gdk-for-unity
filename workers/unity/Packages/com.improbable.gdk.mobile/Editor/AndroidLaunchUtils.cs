@@ -10,9 +10,6 @@ namespace Improbable.Gdk.Mobile
     {
         private const string rootApkPath = "build";
 
-        private static string AbsoluteApkPath =>
-            Path.GetFullPath(Path.Combine(Application.dataPath, "..", rootApkPath));
-
         public static void Launch(bool shouldConnectLocally, string runtimeIp)
         {
             try
@@ -31,9 +28,9 @@ namespace Improbable.Gdk.Mobile
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing APK", 0.3f);
 
                 // Find apk to install
-                if (!TryGetApkPath(AbsoluteApkPath, out var apkPath))
+                if (!TryGetApkPath(Common.BuildScratchDirectory, out var apkPath))
                 {
-                    Debug.LogError($"Could not find a built out Android binary in \"{AbsoluteApkPath}\" to launch.");
+                    Debug.LogError($"Could not find a built out Android binary in \"{Common.BuildScratchDirectory}\" to launch.");
                     return;
                 }
 

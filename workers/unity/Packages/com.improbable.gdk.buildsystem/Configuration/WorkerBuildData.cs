@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public string PackageName => $"{WorkerType}@{BuildTargetName}";
 
         public string BuildScratchDirectory =>
-            Path.Combine(EditorPaths.BuildScratchDirectory, PackageName, ExecutableName);
+            Path.Combine(Common.BuildScratchDirectory, PackageName, ExecutableName);
 
         private string BuildTargetName => BuildTargetNames[buildTarget];
         private string ExecutableName => PackageName + BuildPlatformExtensions[buildTarget];

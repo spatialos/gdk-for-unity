@@ -6,6 +6,9 @@ namespace Improbable.Gdk.Mobile
 {
     public class MobileLaunchConfig
     {
+        private const string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
+        private const string RuntimeIpEditorPrefKey = "RuntimeIp";
+
         public bool shouldConnectLocally;
 
         public string RuntimeIp
@@ -19,8 +22,5 @@ namespace Improbable.Gdk.Mobile
             get => EditorPrefs.GetString(DevelopmentTeamIdEditorPrefKey);
             set => EditorPrefs.SetString(DevelopmentTeamIdEditorPrefKey, value);
         }
-        
-        private string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
-        private string RuntimeIpEditorPrefKey = "RuntimeIp";
     }
 }

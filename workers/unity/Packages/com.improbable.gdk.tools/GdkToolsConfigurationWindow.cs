@@ -14,29 +14,21 @@ namespace Improbable.Gdk.Tools
         internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string CodegenOutputDirLabel = "C# output directory";
         internal const string DescriptorOutputDirLabel = "Descriptor directory";
-        internal const string SchemaSourceDirsLabel = "Schema sources";
-        internal const string MobileSectionLabel = "Mobile Settings";
-        internal const string iOSSectionLabel = "iOS Settings";
-        internal const string DevelopmentTeamIdLabel = "Development Team Id";
-        internal const string RuntimeIpLabel = "Local runtime IP";
-        internal const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
         internal const string DevAuthTokenDirLabel = "Token directory";
-        internal const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
 
+        private const string SchemaSourceDirsLabel = "Schema sources";
+        private const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
+        private const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
         private const string CodeGeneratorLabel = "Code generator";
+        private const string ResetConfigurationButtonText = "Reset to default";
+        private const string SaveConfigurationButtonText = "Save";
 
         private static GUIContent AddSchemaDirButton;
         private static GUIContent RemoveSchemaDirButton;
 
-        private const string ResetConfigurationButtonText = "Reset to default";
-        private const string SaveConfigurationButtonText = "Save";
-
         private GdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
-
         private Vector2 scrollPosition;
-
-        private int simulatorNameIndex;
 
         [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
         public static void ShowWindow()

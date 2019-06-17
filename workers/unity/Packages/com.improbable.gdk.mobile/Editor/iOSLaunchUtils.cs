@@ -14,8 +14,8 @@ namespace Improbable.Gdk.Mobile
 {
     public static class iOSLaunchUtils
     {
-        private static readonly string XCodeProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker", "MobileClient@iOS", "MobileClient@iOS"));
-        private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(XCodeProjectPath, "..", "..", "build"));
+        private static readonly string XCodeProjectPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "MobileClient@iOS", "MobileClient@iOS"));
+        private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "ios-build"));
         private static readonly string XCodeProjectFile = "Unity-iPhone.xcodeproj";
 
         private static readonly Regex nameRegex = new Regex("^[a-z|A-Z|\\s|0-9]+");
@@ -41,6 +41,7 @@ namespace Improbable.Gdk.Mobile
                         }
                     }
                 })
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
             return availableSimulators;
@@ -59,6 +60,7 @@ namespace Improbable.Gdk.Mobile
                         availableDevices[nameRegex.Match(message).Value] = deviceUID;
                     }
                 })
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
             return availableDevices;

@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
-        
+
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()

@@ -7,6 +7,5 @@
     "DescriptorOutputDir": "../../build/assembly/schema",
     "DevAuthTokenDir": "Resources",
     "DevAuthTokenLifetimeDays": 30,
-    "SaveDevAuthTokenToFile": false,
-    "SimulatorNameId": 15
+    "SaveDevAuthTokenToFile": false
 }
