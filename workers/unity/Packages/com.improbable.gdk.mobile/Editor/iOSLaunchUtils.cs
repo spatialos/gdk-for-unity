@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Mobile
             var availableSimulators = new Dictionary<string, string>();
 
             // Check if we have a physical device connected
-            RedirectedProcess.Command("instruments")
+            var exitCode = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
                 {
@@ -44,13 +44,18 @@ namespace Improbable.Gdk.Mobile
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
+            if (exitCode != 0)
+            {
+                Debug.LogError("Failed to find iOS Simulators. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+            }
+
             return availableSimulators;
         }
 
         public static Dictionary<string, string> RetrieveAvailableiOSDevices()
         {
             var availableDevices = new Dictionary<string, string>();
-            RedirectedProcess.Command("instruments")
+            var exitCode = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
                 {
@@ -63,6 +68,11 @@ namespace Improbable.Gdk.Mobile
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
+            if (exitCode != 0)
+            {
+                Debug.LogError("Failed to find connected iOS devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+            }
+            
             return availableDevices;
         }
         
