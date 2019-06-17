@@ -23,10 +23,10 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         // Decompress from uint32 to Unity Quaternion
-        public static UnityEngine.Quaternion ToUnityQuaternion(this CompressedQuaternion quaternion)
+        public static unsafe UnityEngine.Quaternion ToUnityQuaternion(CompressedQuaternion quaternion)
         {
             var compressedValue = quaternion.Data;
-            var q = new float[4];
+            var q = stackalloc float[4];
 
             const uint mask = (1u << 9) - 1u;
 
@@ -57,11 +57,11 @@ namespace Improbable.Gdk.TransformSynchronization
         private const float SqrtHalf = 0.70710678118f;
 
         // Compress from Unity Quaternion to uint32
-        public static CompressedQuaternion ToCompressedQuaternion(this UnityEngine.Quaternion quaternion)
+        public static unsafe CompressedQuaternion ToCompressedQuaternion(UnityEngine.Quaternion quaternion)
         {
             quaternion = quaternion.normalized;
 
-            var q = new float[4] { quaternion.x, quaternion.y, quaternion.z, quaternion.w };
+            var q = stackalloc float[4] { quaternion.x, quaternion.y, quaternion.z, quaternion.w };
 
             uint largestIndex = 0;
             var largestValue = Mathf.Abs(q[largestIndex]);
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.TransformSynchronization
             return new CompressedQuaternion(compressedQuaternion);
         }
 
-        public static UnityEngine.Vector3 ToUnityVector3(this FixedPointVector3 fixedPointVector3)
+        public static UnityEngine.Vector3 ToUnityVector3(FixedPointVector3 fixedPointVector3)
         {
             return new Vector3
             {
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        public static FixedPointVector3 ToFixedPointVector3(this Vector3 vector3)
+        public static FixedPointVector3 ToFixedPointVector3(Vector3 vector3)
         {
             return new FixedPointVector3
             {
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        public static FixedPointVector3 ToFixedPointVector3(this Coordinates coordinates)
+        public static FixedPointVector3 ToFixedPointVector3(Coordinates coordinates)
         {
             return new FixedPointVector3
             {
@@ -121,7 +121,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        public static Coordinates ToCoordinates(this Vector3 vector3)
+        public static Coordinates ToCoordinates(Vector3 vector3)
         {
             return new Coordinates
             {
@@ -131,7 +131,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        public static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
+        public static Coordinates ToCoordinates(FixedPointVector3 fixedPointVector3)
         {
             return new Coordinates
             {
@@ -141,7 +141,8 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        private const int FixedPointOne = 0x00010000;
+        // 2^-10 => 0.977mm precision
+        private const int FixedPointOne = (int) (1u << 10);
 
         private static int FloatToFixed(float a)
         {

@@ -43,9 +43,12 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             Entities.With(rigidbodyGroup).ForEach((ref TransformToSend transformToSend, Rigidbody rigidbody) =>
             {
-                transformToSend.Position = rigidbody.position;
-                transformToSend.Velocity = rigidbody.velocity;
-                transformToSend.Orientation = rigidbody.rotation;
+                transformToSend = new TransformToSend
+                {
+                    Position = rigidbody.position,
+                    Velocity = rigidbody.velocity,
+                    Orientation = rigidbody.rotation
+                };
             });
         }
 
@@ -53,9 +56,12 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, Transform transform) =>
             {
-                transformToSend.Position = transform.position;
-                transformToSend.Velocity = Vector3.zero;
-                transformToSend.Orientation = transform.rotation;
+                transformToSend = new TransformToSend
+                {
+                    Position = transform.position,
+                    Velocity = Vector3.zero,
+                    Orientation = transform.rotation
+                };
             });
         }
     }

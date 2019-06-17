@@ -86,12 +86,12 @@ namespace Playground.Editor.SnapshotGenerator
                     var location = new Vector3(x, 1, z);
                     var positionSnapshot = new Position.Snapshot
                     {
-                        Coords = location.ToCoordinates()
+                        Coords = TransformUtils.ToCoordinates(location)
                     };
                     var transformSnapshot = new TransformInternal.Snapshot
                     {
-                        Location = location.ToFixedPointVector3(),
-                        Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion(),
+                        Location = TransformUtils.ToFixedPointVector3(location),
+                        Rotation = TransformUtils.ToCompressedQuaternion(Quaternion.identity),
                         TicksPerSecond = 1f / Time.fixedDeltaTime
                     };
 
@@ -108,8 +108,8 @@ namespace Playground.Editor.SnapshotGenerator
 
             var transform = new TransformInternal.Snapshot
             {
-                Location = coords.ToFixedPointVector3(),
-                Rotation = new UnityEngine.Quaternion(0, 0, 0, 1).ToCompressedQuaternion(),
+                Location = TransformUtils.ToFixedPointVector3(coords),
+                Rotation = TransformUtils.ToCompressedQuaternion(Quaternion.identity),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
 

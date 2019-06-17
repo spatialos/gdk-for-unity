@@ -25,9 +25,9 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             var transform = new TransformInternal.Snapshot
             {
-                Location = location.ToFixedPointVector3(),
-                Rotation = rotation.ToCompressedQuaternion(),
-                Velocity = velocity.ToFixedPointVector3(),
+                Location = TransformUtils.ToFixedPointVector3(location),
+                Rotation = TransformUtils.ToCompressedQuaternion(rotation),
+                Velocity = TransformUtils.ToFixedPointVector3(velocity),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
 

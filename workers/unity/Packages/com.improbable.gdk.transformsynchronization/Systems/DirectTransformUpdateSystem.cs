@@ -44,9 +44,12 @@ namespace Improbable.Gdk.TransformSynchronization
                         return;
                     }
 
-                    transformToSet.Position = transformInternal.Location.ToUnityVector3() - worker.Origin;
-                    transformToSet.Velocity = transformInternal.Velocity.ToUnityVector3();
-                    transformToSet.Orientation = transformInternal.Rotation.ToUnityQuaternion();
+                    transformToSet = new TransformToSet
+                    {
+                        Position = TransformUtils.ToUnityVector3(transformInternal.Location) - worker.Origin,
+                        Velocity = TransformUtils.ToUnityVector3(transformInternal.Velocity),
+                        Orientation = TransformUtils.ToUnityQuaternion(transformInternal.Rotation)
+                    };
                 });
         }
     }
