@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Mobile
                         var availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
                         if (availableSimulators.TryGetValue(simulatorNames[simulatorNameIndex], out var simulatorUID))
                         {
-                            iOSLaunchUtils.Launch(true, simulatorUID, launchConfig.RuntimeIp, true);
+                            iOSLaunchUtils.Launch(launchConfig.shouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
                         }
                         else
                         {
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.Mobile
                         var availableDevices = iOSLaunchUtils.RetrieveAvailableiOSDevices();
                         if (availableDevices.TryGetValue(deviceNames[deviceNameIndex], out var deviceUID))
                         {
-                            iOSLaunchUtils.Launch(true, deviceUID, launchConfig.RuntimeIp, false);
+                            iOSLaunchUtils.Launch(launchConfig.shouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
                         }
                         else
                         {
