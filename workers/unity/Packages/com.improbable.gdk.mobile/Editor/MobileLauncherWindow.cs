@@ -15,6 +15,9 @@ namespace Improbable.Gdk.Mobile
         private const string RuntimeIpLabel = "Local runtime IP";
         private const string ConnectLocallyLabel = "Should connect locally?";
 
+        private static readonly Color DarkGrey = new Color(0.4f, 0.4f, 0.4f, 1);
+        private static readonly Color LightGrey = new Color(0.7f, 0.7f, 0.7f, 1);
+
         private MobileLaunchConfig launchConfig;
 
         private string[] simulatorNames;
@@ -49,7 +52,7 @@ namespace Improbable.Gdk.Mobile
                 launchConfig.shouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.shouldConnectLocally);
             }
             
-            DrawHorizontalLine(10, new Color(0.7f, 0.7f, 0.7f, 1));
+            DrawHorizontalLine(10, LightGrey);
             GUILayout.Label(AndroidSectionLabel, EditorStyles.boldLabel);
 
             if (GUILayout.Button("Launch Android app"))
@@ -59,7 +62,7 @@ namespace Improbable.Gdk.Mobile
 
 #if UNITY_EDITOR_OSX
 
-            DrawHorizontalLine(10, new Color(0.7f, 0.7f, 0.7f, 1));
+            DrawHorizontalLine(10, LightGrey);
 
             GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
 
@@ -72,7 +75,7 @@ namespace Improbable.Gdk.Mobile
                     iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
                 }
 
-                DrawHorizontalLine(8, new Color(0.4f, 0.4f, 0.4f, 1));
+                DrawHorizontalLine(8, DarkGrey);
 
                 using (new GUILayout.HorizontalScope())
                 {
@@ -96,7 +99,7 @@ namespace Improbable.Gdk.Mobile
 
                 using (new EditorGUI.DisabledScope(simulatorNames.Length == 0))
                 {
-                    if (GUILayout.Button("Launch iOS app on Simulator"))
+                    if (GUILayout.Button("Launch iOS app in Simulator"))
                     {
                         var availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
                         if (availableSimulators.TryGetValue(simulatorNames[simulatorNameIndex], out var simulatorUID))
@@ -112,7 +115,7 @@ namespace Improbable.Gdk.Mobile
                     }
                 }
                 
-                DrawHorizontalLine(8, new Color(0.4f, 0.4f, 0.4f, 1));
+                DrawHorizontalLine(8, DarkGrey);
 
                 using (new GUILayout.HorizontalScope())
                 {
