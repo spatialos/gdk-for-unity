@@ -10,7 +10,7 @@ namespace Playground
         [Require] private CollisionsWriter collisionWriter;
 #pragma warning restore 649
 
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             collisionWriter?.SendPlayerCollidedEvent(new Empty());
         }
