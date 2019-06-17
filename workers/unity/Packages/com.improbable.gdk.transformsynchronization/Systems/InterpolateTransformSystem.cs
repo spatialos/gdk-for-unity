@@ -115,7 +115,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
                         for (uint k = 0; k < ticksToFill - 1; ++k)
                         {
-                            transformBuffer.Add(InterpolateValues(transformToInterpolateFrom, transformToInterpolateTo,
+                            transformBuffer.Add(InterpolateValues(
+                                transformToInterpolateFrom,
+                                transformToInterpolateTo,
                                 k + 1));
                         }
 

@@ -73,7 +73,7 @@ namespace Improbable.Gdk.TransformSynchronization
                         return;
                     }
 
-                    transform.PhysicsTick = transform.PhysicsTick + ticksSinceLastTransformUpdate.NumberOfTicks;
+                    transform.PhysicsTick += ticksSinceLastTransformUpdate.NumberOfTicks;
                     transform.TicksPerSecond = tickRate.PhysicsTicksPerRealSecond;
 
                     lastTransformSent.TimeSinceLastUpdate = 0.0f;

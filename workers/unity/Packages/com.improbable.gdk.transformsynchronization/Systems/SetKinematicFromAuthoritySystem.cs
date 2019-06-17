@@ -1,5 +1,4 @@
 ﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;

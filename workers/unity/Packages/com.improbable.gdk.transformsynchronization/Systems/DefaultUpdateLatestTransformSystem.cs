@@ -1,5 +1,4 @@
 ﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 using UnityEngine;
 
@@ -44,25 +43,19 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             Entities.With(rigidbodyGroup).ForEach((ref TransformToSend transformToSend, Rigidbody rigidbody) =>
             {
-                transformToSend = new TransformToSend
-                {
-                    Position = rigidbody.position,
-                    Velocity = rigidbody.velocity,
-                    Orientation = rigidbody.rotation
-                };
+                transformToSend.Position = rigidbody.position;
+                transformToSend.Velocity = rigidbody.velocity;
+                transformToSend.Orientation = rigidbody.rotation;
             });
         }
 
         private void UpdateTransformData()
         {
-            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, UnityEngine.Transform transform) =>
+            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, Transform transform) =>
             {
-                transformToSend = new TransformToSend
-                {
-                    Position = transform.position,
-                    Velocity = Vector3.zero,
-                    Orientation = transform.rotation
-                };
+                transformToSend.Position = transform.position;
+                transformToSend.Velocity = Vector3.zero;
+                transformToSend.Orientation = transform.rotation;
             });
         }
     }

@@ -1,7 +1,5 @@
 package improbable.gdk.transform_synchronization;
 
-// These are both types to be removed later when we decide on a compression scheme.
-
 type FixedPointVector3 {
     sint32 x = 1;
     sint32 y = 2;

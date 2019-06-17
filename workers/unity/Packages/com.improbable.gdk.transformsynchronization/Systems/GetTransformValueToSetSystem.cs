@@ -37,15 +37,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var bufferHead = buffer[0];
 
-                    var currentTransform = new TransformToSet
-                    {
-                        Position = bufferHead.Position + worker.Origin,
-                        Orientation = bufferHead.Orientation,
-                        Velocity = bufferHead.Velocity,
-                        ApproximateRemoteTick = bufferHead.PhysicsTick
-                    };
+                    transformToSet.Position = bufferHead.Position + worker.Origin;
+                    transformToSet.Orientation = bufferHead.Orientation;
+                    transformToSet.Velocity = bufferHead.Velocity;
+                    transformToSet.ApproximateRemoteTick = bufferHead.PhysicsTick;
 
-                    transformToSet = currentTransform;
                     buffer.RemoveAt(0);
                 });
         }
