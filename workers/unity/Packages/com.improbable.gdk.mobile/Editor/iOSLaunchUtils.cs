@@ -176,7 +176,7 @@ namespace Improbable.Gdk.Mobile
             var command = "osascript";
             var commandArgs = $@"-e 'tell application ""Terminal""
                                      activate
-                                     do script ""xcodebuild test-without-building -destination id={deviceId} -xctestrun {filePath}""
+                                     do script ""xcodebuild test-without-building -destination 'id={deviceId}' -xctestrun {filePath}""
                                      end tell'";
 
             var processInfo = new ProcessStartInfo(command, commandArgs)
@@ -191,7 +191,7 @@ namespace Improbable.Gdk.Mobile
             return process != null;
         }
 
-        private static bool TryGetXCTestRunPath(bool forSimulator, out string xctestrunPath)
+        private static bool TryGetXCTestRunPath(bool useSimulator, out string xctestrunPath)
         {
             if (!Directory.Exists(DerivedDataPath))
             {
@@ -200,7 +200,7 @@ namespace Improbable.Gdk.Mobile
             }
             
             var files = Directory.GetFiles(DerivedDataPath, "*.xctestrun", SearchOption.AllDirectories);
-            xctestrunPath = forSimulator 
+            xctestrunPath = useSimulator
                 ? files.FirstOrDefault(file => file.Contains("iphonesimulator")) 
                 : files.FirstOrDefault(file => file.Contains("iphoneos"));
 

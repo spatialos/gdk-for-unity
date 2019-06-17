@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Net;
 using UnityEditor;
 
 namespace Improbable.Gdk.Mobile

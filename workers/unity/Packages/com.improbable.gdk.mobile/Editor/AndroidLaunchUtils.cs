@@ -8,8 +8,6 @@ namespace Improbable.Gdk.Mobile
 {
     public static class AndroidLaunchUtils
     {
-        private const string rootApkPath = "build";
-
         public static void Launch(bool shouldConnectLocally, string runtimeIp)
         {
             try
