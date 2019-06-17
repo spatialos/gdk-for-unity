@@ -8,7 +8,7 @@ Once the deployment is running, you can connect clients to it in order to play t
 
 You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
 
-Before you deploy your game, you need to build its workers; see documentation on [building workers]({{urlRoot}}/modules/build-system/editor-menu).
+Before you deploy your game, you need to build its workers; see the documentation on [building workers]({{urlRoot}}/modules/build-system/editor-menu).
 
 ## Configuring your deployment
 
@@ -18,7 +18,7 @@ To ensure the SpatialOS Runtime starts your [server-workers](https://docs.improb
 
 ## Local deployment
 
-To start a local deployment, in your Unity Editor, from the menu select **SpatialOS** > **Local Launch**.
+To start a local deployment, in your Unity Editor, select **SpatialOS** > **Local Launch**.
 
 This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used.
 
@@ -28,9 +28,9 @@ This starts a local version of the SpatialOS Runtime on your development machine
 
 The GDK provides tooling for starting client workers from the Unity Editor. 
 
-First, ensure that have built the worker by selecting **SpatialOS** > **Build for local** > **UnityClient**. This may take a few minutes depending on the size of your Unity project.
+First, ensure that you have built the worker by selecting **SpatialOS** > **Build for local** > **UnityClient**. This may take a few minutes depending on the size of your Unity project.
 
-Then, in your Unity Editor, from the menu select **SpatialOS** > **Launch standalone client**.
+Then, in your Unity Editor,  select **SpatialOS** > **Launch standalone client**.
 
 ## Cloud deployment
 
