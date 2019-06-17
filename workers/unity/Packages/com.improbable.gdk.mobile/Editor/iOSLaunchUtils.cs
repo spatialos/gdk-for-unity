@@ -70,7 +70,6 @@ namespace Improbable.Gdk.Mobile
             {
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Building your XCode project", 0f);
 
-                Debug.Log(XCodeProjectPath);
                 if (!Directory.Exists(XCodeProjectPath))
                 {
                     Debug.LogError("Was not able to find an XCode project. Did you build your iOS worker?");
@@ -159,16 +158,14 @@ namespace Improbable.Gdk.Mobile
         
         private static bool TryBuildXCodeProject(string developmentTeamId)
         {
-            var process = RedirectedProcess.Command("xcodebuild")
+            return RedirectedProcess.Command("xcodebuild")
                 .WithArgs("build-for-testing",
                     "-project", Path.Combine(XCodeProjectPath, XCodeProjectFile),
                     "-derivedDataPath", DerivedDataPath,
                     "-scheme", "Unity-iPhone",
                     $"DEVELOPMENT_TEAM={developmentTeamId}",
                     "-allowProvisioningUpdates")
-                .Run();
-            
-            return process == 0;
+                .Run() == 0;
         }
 
         private static bool TryLaunchApplication(string deviceId, string filePath)

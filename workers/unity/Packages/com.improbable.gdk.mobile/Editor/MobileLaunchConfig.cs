@@ -7,19 +7,20 @@ namespace Improbable.Gdk.Mobile
     public class MobileLaunchConfig
     {
         public bool shouldConnectLocally;
-        public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
-        public string DevelopmentTeamId => EditorPrefs.GetString(DevelopmentTeamIdEditorPrefKey);
-        
-        internal Dictionary<string, string> availableSimulators = new Dictionary<string, string>();
-        internal Dictionary<string, string> availableDevices = new Dictionary<string, string>();
 
-        internal string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
-        internal string RuntimeIpEditorPrefKey = "RuntimeIp";
-
-        public MobileLaunchConfig()
+        public string RuntimeIp
         {
-            availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
-            availableDevices = iOSLaunchUtils.RetrieveAvailableiOSDevices();
+            get => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
+            set => EditorPrefs.SetString(RuntimeIpEditorPrefKey, value);
         }
+
+        public string DevelopmentTeamId
+        {
+            get => EditorPrefs.GetString(DevelopmentTeamIdEditorPrefKey);
+            set => EditorPrefs.SetString(DevelopmentTeamIdEditorPrefKey, value);
+        }
+        
+        private string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
+        private string RuntimeIpEditorPrefKey = "RuntimeIp";
     }
 }
