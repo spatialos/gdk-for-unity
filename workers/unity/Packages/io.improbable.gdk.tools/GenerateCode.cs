@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Tools
         private const string SchemaPackageDir = ".schema";
 
         private static readonly string SchemaCompilerPath = Path.Combine(
-            Common.GetPackagePath("com.improbable.worker.sdk"),
+            Common.GetPackagePath("io.improbable.worker.sdk"),
             ".schema_compiler/schema_compiler");
 
         private static readonly string StartupCodegenMarkerFile =
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Tools
         ///     CS error code
         ///     Message
         /// </summary>
-        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\com.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
+        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\io.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
         private static readonly Regex dotnetRegex = new Regex(
             @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);

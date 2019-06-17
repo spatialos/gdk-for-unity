@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Tools
 
         internal static string GetThisPackagePath()
         {
-            return GetPackagePath("com.improbable.gdk.tools");
+            return GetPackagePath("io.improbable.gdk.tools");
         }
 
         /// <summary>

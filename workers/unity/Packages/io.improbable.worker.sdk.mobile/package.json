@@ -1,11 +1,11 @@
 {
-    "name": "com.improbable.worker.sdk.mobile",
+    "name": "io.improbable.worker.sdk.mobile",
     "displayName": "SpatialOS Worker Mobile SDK",
     "version": "13.7.1",
     "unity": "2018.3",
     "author": "Improbable Worlds Ltd",
     "description": "SpatialOS Worker Mobile SDK.",
     "dependencies": {
-  		"com.improbable.worker.sdk": "13.7.1"
+  		"io.improbable.worker.sdk": "13.7.1"
     }
 }

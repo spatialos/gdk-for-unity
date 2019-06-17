@@ -12,7 +12,7 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
     internal static class Deployment
     {
         private static string DeploymentLauncherProjectPath = Path.GetFullPath(Path.Combine(
-            Tools.Common.GetPackagePath("com.improbable.gdk.deploymentlauncher"),
+            Tools.Common.GetPackagePath("io.improbable.gdk.deploymentlauncher"),
             ".DeploymentLauncher/DeploymentLauncher.csproj"));
 
         public static WrappedTask<Result<RedirectedProcessResult, Ipc.Error>, (string, string, BaseDeploymentConfig)> LaunchAsync(string projectName, string assemblyName, BaseDeploymentConfig config)
