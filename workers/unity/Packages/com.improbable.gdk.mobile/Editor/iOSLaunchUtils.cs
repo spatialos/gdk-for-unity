@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Mobile
                 if (!TryBuildXCodeProject(developmentTeamId))
                 {
                     Debug.LogError(
-                        $"Failed to build your XCode project. Make sure you have xcodebuild installed and check the logs.");
+                        $"Failed to build your XCode project. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
                 }
             }
             finally
@@ -103,7 +103,8 @@ namespace Improbable.Gdk.Mobile
                 if (!TryGetXCTestRunPath(useSimulator, out var xcTestRunPath))
                 {
                     Debug.LogError(
-                        "Unable to find a xctestrun file for the correct architecture. Did you build your game using the correct Target SDK?");
+                        "Unable to find a xctestrun file for the correct architecture. Did you build your game using the correct Target SDK? " +
+                        "Go to Project Settings > Player > iOS > Other Settings > Target SDK to select the correct one before building your iOS worker.");
                     return;
                 }
 

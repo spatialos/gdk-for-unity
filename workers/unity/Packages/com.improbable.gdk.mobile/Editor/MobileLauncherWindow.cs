@@ -67,14 +67,11 @@ namespace Improbable.Gdk.Mobile
             {
                 launchConfig.DevelopmentTeamId = EditorGUILayout.TextField(DevelopmentTeamIdLabel, launchConfig.DevelopmentTeamId);
                 
-                using (new EditorGUI.DisabledScope(false)) // todo check xcode project
+                if (GUILayout.Button("Build XCode project"))
                 {
-                    if (GUILayout.Button("Build XCode project"))
-                    {
-                        iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
-                    }
+                    iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
                 }
-                
+
                 DrawHorizontalLine(8, new Color(0.4f, 0.4f, 0.4f, 1));
 
                 using (new GUILayout.HorizontalScope())
