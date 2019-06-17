@@ -47,8 +47,6 @@ workers/unity/Assets/Plugins/Improbable.meta
 
 _ReSharper.Caches
 
-workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Generated
-
 # Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains.meta
