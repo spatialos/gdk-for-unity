@@ -35,10 +35,10 @@ cleanUnity "$(pwd)/test-project"
 
 echo "Code Generator Testing"
 
-dotnet test --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
+dotnet test --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
 CODE_GEN_LIB_TEST_RESULT=$?
 
-dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
+dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
 
 echo "Editmode Testing"
