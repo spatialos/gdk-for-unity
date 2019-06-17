@@ -6828,7 +6828,7 @@
         "column": 5
       },
       "improbable.tests.DependencyTestChild.child": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytestchild\\dependency_test_child.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytestchild\\dependency_test_child.schema",
         "line": 10,
         "column": 5
       },
@@ -7418,7 +7418,7 @@
         "column": 3
       },
       "improbable.tests.DependencyTest.root": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytest\\dependency_test.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytest\\dependency_test.schema",
         "line": 10,
         "column": 5
       },
@@ -7483,7 +7483,7 @@
         "column": 1
       },
       "improbable.common.Empty": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.core\\common.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.core\\common.schema",
         "line": 8,
         "column": 1
       },
@@ -7563,7 +7563,7 @@
         "column": 1
       },
       "improbable.tests.DependencyTestGrandchild.grandchild": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytestgrandchild\\dependency_test_grandchild.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytestgrandchild\\dependency_test_grandchild.schema",
         "line": 10,
         "column": 5
       },
@@ -7798,7 +7798,7 @@
         "column": 3
       },
       "improbable.tests.DependencyTest": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytest\\dependency_test.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytest\\dependency_test.schema",
         "line": 8,
         "column": 1
       },
@@ -7878,7 +7878,7 @@
         "column": 5
       },
       "improbable.tests.DependencyTestGrandchild": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytestgrandchild\\dependency_test_grandchild.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytestgrandchild\\dependency_test_grandchild.schema",
         "line": 8,
         "column": 1
       },
@@ -7893,7 +7893,7 @@
         "column": 5
       },
       "improbable.tests.DependencyTestChild": {
-        "filePath": "Assets/.Schema\\from_gdk_packages\\com.improbable.gdk.dependencytestchild\\dependency_test_child.schema",
+        "filePath": "Assets/.Schema\\from_gdk_packages\\io.improbable.gdk.dependencytestchild\\dependency_test_child.schema",
         "line": 8,
         "column": 1
       },

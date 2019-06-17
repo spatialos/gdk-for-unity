@@ -1,11 +1,15 @@
 {
-  "name": "com.improbable.gdk.mobile",
+  "name": "io.improbable.gdk.mobile",
   "displayName": "SpatialOS GDK Mobile Support",
   "version": "0.0.8",
   "unity": "2019.1",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Mobile Support Module. Made by Improbable.",
   "dependencies": {
+<<<<<<< HEAD
     "com.improbable.gdk.core": "0.2.4"
+=======
+    "io.improbable.gdk.core": "0.2.3"
+>>>>>>> rename package dependencies to new naming style
   }
 }
