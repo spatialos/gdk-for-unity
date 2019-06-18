@@ -266,6 +266,8 @@ Now that you have changed the snapshot generation script in `SnapshotMenu.cs`, w
 
 You can validate that the snapshot was updated by launching a local deployment (`Ctrl + L`/`Cmd + L` in your Unity Editor) and looking in the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector).
 
+> **Note:** If you have a local deployment running, make sure to close it before launching a new one!
+
 ![World view in the Inspector showing the `HealthPickup` entity]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-inspector-1.png)
 
 If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server-workers. We'll do this in the next section.
@@ -288,7 +290,7 @@ Yes, there is a `spatial` command that will convert snapshots to a human-readabl
 While they are human-readable and you can manually edit the values of the properties within, be careful to not make mistakes that will inhibit the conversion back to binary form!
 <%(/Expandable)%>
 
-**Step 6.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
+**Step 6.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or close the window to stop the process.
 
 ## Plan your entity representations
 
@@ -334,7 +336,7 @@ The client-side logic we want to implement for this feature is:
 
 **Step 1.** In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 
-**Step 2.** Select this prefab and press **Ctrl+D** to duplicate it.
+**Step 2.** Select this prefab and press `Ctrl+D`/`Cmd + D` to duplicate it.
 
 **Step 3.** Move this duplicated prefab to `Assets/Fps/Resources/Prefabs/UnityClient`.
 
@@ -442,7 +444,7 @@ You'll know that your previous changes have worked if you can see a `HealthPicku
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
-**Step 4.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** to stop the process.
+**Step 4.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or close the window to stop the process.
 
 ## Implement server-side entity representation
 
@@ -455,7 +457,7 @@ The client-side logic we want to implement for this feature is:
 
 **Step 1.** In your Unity Editor, locate `Assets/Fps/Prefabs/HealthPickup.prefab`.
 
-**Step 2.** Select this prefab and press **Ctrl+D** to duplicate it.
+**Step 2.** Select this prefab and press `Ctrl+D`/`Cmd + D` to duplicate it.
 
 **Step 3.** Move this duplicated prefab to `Assets/Fps/Resources/Prefabs/UnityGameLogic`.
 
@@ -526,7 +528,7 @@ namespace Fps
         {
             healthPickupWriter?.SendUpdate(new HealthPickup.Update
                 {
-                    IsActive = new Option<BlittableBool>(isActive)
+                    IsActive = new Option<bool>(isActive)
                 });
         }
 
@@ -636,7 +638,7 @@ If you are running your workers from within your Unity Editor a build is not nec
 
 From the Unity Editor menu, select **SpatialOS** > **Local launch**. This opens a terminal which notifies you when the deployment is up and running.
 
-Alternatively you can enter `Ctrl + L` in your Unity Editor.
+Alternatively you can enter `Ctrl + L`/`Cmd + L` in your Unity Editor.
 
 **Step 4.** Launch a server-worker and client-worker in-editor.
 
