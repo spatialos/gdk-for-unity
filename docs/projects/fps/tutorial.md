@@ -290,7 +290,7 @@ Yes, there is a `spatial` command that will convert snapshots to a human-readabl
 While they are human-readable and you can manually edit the values of the properties within, be careful to not make mistakes that will inhibit the conversion back to binary form!
 <%(/Expandable)%>
 
-**Step 6.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or close the window to stop the process.
+**Step 6.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or stop the process.
 
 ## Plan your entity representations
 
@@ -444,7 +444,7 @@ You'll know that your previous changes have worked if you can see a `HealthPicku
 
 ![In-game view of the health pickup prefab]({{assetRoot}}assets/health-pickups-tutorial/health-pickup-visible-1.png)
 
-**Step 4.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or close the window to stop the process.
+**Step 4.** Before you move on, in the terminal window that's running the SpatialOS process, enter **Ctrl+C** or stop the process.
 
 ## Implement server-side entity representation
 
