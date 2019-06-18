@@ -1,4 +1,5 @@
 using System.Linq;
+using Improbable.Gdk.Core.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,7 +54,7 @@ namespace Improbable.Gdk.Mobile
                 launchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.ShouldConnectLocally);
             }
             
-            DrawHorizontalLine(10, LightGrey);
+            CommonUIElements.DrawHorizontalLine(10, LightGrey);
             GUILayout.Label(AndroidSectionLabel, EditorStyles.boldLabel);
 
             if (GUILayout.Button("Launch Android app"))
@@ -63,7 +64,7 @@ namespace Improbable.Gdk.Mobile
 
 #if UNITY_EDITOR_OSX
 
-            DrawHorizontalLine(10, LightGrey);
+            CommonUIElements.DrawHorizontalLine(10, LightGrey);
 
             GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
 
@@ -76,7 +77,7 @@ namespace Improbable.Gdk.Mobile
                     iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
                 }
 
-                DrawHorizontalLine(8, DarkGrey);
+                CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
                 using (new GUILayout.HorizontalScope())
                 {
@@ -116,7 +117,7 @@ namespace Improbable.Gdk.Mobile
                     }
                 }
                 
-                DrawHorizontalLine(8, DarkGrey);
+                CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
                 using (new GUILayout.HorizontalScope())
                 {
@@ -156,18 +157,6 @@ namespace Improbable.Gdk.Mobile
                 }
             }
 #endif
-        }
-        
-        private void DrawHorizontalLine(int height, Color color)
-        {
-            var rect = EditorGUILayout.GetControlRect(false, height);
-            rect.height = height;
-            using (new Handles.DrawingScope(color))
-            {
-                Handles.DrawLine(new Vector2(rect.x, rect.yMax), new Vector2(rect.xMax, rect.yMax));
-            }
-
-            GUILayout.Space(rect.height);
         }
     }
 }

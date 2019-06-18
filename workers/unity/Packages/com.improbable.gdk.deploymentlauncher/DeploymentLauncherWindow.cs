@@ -231,7 +231,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     EditorGUILayout.LabelField("Project Name", projectName);
                 }
 
-                DrawHorizontalLine(5);
+                CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
 
                 launcherConfig.AssemblyConfig = DrawAssemblyConfig(launcherConfig.AssemblyConfig);
 
@@ -299,7 +299,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
                 }
 
-                DrawHorizontalLine(5);
+                CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
                 GUILayout.Label("Live Deployments", EditorStyles.boldLabel);
                 DrawDeploymentList();
 
@@ -442,7 +442,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 }
             }
 
-            DrawHorizontalLine(3);
+            CommonUIElements.DrawHorizontalLine(3, horizontalLineColor);
 
             return copy;
         }
@@ -548,7 +548,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 }
             }
 
-            DrawHorizontalLine(5);
+            CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
 
             return (false, copy);
         }
@@ -752,7 +752,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                             }
                         }
 
-                        DrawHorizontalLine(3);
+                        CommonUIElements.DrawHorizontalLine(3, horizontalLineColor);
                     }
                 }
 
@@ -802,17 +802,6 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                 stateManager.SetStateObject(config.SimulatedPlayerDeploymentConfigs[i].Name.GetHashCode(), previousFoldoutState);
             }
-        }
-
-        private void DrawHorizontalLine(int height)
-        {
-            var rect = EditorGUILayout.GetControlRect(false, height, EditorStyles.foldout);
-            using (new Handles.DrawingScope(horizontalLineColor))
-            {
-                Handles.DrawLine(new Vector2(rect.x, rect.yMax), new Vector2(rect.xMax, rect.yMax));
-            }
-
-            GUILayout.Space(rect.height);
         }
 
         private string GetProjectName()
