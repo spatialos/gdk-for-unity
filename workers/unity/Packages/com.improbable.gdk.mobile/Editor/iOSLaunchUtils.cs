@@ -120,12 +120,8 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, runtimeIp, out var arguments))
-                {
-                    Debug.LogError("Failed to generate arguments");
-                    return;
-                }
-                
+                var arguments = MobileLaunchUtils.PrepareArguments(shouldConnectLocally, runtimeIp);
+
                 if (!TryModifyEnvironmentVariables(xcTestRunPath, arguments))
                 {
                     Debug.LogError($"Was unable to read and modify {xcTestRunPath}.");

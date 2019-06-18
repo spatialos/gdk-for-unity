@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Mobile
     {
         private const string argStructure = "+{0} {1} ";
 
-        public static bool TryPrepareArguments(bool shouldConnectLocally, string runtimeIp, out string builtArguments)
+        public static string PrepareArguments(bool shouldConnectLocally, string runtimeIp)
         {
             var arguments = new StringBuilder();
             if (shouldConnectLocally)
@@ -29,16 +29,13 @@ namespace Improbable.Gdk.Mobile
                 // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
                 if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.TryGenerate())
                 {
-                    Debug.LogError("Failed to retrieve a Dev Auth Token to launch a mobile client.");
-                    builtArguments = string.Empty;
-                    return false;
+                    throw new PlayerPrefsException("Failed to retrieve a Dev Auth Token to launch a mobile client.");
                 }
 
                 arguments.AppendFormat(argStructure, RuntimeConfigNames.DevAuthTokenKey, DevAuthTokenUtils.DevAuthToken);
             }
 
-            builtArguments = arguments.ToString();
-            return true;
+            return arguments.ToString();
         }
     }
 }

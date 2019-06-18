@@ -6,6 +6,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Mobile
 {
+    // TODO UTY-2095: Improve Android workflow and refactor the code
     public static class AndroidLaunchUtils
     {
         public static void Launch(bool shouldConnectLocally, string runtimeIp)
@@ -54,11 +55,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
-                if (!MobileLaunchUtils.TryPrepareArguments(shouldConnectLocally, runtimeIp, out var arguments))
-                {
-                    Debug.LogError("Failed to generate arguments");
-                    return;
-                }
+                var arguments = MobileLaunchUtils.PrepareArguments(shouldConnectLocally, runtimeIp);
 
                 // Get chosen android package id and launch
                 var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
