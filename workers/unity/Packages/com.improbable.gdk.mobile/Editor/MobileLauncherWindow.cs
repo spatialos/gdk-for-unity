@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -52,7 +50,7 @@ namespace Improbable.Gdk.Mobile
             using (new EditorGUI.IndentLevelScope())
             {
                 launchConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, launchConfig.RuntimeIp);
-                launchConfig.shouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.shouldConnectLocally);
+                launchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.ShouldConnectLocally);
             }
             
             DrawHorizontalLine(10, LightGrey);
@@ -60,7 +58,7 @@ namespace Improbable.Gdk.Mobile
 
             if (GUILayout.Button("Launch Android app"))
             {
-                AndroidLaunchUtils.Launch(launchConfig.shouldConnectLocally, launchConfig.RuntimeIp);
+                AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, launchConfig.RuntimeIp);
             }
 
 #if UNITY_EDITOR_OSX
@@ -107,7 +105,7 @@ namespace Improbable.Gdk.Mobile
                         var availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
                         if (availableSimulators.TryGetValue(simulatorNames[simulatorNameIndex], out var simulatorUID))
                         {
-                            iOSLaunchUtils.Launch(launchConfig.shouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
+                            iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
                         }
                         else
                         {
@@ -146,7 +144,7 @@ namespace Improbable.Gdk.Mobile
                         var availableDevices = iOSLaunchUtils.RetrieveAvailableiOSDevices();
                         if (availableDevices.TryGetValue(deviceNames[deviceNameIndex], out var deviceUID))
                         {
-                            iOSLaunchUtils.Launch(launchConfig.shouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
+                            iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
                         }
                         else
                         {

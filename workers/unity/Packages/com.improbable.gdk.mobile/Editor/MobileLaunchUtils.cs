@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Mobile
                 // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
                 if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.TryGenerate())
                 {
-                    Debug.LogError("Failed to generate a Dev Auth Token to launch mobile client.");
+                    Debug.LogError("Failed to retrieve a Dev Auth Token to launch a mobile client.");
                     builtArguments = string.Empty;
                     return false;
                 }

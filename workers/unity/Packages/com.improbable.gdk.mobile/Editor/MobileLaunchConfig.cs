@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Mobile
         private const string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
         private const string RuntimeIpEditorPrefKey = "RuntimeIp";
 
-        public bool shouldConnectLocally;
+        public bool ShouldConnectLocally;
 
         public string RuntimeIp
         {

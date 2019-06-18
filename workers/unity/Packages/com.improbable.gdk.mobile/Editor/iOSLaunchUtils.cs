@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Mobile
                 .AddOutputProcessing(message =>
                 {
                     // get all simulators
-                    if (message.Contains("iPhone") | message.Contains("iPad"))
+                    if (message.Contains("iPhone") || message.Contains("iPad"))
                     {
                         if (simulatorUIDRegex.IsMatch(message))
                         {
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.Mobile
                 if (!TryGetXCTestRunPath(useSimulator, out var xcTestRunPath))
                 {
                     Debug.LogError(
-                        "Unable to find a xctestrun file for the correct architecture. Did you build your game using the correct Target SDK? " +
+                        "Unable to find a xctestrun file for the correct architecture. Did you build your client using the correct Target SDK? " +
                         "Go to Project Settings > Player > iOS > Other Settings > Target SDK to select the correct one before building your iOS worker.");
                     return;
                 }
@@ -242,46 +242,26 @@ namespace Improbable.Gdk.Mobile
             {
                 var doc = new XmlDocument();
                 doc.Load(filePath);
-                XmlNode spatialNode = null;
-                // Navigate to the <dict> node containing all the parameters to launch the game
+                // Navigate to the <dict> node containing all the parameters to launch the client
                 var rootNode = doc.DocumentElement.ChildNodes[0].ChildNodes[1];
-                for (var i = 0; i < rootNode.ChildNodes.Count; i++)
+                var envKeyNode = rootNode.ChildNodes.Cast<XmlNode>().FirstOrDefault(node => node.InnerText == "EnvironmentVariables");
+                var envValueNode = envKeyNode.NextSibling;
+                var spatialKeyNode = envValueNode.ChildNodes.Cast<XmlNode>()
+                    .FirstOrDefault(node => node.InnerText == LaunchArguments.iOSEnvironmentKey);
+
+                if (spatialKeyNode != null)
                 {
-                    var node = rootNode.ChildNodes[i];
-                    if (node.InnerText != "EnvironmentVariables")
-                    {
-                        continue;
-                    }
-
-                    // add new parameters to the environment variables <dict> node
-                    var envValueNode = rootNode.ChildNodes[i + 1];
-                    for (var j = 0; j < envValueNode.ChildNodes.Count; j++)
-                    {
-                        var envNode = envValueNode.ChildNodes[j];
-                        if (envNode.InnerText != LaunchArguments.iOSEnvironmentKey)
-                        {
-                            continue;
-                        }
-
-                        spatialNode = node.ChildNodes[j + 1];
-                        break;
-                    }
-
-                    if (spatialNode != null)
-                    {
-                        spatialNode.InnerText = arguments;
-                    }
-                    else
-                    {
-                        var spatialKeyNode = doc.CreateNode("element", "key", string.Empty);
-                        spatialKeyNode.InnerText = LaunchArguments.iOSEnvironmentKey;
-                        var spatialValueNode = doc.CreateNode("element", "string", string.Empty);
-                        spatialValueNode.InnerText = arguments;
-                        envValueNode.AppendChild(spatialKeyNode);
-                        envValueNode.AppendChild(spatialValueNode);
-                    }
-
-                    break;
+                    var spatialValueNode = spatialKeyNode.NextSibling;
+                    spatialValueNode.InnerText = arguments;
+                }
+                else
+                {
+                    spatialKeyNode = doc.CreateNode("element", "key", string.Empty);
+                    spatialKeyNode.InnerText = LaunchArguments.iOSEnvironmentKey;
+                    var spatialValueNode = doc.CreateNode("element", "string", string.Empty);
+                    spatialValueNode.InnerText = arguments;
+                    envValueNode.AppendChild(spatialKeyNode);
+                    envValueNode.AppendChild(spatialValueNode);
                 }
 
                 doc.Save(filePath);
