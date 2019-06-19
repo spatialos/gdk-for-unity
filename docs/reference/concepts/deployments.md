@@ -2,19 +2,33 @@
 
 # Deployments
 
-When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world. 
+When you want to try out your game, you need to run a deployment of the game. This means launching SpatialOS itself. SpatialOS sets up the game world and optionally starts up the server-workers needed to run the game world.
 
-Once the deployment is running, you can connect clients to it in order to play the game. 
+Once the deployment is running, you can connect clients to it in order to play your game.
 
 You can run a deployment on your development machine (a "local deployment") or in the cloud (a "cloud deployment").
 
-Before you deploy your game, you need to build its workers; see the documentation on [building workers]({{urlRoot}}/modules/build-system/editor-menu).
+Before you deploy your game, you need to build its workers. See the documentation on [building workers]({{urlRoot}}/modules/build-system/editor-menu).
 
 ## Configuring your deployment
 
-To ensure the SpatialOS Runtime starts your [server-workers](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing#server-workers) correctly, you need to ensure the launch configuration file has the worker set up correctly.
+Before you launch a deployment, you need to ensure that it is configured correctly. There are two parts to configuring a deployment: the launch configuration and the worker configurations.
 
- See the [Worker launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#worker-launch-configuration) in the SpatialOS documentation for guidance on how to define the worker launch configurations for both server-workers and client-workers.
+### Launch configuration
+
+The launch configuration file specifics the parameters of your game world as well as your load balancing configuration. The load balancing configuration determines the worker instances that the SpatialOS Runtime will start.
+
+For more information, see the [comprehensive launch configuration documentation](https://docs.improbable.io/reference/latest/shared/project-layout/launch-config#launch-configuration-file).
+
+> **Note:** If the SpatialOS Runtime fails to start a worker in a deployment that you were expecting, double check that your load balancing configuration is correct.
+
+### Worker configuration
+
+The worker configuration file specifics the parameters of a specific worker-type as well as describing how the SpatialOS Runtime should start them. 
+
+For more information, see the [comprehensive worker configuration documentation](https://docs.improbable.io/reference/latest/shared/project-layout/introduction#configuration-file).
+
+> **Note:** The `build` section of the worker configuration files are **not** used in the GDK for Unity.
 
 ## Local deployment
 
