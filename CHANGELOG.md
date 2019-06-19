@@ -6,6 +6,14 @@
 
 - The constructor for the `ForwardingDispatcher` now accepts a `UnityEngine.LogType` instead of `Improbable.Worker.CInterop.LogLevel` as its parameter. [#987](https://github.com/spatialos/gdk-for-unity/pull/987)
 
+### Added
+
+- Added a mobile launcher window containing all the settings and functionality to allow you to launch your apps for iOS and Android. To open it, in the Unity Editor, select **SpatialOS** > **Mobile launcher**.
+
+### Changed
+
+- Moved the configuration of the Local Runtime IP from the GDK tools configuration window to the mobile launcher window.
+
 ### Fixed
 
 - Fixed a bug where invalid characters in your PATH elements would throw exceptions and break code generation. [#986](https://github.com/spatialos/gdk-for-unity/pull/986)
