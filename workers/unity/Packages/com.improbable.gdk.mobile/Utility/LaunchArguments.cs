@@ -7,6 +7,8 @@ namespace Improbable.Gdk.Mobile
 {
     public static class LaunchArguments
     {
+        public const string iOSEnvironmentKey = "SPATIALOS_ARGUMENTS";
+
         public static Dictionary<string, string> GetArguments()
         {
             if (Application.isEditor)
@@ -30,6 +32,19 @@ namespace Improbable.Gdk.Mobile
                             return CommandLineUtility.ParseCommandLineArgs(arguments);
                         }
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+#elif UNITY_IOS
+            try
+            {
+                var argumentsEnvVar = System.Environment.GetEnvironmentVariable(iOSEnvironmentKey);
+                if (argumentsEnvVar != null)
+                {
+                    return CommandLineUtility.ParseCommandLineArgs(argumentsEnvVar.Split(' '));
                 }
             }
             catch (Exception e)

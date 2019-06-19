@@ -26,6 +26,12 @@ namespace Improbable.Gdk.Tools
             SpatialProjectRootDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", ".."));
 
         /// <summary>
+        ///     The path to the Unity project build directory that worker build artifacts are placed into.
+        /// </summary>
+        public static readonly string BuildScratchDirectory =
+            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "build", "worker"));
+
+        /// <summary>
         ///     The absolute path to the `spatial` binary, or an empty string if it doesn't exist.
         /// </summary>
         public static string SpatialBinary => DiscoverLocation("spatial");
@@ -39,6 +45,8 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string[] MacPaths = { "/usr/local/bin", "/usr/local/share" };
         private static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
+
+        public static readonly string RuntimeIpEditorPrefKey = "RuntimeIp";
 
         internal static string GetThisPackagePath()
         {

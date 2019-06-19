@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -17,9 +15,6 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
-
-        internal string RuntimeIpEditorPrefKey = "RuntimeIp";
-        public string RuntimeIp => EditorPrefs.GetString(RuntimeIpEditorPrefKey);
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
@@ -78,11 +73,6 @@ namespace Improbable.Gdk.Tools
                 {
                     errors.Add($"Schema path [{i}] contains one or more invalid characters.");
                 }
-            }
-
-            if (!string.IsNullOrEmpty(RuntimeIp) && !IPAddress.TryParse(RuntimeIp, out _))
-            {
-                errors.Add($"Runtime IP \"{RuntimeIp}\" is not a valid IP address.");
             }
 
             if (!SaveDevAuthTokenToFile)

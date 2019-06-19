@@ -231,9 +231,9 @@ namespace Improbable.Gdk.BuildSystem
                 }
             }
 
-            if (Directory.Exists(EditorPaths.BuildScratchDirectory))
+            if (Directory.Exists(Common.BuildScratchDirectory))
             {
-                Directory.Delete(EditorPaths.BuildScratchDirectory, true);
+                Directory.Delete(Common.BuildScratchDirectory, true);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Improbable.Gdk.BuildSystem
             }
 
             var zipPath = Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName);
-            var basePath = Path.Combine(EditorPaths.BuildScratchDirectory, workerBuildData.PackageName);
+            var basePath = Path.Combine(Common.BuildScratchDirectory, workerBuildData.PackageName);
             Zip(zipPath, basePath, targetEnvironment == BuildEnvironment.Cloud);
             return true;
         }
