@@ -8,7 +8,7 @@
 
 ### Added
 
-- Added a mobile launcher window containing all the settings and functionality to allow you to launch your apps for iOS and Android. To open it, in the Unity Editor, select **SpatialOS** > **Mobile launcher**.
+- Added a mobile launcher window containing all the settings and functionality to allow you to launch your apps for iOS and Android. To open it, in the Unity Editor, select **SpatialOS** > **Mobile Launcher**.
 
 ### Changed
 

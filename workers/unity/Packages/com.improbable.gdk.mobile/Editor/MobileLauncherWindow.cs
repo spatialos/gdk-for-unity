@@ -21,11 +21,11 @@ namespace Improbable.Gdk.Mobile
 
         private string[] simulatorNames;
         private string[] deviceNames;
-        
+
         private int simulatorNameIndex;
         private int deviceNameIndex;
 
-        [MenuItem("SpatialOS/Mobile launcher", false, 70)]
+        [MenuItem("SpatialOS/Mobile Launcher", false, 52)]
         public static void ShowWindow()
         {
             var inspectorWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.InspectorWindow");
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Mobile
         private void OnEnable()
         {
             launchConfig = new MobileLaunchConfig();
-            
+
 #if UNITY_EDITOR_OSX
             deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
             simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Mobile
                 launchConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, launchConfig.RuntimeIp);
                 launchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.ShouldConnectLocally);
             }
-            
+
             CommonUIElements.DrawHorizontalLine(10, LightGrey);
             GUILayout.Label(AndroidSectionLabel, EditorStyles.boldLabel);
 
@@ -63,7 +63,6 @@ namespace Improbable.Gdk.Mobile
             }
 
 #if UNITY_EDITOR_OSX
-
             CommonUIElements.DrawHorizontalLine(10, LightGrey);
 
             GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
@@ -71,7 +70,7 @@ namespace Improbable.Gdk.Mobile
             using (new EditorGUI.IndentLevelScope())
             {
                 launchConfig.DevelopmentTeamId = EditorGUILayout.TextField(DevelopmentTeamIdLabel, launchConfig.DevelopmentTeamId);
-                
+
                 if (GUILayout.Button("Build XCode project"))
                 {
                     iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
@@ -116,7 +115,7 @@ namespace Improbable.Gdk.Mobile
                         }
                     }
                 }
-                
+
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
                 using (new GUILayout.HorizontalScope())
