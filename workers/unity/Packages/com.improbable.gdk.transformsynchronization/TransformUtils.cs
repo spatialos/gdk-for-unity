@@ -58,6 +58,7 @@ namespace Improbable.Gdk.TransformSynchronization
             // The raw uint representing a compressed quaternion.
             var compressedValue = compressedQuaternion.Data;
 
+            // Stack allocate float array to ensure it's discarded when the method returns.
             // q[x, y, z, w]
             var q = stackalloc float[4];
 
@@ -94,6 +95,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
             }
 
+            // The value of the largest component is 1 - the sum of the squares of the smallest three components.
             q[largestIndex] = Mathf.Sqrt(1f - sumSquares);
 
             return new Quaternion(q[0], q[1], q[2], q[3]);
@@ -125,7 +127,7 @@ namespace Improbable.Gdk.TransformSynchronization
             // Ensure we have a unit quaternion before compression.
             quaternion = quaternion.normalized;
 
-            // Stack allocate float to ensure it's discarded when the method returns.
+            // Stack allocate float array to ensure it's discarded when the method returns.
             var q = stackalloc float[4] { quaternion.x, quaternion.y, quaternion.z, quaternion.w };
 
             // Iterate through quaternion to find the index of the largest component.
@@ -173,7 +175,7 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Converts a FixedPointVector3 to a Unity Vector3.
         /// </summary>
         /// <remarks>
-        ///     Converts each vector component from a Q21.10 fixed point value to a float.
+        ///     Converts each component from a Q21.10 fixed point value to a float.
         /// </remarks>
         public static UnityEngine.Vector3 ToUnityVector3(FixedPointVector3 fixedPointVector3)
         {
@@ -189,7 +191,7 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Converts a Unity Vector3 to a FixedPointVector3.
         /// </summary>
         /// <remarks>
-        ///     Converts each vector component from a float to a Q21.10 fixed point value.
+        ///     Converts each component from a float to a Q21.10 fixed point value.
         /// </remarks>
         public static FixedPointVector3 ToFixedPointVector3(Vector3 vector3)
         {
@@ -205,7 +207,7 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Converts a Coordinates value to a FixedPointVector3.
         /// </summary>
         /// <remarks>
-        ///     Converts each vector component from a double to a Q21.10 fixed point value.
+        ///     Converts each component from a double to a Q21.10 fixed point value.
         /// </remarks>
         public static FixedPointVector3 ToFixedPointVector3(Coordinates coordinates)
         {
@@ -221,7 +223,7 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Converts a Unity Vector3 to a Coordinates value.
         /// </summary>
         /// <remarks>
-        ///     Converts each vector component from a float to a double.
+        ///     Converts each component from a float to a double.
         /// </remarks>
         public static Coordinates ToCoordinates(Vector3 vector3)
         {
@@ -237,7 +239,7 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Converts a FixedPointVector3 to a Coordinates value.
         /// </summary>
         /// <remarks>
-        ///     Converts each vector component from a Q21.10 fixed point value to a double.
+        ///     Converts each component from a Q21.10 fixed point value to a double.
         /// </remarks>
         public static Coordinates ToCoordinates(FixedPointVector3 fixedPointVector3)
         {
