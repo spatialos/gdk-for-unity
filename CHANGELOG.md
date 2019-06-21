@@ -5,6 +5,10 @@
 ### Breaking Changes
 
 - The constructor for the `ForwardingDispatcher` now accepts a `UnityEngine.LogType` instead of `Improbable.Worker.CInterop.LogLevel` as its parameter. [#987](https://github.com/spatialos/gdk-for-unity/pull/987)
+- The schema for the Transform Synchronization feature module has been optimised to reduce bandwidth. If you use this module, please make use of the updated helper methods and regenerate your snapshot. [#990](https://github.com/spatialos/gdk-for-unity/pull/990)
+    - Quaternions are now compressed from 4 floats to a single uint32.
+    - Location and velocity are now `Q21.10` fixed point values.
+    - Regenerated `default.snapshot` after schema changes were made.
 
 ### Added
 
