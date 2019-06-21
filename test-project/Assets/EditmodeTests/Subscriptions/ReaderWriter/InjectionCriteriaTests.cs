@@ -16,7 +16,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
     {
         private const long EntityId = 100;
 
-        private World world;
+        private WorkerInWorld workerInWorld;
         private SpatialOSReceiveSystem receiveSystem;
         private RequireLifecycleSystem requireLifecycleSystem;
 
@@ -28,19 +28,16 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
         [SetUp]
         public void Setup()
         {
-            world = new World("TestWorld");
-            connectionHandler = new MockConnectionHandler();
-            world.CreateSystem<WorkerSystem>(connectionHandler, null,
-                new LoggingDispatcher(), "TestWorkerType", Vector3.zero);
-            receiveSystem = world.CreateSystem<SpatialOSReceiveSystem>();
-            world.GetOrCreateSystem<WorkerFlagCallbackSystem>();
-            world.GetOrCreateSystem<ComponentUpdateSystem>();
-            world.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
-            world.CreateSystem<SubscriptionSystem>();
-            world.CreateSystem<CommandCallbackSystem>();
-            world.CreateSystem<ComponentCallbackSystem>();
-            requireLifecycleSystem = world.CreateSystem<RequireLifecycleSystem>();
+            var connectionBuilder = new MockConnectionHandlerBuilder();
+            connectionHandler = connectionBuilder.ConnectionHandler;
 
+            workerInWorld = WorkerInWorld
+                .CreateWorkerInWorldAsync(connectionBuilder, "TestWorkerType", new LoggingDispatcher(), Vector3.zero)
+                .Result;
+
+            var world = workerInWorld.World;
+            receiveSystem = world.GetExistingSystem<SpatialOSReceiveSystem>();
+            requireLifecycleSystem = world.GetExistingSystem<RequireLifecycleSystem>();
             linker = new EntityGameObjectLinker(world);
 
             var template = new EntityTemplate();
@@ -53,7 +50,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter
         public void TearDown()
         {
             Object.DestroyImmediate(createdGameObject);
-            world.Dispose();
+            workerInWorld.Dispose();
         }
 
         [Test]

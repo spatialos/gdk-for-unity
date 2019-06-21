@@ -21,47 +21,35 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             template.AddComponent(new PlayerHeartbeatClient.Snapshot(),
                 EntityTemplate.GetWorkerAccessAttribute(clientWorkerId));
-
             template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
             template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
         }
 
-        /// <summary>
-        ///     Returns whether an entity is owned by a worker. It can be used to determine whether a client-worker is
-        ///     responsible for a particular player entity.
-        /// </summary>
-        /// <param name="entityId">An ECS component containing a SpatialOS Entity ID.</param>
-        /// <param name="workerWorld">An ECS World associated with a worker.</param>
-        /// <returns>
-        ///     True if the entity with ID entityId contains an OwningWorker component with a value matching the
-        ///     workerWorld's workerId. False if the entity does not contain an OwningWorker component, or if the value
-        ///     does not match the workerId. Throws an InvalidOperationException if workerWorld does not contain a
-        ///     WorkerSystem, or if the entity does not exist in the worker's view.
-        /// </returns>
-        public static bool IsOwningWorker(SpatialEntityId entityId, World workerWorld)
+        public static bool IsOwningWorker(EntityId entityId, World workerWorld)
         {
-            var entityManager = workerWorld.EntityManager;
             var worker = workerWorld.GetExistingSystem<WorkerSystem>();
+            var updateSystem = workerWorld.GetExistingSystem<ComponentUpdateSystem>();
+            var entitySystem = workerWorld.GetExistingSystem<EntitySystem>();
 
             if (worker == null)
             {
                 throw new InvalidOperationException("Provided World does not have an associated worker");
             }
 
-            if (!worker.TryGetEntity(entityId.EntityId, out var entity))
+            if (entitySystem.GetEntitiesInView().Contains(entityId))
             {
                 throw new InvalidOperationException(
-                    $"Entity with SpatialOS Entity ID {entityId.EntityId.Id} is not in this worker's view");
+                    $"Entity with SpatialOS Entity ID {entityId.Id} is not in this worker's view");
             }
 
-            if (!entityManager.HasComponent<OwningWorker.Component>(entity))
+            if (!updateSystem.HasComponent(OwningWorker.ComponentId, entityId))
             {
                 return false;
             }
 
-            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerId;
 
-            return worker.Connection.GetWorkerId() == ownerId;
+            var ownerId = updateSystem.GetComponent<OwningWorker.Snapshot>(entityId).WorkerId;
+            return worker.WorkerId == ownerId;
         }
 
         /// <summary>

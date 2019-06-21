@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     {
         protected World World;
         protected WorkerSystem Worker;
+        protected WorkerInWorld WorkerInWorld;
         protected SubscriptionSystem SubscriptionSystem;
         protected ILogDispatcher LogDispatcher;
 
@@ -17,20 +18,21 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         public void Setup()
         {
             // This is the minimal set required for subscriptions to work.
-            // TODO: Look into untangling these!
-            World = new World("test-world");
-            Worker = World.CreateSystem<WorkerSystem>(new MockConnectionHandler(), null, new TestLogDispatcher(), "TestWorkerType", Vector3.zero);
-            World.CreateSystem<SpatialOSReceiveSystem>();
-            World.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
-            SubscriptionSystem = World.CreateSystem<SubscriptionSystem>();
 
+            var mockConnectionBuilder = new MockConnectionHandlerBuilder();
+            WorkerInWorld = WorkerInWorld.CreateWorkerInWorldAsync(mockConnectionBuilder, "TestWorkerType",
+                new TestLogDispatcher(), Vector3.zero).Result;
+
+            World = WorkerInWorld.World;
+            Worker = World.GetExistingSystem<WorkerSystem>();
+            SubscriptionSystem = World.GetExistingSystem<SubscriptionSystem>();
             LogDispatcher = Worker.LogDispatcher;
         }
 
         [TearDown]
         public void TearDown()
         {
-            World.Dispose();
+            WorkerInWorld.Dispose();
         }
     }
 }
