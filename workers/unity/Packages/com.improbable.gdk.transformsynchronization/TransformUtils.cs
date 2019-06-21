@@ -8,6 +8,64 @@ namespace Improbable.Gdk.TransformSynchronization
     public static class TransformUtils
     {
         /// <summary>
+        ///     Utility method for creating a TransformInternal Snapshot.
+        /// </summary>
+        /// <param name="location">
+        ///     The location of an entity, given as a Unity Vector3.
+        /// </param>
+        /// <param name="rotation">
+        ///     The rotation of an entity, given as a Unity Quaternion.
+        /// </param>
+        /// <param name="velocity">
+        ///     The velocity of an entity, given as a Unity Vector3.
+        /// </param>
+        /// <remarks>
+        ///     This method populates a TransformInternal with compressed representations of the given arguments.
+        /// </remarks>
+        public static TransformInternal.Snapshot CreateTransformSnapshot(
+            Vector3 location = default,
+            Quaternion rotation = default,
+            Vector3 velocity = default)
+        {
+            return new TransformInternal.Snapshot
+            {
+                Location = ToFixedPointVector3(location),
+                Rotation = ToCompressedQuaternion(rotation),
+                Velocity = ToFixedPointVector3(velocity),
+                TicksPerSecond = 1f / Time.fixedDeltaTime
+            };
+        }
+
+        /// <summary>
+        ///     Utility method for creating a TransformInternal Snapshot.
+        /// </summary>
+        /// <param name="location">
+        ///     The location of an entity, given as Improbable Coordinates.
+        /// </param>
+        /// <param name="rotation">
+        ///     The rotation of an entity, given as a Unity Quaternion.
+        /// </param>
+        /// <param name="velocity">
+        ///     The velocity of an entity, given as a Unity Vector3.
+        /// </param>
+        /// <remarks>
+        ///     This method populates a TransformInternal with compressed representations of the given arguments.
+        /// </remarks>
+        public static TransformInternal.Snapshot CreateTransformSnapshot(
+            Coordinates location = default,
+            Quaternion rotation = default,
+            Vector3 velocity = default)
+        {
+            return new TransformInternal.Snapshot
+            {
+                Location = ToFixedPointVector3(location),
+                Rotation = ToCompressedQuaternion(rotation),
+                Velocity = ToFixedPointVector3(velocity),
+                TicksPerSecond = 1f / Time.fixedDeltaTime
+            };
+        }
+
+        /// <summary>
         ///     Returns whether two Coordinates variables are different.
         /// </summary>
         /// <remarks>
@@ -225,7 +283,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a float to a double.
         /// </remarks>
-        public static Coordinates ToCoordinates(Vector3 vector3)
+        public static Coordinates ToCoordinates(this Vector3 vector3)
         {
             return new Coordinates
             {
@@ -241,7 +299,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a Q21.10 fixed point value to a double.
         /// </remarks>
-        public static Coordinates ToCoordinates(FixedPointVector3 fixedPointVector3)
+        public static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
         {
             return new Coordinates
             {

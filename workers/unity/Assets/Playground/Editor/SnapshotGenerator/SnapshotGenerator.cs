@@ -84,16 +84,8 @@ namespace Playground.Editor.SnapshotGenerator
                     }
 
                     var location = new Vector3(x, 1, z);
-                    var positionSnapshot = new Position.Snapshot
-                    {
-                        Coords = TransformUtils.ToCoordinates(location)
-                    };
-                    var transformSnapshot = new TransformInternal.Snapshot
-                    {
-                        Location = TransformUtils.ToFixedPointVector3(location),
-                        Rotation = TransformUtils.ToCompressedQuaternion(Quaternion.identity),
-                        TicksPerSecond = 1f / Time.fixedDeltaTime
-                    };
+                    var positionSnapshot = new Position.Snapshot(location.ToCoordinates());
+                    var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, Quaternion.identity);
 
                     cubeTemplate.SetComponent(positionSnapshot);
                     cubeTemplate.SetComponent(transformSnapshot);
@@ -106,12 +98,7 @@ namespace Playground.Editor.SnapshotGenerator
         {
             const string entityType = "Spinner";
 
-            var transform = new TransformInternal.Snapshot
-            {
-                Location = TransformUtils.ToFixedPointVector3(coords),
-                Rotation = TransformUtils.ToCompressedQuaternion(Quaternion.identity),
-                TicksPerSecond = 1f / Time.fixedDeltaTime
-            };
+            var transform = TransformUtils.CreateTransformSnapshot(coords, Quaternion.identity);
 
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);

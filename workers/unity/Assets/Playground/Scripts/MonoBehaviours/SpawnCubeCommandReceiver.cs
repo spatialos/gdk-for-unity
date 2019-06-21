@@ -50,16 +50,12 @@ namespace Playground.MonoBehaviours
 
             var location = TransformUtils.ToUnityVector3(transformReader.Data.Location);
             location.y += 2;
+
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
-            cubeEntityTemplate.SetComponent(new Position.Snapshot
-            {
-                Coords = TransformUtils.ToCoordinates(location)
-            });
-            cubeEntityTemplate.SetComponent(new TransformInternal.Snapshot
-            {
-                Location = TransformUtils.ToFixedPointVector3(location),
-                Rotation = TransformUtils.ToCompressedQuaternion(Quaternion.identity)
-            });
+
+            cubeEntityTemplate.SetComponent(new Position.Snapshot(location.ToCoordinates()));
+            cubeEntityTemplate.SetComponent(TransformUtils.CreateTransformSnapshot(location, Quaternion.identity));
+
             var expectedEntityId = response.FirstEntityId.Value;
 
             worldCommandRequestSender.SendCreateEntityCommand(
