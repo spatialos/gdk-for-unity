@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
+#if !DISABLE_REACTIVE_COMPONENTS
+using Improbable.Gdk.ReactiveComponents;
+#endif
 
 namespace Improbable.Gdk.Core
 {
