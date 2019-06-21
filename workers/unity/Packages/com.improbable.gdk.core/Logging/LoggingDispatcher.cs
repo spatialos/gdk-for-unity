@@ -1,5 +1,4 @@
 using System;
-using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -12,7 +11,7 @@ namespace Improbable.Gdk.Core
     /// </remarks>
     public class LoggingDispatcher : ILogDispatcher
     {
-        public Connection Connection { get; set; }
+        public Worker Worker { get; set; }
         public string WorkerType { get; set; }
 
         /// <summary>

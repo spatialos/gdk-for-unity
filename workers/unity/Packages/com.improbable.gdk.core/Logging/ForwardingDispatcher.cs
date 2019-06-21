@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
 
         private bool inHandleLog;
 
-        public Connection Connection { get; set; }
+        public Worker Worker { get; set; }
         public string WorkerType { get; set; }
 
         private static readonly Dictionary<LogType, LogLevel> LogTypeMapping = new Dictionary<LogType, LogLevel>
@@ -48,7 +48,7 @@ namespace Improbable.Gdk.Core
             // This is required to avoid duplicate forwarding caused by HandleLog also logging to console
             if (type == LogType.Exception)
             {
-                Connection?.SendLogMessage(LogLevel.Error, Connection.GetWorkerId(), $"{message}\n{stackTrace}");
+                Worker?.SendLogMessage(LogLevel.Error, $"{message}\n{stackTrace}", Worker?.WorkerId, null);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core
 
                 var logLevel = LogTypeMapping[type];
 
-                if (Connection == null || logLevel < minimumLogLevel)
+                if (Worker == null || logLevel < minimumLogLevel)
                 {
                     return;
                 }
@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core
 
                 var entityId = LoggingUtils.ExtractEntityId(logEvent.Data);
 
-                Connection.SendLogMessage(logLevel, LoggingUtils.ExtractLoggerName(logEvent.Data), message, entityId.HasValue ? new long?(entityId.Value.Id) : null);
+                Worker.SendLogMessage(logLevel, message, LoggingUtils.ExtractLoggerName(logEvent.Data), entityId);
             }
             finally
             {
@@ -113,7 +113,6 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public void Dispose()
         {
-            Connection = null;
             Application.logMessageReceived -= LogCallback;
         }
     }
