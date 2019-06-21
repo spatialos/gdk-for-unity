@@ -14,6 +14,10 @@ common: &common
     - "permission_set=builder"
     - "platform=windows"
     - "queue=v3-1558109315-a75758857a3cdfbe-------z"
+    - "scaler_version=2"
+    - "minimum_instances=1"
+    - "agent_count=1"
+    - "machine_type=quad"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
