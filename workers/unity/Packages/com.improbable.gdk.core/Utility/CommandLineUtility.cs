@@ -3,35 +3,52 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core
 {
-    public static class CommandLineUtility
+    public class CommandLineArgs
     {
-        public static Dictionary<string, string> GetArguments()
+        private Dictionary<string, string> arguments;
+
+        // Hide default constructor
+        private CommandLineArgs()
         {
-            return ParseCommandLineArgs(Environment.GetCommandLineArgs());
         }
 
-
-        public static T GetCommandLineValue<T>(Dictionary<string, string> commandLineDictionary, string configKey,
-            T defaultValue)
+        public static CommandLineArgs FromCommandLine()
         {
-            if (TryGetConfigValue(commandLineDictionary, configKey, out T configValue))
+            return From(Environment.GetCommandLineArgs());
+        }
+
+        public static CommandLineArgs From(Dictionary<string, string> args)
+        {
+            return new CommandLineArgs
             {
-                return configValue;
-            }
-
-            return defaultValue;
+                arguments = args
+            };
         }
 
-        public static T GetCommandLineValue<T>(IList<string> arguments, string configKey, T defaultValue)
+        public static CommandLineArgs From(IList<string> args)
         {
-            var dict = ParseCommandLineArgs(arguments);
-            return GetCommandLineValue(dict, configKey, defaultValue);
+            return new CommandLineArgs
+            {
+                arguments = ParseCommandLineArgs(args)
+            };
         }
 
-        private static bool TryGetConfigValue<T>(Dictionary<string, string> dictionary, string configName, out T value)
+        public bool Contains(string key)
+        {
+            return arguments.ContainsKey(key);
+        }
+
+        public T GetCommandLineValue<T>(string key, T defaultValue)
+        {
+            T value = defaultValue;
+            TryGetCommandLineValue(key, ref value);
+            return value;
+        }
+
+        public bool TryGetCommandLineValue<T>(string key, ref T value)
         {
             var desiredType = typeof(T);
-            if (dictionary.TryGetValue(configName, out var strValue))
+            if (arguments.TryGetValue(key, out var strValue))
             {
                 if (desiredType.IsEnum)
                 {
@@ -51,11 +68,10 @@ namespace Improbable.Gdk.Core
                 return true;
             }
 
-            value = default(T);
             return false;
         }
 
-        public static Dictionary<string, string> ParseCommandLineArgs(IList<string> args)
+        private static Dictionary<string, string> ParseCommandLineArgs(IList<string> args)
         {
             var config = new Dictionary<string, string>();
             for (var i = 0; i < args.Count; i++)

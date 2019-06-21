@@ -1,7 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using UnityEngine;
+
+#if UNITY_ANDROID || UNITY_IOS
+using System;
+#endif
 
 namespace Improbable.Gdk.Mobile
 {
@@ -9,11 +12,11 @@ namespace Improbable.Gdk.Mobile
     {
         public const string iOSEnvironmentKey = "SPATIALOS_ARGUMENTS";
 
-        public static Dictionary<string, string> GetArguments()
+        public static CommandLineArgs GetArguments()
         {
             if (Application.isEditor)
             {
-                return new Dictionary<string, string>();
+                return CommandLineArgs.From(new Dictionary<string, string>());
             }
 
 #if UNITY_ANDROID
@@ -29,7 +32,7 @@ namespace Improbable.Gdk.Mobile
                         using (var extras = intent.Call<AndroidJavaObject>("getExtras"))
                         {
                             var arguments = extras.Call<string>("getString", "arguments").Split(' ');
-                            return CommandLineUtility.ParseCommandLineArgs(arguments);
+                            return CommandLineArgs.From(arguments);
                         }
                     }
                 }
@@ -44,7 +47,7 @@ namespace Improbable.Gdk.Mobile
                 var argumentsEnvVar = System.Environment.GetEnvironmentVariable(iOSEnvironmentKey);
                 if (argumentsEnvVar != null)
                 {
-                    return CommandLineUtility.ParseCommandLineArgs(argumentsEnvVar.Split(' '));
+                    return CommandLineArgs.From(argumentsEnvVar.Split(' '));
                 }
             }
             catch (Exception e)
@@ -53,7 +56,7 @@ namespace Improbable.Gdk.Mobile
             }
 #endif
 
-            return new Dictionary<string, string>();
+            return CommandLineArgs.From(new Dictionary<string, string>());
         }
     }
 }
