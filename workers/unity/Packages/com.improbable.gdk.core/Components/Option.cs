@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core
 {
@@ -165,6 +166,20 @@ namespace Improbable.Gdk.Core
         public CalledValueOnEmptyOptionException(string message)
             : base(message)
         {
+        }
+    }
+
+    public static class LinqExtensions
+    {
+        public static IEnumerable<T> FilterOption<T>(this IEnumerable<Option<T>> enumerable)
+        {
+            foreach (var e in enumerable)
+            {
+                if (e.HasValue)
+                {
+                    yield return e.Value;
+                }
+            }
         }
     }
 }
