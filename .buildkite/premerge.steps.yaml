@@ -14,7 +14,7 @@ common: &common
     - "permission_set=builder"
     - "platform=windows"
     - "queue=v3-1558109315-a75758857a3cdfbe-------z"
-    - "scaler_version=2"
+    - "scaler_version=stefan"
     - "minimum_instances=1"
     - "agent_count=1"
     - "machine_type=quad"
