@@ -36,9 +36,24 @@ component TransformInternal {
 <%(#Expandable title="Why not reuse the <code>Improbable.Position</code> SpatialOS component?")%>
 There are a few reasons why you might want different `Transform` and `Position` components.
 
-1. **Separation of responsibilies.** The `Improbable.Position` component is the load balancer's representation of location and the `TransformInternal` component is the workers' representation of location. This allows you to abstract the concept of location from the load balancer. A gameplay programmer would only need to be aware of the `TransformInternal` component without having to know about the load balancer at all.
-2. **Save bandwidth.** The `Position` component represents location with 3 doubles. The `TransformInternal` component represents location as 3 fixed point value. This means that, ignoring rotation and velocity, a position update is _at least_ twice as large as a location update. If the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate, then you have a net bandwidth saving compared to updating just the `Position` component at a high frequency!
-3. **Atomicity.** The `TransformInternal` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically.<br/><br/>Two updates sent in the same frame from one worker are _not_ guaranteed to be received in the same frame on another.
+###### **1. Separation of responsibilies.**
+
+The `Improbable.Position` component is the load balancer's representation of location and the `TransformInternal` component is the workers' representation of location. This allows you to abstract the concept of location from the load balancer. A gameplay programmer would only need to be aware of the `TransformInternal` component without having to know about the load balancer at all.
+
+###### **2. Save bandwidth.**
+
+The `TransformInternal` component contains the compressed representations of location, rotation and velocity.
+
+Rotation is compressed from a full 128 bit Quaternion to a 32 bit uint. A `FixedPointVector3` type exists to represent a 3D vector as 3 fixed point values, each of which uses variable-length zig-zag encoding. This means that location and velocity now require _at most_ 96 bits each, instead of _always_ requiring 96 bits.
+
+For comparison, the `Position` component uses 3 doubles, which always takes 192 bits compared to a `FixedPointVector3` using _at most_ 96 bits. This means that, only considering location, a `Position` update is _at least_ twice as large as a comparable `TransformInternal` update.
+
+If the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate, then you have a net bandwidth saving compared to updating just the `Position` component at a high frequency!
+
+###### **3. Atomicity.**
+The `TransformInternal` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically.
+
+Two updates sent in the same frame from one worker are _not_ guaranteed to be received in the same frame on another.
 <%(/Expandable)%>
 
 ## How do my entities' transform get synchronized
