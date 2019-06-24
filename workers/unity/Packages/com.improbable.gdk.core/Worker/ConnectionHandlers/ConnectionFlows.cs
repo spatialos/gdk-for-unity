@@ -58,9 +58,9 @@ namespace Improbable.Gdk.Core
             EnableLogging = false,
         };
 
-        public LocatorFlow(IConnectionFlowInitializer<LocatorFlow> initializer)
+        public LocatorFlow(IConnectionFlowInitializer<LocatorFlow> initializer = null)
         {
-            initializer.Initialize(this);
+            initializer?.Initialize(this);
         }
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
@@ -140,9 +140,9 @@ namespace Improbable.Gdk.Core
                 }
             };
 
-        public AlphaLocatorFlow(IConnectionFlowInitializer<AlphaLocatorFlow> initializer)
+        public AlphaLocatorFlow(IConnectionFlowInitializer<AlphaLocatorFlow> initializer = null)
         {
-            initializer.Initialize(this);
+            initializer?.Initialize(this);
         }
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)

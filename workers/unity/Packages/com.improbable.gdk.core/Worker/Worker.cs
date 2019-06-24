@@ -34,6 +34,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public ILogDispatcher LogDispatcher;
 
+        public bool IsConnected => ConnectionHandler.IsConnected();
+
         protected IConnectionHandler ConnectionHandler;
 
         // todo replace internal with real apis
@@ -79,6 +81,11 @@ namespace Improbable.Gdk.Core
         public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
         {
             MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+        }
+
+        public string GetWorkerFlag(string key)
+        {
+            return View.GetWorkerFlag(key);
         }
 
         public virtual void Dispose()
