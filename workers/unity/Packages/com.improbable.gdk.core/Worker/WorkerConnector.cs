@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Core
 
         private static readonly SemaphoreSlim WorkerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
-        // Important run in this step as otherwise it can interfere with the the domain unloading logic.
+        // Important run in this step as otherwise it can interfere with the domain unloading logic.
         protected void OnApplicationQuit()
         {
             Dispose();
@@ -61,15 +61,16 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Asynchronously connects a worker to the SpatialOS runtime.
         /// </summary>
-        /// <remarks>
-        ///     Uses the global position of this GameObject as the worker origin.
-        ///     Uses <see cref="ShouldUseLocator"/> to determine whether to connect via the Locator.
-        /// </remarks>
-        /// <param name="workerType">The type of the worker to connect as</param>
+        /// <param name="builder">Describes how to create a <see cref="IConnectionHandler"/> for this worker.</param>
         /// <param name="logger">The logger for the worker to use.</param>
         /// <returns></returns>
         protected async Task Connect(IConnectionHandlerBuilder builder, ILogDispatcher logger)
         {
+            if (builder == null)
+            {
+                throw new ArgumentException("Builder cannot be null.", nameof(builder));
+            }
+
             // Check that other workers have finished trying to connect before this one starts.
             // This prevents races on the workers starting and races on when we start ticking systems.
             await WorkerConnectionSemaphore.WaitAsync();

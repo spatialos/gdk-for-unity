@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
             MultiThreaded
         }
 
-        public string WorkerType => connectionParameters?.WorkerType ?? string.Empty;
+        public string WorkerType { get; private set; } = string.Empty;
 
         private ConnectionParameters connectionParameters;
         private IConnectionFlow flow;
@@ -35,6 +35,7 @@ namespace Improbable.Gdk.Core
         public SpatialOSConnectionHandlerBuilder SetConnectionParameters(ConnectionParameters parameters)
         {
             connectionParameters = parameters;
+            WorkerType = connectionParameters.WorkerType;
             return this;
         }
 
@@ -47,7 +48,7 @@ namespace Improbable.Gdk.Core
 
             if (flow == null)
             {
-                throw new InvalidOperationException("An executor implementation must be provided.");
+                throw new InvalidOperationException("An connection flow implementation must be provided.");
             }
 
             var connection = await flow.CreateAsync(connectionParameters);

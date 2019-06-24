@@ -24,7 +24,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
             worker = WorkerInWorld.CreateWorkerInWorldAsync(mockConnectionBuilder, "TestWorkerType",
                 new TestLogDispatcher(), Vector3.zero).Result;
 
-
             var world = worker.World;
 
             sendSystem = world.GetExistingSystem<ComponentSendSystem>();

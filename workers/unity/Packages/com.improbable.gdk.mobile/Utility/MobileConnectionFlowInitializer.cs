@@ -62,14 +62,14 @@ namespace Improbable.Gdk.Mobile
 
                 var hostIp = string.Empty;
 
-                if (args.TryGetCommandLineValue(RuntimeConfigNames.ReceptionistHost, ref hostIp))
+                if (!args.TryGetCommandLineValue(RuntimeConfigNames.ReceptionistHost, ref hostIp))
                 {
-                    PlayerPrefs.SetString(RuntimeConfigNames.ReceptionistHost, hostIp);
-                    PlayerPrefs.Save();
-                    return hostIp;
+                    return Option<string>.Empty;
                 }
 
-                return Option<string>.Empty;
+                PlayerPrefs.SetString(RuntimeConfigNames.ReceptionistHost, hostIp);
+                PlayerPrefs.Save();
+                return hostIp;
             }
 
             public Option<string> GetDevAuthToken()
@@ -78,14 +78,14 @@ namespace Improbable.Gdk.Mobile
 
                 var devAuthToken = string.Empty;
 
-                if (args.TryGetCommandLineValue(RuntimeConfigNames.DevAuthTokenKey, ref devAuthToken))
+                if (!args.TryGetCommandLineValue(RuntimeConfigNames.DevAuthTokenKey, ref devAuthToken))
                 {
-                    PlayerPrefs.SetString(RuntimeConfigNames.DevAuthTokenKey, devAuthToken);
-                    PlayerPrefs.Save();
-                    return devAuthToken;
+                    return Option<string>.Empty;
                 }
 
-                return Option<string>.Empty;
+                PlayerPrefs.SetString(RuntimeConfigNames.DevAuthTokenKey, devAuthToken);
+                PlayerPrefs.Save();
+                return devAuthToken;
             }
 
             public Option<ConnectionService> GetConnectionService()
@@ -94,17 +94,17 @@ namespace Improbable.Gdk.Mobile
 
                 var environment = string.Empty;
 
-                if (args.TryGetCommandLineValue(RuntimeConfigNames.Environment, ref environment))
+                if (!args.TryGetCommandLineValue(RuntimeConfigNames.Environment, ref environment))
                 {
-                    PlayerPrefs.SetString(RuntimeConfigNames.Environment, environment);
-                    PlayerPrefs.Save();
-
-                    return environment == RuntimeConfigDefaults.LocalEnvironment
-                        ? ConnectionService.Receptionist
-                        : ConnectionService.AlphaLocator;
+                    return Option<ConnectionService>.Empty;
                 }
 
-                return Option<ConnectionService>.Empty;
+                PlayerPrefs.SetString(RuntimeConfigNames.Environment, environment);
+                PlayerPrefs.Save();
+
+                return environment == RuntimeConfigDefaults.LocalEnvironment
+                    ? ConnectionService.Receptionist
+                    : ConnectionService.AlphaLocator;
             }
         }
 

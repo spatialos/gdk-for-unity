@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
         IConnectionFlowInitializer<LocatorFlow>,
         IConnectionFlowInitializer<AlphaLocatorFlow>
     {
-        private CommandLineArgs commandLineArgs;
+        private readonly CommandLineArgs commandLineArgs;
 
         public CommandLineConnectionFlowInitializer()
         {
@@ -57,7 +57,6 @@ namespace Improbable.Gdk.Core
                 ref locator.LocatorParameters.Steam.DeploymentTag);
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.SteamTicket,
                 ref locator.LocatorParameters.Steam.Ticket);
-
 
             if (!string.IsNullOrEmpty(locator.LocatorParameters.LoginToken.Token))
             {

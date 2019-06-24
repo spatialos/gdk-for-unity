@@ -17,7 +17,6 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public readonly Vector3 Origin;
 
-
         /// <summary>
         ///     The ECS world associated with this worker.
         /// </summary>

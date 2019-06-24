@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
             try
             {
                 Profiler.BeginSample("GetMessages");
-                worker.GetMessages();
+                worker.Advance();
                 Profiler.EndSample();
 
                 var diff = worker.Diff;

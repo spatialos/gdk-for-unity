@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public ILogDispatcher LogDispatcher;
 
-        protected readonly IConnectionHandler ConnectionHandler;
+        protected IConnectionHandler ConnectionHandler;
 
         // todo replace internal with real apis
         internal readonly View View;
@@ -84,6 +84,7 @@ namespace Improbable.Gdk.Core
         public virtual void Dispose()
         {
             ConnectionHandler?.Dispose();
+            ConnectionHandler = null;
             LogDispatcher?.Dispose();
             LogDispatcher = null;
         }

@@ -78,7 +78,7 @@ namespace Improbable.Gdk.Core
             Worker.MessagesToSend.AddMetrics(metrics);
         }
 
-        internal void GetMessages()
+        internal void Advance()
         {
             Worker.Advance();
         }
