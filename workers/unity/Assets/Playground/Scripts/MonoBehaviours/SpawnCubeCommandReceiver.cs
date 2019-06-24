@@ -48,7 +48,7 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var location = TransformUtils.ToUnityVector3(transformReader.Data.Location);
+            var location = gameObject.transform.position;
             location.y += 2;
 
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();

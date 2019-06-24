@@ -14,6 +14,6 @@ public class RotationBehaviour : MonoBehaviour
     private void Update()
     {
         transform.rotation *=
-            Quaternion.Euler(Time.deltaTime * 20.0f * (RotatingClockWise ? Vector3.up : Vector3.down));
+            Quaternion.Euler(20.0f * Time.deltaTime * (RotatingClockWise ? Vector3.up : Vector3.down));
     }
 }

@@ -71,7 +71,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     This method is used to check if there have been no changes, so exact equality of floats is fine.
         /// </remarks>
-        public static bool HasChanged(Coordinates a, Coordinates b)
+        internal static bool HasChanged(Coordinates a, Coordinates b)
         {
             return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <summary>
         ///     Returns whether two CompressedQuaternion variables are different.
         /// </summary>
-        public static bool HasChanged(CompressedQuaternion a, CompressedQuaternion b)
+        internal static bool HasChanged(CompressedQuaternion a, CompressedQuaternion b)
         {
             return a.Data != b.Data;
         }
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <summary>
         ///     Returns whether two FixedPointVector3 variables are different.
         /// </summary>
-        public static bool HasChanged(FixedPointVector3 a, FixedPointVector3 b)
+        internal static bool HasChanged(FixedPointVector3 a, FixedPointVector3 b)
         {
             return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <returns>
         ///     A decompressed Unity Quaternion.
         /// </returns>
-        public static unsafe UnityEngine.Quaternion ToUnityQuaternion(CompressedQuaternion compressedQuaternion)
+        internal static unsafe UnityEngine.Quaternion ToUnityQuaternion(CompressedQuaternion compressedQuaternion)
         {
             // The raw uint representing a compressed quaternion.
             var compressedValue = compressedQuaternion.Data;
@@ -180,7 +180,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <returns>
         ///     A uint32 representation of a quaternion.
         /// </returns>
-        public static unsafe CompressedQuaternion ToCompressedQuaternion(UnityEngine.Quaternion quaternion)
+        internal static unsafe CompressedQuaternion ToCompressedQuaternion(UnityEngine.Quaternion quaternion)
         {
             // Ensure we have a unit quaternion before compression.
             quaternion = quaternion.normalized;
@@ -235,7 +235,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a Q21.10 fixed point value to a float.
         /// </remarks>
-        public static UnityEngine.Vector3 ToUnityVector3(FixedPointVector3 fixedPointVector3)
+        internal static UnityEngine.Vector3 ToUnityVector3(FixedPointVector3 fixedPointVector3)
         {
             return new Vector3
             {
@@ -251,7 +251,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a float to a Q21.10 fixed point value.
         /// </remarks>
-        public static FixedPointVector3 ToFixedPointVector3(Vector3 vector3)
+        internal static FixedPointVector3 ToFixedPointVector3(Vector3 vector3)
         {
             return new FixedPointVector3
             {
@@ -267,7 +267,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a double to a Q21.10 fixed point value.
         /// </remarks>
-        public static FixedPointVector3 ToFixedPointVector3(Coordinates coordinates)
+        internal static FixedPointVector3 ToFixedPointVector3(Coordinates coordinates)
         {
             return new FixedPointVector3
             {
@@ -299,7 +299,7 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <remarks>
         ///     Converts each component from a Q21.10 fixed point value to a double.
         /// </remarks>
-        public static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
+        internal static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
         {
             return new Coordinates
             {
