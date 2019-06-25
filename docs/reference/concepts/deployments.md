@@ -16,7 +16,7 @@ Before you launch a deployment, you need to ensure that it is configured correct
 
 ### Launch configuration
 
-The launch configuration file specifies the parameters of your game world as well as your load balancing configuration. The load balancing configuration determines the worker instances that the SpatialOS Runtime will start.
+The launch configuration file specifies the parameters of your game world as well as your load balancing configuration. The load balancing configuration determines the worker-instances that the SpatialOS Runtime starts and how they are balanced across your game world.
 
 For more information, see the [comprehensive launch configuration documentation](https://docs.improbable.io/reference/latest/shared/project-layout/launch-config#launch-configuration-file).
 
@@ -37,6 +37,8 @@ To start a local deployment, in your Unity Editor, select **SpatialOS** > **Loca
 This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used.
 
 <%(Callout message="Its done when you see the following message in the console window which opens:<br/><br/>```SpatialOS ready. Access the Inspector at https://localhost:21000/inspector```")%>
+
+> **Note:** You can only have one instance of a local deployment running at any given time.
 
 ### Start a standalone client worker
 
