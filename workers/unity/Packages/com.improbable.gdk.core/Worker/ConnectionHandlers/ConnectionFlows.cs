@@ -107,7 +107,8 @@ namespace Improbable.Gdk.Core
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
         {
-            // TODO: Should we force external IP ?
+            parameters.Network.UseExternalIp = true;
+
             using (var locator = new Locator(LocatorHost, LocatorParameters))
             {
                 var deploymentList = await GetDeploymentList(locator);
@@ -223,7 +224,8 @@ namespace Improbable.Gdk.Core
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
         {
-            // TODO: Should we force external IP ?
+            parameters.Network.UseExternalIp = true;
+
             if (UseDevAuthFlow)
             {
                 var pit = GetDevelopmentPlayerIdentityToken();
