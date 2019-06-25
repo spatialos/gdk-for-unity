@@ -34,19 +34,19 @@ For more information, see the [comprehensive worker configuration documentation]
 
 To start a local deployment, in your Unity Editor, select **SpatialOS** > **Local Launch**.
 
-This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you used.
+This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you selected.
 
 <%(Callout message="Its done when you see the following message in the console window which opens:<br/><br/>```SpatialOS ready. Access the Inspector at https://localhost:21000/inspector```")%>
 
-> **Note:** You can only have one instance of a local deployment running at any given time.
+> **Note:** You can only have one instance of a local deployment running at any given time. If you already have one instance running, you may see an error like: `listen tcp :22000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.`
 
 ### Start a standalone client worker
 
-The GDK provides tooling for starting client workers from the Unity Editor. 
+The GDK provides tooling for starting client workers from the Unity Editor.
 
 First, ensure that you have built the worker by selecting **SpatialOS** > **Build for local** > **UnityClient**. This may take a few minutes depending on the size of your Unity project.
 
-Then, in your Unity Editor,  select **SpatialOS** > **Launch standalone client**.
+Then, select **SpatialOS** > **Launch standalone client** to launch the built out client.
 
 ## Cloud deployment
 
