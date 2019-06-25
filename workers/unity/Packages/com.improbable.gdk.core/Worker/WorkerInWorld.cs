@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     The ECS world associated with this worker.
         /// </summary>
-        public World World { get; internal set; }
+        public World World { get; private set; }
 
         /// <summary>
         ///     An event that triggers when the worker is disconnected.
@@ -47,6 +47,16 @@ namespace Improbable.Gdk.Core
             AddCoreSystems();
         }
 
+        /// <summary>
+        ///     Creates a <see cref="WorkerInWorld"/> object asynchronously.
+        /// </summary>
+        /// <param name="connectionHandlerBuilder">
+        ///     A builder which describes how to create the <see cref="IConnectionHandler"/> for this worker.
+        /// </param>
+        /// <param name="workerType">The type of worker to connect as.</param>
+        /// <param name="logDispatcher">The logger to use for this worker.</param>
+        /// <param name="token">A cancellation token which will cancel this asynchronous operation</param>
+        /// <returns>A task which represents the asynchronous creation of a worker.</returns>
         public static async Task<WorkerInWorld> CreateWorkerInWorldAsync(IConnectionHandlerBuilder connectionHandlerBuilder, string workerType,
             ILogDispatcher logDispatcher, Vector3 origin, CancellationToken? token = null)
         {

@@ -1,14 +1,25 @@
-using System;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
     // TODO: Should this be contravarient?
+    /// <summary>
+    ///    Represents an object which can initialize a connection flow of a certain type.
+    /// </summary>
+    /// <typeparam name="TConnectionFlow">The type of connection flow that this object can initialize.</typeparam>
     public interface IConnectionFlowInitializer<TConnectionFlow> where TConnectionFlow : IConnectionFlow
     {
+        /// <summary>
+        ///     Initializes the flow. Seeds the flow implementation with the data required to successfully connect.
+        /// </summary>
+        /// <param name="flow">The flow object to initialize.</param>
         void Initialize(TConnectionFlow flow);
     }
 
+    /// <summary>
+    ///     Represents an object which can initialize the <see cref="ReceptionistFlow"/>, <see cref="LocatorFlow"/>,
+    ///     and <see cref="AlphaLocatorFlow"/> connection flows from the command line.
+    /// </summary>
     public class CommandLineConnectionFlowInitializer :
         IConnectionFlowInitializer<ReceptionistFlow>,
         IConnectionFlowInitializer<LocatorFlow>,
@@ -21,6 +32,10 @@ namespace Improbable.Gdk.Core
             commandLineArgs = CommandLineArgs.FromCommandLine();
         }
 
+        /// <summary>
+        ///     Gets the connection service to use based on command line arguments.
+        /// </summary>
+        /// <returns>The connection service to use.</returns>
         public ConnectionService GetConnectionService()
         {
             if (commandLineArgs.Contains(RuntimeConfigNames.SteamDeploymentTag) ||

@@ -34,6 +34,9 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public ILogDispatcher LogDispatcher;
 
+        /// <summary>
+        ///     Denotes whether this worker is connected or not.
+        /// </summary>
         public bool IsConnected => ConnectionHandler.IsConnected();
 
         protected IConnectionHandler ConnectionHandler;
@@ -59,6 +62,16 @@ namespace Improbable.Gdk.Core
             View = new View();
         }
 
+        /// <summary>
+        ///     Creates a <see cref="Worker"/> object asynchronously.
+        /// </summary>
+        /// <param name="connectionHandlerBuilder">
+        ///     A builder which describes how to create the <see cref="IConnectionHandler"/> for this worker.
+        /// </param>
+        /// <param name="workerType">The type of worker to connect as.</param>
+        /// <param name="logDispatcher">The logger to use for this worker.</param>
+        /// <param name="token">A cancellation token which will cancel this asynchronous operation</param>
+        /// <returns>A task which represents the asynchronous creation of a worker.</returns>
         public static async Task<Worker> CreateWorkerAsync(IConnectionHandlerBuilder connectionHandlerBuilder, string workerType,
             ILogDispatcher logDispatcher, CancellationToken? token = null)
         {
@@ -66,6 +79,9 @@ namespace Improbable.Gdk.Core
             return new Worker(handler, workerType, logDispatcher);
         }
 
+        /// <summary>
+        ///     Advances the worker to a new state using all messages received since the last <see cref="Advance"/> call.
+        /// </summary>
         public void Advance()
         {
             ConnectionHandler.GetMessagesReceived(ref ViewDiff);
@@ -78,11 +94,27 @@ namespace Improbable.Gdk.Core
             MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
         }
 
+
+        /// <summary>
+        ///     Sends a log message to SpatialOS from this worker.
+        /// </summary>
+        /// <param name="logLevel">The log verbosity level.</param>
+        /// <param name="message">The log message.</param>
+        /// <param name="loggerName">A name for the sender of the log.</param>
+        /// <param name="entityId">
+        ///     The <see cref="EntityId"/> to associate with the log message.
+        ///     Set to null for no <see cref="EntityId"/>.
+        /// </param>
         public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
         {
             MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
         }
 
+        /// <summary>
+        ///     Gets the value for a given worker flag.
+        /// </summary>
+        /// <param name="key">The key of the worker flag.</param>
+        /// <returns>The value of the flag, if it exists, null otherwise.</returns>
         public string GetWorkerFlag(string key)
         {
             return View.GetWorkerFlag(key);
