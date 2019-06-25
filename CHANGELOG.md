@@ -10,10 +10,53 @@
         - The location and velocity fields are now [`Q21.10`](https://en.wikipedia.org/wiki/Q_(number_format)) fixed point values.
     - The `Quaternion` schema type has been replaced by the `CompressedQuaternion` type.
         - Rotation is now compressed from 4 floats to a single uint32.
+- The worker abstraction & connectors have been changed **significantly**. See the [Upgrade guide](TODO) for more details on how to upgrade. 
+    - The `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` classes have been removed.
+    - The `WorkerConnector` has had the following abstract methods removed:
+        - `ConnectionService GetConnectionService()`
+        - `ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service)`
+        - `LocatorConfig GetLocatorConfig()`
+        - `AlphaLocatorConfig GetAlphaLocatorConfig(string workerType)`
+        - `ReceptionistConfig GetReceptionistConfig(string workerType)`
+    - The `WorkerConnector` has had the following virtual methods removed:
+        - `string GetPlayerId()`
+        - `string GetDisplayName()`
+        - `string SelectDeploymentName(DeploymentList deployments)`
+        - `string GetDevAuthToken()`
+        - `string SelectLoginToken(List<LoginTokenDetails> loginTokens)`
+        - `string GetDevelopmentPlayerIdentityToken(string authToken, string playerId, string displayName)`
+        - `List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)`
+    - The `WorkerConnector` has also had the following changes:
+        - The `public Worker Worker;` field is now the `public WorkerInWorld Worker;` field.
+        - The `public async Task Connect(string workerType, ILogDispatcher logger)` method is now `protected async Task Connect(IConnectionHandlerBuilder builder, ILogDispatcher logger)`. 
+    - The `Worker` class has had the following changes:
+        - The `public Connection Connection { get; private set; }` property has been removed.
+        - The `public World World { get; private set; }` property has been moved to the `WorkerInWorld` class.
+        - The `public static async Task<Worker> CreateWorkerAsync(ReceptionistConfig parameters, ConnectionParameters connectionParameters, ILogDispatcher logger, Vector3 origin)` method has been removed.
+        - The `public static async Task<Worker> CreateWorkerAsync(LocatorConfig parameters, ConnectionParameters connectionParameters, ILogDispatcher logger, Vector3 origin)` method has been removed.
+        - The `public static async Task<Worker> CreateWorkerAsync(AlphaLocatorConfig  parameters, ConnectionParameters connectionParameters, ILogDispatcher logger, Vector3 origin)` method has been removed.
+    - The `ReceptionistConfig`, `LocatorConfig`, and `AlphaLocatorConfig` structs have been removed.
+    - The `WorkerSystem` no longer has a `public readonly Connection Connection;` field
+- The `CommandLineUtility` static class has been replaced with a `CommandLineArgs` stateful class.
+- The `ILogDispatcher` interface now has a `public Worker Worker { get; set; }` property instead of a `public Connection Connection { get; set; }` property. This of course, propagates down to all implementations of the `ILogDispatcher` interface.
 
 ### Added
 
 - Added a mobile launcher window containing all the settings and functionality to allow you to launch your apps for iOS and Android. To open it, in the Unity Editor, select **SpatialOS** > **Mobile Launcher**.
+- Added a `IEnumerable<T> FilterOption<T>(this IEnumerable<Option<T>> enumerable)` LINQ extension.
+- Added a `public readonly string WorkerId;` field to the `WorkerSystem` class.
+- Added a `IConnectionFlow` interface which describes how a connection can be created.
+    - Added a `ReceptionistFlow`, `LocatorFlow`, and `AlphaLocatorFlow` which implement `IConnectionFlow`.
+- Added a `IConnectionFlowInitializer<TConnectionFlow>` interface which describes how the parameters for a particular connection flow are initialized.
+    - Added a `CommandLineConnectionFlowInitializer` which implements `IConnectionFlowInitializer<ReceptionistFlow>`, `IConnectionFlowInitializer<LocatorFlow>`, and `IConnectionFlowInitializer<AlphaLocatorFlow>`.
+    - Added a `MobileConnectionFlowInitializer` which implements `IConnectionFlowInitializer<ReceptionistFlow>` and `IConnectionFlowInitializer<AlphaLocatorFlow>`.
+- Added a `IConnectionParameterInitializer` which describes how the parameters for a worker connector are initialized.
+    - Added a `CommandLineConnectionParameterInitializer` which implements `IConnectionParameterInitializer`.
+    - Added a `MobileConnectionParametersInitializer` which implements `IConnectionParameterInitializer`.
+- The `IConnectionHandler` interface now has the following methods:
+    - `string GetWorkerId();`
+    - `List<string> GetWorkerAttributes();`
+- Added a `WorkerInWorld` class which inherits from `Worker` and adds ECS specific implementation details to the `Worker`.
 
 ### Changed
 
