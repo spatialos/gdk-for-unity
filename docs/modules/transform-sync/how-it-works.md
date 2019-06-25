@@ -50,6 +50,8 @@ For comparison, the `Position` component uses 3 doubles, which always takes 192 
 
 If the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate, then you have a net bandwidth saving compared to updating just the `Position` component at a high frequency!
 
+> The `TransformInternal` compression scheme comes with a drop in precision. The `FixedPointVector3` type utilises the Q21.10 fixed point format, for a range of -2097152 to 2097151.999 at 0.977mm (2^-10 metres) precision. The `CompressedQuaternion` utilises 10 bits to encode each quaternion element, which translates to a mean precision in Euler angles of 0.08 degrees.
+
 ###### **3. Atomicity.**
 The `TransformInternal` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically.
 
