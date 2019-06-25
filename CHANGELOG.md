@@ -10,7 +10,7 @@
         - The location and velocity fields are now [`Q21.10`](https://en.wikipedia.org/wiki/Q_(number_format)) fixed point values.
     - The `Quaternion` schema type has been replaced by the `CompressedQuaternion` type.
         - Rotation is now compressed from 4 floats to a single uint32.
-- The worker abstraction & connectors have been changed **significantly**. See the [Upgrade guide](TODO) for more details on how to upgrade. 
+- The worker abstraction & connectors have been changed **significantly**. See the [Upgrade guide](TODO) for more details on how to upgrade. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - The `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` classes have been removed.
     - The `WorkerConnector` has had the following abstract methods removed:
         - `ConnectionService GetConnectionService()`
@@ -37,26 +37,26 @@
         - The `public static async Task<Worker> CreateWorkerAsync(AlphaLocatorConfig  parameters, ConnectionParameters connectionParameters, ILogDispatcher logger, Vector3 origin)` method has been removed.
     - The `ReceptionistConfig`, `LocatorConfig`, and `AlphaLocatorConfig` structs have been removed.
     - The `WorkerSystem` no longer has a `public readonly Connection Connection;` field
-- The `CommandLineUtility` static class has been replaced with a `CommandLineArgs` stateful class.
-- The `ILogDispatcher` interface now has a `public Worker Worker { get; set; }` property instead of a `public Connection Connection { get; set; }` property. This of course, propagates down to all implementations of the `ILogDispatcher` interface.
+- The `CommandLineUtility` static class has been replaced with a `CommandLineArgs` stateful class. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
+- The `ILogDispatcher` interface now has a `public Worker Worker { get; set; }` property instead of a `public Connection Connection { get; set; }` property. This of course, propagates down to all implementations of the `ILogDispatcher` interface. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
 
 ### Added
 
 - Added a mobile launcher window containing all the settings and functionality to allow you to launch your apps for iOS and Android. To open it, in the Unity Editor, select **SpatialOS** > **Mobile Launcher**.
-- Added a `IEnumerable<T> FilterOption<T>(this IEnumerable<Option<T>> enumerable)` LINQ extension.
-- Added a `public readonly string WorkerId;` field to the `WorkerSystem` class.
-- Added a `IConnectionFlow` interface which describes how a connection can be created.
+- Added a `IEnumerable<T> FilterOption<T>(this IEnumerable<Option<T>> enumerable)` LINQ extension. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
+- Added a `public readonly string WorkerId;` field to the `WorkerSystem` class. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
+- Added a `IConnectionFlow` interface which describes how a connection can be created. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - Added a `ReceptionistFlow`, `LocatorFlow`, and `AlphaLocatorFlow` which implement `IConnectionFlow`.
-- Added a `IConnectionFlowInitializer<TConnectionFlow>` interface which describes how the parameters for a particular connection flow are initialized.
+- Added a `IConnectionFlowInitializer<TConnectionFlow>` interface which describes how the parameters for a particular connection flow are initialized. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - Added a `CommandLineConnectionFlowInitializer` which implements `IConnectionFlowInitializer<ReceptionistFlow>`, `IConnectionFlowInitializer<LocatorFlow>`, and `IConnectionFlowInitializer<AlphaLocatorFlow>`.
     - Added a `MobileConnectionFlowInitializer` which implements `IConnectionFlowInitializer<ReceptionistFlow>` and `IConnectionFlowInitializer<AlphaLocatorFlow>`.
-- Added a `IConnectionParameterInitializer` which describes how the parameters for a worker connector are initialized.
+- Added a `IConnectionParameterInitializer` which describes how the parameters for a worker connector are initialized. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - Added a `CommandLineConnectionParameterInitializer` which implements `IConnectionParameterInitializer`.
     - Added a `MobileConnectionParametersInitializer` which implements `IConnectionParameterInitializer`.
-- The `IConnectionHandler` interface now has the following methods:
+- The `IConnectionHandler` interface now has the following methods: [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - `string GetWorkerId();`
     - `List<string> GetWorkerAttributes();`
-- Added a `WorkerInWorld` class which inherits from `Worker` and adds ECS specific implementation details to the `Worker`.
+- Added a `WorkerInWorld` class which inherits from `Worker` and adds ECS specific implementation details to the `Worker`. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
 
 ### Changed
 
