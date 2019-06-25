@@ -17,20 +17,25 @@ namespace Playground
         {
             Application.targetFrameRate = 60;
 
-            var connParams = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
-            connParams.Network.UseExternalIp = UseExternalIp;
-
-            var builder = new SpatialOSConnectionHandlerBuilder()
-                .SetConnectionParameters(connParams);
+            IConnectionFlow flow;
+            ConnectionParameters connectionParameters;
 
             if (Application.isEditor)
             {
-                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic)));
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
+                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
             }
             else
             {
-                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic), new CommandLineConnectionFlowInitializer()));
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
+                    new CommandLineConnectionFlowInitializer());
+                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                    new CommandLineConnectionParameterInitializer());
             }
+
+            var builder = new SpatialOSConnectionHandlerBuilder()
+                .SetConnectionFlow(flow)
+                .SetConnectionParameters(connectionParameters);
 
             await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
         }
@@ -38,6 +43,7 @@ namespace Playground
         protected override void HandleWorkerConnectionEstablished()
         {
             WorkerUtils.AddGameLogicSystems(Worker.World);
+            
             if (level == null)
             {
                 return;

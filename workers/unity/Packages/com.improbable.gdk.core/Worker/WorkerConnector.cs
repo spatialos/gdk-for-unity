@@ -191,13 +191,17 @@ namespace Improbable.Gdk.Core
             return $"{workerType}-{Guid.NewGuid()}";
         }
 
-        protected ConnectionParameters CreateConnectionParameters(string workerType)
+        protected ConnectionParameters CreateConnectionParameters(string workerType, IConnectionParameterInitializer initializer = null)
         {
-            return new ConnectionParameters
+            var @params = new ConnectionParameters
             {
                 WorkerType = workerType,
                 DefaultComponentVtable = new ComponentVtable()
             };
+
+            initializer?.Initialize(@params);
+
+            return @params;
         }
 
         private void OnDisconnected(string reason)

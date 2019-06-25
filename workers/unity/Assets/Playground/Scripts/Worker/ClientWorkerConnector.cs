@@ -28,7 +28,6 @@ namespace Playground
             if (!Application.isEditor)
             {
                 var initializer = new CommandLineConnectionFlowInitializer();
-
                 switch (initializer.GetConnectionService())
                 {
                     case ConnectionService.Receptionist:

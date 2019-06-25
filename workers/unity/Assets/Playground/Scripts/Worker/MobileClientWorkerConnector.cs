@@ -17,18 +17,7 @@ namespace Playground
 
         public async void Start()
         {
-            var connParams = CreateConnectionParameters(WorkerUtils.MobileClient);
-            connParams.Network.UseExternalIp = true;
-            connParams.Network.ConnectionType = NetworkConnectionType.Kcp;
-            connParams.Network.Kcp = new KcpNetworkParameters
-            {
-                // These are the last tested values
-                Heartbeat = new HeartbeatParameters
-                {
-                    IntervalMillis = 5000,
-                    TimeoutMillis = 10000
-                }
-            };
+            var connParams = CreateConnectionParameters(WorkerUtils.MobileClient, new MobileConnectionParametersInitializer());
 
             var flowInitializer = new MobileConnectionFlowInitializer(
                 new MobileConnectionFlowInitializer.CommandLineSettingsProvider(),
