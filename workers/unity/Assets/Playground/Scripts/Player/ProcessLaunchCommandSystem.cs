@@ -98,8 +98,7 @@ namespace Playground
                 var info = request.Payload;
 
                 rigidbody.AddForceAtPosition(
-                    new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z) *
-                    info.LaunchEnergy * 100.0f,
+                    info.LaunchEnergy * 100.0f * new Vector3(info.LaunchDirection.X, info.LaunchDirection.Y, info.LaunchDirection.Z),
                     new Vector3(info.ImpactPoint.X, info.ImpactPoint.Y, info.ImpactPoint.Z)
                 );
 

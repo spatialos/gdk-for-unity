@@ -1,7 +1,7 @@
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
-using SpatialQuaternion = Improbable.Gdk.TransformSynchronization.Quaternion;
+using SpatialQuaternion = Improbable.Gdk.TransformSynchronization.CompressedQuaternion;
 using Quaternion = UnityEngine.Quaternion;
 
 public class RotationBehaviour : MonoBehaviour
@@ -14,6 +14,6 @@ public class RotationBehaviour : MonoBehaviour
     private void Update()
     {
         transform.rotation *=
-            Quaternion.Euler((RotatingClockWise ? Vector3.up : Vector3.down) * Time.deltaTime * 20.0f);
+            Quaternion.Euler(20.0f * Time.deltaTime * (RotatingClockWise ? Vector3.up : Vector3.down));
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 using UnityEngine;
 
@@ -55,7 +54,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformData()
         {
-            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, UnityEngine.Transform transform) =>
+            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, Transform transform) =>
             {
                 transformToSend = new TransformToSend
                 {

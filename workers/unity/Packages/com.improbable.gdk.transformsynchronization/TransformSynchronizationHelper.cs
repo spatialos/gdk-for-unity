@@ -23,15 +23,8 @@ namespace Improbable.Gdk.TransformSynchronization
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
-            var transform = new TransformInternal.Snapshot
-            {
-                Location = location.ToImprobableLocation(),
-                Rotation = rotation.ToImprobableQuaternion(),
-                Velocity = velocity.ToImprobableVelocity(),
-                TicksPerSecond = 1f / Time.fixedDeltaTime
-            };
-
-            template.AddComponent(transform, writeAccess);
+            var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, rotation, velocity);
+            template.AddComponent(transformSnapshot, writeAccess);
         }
 
         public static void AddClientSystems(World world)

@@ -37,7 +37,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var bufferHead = buffer[0];
 
-                    var currentTransform = new TransformToSet
+                    transformToSet = new TransformToSet
                     {
                         Position = bufferHead.Position + worker.Origin,
                         Orientation = bufferHead.Orientation,
@@ -45,7 +45,6 @@ namespace Improbable.Gdk.TransformSynchronization
                         ApproximateRemoteTick = bufferHead.PhysicsTick
                     };
 
-                    transformToSet = currentTransform;
                     buffer.RemoveAt(0);
                 });
         }

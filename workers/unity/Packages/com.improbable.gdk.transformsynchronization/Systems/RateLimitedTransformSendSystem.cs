@@ -45,25 +45,39 @@ namespace Improbable.Gdk.TransformSynchronization
                         return;
                     }
 
-                    var currentTransform = new TransformInternal.Component
-                    {
-                        Location = (transformToSend.Position - worker.Origin).ToImprobableLocation(),
-                        Rotation = transformToSend.Orientation.ToImprobableQuaternion(),
-                        Velocity = transformToSend.Velocity.ToImprobableVelocity(),
-                        PhysicsTick = transform.PhysicsTick + ticksSinceLastTransformUpdate.NumberOfTicks,
-                        TicksPerSecond = tickRate.PhysicsTicksPerRealSecond
-                    };
+                    var transformHasChanged = false;
 
-                    if (!(TransformUtils.HasChanged(currentTransform.Location, transform.Location) ||
-                        TransformUtils.HasChanged(currentTransform.Rotation, transform.Rotation)))
+                    var newVelocity = TransformUtils.ToFixedPointVector3(transformToSend.Velocity);
+                    if (TransformUtils.HasChanged(newVelocity, transform.Velocity))
+                    {
+                        transform.Velocity = newVelocity;
+                        transformHasChanged = true;
+                    }
+
+                    var newLocation = TransformUtils.ToFixedPointVector3(transformToSend.Position - worker.Origin);
+                    if (TransformUtils.HasChanged(newLocation, transform.Location))
+                    {
+                        transform.Location = newLocation;
+                        transformHasChanged = true;
+                    }
+
+                    var newRotation = TransformUtils.ToCompressedQuaternion(transformToSend.Orientation);
+                    if (TransformUtils.HasChanged(newRotation, transform.Rotation))
+                    {
+                        transform.Rotation = newRotation;
+                        transformHasChanged = true;
+                    }
+
+                    if (!transformHasChanged)
                     {
                         return;
                     }
 
+                    transform.PhysicsTick += ticksSinceLastTransformUpdate.NumberOfTicks;
+                    transform.TicksPerSecond = tickRate.PhysicsTicksPerRealSecond;
+
                     lastTransformSent.TimeSinceLastUpdate = 0.0f;
                     lastTransformSent.Transform = transform;
-
-                    transform = currentTransform;
 
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate
                     {

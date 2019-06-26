@@ -1,5 +1,4 @@
 ﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 using UnityEngine;
 
@@ -21,6 +20,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
             worker = World.GetExistingSystem<WorkerSystem>();
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
+
+            // TODO: we need "auth loss" exposed to set the component group filters below correctly.
+            // Alternatively, we need an authority changed component that is filled at the beginning of the tick.
 
             rigidbodyGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Rigidbody>(),
@@ -60,8 +62,6 @@ namespace Improbable.Gdk.TransformSynchronization
                     ref TransformInternal.Component transformInternal,
                     ref SpatialEntityId spatialEntityId) =>
                 {
-                    // todo this is not a correct constraint. Needs a the auth loss temporary exposed to correctly do this
-                    // alternatively this needs an authority changed component that is filled at the beginning of the tick
                     if (updateSystem
                         .GetAuthorityChangesReceived(spatialEntityId.EntityId, TransformInternal.ComponentId)
                         .Count == 0)
@@ -70,9 +70,9 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
 
                     var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
-                    rigidbody.MovePosition(transformInternal.Location.ToUnityVector3() + worker.Origin);
-                    rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
-                    rigidbody.AddForce(transformInternal.Velocity.ToUnityVector3() - rigidbody.velocity,
+                    rigidbody.MovePosition(TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin);
+                    rigidbody.MoveRotation(TransformUtils.ToUnityQuaternion(transformInternal.Rotation));
+                    rigidbody.AddForce(TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
                         ForceMode.VelocityChange);
 
                     buffer.Clear();
@@ -96,8 +96,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 var unityTransform = EntityManager.GetComponentObject<UnityEngine.Transform>(entity);
-                unityTransform.position = transformInternal.Location.ToUnityVector3() + worker.Origin;
-                unityTransform.rotation = transformInternal.Rotation.ToUnityQuaternion();
+                unityTransform.position = TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin;
+                unityTransform.rotation = TransformUtils.ToUnityQuaternion(transformInternal.Rotation);
 
                 buffer.Clear();
                 ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();

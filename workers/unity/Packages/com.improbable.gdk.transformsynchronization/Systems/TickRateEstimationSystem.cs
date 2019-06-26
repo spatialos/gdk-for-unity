@@ -26,13 +26,13 @@ namespace Improbable.Gdk.TransformSynchronization
 
         protected override void OnUpdate()
         {
-            long sample = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var sample = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             samples.Enqueue(sample);
             if (samples.Count == NumberOfSamples)
             {
                 var oldestSample = samples.Dequeue();
-                float secondsPast = 0.001f * (float) (sample - oldestSample);
-                PhysicsTicksPerRealSecond = (float) NumberOfSamples / secondsPast;
+                var secondsPast = 0.001f * (sample - oldestSample);
+                PhysicsTicksPerRealSecond = NumberOfSamples / secondsPast;
             }
         }
     }

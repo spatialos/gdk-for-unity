@@ -51,12 +51,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformData()
         {
-            Entities.With(transformGroup)
-                .ForEach((UnityEngine.Transform transform, ref TransformToSet transformToSet) =>
-                {
-                    transform.localPosition = transformToSet.Position;
-                    transform.localRotation = transformToSet.Orientation;
-                });
+            Entities.With(transformGroup).ForEach((Transform transform, ref TransformToSet transformToSet) =>
+            {
+                transform.localPosition = transformToSet.Position;
+                transform.localRotation = transformToSet.Orientation;
+            });
         }
     }
 }

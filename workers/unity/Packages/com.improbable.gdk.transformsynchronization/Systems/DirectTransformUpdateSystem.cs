@@ -46,9 +46,9 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     transformToSet = new TransformToSet
                     {
-                        Position = transformInternal.Location.ToUnityVector3() + worker.Origin,
-                        Velocity = transformInternal.Velocity.ToUnityVector3(),
-                        Orientation = transformInternal.Rotation.ToUnityQuaternion()
+                        Position = TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin,
+                        Velocity = TransformUtils.ToUnityVector3(transformInternal.Velocity),
+                        Orientation = TransformUtils.ToUnityQuaternion(transformInternal.Rotation)
                     };
                 });
         }

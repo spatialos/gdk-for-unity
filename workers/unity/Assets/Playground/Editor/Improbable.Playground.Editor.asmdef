@@ -3,12 +3,18 @@
     "references": [
         "Improbable.Playground",
         "Improbable.Gdk.Core",
-        "Improbable.Gdk.Generated"
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.TransformSynchronization"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }

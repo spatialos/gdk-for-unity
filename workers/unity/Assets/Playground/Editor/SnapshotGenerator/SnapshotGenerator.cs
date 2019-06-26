@@ -4,7 +4,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
-using Quaternion = Improbable.Gdk.TransformSynchronization.Quaternion;
 
 namespace Playground.Editor.SnapshotGenerator
 {
@@ -84,16 +83,9 @@ namespace Playground.Editor.SnapshotGenerator
                         return;
                     }
 
-                    var positionSnapshot = new Position.Snapshot
-                    {
-                        Coords = new Coordinates(x, 1, z)
-                    };
-                    var transformSnapshot = new TransformInternal.Snapshot
-                    {
-                        Location = new Location(x, 1, z),
-                        Rotation = new Quaternion(1, 0, 0, 0),
-                        TicksPerSecond = 1f / Time.fixedDeltaTime
-                    };
+                    var location = new Vector3(x, 1, z);
+                    var positionSnapshot = new Position.Snapshot(location.ToCoordinates());
+                    var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, Quaternion.identity);
 
                     cubeTemplate.SetComponent(positionSnapshot);
                     cubeTemplate.SetComponent(transformSnapshot);
@@ -106,25 +98,19 @@ namespace Playground.Editor.SnapshotGenerator
         {
             const string entityType = "Spinner";
 
-            var transform = new TransformInternal.Snapshot
-            {
-                Location = new Location((float) coords.X, (float) coords.Y, (float) coords.Z),
-                Rotation = new Quaternion(1, 0, 0, 0),
-                TicksPerSecond = 1f / Time.fixedDeltaTime
-            };
+            var transform = TransformUtils.CreateTransformSnapshot(coords, Quaternion.identity);
 
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot { Coords = coords }, WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Metadata.Snapshot { EntityType = entityType }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Metadata.Snapshot(entityType), WorkerUtils.UnityGameLogic);
             template.AddComponent(transform, WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new SpinnerColor.Snapshot { Color = Color.BLUE }, WorkerUtils.UnityGameLogic);
+            template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
             template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
-
 
             snapshot.AddEntity(template);
         }

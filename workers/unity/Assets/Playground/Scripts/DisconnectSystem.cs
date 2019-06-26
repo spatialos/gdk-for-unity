@@ -23,8 +23,7 @@ namespace Playground
         {
             Entities.With(group).ForEach((OnDisconnected data) =>
             {
-                Debug.LogWarningFormat("Disconnected from SpatialOS with reason: \"{0}\"",
-                    data.ReasonForDisconnect);
+                Debug.LogWarning($"Disconnected from SpatialOS with reason: {data.ReasonForDisconnect}");
             });
         }
     }
