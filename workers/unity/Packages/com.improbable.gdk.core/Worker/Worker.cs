@@ -80,9 +80,10 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Advances the worker to a new state using all messages received since the last <see cref="Advance"/> call.
+        ///     Ticks the worker. Fetches all messages received since the last <see cref="Tick"/> call and
+        ///     applies the diff.
         /// </summary>
-        public void Advance()
+        public void Tick()
         {
             ConnectionHandler.GetMessagesReceived(ref ViewDiff);
             View.ApplyDiff(ViewDiff);

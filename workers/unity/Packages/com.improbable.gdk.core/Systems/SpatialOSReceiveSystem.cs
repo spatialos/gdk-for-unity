@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
             try
             {
                 Profiler.BeginSample("GetMessages");
-                worker.Advance();
+                worker.Tick();
                 Profiler.EndSample();
 
                 var diff = worker.Diff;
@@ -38,8 +38,10 @@ namespace Improbable.Gdk.Core
                 Profiler.BeginSample("ApplyDiff ECS");
                 ecsViewSystem.ApplyDiff(diff);
                 Profiler.EndSample();
+
                 Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
+                Profiler.EndSample();
             }
             catch (Exception e)
             {

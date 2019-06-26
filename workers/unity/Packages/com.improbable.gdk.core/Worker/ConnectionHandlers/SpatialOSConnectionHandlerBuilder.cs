@@ -73,7 +73,7 @@ namespace Improbable.Gdk.Core
 
             if (flow == null)
             {
-                throw new InvalidOperationException("An connection flow implementation must be provided.");
+                throw new InvalidOperationException("A connection flow implementation must be provided.");
             }
 
             var connection = await flow.CreateAsync(connectionParameters);
