@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Mobile
         private const string AndroidSectionLabel = "Android";
         private const string DevelopmentTeamIdLabel = "Development Team Id";
         private const string RuntimeIpLabel = "Local runtime IP";
-        private const string ConnectLocallyLabel = "Should connect locally?";
+        private const string ConnectLocallyLabel = "Connect locally";
 
         private static readonly Color DarkGrey = new Color(0.4f, 0.4f, 0.4f, 1);
         private static readonly Color LightGrey = new Color(0.7f, 0.7f, 0.7f, 1);
