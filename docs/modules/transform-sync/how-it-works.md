@@ -34,32 +34,28 @@ component TransformInternal {
 > **Note:** The `TransformInternal` component contains additional fields such as `velocity` and `physics_tick`. These are implementation details of the Transform Synchronization Feature Module.
 
 <%(#Expandable title="Why not reuse the <code>Improbable.Position</code> SpatialOS component?")%>
-There are a few reasons why you might want different `Transform` and `Position` components.
 
-1. **Separation of responsibilies.** The `Improbable.Position` component is the load balancer's representation of location and the `TransformInternal` component is the workers' representation of location. This allows you to abstract the concept of location from the load balancer. A gameplay programmer would only need to be aware of the `TransformInternal` component without having to know about the load balancer at all.
-2. **Save bandwidth.** The `TransformInternal` component contains the compressed representations of location, rotation and velocity. By comparison, a `Position` uses 3 doubles representing the raw location of an entity. This means that if the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate, you have a net bandwidth saving compared to updating just the `Position` component at a high frequency!
-3. **Atomicity.** The `TransformInternal` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically.Two updates sent in the same frame from one worker are _not_ guaranteed to be received in the same frame on another.
+1. **Separation of responsibilies.** The `Improbable.Position` component is the load balancer's representation of location and the `TransformInternal` component is the workers' representation of location. This allows you to abstract the concept of location from the load balancer. A gameplay programmer would only need to be aware of the Unity `Transform` without having to know about the load balancer at all.
+1. **Save bandwidth.** The `TransformInternal` component contains the compressed representations of location, rotation and velocity. By comparison, a `Position` uses 3 doubles representing the raw location of an entity. If the `TransformInternal` component has a high frequency update rate and the `Position` component has a low frequency update rate, you have a net bandwidth saving compared to updating just the `Position` component at a high frequency!
+1. **Atomicity.** The `TransformInternal` component contains more than just the location. If the other fields were on a separate component, you lose the guarantee that all fields are updated atomically. Two updates sent in the same frame from one worker are _not_ guaranteed to be received in the same frame on another.
+
 <%(/Expandable)%>
 
-## How is transform compressed
+## How `TransformInternal` is compressed
 
-### Location
+##### Location
 
-Although the Improbable `Position` component uses 3 doubles, a Unity transform represents location as three floats. As this makes the double-precision of `Position` redundant, location can be represented with 96 bits instead of 192.
+Although the Improbable `Position` component uses 3 doubles, a Unity transform represents location as three floats. This makes the double-precision of `Position` redundant, and location can be represented with 96 bits instead of 192.
 
-To further optimise this, the `FixedPointVector3` type is introduced to represent a location as three [Q21.10](https://en.wikipedia.org/wiki/Q_(number_format)) _fixed-point_ values. This type represents each of its components as variable-length zig-zag encoded integers. This means that smaller _absolute_ values use fewer bits.
+To further optimise this, the `FixedPointVector3` type is introduced to represent a location as three [Q21.10](https://en.wikipedia.org/wiki/Q_(number_format)) _fixed-point_ values. This type represents each of its components as variable-length zig-zag encoded integers, so that smaller _absolute_ values use fewer bits.
 
-By using the Q21.10 fixed point format, each fixed point value is within the range -2097152 to 2097151.999 at a precision of 0.0009765625 (2^-10). Using this format to encode location as a `FixedPointVector3` means that it requires _at most_ 96 bits each, instead of _always_ requiring 96 bits.
+With the Q21.10 format, each fixed point value is within the range -2097152 to 2097151.999 at a precision of 0.0009765625 (2^-10). By encoding as a `FixedPointVector3`, location requires _at most_ 96 bits instead of _always_ requiring 96 bits.
 
-### Velocity
-
-Like location, velocity is also represented as three floats. Therefore, the techniques used for location are re-applied to store velocity as a `FixedPointVector3` instead.
-
-### Rotation
+##### Rotation
 
 The rotation of a transform is compressed from four floats to a single 32 bit unsigned integer, using the "smallest three" trick. As a quaternion's length must equal 1, the largest component can be dropped and recalculated later from the values of the other components. By storing the smallest three components at a lower precision, an entire quaternion can fit into 32 bits.
 
-To store this compressed state, the `CompressedQuaternion` type is introduced. A `CompressedQuaternion` utilises 2 bits to define the index of the largest component and 10 bits to encode each quaternion element, which translates to a mean precision in Euler angles of 0.08 degrees.
+The `CompressedQuaternion` schema type utilises 2 bits to define the index of the largest component and 10 bits to encode each quaternion element, which translates to a mean precision in Euler angles of 0.08 degrees.
 
 ## How do my entities' transform get synchronized
 
