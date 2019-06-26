@@ -10,7 +10,7 @@
         - The location and velocity fields are now [`Q21.10`](https://en.wikipedia.org/wiki/Q_(number_format)) fixed point values.
     - The `Quaternion` schema type has been replaced by the `CompressedQuaternion` type.
         - Rotation is now compressed from 4 floats to a single uint32.
-- The worker abstraction & connectors have been changed **significantly**. See the [Upgrade guide](TODO) for more details on how to upgrade. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
+- The worker abstraction & connectors have been changed **significantly**. See the [Upgrade guide](UPGRADE_GUIDE.md) for more details on how to upgrade. [#981](https://github.com/spatialos/gdk-for-unity/pull/981)
     - The `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` classes have been removed.
     - The `WorkerConnector` has had the following abstract methods removed:
         - `ConnectionService GetConnectionService()`
