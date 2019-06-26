@@ -8,7 +8,7 @@ When constructing a `ForwardingDispatcher`, you must now provide a `UnityEngine.
 
 ### Transform Synchronization changes
 
-Several utility methods in the `TransformUtils` class have been made `internal` to the Transform Synchronization package. We highly recommend that **if you were using the `TransformInternal` component in your logic, please use `UnityEngine.Transform` instead.**
+Several utility methods in the `TransformUtils` class have been made `internal` to the Transform Synchronization package. We highly recommend that **if you were using the `TransformInternal` component in your logic, to use `UnityEngine.Transform` instead.**
 
 You must no longer use the `TransformInternal.Snapshot` constructor.
 
@@ -22,7 +22,7 @@ var transform = new TransformInternal.Snapshot
 };
 ```
 
-Instead, you must use the `CreateTransformSnapshot` method provided by the `TransformUtils` class. This is to ensure that the contents of an entity's `TransformInternal` component are compressed using the Transform Synchronization module's new compression scheme.
+Instead, you must use the `TransformUtils.CreateTransformSnapshot` static method. This is to ensure that the contents of an entity's `TransformInternal` component are compressed using the Transform Synchronization module's new compression scheme.
 
 ```csharp
 // This is the correct way of initialising a `TransformInternal` snapshot manually.
