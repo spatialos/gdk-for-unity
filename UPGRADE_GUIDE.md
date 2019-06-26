@@ -35,11 +35,11 @@ If you use the `AddTransformSynchronizationComponents` method in the `TransformS
 
 ### WorkerConnector changes
 
-This release brought a number of changes to the `WorkerConnector` and its derived classes. The crucial difference is now that the logic for connecting a worker is described by composing objects in a builder-like pattern rather than class level methods on the `WorkerConnector` methods.
+This release brought a number of changes to the `WorkerConnector` and its derived classes. A crucial difference is now that the logic for connecting a worker is described by composing objects in a builder-like pattern rather than class level methods on the `WorkerConnector` methods.
 
-This means that the `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` have been removed, which contained default implementations for the class level methods for describing how a connection is made. Not to worry! The logic from these have been preserved in other objects. More about that later.
+As a result of this the `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` have been removed, with their logic preserved in other objects. More about that later.
 
-As a general rule for this upgrade, the changes in the `ClientWorkerConnector.cs`, `GameLogicWorkerConnector.cs`, and `MobileWorkerConnector.cs` classes between the `0.2.3` and `0.2.4` releases will be illustrative in the upgrade process. The upgrade process depends on how heavily you customized your worker connector.
+As a general rule for this upgrade, the changes in the [`ClientWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/ClientWorkerConnector.cs), [`GameLogicWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/GameLogicWorkerConnector.cs), and [`MobileWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/MobileWorkerConnector.cs) classes between the `0.2.3` and `0.2.4` releases will be illustrative in the upgrade process. The upgrade process depends on how heavily you customized your worker connector.
 
 Previously, your connection logic may have looked something like:
 
@@ -51,7 +51,7 @@ private async void Connect()
 }
 ```
 
-and all the details for how the connection was made and which flow it used were contained in the class methods like `GetConnectionService`, `GetReceptionistConfig`, etc.
+All the details for how the connection was made and which flow it used were contained in the class methods like `GetConnectionService`, `GetReceptionistConfig`, etc.
 
 Now, your connection logic will look something like:
 
@@ -65,7 +65,7 @@ private async void Connect()
     switch (initializer.GetConnectionService())
     {
         case ConnectionService.Receptionist:
-            builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient), initializer));
+            builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.MyWorkerType), initializer));
             break;
         case ConnectionService.Locator:
             builder.SetConnectionFlow(new LocatorFlow(initializer));
@@ -83,13 +83,13 @@ private async void Connect()
 
 There are a few new things here:
 
-- The `SpatialOSConnectionHandlerBuilder` which is a object for building up a SpatialOS connection. This contains the configuration for creating a single SpatialOS connection.
+- The `SpatialOSConnectionHandlerBuilder`. This object is used for configuring and creating a single SpatialOS connection.
 - The `xyzFlow` objects. These encapsulate the configuration and implementation for connecting to SpatialOS via a specific connection flow.
 - The `xyzFlowInitializer` objects. These describe how the configuration for a flow object is obtained.
 
 #### Upgrading my worker connectors
 
-For upgrading mobile worker connectors, see [below](#mobile-setup). We preserved the semantics of the `DefaultWorkerConnector` implementation in the `CommandLineConnectionFlowInitializer` and connection flow objects to make upgrading as easily as possible.
+For upgrading mobile worker connectors, see [below](#mobile-setup). We preserved the semantics of the `DefaultWorkerConnector` implementation in the `CommandLineConnectionFlowInitializer` and connection flow objects to make upgrading as easy as possible.
 
 In order to replicate the `DefaultWorkerConnector` behaviour exactly:
 
