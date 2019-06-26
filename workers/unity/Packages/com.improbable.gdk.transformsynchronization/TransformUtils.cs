@@ -309,7 +309,7 @@ namespace Improbable.Gdk.TransformSynchronization
             };
         }
 
-        // 2^-10 => 0.977mm precision
+        // 2^-10 => 0.0009765625 precision
         private const int FixedPointOne = (int) (1u << 10);
 
         private static int FloatToFixed(float a)
