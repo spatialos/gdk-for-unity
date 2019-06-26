@@ -75,10 +75,13 @@ namespace Improbable.Gdk.Mobile
 
         private static bool TryGetApkPath(string rootPath, out string apkPath)
         {
-            foreach (var file in Directory.GetFiles(rootPath, "*.apk", SearchOption.AllDirectories))
+            if (Directory.Exists(rootPath))
             {
-                apkPath = file;
-                return true;
+                foreach (var file in Directory.GetFiles(rootPath, "*.apk", SearchOption.AllDirectories))
+                {
+                    apkPath = file;
+                    return true;
+                }
             }
 
             apkPath = string.Empty;
