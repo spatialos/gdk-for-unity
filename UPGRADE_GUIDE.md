@@ -39,7 +39,7 @@ This release brought a number of changes to the `WorkerConnector` and its derive
 
 As a result of this the `DefaultWorkerConnector` and `DefaultMobileWorkerConnector` have been removed, with their logic preserved in other objects. More about that later.
 
-As a general rule for this upgrade, the changes in the [`ClientWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/ClientWorkerConnector.cs), [`GameLogicWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/GameLogicWorkerConnector.cs), and [`MobileWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/MobileWorkerConnector.cs) classes between the `0.2.3` and `0.2.4` releases will be illustrative in the upgrade process. The upgrade process depends on how heavily you customized your worker connector.
+As a general rule for this upgrade, the changes in the [`ClientWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/ClientWorkerConnector.cs), [`GameLogicWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/GameLogicWorkerConnector.cs), and [`MobileClientWorkerConnector.cs`](workers/unity/Assets/Playground/Scripts/Worker/MobileClientWorkerConnector.cs) classes between the `0.2.3` and `0.2.4` releases will be illustrative in the upgrade process. The upgrade process depends on how heavily you customized your worker connector.
 
 Previously, your connection logic may have looked something like:
 
