@@ -195,7 +195,7 @@ namespace Improbable.Gdk.Core
         ///    Denotes whether we should connect with development authentication.
         /// </summary>
         /// <remarks>
-        ///     If this is false, is it assumed that the <see cref="PlayerIdentityCredentials"/> element
+        ///     If this is false, it is assumed that the <see cref="PlayerIdentityCredentials"/> element
         ///     in the <see cref="LocatorParameters"/> has been filled.
         /// </remarks>
         public bool UseDevAuthFlow = true;
@@ -327,7 +327,7 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Gets the player id for the player trying to connect via the development authentication flow.
+        ///     Gets the player ID for the player trying to connect via the development authentication flow.
         /// </summary>
         /// <returns>A string containing the player id.</returns>
         protected virtual string GetPlayerId()

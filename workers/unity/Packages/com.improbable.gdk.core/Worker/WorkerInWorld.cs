@@ -10,6 +10,9 @@ using Improbable.Gdk.ReactiveComponents;
 
 namespace Improbable.Gdk.Core
 {
+    /// <summary>
+    ///     Represents a SpatialOS worker that is coupled with an ECS World.
+    /// </summary>
     public class WorkerInWorld : Worker
     {
         /// <summary>
