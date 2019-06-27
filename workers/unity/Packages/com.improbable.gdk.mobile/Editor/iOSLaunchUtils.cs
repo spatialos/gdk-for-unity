@@ -18,9 +18,9 @@ namespace Improbable.Gdk.Mobile
         private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "ios-build"));
         private static readonly string XCodeProjectFile = "Unity-iPhone.xcodeproj";
 
-        private static readonly Regex nameRegex = new Regex("^[a-z|A-Z|\\s|0-9]+");
-        private static readonly Regex simulatorUIDRegex = new Regex("\\[([A-Z]|[0-9]|-)+\\]");
-        private static readonly Regex deviceUIDRegex = new Regex("\\[([a-z]|[0-9])+\\]");
+        private static readonly Regex nameRegex = new Regex("^(.+) \\[");
+        private static readonly Regex simulatorUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\] \\(Simulator\\)$");
+        private static readonly Regex deviceUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\]$");
         
         public static Dictionary<string, string> RetrieveAvailableiOSSimulators()
         {
@@ -36,8 +36,8 @@ namespace Improbable.Gdk.Mobile
                     {
                         if (simulatorUIDRegex.IsMatch(message))
                         {
-                            var simulatorUID = simulatorUIDRegex.Match(message).Value.Trim('[', ']');
-                            availableSimulators[nameRegex.Match(message).Value] = simulatorUID;
+                            var simulatorUID = simulatorUIDRegex.Match(message).Groups[1].Value;
+                            availableSimulators[nameRegex.Match(message).Groups[1].Value] = simulatorUID;
                         }
                     }
                 })
@@ -61,8 +61,8 @@ namespace Improbable.Gdk.Mobile
                 {
                     if (deviceUIDRegex.IsMatch(message))
                     {
-                        var deviceUID = deviceUIDRegex.Match(message).Value.Trim('[', ']');
-                        availableDevices[nameRegex.Match(message).Value] = deviceUID;
+                        var deviceUID = deviceUIDRegex.Match(message).Groups[1].Value;
+                        availableDevices[nameRegex.Match(message).Groups[1].Value] = deviceUID;
                     }
                 })
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
