@@ -92,7 +92,7 @@ GDK package: TransformSynchronization<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/transform-synchronization/transform-utils">TransformUtils</a></td>
-<td style="padding: 14px; border: none;"></td>
+<td style="padding: 14px; border: none;">A collection of utility functions for use with the Transform Synchronization Feature Module. </td>
 </tr>
 </table>
 

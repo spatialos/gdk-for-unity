@@ -14,6 +14,10 @@ GDK package: Core<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 25ch"><a href="{{urlRoot}}/api/core/editor/common-ui-elements">CommonUIElements</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 25ch"><a href="{{urlRoot}}/api/core/editor/singleton-scriptable-object">SingletonScriptableObject</a></td>
 <td style="padding: 14px; border: none;">Base object for a singleton scriptable object. </td>
 </tr>
