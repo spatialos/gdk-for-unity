@@ -33,7 +33,7 @@ It is your responsibility to destroy the GameObjects that have been linked to th
 
 ## Use your custom `IEntityGameObjectCreator` implementation
 
-Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and add the following line to the `HandleWorkerConnectionEstablished` method.
+Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors) and add the following line to the `HandleWorkerConnectionEstablished` method.
 
 ```csharp
     GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, new MyGameObjectCreator());

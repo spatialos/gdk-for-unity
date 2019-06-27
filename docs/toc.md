@@ -72,7 +72,7 @@
     - Workflows
         - [Overview]({{urlRoot}}/reference/workflows/overview)
         - MonoBehaviours
-            - [Creating workers]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers)
+            - [Worker connectors]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
             - Interacting with SpatialOS
                 - [Readers & Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
                     - [Lifecycle]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)

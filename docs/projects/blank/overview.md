@@ -14,7 +14,7 @@ It has the minimum GDK feature set you need to start developing games for Spatia
 - Sample [local and cloud deployment]({{urlRoot}}/reference/glossary#deploying) configurations.
 - An empty [snapshot]({{urlRoot}}/reference/concepts/snapshots#snapshots).
 - [Client-worker and server-worker]({{urlRoot}}/reference/glossary#worker) JSON [configuration files](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
-- Client-worker and server-worker [worker connectors]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers) and [worker prefabs]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers#how-to-use-worker-prefabs).
+- Client-worker and server-worker [worker connectors]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors) and worker prefabs.
 - [Worker build configuration]({{urlRoot}}/projects/myo/build#build-your-workers).
 - A set of Unity Scenes to use in development.
 
