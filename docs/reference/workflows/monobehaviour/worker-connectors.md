@@ -82,8 +82,8 @@ public class ClientWorkerConnector : WorkerConnector
 
     public override void Dispose()
     {
-        // Need to call base.Dispose() to properly clean up.
-        // The ECS world and the connection.
+        // Need to call base.Dispose() to properly clean up
+        // the ECS world and the connection.
         base.Dispose();
     }
 }
@@ -93,20 +93,20 @@ public class ClientWorkerConnector : WorkerConnector
 
 ## How to modify the connection configuration
 
-When configuring the connection, you have a number of parameters to configure. The GDK provides a small framework for composing these parameters which you can extend to build reusable configurations.
+There are a number of parameters to consider when configuring the connection. The GDK provides a small framework for composing these parameters, which you can then extend to build reusable configurations.
 
-The `SpatialOSConnectionHandlerBuilder` object is central to this framework, it allows you to declare which connection flow to use and what parameters the connection should use. There are two key decisions that you need to make when configuring your connection.
+The `SpatialOSConnectionHandlerBuilder` object is central to this framework. It allows you to declare which connection flow to use, what parameters the connection should use, and how these parameters are populated.
 
 ### What connection parameters should I use
 
-The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class has a `CreateConnectionParameters(string workerType)` method which returns reasonable defaults for your `ConnectionParameters`. You can then tweak these to fit your use case:
+The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class has a `CreateConnectionParameters(string workerType)` method which returns reasonable defaults for your `ConnectionParameters`. You can then tweak these to fit your use case. For example:
 
 - If you are implementing a client worker, you may want to use the `KCP` networking stack.
 - If you are debugging the low level networking of a worker, you may want to enable [protocol logging](https://docs.improbable.io/reference/latest/shared/debugging#protocol-logging).
 
 ### How do I populate my connection flow parameters
 
-Each of the [connection flows]({{urlRoot}}/reference/concepts/connection-flows) have parmeters that need to be configured to ensure a successful connection.
+Each of the [connection flows]({{urlRoot}}/reference/concepts/connection-flows) have parameters that need to be configured to ensure a successful connection.
 
 The GDK provides the `IConnectionFlowInitializer<TConnectionFlow>` interface as part of the small framework mentioned above. This interface represents an object which knows how to initialize a connection flow of type `TConnectionFlow`. The GDK provides two implementations:
 
@@ -118,7 +118,6 @@ The GDK provides the `IConnectionFlowInitializer<TConnectionFlow>` interface as 
 The Locator and AlphaLocator connection flows both have callbacks to the user during the connection process. The `LocatorFlow` and `AlphaLocatorFlow` objects provide a reasonable default implementation for these callbacks, but you may want to customize this to suit your connection & authentication logic. 
 
 To customize these flows, simply inherit from the relevant flow object and override the methods that you want to tweak. Please refer to the API documentation for more detail on the [`LocatorFlow`]({{urlRoot}}/api/core/locator-flow) and [`AlphaLocatorFlow`]({{urlRoot}}/api/core/alpha-locator-flow).
-
 
 ## Example implementation
 

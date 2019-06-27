@@ -33,7 +33,7 @@ To learn about a workers’ connection to the SpatialOS Runtime, see:
 
 To learn more about how to create and use workers in the GDK, please see the following documentation:
 
-  * MonoBehaviour workflow - [Workers: Creating workers with WorkerConnector]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
+  * MonoBehaviour workflow - [Workers: Creating workers with the WorkerConnector]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
   * ECS workflow - [worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
 
 ## Example implementation
