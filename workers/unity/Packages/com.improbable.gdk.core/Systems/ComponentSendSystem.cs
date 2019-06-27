@@ -24,13 +24,9 @@ namespace Improbable.Gdk.Core
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
         private NativeArray<JobHandle> gatheringJobs;
 
-        private IConnectionHandler connection;
-
         protected override void OnCreate()
         {
             base.OnCreate();
-
-            connection = World.GetExistingSystem<WorkerSystem>().ConnectionHandler;
 
             PopulateDefaultComponentReplicators();
             chunkArrayCache = new NativeArray<ArchetypeChunk>[componentReplicators.Count];
@@ -57,11 +53,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (!connection.IsConnected())
-            {
-                return;
-            }
-
             var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             Profiler.BeginSample("GatherChunks");

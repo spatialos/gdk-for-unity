@@ -12,23 +12,21 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     public class SpatialOSSendSystemTests
     {
         internal const uint TestComponentId = 1;
-
-        private const string TestWorkerType = "TestWorker";
         private const uint UnknownComponentId = 0;
 
-        private World world;
+        private WorkerInWorld worker;
         private ComponentSendSystem sendSystem;
-
-        private ILogDispatcher logDispatcher;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            world = new World("test-world");
-            logDispatcher = new TestLogDispatcher();
-            world.CreateSystem<WorkerSystem>(new MockConnectionHandler(), null, logDispatcher, TestWorkerType, Vector3.zero);
+            var mockConnectionBuilder = new MockConnectionHandlerBuilder();
+            worker = WorkerInWorld.CreateWorkerInWorldAsync(mockConnectionBuilder, "TestWorkerType",
+                new TestLogDispatcher(), Vector3.zero).Result;
 
-            sendSystem = world.GetOrCreateSystem<ComponentSendSystem>();
+            var world = worker.World;
+
+            sendSystem = world.GetExistingSystem<ComponentSendSystem>();
 
             var testHandler = new TestComponentReplicationHandler();
             sendSystem.AddComponentReplicator(testHandler);
@@ -37,8 +35,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            logDispatcher.Dispose();
-            world.Dispose();
+            worker.Dispose();
         }
 
         [Test]

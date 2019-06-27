@@ -31,8 +31,8 @@ namespace Improbable.Gdk.BuildSystem
         {
             try
             {
-                var commandLine = Environment.GetCommandLineArgs();
-                var buildTargetArg = CommandLineUtility.GetCommandLineValue(commandLine, "buildTarget", "local");
+                var args = CommandLineArgs.FromCommandLine();
+                var buildTargetArg = args.GetCommandLineValue("buildTarget", "local");
 
                 BuildEnvironment buildEnvironment;
                 switch (buildTargetArg.ToLower())
@@ -47,14 +47,11 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown build target value: " + buildTargetArg);
                 }
 
-                var workerTypesArg =
-                    CommandLineUtility.GetCommandLineValue(commandLine, BuildWorkerTypes,
-                        "UnityClient,UnityGameLogic");
+                var workerTypesArg = args.GetCommandLineValue(BuildWorkerTypes, "UnityClient,UnityGameLogic");
                 var wantedWorkerTypes = workerTypesArg.Split(',');
 
                 ScriptingImplementation scriptingBackend;
-                var wantedScriptingBackend =
-                    CommandLineUtility.GetCommandLineValue(commandLine, "scriptingBackend", "mono");
+                var wantedScriptingBackend = args.GetCommandLineValue("scriptingBackend", "mono");
                 switch (wantedScriptingBackend)
                 {
                     case "mono":

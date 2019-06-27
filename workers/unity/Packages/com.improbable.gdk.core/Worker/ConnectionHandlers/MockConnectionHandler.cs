@@ -1,7 +1,27 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
+    public class MockConnectionHandlerBuilder : IConnectionHandlerBuilder
+    {
+        public MockConnectionHandler ConnectionHandler;
+
+        public MockConnectionHandlerBuilder()
+        {
+            ConnectionHandler = new MockConnectionHandler();
+        }
+
+        public Task<IConnectionHandler> CreateAsync(CancellationToken? token = null)
+        {
+            return Task.FromResult((IConnectionHandler) ConnectionHandler);
+        }
+
+        public string WorkerType { get; }
+    }
+
     public class MockConnectionHandler : IConnectionHandler
     {
         private uint updateId;
@@ -54,6 +74,16 @@ namespace Improbable.Gdk.Core
         // TODO: Commands
 
         #region IConnectionHandler implementation
+
+        public string GetWorkerId()
+        {
+            return "TestWorker";
+        }
+
+        public List<string> GetWorkerAttributes()
+        {
+            return new List<string> { "attribute_the_first", "attribute_the_second" };
+        }
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
-using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEngine;
 
@@ -15,8 +14,6 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public abstract class WorkerConnector : MonoBehaviour, IDisposable
     {
-        private delegate Task<Worker> ConnectionDelegate();
-
         /// <summary>
         ///     The number of connection attempts before giving up.
         /// </summary>
@@ -28,7 +25,7 @@ namespace Improbable.Gdk.Core
         /// <remarks>
         ///    Only safe to access after the connection has succeeded.
         /// </remarks>
-        public Worker Worker;
+        public WorkerInWorld Worker;
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
@@ -45,12 +42,12 @@ namespace Improbable.Gdk.Core
                     value.Invoke(Worker);
                 }
             }
-            remove { workerConnectedCallbacks.Remove(value); }
+            remove => workerConnectedCallbacks.Remove(value);
         }
 
         private static readonly SemaphoreSlim WorkerConnectionSemaphore = new SemaphoreSlim(1, 1);
 
-        // Important run in this step as otherwise it can interfere with the the domain unloading logic.
+        // Important run in this step as otherwise it can interfere with the domain unloading logic.
         protected void OnApplicationQuit()
         {
             Dispose();
@@ -64,15 +61,16 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Asynchronously connects a worker to the SpatialOS runtime.
         /// </summary>
-        /// <remarks>
-        ///     Uses the global position of this GameObject as the worker origin.
-        ///     Uses <see cref="ShouldUseLocator"/> to determine whether to connect via the Locator.
-        /// </remarks>
-        /// <param name="workerType">The type of the worker to connect as</param>
+        /// <param name="builder">Describes how to create a <see cref="IConnectionHandler"/> for this worker.</param>
         /// <param name="logger">The logger for the worker to use.</param>
         /// <returns></returns>
-        public async Task Connect(string workerType, ILogDispatcher logger)
+        protected async Task Connect(IConnectionHandlerBuilder builder, ILogDispatcher logger)
         {
+            if (builder == null)
+            {
+                throw new ArgumentException("Builder cannot be null.", nameof(builder));
+            }
+
             // Check that other workers have finished trying to connect before this one starts.
             // This prevents races on the workers starting and races on when we start ticking systems.
             await WorkerConnectionSemaphore.WaitAsync();
@@ -85,32 +83,8 @@ namespace Improbable.Gdk.Core
                 }
 
                 var origin = transform.position;
-                ConnectionDelegate connectionDelegate;
-                var chosenService = GetConnectionService();
-                var connectionParameters = GetConnectionParameters(workerType, chosenService);
-                switch (chosenService)
-                {
-                    case ConnectionService.Receptionist:
-                        connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetReceptionistConfig(workerType), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
-                        break;
-                    case ConnectionService.Locator:
-                        connectionDelegate = async () =>
-                            await Worker
-                                .CreateWorkerAsync(GetLocatorConfig(), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
-                        break;
-                    case ConnectionService.AlphaLocator:
-                        connectionDelegate = async () =>
-                            await Worker.CreateWorkerAsync(GetAlphaLocatorConfig(workerType), connectionParameters, logger, origin)
-                                .ConfigureAwait(false);
-                        break;
-                    default:
-                        throw new Exception("No valid connection flow type selected");
-                }
 
-                Worker = await ConnectWithRetries(connectionDelegate, MaxConnectionAttempts, logger, workerType);
+                Worker = await ConnectWithRetries(builder, MaxConnectionAttempts, logger, builder.WorkerType, origin);
 
                 Worker.OnDisconnect += OnDisconnected;
 
@@ -132,7 +106,7 @@ namespace Improbable.Gdk.Core
             {
                 logger.HandleLog(LogType.Error, new LogEvent("Failed to create worker")
                     .WithException(e)
-                    .WithField("WorkerType", workerType)
+                    .WithField("WorkerType", builder.WorkerType)
                     .WithField("Message", e.Message)
                     .WithField("Stacktrace", e.StackTrace));
 #if UNITY_EDITOR
@@ -160,205 +134,6 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        /// <summary>
-        ///     Determines which <see cref="ConnectionService"/> to use to connect to the SpatialOS Runtime.
-        /// </summary>
-        /// <returns>A <see cref="ConnectionService"/> object describing which connection servce to use.</returns>
-        protected abstract ConnectionService GetConnectionService();
-
-        /// <summary>
-        ///     Retrieves the <see cref="ConnectionParameters"/> needed to be able to connect to any connection service.
-        /// </summary>
-        /// <param name="workerType">The type of worker you want to connect.</param>
-        /// <param name="service">The connection service used to connect.</param>
-        /// <returns>A <see cref="ConnectionParameters"/> object.</returns>
-        protected abstract ConnectionParameters GetConnectionParameters(string workerType, ConnectionService service);
-
-        /// <summary>
-        /// Retrieves the configuration needed to connect via the Locator service.
-        /// </summary>
-        /// <returns>A <see cref="LocatorConfig"/> object.</returns>
-        protected abstract LocatorConfig GetLocatorConfig();
-
-        /// <summary>
-        /// Retrieves the configuration needed to connect via the Alpha Locator service.
-        /// </summary>
-        /// <remarks>
-        ///     This connection service is still in Alpha and does not provide an integration with Steam.
-        /// </remarks>
-        /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
-        protected abstract AlphaLocatorConfig GetAlphaLocatorConfig(string workerType);
-
-        /// <summary>
-        /// Retrieves the configuration needed to connect via the Alpha Locator service using the development authentication flow.
-        /// </summary>
-        /// <returns>A <see cref="AlphaLocatorConfig"/> object.</returns>
-        protected AlphaLocatorConfig GetAlphaLocatorConfigViaDevAuthFlow(string workerType)
-        {
-            var token = GetDevAuthToken();
-            var pit = GetDevelopmentPlayerIdentityToken(token, GetPlayerId(), GetDisplayName());
-            var loginTokenDetails = GetDevelopmentLoginTokens(workerType, pit);
-            var loginToken = SelectLoginToken(loginTokenDetails);
-
-            return new AlphaLocatorConfig
-            {
-                LocatorHost = RuntimeConfigDefaults.LocatorHost,
-                LocatorParameters = new Improbable.Worker.CInterop.Alpha.LocatorParameters
-                {
-                    PlayerIdentity = new PlayerIdentityCredentials
-                    {
-                        PlayerIdentityToken = pit,
-                        LoginToken = loginToken,
-                    },
-                    UseInsecureConnection = false,
-                }
-            };
-        }
-
-        /// <summary>
-        /// Retrieves the configuration needed to connect via the Receptionist service.
-        /// </summary>
-        /// <param name="workerType">The type of worker you want to connect.</param>
-        /// <returns>A <see cref="ReceptionistConfig"/> object.</returns>
-        protected abstract ReceptionistConfig GetReceptionistConfig(string workerType);
-
-        /// <summary>
-        /// Retrieves the player id for the player trying to connect via the anonymous authentication flow.
-        /// </summary>
-        /// <returns>A string containing the player id.</returns>
-        protected virtual string GetPlayerId()
-        {
-            return $"Player-{Guid.NewGuid()}";
-        }
-
-        /// <summary>
-        /// Retrieves the display name for the player trying to connect via the anonymous authentication flow.
-        /// </summary>
-        /// <returns>A string containing the display name.</returns>
-        protected virtual string GetDisplayName()
-        {
-            return string.Empty;
-        }
-
-        /// <summary>
-        ///     Selects which deployment to connect to.
-        /// </summary>
-        /// <param name="deployments">The list of deployments.</param>
-        /// <returns>The name of the deployment to connect to.</returns>
-        protected virtual string SelectDeploymentName(DeploymentList deployments)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Loads the development authentication token and stores it in the DevelopmentAuthToken field.
-        /// </summary>
-        protected virtual string GetDevAuthToken()
-        {
-            if (PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey))
-            {
-                return PlayerPrefs.GetString(RuntimeConfigNames.DevAuthTokenKey);
-            }
-
-            var textAsset = Resources.Load<TextAsset>("DevAuthToken");
-            if (textAsset != null)
-            {
-                PlayerPrefs.SetString(RuntimeConfigNames.DevAuthTokenKey, textAsset.text.Trim());
-            }
-            else
-            {
-                throw new MissingReferenceException("Unable to find DevAuthToken.txt in the Resources folder. " +
-                    "You can generate one via SpatialOS > Generate Dev Authentication Token.");
-            }
-
-            return PlayerPrefs.GetString(RuntimeConfigNames.DevAuthTokenKey);
-        }
-
-        /// <summary>
-        ///     Selects which login token to use to connect via the anonymous authentication flow.
-        /// </summary>
-        /// <param name="loginTokens">A list of available login tokens.</param>
-        /// <returns>The selected login token.</returns>
-        protected virtual string SelectLoginToken(List<LoginTokenDetails> loginTokens)
-        {
-            if (loginTokens.Count == 0)
-            {
-                throw new AuthenticationFailedException("Did not receive any login tokens. Do you have a valid deployment running?");
-            }
-
-            return loginTokens[0].LoginToken;
-        }
-
-        /// <summary>
-        ///     Retrieves the player identity token needed to generate a login token when using
-        ///     the anonymous authentication flow.
-        /// </summary>
-        /// <param name="authToken">The authentication token that you generated.</param>
-        /// <param name="playerId">The id of the player that wants to connect.</param>
-        /// <param name="displayName">The display name of the player that wants to connect.</param>
-        /// <returns>The player identity token.</returns>
-        protected virtual string GetDevelopmentPlayerIdentityToken(string authToken, string playerId, string displayName)
-        {
-            var result = DevelopmentAuthentication.CreateDevelopmentPlayerIdentityTokenAsync(
-                RuntimeConfigDefaults.LocatorHost,
-                RuntimeConfigDefaults.AnonymousAuthenticationPort,
-                new PlayerIdentityTokenRequest
-                {
-                    DevelopmentAuthenticationToken = authToken,
-                    PlayerId = playerId,
-                    DisplayName = displayName,
-                }
-            ).Get();
-
-            if (!result.HasValue)
-            {
-                throw new AuthenticationFailedException("Did not receive a player identity token.");
-            }
-
-            if (result.Value.Status.Code != ConnectionStatusCode.Success)
-            {
-                throw new AuthenticationFailedException("Failed to retrieve a player identity token.\n" +
-                    $"error code: {result.Value.Status.Code}\nerror message: {result.Value.Status.Detail}");
-            }
-
-            return result.Value.PlayerIdentityToken;
-        }
-
-        /// <summary>
-        ///     Retrieves the login tokens for all active deployments that the player
-        ///     can connect to via the anonymous authentication flow.
-        /// </summary>
-        /// <param name="workerType">The type of the worker that wants to connect.</param>
-        /// <param name="playerIdentityToken">The player identity token of the player that wants to connect.</param>
-        /// <returns>A list of all available login tokens and their deployments.</returns>
-        protected virtual List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)
-        {
-            var result = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
-                RuntimeConfigDefaults.LocatorHost,
-                RuntimeConfigDefaults.AnonymousAuthenticationPort,
-                new LoginTokensRequest
-                {
-                    WorkerType = workerType,
-                    PlayerIdentityToken = playerIdentityToken,
-                    UseInsecureConnection = false,
-                    DurationSeconds = 120,
-                }
-            ).Get();
-
-            if (!result.HasValue)
-            {
-                throw new AuthenticationFailedException("Did not receive any login tokens back.");
-            }
-
-            if (result.Value.Status.Code != ConnectionStatusCode.Success)
-            {
-                throw new AuthenticationFailedException("Failed to retrieve any login tokens.\n" +
-                    $"error code: {result.Value.Status.Code}\nerror message: {result.Value.Status.Detail}");
-            }
-
-            return result.Value.LoginTokens;
-        }
-
         protected virtual void HandleWorkerConnectionEstablished()
         {
         }
@@ -367,15 +142,29 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        private static async Task<Worker> ConnectWithRetries(ConnectionDelegate connectionDelegate, int maxAttempts,
-            ILogDispatcher logger, string workerType)
+        private static async Task<WorkerInWorld> ConnectWithRetries(IConnectionHandlerBuilder connectionHandlerBuilder, int maxAttempts,
+            ILogDispatcher logger, string workerType, Vector3 origin)
         {
             var remainingAttempts = maxAttempts;
             while (remainingAttempts > 0)
             {
+                if (!Application.isPlaying)
+                {
+                    throw new ConnectionFailedException("Editor application stopped", ConnectionErrorReason.EditorApplicationStopped);
+                }
+
                 try
                 {
-                    return await connectionDelegate();
+                    using (var tokenSource = new CancellationTokenSource())
+                    {
+                        Action cancelTask = delegate { tokenSource.Cancel(); };
+                        Application.quitting += cancelTask;
+
+                        var workerInWorld = await WorkerInWorld.CreateWorkerInWorldAsync(connectionHandlerBuilder, workerType, logger, origin, tokenSource.Token);
+
+                        Application.quitting -= cancelTask;
+                        return workerInWorld;
+                    }
                 }
                 catch (ConnectionFailedException e)
                 {
@@ -402,6 +191,18 @@ namespace Improbable.Gdk.Core
             return $"{workerType}-{Guid.NewGuid()}";
         }
 
+        protected ConnectionParameters CreateConnectionParameters(string workerType, IConnectionParameterInitializer initializer = null)
+        {
+            var @params = new ConnectionParameters
+            {
+                WorkerType = workerType,
+                DefaultComponentVtable = new ComponentVtable()
+            };
+
+            initializer?.Initialize(@params);
+
+            return @params;
+        }
 
         private void OnDisconnected(string reason)
         {

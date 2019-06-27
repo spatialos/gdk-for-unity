@@ -17,29 +17,29 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public Entity WorkerEntity;
 
-        public readonly Connection Connection;
         public readonly ILogDispatcher LogDispatcher;
         public readonly string WorkerType;
+        public readonly string WorkerId;
         public readonly Vector3 Origin;
 
-        internal MessagesToSend MessagesToSend;
-
-        internal readonly View View = new View();
-        internal readonly IConnectionHandler ConnectionHandler;
+        internal readonly View View;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
-        internal ViewDiff Diff;
+        internal WorkerInWorld Worker;
 
-        public WorkerSystem(IConnectionHandler connectionHandler, Connection connection, ILogDispatcher logDispatcher, string workerType, Vector3 origin)
+        internal ViewDiff Diff => Worker.ViewDiff;
+        internal MessagesToSend MessagesToSend => Worker.MessagesToSend;
+
+        public WorkerSystem(WorkerInWorld worker)
         {
-            Connection = connection;
-            LogDispatcher = logDispatcher;
-            WorkerType = workerType;
-            Origin = origin;
-            ConnectionHandler = connectionHandler;
+            Worker = worker;
 
-            MessagesToSend = connectionHandler.GetMessagesToSendContainer();
+            LogDispatcher = worker.LogDispatcher;
+            WorkerType = worker.WorkerType;
+            WorkerId = worker.WorkerId;
+            Origin = worker.Origin;
+            View = worker.View;
         }
 
         /// <summary>
@@ -70,23 +70,22 @@ namespace Improbable.Gdk.Core
 
         public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
         {
-            MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+            Worker.MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
         }
 
         public void SendMetrics(Metrics metrics)
         {
-            MessagesToSend.AddMetrics(metrics);
+            Worker.MessagesToSend.AddMetrics(metrics);
         }
 
-        internal void GetMessages()
+        internal void Tick()
         {
-            ConnectionHandler.GetMessagesReceived(ref Diff);
+            Worker.Tick();
         }
 
         internal void SendMessages()
         {
-            ConnectionHandler.PushMessagesToSend(MessagesToSend);
-            MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
+            Worker.EnsureMessagesFlushed();
         }
 
         protected override void OnCreate()
@@ -96,12 +95,6 @@ namespace Improbable.Gdk.Core
             WorkerEntity = entityManager.CreateEntity(typeof(OnConnected), typeof(WorkerEntityTag));
             EntityIdToEntity.Add(new EntityId(0), WorkerEntity);
             Enabled = false;
-        }
-
-        protected override void OnDestroy()
-        {
-            ConnectionHandler.Dispose();
-            base.OnDestroy();
         }
 
         protected override void OnUpdate()

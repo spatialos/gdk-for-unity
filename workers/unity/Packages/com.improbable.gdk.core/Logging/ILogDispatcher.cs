@@ -11,9 +11,9 @@ namespace Improbable.Gdk.Core
     public interface ILogDispatcher : IDisposable
     {
         /// <summary>
-        ///     The SpatialOS connection.
+        ///     The associated GDK Worker.
         /// </summary>
-        Connection Connection { get; set; }
+        Worker Worker { get; set; }
 
         /// <summary>
         ///     The worker type associated with this logger.

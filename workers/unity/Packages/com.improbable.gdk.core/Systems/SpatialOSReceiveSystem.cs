@@ -16,8 +16,6 @@ namespace Improbable.Gdk.Core
         private EcsViewSystem ecsViewSystem;
         private EntitySystem entitySystem;
 
-        private View view;
-
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -25,8 +23,6 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();
             entitySystem = World.GetOrCreateSystem<EntitySystem>();
-
-            view = worker.View;
         }
 
         protected override void OnUpdate()
@@ -34,7 +30,7 @@ namespace Improbable.Gdk.Core
             try
             {
                 Profiler.BeginSample("GetMessages");
-                worker.GetMessages();
+                worker.Tick();
                 Profiler.EndSample();
 
                 var diff = worker.Diff;
@@ -42,11 +38,9 @@ namespace Improbable.Gdk.Core
                 Profiler.BeginSample("ApplyDiff ECS");
                 ecsViewSystem.ApplyDiff(diff);
                 Profiler.EndSample();
+
                 Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
-                Profiler.EndSample();
-                Profiler.BeginSample("ApplyDiff View");
-                view.ApplyDiff(diff);
                 Profiler.EndSample();
             }
             catch (Exception e)

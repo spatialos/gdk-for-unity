@@ -1,12 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Improbable.Gdk.ReactiveComponents;
 using Improbable.Worker.CInterop;
-using Unity.Entities;
-using UnityEngine;
-using Improbable.Gdk.Subscriptions;
-using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 
 namespace Improbable.Gdk.Core
 {
@@ -15,11 +11,6 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class Worker : IDisposable
     {
-        /// <summary>
-        ///     The origin of the worker in global Unity space.
-        /// </summary>
-        public readonly Vector3 Origin;
-
         /// <summary>
         ///     The type of the worker.
         /// </summary>
@@ -34,263 +25,108 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerId;
 
         /// <summary>
+        ///     The worker attribute list
+        /// </summary>
+        public readonly List<string> Attributes;
+
+        /// <summary>
         ///     The logger for this worker.
         /// </summary>
         public ILogDispatcher LogDispatcher;
 
         /// <summary>
-        ///     The connection to the SpatialOS runtime.
+        ///     Denotes whether this worker is connected or not.
         /// </summary>
-        public Connection Connection { get; private set; }
+        public bool IsConnected => ConnectionHandler.IsConnected();
 
-        /// <summary>
-        ///     The ECS world associated with this worker.
-        /// </summary>
-        public World World { get; private set; }
+        protected IConnectionHandler ConnectionHandler;
 
-        private readonly WorkerDisconnectCallbackSystem disconnectCallbackSystem;
+        // todo replace internal with real apis
+        internal readonly View View;
+        internal ViewDiff ViewDiff;
 
-        /// <summary>
-        ///     An event that triggers when the worker is disconnected.
-        /// </summary>
-        public event Action<string> OnDisconnect
+        internal MessagesToSend MessagesToSend;
+
+        protected Worker(IConnectionHandler connectionHandler, string workerType, ILogDispatcher logDispatcher)
         {
-            add => disconnectCallbackSystem.OnDisconnected += value;
-            remove => disconnectCallbackSystem.OnDisconnected -= value;
-        }
-
-        private Worker(string workerType, Connection connection, ILogDispatcher logDispatcher, Vector3 origin)
-        {
-            Origin = origin;
+            ConnectionHandler = connectionHandler;
             WorkerType = workerType;
-            WorkerId = connection.GetWorkerId();
+            WorkerId = connectionHandler.GetWorkerId();
+            Attributes = connectionHandler.GetWorkerAttributes();
 
-            Connection = connection;
             LogDispatcher = logDispatcher;
-            logDispatcher.Connection = connection;
+            logDispatcher.Worker = this;
             logDispatcher.WorkerType = workerType;
 
-            World = new World(Connection.GetWorkerId());
-            AddCoreSystems();
-
-            // This isn't a core system, this is for an easy disconnect event
-            disconnectCallbackSystem = World.GetOrCreateSystem<WorkerDisconnectCallbackSystem>();
+            MessagesToSend = connectionHandler.GetMessagesToSendContainer();
+            View = new View();
         }
 
         /// <summary>
-        ///     Tries to connect to the SpatialOS Runtime and creates the worker responsible for the connection upon successfully
-        ///     connecting.
+        ///     Creates a <see cref="Worker"/> object asynchronously.
         /// </summary>
-        /// <param name="connectionFuture">
-        ///     The <see cref="Future{T}" /> of the <see cref="Connection" /> object that we use to
-        ///     connect to the SpatialOS Runtime.
+        /// <param name="connectionHandlerBuilder">
+        ///     A builder which describes how to create the <see cref="IConnectionHandler"/> for this worker.
         /// </param>
-        /// <param name="workerType">The type of the worker.</param>
-        /// <param name="logger">The logger used by this worker.</param>
-        /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>
-        ///     A <see cref="Task{TResult}" /> to run this method asyncally and retrieve the created <see cref="Worker" />
-        ///     object upon connecting successfully.
-        /// </returns>
-        private static async Task<Worker> TryToConnectAsync(Future<Connection> connectionFuture,
-            string workerType,
-            ILogDispatcher logger,
-            Vector3 origin)
+        /// <param name="workerType">The type of worker to connect as.</param>
+        /// <param name="logDispatcher">The logger to use for this worker.</param>
+        /// <param name="token">A cancellation token which will cancel this asynchronous operation</param>
+        /// <returns>A task which represents the asynchronous creation of a worker.</returns>
+        public static async Task<Worker> CreateWorkerAsync(IConnectionHandlerBuilder connectionHandlerBuilder, string workerType,
+            ILogDispatcher logDispatcher, CancellationToken? token = null)
         {
-            Connection connection;
-            using (var tokenSource = new CancellationTokenSource())
-            {
-                Action cancelTask = delegate { tokenSource?.Cancel(); };
-                Application.quitting += cancelTask;
-                connection = await Task.Run(() => connectionFuture.Get()).WithCancellation(tokenSource.Token);
-                Application.quitting -= cancelTask;
-            }
-
-            // A check is needed for the case that play mode is exited before the connection can complete.
-            if (!Application.isPlaying)
-            {
-                connection.Dispose();
-                throw new ConnectionFailedException("Editor application stopped",
-                    ConnectionErrorReason.EditorApplicationStopped);
-            }
-
-            if (connection.GetConnectionStatusCode() != ConnectionStatusCode.Success)
-            {
-                throw new ConnectionFailedException(GetConnectionFailureReason(connection),
-                    ConnectionErrorReason.CannotEstablishConnection);
-            }
-
-            var worker = new Worker(workerType, connection, logger, origin);
-            logger.HandleLog(LogType.Log, new LogEvent("Successfully created a worker")
-                .WithField("WorkerId", worker.WorkerId));
-            return worker;
+            var handler = await connectionHandlerBuilder.CreateAsync(token);
+            return new Worker(handler, workerType, logDispatcher);
         }
 
         /// <summary>
-        ///     Connects to the SpatialOS Runtime via the Receptionist service and creates a <see cref="Worker" /> object
-        ///     asynchronously.
+        ///     Ticks the worker. Fetches all messages received since the last <see cref="Tick"/> call and
+        ///     applies the diff.
         /// </summary>
-        /// <param name="parameters">
-        ///     The <see cref="ReceptionistConfig" /> object stores the configuration needed to connect via the
-        ///     Receptionist Service.
-        /// </param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
-        /// <param name="logger">The logger used by this worker.</param>
-        /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>
-        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
-        ///     <see cref="Worker" /> object upon connecting successfully.
-        /// </returns>
-        public static async Task<Worker> CreateWorkerAsync(
-            ReceptionistConfig parameters,
-            ConnectionParameters connectionParameters,
-            ILogDispatcher logger,
-            Vector3 origin)
+        public void Tick()
         {
-            using (var connectionFuture =
-                Connection.ConnectAsync(parameters.ReceptionistHost, parameters.ReceptionistPort, parameters.WorkerId,
-                    connectionParameters))
-            {
-                return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
-            }
+            ConnectionHandler.GetMessagesReceived(ref ViewDiff);
+            View.ApplyDiff(ViewDiff);
+        }
+
+        public void EnsureMessagesFlushed()
+        {
+            ConnectionHandler.PushMessagesToSend(MessagesToSend);
+            MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
+        }
+
+
+        /// <summary>
+        ///     Sends a log message to SpatialOS from this worker.
+        /// </summary>
+        /// <param name="logLevel">The log verbosity level.</param>
+        /// <param name="message">The log message.</param>
+        /// <param name="loggerName">A name for the sender of the log.</param>
+        /// <param name="entityId">
+        ///     The <see cref="EntityId"/> to associate with the log message.
+        ///     Set to null for no <see cref="EntityId"/>.
+        /// </param>
+        public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
+        {
+            MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
         }
 
         /// <summary>
-        ///     Connects to the SpatialOS Runtime via the Locator service and creates a <see cref="Worker" /> object
-        ///     asynchronously.
+        ///     Gets the value for a given worker flag.
         /// </summary>
-        /// <param name="parameters">
-        ///     The <see cref="LocatorConfig" /> object stores the configuration needed to connect via the
-        ///     Receptionist Service.
-        /// </param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
-        /// <param name="logger">The logger used by this worker.</param>
-        /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>
-        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
-        ///     <see cref="Worker" /> object upon connecting successfully.
-        /// </returns>
-        public static async Task<Worker> CreateWorkerAsync(
-            LocatorConfig parameters,
-            ConnectionParameters connectionParameters,
-            ILogDispatcher logger,
-            Vector3 origin)
+        /// <param name="key">The key of the worker flag.</param>
+        /// <returns>The value of the flag, if it exists, null otherwise.</returns>
+        public string GetWorkerFlag(string key)
         {
-            using (var locator = new Locator(parameters.LocatorHost, parameters.LocatorParameters))
-            {
-                var deploymentList = await GetDeploymentList(locator);
-
-                var deploymentName = parameters.DeploymentListCallback(deploymentList);
-                if (string.IsNullOrEmpty(deploymentName))
-                {
-                    throw new ConnectionFailedException("No deployment name chosen",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                using (var connectionFuture = locator.ConnectAsync(deploymentName, connectionParameters, (_) => true))
-                {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
-                }
-            }
+            return View.GetWorkerFlag(key);
         }
 
-        /// <summary>
-        ///     Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <see cref="Worker" /> object
-        ///     asynchronously.
-        /// </summary>
-        /// <param name="parameters">
-        ///     The <see cref="AlphaLocatorConfig" /> object stores the configuration needed to connect via the
-        ///     Receptionist Service.
-        /// </param>
-        /// <param name="connectionParameters">The <see cref="ConnectionParameters" /> storing </param>
-        /// <param name="logger">The logger used by this worker.</param>
-        /// <param name="origin">The origin of this worker in the local Unity space.</param>
-        /// <returns>
-        ///     A <see cref="Task{TResult}" /> to run this method asynchronously and retrieve the created
-        ///     <see cref="Worker" /> object upon connecting successfully.
-        /// </returns>
-        public static async Task<Worker> CreateWorkerAsync(
-            AlphaLocatorConfig parameters,
-            ConnectionParameters connectionParameters,
-            ILogDispatcher logger,
-            Vector3 origin)
+        public virtual void Dispose()
         {
-            using (var locator = new AlphaLocator(parameters.LocatorHost, parameters.LocatorParameters))
-            {
-                using (var connectionFuture = locator.ConnectAsync(connectionParameters))
-                {
-                    return await TryToConnectAsync(connectionFuture, connectionParameters.WorkerType, logger, origin);
-                }
-            }
-        }
-
-        private static async Task<DeploymentList> GetDeploymentList(Locator locator)
-        {
-            using (var deploymentsFuture = locator.GetDeploymentListAsync())
-            {
-                var deploymentList = await Task.Run(() => deploymentsFuture.Get()).ConfigureAwait(false);
-                // Guard against null refs. This shouldn't be triggered.
-                if (!deploymentList.HasValue)
-                {
-                    throw new ConnectionFailedException("Deployment list future returned null.",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                if (deploymentList.Value.Error != null)
-                {
-                    throw new ConnectionFailedException(deploymentList.Value.Error,
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                return deploymentList.Value;
-            }
-        }
-
-        private static string GetConnectionFailureReason(Connection connection)
-        {
-            return connection.GetConnectionStatusCodeDetailString() ?? "No reason found for connection failure";
-        }
-
-        private void AddCoreSystems()
-        {
-            var connectionHandler = new SpatialOSConnectionHandler(Connection);
-            World.CreateSystem<WorkerSystem>(connectionHandler, Connection, LogDispatcher, WorkerType, Origin);
-            World.GetOrCreateSystem<CommandSystem>();
-            World.GetOrCreateSystem<ComponentUpdateSystem>();
-            World.GetOrCreateSystem<EntitySystem>();
-            World.GetOrCreateSystem<ComponentSendSystem>();
-            World.GetOrCreateSystem<SpatialOSReceiveSystem>();
-            World.GetOrCreateSystem<SpatialOSSendSystem>();
-            World.GetOrCreateSystem<EcsViewSystem>();
-            World.GetOrCreateSystem<CleanTemporaryComponentsSystem>();
-
-            // Subscriptions systems
-            World.GetOrCreateSystem<WorkerFlagCallbackSystem>();
-            World.GetOrCreateSystem<CommandCallbackSystem>();
-            World.GetOrCreateSystem<ComponentConstraintsCallbackSystem>();
-            World.GetOrCreateSystem<ComponentCallbackSystem>();
-            World.GetOrCreateSystem<RequireLifecycleSystem>();
-            World.GetOrCreateSystem<SubscriptionSystem>();
-
-#if !DISABLE_REACTIVE_COMPONENTS
-            // Reactive components
-            ReactiveComponentsHelper.AddCommonSystems(World);
-#endif
-        }
-
-        public void Dispose()
-        {
+            ConnectionHandler?.Dispose();
+            ConnectionHandler = null;
             LogDispatcher?.Dispose();
             LogDispatcher = null;
-
-            if (World != null && World.IsCreated)
-            {
-                World.Dispose();
-                World = null;
-            }
-
-            Connection?.Dispose();
-            Connection = null;
         }
     }
 }
