@@ -9,7 +9,7 @@ Before reading this document, make sure you have read:
   * [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
 ")%>
 
-To expose the [`Worker`]({{urlRoot}}/api/core/worker) class in the MonoBehaviour workflow, the GDK provide an abstract [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) MonoBehaviour.
+To expose the [`Worker`]({{urlRoot}}/api/core/worker) class in the MonoBehaviour workflow, the GDK provides an abstract [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) MonoBehaviour.
 
 This class provides methods for connecting and managing the lifecycle of your worker-instance. You can derive from `WorkerConnector` and use those MonoBehaviours to create multiple server-worker or client-worker instances in one Scene by adding it to multiple GameObjects, each GameObject creating a different worker instance.
 
