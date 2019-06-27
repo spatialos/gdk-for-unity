@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## `0.2.4` - 2019-06-28
 
 ### Breaking Changes
 
