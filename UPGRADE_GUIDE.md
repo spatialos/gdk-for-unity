@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-## From `0.2.3` to `Unreleased`
+## From `0.2.3` to `0.2.4`
 
 ### General changes
 
