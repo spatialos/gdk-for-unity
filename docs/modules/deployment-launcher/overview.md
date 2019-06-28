@@ -14,7 +14,7 @@ workers/unity/Packages/com.improbable.gdk.deploymentlauncher/package.json
 
 ## Usage
 
-1. Create a Deployment Configuration asset by selecting **Create** > **Asset** > **SpatialOS** > **Deployment Configuration** from the Unity Editor menu.
+1. Create a Deployment Configuration asset by selecting **Assets** > **Create** > **SpatialOS** > **Deployment Launcher Config** from the Unity Editor menu.
 1. Open the Deployment Launcher window by selecting **SpatialOS** > **Deployment Launcher** from the Unity Editor menu.
 
 Please refer to the detailed documentation for each of the functions of the Deployment Launcher:
