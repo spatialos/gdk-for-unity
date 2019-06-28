@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -53,7 +53,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetWorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,7 +72,7 @@ Gets the worker ID for this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetWorkerAttributes</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -91,7 +91,7 @@ Gets the worker attributes for this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetMessagesReceived</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L29">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L29">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -119,7 +119,7 @@ Populates the <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> object using
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetMessagesToSendContainer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -138,7 +138,7 @@ Gets the current messages to send container.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>PushMessagesToSend</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L44">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -175,7 +175,7 @@ Adds a set of <a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a>
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>IsConnected</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
