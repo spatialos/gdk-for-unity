@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -51,7 +51,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Clear</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L31">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -70,7 +70,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L48">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -126,7 +126,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L53">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L53">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -154,7 +154,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L58">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L58">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

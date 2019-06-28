@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L177">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L177">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -50,7 +50,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L182">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L182">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,7 +65,7 @@ The IP address of the Locator to use when connecting.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AnonymousAuthPort</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L187">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L187">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -80,7 +80,7 @@ The port to use when connecting via development authentication.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L192">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L192">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,7 +95,7 @@ The development authentication token to use when connecting via with development
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>UseDevAuthFlow</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L201">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L201">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -119,7 +119,7 @@ Denotes whether we should connect with development authentication.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L206">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L206">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -149,7 +149,7 @@ The parameters to use to connect to the Locator.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AlphaLocatorFlow</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L220">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L220">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -189,7 +189,7 @@ Initializes a new instance of the <a href="{{urlRoot}}/api/core/alpha-locator-fl
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CreateAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L225">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L225">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -218,7 +218,7 @@ Creates a Connection asynchronously.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDevelopmentPlayerIdentityToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L252">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L252">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -246,7 +246,7 @@ Retrieves a development player identity token using development authentication.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDevelopmentLoginTokens</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L286">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L286">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -275,7 +275,7 @@ Retrieves the login tokens for all active deployments that the player can connec
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SelectLoginToken</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L319">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L319">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -303,7 +303,7 @@ Selects which login token to use to connect via the development authentication f
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetPlayerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L333">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L333">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -322,7 +322,7 @@ Gets the player ID for the player trying to connect via the development authenti
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetDisplayName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L342">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L342">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
