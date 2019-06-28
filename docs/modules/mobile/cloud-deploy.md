@@ -10,7 +10,7 @@ Before reading this document, make sure you have read:
 * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 ")%>
 
-To connect your mobile device to a cloud deployment, you need to authenticate with our services. 
+To connect your mobile device to a cloud deployment, you need to authenticate with our services.
 
 This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development.
 
@@ -60,4 +60,3 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
     * In the **General** tab, navigate to the **Signing** section and sign the project. For more information, see [Apple's documentation on code signing and provisioning](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7).
 1. Still in XCode, select the **Play** button in the top left of the window.
 1. Play the game on your device or Simulator.
-
