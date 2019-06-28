@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    [WorkerType(WorkerUtils.UnityGameLogic)]
+    [WorkerType(WorkerUtils.UnityGameLogic, "FakeWorkerType")]
     public class WorkerFlagTest : MonoBehaviour
     {
 #pragma warning disable 649

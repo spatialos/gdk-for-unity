@@ -1,12 +1,18 @@
 {
     "name": "Improbable.Gdk.Core.Subscriptions.Editor",
     "references": [
-        "Improbable.Gdk.Core"
+        "Improbable.Gdk.Core",
+        "Unity.Entities"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }
