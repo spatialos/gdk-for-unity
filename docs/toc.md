@@ -72,7 +72,7 @@
     - Workflows
         - [Overview]({{urlRoot}}/reference/workflows/overview)
         - MonoBehaviours
-            - [Creating workers]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers)
+            - [Worker connectors]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
             - Interacting with SpatialOS
                 - [Readers & Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
                     - [Lifecycle]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
@@ -120,15 +120,18 @@
             - <a href="{{urlRoot}}/api/core/commands/i-received-command-response">IReceivedCommandResponse</a>
             - <a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>
         - [Editor]({{urlRoot}}/api/core/editor-index)
+            - <a href="{{urlRoot}}/api/core/editor/common-ui-elements">CommonUIElements</a>
             - <a href="{{urlRoot}}/api/core/editor/singleton-scriptable-object">SingletonScriptableObject</a>
             - <a href="{{urlRoot}}/api/core/editor/ui-state-manager">UIStateManager</a>
-        - <a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a>
+        - <a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a>
         - <a href="{{urlRoot}}/api/core/authentication-failed-exception">AuthenticationFailedException</a>
         - <a href="{{urlRoot}}/api/core/authority-change-received">AuthorityChangeReceived</a>
         - <a href="{{urlRoot}}/api/core/called-value-on-empty-option-exception">CalledValueOnEmptyOptionException</a>
         - <a href="{{urlRoot}}/api/core/clean-temporary-components-system">CleanTemporaryComponentsSystem</a>
         - <a href="{{urlRoot}}/api/core/command-context">CommandContext</a>
-        - <a href="{{urlRoot}}/api/core/command-line-utility">CommandLineUtility</a>
+        - <a href="{{urlRoot}}/api/core/command-line-args">CommandLineArgs</a>
+        - <a href="{{urlRoot}}/api/core/command-line-connection-flow-initializer">CommandLineConnectionFlowInitializer</a>
+        - <a href="{{urlRoot}}/api/core/command-line-connection-parameter-initializer">CommandLineConnectionParameterInitializer</a>
         - <a href="{{urlRoot}}/api/core/command-meta-data">CommandMetaData</a>
         - <a href="{{urlRoot}}/api/core/command-meta-data-aggregate">CommandMetaDataAggregate</a>
         - <a href="{{urlRoot}}/api/core/command-request-id-generator">CommandRequestIdGenerator</a>
@@ -145,7 +148,6 @@
         - <a href="{{urlRoot}}/api/core/connection-service">ConnectionService</a>
         - <a href="{{urlRoot}}/api/core/created-option-with-null-payload-exception">CreatedOptionWithNullPayloadException</a>
         - <a href="{{urlRoot}}/api/core/custom-spatial-os-send-system">CustomSpatialOSSendSystem</a>
-        - <a href="{{urlRoot}}/api/core/default-worker-connector">DefaultWorkerConnector</a>
         - <a href="{{urlRoot}}/api/core/dynamic">Dynamic</a>
         - <a href="{{urlRoot}}/api/core/dynamic-converter">DynamicConverter</a>
         - <a href="{{urlRoot}}/api/core/dynamic-snapshot">DynamicSnapshot</a>
@@ -170,7 +172,11 @@
         - <a href="{{urlRoot}}/api/core/i-component-diff-deserializer">IComponentDiffDeserializer</a>
         - <a href="{{urlRoot}}/api/core/i-component-diff-storage">IComponentDiffStorage</a>
         - <a href="{{urlRoot}}/api/core/i-component-serializer">IComponentSerializer</a>
+        - <a href="{{urlRoot}}/api/core/i-connection-flow">IConnectionFlow</a>
+        - <a href="{{urlRoot}}/api/core/i-connection-flow-initializer">IConnectionFlowInitializer</a>
         - <a href="{{urlRoot}}/api/core/i-connection-handler">IConnectionHandler</a>
+        - <a href="{{urlRoot}}/api/core/i-connection-handler-builder">IConnectionHandlerBuilder</a>
+        - <a href="{{urlRoot}}/api/core/i-connection-parameter-initializer">IConnectionParameterInitializer</a>
         - <a href="{{urlRoot}}/api/core/i-diff-authority-storage">IDiffAuthorityStorage</a>
         - <a href="{{urlRoot}}/api/core/i-diff-command-request-storage">IDiffCommandRequestStorage</a>
         - <a href="{{urlRoot}}/api/core/i-diff-command-response-storage">IDiffCommandResponseStorage</a>
@@ -191,7 +197,8 @@
         - <a href="{{urlRoot}}/api/core/i-view-component-storage">IViewComponentStorage</a>
         - <a href="{{urlRoot}}/api/core/i-view-component-updater">IViewComponentUpdater</a>
         - <a href="{{urlRoot}}/api/core/i-view-storage">IViewStorage</a>
-        - <a href="{{urlRoot}}/api/core/locator-config">LocatorConfig</a>
+        - <a href="{{urlRoot}}/api/core/linq-extensions">LinqExtensions</a>
+        - <a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a>
         - <a href="{{urlRoot}}/api/core/log-event">LogEvent</a>
         - <a href="{{urlRoot}}/api/core/logging-dispatcher">LoggingDispatcher</a>
         - <a href="{{urlRoot}}/api/core/logging-utils">LoggingUtils</a>
@@ -199,13 +206,14 @@
         - <a href="{{urlRoot}}/api/core/log-message-to-send">LogMessageToSend</a>
         - <a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a>
         - <a href="{{urlRoot}}/api/core/mock-connection-handler">MockConnectionHandler</a>
+        - <a href="{{urlRoot}}/api/core/mock-connection-handler-builder">MockConnectionHandlerBuilder</a>
         - <a href="{{urlRoot}}/api/core/multi-threaded-spatial-os-connection-handler">MultiThreadedSpatialOSConnectionHandler</a>
         - <a href="{{urlRoot}}/api/core/newly-added-spatial-os-entity">NewlyAddedSpatialOSEntity</a>
         - <a href="{{urlRoot}}/api/core/on-connected">OnConnected</a>
         - <a href="{{urlRoot}}/api/core/on-disconnected">OnDisconnected</a>
         - <a href="{{urlRoot}}/api/core/option">Option</a>
         - <a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>
-        - <a href="{{urlRoot}}/api/core/receptionist-config">ReceptionistConfig</a>
+        - <a href="{{urlRoot}}/api/core/receptionist-flow">ReceptionistFlow</a>
         - <a href="{{urlRoot}}/api/core/remove-at-end-of-tick-attribute">RemoveAtEndOfTickAttribute</a>
         - <a href="{{urlRoot}}/api/core/runtime-config-defaults">RuntimeConfigDefaults</a>
         - <a href="{{urlRoot}}/api/core/runtime-config-names">RuntimeConfigNames</a>
@@ -214,6 +222,7 @@
         - <a href="{{urlRoot}}/api/core/snapshot">Snapshot</a>
         - <a href="{{urlRoot}}/api/core/spatial-entity-id">SpatialEntityId</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-connection-handler">SpatialOSConnectionHandler</a>
+        - <a href="{{urlRoot}}/api/core/spatial-os-connection-handler-builder">SpatialOSConnectionHandlerBuilder</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-receive-group">SpatialOSReceiveGroup</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-receive-system">SpatialOSReceiveSystem</a>
         - <a href="{{urlRoot}}/api/core/spatial-os-send-group">SpatialOSSendGroup</a>
@@ -230,6 +239,7 @@
         - <a href="{{urlRoot}}/api/core/worker-entity-tag">WorkerEntityTag</a>
         - <a href="{{urlRoot}}/api/core/worker-flag-reader">WorkerFlagReader</a>
         - <a href="{{urlRoot}}/api/core/worker-flag-subscription-manager">WorkerFlagSubscriptionManager</a>
+        - <a href="{{urlRoot}}/api/core/worker-in-world">WorkerInWorld</a>
         - <a href="{{urlRoot}}/api/core/worker-system">WorkerSystem</a>
         - <a href="{{urlRoot}}/api/core/world-command-meta-data-storage">WorldCommandMetaDataStorage</a>
         - <a href="{{urlRoot}}/api/core/world-command-sender">WorldCommandSender</a>
@@ -245,11 +255,16 @@
         - <a href="{{urlRoot}}/api/game-object-creation/i-entity-game-object-creator">IEntityGameObjectCreator</a>
         - <a href="{{urlRoot}}/api/game-object-creation/spatial-os-entity">SpatialOSEntity</a>
     - [Mobile]({{urlRoot}}/api/mobile-index)
-        - <a href="{{urlRoot}}/api/mobile/default-mobile-worker-connector">DefaultMobileWorkerConnector</a>
+        - <a href="{{urlRoot}}/api/mobile/android-launch-utils">AndroidLaunchUtils</a>
         - <a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a>
+        - <a href="{{urlRoot}}/api/mobile/i-os-launch-utils">iOSLaunchUtils</a>
         - <a href="{{urlRoot}}/api/mobile/launch-arguments">LaunchArguments</a>
-        - <a href="{{urlRoot}}/api/mobile/launch-menu">LaunchMenu</a>
+        - <a href="{{urlRoot}}/api/mobile/mobile-connection-flow-initializer">MobileConnectionFlowInitializer</a>
+        - <a href="{{urlRoot}}/api/mobile/mobile-connection-parameters-initializer">MobileConnectionParametersInitializer</a>
         - <a href="{{urlRoot}}/api/mobile/mobile-device-type">MobileDeviceType</a>
+        - <a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a>
+        - <a href="{{urlRoot}}/api/mobile/mobile-launcher-window">MobileLauncherWindow</a>
+        - <a href="{{urlRoot}}/api/mobile/mobile-launch-utils">MobileLaunchUtils</a>
     - [PlayerLifecycle]({{urlRoot}}/api/player-lifecycle-index)
         - <a href="{{urlRoot}}/api/player-lifecycle/handle-create-player-request-system">HandleCreatePlayerRequestSystem</a>
         - <a href="{{urlRoot}}/api/player-lifecycle/handle-player-heartbeat-request-system">HandlePlayerHeartbeatRequestSystem</a>

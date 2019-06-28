@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -15,6 +15,12 @@ code {
 </sup>
 <nav id="pageToc" class="page-toc"><ul><li><a href="#methods">Methods</a>
 </ul></nav>
+
+</p>
+
+
+
+<p>Represents a handler for a SpatialOS connection. </p>
 
 
 
@@ -46,13 +52,51 @@ code {
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><b>GetWorkerId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L16">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>string GetWorkerId()</code></p>
+Gets the worker ID for this worker. 
+</p><b>Returns:</b></br>The worker ID.
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetWorkerAttributes</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L22">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>List&lt;string&gt; GetWorkerAttributes()</code></p>
+Gets the worker attributes for this worker. 
+</p><b>Returns:</b></br>The list of worker attributes.
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><b>GetMessagesReceived</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L7">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L29">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>void GetMessagesReceived(ref <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> viewDiff)</code></p>
-
+Populates the <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> object using the messages received since the last time this was called. 
 
 
 </p>
@@ -60,7 +104,7 @@ code {
 <b>Parameters</b>
 
 <ul>
-<li><code>ref <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> viewDiff</code> : </li>
+<li><code>ref <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> viewDiff</code> : The <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> to populate.</li>
 </ul>
 
 
@@ -75,13 +119,13 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetMessagesToSendContainer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code><a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a> GetMessagesToSendContainer()</code></p>
-
-
+Gets the current messages to send container. 
+</p><b>Returns:</b></br>The messages to send container.
 
 
 
@@ -94,12 +138,12 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>PushMessagesToSend</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L9">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>void PushMessagesToSend(<a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a> messages)</code></p>
-
+Adds a set of <a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a> to be sent. 
 
 
 </p>
@@ -107,9 +151,18 @@ code {
 <b>Parameters</b>
 
 <ul>
-<li><code><a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a> messages</code> : </li>
+<li><code><a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a> messages</code> : The set of messages to send.</li>
 </ul>
 
+
+
+</p>
+
+<b>Notes:</b>
+
+<ul>
+<li>The messages may not be sent immediately. This is up to the implementer. </li>
+</ul>
 
 
 
@@ -122,13 +175,13 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>IsConnected</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>bool IsConnected()</code></p>
-
-
+Gets a value indicating whether the underlying connection is connected. 
+</p><b>Returns:</b></br>True if the underlying connection is connected, false otherwise.
 
 
 

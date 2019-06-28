@@ -88,7 +88,7 @@ Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-
 
 > Related:
 >
-> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/reference/workflows/monobehaviour/creating-workers)
+> * [Creating workers with the `WorkerConnector`]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
 > * [Locator Connection Flow](#locator-connection-flow)
 > * [Receptionist Connection Flow](#receptionist-connection-flow)
 

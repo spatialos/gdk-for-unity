@@ -5,7 +5,7 @@ Before reading this document, make sure you have read:
 
   * [Setting up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
   * [Setting up iOS Support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
-  * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/creating-workers)
+  * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/worker-connectors)
   * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
 ")%>
 
@@ -15,7 +15,7 @@ If you are using one of our [Starter Projects]({{urlRoot}}/reference/glossary#st
 
 If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity project rather than using a Starter Project, then you need to create and add a MonoBehaviour script to your mobile client-worker GameObject. To do this:
 
-1. Create a MonoBehaviour script which inherits from the [`DefaultMobileWorkerConnector`]({{urlRoot}}/api/mobile/default-mobile-worker-connector). This scripts contains support for both Android and iOS. You can base your implementation on the one in our [Blank Starter Project](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/MobileClientWorkerConnector.cs).
+1. Create a MonoBehaviour script which inherits from the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector). This scripts contains support for both Android and iOS. You can base your implementation on the one in our [Blank Starter Project](https://github.com/spatialos/gdk-for-unity-blank-project/blob/master/workers/unity/Assets/Scripts/Workers/MobileClientWorkerConnector.cs).
 1. In your Unity Editor, add the MonoBehaviour script to your mobile client-worker GameObject.
 
 ## Create your development authentication token

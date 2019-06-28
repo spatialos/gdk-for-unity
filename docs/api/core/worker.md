@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L16">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L12">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -14,8 +14,8 @@ code {
 </style>
 </sup>
 <nav id="pageToc" class="page-toc"><ul><li><a href="#fields">Fields</a>
-<li><a href="#properties">Properties</a>
 <li><a href="#static-methods">Static Methods</a>
+<li><a href="#constructors">Constructors</a>
 <li><a href="#methods">Methods</a>
 </ul></nav>
 
@@ -50,23 +50,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Origin</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L21">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> readonly Vector3 Origin</code></p>
-The origin of the worker in global Unity space. 
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
         <td style="border-right:none"><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -81,7 +66,7 @@ The type of the worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L34">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -104,8 +89,23 @@ The worker ID.
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><b>Attributes</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L30">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> readonly List&lt;string&gt; Attributes</code></p>
+The worker attribute list 
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><b>LogDispatcher</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -117,29 +117,15 @@ The logger for this worker.
 </table>
 
 
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Properties
-
-
-</p>
-
-
-
-
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Connection</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L44">Source</a></td>
+        <td style="border-right:none"><b>IsConnected</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code> Connection Connection { get; }</code></p>
-The connection to the SpatialOS runtime. 
-
+<code> bool IsConnected</code></p>
+Denotes whether this worker is connected or not. 
 
 </td>
     </tr>
@@ -148,13 +134,12 @@ The connection to the SpatialOS runtime.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>World</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L49">Source</a></td>
+        <td style="border-right:none"><b>ConnectionHandler</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code> World World { get; }</code></p>
-The ECS world associated with this worker. 
+<code> <a href="{{urlRoot}}/api/core/i-connection-handler">IConnectionHandler</a> ConnectionHandler</code></p>
 
 
 </td>
@@ -162,20 +147,6 @@ The ECS world associated with this worker.
 </table>
 
 
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>OnDisconnect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L56">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> Action&lt;string&gt; OnDisconnect {  }</code></p>
-An event that triggers when the worker is disconnected. 
-
-
-</td>
-    </tr>
-</table>
 
 
 
@@ -193,23 +164,23 @@ An event that triggers when the worker is disconnected.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CreateWorkerAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L144">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L75">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>async Task&lt;<a href="{{urlRoot}}/api/core/worker">Worker</a>&gt; CreateWorkerAsync(<a href="{{urlRoot}}/api/core/receptionist-config">ReceptionistConfig</a> parameters, ConnectionParameters connectionParameters, <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger, Vector3 origin)</code></p>
-Connects to the SpatialOS Runtime via the Receptionist service and creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously. 
-</p><b>Returns:</b></br>A Task<TResult> to run this method asynchronously and retrieve the created <a href="{{urlRoot}}/api/core/worker">Worker</a> object upon connecting successfully. 
+<code>async Task&lt;<a href="{{urlRoot}}/api/core/worker">Worker</a>&gt; CreateWorkerAsync(<a href="{{urlRoot}}/api/core/i-connection-handler-builder">IConnectionHandlerBuilder</a> connectionHandlerBuilder, string workerType, <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logDispatcher, CancellationToken? token = null)</code></p>
+Creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously. 
+</p><b>Returns:</b></br>A task which represents the asynchronous creation of a worker.
 
 </p>
 
 <b>Parameters</b>
 
 <ul>
-<li><code><a href="{{urlRoot}}/api/core/receptionist-config">ReceptionistConfig</a> parameters</code> : The <a href="{{urlRoot}}/api/core/receptionist-config">ReceptionistConfig</a> object stores the configuration needed to connect via the Receptionist Service. </li>
-<li><code>ConnectionParameters connectionParameters</code> : The ConnectionParameters storing </li>
-<li><code><a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger</code> : The logger used by this worker.</li>
-<li><code>Vector3 origin</code> : The origin of this worker in the local Unity space.</li>
+<li><code><a href="{{urlRoot}}/api/core/i-connection-handler-builder">IConnectionHandlerBuilder</a> connectionHandlerBuilder</code> : A builder which describes how to create the <a href="{{urlRoot}}/api/core/i-connection-handler">IConnectionHandler</a> for this worker. </li>
+<li><code>string workerType</code> : The type of worker to connect as.</li>
+<li><code><a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logDispatcher</code> : The logger to use for this worker.</li>
+<li><code>CancellationToken? token</code> : A cancellation token which will cancel this asynchronous operation</li>
 </ul>
 
 
@@ -219,28 +190,39 @@ Connects to the SpatialOS Runtime via the Receptionist service and creates a <a 
 </td>
     </tr>
 </table>
+
+
+
+
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Constructors
+
+
+</p>
+
+
 
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateWorkerAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L173">Source</a></td>
+        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>async Task&lt;<a href="{{urlRoot}}/api/core/worker">Worker</a>&gt; CreateWorkerAsync(<a href="{{urlRoot}}/api/core/locator-config">LocatorConfig</a> parameters, ConnectionParameters connectionParameters, <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger, Vector3 origin)</code></p>
-Connects to the SpatialOS Runtime via the Locator service and creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously. 
-</p><b>Returns:</b></br>A Task<TResult> to run this method asynchronously and retrieve the created <a href="{{urlRoot}}/api/core/worker">Worker</a> object upon connecting successfully. 
+<code> Worker(<a href="{{urlRoot}}/api/core/i-connection-handler">IConnectionHandler</a> connectionHandler, string workerType, <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logDispatcher)</code></p>
+
+
 
 </p>
 
 <b>Parameters</b>
 
 <ul>
-<li><code><a href="{{urlRoot}}/api/core/locator-config">LocatorConfig</a> parameters</code> : The <a href="{{urlRoot}}/api/core/locator-config">LocatorConfig</a> object stores the configuration needed to connect via the Receptionist Service. </li>
-<li><code>ConnectionParameters connectionParameters</code> : The ConnectionParameters storing </li>
-<li><code><a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger</code> : The logger used by this worker.</li>
-<li><code>Vector3 origin</code> : The origin of this worker in the local Unity space.</li>
+<li><code><a href="{{urlRoot}}/api/core/i-connection-handler">IConnectionHandler</a> connectionHandler</code> : </li>
+<li><code>string workerType</code> : </li>
+<li><code><a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logDispatcher</code> : </li>
 </ul>
 
 
@@ -250,38 +232,6 @@ Connects to the SpatialOS Runtime via the Locator service and creates a <a href=
 </td>
     </tr>
 </table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>CreateWorkerAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L212">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>async Task&lt;<a href="{{urlRoot}}/api/core/worker">Worker</a>&gt; CreateWorkerAsync(<a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a> parameters, ConnectionParameters connectionParameters, <a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger, Vector3 origin)</code></p>
-Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously. 
-</p><b>Returns:</b></br>A Task<TResult> to run this method asynchronously and retrieve the created <a href="{{urlRoot}}/api/core/worker">Worker</a> object upon connecting successfully. 
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code><a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a> parameters</code> : The <a href="{{urlRoot}}/api/core/alpha-locator-config">AlphaLocatorConfig</a> object stores the configuration needed to connect via the Receptionist Service. </li>
-<li><code>ConnectionParameters connectionParameters</code> : The ConnectionParameters storing </li>
-<li><code><a href="{{urlRoot}}/api/core/i-log-dispatcher">ILogDispatcher</a> logger</code> : The logger used by this worker.</li>
-<li><code>Vector3 origin</code> : The origin of this worker in the local Unity space.</li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
 
 
 
@@ -298,8 +248,105 @@ Connects to the SpatialOS Runtime via the Alpha Locator service and creates a <a
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><b>Tick</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L86">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void Tick()</code></p>
+Ticks the worker. Fetches all messages received since the last Tick call and applies the diff. 
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>EnsureMessagesFlushed</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L92">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void EnsureMessagesFlushed()</code></p>
+
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>SendLogMessage</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L109">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void SendLogMessage(LogLevel logLevel, string message, string loggerName, <a href="{{urlRoot}}/api/core/entity-id">EntityId</a>? entityId)</code></p>
+Sends a log message to SpatialOS from this worker. 
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>LogLevel logLevel</code> : The log verbosity level.</li>
+<li><code>string message</code> : The log message.</li>
+<li><code>string loggerName</code> : A name for the sender of the log.</li>
+<li><code><a href="{{urlRoot}}/api/core/entity-id">EntityId</a>? entityId</code> : The <a href="{{urlRoot}}/api/core/entity-id">EntityId</a> to associate with the log message. Set to null for no <a href="{{urlRoot}}/api/core/entity-id">EntityId</a>. </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>GetWorkerFlag</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L119">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>string GetWorkerFlag(string key)</code></p>
+Gets the value for a given worker flag. 
+</p><b>Returns:</b></br>The value of the flag, if it exists, null otherwise.
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>string key</code> : The key of the worker flag.</li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.3/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L281">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/84243525d98aff511e7aa1f7703c37347017e386/workers/unity/Packages/com.improbable.gdk.core/Worker/Worker.cs/#L124">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
