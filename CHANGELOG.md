@@ -2,6 +2,8 @@
 
 ## `0.2.4` - 2019-06-28
 
+## `test` - 2019-07-01
+
 ### Breaking Changes
 
 - The constructor for the `ForwardingDispatcher` now accepts a `UnityEngine.LogType` instead of `Improbable.Worker.CInterop.LogLevel` as its parameter. [#987](https://github.com/spatialos/gdk-for-unity/pull/987)
