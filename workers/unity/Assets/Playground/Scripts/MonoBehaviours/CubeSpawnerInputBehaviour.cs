@@ -25,7 +25,6 @@ namespace Playground.MonoBehaviours
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
-                throw new Exception("Test Exception");
             }
         }
 
