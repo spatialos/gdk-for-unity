@@ -49,7 +49,7 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: "build :android: and iOS"
+  - label: "build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -57,8 +57,21 @@ steps:
       - workers/unity/build/worker/**/*
     env:
       WORKER_TYPE: "MobileClient"
-      BUILD_TARGET: "local"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET: "android"
       SCRIPTING_TYPE: "mono"
+
+  - label: "build iOS"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET: "ios"
+      SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -67,7 +80,7 @@ steps:
       - logs/**/*
     env:
       WORKER_TYPE: "UnityClient"
-      BUILD_TARGET: "cloud"
+      BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityClient il2cpp"
@@ -77,7 +90,7 @@ steps:
       - logs/**/*
     env:
       WORKER_TYPE: "UnityClient"
-      BUILD_TARGET: "local"
+      BUILD_ENVIRONMENT: "local"
       SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityGameLogic mono"
@@ -87,5 +100,5 @@ steps:
       - logs/**/*
     env:
       WORKER_TYPE: "UnityGameLogic"
-      BUILD_TARGET: "cloud"
+      BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_TYPE: "mono"

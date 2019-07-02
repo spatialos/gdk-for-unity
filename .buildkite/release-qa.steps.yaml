@@ -35,7 +35,7 @@ common: &common
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
 steps:
-  - label: "build :android: and iOS"
+  - label: "build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -43,8 +43,21 @@ steps:
       - build/assembly/**/*
     env:
       WORKER_TYPE: "MobileClient"
-      BUILD_TARGET: "local"
+      BUILD_ENVIRONMENT: "cloud"
+      BUILD_TARGET: "android"
       SCRIPTING_TYPE: "mono"
+
+  - label: "build iOS"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - build/assembly/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "cloud"
+      BUILD_TARGET: "ios"
+      SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -54,7 +67,7 @@ steps:
       - build/assembly/**/*
     env:
       WORKER_TYPE: "UnityClient"
-      BUILD_TARGET: "cloud"
+      BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_TYPE: "mono"
 
   - label: "build UnityGameLogic mono"
@@ -65,7 +78,7 @@ steps:
       - build/assembly/**/*
     env:
       WORKER_TYPE: "UnityGameLogic"
-      BUILD_TARGET: "cloud"
+      BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_TYPE: "mono"
   - wait
   - label: Launch deployments

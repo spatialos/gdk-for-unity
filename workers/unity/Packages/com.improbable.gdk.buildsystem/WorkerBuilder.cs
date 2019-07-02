@@ -32,16 +32,45 @@ namespace Improbable.Gdk.BuildSystem
             try
             {
                 var args = CommandLineArgs.FromCommandLine();
-                var buildTargetArg = args.GetCommandLineValue("buildTarget", "local");
+                var buildEnvironmentArg = args.GetCommandLineValue("buildEnvironment", "local");
+                var buildTargetArg = args.GetCommandLineValue("buildTarget", "All");
 
                 BuildEnvironment buildEnvironment;
-                switch (buildTargetArg.ToLower())
+                switch (buildEnvironmentArg.ToLower())
                 {
                     case "cloud":
                         buildEnvironment = BuildEnvironment.Cloud;
                         break;
                     case "local":
                         buildEnvironment = BuildEnvironment.Local;
+                        break;
+                    default:
+                        throw new BuildFailedException("Unknown build environment value: " + buildEnvironmentArg);
+                }
+
+                BuildTarget buildTarget;
+                switch (buildTargetArg.ToLower())
+                {
+                    case "all":
+                        buildTarget = BuildTarget.NoTarget;
+                        break;
+                    case "android":
+                        buildTarget = BuildTarget.Android;
+                        break;
+                    case "ios":
+                        buildTarget = BuildTarget.iOS;
+                        break;
+                    case "winx86":
+                        buildTarget = BuildTarget.StandaloneWindows;
+                        break;
+                    case "win":
+                        buildTarget = BuildTarget.StandaloneWindows64;
+                        break;
+                    case "linux":
+                        buildTarget = BuildTarget.StandaloneLinux64;
+                        break;
+                    case "macos":
+                        buildTarget = BuildTarget.StandaloneOSX;
                         break;
                     default:
                         throw new BuildFailedException("Unknown build target value: " + buildTargetArg);
@@ -64,7 +93,7 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, scriptingBackend);
+                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, buildTarget, scriptingBackend);
 
                 if (!buildsSucceeded)
                 {
@@ -90,7 +119,7 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
-                    BuildWorkers(workerTypes, environment);
+                    BuildWorkers(workerTypes, environment, BuildTarget.NoTarget);
                 }
                 catch (Exception)
                 {
@@ -103,7 +132,7 @@ namespace Improbable.Gdk.BuildSystem
             };
         }
 
-        private static bool BuildWorkers(string[] workerTypes, BuildEnvironment buildEnvironment, ScriptingImplementation? scriptingBackend = null)
+        private static bool BuildWorkers(string[] workerTypes, BuildEnvironment buildEnvironment, BuildTarget buildTarget, ScriptingImplementation? scriptingBackend = null)
         {
             var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             var activeBuildTargetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
@@ -134,7 +163,7 @@ namespace Improbable.Gdk.BuildSystem
                 var workerResults = new Dictionary<string, bool>();
                 foreach (var wantedWorkerType in workerTypes)
                 {
-                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, scriptingBackend);
+                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, buildTarget, scriptingBackend);
                     workerResults[wantedWorkerType] = result;
                 }
 
@@ -165,12 +194,14 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        private static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, ScriptingImplementation? scriptingBackend = null)
+        private static bool BuildWorkerForEnvironment(string workerType, BuildEnvironment targetEnvironment, BuildTarget buildTarget, ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, targetEnvironment);
 
-            var enabledTargets = environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList();
+            var enabledTargets = buildTarget == BuildTarget.NoTarget
+                ? environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList()
+                : environmentConfig?.BuildTargets.Where(t => t.Enabled && t.Target == buildTarget).ToList();
 
             if (enabledTargets == null || enabledTargets.Count == 0)
             {
