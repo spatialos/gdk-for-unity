@@ -44,7 +44,7 @@ steps:
     env:
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "cloud"
-      BUILD_TARGET: "android"
+      BUILD_TARGETS: "android"
       SCRIPTING_TYPE: "mono"
 
   - label: "build iOS"
@@ -56,7 +56,7 @@ steps:
     env:
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "cloud"
-      BUILD_TARGET: "ios"
+      BUILD_TARGETS: "ios"
       SCRIPTING_TYPE: "il2cpp"
 
   - label: "build UnityClient mono"
