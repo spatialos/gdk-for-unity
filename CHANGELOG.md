@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Internal
+
+- Stopped throwing a `Test Exception` in playground.
+
 ## `0.2.4` - 2019-06-28
 
 ### Breaking Changes
