@@ -23,6 +23,8 @@ namespace Improbable.Gdk.BuildSystem
 
         private const string BuildWorkerTypes = "buildWorkerTypes";
 
+        private static readonly IEnumerable<BuildTarget> DefaultBuildTargets = new List<BuildTarget>();
+
         /// <summary>
         ///     Build method that is invoked by commandline
         /// </summary>
@@ -115,7 +117,7 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
-                    BuildWorkers(workerTypes, environment);
+                    BuildWorkers(workerTypes, environment, DefaultBuildTargets);
                 }
                 catch (Exception)
                 {
@@ -129,9 +131,9 @@ namespace Improbable.Gdk.BuildSystem
         }
 
         private static bool BuildWorkers(
-            string[] workerTypes,
+            IEnumerable<string> workerTypes,
             BuildEnvironment buildEnvironment,
-            IEnumerable<BuildTarget> buildTargets = null,
+            IEnumerable<BuildTarget> buildTargets,
             ScriptingImplementation? scriptingBackend = null)
         {
             var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -203,9 +205,9 @@ namespace Improbable.Gdk.BuildSystem
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, buildEnvironment);
 
-            var enabledTargets = buildTargets == null
-                ? environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList()
-                : environmentConfig?.BuildTargets.Where(t => buildTargets.Contains(t.Target)).ToList();
+            var enabledTargets = buildTargets.Any()
+                ? environmentConfig?.BuildTargets.Where(t => buildTargets.Contains(t.Target)).ToList()
+                : environmentConfig?.BuildTargets.Where(t => t.Enabled).ToList();
 
             if (enabledTargets == null || enabledTargets.Count == 0)
             {
@@ -232,7 +234,7 @@ namespace Improbable.Gdk.BuildSystem
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
 
-                    hasBuildSucceeded &= BuildWorkerForTarget(workerType, config.Target, config.Options, buildEnvironment);
+                    hasBuildSucceeded &= BuildWorkerForTarget(workerType, buildEnvironment, config.Target, config.Options);
                 }
                 catch (Exception e)
                 {
@@ -269,8 +271,11 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        private static bool BuildWorkerForTarget(string workerType, BuildTarget buildTarget,
-            BuildOptions buildOptions, BuildEnvironment targetEnvironment)
+        private static bool BuildWorkerForTarget(
+            string workerType,
+            BuildEnvironment targetEnvironment,
+            BuildTarget buildTarget,
+            BuildOptions buildOptions)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
 
