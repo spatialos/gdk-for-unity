@@ -59,7 +59,7 @@ steps:
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "android"
-      SCRIPTING_TYPE: "mono"
+      SCRIPTING_BACKEND: "mono"
 
   - label: "build iOS"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -71,7 +71,7 @@ steps:
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "ios"
-      SCRIPTING_TYPE: "il2cpp"
+      SCRIPTING_BACKEND: "il2cpp"
 
   - label: "build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -81,7 +81,7 @@ steps:
     env:
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_TYPE: "mono"
+      SCRIPTING_BACKEND: "mono"
 
   - label: "build UnityClient il2cpp"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -91,7 +91,7 @@ steps:
     env:
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "local"
-      SCRIPTING_TYPE: "il2cpp"
+      SCRIPTING_BACKEND: "il2cpp"
 
   - label: "build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -101,4 +101,4 @@ steps:
     env:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_TYPE: "mono"
+      SCRIPTING_BACKEND: "mono"
