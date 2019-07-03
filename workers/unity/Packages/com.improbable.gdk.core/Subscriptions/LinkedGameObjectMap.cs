@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Improbable.Gdk.Subscriptions
 {
     /// <summary>
-    ///     Represents the mapping between SpatiaLOS entity IDs and linked GameObjects.
+    ///     Represents the mapping between SpatialOS entity IDs and linked GameObjects.
     /// </summary>
     public class LinkedGameObjectMap
     {
-        private EntityGameObjectLinker linker;
+        private readonly EntityGameObjectLinker linker;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LinkedGameObjectMap"/> class backed with the data from
@@ -46,6 +46,4 @@ namespace Improbable.Gdk.Subscriptions
             return linkedGameObjects != null;
         }
     }
-
-
 }
