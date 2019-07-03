@@ -71,8 +71,9 @@ pushd "workers/unity"
     PLAYMODE_TEST_RESULT=$?
 popd
 
-pushd "test-project"
 echo "Generated Code Testing"
+
+pushd "test-project"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/test-project" \
