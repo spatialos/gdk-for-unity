@@ -1,0 +1,22 @@
+{
+    "name": "Improbable.Gdk.GameObjectCreation.EditmodeTests",
+    "references": [
+        "GUID:0603bcb6cd766ea40a053a38fff8a84b",
+        "GUID:edb3612c44ad0d24988d387581fd5fbe",
+        "GUID:6e87be7cacbd7264c9a5b9efc59a4030",
+        "GUID:734d92eba21c94caba915361bd5ac177"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
