@@ -5,9 +5,18 @@ If you have not signed up before, you can do this [here](https://improbable.io/g
 
 If you have already signed up, make sure you are logged into [Improbable.io](https://improbable.io). If you are logged in, you should see your picture in the top right of this page; if you are not logged in, select __Sign in__ at the top of this page and follow the instructions.
 
-<br/>
 
-### 2. Install the GDK dependencies
+### 2: Hardware
+
+Ensure your machine meets the minimum system requirements for Unity development.
+
+Refer to the [Unity system requirements](https://unity3d.com/unity/system-requirements) for further information about the minimum hardware requirements.
+
+### 3: Network settings
+
+To configure your network to work with SpatialOS, refer to the [SpatialOS network settings](https://docs.improbable.io/reference/latest/shared/setup/requirements#network-settings). 
+
+### 4. Install the GDK dependencies
 
 <%(#Expandable title="Setup for Windows")%>
 
