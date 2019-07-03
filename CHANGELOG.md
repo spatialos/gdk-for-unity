@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Added the `LinkedGameObjectMap` class for finding the `GameObject`(s) linked with a specified `EntityId`.
+    - This can be used with the `[Require]` annotation to inject it into your `MonoBehaviours` provided you are using the `GameObjectCreation` feature module.
+
 ### Internal
 
 - Stopped throwing a `Test Exception` in playground.
