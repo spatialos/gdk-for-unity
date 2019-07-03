@@ -207,9 +207,9 @@ namespace Improbable.Gdk.BuildSystem
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
             var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, buildEnvironment);
 
-            var targetConfigs = buildTargetFilter.Any()
-                ? environmentConfig?.BuildTargets.Where(t => t.Enabled && buildTargetFilter.Contains(t.Target))
-                : environmentConfig?.BuildTargets.Where(t => t.Enabled);
+            var targetConfigs = buildTargetFilter == null
+                ? environmentConfig?.BuildTargets.Where(t => t.Enabled)
+                : environmentConfig?.BuildTargets.Where(t => t.Enabled && buildTargetFilter.Contains(t.Target));
 
             if (targetConfigs == null || !targetConfigs.Any())
             {
