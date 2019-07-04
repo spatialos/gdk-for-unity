@@ -7,7 +7,7 @@
 When calling the build system from the command line, you must change the `buildTarget` argument to `buildEnvironment`. Previously you may have called the build system like so:
 
 ```bash
-dotnet run -p <unity_path> <arguments> \
+<run_unity> <arguments> \
     -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
     +buildWorkerTypes "UnityGameLogic" \
     +buildTarget "cloud" \
@@ -17,7 +17,7 @@ dotnet run -p <unity_path> <arguments> \
 You must change this to:
 
 ```bash
-dotnet run -p <unity_path> <arguments> \
+<run_unity> <arguments> \
     -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
     +buildWorkerTypes "UnityGameLogic" \
     +buildEnvironment "cloud" \
