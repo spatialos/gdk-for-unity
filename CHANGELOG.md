@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Added the `LinkedGameObjectMap` class for finding the `GameObject`(s) linked with a specified `EntityId`. [#1013](https://github.com/spatialos/gdk-for-unity/pull/1013)
+    - This can be used with the `[Require]` annotation to inject it into your `MonoBehaviours` provided you are using the `GameObjectCreation` feature module. For example: `[Require] private LinkedGameObjectMap gameObjectMap;`
+
 ### Internal
 
 - Stopped throwing a `Test Exception` in playground.

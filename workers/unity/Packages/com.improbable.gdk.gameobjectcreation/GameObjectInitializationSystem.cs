@@ -14,11 +14,11 @@ namespace Improbable.Gdk.GameObjectCreation
     [UpdateInGroup(typeof(GameObjectInitializationGroup))]
     internal class GameObjectInitializationSystem : ComponentSystem
     {
+        internal EntityGameObjectLinker Linker;
+
         private readonly IEntityGameObjectCreator gameObjectCreator;
 
         private readonly GameObject workerGameObject;
-
-        private EntityGameObjectLinker linker;
 
         private EntitySystem entitySystem;
         private WorkerSystem workerSystem;
@@ -36,17 +36,17 @@ namespace Improbable.Gdk.GameObjectCreation
             entitySystem = World.GetExistingSystem<EntitySystem>();
             workerSystem = World.GetExistingSystem<WorkerSystem>();
 
-            linker = new EntityGameObjectLinker(World);
+            Linker = new EntityGameObjectLinker(World);
 
             if (workerGameObject != null)
             {
-                linker.LinkGameObjectToSpatialOSEntity(new EntityId(0), workerGameObject);
+                Linker.LinkGameObjectToSpatialOSEntity(new EntityId(0), workerGameObject);
             }
         }
 
         protected override void OnDestroy()
         {
-            linker.UnlinkAllGameObjects();
+            Linker.UnlinkAllGameObjects();
 
             foreach (var entityId in entitySystem.GetEntitiesInView())
             {
@@ -61,16 +61,16 @@ namespace Improbable.Gdk.GameObjectCreation
             foreach (var entityId in entitySystem.GetEntitiesAdded())
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
-                gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), linker);
+                gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
             }
 
             var removedEntities = entitySystem.GetEntitiesRemoved();
             foreach (var entityId in removedEntities)
             {
-                linker.UnlinkAllGameObjectsFromEntityId(entityId);
+                Linker.UnlinkAllGameObjectsFromEntityId(entityId);
             }
 
-            linker.FlushCommandBuffer();
+            Linker.FlushCommandBuffer();
 
             foreach (var entityId in removedEntities)
             {

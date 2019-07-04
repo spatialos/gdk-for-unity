@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly EntityManager entityManager;
         private readonly World world;
 
-        private readonly Dictionary<EntityId, List<GameObject>> entityIdToGameObjects =
+        internal readonly Dictionary<EntityId, List<GameObject>> EntityIdToGameObjects =
             new Dictionary<EntityId, List<GameObject>>();
 
         private readonly Dictionary<GameObject, List<RequiredSubscriptionsInjector>> gameObjectToInjectors =
@@ -66,10 +66,10 @@ namespace Improbable.Gdk.Subscriptions
                     $"GameObject is already linked to the entity with ID {linkedComponent.EntityId}");
             }
 
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var linkedGameObjects))
+            if (!EntityIdToGameObjects.TryGetValue(entityId, out var linkedGameObjects))
             {
                 linkedGameObjects = new List<GameObject>();
-                entityIdToGameObjects.Add(entityId, linkedGameObjects);
+                EntityIdToGameObjects.Add(entityId, linkedGameObjects);
             }
 
             linkedGameObjects.Add(gameObject);
@@ -116,7 +116,7 @@ namespace Improbable.Gdk.Subscriptions
                 throw new ArgumentException($"Can not unlink null GameObject from entity {entityId}");
             }
 
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet) ||
+            if (!EntityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet) ||
                 !gameObjectSet.Contains(gameObject))
             {
                 throw new ArgumentException(
@@ -155,13 +155,13 @@ namespace Improbable.Gdk.Subscriptions
             gameObjectSet.Remove(gameObject);
             if (gameObjectSet.Count == 0)
             {
-                entityIdToGameObjects.Remove(entityId);
+                EntityIdToGameObjects.Remove(entityId);
             }
         }
 
         public void UnlinkAllGameObjects()
         {
-            var ids = entityIdToGameObjects.Keys.ToArray();
+            var ids = EntityIdToGameObjects.Keys.ToArray();
             foreach (var id in ids)
             {
                 UnlinkAllGameObjectsFromEntityId(id);
@@ -170,7 +170,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void UnlinkAllGameObjectsFromEntityId(EntityId entityId)
         {
-            if (!entityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
+            if (!EntityIdToGameObjects.TryGetValue(entityId, out var gameObjectSet))
             {
                 return;
             }
