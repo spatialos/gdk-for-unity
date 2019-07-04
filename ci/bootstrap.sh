@@ -19,6 +19,6 @@ mkdir "${SHARED_CI_DIR}"
 pushd "${SHARED_CI_DIR}"
     git init
     git remote add origin "${CLONE_URL}"
-    git fetch --depth 20 origin feature/specify-target-per-environment
+    git fetch --depth 20 origin master
     git checkout "${PINNED_SHARED_CI_VERSION}"
 popd

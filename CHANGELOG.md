@@ -2,10 +2,16 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Renamed the `buildTarget` command line argument to `buildEnvironment`. [#1012](https://github.com/spatialos/gdk-for-unity/pull/1012)
+
 ### Added
 
 - Added the `LinkedGameObjectMap` class for finding the `GameObject`(s) linked with a specified `EntityId`. [#1013](https://github.com/spatialos/gdk-for-unity/pull/1013)
     - This can be used with the `[Require]` annotation to inject it into your `MonoBehaviours` provided you are using the `GameObjectCreation` feature module. For example: `[Require] private LinkedGameObjectMap gameObjectMap;`
+- Added the ability for the build system to build specific targets of a given build environment. [#1012](https://github.com/spatialos/gdk-for-unity/pull/1012)
+    - Use the `buildTargetFilter` command line argument to pass in a comma delimited list of build targets to filter for. For example, `+buildTargetFilter win,macos`.
 
 ### Internal
 
@@ -39,7 +45,7 @@
         - `List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)`
     - The `WorkerConnector` has also had the following changes:
         - The `public Worker Worker;` field is now the `public WorkerInWorld Worker;` field.
-        - The `public async Task Connect(string workerType, ILogDispatcher logger)` method is now `protected async Task Connect(IConnectionHandlerBuilder builder, ILogDispatcher logger)`. 
+        - The `public async Task Connect(string workerType, ILogDispatcher logger)` method is now `protected async Task Connect(IConnectionHandlerBuilder builder, ILogDispatcher logger)`.
     - The `Worker` class has had the following changes:
         - The `public Connection Connection { get; private set; }` property has been removed.
         - The `public World World { get; private set; }` property has been moved to the `WorkerInWorld` class.
