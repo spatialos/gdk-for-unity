@@ -7,7 +7,7 @@
 When calling the build system from the command line, you must change the `buildTarget` argument to `buildEnvironment`. Previously you may have called the build system like so:
 
 ```bash
-<run_unity> <arguments> \
+Unity.exe <arguments> \
     -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
     +buildWorkerTypes "UnityGameLogic" \
     +buildTarget "cloud" \
@@ -17,7 +17,7 @@ When calling the build system from the command line, you must change the `buildT
 You must change this to:
 
 ```bash
-<run_unity> <arguments> \
+Unity.exe <arguments> \
     -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
     +buildWorkerTypes "UnityGameLogic" \
     +buildEnvironment "cloud" \
