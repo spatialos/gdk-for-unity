@@ -6,18 +6,17 @@ cd "$(dirname "$0")/../"
 ci/bootstrap.sh
 
 source .shared-ci/scripts/pinned-tools.sh
-source .shared-ci/scripts/profiling.sh
 
 if isDocsBranch; then
     exit 0
 fi
 
-markStartOfBlock "$0"
+echo "$0"
 
 #####
 # Setup variables
 #####
-markStartOfBlock "Setup variables"
+echo "Setup variables"
 PROJECT_DIR="$(pwd)"
 mkdir -p "${PROJECT_DIR}/logs/"
 
@@ -31,12 +30,10 @@ rm  "${CODE_GENERATOR_TEST_RESULTS_FILE}" \
     "${EDITMODE_TEST_RESULTS_FILE}" \
     "${PLAYMODE_TEST_RESULTS_FILE}"
 
-markEndOfBlock "Setup variables"
-
 cleanUnity "$(pwd)/workers/unity"
 cleanUnity "$(pwd)/test-project"
 
-markStartOfBlock "Code Generator Testing"
+echo "Code Generator Testing"
 
 dotnet test --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
 CODE_GEN_LIB_TEST_RESULT=$?
@@ -44,9 +41,7 @@ CODE_GEN_LIB_TEST_RESULT=$?
 dotnet test --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 CODE_GENERATOR_TEST_RESULT=$?
 
-markEndOfBlock "Code Generator Testing"
-
-markStartOfBlock "Editmode Testing"
+echo "Editmode Testing"
 
 pushd "workers/unity"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -60,11 +55,9 @@ pushd "workers/unity"
     EDITMODE_TEST_RESULT=$?
 popd
 
-markEndOfBlock "Editmode Testing"
-
 cleanUnity "$(pwd)/workers/unity"
 
-markStartOfBlock "Playmode Testing"
+echo "Playmode Testing"
 
 pushd "workers/unity"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -78,10 +71,9 @@ pushd "workers/unity"
     PLAYMODE_TEST_RESULT=$?
 popd
 
-markEndOfBlock "Playmode Testing"
+echo "Generated Code Testing"
 
 pushd "test-project"
-markStartOfBlock "Generated Code Testing"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/test-project" \
@@ -92,8 +84,6 @@ markStartOfBlock "Generated Code Testing"
 
     TEST_PROJECT_EDITMODE_TEST_RESULT=$?
 popd
-
-markEndOfBlock "Generated Code Testing"
 
 if [ $CODE_GEN_LIB_TEST_RESULT -ne 0 ]; then
     >&2 echo "Code Generator Tests failed. Please check the file ${CODE_GEN_LIB_TEST_RESULTS_FILE} for more information."
@@ -114,8 +104,6 @@ fi
 if [ $TEST_PROJECT_EDITMODE_TEST_RESULT -ne 0 ]; then
     >&2 echo "Test Project Editmode Tests failed. Please check the file ${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE} for more information."
 fi
-
-markEndOfBlock "$0"
 
 cleanUnity "$(pwd)/workers/unity"
 cleanUnity "$(pwd)/test-project"

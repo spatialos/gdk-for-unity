@@ -1,5 +1,29 @@
 # Upgrade Guide
 
+## From `0.2.4` to `0.2.5`
+
+### Build system changes
+
+When calling the build system from the command line, you must change the `buildTarget` argument to `buildEnvironment`. Previously you may have called the build system like so:
+
+```bash
+Unity.exe <arguments> \
+    -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
+    +buildWorkerTypes "UnityGameLogic" \
+    +buildTarget "cloud" \
+    +scriptingBackend "mono"
+```
+
+You must change this to:
+
+```bash
+Unity.exe <arguments> \
+    -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
+    +buildWorkerTypes "UnityGameLogic" \
+    +buildEnvironment "cloud" \
+    +scriptingBackend "mono"
+```
+
 ## From `0.2.3` to `0.2.4`
 
 ### General changes
@@ -129,15 +153,15 @@ Previously, there were a set of virtual methods on the `WorkerConnector` class t
 | Method | Class |
 | --- | --- |
 | `SelectDeploymentName(DeploymentList deployments)` | `LocatorFlow` |
-| `GetPlayerId()` | `AlphaLocatorFlow` | 
-| `GetDisplayName()` | `AlphaLocatorFlow` | 
+| `GetPlayerId()` | `AlphaLocatorFlow` |
+| `GetDisplayName()` | `AlphaLocatorFlow` |
 | `string SelectLoginToken(List<LoginTokenDetails> loginTokens)` | `AlphaLocatorFlow` |
 | `string GetDevelopmentPlayerIdentityToken(string authToken, string playerId, string displayName)` | `AlphaLocatorFlow` |
 | `List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)` | `AlphaLocatorFlow` |
 
 #### Mobile setup
 
-The mobile setup is a little bit special. There are built-in initializers for the connection flows and connection parameters in the mobile package. These replicate the behaviour of the `DefaultMobileWorkerConnector`. 
+The mobile setup is a little bit special. There are built-in initializers for the connection flows and connection parameters in the mobile package. These replicate the behaviour of the `DefaultMobileWorkerConnector`.
 
 The `MobileConnectionFlowInitializer` constructor takes any number of `IMobileSettingsProvider` objects and will use these to get mobile specific settings (such as the host IP address for the receptionist). The order in which you provide these objects _does matter_ as the first one to return a valid setting for each setting will be used. We provide two implementations of this interface in the mobile package, one for command line arguments and one for player prefs.
 

@@ -4,7 +4,6 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
-source ".shared-ci/scripts/profiling.sh"
 source ".shared-ci/scripts/pinned-tools.sh"
 
 if [[ -n "${BUILDKITE-}" ]]; then
@@ -17,7 +16,7 @@ fi
 
 uploadAssembly "${ASSEMBLY_PREFIX}" "${PROJECT_NAME}"
 
-markStartOfBlock "Launching deployment"
+echo "Launching deployment"
 
 spatial cloud launch "${ASSEMBLY_NAME}" cloud_launch.json "${ASSEMBLY_NAME}" --snapshot=snapshots/default.snapshot | tee -a ./launch.log
 
@@ -31,5 +30,3 @@ if [[ -n "${BUILDKITE-}" ]]; then
         buildkite-agent annotate --style "warning" "Could not parse deployment URL from launch log."
     fi
 fi
-
-markEndOfBlock "Launching deployment"
