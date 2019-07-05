@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "com.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/com.improbable.gdk.buildsystem",
-    "com.improbable.gdk.core": "file:../../workers/unity/Packages/com.improbable.gdk.core",
-    "com.improbable.gdk.dependencytest": "file:com.improbable.gdk.dependencytest",
-    "com.improbable.gdk.querybasedinteresthelper": "file:../../workers/unity/Packages/com.improbable.gdk.querybasedinteresthelper",
-    "com.improbable.gdk.testutils": "file:../../workers/unity/Packages/com.improbable.gdk.testutils",
-    "com.improbable.gdk.tools": "file:../../workers/unity/Packages/com.improbable.gdk.tools",
-    "com.improbable.worker.sdk": "file:../../workers/unity/Packages/com.improbable.worker.sdk",
+    "io.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/io.improbable.gdk.buildsystem",
+    "io.improbable.gdk.core": "file:../../workers/unity/Packages/io.improbable.gdk.core",
+    "io.improbable.gdk.dependencytest": "file:io.improbable.gdk.dependencytest",
+    "io.improbable.gdk.querybasedinteresthelper": "file:../../workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper",
+    "io.improbable.gdk.testutils": "file:../../workers/unity/Packages/io.improbable.gdk.testutils",
+    "io.improbable.gdk.tools": "file:../../workers/unity/Packages/io.improbable.gdk.tools",
+    "io.improbable.worker.sdk": "file:../../workers/unity/Packages/io.improbable.worker.sdk",
     "com.unity.modules.physics": "1.0.0"
   },
   "registry": "https://staging-packages.unity.com"
