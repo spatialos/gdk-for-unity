@@ -6,10 +6,6 @@
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Mobile Support Module. Made by Improbable.",
   "dependencies": {
-<<<<<<< HEAD
-    "com.improbable.gdk.core": "0.2.4"
-=======
-    "io.improbable.gdk.core": "0.2.3"
->>>>>>> rename package dependencies to new naming style
+    "io.improbable.gdk.core": "0.2.4"
   }
 }
