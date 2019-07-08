@@ -5,7 +5,7 @@
 ### Breaking Changes
 
 - Renamed the `buildTarget` command line argument to `buildEnvironment`. [#1012](https://github.com/spatialos/gdk-for-unity/pull/1012)
-- All GDK packages now have an `io.improbable` prefix instead of `com.improbable`.
+- All GDK packages now have an `io.improbable` prefix instead of `com.improbable`. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
 
 ### Added
 
@@ -13,13 +13,14 @@
     - This can be used with the `[Require]` annotation to inject it into your `MonoBehaviours` provided you are using the `GameObjectCreation` feature module. For example: `[Require] private LinkedGameObjectMap gameObjectMap;`
 - Added the ability for the build system to build specific targets of a given build environment. [#1012](https://github.com/spatialos/gdk-for-unity/pull/1012)
     - Use the `buildTargetFilter` command line argument to pass in a comma delimited list of build targets to filter for. For example, `+buildTargetFilter win,macos`.
-- Added two new GDK packages: `io.improbable.worker.sdk` and `io.improbable.worker.sdk.mobile` which contain the underlying Worker SDK packages for Windows/MacOS/Linux and Android/iOS respectively.
+- Added two new GDK packages: `io.improbable.worker.sdk` and `io.improbable.worker.sdk.mobile` which contain the underlying Worker SDK packages for Windows/MacOS/Linux and Android/iOS respectively. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
+- You may now `[Require]` a `WorkerId` in MonoBehaviours. For example: `[Require] private WorkerId workerId;`. [#1016](https://github.com/spatialos/gdk-for-unity/pull/1016)
 
 ### Internal
 
-- Stopped throwing a `Test Exception` in playground.
-- The embedded `DownloadCoreSdk` `dotnet` project has been removed from `Improbable.Gdk.Tools`.
-- The `PluginPostprocessor` tool has been removed from `Improbable.Gdk.Tools`.
+- Stopped throwing a `Test Exception` in playground. [#1011](https://github.com/spatialos/gdk-for-unity/pull/1011)
+- The embedded `DownloadCoreSdk` `dotnet` project has been removed from `Improbable.Gdk.Tools`. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
+- The `PluginPostprocessor` tool has been removed from `Improbable.Gdk.Tools`. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
 
 ## `0.2.4` - 2019-06-28
 

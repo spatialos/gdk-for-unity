@@ -16,7 +16,8 @@ namespace Improbable.Gdk.Subscriptions
         public override Subscription<WorkerId> Subscribe(EntityId entityId)
         {
             var subscription = new Subscription<WorkerId>(this, new EntityId(0));
-            subscription.SetAvailable(new WorkerId(world.GetExistingSystem<WorkerSystem>().WorkerId));
+            var workerId = world.GetExistingSystem<WorkerSystem>().WorkerId;
+            subscription.SetAvailable(new WorkerId(workerId));
             return subscription;
         }
 
@@ -29,13 +30,13 @@ namespace Improbable.Gdk.Subscriptions
         }
     }
 
-    public struct WorkerId
+    public readonly struct WorkerId
     {
+        public readonly string Id;
+
         public WorkerId(string id)
         {
             Id = id;
         }
-
-        public string Id { get; }
     }
 }
