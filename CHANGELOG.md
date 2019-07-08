@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.6` - 2019-07-08
+
 ### Breaking Changes
 
 - Renamed the `buildTarget` command line argument to `buildEnvironment`. [#1012](https://github.com/spatialos/gdk-for-unity/pull/1012)
