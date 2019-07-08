@@ -1,11 +1,11 @@
 {
   "name": "com.improbable.gdk.playerlifecycle",
   "displayName": "SpatialOS GDK Player Lifecycle",
-  "version": "0.2.4",
+  "version": "test",
   "unity": "2019.1",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Player Lifecycle Module. Made by Improbable.",
   "dependencies": {
-    "com.improbable.gdk.core": "0.2.4"
+    "com.improbable.gdk.core": "test"
   }
 }
