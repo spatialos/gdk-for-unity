@@ -24,4 +24,4 @@ pushd "${SHARED_CI_DIR}"
 popd
 
 # Download local copy of the SDK packages.
-./scripts/shell/update_sdk_packages.sh
+./init.sh

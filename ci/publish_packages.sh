@@ -2,9 +2,9 @@
 
 set -e -u -o pipefail
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/../"
 
-PKG_ROOT="../../workers/unity/Packages"
+PKG_ROOT="workers/unity/Packages"
 REGISTRY="https://npm.cloudsmith.io/spatialos/gdk-for-unity/"
 
 # Re-publish all packages

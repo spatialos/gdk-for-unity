@@ -3,9 +3,9 @@ set -e -u -o pipefail
 
 cd "$(dirname "$0")"
 
-PKG_ROOT="../../workers/unity/Packages"
-SDK_PATH="$PKG_ROOT/io.improbable.worker.sdk"
-SDK_MOBILE_PATH="$PKG_ROOT/io.improbable.worker.sdk.mobile"
+PKG_ROOT="workers/unity/Packages"
+SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
+SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
 
 SDK_VERSION="$(cat "${SDK_PATH}"/package.json | jq -r '.version')"
 
