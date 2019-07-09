@@ -17,8 +17,7 @@ update_package() {
     spatial package get $type $identifier $SDK_VERSION "${path}" --unzip --force --json_output
 
     local files=${4:-""}
-    IFS=';' read -a files <<< "$files"
-    for file in "${files[@]}"; do
+    for file in $(echo $files | tr ";" "\n"); do
         rm "${path}/${file}"
     done
 }
