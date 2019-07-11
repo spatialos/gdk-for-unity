@@ -33,7 +33,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 throw new InvalidOperationException("Provided World does not have an associated worker");
             }
 
-            if (entitySystem.GetEntitiesInView().Contains(entityId))
+            if (!entitySystem.GetEntitiesInView().Contains(entityId))
             {
                 throw new InvalidOperationException(
                     $"Entity with SpatialOS Entity ID {entityId.Id} is not in this worker's view");
@@ -43,7 +43,6 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 return false;
             }
-
 
             var ownerId = updateSystem.GetComponent<OwningWorker.Snapshot>(entityId).WorkerId;
             return worker.WorkerId == ownerId;

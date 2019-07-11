@@ -15,6 +15,11 @@
     - Use the `buildTargetFilter` command line argument to pass in a comma delimited list of build targets to filter for. For example, `+buildTargetFilter win,macos`.
 - Added two new GDK packages: `io.improbable.worker.sdk` and `io.improbable.worker.sdk.mobile` which contain the underlying Worker SDK packages for Windows/MacOS/Linux and Android/iOS respectively.
 
+
+### Fixed
+
+- Fixed a bug where `PlayerLifecycleHelper.IsOwningWorker` would throw an exception if the entity was in your worker's view, instead of throwing if it wasn't in your worker's view.
+
 ### Internal
 
 - Stopped throwing a `Test Exception` in playground.
