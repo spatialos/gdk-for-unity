@@ -6,6 +6,11 @@
 
 set -e -u -x -o pipefail
 
+if [[ -z "$BUILDKITE" ]]; then
+  echo "This script is only to be run on Improbable CI."
+  exit 1
+fi
+
 # Build and upload a version of the docs.
 #
 # Environment variables as arguments:
