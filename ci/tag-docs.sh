@@ -23,10 +23,6 @@ source ci/tools.sh
 #   DOCS_TARGET: "testing", "staging" or "production"
 
 DOCS_HASH="$(buildkite-agent meta-data get "docs-hash")"
-if [ -z "${DOCS_HASH}" ]; then
-    echo "Expected docs-hash meta-data to be set."
-    exit 1
-fi
 
 if [ "${DOCS_TARGET}" != "production" ]; then
     DOCS_VERSION="preview-${DOCS_HASH}"
