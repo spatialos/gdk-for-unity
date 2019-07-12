@@ -22,3 +22,6 @@ pushd "${SHARED_CI_DIR}"
     git fetch --depth 20 origin master
     git checkout "${PINNED_SHARED_CI_VERSION}"
 popd
+
+# Download local copy of the SDK packages.
+./init.sh

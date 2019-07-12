@@ -1,0 +1,3 @@
+.CodeGenerator/**/obj
+.CodeGenerator/**/bin
+.CodeGenerator/GdkCodeGenerator/Generated

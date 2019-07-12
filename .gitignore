@@ -47,8 +47,6 @@ workers/unity/Assets/Plugins/Improbable.meta
 
 _ReSharper.Caches
 
-workers/unity/Packages/com.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Generated
-
 # Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains.meta
@@ -65,7 +63,6 @@ test-project/Assets/Plugins/Improbable.meta
 test-project/ProjectSettings/UnityConnectSettings.asset
 test-project/Assets/Generated/Source.meta
 test-project/Assets/Generated/Source/**/*.*
-test-project/Assets/.Schema/from_gdk_packages
 !test-project/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
 .shared-ci/

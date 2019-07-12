@@ -2,6 +2,28 @@
 
 ## From `0.2.4` to `0.2.5`
 
+### NPM Packages
+
+From release `0.2.5` onward, all GDK packages and feature modules will be delivered through the Unity Package Manager. To upgrade your project to use these packages do the following:
+
+1. Open the `Packages/manifest.json` file inside your Unity project.
+2. Add the following JSON snippet to the this file, under the `"registry: "https://packages.unity.com"` line:
+    ```json
+    "scopedRegistries": [
+      {
+        "name": "Improbable",
+        "url": "https://npm.improbable.io/gdk-for-unity/",
+        "scopes": [
+          "io.improbable"
+        ]
+      }
+    ]
+    ```
+3. Under the `dependencies` field, find all `com.improbable.*` packages and change the names to `io.improbable.*`.
+4. For all these packages, change the value from `file:<something>` to `0.2.5`.
+
+> **Note:** You no longer need to checkout the `gdk-for-unity` repository side-by-side your project to sideload these packages.
+
 ### Build system changes
 
 When calling the build system from the command line, you must change the `buildTarget` argument to `buildEnvironment`. Previously you may have called the build system like so:
