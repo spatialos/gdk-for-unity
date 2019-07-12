@@ -9,7 +9,7 @@ Once you have completed this introduction, you are then ready to learn how to bu
 We recommend starting with the FPS Starter Project by going to the next step: [Set up]({{urlRoot}}/projects/fps/get-started/set-up.md), but you can get going with the [Blank Starter Project]({{urlRoot}}/projects/blank/overview) if you prefer this route.
 <br/>
 
-> **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity](https://unity3d.com/programming-in-unity), version control systems (such as [Git](https://try.github.io/)), and [command line interfaces](https://tutorial.djangogirls.org/en/intro_to_command_line/) to use the SpatialOS GDK for Unity.
+> **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity](https://unity3d.com/programming-in-unity), version control systems (such as [Git](https://try.github.io/)), and command line interfaces (CLI) to use the SpatialOS GDK for Unity.
 
 #### Next: [Set up]({{urlRoot}}/projects/fps/get-started/set-up.md)
 

@@ -128,7 +128,7 @@ When you want to try out your game, you need to deploy it. This means
 launching SpatialOS itself. SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot), then starts up the [server-workers](#worker) needed to run the world.
 There are two types of deployment: local and cloud.
 
-[Local deployments](https://docs.improbable.io/reference/cloud/shared/deploy/deploy-local) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
+[Local deployments](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
 
 As their name suggests, [cloud deployments](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud) run in the cloud on [nodes](#node). They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
 
@@ -159,7 +159,7 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 > Related:
 >
 > * [Unity Manual: GameObject](https://docs.unity3d.com/Manual/class-GameObject.html)
-> * [Unity Scripting API Reference: GameObject](https://docs.unity3d.com/Scriptreference/workflows/monobehaviour.html)
+> * [Unity Scripting API Reference: GameObject](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)
 
 ### Inject
 
@@ -222,10 +222,10 @@ Note that there are [other ways](https://docs.improbable.io/reference/13.3/share
 
 ### Message
 
-A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component](#spatialos-component) that the worker is [interested](https://docs.improbable.io/reference/latestshared/glossary#interest) in, messages can be either
+A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component](#spatialos-component) that the worker is [interested](https://docs.improbable.io/reference/latest/shared/glossary#interest) in, messages can be either:
 
-  * [Events](https://docs.improbable.io/reference/latest/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
-  * [Commands](https://docs.improbable.io/reference/latest/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
+* [Events](https://docs.improbable.io/reference/latest/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
+* [Commands](https://docs.improbable.io/reference/latest/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
 
 > Related:
 >
@@ -544,7 +544,7 @@ Generated Unity ECS components can be injected into systems, read, and modified 
 
 > Related:
 >
-> * [Unity ECS documentation: IComponentData](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#icomponentdata)
+> * [Unity ECS documentation: IComponentData](https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/component_data.html#icomponentdata)
 
 ### Unity ECS Entity
 
@@ -555,7 +555,7 @@ In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS 
 
 > Related:
 >
-> * [Unity ECS documentation: Entity](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#entity)
+> * [Unity ECS documentation: Entity](https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/ecs_entities.html)
 
 ### Unity ECS system
 
@@ -571,7 +571,7 @@ In the GDK, ECS worlds (and everything in them) are an abstraction used to repre
 
 > Related:
 >
-> * [Unity ECS documentation: World](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail#world)
+> * [Unity ECS documentation: World](https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/world.html)
 
 ### Unity packages
 
@@ -594,7 +594,7 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 
 > Related:
 >
-> * [System update order (Unity documentation)](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/Documentation/reference/workflows/ecs_in_detail)
+> * [System update order (Unity documentation)](https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/system_update_order.html)
 > * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
 
 ### Worker
