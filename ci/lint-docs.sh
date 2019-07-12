@@ -38,10 +38,9 @@ function annotations() {
 }
 
 DOCS_PATH="./docs"
-ENVIRONMENT="production"
 
 echo "Setting up Improbadoc linter"
-setup_improbadoc "${ENVIRONMENT}"
+setup_improbadoc
 
 echo "Running Improbadoc Linter"
 improbadoc lint \

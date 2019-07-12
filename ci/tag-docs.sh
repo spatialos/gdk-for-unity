@@ -36,14 +36,11 @@ if [[ "${BUILDKITE_BRANCH}" != "master" && "${DOCS_TARGET}" == "production" ]]; 
     echo "Docs may only be published to production from master."
 fi
 
-ENVIRONMENT="production"
-
-setup_improbadoc "${ENVIRONMENT}"
+setup_improbadoc
 
 improbadoc list \
     "${DOCS_TYPE}" \
     --target="${DOCS_TARGET}" \
-    --environment="${ENVIRONMENT}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
 improbadoc tag \
@@ -51,15 +48,13 @@ improbadoc tag \
     "${DOCS_VERSION}" \
     "${DOCS_HASH}" \
     --target="${DOCS_TARGET}" \
-    --environment="${ENVIRONMENT}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}" \
     --json | jq '.' | tee "improbadoc.tag.output.json"
 
 improbadoc list \
     "${DOCS_TYPE}" \
     --target="${DOCS_TARGET}" \
-    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}" \
-    --environment="${ENVIRONMENT}"
+    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
 if [ "${DOCS_TARGET}" = "production" ]; then
     buildkite-agent annotate "Production link: https://docs.improbable.io/${DOCS_TYPE}/${DOCS_VERSION}" --style 'success' --context 'ctx-production'

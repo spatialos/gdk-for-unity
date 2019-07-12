@@ -3,8 +3,6 @@ function delete_secret() {
 }
 
 function fetch_service_account() {
-    local ENV="${1}"
-
     export SPATIAL_OAUTH_DIR=$(mktemp -d)
     local SPATIAL_OAUTH_FILE="${SPATIAL_OAUTH_DIR}/oauth2_refresh_token"
 
@@ -13,7 +11,7 @@ function fetch_service_account() {
         --environment=production \
         --buildkite-org=improbable \
         --secret-type=spatialos-service-account \
-        --secret-name="improbadoc/token-${ENV}" \
+        --secret-name="improbadoc/token-production" \
         --field=token \
         --write-to="${SPATIAL_OAUTH_FILE}"
 
@@ -21,9 +19,7 @@ function fetch_service_account() {
 }
 
 function setup_improbadoc() {
-    local ENV="${1}"
-
-    fetch_service_account "${ENV}"
+    fetch_service_account
 
     echo "Adding imp-tool subcriptions to PATH."
     export PATH="$HOME/.improbable/imp-tool/subscriptions:$PATH"

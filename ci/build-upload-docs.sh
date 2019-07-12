@@ -22,10 +22,9 @@ source ci/tools.sh
 
 DOCS_PATH_TMP="$(mktemp -d)"
 DOCS_PATH="./docs"
-ENVIRONMENT="production"
 ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
-setup_improbadoc "${ENVIRONMENT}"
+setup_improbadoc
 
 echo $(date +%s%N | cut -b1-13) > "${DOCS_PATH}/timestamp.txt"
 
@@ -41,7 +40,6 @@ improbadoc lint \
 improbadoc upload \
     "${DOCS_TYPE}" \
     "${DOCS_PATH_TMP}" \
-    --environment="${ENVIRONMENT}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}" \
     --json | jq '.' | tee "${ARTIFACT_FILE_NAME}"
 

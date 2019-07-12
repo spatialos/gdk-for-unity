@@ -1,5 +1,5 @@
 pinned_tool:
   - tool: "improbadoc"
-    version: "2.20.2"
+    version: "2.20.5"
   - tool: "imp-tool"
     version: "20190708.134741.1012d5e04e"

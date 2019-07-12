@@ -9,6 +9,6 @@ github:
     - "docs/*"
 teams:
 - name: Everyone
-  permission: BUILD_AND_READ
+  permission: READ_ONLY
 - name: gbu/develop/unity
   permission: MANAGE_BUILD_AND_READ
