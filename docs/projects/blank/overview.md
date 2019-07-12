@@ -18,4 +18,4 @@ It has the minimum GDK feature set you need to start developing games for Spatia
 - [Worker build configuration]({{urlRoot}}/projects/myo/build#build-your-workers).
 - A set of Unity Scenes to use in development.
 
-> **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity (Unity documentation)](https://unity3d.com/programming-in-unity), version control systems (such as [Git (github.io)](https://try.github.io/)), and command line interfaces (CLI) to use the SpatialOS GDK for Unity.
+> **Note:** Whichever route you choose, you need basic proficiency in [programming in Unity](https://unity3d.com/programming-in-unity), version control systems (such as [Git](https://try.github.io/)), and command line interfaces (CLI) to use the SpatialOS GDK for Unity.
