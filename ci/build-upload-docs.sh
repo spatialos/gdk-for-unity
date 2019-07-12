@@ -15,9 +15,7 @@ DOCS_PATH="./docs"
 ENVIRONMENT="production"
 ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
-fetch_service_account "${ENVIRONMENT}"
-
-setup_improbadoc
+setup_improbadoc "${ENVIRONMENT}"
 
 echo $(date +%s%N | cut -b1-13) > "$DOCS_PATH/timestamp.txt"
 

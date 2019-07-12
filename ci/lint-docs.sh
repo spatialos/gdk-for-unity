@@ -31,8 +31,7 @@ DOCS_PATH="./docs"
 ENVIRONMENT="production"
 
 echo "Setting up Improbadoc linter"
-fetch_service_account "${ENVIRONMENT}"
-setup_improbadoc
+setup_improbadoc "${ENVIRONMENT}"
 
 echo "Running Improbadoc Linter"
 improbadoc lint \

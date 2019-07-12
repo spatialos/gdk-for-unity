@@ -28,6 +28,10 @@ function fetch_service_account() {
 }
 
 function setup_improbadoc() {
+    local ENV="${1}"
+
+    fetch_service_account "${ENV}"
+
     echo "Adding imp-tool subcriptions to PATH."
     export PATH="$HOME/.improbable/imp-tool/subscriptions:$PATH"
 

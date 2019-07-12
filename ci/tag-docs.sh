@@ -28,9 +28,7 @@ fi
 
 ENVIRONMENT="production"
 
-fetch_service_account "${ENVIRONMENT}"
-
-setup_improbadoc
+setup_improbadoc "${ENVIRONMENT}"
 
 improbadoc list \
     "${DOCS_TYPE}" \
