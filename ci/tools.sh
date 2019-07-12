@@ -1,10 +1,3 @@
-function from_meta() {
-    key="${1}"
-    default_value="${2-""}"
-
-    buildkite-agent meta-data get "${key}" --default "${default_value}"
-}
-
 function delete_secret() {
     rm -rf "${SPATIAL_OAUTH_DIR}"
 }
