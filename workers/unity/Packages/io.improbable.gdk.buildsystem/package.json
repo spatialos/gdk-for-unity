@@ -4,7 +4,7 @@
   "version": "0.2.4",
   "unity": "2019.1",
   "author": "Improbable Worlds Ltd",
-  "description": "SpatialOS GDK Build System Module. Made by Improbable.",
+  "description": "SpatialOS GDK Build System Module.",
   "dependencies": {
     "io.improbable.gdk.core": "0.2.4"
   }
