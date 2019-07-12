@@ -32,8 +32,8 @@ if [ "${DOCS_TARGET}" != "production" ]; then
     DOCS_VERSION="preview-${DOCS_HASH}"
 fi
 
-if [[ "${BUILDKITE_BRANCH}" != "master" && "${DOCS_TARGET}" == "production" ]]; then
-    echo "Docs may only be published to production from master."
+if [[ "${BUILDKITE_BRANCH}" != "docs-current" && "${DOCS_TARGET}" == "production" ]]; then
+    echo "Docs may only be published to production from docs-current."
 fi
 
 setup_improbadoc

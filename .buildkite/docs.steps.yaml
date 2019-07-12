@@ -36,18 +36,6 @@ steps:
 
   - wait
 
-  - label: "Preview docs in testing"
-    command: bash -c ci/tag-docs.sh
-    <<: *common
-    artifact_paths:
-      - "./improbadoc.tag.output.json"
-    env:
-      DOCS_TYPE: "unity"
-      DOCS_VERSION: "alpha"
-      DOCS_TARGET: "testing"
-
-  - block: "Promote to staging!"
-
   - label: "Preview docs in staging"
     command: bash -c ci/tag-docs.sh
     <<: *common

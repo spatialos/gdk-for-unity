@@ -17,7 +17,7 @@ ci/bootstrap.sh
 
 source ci/tools.sh
 
-function annotations() {
+function display_annotations() {
     WARNINGS_FILE="./logs/warnings.txt"
     if [[ -f "${WARNINGS_FILE}" ]]; then
         buildkite-agent annotate --style 'warning' --context 'ctx-warn' "<h2>Warnings:</h2><ul>"
@@ -53,11 +53,11 @@ setup_docs_linter
 mkdir -p ./logs
 
 echo "Running Docs Linter"
-trap annotations ERR
+trap display_annotations ERR
 docker run \
     -v $(pwd)/logs:/var/logs \
     local:gdk-docs-linter \
         "/var/logs/warnings.txt" \
         "/var/logs/errors.txt"
 
-annotations
+display_annotations
