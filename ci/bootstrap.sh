@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+### This script should only be run on Improbable's internal build machines.
+### If you don't work at Improbable, this may be interesting as a guide to what software versions we use for our
+### automation, but not much more than that.
+
 set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
