@@ -47,7 +47,7 @@ steps:
       BUILD_TARGET_FILTER: "android"
       SCRIPTING_BACKEND: "mono"
 
-  - label: "build iOS"
+  - label: "build :ios:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:

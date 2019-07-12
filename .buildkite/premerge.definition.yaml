@@ -1,6 +1,6 @@
 ---
 agent_queue_id: trigger-pipelines
-description: Unity GDK pre-merge CI pipeline.
+description: GDK for Unity pre-merge CI pipeline.
 github:
   branch_configuration: []
   default_branch: develop
