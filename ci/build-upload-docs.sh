@@ -17,7 +17,7 @@ ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
 setup_improbadoc "${ENVIRONMENT}"
 
-echo $(date +%s%N | cut -b1-13) > "$DOCS_PATH/timestamp.txt"
+echo $(date +%s%N | cut -b1-13) > "${DOCS_PATH}/timestamp.txt"
 
 improbadoc build \
     "${DOCS_PATH}" \
