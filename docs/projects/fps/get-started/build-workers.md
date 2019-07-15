@@ -59,4 +59,4 @@ You can also check our [Known Issues](https://github.com/spatialos/gdk-for-unity
 
 <br/>
 
-#### Next: [Upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch.md)
+#### Next: [Upload and launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch)

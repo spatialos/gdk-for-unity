@@ -10,7 +10,7 @@
             - [2. Set up]({{urlRoot}}/projects/fps/get-started/set-up)
             - [3. Build your workers]({{urlRoot}}/projects/fps/get-started/build-workers)
             - [4. Upload & launch your game]({{urlRoot}}/projects/fps/get-started/upload-launch)
-            - [5. Get playing]({{urlRoot}}/projects/fps/get-started/get-playing.md)
+            - [5. Get playing]({{urlRoot}}/projects/fps/get-started/get-playing)
             - [6. View your game world]({{urlRoot}}/projects/fps/get-started/view-game-world)
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
     - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)

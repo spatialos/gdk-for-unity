@@ -163,11 +163,9 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 
 ### Inject
 
-The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
+The term “inject” refers to when a field is populated automatically by the SpatialOS GDK for Unity.
 
 In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) the GDK performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`[Require]` attribute]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) to allow you to interact with SpatialOS. A MonoBehaviour is only enabled when all of its dependencies are populated.
-
-In the ECS workflow, Unity performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`Inject`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/8f94d72d1fd9b8db896646d9d533055917dc265a/Documentation/reference/injection.md) attribute inside systems to iterate over all the [Unity ECS Entities](#unity-ecs-entity) matching a required [Unity ECS component](#unity-ecs-component) type.
 
 ### Inspector
 
