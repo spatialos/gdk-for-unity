@@ -38,13 +38,23 @@ namespace Improbable.Gdk.Subscriptions
         }
     }
 
-    public readonly struct WorkerId : IEquatable<string>
+    public readonly struct WorkerId : IEquatable<string>, IEquatable<WorkerId>
     {
         public readonly string Id;
 
         public WorkerId(string id)
         {
             Id = id;
+        }
+
+        public bool Equals(WorkerId other)
+        {
+            if (Id == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            return other.Id != null && Id.Equals(other.Id);
         }
 
         public bool Equals(string other)
