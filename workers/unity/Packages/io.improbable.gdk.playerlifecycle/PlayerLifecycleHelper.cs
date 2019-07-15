@@ -35,8 +35,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             if (!entitySystem.GetEntitiesInView().Contains(entityId))
             {
-                throw new InvalidOperationException(
-                    $"Entity with SpatialOS Entity ID {entityId.Id} is not in this worker's view");
+                return false;
             }
 
             if (!updateSystem.HasComponent(OwningWorker.ComponentId, entityId))

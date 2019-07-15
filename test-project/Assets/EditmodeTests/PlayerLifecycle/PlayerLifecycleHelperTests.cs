@@ -26,9 +26,9 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
         }
 
         [Test]
-        public void IsOwningWorker_should_throw_if_entity_does_not_exist()
+        public void IsOwningWorker_should_return_false_if_entity_does_not_exist()
         {
-            Assert.Throws<InvalidOperationException>(() => PlayerLifecycleHelper.IsOwningWorker(new EntityId(10), worker.World));
+            Assert.IsFalse(PlayerLifecycleHelper.IsOwningWorker(new EntityId(10), worker.World));
         }
 
         [Test]
