@@ -11,7 +11,7 @@ namespace Playground
 
         private void OnEnable()
         {
-            Debug.Log($"Testing [Require] WorkerId: {workerId.Id}");
+            Debug.Log($"Testing [Require] WorkerId: {workerId}");
         }
     }
 }
