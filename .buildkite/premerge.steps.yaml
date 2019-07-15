@@ -39,10 +39,6 @@ steps:
     command: bash -c ci/docs-build-verification.sh
     <<: *common # This folds the YAML named anchor into this step. Overrides, if any, should follow, not precede.
 
-  - label: "lint docs :lint-roller:"
-    command: bash -c ci/docs-lint.sh
-    <<: *common
-
   - label: "test"
     command: bash -c ci/test.sh
     <<: *common
