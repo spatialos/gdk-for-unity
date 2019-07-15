@@ -10,7 +10,7 @@ To run the the FPS Starter Project, you need to download the source code. There 
 
 <%(#Expandable title="Zip file download")%>
 
- While we recommend using Git, if you prefer to, you can get the source code for both the GDK and FPS Starter Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases" data-track-link="Starter Project Zip Clicked|product=Docs" target="_blank">here</a>. Please download the latest release, the file should be called something like `gdk-for-unity-fps-starter-project-x.y.z.zip`.
+ While we recommend using Git, if you prefer to, you can get the source code for the FPS Starter Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-fps-starter-project/releases" data-track-link="Starter Project Zip Clicked|product=Docs" target="_blank">here</a>. Please download the latest release, the file should be called something like `gdk-for-unity-fps-starter-project-x.y.z.zip`.
 
 <%(Callout message="If you have downloaded the source code via a zip file move on to the next section of this page: [Open the FPS Starter Project in your Unity Editor](#open-in-editor).")%>
 
