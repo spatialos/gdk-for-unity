@@ -110,11 +110,11 @@ The [Console](https://console.improbable.io/) is the main landing page for manag
 
 ### Core module
 
-The [Unity project](#unity-project) inside the GDK consists of the core module and a number of [feature modules](#feature-modules). The core module is compulsory. It provides core functionality to enable your game to run on SpatialOS. It is located at `UnityGDK/workers/unity/Packages/com.improbable.gdk.core` and consists out of the following [Unity packages](#unity-packages):
+The [Unity project](#unity-project) inside the GDK consists of the core module and a number of [feature modules](#feature-modules). The core module is compulsory. It provides core functionality to enable your game to run on SpatialOS. It is located at `UnityGDK/workers/unity/Packages/io.improbable.gdk.core` and consists out of the following [Unity packages](#unity-packages):
 
- * SpatialOS GDK Core (com.improbable.gdk.core)
- * SpatialOS GDK Test Utils (com.improbable.gdk.testutils)
- * SpatialOS GDK Tools (com.improbable.gdk.tools)
+* SpatialOS GDK Core (io.improbable.gdk.core)
+* SpatialOS GDK Test Utils (io.improbable.gdk.testutils)
+* SpatialOS GDK Tools (io.improbable.gdk.tools)
 
 These packages provide the the basic implementation to synchronize with the SpatialOS Runtime and additional tooling for generating code and testing your game.
 
