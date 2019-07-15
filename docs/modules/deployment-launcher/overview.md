@@ -4,12 +4,16 @@ This feature module contains Unity Editor tooling for uploading assemblies, and 
 
 ## Installation
 
-Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
+Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.1/manual/index.html#installing-a-new-package).
 
-The Deployment Launcher Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
+Or add it to your `Packages/manifest.json`:
 
-```text
-workers/unity/Packages/com.improbable.gdk.deploymentlauncher/package.json
+```json
+{
+  "dependencies": {
+    "io.improbable.gdk.deploymentlauncher": "<%(Var key="current_version")%>"
+  },
+}
 ```
 
 ## Usage

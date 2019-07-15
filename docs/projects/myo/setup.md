@@ -8,26 +8,8 @@ _Make sure you have followed the [Setup & installation]({{urlRoot}}/machine-setu
 
 To use the SpatialOS GDK for Unity in a new project, you need to:
 
-1. Clone the `gdk-for-unity` repository.
 1. Setup the [SpatialOS project structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure).
 1. Add the GDK packages to your Unity project.
-
-## Clone the SpatialOS GDK for Unity repository
-
-To run the GDK for Unity, you need to download the source code. To do this, you need to clone the GDK repository.
-
-### Using a terminal
-
-Clone the SpatialOS GDK for Unity repository using one of the following terminal commands:
-
-|     |     |
-| --- | --- |
-| HTTPS | `git clone https://github.com/spatialos/gdk-for-unity.git` |
-| SSH | `git clone git@github.com:spatialos/gdk-for-unity.git` |
-
-### Using GitHub Desktop
-
-To clone the repository using GitHub desktop: navigate to **File > Clone Repository**, select the URL tab and enter `https://github.com/spatialos/gdk-for-unity` into the URL or username/repository field, then select Clone.
 
 ## Setup a SpatialOS project
 
@@ -37,15 +19,17 @@ A SpatialOS project needs to have a specific directory layout and configuration 
 
 In the root of your SpatialOS project, you need to create the following directories: `schema` and `workers`.
 
-* `schema`: This directory contains your `.schema` files.
+* `schema`: This directory contains your `*.schema` files.
 * `workers`: This directory contains your worker code and configuration.
 
 <%(#Expandable title="What should my project directory look like when I'm done?")%>
+
 ```text
   <project_root>
     ├── schema/
     ├── workers/
 ```
+
 <%(/Expandable)%>
 
 **Step 2.** Create the required configuration files.
@@ -71,7 +55,7 @@ In the root of your SpatialOS project, create two files:
 
 ```json
 {
-  "template": "small",
+  "template": "w2_r0500_e5",
   "world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
@@ -123,6 +107,7 @@ In the root of your SpatialOS project, create two files:
 ```
 
 <%(#Expandable title="What should my project directory look like when I'm done?")%>
+
 ```text
   <project_root>
     ├── schema/
@@ -130,6 +115,7 @@ In the root of your SpatialOS project, create two files:
     ├── spatialos.json
     ├── default_launch.json
 ```
+
 <%(/Expandable)%>
 
 **Step 3.** Create a new Unity project.
@@ -137,6 +123,7 @@ In the root of your SpatialOS project, create two files:
 You need to put the new Unity project in the `workers` directory. For example `workers/my-unity-project/`.
 
 <%(#Expandable title="What should my project directory look like when I'm done?")%>
+
 ```text
   <project_root>
     ├── schema/
@@ -145,6 +132,7 @@ You need to put the new Unity project in the `workers` directory. For example `w
     ├── spatialos.json
     ├── default_launch.json
 ```
+
 <%(/Expandable)%>
 
 **Step 4.** Add worker configurations.
@@ -157,6 +145,7 @@ For a basic set up of two worker types, an `UnityGameLogic` and `UnityClient`, w
 Copy these files into `workers/my-unity-project/`.
 
 <%(#Expandable title="What should my project directory look like when I'm done?")%>
+
 ```text
   <project_root>
     ├── schema/
@@ -167,6 +156,7 @@ Copy these files into `workers/my-unity-project/`.
     ├── spatialos.json
     ├── default_launch.json
 ```
+
 <%(/Expandable)%>
 
 ## Add the GDK packages
@@ -183,58 +173,54 @@ Copy this file into `workers/my-unity-project/Assets/Generated/Improbable.Gdk.Ge
 
 **Step 2.** Add package references to your `manifest.json`.
 
-Unity loads the packages that are declared in the `manifest.json` file into your Unity project. We will be side-loading the GDK packages.
+Unity loads the packages that are declared in the `manifest.json` file into your Unity project. We will be including the GDK packages.
 
-Open the `manifest.json` in the `workers/my-unity-project/Packages/` directory and add the following dependencies:
+Open the `manifest.json` in the `workers/my-unity-project/Packages/` directory and add the following:
 
 ```json
 {
   "dependencies": {
-    "com.improbable.gdk.core": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.core",
-    "com.improbable.gdk.tools": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.tools",
-    "com.improbable.gdk.buildsystem": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.buildsystem",
-    "com.improbable.gdk.testutils": "file:<path-to-the-gdk>/workers/unity/Packages/com.improbable.gdk.testutils",
-  }
+    "io.improbable.gdk.core": "<%(Var key="current_version")%>",
+    "io.improbable.gdk.buildsystem": "<%(Var key="current_version")%>"
+  },
+  "scopedRegistries": [
+    {
+      "name": "Improbable",
+      "url": "https://npm.improbable.io/gdk-for-unity/",
+      "scopes": [
+        "io.improbable"
+      ]
+    }
+  ]
 }
 ```
 
-Replace `<path-to-the-gdk>` with the _relative path_ from the `manifest.json` to the `gdk-for-unity` directory.
+See our [FPS Starter Project](https://github.com/spatialos/gdk-for-unity-fps-starter-project/blob/master/workers/unity/Packages/manifest.json) for an example.
 
 > **Note:** There may already be some dependencies listed in your `manifest.json`. If there are, do not remove them - just add to the list.
 
 <%(Callout message="The packages listed above are just the **minimum** set required to get started with the GDK.<br/><br/>You can add additional feature module packages by referencing them the same way.")%>
 
-<%(#Expandable title="What is sideloading?")%>
-Sideloading is the mechanism by which we load packages in the GDK (for now!).
-
-Unity allows you to reference a package with a file path instead of fetching a versioned package from a registry.
-
-The consequence of this mechanism is that you tend to need two repositories cloned side by side.
-<%(/Expandable)%>
-
 **Step 3.** Create a GDK tools configuration file.
 
-Our `com.improbable.gdk.tools` package uses a configuration file when downloading Worker SDK packages and generating code. We recommend that you reuse this file:
+The GDK for Unity uses a configuration file when generating code. We recommend that you reuse this file:
 
 * [`GdKToolsConfiguration.json`](https://github.com/spatialos/gdk-for-unity/blob/master/workers/unity/Assets/Config/GdkToolsConfiguration.json)
 
 Copy this file into `workers/my-unity-project/Assets/Config/GdkToolsConfiguration.json`
 
-> **Note:** You will need to create the `Config` folder.
+> **Note:** You will need to create the `Assets/Config` folder.
 
 **Step 4.** Open your Unity project.
 
-Open your Unity project located at `workers/my-unity-project`. This triggers a few actions:
+Open your Unity project located at `workers/my-unity-project`. This triggers code generation for your project.
 
-* Unity downloads several required SpatialOS libraries.
+> **Note:** Unity generates code from the [schema]({{urlRoot}}/reference/glossary#schema) files defined in your SpatialOS project.
 
-> This may result in opening a browser windows prompting you to log in to your SpatialOS account.
-
-* Unity generates code from the [schema]({{urlRoot}}/reference/glossary#schema) files defined in your SpatialOS project.
-
-<br />
+<br/>
 
 <%(#Expandable title="What should my project directory look like when I'm done?")%>
+
 ```text
   <project_root>
     ├── schema/
@@ -253,4 +239,5 @@ Open your Unity project located at `workers/my-unity-project`. This triggers a f
     ├── spatialos.json
     ├── default_launch.json
 ```
+
 <%(/Expandable)%>
