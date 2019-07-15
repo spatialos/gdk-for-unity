@@ -5,7 +5,8 @@
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Unity.Entities.Hybrid"
+        "Unity.Entities.Hybrid",
+        "Improbable.Gdk.PlayerLifecycle"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -18,5 +19,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": []
 }

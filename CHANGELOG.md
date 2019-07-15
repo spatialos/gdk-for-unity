@@ -16,6 +16,15 @@
 - Added two new GDK packages: `io.improbable.worker.sdk` and `io.improbable.worker.sdk.mobile` which contain the underlying Worker SDK packages for Windows/MacOS/Linux and Android/iOS respectively. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
 - You may now `[Require]` a `WorkerId` in MonoBehaviours. For example: `[Require] private WorkerId workerId;`. [#1016](https://github.com/spatialos/gdk-for-unity/pull/1016)
 
+
+### Changed
+
+- `PlayerLifecycleHelper.IsOwningWorker` will now return false instead of throwing an exception if the entity is not in your worker's view.
+
+### Fixed
+
+- Fixed a bug where `PlayerLifecycleHelper.IsOwningWorker` would throw an exception if the entity was in your worker's view.
+
 ### Internal
 
 - Stopped throwing a `Test Exception` in playground. [#1011](https://github.com/spatialos/gdk-for-unity/pull/1011)
