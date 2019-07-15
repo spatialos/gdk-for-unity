@@ -7,6 +7,7 @@
     "io.improbable.gdk.testutils": "file:../../workers/unity/Packages/io.improbable.gdk.testutils",
     "io.improbable.gdk.tools": "file:../../workers/unity/Packages/io.improbable.gdk.tools",
     "io.improbable.worker.sdk": "file:../../workers/unity/Packages/io.improbable.worker.sdk",
+    "io.improbable.gdk.playerlifecycle": "file:../../workers/unity/Packages/io.improbable.gdk.playerlifecycle",
     "com.unity.modules.physics": "1.0.0"
   },
   "registry": "https://staging-packages.unity.com"
