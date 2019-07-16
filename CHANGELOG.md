@@ -15,7 +15,7 @@
     - Use the `buildTargetFilter` command line argument to pass in a comma delimited list of build targets to filter for. For example, `+buildTargetFilter win,macos`.
 - Added two new GDK packages: `io.improbable.worker.sdk` and `io.improbable.worker.sdk.mobile` which contain the underlying Worker SDK packages for Windows/MacOS/Linux and Android/iOS respectively. [#894](https://github.com/spatialos/gdk-for-unity/pull/894)
 - You may now `[Require]` a `WorkerId` in MonoBehaviours. For example: `[Require] private WorkerId workerId;`. [#1016](https://github.com/spatialos/gdk-for-unity/pull/1016)
-
+- iOS builds now perform a post processing step on the XCode project to ensure x86_64 and arm libraries from the SpatialOS Worker SDK are separated.
 
 ### Changed
 
