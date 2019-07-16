@@ -33,7 +33,6 @@ update_package schema standard_library "${SDK_PATH}/.schema"
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
-update_package tools schema_compiler-x86_64-linux "${SDK_PATH}/.schema_compiler"
 
 #Update Mobile SDK
 update_package worker_sdk core-static-fullylinked-arm-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm" "CoreSdkStatic.lib;libCoreSdkStatic.a.pic"
