@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     ///         - EntityId
     ///         - ECS Entity
     ///         - Log Dispatcher
+    ///         - WorkerId
     ///         - World Commands
     ///         - ECS World
     /// </summary>
@@ -52,6 +53,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
             var logSubscription = SubscriptionSystem.Subscribe<ILogDispatcher>(entityId);
             Assert.IsTrue(logSubscription.HasValue);
             Assert.AreEqual(LogDispatcher, logSubscription.Value);
+        }
+
+        [Test]
+        public void Subscribe_to_worker_id_should_always_be_available()
+        {
+            var workerIdSubscription = SubscriptionSystem.Subscribe<WorkerId>(entityId);
+            Assert.True(workerIdSubscription.HasValue);
+            Assert.AreEqual("TestWorker", workerIdSubscription.Value);
         }
 
         [Test]
