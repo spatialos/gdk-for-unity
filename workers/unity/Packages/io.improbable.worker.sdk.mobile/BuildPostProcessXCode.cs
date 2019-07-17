@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.Callbacks;
 
 namespace Improbable.Gdk.Mobile
@@ -23,7 +24,7 @@ namespace Improbable.Gdk.Mobile
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                var type = assembly.GetTypes().FirstOrDefault(t => t.FullName == "UnityEditor.iOS.Xcode.PBXProjectddd");
+                var type = assembly.GetTypes().FirstOrDefault(t => t.FullName == "UnityEditor.iOS.Xcode.PBXProject");
                 if (type != null)
                 {
                     pbxType = type;
@@ -34,7 +35,7 @@ namespace Improbable.Gdk.Mobile
             // Safety check again API changes
             if (pbxType == null)
             {
-                throw new TypeLoadException("Unable to find type UnityEditor.iOS.Xcode.PBXProject");
+                throw new BuildFailedException("Unable to find type UnityEditor.iOS.Xcode.PBXProject");
             }
 
             var xcodeObject = Activator.CreateInstance(pbxType);
@@ -85,7 +86,7 @@ namespace Improbable.Gdk.Mobile
             }
 
             // Save changes to xcode project file
-            InvokeMethod<string>(xcodeObject, "WriteToFile", projPath);
+            InvokeMethod(xcodeObject, "WriteToFile", projPath);
         }
 
         private static T InvokeStaticMethod<T>(string methodName, params object[] parameters)
