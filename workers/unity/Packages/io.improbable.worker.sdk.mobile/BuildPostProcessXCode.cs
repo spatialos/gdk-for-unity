@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEngine;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -21,12 +20,10 @@ namespace Improbable.Gdk.Mobile
                 return;
             }
 
-            Debug.Log("PostProcessBuild");
-
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                var type = assembly.GetTypes().FirstOrDefault(t => t.FullName == "UnityEditor.iOS.Xcode.PBXProject");
+                var type = assembly.GetTypes().FirstOrDefault(t => t.FullName == "UnityEditor.iOS.Xcode.PBXProjectddd");
                 if (type != null)
                 {
                     pbxType = type;
@@ -34,11 +31,10 @@ namespace Improbable.Gdk.Mobile
                 }
             }
 
-            //pbxType = Type.GetType("UnityEditor.iOS.Xcode.PBXProject");
+            // Safety check again API changes
             if (pbxType == null)
             {
-                Debug.LogWarning("iOS Support not installed.");
-                return;
+                throw new TypeLoadException("Unable to find type UnityEditor.iOS.Xcode.PBXProject");
             }
 
             var xcodeObject = Activator.CreateInstance(pbxType);
