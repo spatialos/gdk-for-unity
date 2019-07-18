@@ -82,6 +82,25 @@ namespace Improbable.Gdk.Tools
                 var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
                     CsProjectFile));
 
+
+                // Fix up symlinking for Mac
+                if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    var packageAttributes = File.GetAttributes(Common.GetThisPackagePath());
+                    if (packageAttributes.HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        var process = RedirectedProcess.Command("pwd")
+                            .WithArgs("-P")
+                            .InDirectory(Common.GetThisPackagePath())
+                            .RedirectOutputOptions(OutputRedirectBehaviour.None);
+
+                        var result = process.RunAsync().Result;
+                        var realPath = string.Join("\n", result.Stdout).Trim();
+
+                        projectPath = Path.GetFullPath(Path.Combine(realPath, CsProjectFile));
+                    }
+                }
+
                 var schemaCompilerPath = SchemaCompilerPath;
 
                 var workerJsonPath =
