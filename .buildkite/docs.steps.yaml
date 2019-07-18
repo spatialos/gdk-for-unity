@@ -1,0 +1,59 @@
+---
+common: &common
+  agents:
+    - "capable_of_building=gdk-for-unity"
+    - "environment=production"
+    - "permission_set=builder"
+    - "platform=linux"  # if you need a different platform, configure this: macos|linux|windows.
+    - "queue=v3-1562766449-11b126f880607f28-------z"
+  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
+  retry:
+    automatic:
+        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+      - exit_status: -1
+        limit: 3
+        # This is designed to trap and retry failures because of a buildkite bug.
+      - exit_status: 255
+        limit: 3
+        # Workaround for flaky Git clones, likely due to - https://github.com/PowerShell/Win32-OpenSSH/issues/1322
+      - exit_status: 128
+        limit: 3
+
+steps:
+  - label: "Lint docs"
+    command: bash -c ci/lint-docs.sh
+    <<: *common
+
+  - wait
+
+  - label: "Build and upload"
+    command: bash -c ci/build-upload-docs.sh
+    <<: *common
+    artifact_paths:
+      - "./improbadoc.upload.output.json"
+    env:
+      DOCS_TYPE: "unity"
+
+  - wait
+
+  - label: "Preview docs in staging"
+    command: bash -c ci/tag-docs.sh
+    <<: *common
+    artifact_paths:
+      - "./improbadoc.tag.output.json"
+    env:
+      DOCS_TYPE: "unity"
+      DOCS_VERSION: "alpha"
+      DOCS_TARGET: "staging"
+
+  - block: ":rocket: Release to production!"
+
+  - label: "Release docs to production"
+    command: bash -c ci/tag-docs.sh
+    <<: *common
+    artifact_paths:
+      - "./improbadoc.tag.output.json"
+    env:
+      DOCS_TYPE: "unity"
+      DOCS_VERSION: "alpha"
+      DOCS_TARGET: "production"

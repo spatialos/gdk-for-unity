@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+### This script should only be run on Improbable's internal build machines.
+### If you don't work at Improbable, this may be interesting as a guide to what software versions we use for our
+### automation, but not much more than that.
+
+set -e -u -x -o pipefail
+
+if [[ -z "$BUILDKITE" ]]; then
+  echo "This script is only to be run on Improbable CI."
+  exit 1
+fi
+
+cd "$(dirname "$0")/../"
+
+ci/bootstrap.sh
+
+source ci/tools.sh
+
+function display_annotations() {
+    WARNINGS_FILE="./logs/warnings.txt"
+    if [[ -f "${WARNINGS_FILE}" ]]; then
+        buildkite-agent annotate --style 'warning' --context 'ctx-warn' "<h2>Warnings:</h2><ul>"
+        while read LINE; do
+            buildkite-agent annotate --style 'warning' --context 'ctx-warn' --append "<li>${LINE}</li>"
+        done < "${WARNINGS_FILE}"
+        buildkite-agent annotate --style 'warning' --context 'ctx-warn' --append "</ul>"
+    fi
+
+    ERRORS_FILE="./logs/errors.txt"
+    if [[ -f "${ERRORS_FILE}" ]]; then
+        buildkite-agent annotate --style 'error' --context 'ctx-error' "<h2>Errors:</h2><ul>"
+        while read LINE; do
+            buildkite-agent annotate --style 'error' --context 'ctx-error' --append "<li>${LINE}</li>"
+        done < "${ERRORS_FILE}"
+        buildkite-agent annotate --style 'error' --context 'ctx-error' --append "</ul>"
+    fi
+}
+
+DOCS_PATH="./docs"
+
+echo "Setting up Improbadoc linter"
+setup_improbadoc
+
+echo "Running Improbadoc Linter"
+improbadoc lint \
+    "${DOCS_PATH}" \
+    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
+
+echo "Setting up Docs Linter"
+setup_docs_linter
+
+mkdir -p ./logs
+
+echo "Running Docs Linter"
+trap display_annotations ERR
+docker run \
+    -v $(pwd)/logs:/var/logs \
+    local:gdk-docs-linter \
+        "/var/logs/warnings.txt" \
+        "/var/logs/errors.txt"
+
+display_annotations
