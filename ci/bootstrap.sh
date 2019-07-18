@@ -24,6 +24,6 @@ mkdir "${SHARED_CI_DIR}"
 pushd "${SHARED_CI_DIR}"
     git init
     git remote add origin "${CLONE_URL}"
-    git fetch --depth 20 origin fix/dont-check-improbadoc-esque-links
+    git fetch --depth 20 origin master
     git checkout "${PINNED_SHARED_CI_VERSION}"
 popd
