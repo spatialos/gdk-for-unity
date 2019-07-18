@@ -173,7 +173,7 @@ Copy this file into `workers/my-unity-project/Assets/Generated/Improbable.Gdk.Ge
 
 **Step 2.** Add package references to your `manifest.json`.
 
-Unity loads the packages that are declared in the `manifest.json` file into your Unity project. We will be including the GDK packages.
+Unity loads the packages that are declared in the `manifest.json` file into your Unity project.
 
 Open the `manifest.json` in the `workers/my-unity-project/Packages/` directory and add the following:
 

@@ -24,7 +24,7 @@ Or add it to your `Packages/manifest.json`:
 ```json
 {
   "dependencies": {
-    "io.improbable.gdk.mobile": "<%(Var key="current_version_mobile")%>"
+    "io.improbable.gdk.mobile": "<%(Var key="current_version")%>"
   },
 }
 ```
