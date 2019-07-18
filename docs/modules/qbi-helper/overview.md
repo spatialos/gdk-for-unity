@@ -14,12 +14,16 @@ You can find more information about the underlying APIs provided in our [API ref
 
 ### 1. Add the package
 
-Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
+Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.1/manual/index.html#installing-a-new-package).
 
-The Query-based Interest Helper Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
+Or add it to your `Packages/manifest.json`:
 
-```text
-workers/unity/Packages/com.improbable.gdk.querybasedinteresthelper/package.json
+```json
+{
+  "dependencies": {
+    "io.improbable.gdk.querybasedinteresthelper": "<%(Var key="current_version")%>"
+  },
+}
 ```
 
 ### 2. Reference the assemblies

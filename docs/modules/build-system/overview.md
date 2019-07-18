@@ -6,12 +6,14 @@ This feature module provides tooling for building your GDK for Unity workers ins
 
 ## Installation
 
-### Add the package
+Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.1/manual/index.html#installing-a-new-package).
 
- Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.0/manual/index.html#specifying-a-local-package-location).
+Or add it to your `Packages/manifest.json`:
 
- The Build System Feature Module `package.json` can be found in the [`gdk-for-unity` repository](https://github.com/spatialos/gdk-for-unity) at:
-
- ```text
-workers/unity/Packages/com.improbable.gdk.buildsystem/package.json
+```json
+{
+  "dependencies": {
+    "io.improbable.gdk.buildsystem": "<%(Var key="current_version")%>"
+  },
+}
 ```

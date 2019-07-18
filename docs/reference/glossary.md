@@ -110,11 +110,11 @@ The [Console](https://console.improbable.io/) is the main landing page for manag
 
 ### Core module
 
-The [Unity project](#unity-project) inside the GDK consists of the core module and a number of [feature modules](#feature-modules). The core module is compulsory. It provides core functionality to enable your game to run on SpatialOS. It is located at `UnityGDK/workers/unity/Packages/com.improbable.gdk.core` and consists out of the following [Unity packages](#unity-packages):
+The [Unity project](#unity-project) inside the GDK consists of the core module and a number of [feature modules](#feature-modules). The core module is compulsory. It provides core functionality to enable your game to run on SpatialOS. It is located at `UnityGDK/workers/unity/Packages/io.improbable.gdk.core` and consists out of the following [Unity packages](#unity-packages):
 
- * SpatialOS GDK Core (com.improbable.gdk.core)
- * SpatialOS GDK Test Utils (com.improbable.gdk.testutils)
- * SpatialOS GDK Tools (com.improbable.gdk.tools)
+* SpatialOS GDK Core (io.improbable.gdk.core)
+* SpatialOS GDK Test Utils (io.improbable.gdk.testutils)
+* SpatialOS GDK Tools (io.improbable.gdk.tools)
 
 These packages provide the the basic implementation to synchronize with the SpatialOS Runtime and additional tooling for generating code and testing your game.
 
@@ -163,11 +163,9 @@ In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker](#worker) 
 
 ### Inject
 
-The term “inject” refers to when a field is populated automatically, either by Unity or the SpatialOS GDK.
+The term “inject” refers to when a field is populated automatically by the SpatialOS GDK for Unity.
 
 In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) the GDK performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`[Require]` attribute]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) to allow you to interact with SpatialOS. A MonoBehaviour is only enabled when all of its dependencies are populated.
-
-In the ECS workflow, Unity performs injection via [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection) using the [`Inject`](https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/8f94d72d1fd9b8db896646d9d533055917dc265a/Documentation/reference/injection.md) attribute inside systems to iterate over all the [Unity ECS Entities](#unity-ecs-entity) matching a required [Unity ECS component](#unity-ecs-component) type.
 
 ### Inspector
 

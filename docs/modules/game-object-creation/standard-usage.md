@@ -8,7 +8,7 @@ The [`GameObjectCreatorFromMetadata`]({{urlRoot}}/api/game-object-creation/game-
 
 The `GameObjectCreatorFromMetadata` uses the `entity_type` field in the `Metadata` component along with the worker instance's type to determine which prefab to spawn.
 
-<%(Callout message="You can set the `entity_type` field in the `Metadata` component when declaring your [EntityTemplate]({{urlRoot}}/reference/concepts/entity-templates.md).")%>
+<%(Callout message="You can set the `entity_type` field in the `Metadata` component when declaring your [EntityTemplate]({{urlRoot}}/reference/concepts/entity-templates).")%>
 
 For a given worker type `<worker-type>` it will first look for a prefab at:
 
