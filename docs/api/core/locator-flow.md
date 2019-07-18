@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L72">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L72">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -50,7 +50,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L77">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L77">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,7 +65,7 @@ The IP address of the Locator to use when connecting.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L82">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L82">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,7 +95,7 @@ The parameters to use to connect to the Locator.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LocatorFlow</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L103">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L103">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -135,7 +135,7 @@ Initializes a new instance of the <a href="{{urlRoot}}/api/core/locator-flow">Lo
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CreateAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L108">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L108">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -164,7 +164,7 @@ Creates a Connection asynchronously.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SelectDeploymentName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.2.4/workers/unity/Packages/com.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L136">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L136">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

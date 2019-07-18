@@ -2,6 +2,7 @@
 # Improbable.Gdk.Subscriptions Namespace
 <nav id="pageToc" class="page-toc"><ul><li><a href="#namespaces">Namespaces</a>
 <li><a href="#classes">Classes</a>
+<li><a href="#structs">Structs</a>
 <li><a href="#interfaces">Interfaces</a>
 </ul></nav>
 <sup>
@@ -76,6 +77,10 @@ GDK package: Subscriptions<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/linked-game-object-map">LinkedGameObjectMap</a></td>
+<td style="padding: 14px; border: none;">Represents the mapping between SpatialOS entity IDs and linked GameObjects. </td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/log-dispatcher-subscription-manager">LogDispatcherSubscriptionManager</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
@@ -128,6 +133,10 @@ GDK package: Subscriptions<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-id-subscription-manager">WorkerIdSubscriptionManager</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a></td>
 <td style="padding: 14px; border: none;">Marks MonoBehaviours which want to be enabled only for particular worker types. </td>
 </tr>
@@ -137,6 +146,18 @@ GDK package: Subscriptions<br />
 </tr>
 </table>
 
+
+
+</p>
+
+#### Structs
+
+<table>
+<tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/worker-id">WorkerId</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+</table>
 
 
 
