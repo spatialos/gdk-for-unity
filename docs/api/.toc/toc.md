@@ -157,6 +157,7 @@
         - <a href="{{urlRoot}}/api/game-object-creation/spatial-os-entity">SpatialOSEntity</a>
     - [Mobile]({{urlRoot}}/api/mobile-index)
         - <a href="{{urlRoot}}/api/mobile/android-launch-utils">AndroidLaunchUtils</a>
+        - <a href="{{urlRoot}}/api/mobile/build-post-process-x-code">BuildPostProcessXCode</a>
         - <a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a>
         - <a href="{{urlRoot}}/api/mobile/i-os-launch-utils">iOSLaunchUtils</a>
         - <a href="{{urlRoot}}/api/mobile/launch-arguments">LaunchArguments</a>
@@ -220,6 +221,7 @@
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription">ISubscription</a>
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription-availability-handler">ISubscriptionAvailabilityHandler</a>
         - <a href="{{urlRoot}}/api/subscriptions/linked-entity-component">LinkedEntityComponent</a>
+        - <a href="{{urlRoot}}/api/subscriptions/linked-game-object-map">LinkedGameObjectMap</a>
         - <a href="{{urlRoot}}/api/subscriptions/log-dispatcher-subscription-manager">LogDispatcherSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/require-attribute">RequireAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/required-subscriptions-injector">RequiredSubscriptionsInjector</a>
@@ -233,6 +235,8 @@
         - <a href="{{urlRoot}}/api/subscriptions/subscription-system">SubscriptionSystem</a>
         - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-manager">WorkerFlagCallbackManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/worker-flag-callback-system">WorkerFlagCallbackSystem</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-id">WorkerId</a>
+        - <a href="{{urlRoot}}/api/subscriptions/worker-id-subscription-manager">WorkerIdSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/world-subscription-manager">WorldSubscriptionManager</a>
     - [TestUtils]({{urlRoot}}/api/test-utils-index)
@@ -244,16 +248,13 @@
         - [MiniJSON]({{urlRoot}}/api/tools/mini-json-index)
             - <a href="{{urlRoot}}/api/tools/mini-json/json">Json</a>
         - <a href="{{urlRoot}}/api/tools/common">Common</a>
-        - <a href="{{urlRoot}}/api/tools/cpu-type">CpuType</a>
         - <a href="{{urlRoot}}/api/tools/dev-auth-token-utils">DevAuthTokenUtils</a>
-        - <a href="{{urlRoot}}/api/tools/download-result">DownloadResult</a>
         - <a href="{{urlRoot}}/api/tools/editor-config">EditorConfig</a>
         - <a href="{{urlRoot}}/api/tools/gdk-tools-configuration">GdkToolsConfiguration</a>
         - <a href="{{urlRoot}}/api/tools/gdk-tools-configuration-window">GdkToolsConfigurationWindow</a>
         - <a href="{{urlRoot}}/api/tools/gui-color-scope">GUIColorScope</a>
         - <a href="{{urlRoot}}/api/tools/local-launch">LocalLaunch</a>
         - <a href="{{urlRoot}}/api/tools/output-redirect-behaviour">OutputRedirectBehaviour</a>
-        - <a href="{{urlRoot}}/api/tools/plugin-type">PluginType</a>
         - <a href="{{urlRoot}}/api/tools/redirected-process">RedirectedProcess</a>
         - <a href="{{urlRoot}}/api/tools/redirected-process-result">RedirectedProcessResult</a>
         - <a href="{{urlRoot}}/api/tools/show-progress-bar-scope">ShowProgressBarScope</a>

@@ -88,18 +88,6 @@ GDK package: Tools<br />
 
 <table>
 <tr>
-<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/download-result">DownloadResult</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/plugin-type">PluginType</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/cpu-type">CpuType</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/output-redirect-behaviour">OutputRedirectBehaviour</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

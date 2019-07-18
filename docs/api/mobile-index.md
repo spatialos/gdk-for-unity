@@ -19,6 +19,10 @@ GDK package: Mobile<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/build-post-process-x-code">BuildPostProcessXCode</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
