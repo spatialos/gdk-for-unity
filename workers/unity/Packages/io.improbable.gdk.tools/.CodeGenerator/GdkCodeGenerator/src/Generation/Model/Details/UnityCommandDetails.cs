@@ -1,4 +1,4 @@
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -13,14 +13,14 @@ namespace Improbable.Gdk.CodeGenerator
 
         public uint CommandIndex { get; }
 
-        public UnityCommandDetails(ComponentDefinitionRaw.CommandDefinitionRaw commandDefinitionRaw)
+        public UnityCommandDetails(ComponentDefinition.CommandDefinition commandDefinitionRaw)
         {
-            CommandName = Formatting.SnakeCaseToPascalCase(commandDefinitionRaw.Identifier.Name);
+            CommandName = Formatting.SnakeCaseToPascalCase(commandDefinitionRaw.Name);
             CamelCaseCommandName = Formatting.PascalCaseToCamelCase(CommandName);
             FqnRequestType =
-                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.RequestType.Type.QualifiedName);
+                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.RequestType);
             FqnResponseType =
-                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.ResponseType.Type.QualifiedName);
+                CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.ResponseType);
 
             CommandIndex = commandDefinitionRaw.CommandIndex;
         }

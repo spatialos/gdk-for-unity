@@ -1,29 +1,30 @@
 using System.Collections.Generic;
-using Improbable.Gdk.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityTypeMappings
     {
-        public static readonly Dictionary<string, string> BuiltInSchemaTypeToUnityNativeType =
-            new Dictionary<string, string>
+        public static readonly Dictionary<PrimitiveType, string> SchemaTypeToUnityType =
+            new Dictionary<PrimitiveType, string>
             {
-                { BuiltInSchemaTypes.BuiltInDouble, "double" },
-                { BuiltInSchemaTypes.BuiltInFloat, "float" },
-                { BuiltInSchemaTypes.BuiltInInt32, "int" },
-                { BuiltInSchemaTypes.BuiltInInt64, "long" },
-                { BuiltInSchemaTypes.BuiltInUint32, "uint" },
-                { BuiltInSchemaTypes.BuiltInUint64, "ulong" },
-                { BuiltInSchemaTypes.BuiltInSint32, "int" },
-                { BuiltInSchemaTypes.BuiltInSint64, "long" },
-                { BuiltInSchemaTypes.BuiltInFixed32, "uint" },
-                { BuiltInSchemaTypes.BuiltInFixed64, "ulong" },
-                { BuiltInSchemaTypes.BuiltInSfixed32, "int" },
-                { BuiltInSchemaTypes.BuiltInSfixed64, "long" },
-                { BuiltInSchemaTypes.BuiltInBool, "bool" },
-                { BuiltInSchemaTypes.BuiltInString, "string" },
-                { BuiltInSchemaTypes.BuiltInBytes, "byte[]" },
-                { BuiltInSchemaTypes.BuiltInEntityId, "global::Improbable.Gdk.Core.EntityId" }
+                { PrimitiveType.Double, "double" },
+                { PrimitiveType.Float, "float" },
+                { PrimitiveType.Int32, "int" },
+                { PrimitiveType.Int64, "long" },
+                { PrimitiveType.Uint32, "uint" },
+                { PrimitiveType.Uint64, "ulong" },
+                { PrimitiveType.Sint32, "int" },
+                { PrimitiveType.Sint64, "long" },
+                { PrimitiveType.Fixed32, "uint" },
+                { PrimitiveType.Fixed64, "ulong" },
+                { PrimitiveType.Sfixed32, "int" },
+                { PrimitiveType.Sfixed64, "long" },
+                { PrimitiveType.Bool, "bool" },
+                { PrimitiveType.String, "string" },
+                { PrimitiveType.Bytes, "byte[]" },
+                { PrimitiveType.EntityId, "global::Improbable.Gdk.Core.EntityId" },
+                { PrimitiveType.Entity, "TODO" },
             };
     }
 }

@@ -1,5 +1,5 @@
 using System.Linq;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
 using Improbable.Gdk.CodeGenerator;
 using NUnit.Framework;
@@ -14,17 +14,17 @@ namespace GdkCodeGenerator.Tests.Model
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            var bundle = JsonParsingTests.GetBundleContents();
-            store = new DetailsStore(SchemaBundle.FromJson(bundle));
+            var json = JsonParsingTests.GetBundleContents();
+            store = new DetailsStore(SchemaBundle.LoadBundle(json));
         }
 
         [Test]
         public void BlittableComponent_is_marked_as_blittable()
         {
-            var identifier = CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.blittable_types.BlittableComponent");
-            Assert.IsTrue(store.BlittableMap.Contains(identifier));
+            var fqn = "improbable.gdk.tests.blittable_types.BlittableComponent";
+            Assert.IsTrue(store.BlittableSet.Contains(fqn));
 
-            foreach (var field in store.Components[identifier].FieldDetails)
+            foreach (var field in store.Components[fqn].FieldDetails)
             {
                 Assert.IsTrue(field.IsBlittable);
             }
@@ -33,40 +33,39 @@ namespace GdkCodeGenerator.Tests.Model
         [Test]
         public void NonBlittableComponent_is_marked_as_nonblittable()
         {
-            var identifier = CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.nonblittable_types.NonBlittableComponent");
-            Assert.IsFalse(store.BlittableMap.Contains(identifier));
-            Assert.IsTrue(store.Components[identifier].FieldDetails.Any(field => !field.IsBlittable));
+            var fqn = "improbable.gdk.tests.nonblittable_types.NonBlittableComponent";
+            Assert.IsFalse(store.BlittableSet.Contains(fqn));
         }
 
         [Test]
         public void GetNestedTypes_returns_direct_children_only()
         {
-            var parentIdentifier = CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.TypeName");
+            var parentFqn = "improbable.gdk.tests.TypeName";
 
-            var nestedTypes = store.GetNestedTypes(parentIdentifier);
+            var nestedTypes = store.GetNestedTypes(parentFqn);
 
             Assert.AreEqual(1, nestedTypes.Count);
-            Assert.IsTrue(nestedTypes.Contains(CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.TypeName.Other")));
+            Assert.IsTrue(nestedTypes.Contains("improbable.gdk.tests.TypeName.Other"));
         }
 
         [Test]
         public void GetNestedTypes_returns_child_enums_and_child_types()
         {
-            var parentIdentifier =
-                CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.TypeName.Other.NestedTypeName");
+            var parentFqn =
+                "improbable.gdk.tests.TypeName.Other.NestedTypeName";
 
-            var nestedTypes = store.GetNestedTypes(parentIdentifier);
+            var nestedTypes = store.GetNestedTypes(parentFqn);
 
             Assert.AreEqual(2, nestedTypes.Count);
-            Assert.IsTrue(nestedTypes.Contains(CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.TypeName.Other.NestedTypeName.Other0")));
-            Assert.IsTrue(nestedTypes.Contains(CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.TypeName.Other.NestedTypeName.NestedEnum")));
+            Assert.IsTrue(nestedTypes.Contains("improbable.gdk.tests.TypeName.Other.NestedTypeName.Other0"));
+            Assert.IsTrue(nestedTypes.Contains("improbable.gdk.tests.TypeName.Other.NestedTypeName.NestedEnum"));
         }
 
         [Test]
         public void GetNestedTypes_returns_empty_set_if_no_children()
         {
-            var identifier = CommonDetailsUtils.CreateIdentifier("improbable.gdk.tests.SomeType");
-            var nestedTypes = store.GetNestedTypes(identifier);
+            var fqn = "improbable.gdk.tests.SomeType";
+            var nestedTypes = store.GetNestedTypes(fqn);
 
             Assert.AreEqual(0, nestedTypes.Count);
         }

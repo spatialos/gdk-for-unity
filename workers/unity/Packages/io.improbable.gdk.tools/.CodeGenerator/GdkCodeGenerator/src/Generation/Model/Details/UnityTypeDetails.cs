@@ -1,33 +1,31 @@
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Utils;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityTypeDetails
     {
+        public string Package { get; }
         public string CapitalisedName { get; }
         public string CamelCaseName { get; }
         public string FullyQualifiedTypeName { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
 
-        public Identifier Identifier { get; }
-
         public IReadOnlyList<UnityTypeDetails> ChildTypes;
         public IReadOnlyList<UnityEnumDetails> ChildEnums;
 
-        private TypeDefinitionRaw raw;
+        private TypeDefinition raw;
 
-        public UnityTypeDetails(TypeDefinitionRaw typeDefinitionRaw)
+        public UnityTypeDetails(string package, TypeDefinition typeDefinitionRaw)
         {
-            CapitalisedName = typeDefinitionRaw.Identifier.Name;
+            Package = package;
+            CapitalisedName = typeDefinitionRaw.Name;
             CamelCaseName = Formatting.PascalCaseToCamelCase(CapitalisedName);
-            FullyQualifiedTypeName =
-                $"global::{Formatting.CapitaliseQualifiedNameParts(typeDefinitionRaw.Identifier.QualifiedName)}";
+            FullyQualifiedTypeName = $"global::{Formatting.CapitaliseQualifiedNameParts(typeDefinitionRaw.QualifiedName)}";
 
-            Identifier = typeDefinitionRaw.Identifier;
             raw = typeDefinitionRaw;
         }
 
@@ -38,7 +36,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public void PopulateChildren(DetailsStore store)
         {
-            var children = store.GetNestedTypes(Identifier);
+            var children = store.GetNestedTypes(raw.QualifiedName);
 
             ChildTypes = store.Types
                 .Where(kv => children.Contains(kv.Key))

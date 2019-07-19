@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
 
             var bundlePath = GenerateBundle();
-            var schemaBundle = SchemaBundle.FromJson(File.ReadAllText(bundlePath));
+            var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
             var store = new DetailsStore(schemaBundle);
             var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
             var singleJob = new SingleGenerationJob(options.NativeOutputDirectory, store, fileSystem);

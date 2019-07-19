@@ -1,4 +1,4 @@
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -10,11 +10,11 @@ namespace Improbable.Gdk.CodeGenerator
         public string FqnPayloadType { get; }
         public uint EventIndex { get; }
 
-        public UnityEventDetails(ComponentDefinitionRaw.EventDefinitionRaw eventDefinitionRaw)
+        public UnityEventDetails(ComponentDefinition.EventDefinition eventDefinitionRaw)
         {
-            EventName = Formatting.SnakeCaseToPascalCase(eventDefinitionRaw.Identifier.Name);
+            EventName = Formatting.SnakeCaseToPascalCase(eventDefinitionRaw.Name);
             CamelCaseEventName = Formatting.PascalCaseToCamelCase(EventName);
-            FqnPayloadType = CommonDetailsUtils.GetCapitalisedFqnTypename(eventDefinitionRaw.Type.Type.QualifiedName);
+            FqnPayloadType = CommonDetailsUtils.GetCapitalisedFqnTypename(eventDefinitionRaw.Type);
             EventIndex = eventDefinitionRaw.EventIndex;
         }
     }
