@@ -29,7 +29,7 @@ These are automatically picked up by the [`ForwardingDispatcher`]({{urlRoot}}/ap
 For example, if you want to use one of the dispatchers in a system, you can use the following code:
 
 ```csharp
-var workerSystem = World.GetExistingManager<WorkerSystem>();
+var workerSystem = World.GetExistingSystem<WorkerSystem>();
 
 workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
         "Custom error message.")
