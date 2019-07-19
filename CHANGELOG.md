@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added a `TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations.
+
 ## `0.2.5` - 2019-07-18
 
 ### Breaking Changes
