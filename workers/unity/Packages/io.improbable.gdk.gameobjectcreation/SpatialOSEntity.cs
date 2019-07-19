@@ -20,14 +20,41 @@ namespace Improbable.Gdk.GameObjectCreation
             SpatialOSEntityId = entityManager.GetComponentData<SpatialEntityId>(entity).EntityId;
         }
 
+        /// <summary>
+        ///     Checks if this entity has a component of type <see cref="T"/>
+        /// </summary>
+        /// <typeparam name="T">The SpatialOS component.</typeparam>
+        /// <returns>True, if the entity has the component; false otherwise.</returns>
         public bool HasComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.HasComponent<T>(entity);
         }
 
+        /// <summary>
+        ///     Gets a component of type <see cref="T"/> attached to this entity.
+        /// </summary>
+        /// <typeparam name="T">The SpatialOS component.</typeparam>
+        /// <returns>The component <see cref="T"/> attached to this entity.</returns>
+        /// <exception cref="System.ArgumentException">Thrown if the component <see cref="T"/> is not attached to this entity.</exception>
         public T GetComponent<T>() where T : struct, ISpatialComponentData, IComponentData
         {
             return entityManager.GetComponentData<T>(entity);
+        }
+
+        /// <summary>
+        ///     Attempts to get a component of type <see cref="T"/> attached to this entity.
+        /// </summary>
+        /// <param name="component">
+        ///     When this method returns, this will be the component attached to this entity if it exists;
+        ///     default constructed otherwise.
+        /// </param>
+        /// <typeparam name="T">The SpatialOS component.</typeparam>
+        /// <returns>True, if the entity has the component; false otherwise.</returns>
+        public bool TryGetComponent<T>(out T component) where T : struct, ISpatialComponentData, IComponentData
+        {
+            var has = HasComponent<T>();
+            component = has ? GetComponent<T>() : default(T);
+            return has;
         }
     }
 }
