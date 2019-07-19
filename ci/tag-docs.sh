@@ -30,6 +30,7 @@ fi
 
 if [[ "${BUILDKITE_BRANCH}" != "docs-current" && "${DOCS_TARGET}" == "production" ]]; then
     echo "Docs may only be published to production from docs-current."
+    buildkite-agent annotate "Docs may only be published to production from docs-current." --style 'error' --context 'ctx-error'
     exit 1
 fi
 
