@@ -1,5 +1,35 @@
 # Upgrade Guide
 
+## From `0.2.5` to `0.2.6`
+
+### General changes
+
+#### `SpatialOSEntity.TryGetComponent<T>(out T component)`
+
+Where previously, you may have had code like:
+
+```csharp
+SpatialOSEntity entity; // Assume constructed correctly.
+
+if (!entity.HasComponent<MyComponent>())
+{
+    return;
+}
+
+var myComponent = entity.GetComponent<MyComponent>();
+```
+
+You may now write:
+
+```csharp
+SpatialOSEntity entity; // Assume constructed correctly.
+
+if (!entity.TryGetComponent<MyComponent>(out var myComponent))
+{
+    return;
+}
+```
+
 ## From `0.2.4` to `0.2.5`
 
 ### NPM Packages
