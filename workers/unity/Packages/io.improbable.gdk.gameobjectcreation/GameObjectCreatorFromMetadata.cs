@@ -22,7 +22,7 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly Type[] componentsToAdd =
         {
-            typeof(UnityEngine.Transform),
+            typeof(Transform),
             typeof(Rigidbody),
             typeof(MeshRenderer)
         };
@@ -36,32 +36,21 @@ namespace Improbable.Gdk.GameObjectCreation
 
         public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
         {
-            if (!entity.HasComponent<Metadata.Component>())
+            if (!entity.TryGetComponent<Metadata.Component>(out var metadata) ||
+                !entity.TryGetComponent<Position.Component>(out var spatialOSPosition))
             {
                 return;
             }
 
-            var prefabName = entity.GetComponent<Metadata.Component>().EntityType;
-            if (!entity.HasComponent<Position.Component>())
-            {
-                cachedPrefabs[prefabName] = null;
-                return;
-            }
-
-            var spatialOSPosition = entity.GetComponent<Position.Component>();
-            var position = new Vector3((float) spatialOSPosition.Coords.X, (float) spatialOSPosition.Coords.Y, (float) spatialOSPosition.Coords.Z) +
-                workerOrigin;
-            var workerSpecificPath = Path.Combine("Prefabs", workerType, prefabName);
-            var commonPath = Path.Combine("Prefabs", "Common", prefabName);
+            var prefabName = metadata.EntityType;
+            var position = spatialOSPosition.Coords.ToUnityVector() + workerOrigin;
 
             if (!cachedPrefabs.TryGetValue(prefabName, out var prefab))
             {
-                prefab = Resources.Load<GameObject>(workerSpecificPath);
-                if (prefab == null)
-                {
-                    prefab = Resources.Load<GameObject>(commonPath);
-                }
+                var workerSpecificPath = Path.Combine("Prefabs", workerType, prefabName);
+                var commonPath = Path.Combine("Prefabs", "Common", prefabName);
 
+                prefab = Resources.Load<GameObject>(workerSpecificPath) ?? Resources.Load<GameObject>(commonPath);
                 cachedPrefabs[prefabName] = prefab;
             }
 
