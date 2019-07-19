@@ -30,6 +30,7 @@ fi
 
 if [[ "${BUILDKITE_BRANCH}" != "docs-current" && "${DOCS_TARGET}" == "production" ]]; then
     echo "Docs may only be published to production from docs-current."
+    exit 1
 fi
 
 setup_improbadoc
