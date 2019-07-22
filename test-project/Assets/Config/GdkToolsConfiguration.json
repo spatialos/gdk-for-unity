@@ -1,5 +1,7 @@
 {
-    "SchemaSourceDirs": [],
+    "SchemaSourceDirs": [
+        "Assets/.schema"
+    ],
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "Temp/schema",
     "DevAuthTokenDir": "Resources",
