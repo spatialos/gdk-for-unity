@@ -1,10 +1,8 @@
 {
-    "SchemaSourceDirs": [
-        "Assets/.Schema"
-    ],
+    "SchemaSourceDirs": [],
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "Temp/schema",
-    "RuntimeIp": "",
     "DevAuthTokenDir": "Resources",
-    "DevAuthTokenLifetimeDays": 30
+    "DevAuthTokenLifetimeDays": 30,
+    "SaveDevAuthTokenToFile": false
 }
