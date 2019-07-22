@@ -6,11 +6,6 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     A snapshot of a SpatialOS entity.
     /// </summary>
-    /// <remarks>
-    ///     This copies entity components from <see cref="Improbable.Worker.CInterop.Entity" /> for long term storage.
-    ///     This may only be a partial snapshot of an entity.
-    ///     The components present depend on the component filter used when making the entity query.
-    /// </remarks>
     public struct EntitySnapshot
     {
         private readonly Dictionary<uint, ISpatialComponentSnapshot> components;
@@ -63,16 +58,14 @@ namespace Improbable.Gdk.Core
         {
             components = new Dictionary<uint, ISpatialComponentSnapshot>();
 
-            var componentDataHandler = new QueryComponentDataHandler
-            {
-                EntitySnapshot = entitySnapshot,
-                Components = components
-            };
+            var componentDataHandler = new QueryComponentDataHandler(entitySnapshot);
 
             foreach (var componentId in entitySnapshot.GetComponentIds())
             {
                 Dynamic.ForComponent(componentId, componentDataHandler);
             }
+
+            components = componentDataHandler.Components;
         }
 
         internal EntitySnapshot(SchemaObject entityObject)
@@ -90,7 +83,7 @@ namespace Improbable.Gdk.Core
 
         internal void SerializeToSchemaObject(SchemaObject inObj)
         {
-            var handler = new SchemaEntitySerializer(this, inObj);
+            var handler = new SchemaEntitySerializer(inObj, components);
 
             foreach (var componentId in components.Keys)
             {
@@ -101,15 +94,22 @@ namespace Improbable.Gdk.Core
 
     internal struct QueryComponentDataHandler : Dynamic.IHandler
     {
-        public Entity EntitySnapshot;
         public Dictionary<uint, ISpatialComponentSnapshot> Components;
+
+        private readonly Entity entitySnapshot;
+
+        public QueryComponentDataHandler(Entity entitySnapshot)
+        {
+            Components = new Dictionary<uint, ISpatialComponentSnapshot>();
+            this.entitySnapshot = entitySnapshot;
+        }
 
         public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
             where TData : struct, ISpatialComponentData
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            var schemaObject = EntitySnapshot.Get(componentId).Value;
+            var schemaObject = entitySnapshot.Get(componentId).Value;
             Components.Add(componentId, vtable.DeserializeSnapshot(schemaObject));
         }
     }
@@ -138,13 +138,13 @@ namespace Improbable.Gdk.Core
 
     internal struct SchemaEntitySerializer : Dynamic.IHandler
     {
-        private EntitySnapshot entitySnapshot;
+        private Dictionary<uint, ISpatialComponentSnapshot> componentSnapshots;
         private SchemaObject targetObject;
 
-        public SchemaEntitySerializer(EntitySnapshot entitySnapshot, SchemaObject targetObject)
+        public SchemaEntitySerializer(SchemaObject targetObject, Dictionary<uint, ISpatialComponentSnapshot> componentSnapshots)
         {
-            this.entitySnapshot = entitySnapshot;
             this.targetObject = targetObject;
+            this.componentSnapshots = componentSnapshots;
         }
 
         public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
@@ -153,8 +153,8 @@ namespace Improbable.Gdk.Core
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
             // Okay to grab the value directly, we only call this for snapshots that actually exist.
-            var data = entitySnapshot.GetComponentSnapshot<TSnapshot>().Value;
-            vtable.SerializeSnapshotRaw(data, targetObject.AddObject(componentId));
+            var data = componentSnapshots[componentId];
+            vtable.SerializeSnapshotRaw((TSnapshot) data, targetObject.AddObject(componentId));
         }
     }
 }

@@ -57,15 +57,15 @@ After:
 ```csharp
 private class MyDynamicHandler : Dynamic.IHandler 
 {
-            public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
-                where TData : struct, ISpatialComponentData
-                where TUpdate : struct, ISpatialComponentUpdate
-                where TSnapshot : struct, ISpatialComponentSnapshot
-            {
-                var redundantComponentId = Dynamic.GetComponentSnapshotId<TSnapshot>();
-                vtable.DeserializeSnapshot(...); 
-                vtable.SerializeSnapshot(...); 
-            }
+    public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
+        where TData : struct, ISpatialComponentData
+        where TUpdate : struct, ISpatialComponentUpdate
+        where TSnapshot : struct, ISpatialComponentSnapshot
+    {
+        var redundantComponentId = Dynamic.GetComponentSnapshotId<TSnapshot>();
+        vtable.DeserializeSnapshot(...); 
+        vtable.SerializeSnapshot(...); 
+    }
 }
 ```
 
