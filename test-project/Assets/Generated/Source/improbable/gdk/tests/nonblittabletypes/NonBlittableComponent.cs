@@ -171,11 +171,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public string StringField
             {
-                get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Get(stringFieldHandle);
+                get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Get(stringFieldHandle);
                 set
                 {
                     MarkDataDirty(5);
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Set(stringFieldHandle, value);
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Set(stringFieldHandle, value);
                 }
             }
 
@@ -183,11 +183,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public int? OptionalField
             {
-                get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Get(optionalFieldHandle);
+                get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Get(optionalFieldHandle);
                 set
                 {
                     MarkDataDirty(6);
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Set(optionalFieldHandle, value);
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Set(optionalFieldHandle, value);
                 }
             }
 
@@ -195,11 +195,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public global::System.Collections.Generic.List<int> ListField
             {
-                get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Get(listFieldHandle);
+                get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Get(listFieldHandle);
                 set
                 {
                     MarkDataDirty(7);
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Set(listFieldHandle, value);
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Set(listFieldHandle, value);
                 }
             }
 
@@ -207,11 +207,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public global::System.Collections.Generic.Dictionary<int,string> MapField
             {
-                get => Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Get(mapFieldHandle);
+                get => global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Get(mapFieldHandle);
                 set
                 {
                     MarkDataDirty(8);
-                    Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(mapFieldHandle, value);
+                    global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Set(mapFieldHandle, value);
                 }
             }
         }
@@ -602,11 +602,11 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 {
                     component.DoubleField = obj.GetDouble(5);
                 }
-                component.stringFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
+                component.stringFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
                 {
                     component.StringField = obj.GetString(6);
                 }
-                component.optionalFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
+                component.optionalFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
                 {
                     if (obj.GetInt32Count(7) == 1)
                     {
@@ -614,7 +614,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     
                 }
-                component.listFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
+                component.listFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
                 {
                     component.ListField = new global::System.Collections.Generic.List<int>();
                     var list = component.ListField;
@@ -625,7 +625,7 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                     }
                     
                 }
-                component.mapFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
+                component.mapFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
                 {
                     component.MapField = new global::System.Collections.Generic.Dictionary<int,string>();
                     var map = component.MapField;

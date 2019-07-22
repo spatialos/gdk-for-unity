@@ -143,11 +143,11 @@ namespace Improbable.Gdk.Tests
 
             public byte[] Field3
             {
-                get => Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
                 set
                 {
                     MarkDataDirty(2);
-                    Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
                 }
             }
 
@@ -191,11 +191,11 @@ namespace Improbable.Gdk.Tests
 
             public string Field7
             {
-                get => Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
                 set
                 {
                     MarkDataDirty(6);
-                    Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
                 }
             }
 
@@ -809,7 +809,7 @@ namespace Improbable.Gdk.Tests
                 {
                     component.Field2 = obj.GetFloat(2);
                 }
-                component.field3Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 {
                     component.Field3 = obj.GetBytes(3);
                 }
@@ -822,7 +822,7 @@ namespace Improbable.Gdk.Tests
                 {
                     component.Field6 = obj.GetDouble(6);
                 }
-                component.field7Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 {
                     component.Field7 = obj.GetString(7);
                 }

@@ -77,10 +77,10 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
             public void Clean(World world)
             {
-                NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.CleanDataInWorld(world);
-                NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.CleanDataInWorld(world);
-                NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.CleanDataInWorld(world);
-                NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
@@ -89,10 +89,10 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
 
                 var component = new global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component();
 
-                component.stringFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
-                component.optionalFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
-                component.listFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
-                component.mapFieldHandle = Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
+                component.stringFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Allocate(world);
+                component.optionalFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Allocate(world);
+                component.listFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Allocate(world);
+                component.mapFieldHandle = global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Allocate(world);
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -104,10 +104,10 @@ namespace Improbable.Gdk.Tests.NonblittableTypes
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
-                NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
-                NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Free(data.optionalFieldHandle);
-                NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Free(data.listFieldHandle);
-                NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Free(data.mapFieldHandle);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.StringFieldProvider.Free(data.stringFieldHandle);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.OptionalFieldProvider.Free(data.optionalFieldHandle);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.ListFieldProvider.Free(data.listFieldHandle);
+                global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.ReferenceTypeProviders.MapFieldProvider.Free(data.mapFieldHandle);
 
                 entityManager.RemoveComponent<global::Improbable.Gdk.Tests.NonblittableTypes.NonBlittableComponent.Component>(entity);
             }

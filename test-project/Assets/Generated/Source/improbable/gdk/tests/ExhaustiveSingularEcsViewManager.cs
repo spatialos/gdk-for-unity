@@ -77,8 +77,8 @@ namespace Improbable.Gdk.Tests
 
             public void Clean(World world)
             {
-                ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
-                ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
@@ -87,8 +87,8 @@ namespace Improbable.Gdk.Tests
 
                 var component = new global::Improbable.Gdk.Tests.ExhaustiveSingular.Component();
 
-                component.field3Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
-                component.field7Handle = Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -100,8 +100,8 @@ namespace Improbable.Gdk.Tests
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
-                ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
-                ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
 
                 entityManager.RemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveSingular.Component>(entity);
             }

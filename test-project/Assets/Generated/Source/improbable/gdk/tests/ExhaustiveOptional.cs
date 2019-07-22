@@ -119,11 +119,11 @@ namespace Improbable.Gdk.Tests
 
             public bool? Field1
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
                 set
                 {
                     MarkDataDirty(0);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
                 }
             }
 
@@ -131,11 +131,11 @@ namespace Improbable.Gdk.Tests
 
             public float? Field2
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
                 set
                 {
                     MarkDataDirty(1);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
                 }
             }
 
@@ -143,11 +143,11 @@ namespace Improbable.Gdk.Tests
 
             public global::Improbable.Gdk.Core.Option<byte[]> Field3
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
                 set
                 {
                     MarkDataDirty(2);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
                 }
             }
 
@@ -155,11 +155,11 @@ namespace Improbable.Gdk.Tests
 
             public int? Field4
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
                 set
                 {
                     MarkDataDirty(3);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
                 }
             }
 
@@ -167,11 +167,11 @@ namespace Improbable.Gdk.Tests
 
             public long? Field5
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
                 set
                 {
                     MarkDataDirty(4);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
                 }
             }
 
@@ -179,11 +179,11 @@ namespace Improbable.Gdk.Tests
 
             public double? Field6
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Get(field6Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Get(field6Handle);
                 set
                 {
                     MarkDataDirty(5);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Set(field6Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Set(field6Handle, value);
                 }
             }
 
@@ -191,11 +191,11 @@ namespace Improbable.Gdk.Tests
 
             public global::Improbable.Gdk.Core.Option<string> Field7
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
                 set
                 {
                     MarkDataDirty(6);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
                 }
             }
 
@@ -203,11 +203,11 @@ namespace Improbable.Gdk.Tests
 
             public uint? Field8
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Get(field8Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Get(field8Handle);
                 set
                 {
                     MarkDataDirty(7);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Set(field8Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Set(field8Handle, value);
                 }
             }
 
@@ -215,11 +215,11 @@ namespace Improbable.Gdk.Tests
 
             public ulong? Field9
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Get(field9Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Get(field9Handle);
                 set
                 {
                     MarkDataDirty(8);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Set(field9Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Set(field9Handle, value);
                 }
             }
 
@@ -227,11 +227,11 @@ namespace Improbable.Gdk.Tests
 
             public int? Field10
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Get(field10Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Get(field10Handle);
                 set
                 {
                     MarkDataDirty(9);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Set(field10Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Set(field10Handle, value);
                 }
             }
 
@@ -239,11 +239,11 @@ namespace Improbable.Gdk.Tests
 
             public long? Field11
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Get(field11Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Get(field11Handle);
                 set
                 {
                     MarkDataDirty(10);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Set(field11Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Set(field11Handle, value);
                 }
             }
 
@@ -251,11 +251,11 @@ namespace Improbable.Gdk.Tests
 
             public uint? Field12
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Get(field12Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Get(field12Handle);
                 set
                 {
                     MarkDataDirty(11);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Set(field12Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Set(field12Handle, value);
                 }
             }
 
@@ -263,11 +263,11 @@ namespace Improbable.Gdk.Tests
 
             public ulong? Field13
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Get(field13Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Get(field13Handle);
                 set
                 {
                     MarkDataDirty(12);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Set(field13Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Set(field13Handle, value);
                 }
             }
 
@@ -275,11 +275,11 @@ namespace Improbable.Gdk.Tests
 
             public int? Field14
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Get(field14Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Get(field14Handle);
                 set
                 {
                     MarkDataDirty(13);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Set(field14Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Set(field14Handle, value);
                 }
             }
 
@@ -287,11 +287,11 @@ namespace Improbable.Gdk.Tests
 
             public long? Field15
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Get(field15Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Get(field15Handle);
                 set
                 {
                     MarkDataDirty(14);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Set(field15Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Set(field15Handle, value);
                 }
             }
 
@@ -299,11 +299,11 @@ namespace Improbable.Gdk.Tests
 
             public global::Improbable.Gdk.Core.EntityId? Field16
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
                 set
                 {
                     MarkDataDirty(15);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Set(field16Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Set(field16Handle, value);
                 }
             }
 
@@ -311,11 +311,11 @@ namespace Improbable.Gdk.Tests
 
             public global::Improbable.Gdk.Tests.SomeType? Field17
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Get(field17Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Get(field17Handle);
                 set
                 {
                     MarkDataDirty(16);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Set(field17Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Set(field17Handle, value);
                 }
             }
 
@@ -323,11 +323,11 @@ namespace Improbable.Gdk.Tests
 
             public global::Improbable.Gdk.Tests.SomeEnum? Field18
             {
-                get => Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                get => global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
                 set
                 {
                     MarkDataDirty(17);
-                    Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
+                    global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
                 }
             }
         }
@@ -1271,7 +1271,7 @@ namespace Improbable.Gdk.Tests
             {
                 var component = new global::Improbable.Gdk.Tests.ExhaustiveOptional.Component();
 
-                component.field1Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field1Provider.Allocate(world);
                 {
                     if (obj.GetBoolCount(1) == 1)
                     {
@@ -1279,7 +1279,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field2Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field2Provider.Allocate(world);
                 {
                     if (obj.GetFloatCount(2) == 1)
                     {
@@ -1287,7 +1287,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field3Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 {
                     if (obj.GetBytesCount(3) == 1)
                     {
@@ -1295,7 +1295,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field4Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field4Provider.Allocate(world);
                 {
                     if (obj.GetInt32Count(4) == 1)
                     {
@@ -1303,7 +1303,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field5Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field5Provider.Allocate(world);
                 {
                     if (obj.GetInt64Count(5) == 1)
                     {
@@ -1311,7 +1311,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field6Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Allocate(world);
+                component.field6Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field6Provider.Allocate(world);
                 {
                     if (obj.GetDoubleCount(6) == 1)
                     {
@@ -1319,7 +1319,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field7Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field7Provider.Allocate(world);
                 {
                     if (obj.GetStringCount(7) == 1)
                     {
@@ -1327,7 +1327,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field8Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Allocate(world);
+                component.field8Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field8Provider.Allocate(world);
                 {
                     if (obj.GetUint32Count(8) == 1)
                     {
@@ -1335,7 +1335,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field9Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Allocate(world);
+                component.field9Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field9Provider.Allocate(world);
                 {
                     if (obj.GetUint64Count(9) == 1)
                     {
@@ -1343,7 +1343,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field10Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Allocate(world);
+                component.field10Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field10Provider.Allocate(world);
                 {
                     if (obj.GetSint32Count(10) == 1)
                     {
@@ -1351,7 +1351,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field11Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Allocate(world);
+                component.field11Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field11Provider.Allocate(world);
                 {
                     if (obj.GetSint64Count(11) == 1)
                     {
@@ -1359,7 +1359,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field12Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Allocate(world);
+                component.field12Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field12Provider.Allocate(world);
                 {
                     if (obj.GetFixed32Count(12) == 1)
                     {
@@ -1367,7 +1367,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field13Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Allocate(world);
+                component.field13Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field13Provider.Allocate(world);
                 {
                     if (obj.GetFixed64Count(13) == 1)
                     {
@@ -1375,7 +1375,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field14Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Allocate(world);
+                component.field14Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field14Provider.Allocate(world);
                 {
                     if (obj.GetSfixed32Count(14) == 1)
                     {
@@ -1383,7 +1383,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field15Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Allocate(world);
+                component.field15Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field15Provider.Allocate(world);
                 {
                     if (obj.GetSfixed64Count(15) == 1)
                     {
@@ -1391,7 +1391,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field16Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Allocate(world);
+                component.field16Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field16Provider.Allocate(world);
                 {
                     if (obj.GetEntityIdCount(16) == 1)
                     {
@@ -1399,7 +1399,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field17Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Allocate(world);
+                component.field17Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field17Provider.Allocate(world);
                 {
                     if (obj.GetObjectCount(17) == 1)
                     {
@@ -1407,7 +1407,7 @@ namespace Improbable.Gdk.Tests
                     }
                     
                 }
-                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                component.field18Handle = global::Improbable.Gdk.Tests.ExhaustiveOptional.ReferenceTypeProviders.Field18Provider.Allocate(world);
                 {
                     if (obj.GetEnumCount(18) == 1)
                     {

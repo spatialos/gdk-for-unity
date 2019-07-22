@@ -77,24 +77,24 @@ namespace Improbable.Gdk.Tests
 
             public void Clean(World world)
             {
-                ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(world);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(world);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
@@ -103,24 +103,24 @@ namespace Improbable.Gdk.Tests
 
                 var component = new global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component();
 
-                component.field1Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Allocate(world);
-                component.field2Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Allocate(world);
-                component.field3Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Allocate(world);
-                component.field4Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.Allocate(world);
-                component.field5Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.Allocate(world);
-                component.field6Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.Allocate(world);
-                component.field7Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.Allocate(world);
-                component.field8Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.Allocate(world);
-                component.field9Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.Allocate(world);
-                component.field10Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.Allocate(world);
-                component.field11Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.Allocate(world);
-                component.field12Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.Allocate(world);
-                component.field13Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.Allocate(world);
-                component.field14Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.Allocate(world);
-                component.field15Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.Allocate(world);
-                component.field16Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Allocate(world);
-                component.field17Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Allocate(world);
-                component.field18Handle = Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field6Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field8Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.Allocate(world);
+                component.field9Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.Allocate(world);
+                component.field10Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.Allocate(world);
+                component.field11Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.Allocate(world);
+                component.field12Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.Allocate(world);
+                component.field13Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.Allocate(world);
+                component.field14Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.Allocate(world);
+                component.field15Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.Allocate(world);
+                component.field16Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Allocate(world);
+                component.field17Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Allocate(world);
+                component.field18Handle = global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Allocate(world);
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -132,24 +132,24 @@ namespace Improbable.Gdk.Tests
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.Free(data.field6Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.Free(data.field8Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.Free(data.field9Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.Free(data.field10Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.Free(data.field11Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.Free(data.field12Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.Free(data.field13Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.Free(data.field14Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
-                ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field6Provider.Free(data.field6Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field8Provider.Free(data.field8Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field9Provider.Free(data.field9Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field10Provider.Free(data.field10Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field11Provider.Free(data.field11Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field12Provider.Free(data.field12Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field13Provider.Free(data.field13Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field14Provider.Free(data.field14Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+                global::Improbable.Gdk.Tests.ExhaustiveMapValue.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
 
                 entityManager.RemoveComponent<global::Improbable.Gdk.Tests.ExhaustiveMapValue.Component>(entity);
             }
