@@ -6,6 +6,10 @@
 
 - Added a `TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations.
 
+### Changed
+
+- Upgraded to Worker SDK 13.8.2
+
 ## `0.2.5` - 2019-07-18
 
 ### Breaking Changes
