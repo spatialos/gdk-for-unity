@@ -2,13 +2,27 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Renamed `Improbable.Gdk.Core.EntityQuerySnapshot` to `Improbable.Gdk.Core.EntitySnapshot`. The `Improbable.Gdk.Core.Commands.WorldCommands.EntityQuery.ReceivedResponse` has been updated accordingly. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+- `DynamicSnapshot` and `DynamicConverter` have been collapsed into `Dynamic`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+    - The delegates from all of these classes are now available in the `Dynamic.VTable<TData, TUpdate, TSnapshot>` struct.
+    - `Dynamic.IHandler.Accept` now takes a `Dynamic.Vtable<TData, TUpdate, TSnapshot` parameter.
+
 ### Added
 
-- Added a `TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049)
+- Added a `bool TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049).
+- Added a `void AddComponent<T>(T componentSnapshot)` to the `Improbable.Gdk.Core.EntitySnapshot` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+- Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 
 ### Changed
 
 - Upgraded to Worker SDK 13.8.2. [#1052](https://github.com/spatialos/gdk-for-unity/pull/1052)
+    - The new [`Entity` schema type](https://docs.improbable.io/reference/13.8/shared/schema/reference#primitive-types) is deserialized as an `Improbable.Gdk.Core.EntitySnapshot`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+
+### Internal
+
+- Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type.
 
 ## `0.2.5` - 2019-07-18
 

@@ -30,6 +30,45 @@ if (!entity.TryGetComponent<MyComponent>(out var myComponent))
 }
 ```
 
+#### `Dynamic` API changes
+
+The `DynamicSnapshot` and `DynamicConverter` classes have been collapsed into `Dynamic`.
+
+The delegates that were previously passed into the `Accept` method for the respective handler interface are now inside the `Dynamic.VTable<TData, TUpdate, TSnapshot>` struct. This means that you can still access the exact same methods as before through the `VTable`.
+
+Before:
+
+```csharp
+private class MyDynamicHandler : DynamicSnapshot.ISnapshotHandler 
+{
+    public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, 
+        DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) 
+        where T : struct, ISpatialComponentSnapshot
+    {
+        var redundantComponentId = DynamicSnapshot.GetComponentSnapshotId<T>();
+        deserializeSnapshot(...); 
+        serializeSnapshot(...); 
+    }
+}
+```
+
+After: 
+
+```csharp
+private class MyDynamicHandler : Dynamic.IHandler 
+{
+            public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
+                where TData : struct, ISpatialComponentData
+                where TUpdate : struct, ISpatialComponentUpdate
+                where TSnapshot : struct, ISpatialComponentSnapshot
+            {
+                var redundantComponentId = Dynamic.GetComponentSnapshotId<T>();
+                vtable.DeserializeSnapshot(...); 
+                vtable.SerializeSnapshot(...); 
+            }
+}
+```
+
 ## From `0.2.4` to `0.2.5`
 
 ### NPM Packages
