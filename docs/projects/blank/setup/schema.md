@@ -36,20 +36,3 @@ To add an entry, select the ➕ icon and enter the path to the schema directory 
 <img src="{{assetRoot}}assets/blank/schema/add-schema-source-after.png" style="margin: 0 auto; width: 50%; display: block;" />
 
 After adding this entry and ensuring that no errors are displayed, select **Save** and close the window.
-
-<%(#Expandable title="What should <code>GdkToolsConfiguration.json</code> look like when I'm done?")%>
-
-```json
-{
-    "SchemaSourceDirs": [
-        "../../schema"
-    ],
-    "CodegenOutputDir": "Assets/Generated/Source",
-    "DescriptorOutputDir": "../../build/assembly/schema",
-    "DevAuthTokenDir": "Resources",
-    "DevAuthTokenLifetimeDays": 30,
-    "SaveDevAuthTokenToFile": false
-}
-```
-
-<%(/Expandable)%>
