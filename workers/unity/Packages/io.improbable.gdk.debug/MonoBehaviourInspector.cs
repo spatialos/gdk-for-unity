@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Improbable.Gdk.Tools;
+using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEngine;
 
-namespace Improbable.Gdk.Subscriptions.Editor
+namespace Improbable.Gdk.Debug
 {
     [CustomEditor(typeof(MonoBehaviour), true)]
     public class MonoBehaviourInspector : UnityEditor.Editor
     {
         private MonoBehaviour script;
+        private LinkedEntityComponent linkedEntityComponent;
         private Type scriptType;
         private bool isSpatialBehaviour;
 
@@ -21,21 +22,20 @@ namespace Improbable.Gdk.Subscriptions.Editor
         private string workerType;
         private bool? isWorkerType;
 
-        private static GUIStyle availableStyle;
-        private static GUIStyle unavailableStyle;
-
         private bool foldout;
 
         private void OnEnable()
         {
-            // Create GUIStyles
-            availableStyle = new GUIStyle(EditorStyles.label) { normal = { textColor = Color.green } };
-            unavailableStyle = new GUIStyle(EditorStyles.label) { normal = { textColor = Color.red } };
-
             // Get type info
             script = (MonoBehaviour) target;
             scriptType = script.GetType();
             isSpatialBehaviour = HasWorkerTypeAttribute(scriptType) || HasRequireAttributes(scriptType);
+            if (!isSpatialBehaviour)
+            {
+                return;
+            }
+
+            linkedEntityComponent = script.GetComponent<LinkedEntityComponent>();
             var requiredWorkerTypes = GetRequiredWorkerTypes(scriptType);
 
             subscriptions = new Dictionary<FieldInfo, ISubscription>();
@@ -44,15 +44,8 @@ namespace Improbable.Gdk.Subscriptions.Editor
                 .Where(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
 
             // Get subscription info when playing
-            if (Application.isPlaying)
+            if (Application.isPlaying && linkedEntityComponent != null)
             {
-                // Get the LinkedEntityComponent to make sure we only run on live GO's and get the world we're in.
-                var linkedEntityComponent = script.GetComponent<LinkedEntityComponent>();
-                if (linkedEntityComponent == null)
-                {
-                    return;
-                }
-
                 workerType = linkedEntityComponent.Worker.WorkerType;
                 isWorkerType = requiredWorkerTypes?.Contains(workerType);
                 if (isWorkerType.HasValue)
@@ -64,7 +57,8 @@ namespace Improbable.Gdk.Subscriptions.Editor
 
                 foreach (var fieldInfo in requiredFields)
                 {
-                    var subscription = subscriptionSystem.Subscribe(linkedEntityComponent.EntityId, fieldInfo.FieldType);
+                    var subscription =
+                        subscriptionSystem.Subscribe(linkedEntityComponent.EntityId, fieldInfo.FieldType);
                     subscriptions.Add(fieldInfo, subscription);
                 }
             }
@@ -84,7 +78,7 @@ namespace Improbable.Gdk.Subscriptions.Editor
 
         private void OnDisable()
         {
-            if (Application.isPlaying && subscriptions != null)
+            if (subscriptions != null)
             {
                 foreach (var pair in subscriptions)
                 {
@@ -103,7 +97,7 @@ namespace Improbable.Gdk.Subscriptions.Editor
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        if (Application.isPlaying)
+                        if (Application.isPlaying && linkedEntityComponent != null)
                         {
                             DrawLiveInspector();
                         }
@@ -139,14 +133,8 @@ namespace Improbable.Gdk.Subscriptions.Editor
         {
             if (isWorkerType.HasValue)
             {
-                if (isWorkerType.Value)
-                {
-                    EditorGUILayout.LabelField(workerType, availableStyle);
-                }
-                else
-                {
-                    EditorGUILayout.LabelField(requiredWorkerTypesLabel, unavailableStyle);
-                }
+                EditorGUILayout.ToggleLeft(isWorkerType.Value ? workerType : requiredWorkerTypesLabel,
+                    isWorkerType.Value);
             }
 
             if (subscriptions != null)
@@ -155,8 +143,7 @@ namespace Improbable.Gdk.Subscriptions.Editor
                 {
                     var field = pair.Key;
                     var subscription = pair.Value;
-                    EditorGUILayout.LabelField(field.FieldType.Name,
-                        subscription.HasValue ? availableStyle : unavailableStyle);
+                    EditorGUILayout.ToggleLeft(field.FieldType.Name, subscription.HasValue);
                 }
             }
         }
