@@ -14,7 +14,7 @@ Refer to the [Unity system requirements](https://unity3d.com/unity/system-requir
 
 ### 3. Network settings
 
-To configure your network to work with SpatialOS, refer to the [SpatialOS network settings](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/setup/requirements#network-settings). 
+To configure your network to work with SpatialOS, refer to the [SpatialOS network settings](https://docs.improbable.io/reference/latest/shared/setup/requirements#network-settings). 
 
 ### 4. Install the GDK dependencies
 
