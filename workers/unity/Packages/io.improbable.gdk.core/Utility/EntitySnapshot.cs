@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, ISpatialComponentSnapshot> components;
 
         /// <summary>
-        ///     Get the SpatialOS component snapshot if present.
+        ///     Gets the SpatialOS component snapshot if present.
         /// </summary>
         /// <returns> The component snapshot, if it exists, or null otherwise.</returns>
         /// <typeparam name="T">The component type.</typeparam>
@@ -31,7 +31,30 @@ namespace Improbable.Gdk.Core
             return null;
         }
 
-        public void AddComponent<T>(T component) where T : struct, ISpatialComponentSnapshot
+        /// <summary>
+        ///     Attempts to get the SpatialOS component if present.
+        /// </summary>
+        /// <param name="snapshot">
+        ///     When this method returns, this will be the component if it exists, default constructed otherwise.
+        /// </param>
+        /// <typeparam name="T">The component type.</typeparam>
+        /// <returns>True, if the component exists; false otherwise.</returns>
+        public bool TryGetComponentSnapshot<T>(out T snapshot) where T : struct, ISpatialComponentSnapshot
+        {
+            var maybeSnapshot = GetComponentSnapshot<T>();
+            snapshot = maybeSnapshot ?? default(T);
+            return maybeSnapshot.HasValue;
+        }
+
+        /// <summary>
+        ///     Adds a component to this snapshot.
+        /// </summary>
+        /// <remarks>
+        ///     Will override any pre-existing component in the snapshot.
+        /// </remarks>
+        /// <param name="component">The component to add.</param>
+        /// <typeparam name="T">The component type.</typeparam>
+        public void AddComponentSnapshot<T>(T component) where T : struct, ISpatialComponentSnapshot
         {
             components[component.ComponentId] = component;
         }
