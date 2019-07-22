@@ -12,7 +12,7 @@
 ### Added
 
 - Added a `bool TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049).
-- Added a `void AddComponentSnapshot<T>(T componentSnapshot)` and `bool TryAddComponent<T>(out T componentSnapshot)` methods to the `Improbable.Gdk.Core.EntitySnapshot` struct. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+- Added the `void AddComponentSnapshot<T>(T componentSnapshot)` and `bool TryGetComponent<T>(out T componentSnapshot)` methods to the `Improbable.Gdk.Core.EntitySnapshot` struct. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 
 ### Changed
