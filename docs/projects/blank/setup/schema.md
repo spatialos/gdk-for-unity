@@ -8,9 +8,7 @@ To compile schema from directories outside of referenced packages, you must add 
 
 ##### 1. Create a folder for schema
 
-First, create the folder in which you will be writing schema files.
-
-For reference, the FPS Starter Project contains a `schema/` folder at the root of its SpatialOS project.
+First, create the folder in which you will be writing schema files. We recommend adding a `schema/` folder at the root of your SpatialOS project.
 
 ```text
   <project_root>
