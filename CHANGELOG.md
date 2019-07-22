@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added a `TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations.
+- Added a `TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049)
 
 ### Changed
 
