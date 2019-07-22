@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core
         /// <returns>The component snapshot, if the component snapshot exists, null otherwise.</returns>
         public TSnapshot? GetComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            if (entityData.TryGetValue(DynamicSnapshot.GetSnapshotComponentId<TSnapshot>(), out var snapshot))
+            if (entityData.TryGetValue(Dynamic.GetSnapshotComponentId<TSnapshot>(), out var snapshot))
             {
                 return (TSnapshot) snapshot;
             }
@@ -94,7 +94,7 @@ namespace Improbable.Gdk.Core
         /// <returns>True, if the component snapshot exists, false otherwise.</returns>
         public bool HasComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            return HasComponent(DynamicSnapshot.GetSnapshotComponentId<TSnapshot>());
+            return HasComponent(Dynamic.GetSnapshotComponentId<TSnapshot>());
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Improbable.Gdk.Core
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
         public void RemoveComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            var id = DynamicSnapshot.GetSnapshotComponentId<TSnapshot>();
+            var id = Dynamic.GetSnapshotComponentId<TSnapshot>();
             entityData.Remove(id);
             acl.RemoveComponentWriteAccess(id);
         }
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Core
         /// <returns>The write access worker attribute, if it exists, null otherwise.</returns>
         public string GetComponentWriteAccess<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            return GetComponentWriteAccess(DynamicSnapshot.GetSnapshotComponentId<TSnapshot>());
+            return GetComponentWriteAccess(Dynamic.GetSnapshotComponentId<TSnapshot>());
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Improbable.Gdk.Core
         public void SetComponentWriteAccess<TSnapshot>(string writeAccess)
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            SetComponentWriteAccess(DynamicSnapshot.GetSnapshotComponentId<TSnapshot>(), writeAccess);
+            SetComponentWriteAccess(Dynamic.GetSnapshotComponentId<TSnapshot>(), writeAccess);
         }
 
         /// <summary>
@@ -186,10 +186,19 @@ namespace Improbable.Gdk.Core
         {
             ValidateEntity();
             var handler = new EntityTemplateDynamicHandler(entityData);
-            DynamicSnapshot.ForEachSnapshotComponent(handler);
+            Dynamic.ForEachComponent(handler);
             var entity = handler.Entity;
             entity.Add(acl.Build());
             return entity;
+        }
+
+        /// <summary>
+        ///     Creates an <see cref="EntitySnapshot"/> from this template.
+        /// </summary>
+        /// <returns>The EntitySnapshot object.</returns>
+        public EntitySnapshot GetEntitySnapshot()
+        {
+            return new EntitySnapshot(GetEntity());
         }
 
         private void ValidateEntity()
@@ -254,7 +263,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private class EntityTemplateDynamicHandler : DynamicSnapshot.ISnapshotHandler
+        private class EntityTemplateDynamicHandler : Dynamic.IHandler
         {
             public Entity Entity;
             private readonly Dictionary<uint, ISpatialComponentSnapshot> data;
@@ -265,8 +274,10 @@ namespace Improbable.Gdk.Core
                 Entity = new Entity();
             }
 
-            public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot,
-                DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) where T : struct, ISpatialComponentSnapshot
+            public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
+                where TData : struct, ISpatialComponentData
+                where TUpdate : struct, ISpatialComponentUpdate
+                where TSnapshot : struct, ISpatialComponentSnapshot
             {
                 if (!data.ContainsKey(componentId))
                 {
@@ -274,7 +285,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var componentData = new ComponentData(new SchemaComponentData(componentId));
-                serializeSnapshot((T) data[componentId], componentData);
+                vtable.SerializeSnapshot((TSnapshot) data[componentId], componentData);
                 Entity.Add(componentData);
             }
         }

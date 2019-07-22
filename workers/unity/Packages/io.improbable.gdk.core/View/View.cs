@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Core
         {
             if (!HasComponent<T>(entityId))
             {
-                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id} and component with ID: {DynamicSnapshot.GetSnapshotComponentId<T>()}");
+                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id} and component with ID: {Dynamic.GetSnapshotComponentId<T>()}");
             }
 
             var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];
