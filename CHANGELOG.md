@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Upgraded to Worker SDK 13.8.2
+- Upgraded to Worker SDK 13.8.2. [#1052](https://github.com/spatialos/gdk-for-unity/pull/1052)
 
 ## `0.2.5` - 2019-07-18
 
