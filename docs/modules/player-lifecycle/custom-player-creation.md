@@ -22,7 +22,7 @@ To modify this behaviour, you must set `PlayerLifecycleConfig.AutoRequestPlayerC
 Once `AutoRequestPlayerCreation` is set to false, call the `SendCreatePlayerRequestSystem.RequestPlayerCreation()` method when you are ready to request player creation.
 
 ```csharp
-var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
+var playerCreationSystem = World.GetExistingSystem<SendCreatePlayerRequestSystem>();
 playerCreationSystem.RequestPlayerCreation();
 ```
 
@@ -37,7 +37,7 @@ For example:
 ```csharp
 public void CallPlayerCreation()
 {
-    var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
+    var playerCreationSystem = World.GetExistingSystem<SendCreatePlayerRequestSystem>();
     playerCreationSystem.RequestPlayerCreation(callback: OnCreatePlayerResponse);
 }
 
@@ -64,7 +64,7 @@ var myArguments = new SampleArgumentsObject
   PlayerName = "playerName",
   SpawnPosition = new Coordinates(50, 0, 75))
 };
-var playerCreationSystem = World.GetExistingManager<SendCreatePlayerRequestSystem>();
+var playerCreationSystem = World.GetExistingSystem<SendCreatePlayerRequestSystem>();
 var serializedArguments = SerializeArguments(myArguments);
 playerCreationSystem.RequestPlayerCreation(serializedArguments: serializedArguments);
 ```
