@@ -3515,6 +3515,17 @@ namespace Improbable.Gdk.Tests
         {
             public uint ComponentId => ExhaustiveMapValue.ComponentId;
 
+            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            {
+                DeserializeComponent = DeserializeData,
+                DeserializeUpdate = DeserializeUpdate,
+                DeserializeSnapshot = DeserializeSnapshot,
+                SerializeSnapshot = SerializeSnapshot,
+                DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
+                SerializeSnapshotRaw = Serialization.SerializeSnapshot,
+                ConvertSnapshotToUpdate = SnapshotToUpdate
+            };
+
             private static Component DeserializeData(ComponentData data, World world)
             {
                 var schemaDataOpt = data.SchemaData;
@@ -3585,17 +3596,7 @@ namespace Improbable.Gdk.Tests
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
-            }
-
-            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
-            {
-                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
-            }
-
-            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
-            {
-                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
+                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
             }
         }
     }
