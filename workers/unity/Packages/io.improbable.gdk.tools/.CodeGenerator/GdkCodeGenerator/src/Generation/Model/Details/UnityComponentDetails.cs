@@ -47,6 +47,7 @@ namespace Improbable.Gdk.CodeGenerator
             else
             {
                 FieldDetails = raw.Fields
+                    .Where(field => !UnityTypeMappings.IsEntity(field))
                     .Select(field => new UnityFieldDetails(field, store))
                     .ToList()
                     .AsReadOnly();
