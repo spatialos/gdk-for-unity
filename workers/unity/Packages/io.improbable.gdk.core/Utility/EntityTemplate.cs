@@ -198,7 +198,15 @@ namespace Improbable.Gdk.Core
         /// <returns>The EntitySnapshot object.</returns>
         public EntitySnapshot GetEntitySnapshot()
         {
-            return new EntitySnapshot(GetEntity());
+            var entity = GetEntity();
+            var snapshot = new EntitySnapshot(entity);
+
+            foreach (var id in entity.GetComponentIds())
+            {
+                entity.Get(id).Value.SchemaData.Value.Destroy();
+            }
+
+            return snapshot;
         }
 
         private void ValidateEntity()
