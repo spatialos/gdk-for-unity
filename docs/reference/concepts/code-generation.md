@@ -25,6 +25,7 @@ The code generator maps from the [schema primitive types](https://docs.improbabl
 | `string`                       | `string`                |
 | `bytes`                        | `byte[]`                |
 | `EntityId`                     | `Improbable.Gdk.Core.EntityId` |
+| `Entity`                       | `Improbable.Gdk.Core.EntitySnapshot` |
 
 The code generator also maps [schema collection types](https://docs.improbable.io/reference/latest/shared/schema/reference#collection-types) to C# collections according to the following table:
 
