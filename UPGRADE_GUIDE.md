@@ -62,7 +62,7 @@ private class MyDynamicHandler : Dynamic.IHandler
                 where TUpdate : struct, ISpatialComponentUpdate
                 where TSnapshot : struct, ISpatialComponentSnapshot
             {
-                var redundantComponentId = Dynamic.GetComponentSnapshotId<T>();
+                var redundantComponentId = Dynamic.GetComponentSnapshotId<TSnapshot>();
                 vtable.DeserializeSnapshot(...); 
                 vtable.SerializeSnapshot(...); 
             }
