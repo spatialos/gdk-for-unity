@@ -24,33 +24,7 @@ namespace Improbable.Gdk.CodeGenerator
                 { PrimitiveType.String, "string" },
                 { PrimitiveType.Bytes, "byte[]" },
                 { PrimitiveType.EntityId, "global::Improbable.Gdk.Core.EntityId" },
-                { PrimitiveType.Entity, "TODO" },
+                { PrimitiveType.Entity, "global::Improbable.Gdk.Core.EntitySnapshot" },
             };
-
-        public static bool IsEntity(FieldDefinition field)
-        {
-            if (field.OptionType != null)
-            {
-                return field.OptionType.InnerType.ValueTypeSelector == ValueType.Primitive &&
-                    field.OptionType.InnerType.Primitive == PrimitiveType.Entity;
-            }
-
-            if (field.ListType != null)
-            {
-                return field.ListType.InnerType.ValueTypeSelector == ValueType.Primitive &&
-                    field.ListType.InnerType.Primitive == PrimitiveType.Entity;
-            }
-
-            if (field.MapType != null)
-            {
-                return (field.MapType.KeyType.ValueTypeSelector == ValueType.Primitive &&
-                        field.MapType.KeyType.Primitive == PrimitiveType.Entity) ||
-                    (field.MapType.ValueType.ValueTypeSelector == ValueType.Primitive &&
-                        field.MapType.ValueType.Primitive == PrimitiveType.Entity);
-            }
-
-            return field.SingularType.Type.ValueTypeSelector == ValueType.Primitive &&
-                field.SingularType.Type.Primitive == PrimitiveType.Entity;
-        }
     }
 }

@@ -54,7 +54,6 @@ namespace Improbable.Gdk.CodeGenerator
         public void PopulateFields(DetailsStore store)
         {
             FieldDetails = raw.Fields
-                .Where(field => !UnityTypeMappings.IsEntity(field))
                 .Select(field => new UnityFieldDetails(field, store))
                 .ToList()
                 .AsReadOnly();
