@@ -7,12 +7,12 @@ Before reading this document, make sure you have read:
 
 * [Setting up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
 * [Setting up iOS support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
-* [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
+* [Development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication)
 ")%>
 
 To connect your mobile device to a cloud deployment, you need to authenticate with our services.
 
-This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development.
+This guide describes how to authenticate using the [development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication) which we provide for the early stages of game development.
 
 ## Prepare your project to connect to a cloud deployment{#prepare-deployment}
 

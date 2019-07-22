@@ -42,7 +42,7 @@ When there are live cloud deployments running, this section is updated with a li
 
 | Button name | Description |
 | --- | --- |
-| Open the SpatialOS Console (🌐) | When pressed, the [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the selected cloud deployment opens in your browser. |
+| Open the SpatialOS Console (🌐) | When pressed, the [Console](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#console) page for the selected cloud deployment opens in your browser. |
 | Stop deployment | When pressed, this begins to stop a deployment chosen from the list of running cloud deployments. |
 
 <%(/Expandable)%>

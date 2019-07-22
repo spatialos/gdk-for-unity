@@ -26,7 +26,7 @@ The GDK is composed of three layers:
 <br/>
 <br/>
 * If you aren’t already familiar with SpatialOS, you can find out about the concepts which enable it to support game worlds with more persistence, scale, and complexity than previously possible.
-<br/> **Read the [SpatialOS concept docs](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)** on the SpatialOS documentation website (5 minute read).
+<br/> **Read the [SpatialOS concept docs](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)** on the SpatialOS documentation website (5 minute read).
 <br/>
 <br/>
 Find out what's involved in getting started with our [Get started with SpatialOS for Unity walk-through youtube video](https://www.youtube.com/watch?v=6PNDBYtIimw), based on our [Get Started guide]({{urlRoot}}/projects/fps/get-started/get-started) (15-minute watch).

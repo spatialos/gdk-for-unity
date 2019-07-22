@@ -20,7 +20,7 @@ You will add health pack pick-ups to the game. These health pack pick-ups are su
 To implement this feature you will:
 
 * Add a new [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component) to hold the state of the health packs.
-* Define a new [SpatialOS entity template](https://docs.improbable.io/reference/latest/shared/glossary#entity-template) called `HealthPickup`.
+* Define a new [SpatialOS entity template](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#entity-template) called `HealthPickup`.
 * Add `HealthPickup` entities to the [snapshot]({{urlRoot}}/reference/glossary#snapshot) so they are loaded in the [SpatialOS world]({{urlRoot}}/reference/glossary#spatialos-world) at startup.
 * Write game logic such that the health packs grant health to players.
 * Write game logic to "respawn" health packs after they have been consumed.
@@ -73,7 +73,7 @@ See the [schemalang reference](https://docs.improbable.io/reference/13.6/shared/
 <%(#Expandable title="Why are we assigning the fields?")%>
 Each field in a component must have a unique id (within the component) which it is assigned to.
 
-This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/latest/shared/schema/reference#components) for more info.
+This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#components) for more info.
 <%(/Expandable)%>
 
 **Step 5.** Add this folder to the GDK tools configuration.
@@ -84,7 +84,7 @@ From your Unity Editor menu, select **SpatialOS** > **Gdk tools configuration**.
 
 From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
 
-The code generator creates C# code based on the components and types defined in the [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Any time you modify your `schema` files you **must** then run the code generator to see your changes reflected in code.
+The code generator creates C# code based on the components and types defined in the [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang). Any time you modify your `schema` files you **must** then run the code generator to see your changes reflected in code.
 
 > When writing schema files, your properties must use snake case (for example, `health_value`), but the the code generator will create C# code in the [standard C# capitalisation conventions](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions).
 
@@ -138,7 +138,7 @@ Let's pull out some of the more interesting lines from the above snippet:
 > Our design constraints state that we should not trust the client, so we only give write-access to the `HealthPickup` component to the [server-worker]({{urlRoot}}/reference/glossary#server-worker). This means that a client cannot change the health value of the health pack or force it to be active.
 
 <%(#Expandable title="What are <code>Position</code>, <code>Metadata</code>, and <code>Persistence</code>?")%>
-These SpatialOS components are [standard library](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library) components.
+These SpatialOS components are [standard library](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/standard-schema-library) components.
 
 * `Position` declares the location of this entity and is used for loadbalancing.
 * `Metadata` declares the "entity type" and is used to populate the information in the Inspector.
@@ -147,14 +147,14 @@ These SpatialOS components are [standard library](https://docs.improbable.io/ref
 <%(/Expandable)%>
 
 <%(#Expandable title="How would you give only a specific client write-access for a component?")%>
-You can state that a specific client has write-access for a component by passing in a value of `workerId: {myWorkerId}` for the write access, where `myWorkerId` is the [worker ID](https://docs.improbable.io/reference/latest/shared/glossary#worker-id) of the client.
+You can state that a specific client has write-access for a component by passing in a value of `workerId: {myWorkerId}` for the write access, where `myWorkerId` is the [worker ID](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-id) of the client.
 
 Some component data should be editable by the player's client, but not by the clients of any other players. In the FPS Starter Project the `Player` entity template function in `FpsEntityTemplates.cs` grants the player's client write access over a number of components: `clientMovement`, `clientRotation`, `clientHeartbeat` etc.
 <%(/Expandable)%>
 
 <%(#Expandable title="Can I specify more than one worker type to have write-access to a single component?")%>Yes, you are not restricted to just one worker type being granted write-access.
 
-To find out about how to do this, read up about [layers](https://docs.improbable.io/reference/latest/shared/worker-configuration/layers#layers).
+To find out about how to do this, read up about [layers](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/layers#layers).
 <%(/Expandable)%>
 
 ## Add your new entity to the snapshot
@@ -264,7 +264,7 @@ namespace Fps
 
 Now that you have changed the snapshot generation script in `SnapshotMenu.cs`, we will need to regenerate the snapshot to see the new `HealthPickup` entity appear in your game world.
 
-You can validate that the snapshot was updated by launching a local deployment (`Ctrl + L`/`Cmd + L` in your Unity Editor) and looking in the [Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector).
+You can validate that the snapshot was updated by launching a local deployment (`Ctrl + L`/`Cmd + L` in your Unity Editor) and looking in the [Inspector](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/inspector).
 
 > **Note:** If you have a local deployment running, make sure to close it before launching a new one!
 
@@ -273,7 +273,7 @@ You can validate that the snapshot was updated by launching a local deployment (
 If we were to test the game at this point, the health pack entity would appear in the inspector but not in-game. This is because we have not yet defined how to represent the entity on your client or server-workers. We'll do this in the next section.
 
 <%(#Expandable title="How does the Inspector decide the entity name?")%>
-The Inspector uses the `entity_type` string field from the [schema standard library](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library) component `Metadata` as the entity name.
+The Inspector uses the `entity_type` string field from the [schema standard library](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/standard-schema-library) component `Metadata` as the entity name.
 <%(/Expandable)%>
 
 <%(#Expandable title="Where are my snapshots?")%>
@@ -285,7 +285,7 @@ All SpatialOS GDK projects contain a directory named `snapshots` in the root of 
 
 <%(#Expandable title="Can I make my snapshots human-readable?")%>
 
-Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/latest/shared/operate/snapshots#convert-a-snapshot).
+Yes, there is a `spatial` command that will convert snapshots to a human-readable format. However, you cannot launch a deployment from a human-readable snapshot, so it must be converted back to binary before it is usable. To find out more about working with snapshots you can read about the [spatial snapshot command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/snapshots#convert-a-snapshot).
 
 While they are human-readable and you can manually edit the values of the properties within, be careful to not make mistakes that will inhibit the conversion back to binary form!
 <%(/Expandable)%>
@@ -579,7 +579,7 @@ Most functions will **only** be called if the `MonoBehaviour` is enabled, but `O
 Here, we send a component update to the SpatialOS Runtime. The fields within the `Update` struct indicate whether the corresponding field should be updated. If the `Option` is empty, the field will **not** be updated. If the `Option` is not empty, the field will be updated.
 
 * `private void HandleCollisionWithPlayer(GameObject player)`<br/>
-This function will be called any time a player walks through a health pack. It handles cross-worker interaction using [commands](https://docs.improbable.io/reference/latest/shared/glossary#command). When you send a command it acts as a request, which SpatialOS delivers to the worker-instance that has write-access for the component that the command is intended for.
+This function will be called any time a player walks through a health pack. It handles cross-worker interaction using [commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command). When you send a command it acts as a request, which SpatialOS delivers to the worker-instance that has write-access for the component that the command is intended for.
 
 > Cross-worker interactions can be necessary when your game has multiple `UnityGameLogic` server-workers, because the worker with write-access for the `HealthPack` entity may not be the same worker that has write-access to the `Player` entity who has collided with that health pack.
 
@@ -587,7 +587,7 @@ This function will be called any time a player walks through a health pack. It h
 This coroutine re-activates consumed health packs after a cool-down period. It starts at the end of the `HandleCollisionWithPlayer` function as well as in `OnEnable` for any health pack entities which are inactive. Any running coroutines are stopped in `OnDisable`.
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>
-This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access).
+This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access).
 <%(/Expandable)%>
 
 <%(#Expandable title="How are clients prevented from sending health-giving commands?")%>

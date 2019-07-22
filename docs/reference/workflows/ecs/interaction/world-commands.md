@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [World commands](https://docs.improbable.io/reference/13.8/shared/design/commands#world-commands)
+* [World commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands#world-commands)
 ")%>
 
 World commands are built-in commands that are used to interact with the SpatialOS runtime to ask it to reserve entity ids, create or delete entities, or request information about entities.
@@ -73,7 +73,7 @@ commandSystem.GetResponses<WorldCommands.CreateEntity.ReceivedResponse>();
 
 ## Entity queries
 
-You can use entity queries to get information about entities in the world. For more information, see [entity queries](https://docs.improbable.io/reference/latest/shared/glossary#queries) in the SpatialOS documentation.
+You can use entity queries to get information about entities in the world. For more information, see [entity queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries) in the SpatialOS documentation.
 
 Create a [`WorldCommands.EntityQuery.Request`]({{urlRoot}}/api/core/commands/world-commands/entity-query/request) struct with the [`EntityQuery`]({{urlRoot}}/api/core/commands/world-commands/entity-query#entityquery-class). The `TimeoutMillis` field is optional.
 

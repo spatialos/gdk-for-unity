@@ -102,7 +102,7 @@ The `SpatialOSConnectionHandlerBuilder` object is central to this framework. It 
 The [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector) class has a `CreateConnectionParameters(string workerType)` method which returns reasonable defaults for your `ConnectionParameters`. You can then tweak these to fit your use case. For example:
 
 - If you are implementing a client worker, you may want to use the `KCP` networking stack.
-- If you are debugging the low level networking of a worker, you may want to enable [protocol logging](https://docs.improbable.io/reference/latest/shared/debugging#protocol-logging).
+- If you are debugging the low level networking of a worker, you may want to enable [protocol logging](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/debugging#protocol-logging).
 
 ### How do I populate my connection flow parameters
 

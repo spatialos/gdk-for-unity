@@ -14,7 +14,7 @@ The section of the Deployment Launcher window that you use to upload assemblies 
 
 | Field | Description |
 | --- | --- |
-| Assembly Name | This is an identifier for the assembly you will upload.<br/><br/>You can use this to reference an assembly when launching a deployment or to find the assembly in the [SpatialOS Console](https://docs.improbable.io/reference/latest/shared/glossary#console). |
+| Assembly Name | This is an identifier for the assembly you will upload.<br/><br/>You can use this to reference an assembly when launching a deployment or to find the assembly in the [SpatialOS Console](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#console). |
 | Force Upload | Denotes whether to force upload this assembly.<br/><br/>If this is checked, an assembly that previously was uploaded with the same assembly name will be overwritten. |
 
 <%(/Expandable)%>

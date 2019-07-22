@@ -11,7 +11,7 @@ They perform the computation associated with a world: they can read what’s hap
 
 We differentiate between [client-workers]({{urlRoot}}/reference/glossary#client-worker) and [server-workers]({{urlRoot}}/reference/glossary#server-worker).
 
->Find out more about SpatialOS entity, component, and worker concepts, in the [SpatialOS concept documentaiton](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
+>Find out more about SpatialOS entity, component, and worker concepts, in the [SpatialOS concept documentaiton](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos).
 
 ## Workers and ECS worlds
 

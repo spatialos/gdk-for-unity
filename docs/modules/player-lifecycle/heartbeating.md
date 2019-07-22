@@ -31,7 +31,7 @@ At intervals set by `PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds`, the 
 
 It sends a `PlayerHeartbeat` request to each of those entities. These requests need to be handled by the client-worker that the player entity belongs to.
 
-Note that there are numerous ways that a request may fail, as outlined [here](https://docs.improbable.io/reference/latest/shared/design/commands#failure-modes).
+Note that there are numerous ways that a request may fail, as outlined [here](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands#failure-modes).
 
 ### How to handle PlayerHeartbeat requests
 

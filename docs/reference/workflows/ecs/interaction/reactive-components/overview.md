@@ -16,11 +16,11 @@ Reactive components are removed by the GDK at the end of each frame, as they are
 
 These are the types of reactive component available:
 
-* `AuthorityChanges`: All updates to the [authority](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component.
-* `ReceivedUpdates`:  All received [SpatialOS component updates](https://docs.improbable.io/reference/latest/shared/design/operations#component-related-operations) for the current SpatialOS entity.
-* `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events) for the current entity.
-* `CommandRequests`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) requests.
-* `CommandResponses`: All received [command](https://docs.improbable.io/reference/latest/shared/design/commands) responses.
+* `AuthorityChanges`: All updates to the [authority](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component.
+* `ReceivedUpdates`:  All received [SpatialOS component updates](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/operations#component-related-operations) for the current SpatialOS entity.
+* `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/object-interaction#events) for the current entity.
+* `CommandRequests`: All received [command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands) requests.
+* `CommandResponses`: All received [command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands) responses.
 * [`ComponentAdded<T>`]({{urlRoot}}/api/reactive-components/component-added): Denotes that a SpatialOS component of type `T` has been added to this entity.
 * [`ComponentRemoved<T>`]({{urlRoot}}/api/reactive-components/component-removed): Denotes that a SpatialOS component of type `T` has been removed to this entity.
 

@@ -60,7 +60,7 @@
         - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
-    - [SpatialOS concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos)
+    - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)
     - GDK concepts
         - [Code generator]({{urlRoot}}/reference/concepts/code-generation)
         - [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
@@ -97,7 +97,7 @@
                 - [System update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
                 - [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
                 - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/concepts/entity-contracts)
-    - [SpatialOS glossary](https://docs.improbable.io/reference/latest/shared/glossary#concepts-glossary)
+    - [SpatialOS glossary](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
     - [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)

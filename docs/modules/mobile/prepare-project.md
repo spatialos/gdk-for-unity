@@ -6,7 +6,7 @@ Before reading this document, make sure you have read:
 * [Setting up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
 * [Setting up iOS Support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
 * [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/worker-connectors)
-* [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
+* [Development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication)
 ")%>
 
 ## Create your worker connector script
@@ -20,7 +20,7 @@ If you [added the GDK]({{urlRoot}}/projects/myo/setup) to an existing Unity proj
 
 ## Create your development authentication token
 
-To connect to a cloud deployment using your mobile device, you need to use the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication) which we provide for the early stages of game development. The GDK for Unity provides tooling around the development authentication flow to help you iterate faster on your mobile application.
+To connect to a cloud deployment using your mobile device, you need to use the [development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication) which we provide for the early stages of game development. The GDK for Unity provides tooling around the development authentication flow to help you iterate faster on your mobile application.
 
 1. Open your project in your Unity Editor.
 1. Navigate to **SpatialOS** > **GDK Tools configuration** to open the configuration window.
@@ -33,4 +33,4 @@ To connect to a cloud deployment using your mobile device, you need to use the [
 
     > If your worker connector inherits from the `DefaultMobileWorkerConnector` script, it will automatically read the content inside `DevAuthToken.txt` when running the application and authenticate against our services. See the section above to learn how to create a mobile worker connector.
 
-If you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk).
+If you want to create your own authentication server, follow [this guide](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/integrate-authentication-platform-sdk).

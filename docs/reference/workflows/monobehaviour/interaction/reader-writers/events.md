@@ -6,7 +6,7 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/wor
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
 
-> For more information, see the documentation on [events](https://docs.improbable.io/reference/latest/shared/glossary#events).
+> For more information, see the documentation on [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#events).
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
 

@@ -45,10 +45,10 @@ A deployment configuration is used to describe what parameters a deployment shou
 | --- | --- | --- |
 | Assembly Name | ✔️ | The identifier of an assembly you have uploaded. |
 | Deployment Name | ✔️ | The name you wish to give to the deployment. |
-| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
+| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical region code that the deployment is running in. |
-| Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
+| Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication). |
 | Simulated Player Deployments | ❌ | A set of child deployments responsible for running [simulated players]({{urlRoot}}/reference/glossary#simulated-player) that connect into the parent deployment. These deployments are launched after the parent deployment has successfully started. |
 
 <%(/Expandable)%>
@@ -95,11 +95,11 @@ Where N is in range [1, number of simulated player deployments]
 
 | Field | Required? | Description |
 | --- | --- | --- |
-| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
+| Snapshot Path | ❌ | Path to the [snapshot](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#snapshot) you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Launch Config | ✔️ | Path to the launch configuration you wish to start the deployment with, relative from the root of your SpatialOS project. |
 | Region | ✔️ | The geographical region code that the deployment is running in. |
-| Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication). |
-| Flag Prefix | ✔️ | The prefix to include on worker flags that the Deployment Launcher adds to simulated player deployments. This should follow [worker flag naming conventions](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#naming-conventions). |
+| Tags | ❌ | Metadata that can be added to a deployment. Some tags have built-in functionality. For example, the `dev_login` tag is used to connect into deployment through the [development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication). |
+| Flag Prefix | ✔️ | The prefix to include on worker flags that the Deployment Launcher adds to simulated player deployments. This should follow [worker flag naming conventions](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/worker-flags#naming-conventions). |
 | Worker Type | ✔️ | The worker type of the [simulated player coordinator]({{urlRoot}}/reference/glossary#simulated-player-coordinator), responsible for managing [simulated players]({{urlRoot}}/reference/glossary#simulated-player) in the child deployment and connecting them to the parent deployment. |
 
 <%(/Expandable)%>
@@ -222,7 +222,7 @@ Assembly reloading locked.
 <%(Callout message="
 When a deployment successfully launches:
 
-* The [Console](https://docs.improbable.io/reference/latest/shared/glossary#console) page for the deployment automatically opens in your browser.
+* The [Console](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#console) page for the deployment automatically opens in your browser.
 * The notification at the bottom of the Deployment Launcher window disappears.
 ")%>
 
