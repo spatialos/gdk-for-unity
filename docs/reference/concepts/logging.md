@@ -127,8 +127,6 @@ The `ForwardingDispatcher` recognises two special structured logging keys that c
 * `LoggingUtils.LoggerName`, which specifies where the log was sent from.
 * `LoggingUtils.EntityId`, which links the log to a specific entity. This lets you filter for a particular entity's logs using the [Logger](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments).
 
-Other context variables are formatted into a string and sent with the log message as normal.
-
 ## Creating your own log dispatcher
 
 To create your own log dispatcher, create a new class which implements [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
