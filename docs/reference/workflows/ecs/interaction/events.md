@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with
 
-  * [SpatialOS events](https://docs.improbable.io/reference/latest/shared/design/object-interaction#events)
+  * [SpatialOS events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/object-interaction#events)
 ")%>
 
 ## Sending events

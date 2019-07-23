@@ -8,7 +8,7 @@ If you are new to the GDK, the best place to start is with the [Get started]({{u
 
 ### SpatialOS concepts
 
-If you are new to SpatialOS, you can check out the SpatialOS concept documentation on the SpatialOS [main documentation site](https://docs.improbable.io/reference/latest/shared/concepts/spatialos).
+If you are new to SpatialOS, you can check out the SpatialOS concept documentation on the SpatialOS [main documentation site](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos).
 
 ### Where to start with the GDK reference documentation
 

@@ -4,9 +4,9 @@
 
 _This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview)._
 
-A [snapshot](https://docs.improbable.io/reference/latest/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/latest/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/latest/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
+A [snapshot](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
 
-You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/latest/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
+You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment).
 
 ## How to create a snapshot
 

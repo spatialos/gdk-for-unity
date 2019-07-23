@@ -10,7 +10,7 @@ Let’s take a look at how many simulated player-clients are now running around 
 
 #### World Inspector
 
-The [World Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector#inspector) (shown below) provides a real-time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/latest/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities a worker-instance is reading from and writing to.
+The [World Inspector](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/inspector#inspector) (shown below) provides a real-time view of what’s happening in a deployment, from the [perspective of SpatialOS](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos): where all the entities are, what their components are, which workers are running and which entities a worker-instance is reading from and writing to.
 
 We can use it, for instance, to highlight where all the simulated player-clients and player-entities are in the world (note: not cool to identify where your friends are hiding).
 
@@ -20,7 +20,7 @@ We can use it, for instance, to highlight where all the simulated player-clients
 
 #### Logs
 
-[The Logs tab](https://docs.improbable.io/reference/latest/shared/operate/logs#logs) (shown below), displays all your deployment’s logs (whether they come from the SpatialOS Runtime or the Worker code you have written).
+[The Logs tab](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#logs) (shown below), displays all your deployment’s logs (whether they come from the SpatialOS Runtime or the Worker code you have written).
 
 <img src="{{assetRoot}}assets/logs-app.png" style="margin: 0 auto; display: block;" />
 <br/>
@@ -28,11 +28,11 @@ We can use it, for instance, to highlight where all the simulated player-clients
 
 #### Metrics dashboards
 
-The [Metrics dashboards](https://docs.improbable.io/reference/latest/shared/operate/metrics#metrics) (shown below), show a selection of useful metrics, to help you check health of your deployment and debug issues.
+The [Metrics dashboards](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics#metrics) (shown below), show a selection of useful metrics, to help you check health of your deployment and debug issues.
 
 <img src="{{assetRoot}}assets/metrics.png" style="margin: 0 auto; display: block;" />
 <br/>
-<%(Callout message="Note that the Logs and Metrics are also [available via an API](https://docs.improbable.io/reference/latest/shared/operate/byo-metrics) if you wish to create your own dashboards or alerts.")%>
+<%(Callout message="Note that the Logs and Metrics are also [available via an API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/byo-metrics) if you wish to create your own dashboards or alerts.")%>
 
 ## Want to add more features?
 

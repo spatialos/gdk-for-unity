@@ -2,7 +2,7 @@
 
 # Glossary
 
->**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/latest/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/latest/shared/glossary) sections for a full glossary of generic SpatialOS concepts.
+>**Note:** This glossary **only** contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. See the [core concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary) sections for a full glossary of generic SpatialOS concepts.
 >
 >**Note:** There are many concepts in this glossary that mean different things in different contexts. When semantically overloaded words or phrases are unavoidable, we explicitly prefix them to avoid confusion. [.NET assemblies (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) and [SpatialOS assemblies](#spatialos-assembly) are an example of this.
 
@@ -25,11 +25,11 @@ In the SpatialOS GDK, the [EntityTemplate implementation]({{urlRoot}}/reference/
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). Each component on a [SpatialOS Entity](#spatialos-entity) has no more than one worker that is authoritative over it. This worker is the only one able to modify the component’s state and handling commands for that component. Authority is sometimes called [write-access](#write-access).
 
 Which types of workers can have authority (or write access) is governed by each entity’s [access control list (ACL)](#access-control-list-acl).
-Which specific worker actually has write access is managed by SpatialOS, and can change regularly due to [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
+Which specific worker actually has write access is managed by SpatialOS, and can change regularly due to [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing).
 
 > Related:
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access#understanding-read-and-write-access-authority)
+> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access#understanding-read-and-write-access-authority)
 
 ### Building
 
@@ -41,16 +41,16 @@ The guide on [how to build your game]({{urlRoot}}/projects/myo/build) explains t
 
 ### Checking out
 
-Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [chunk](https://docs.improbable.io/reference/latest/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
+Each individual [worker](#worker) checks out only part of the [SpatialOS world](#spatialos-world). This happens on a [chunk](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#chunk)-by-chunk basis. A worker “checking out a chunk” means that:
 
 * The worker has a local representation of every [SpatialOS entity](#spatialos-entity) in that chunk
 * The SpatialOS Runtime sends updates about those entities to the worker
 
-A worker checks out all chunks that it is [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
+A worker checks out all chunks that it is [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest).
 
 > Related:
 >
-> * [Entity interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#entity-interest)
+> * [Entity interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#entity-interest)
 
 ### Client-worker
 
@@ -62,7 +62,7 @@ Client-workers are mostly tasked with visualizing what’s happening in the [Spa
 
 > Related:
 >
-> * [External worker (client-worker) launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
+> * [External worker (client-worker) launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/launch-configuration#external-worker-launch-configuration)
 
 ### Code generation
 
@@ -71,7 +71,7 @@ Client-workers are mostly tasked with visualizing what’s happening in the [Spa
 Generated code is generated from the [schema](#schema). It is used by [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity). Using generated code, workers can:
 
 * Read the state of SpatialOS entities and their [SpatialOS components](#spatialos-component).
-* [Send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to SpatialOS components via the [SpatialOS Runtime](#spatialos-runtime).
+* [Send updates](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#sending-an-update) to SpatialOS components via the [SpatialOS Runtime](#spatialos-runtime).
 
 Code generation automatically occurs when you open the [Unity Project](#unity-project) in your Unity editor. You can also manually trigger code generation from inside your Unity Editor by selecting **SpatialOS** > **Generate code**. You only need to do this when you have:
 
@@ -80,7 +80,7 @@ Code generation automatically occurs when you open the [Unity Project](#unity-pr
 
 > Related:
 >
-> * [Generating code from the schema](https://docs.improbable.io/reference/latest/shared/schema/introduction#generating-code-from-the-schema)
+> * [Generating code from the schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/introduction#generating-code-from-the-schema)
 
 ### Connection
 
@@ -96,17 +96,17 @@ Before the [worker](#worker) can interact with the [SpatialOS world](#spatialos-
 
 > Not to be confused with the [Unity Console Window](https://docs.unity3d.com/Manual/Console.html)
 
-The [Console](https://console.improbable.io/) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It shows you:
+The [Console](https://console.improbable.io/) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It shows you:
 
 * Your [project name](#project-name)
-* Your past and present [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment)
+* Your past and present [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment)
 * All of the [SpatialOS assemblies](#spatialos-assembly) you’ve uploaded
 * Links to the [Inspector](#inspector), [Launcher](#launcher), and the logs and metrics page for your deployments.
 
 > Related:
 >
-> * [Logs](https://docs.improbable.io/reference/latest/shared/operate/logs#cloud-deployments)
-> * [Metrics](https://docs.improbable.io/reference/latest/shared/operate/metrics)
+> * [Logs](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments)
+> * [Metrics](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics)
 
 ### Core module
 
@@ -128,9 +128,9 @@ When you want to try out your game, you need to deploy it. This means
 launching SpatialOS itself. SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot), then starts up the [server-workers](#worker) needed to run the world.
 There are two types of deployment: local and cloud.
 
-[Local deployments](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
+[Local deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
 
-As their name suggests, [cloud deployments](https://docs.improbable.io/reference/latest/shared/deploy/deploy-cloud) run in the cloud on [nodes](#node). They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
+As their name suggests, [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/deploy/deploy-cloud) run in the cloud on [nodes](#node). They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
 
 > Related:
 >
@@ -170,28 +170,28 @@ In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/in
 ### Inspector
 
 The Inspector is a web-based tool that you use to explore the internal state of a [SpatialOS world](#spatialos-world).
-It gives you a real time view of what’s happening in a [deployment](#deploying), [locally](https://docs.improbable.io/reference/latest/shared/glossary#local-deployment)
-or in the [cloud](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). Among other things, it displays:
+It gives you a real time view of what’s happening in a [deployment](#deploying), [locally](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment)
+or in the [cloud](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). Among other things, it displays:
 
 * which [workers](#worker) are connected to the [deployment](#deploying)
-* how much [load](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) the workers are under
+* how much [load](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) the workers are under
 * which [SpatialOS entities](#spatialos-entity) are in the world
-* what their [SpatialOS components](#spatialos-component)' [properties](https://docs.improbable.io/reference/latest/shared/glossary#property) are
+* what their [SpatialOS components](#spatialos-component)' [properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property) are
 * which [workers](#worker) are authoritative over each [SpatialOS component](#spatialos-component)
 
 > Related:
 >
-> * [The Inspector](https://docs.improbable.io/reference/latest/shared/operate/inspector)
+> * [The Inspector](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/inspector)
 
 ### Launcher
 
-The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment). It's available as an application for Windows and macOS. From the [Console](#console), you can use the Launcher to connect a game client to your own [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment), or generate a share link so anyone with the link can download a game client and join your game.
+The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It's available as an application for Windows and macOS. From the [Console](#console), you can use the Launcher to connect a game client to your own [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment), or generate a share link so anyone with the link can download a game client and join your game.
 
 The Launcher downloads the client executable from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
 > Related:
 >
-> * [The Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher)
+> * [The Launcher](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/launcher)
 
 ### Locator connection flow
 
@@ -200,13 +200,13 @@ From SpatialOS v13.5, there are two versions of the Locator connection. The new 
 #### v10.4+ Locator connection flow (stable version)
 
 Use this Locator connection flow to:
- * Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+ * Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/launcher#the-launcher)
 
 #### New v13.5+ Locator connection flow (alpha version)
 
 Use this Locator connection flow to:
 
-* Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/latest/shared/operate/launcher#the-launcher)
+* Connect a client-worker to a cloud deployment via the SpatialOS Launcher - [see SpatialOS documentation on the Launcher](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/launcher#the-launcher)
 * Connect a client-worker to a cloud deployment via your Unity Editor so that you can debug using the [development authentication flow](https://docs.improbable.io/reference/13.5/shared/auth/development-authentication). (Note that you can also use the Receptionist to connect in this situation.)
 
 Note that there are [other ways](https://docs.improbable.io/reference/13.3/shared/deploy/connect-external) to connect a client-worker to a cloud deployment without using the Locator flow.
@@ -215,15 +215,15 @@ Note that there are [other ways](https://docs.improbable.io/reference/13.3/share
 >
 > * [Connecting to SpatialOS]({{urlRoot}}/reference/concepts/connection-flows)
 > * [Connection](#connection)
-> * [Creating your own game authentication server](https://docs.improbable.io/reference/latest/shared/auth/integrate-authentication-platform-sdk)
-> * [Development authentication flow](https://docs.improbable.io/reference/latest/shared/auth/development-authentication)
+> * [Creating your own game authentication server](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/integrate-authentication-platform-sdk)
+> * [Development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication)
 
 ### Message
 
-A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component](#spatialos-component) that the worker is [interested](https://docs.improbable.io/reference/latest/shared/glossary#interest) in, messages can be either:
+A [worker](#worker) can send and receive updates and messages to and from the [SpatialOS Runtime](#spatialos-runtime). While updates are simply property updates for any [SpatialOS component](#spatialos-component) that the worker is [interested](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) in, messages can be either:
 
-* [Events](https://docs.improbable.io/reference/latest/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
-* [Commands](https://docs.improbable.io/reference/latest/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
+* [Events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
+* [Commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
 
 > Related:
 >
@@ -250,7 +250,7 @@ A node refers to a single machine used by a [cloud deployment](#deploying). Its 
 
 Your project name is randomly generated when you sign up for SpatialOS. It’s usually something like `beta_someword_anotherword_000`.
 
-You must specify this name in the [spatialos.json](https://docs.improbable.io/reference/latest/shared/reference/file-formats/spatialos-json) file in the root of your [SpatialOS project](#spatialos-project) when you run a [cloud deployment](https://docs.improbable.io/reference/latest/shared/glossary#cloud-deployment).
+You must specify this name in the [spatialos.json](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/spatialos-json) file in the root of your [SpatialOS project](#spatialos-project) when you run a [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment).
 
 You can find your project name in the [Console](https://console.improbable.io/).
 
@@ -264,7 +264,7 @@ If an entity doesn’t have this component, it won’t be captured in snapshots.
 
 Position is a [component](#spatialos-component) in the standard [schema](#schema) library; all SpatialOS [entities](#spatialos-entity) must have this component. It lets SpatialOS know what the position of an entity in the [world](#world) is.
 
-This is used by SpatialOS few specific purposes, like [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/latest/shared/glossary#queries).
+This is used by SpatialOS few specific purposes, like [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries).
 
 ### Reactive component
 
@@ -296,7 +296,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 > Related:
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
+> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access)
 
 ### Replication
 
@@ -306,7 +306,7 @@ Replication is the process by which all workers in the [SpatialOS world](#spatia
 
 ### Server-worker
 
-A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. When running a [deployment](#deploying), the SpatialOS Runtime starts and stops server-workers based on your chosen [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing) configuration.
+A server-worker is a [worker](#worker) whose lifecycle is managed by SpatialOS. When running a [deployment](#deploying), the SpatialOS Runtime starts and stops server-workers based on your chosen [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) configuration.
 
 Server-workers are usually tasked with implementing game logic and physics simulation.
 
@@ -315,7 +315,7 @@ You can have one server-worker connected to your [deployment](#deploying), or do
 
 > Related:
 >
-> * [Managed worker (server-worker) launch configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration#managed-worker-launch-configuration)
+> * [Managed worker (server-worker) launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/launch-configuration#managed-worker-launch-configuration)
 
 ### Scene
 
@@ -328,14 +328,14 @@ Scenes are an abstraction used to represent the part of the [SpatialOS world](#s
 
 The schema is where you define all the [SpatialOS components](#spatialos-component) in your [SpatialOS world](#spatialos-world).
 
-You define your schema in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/latest/shared/glossary#schemalang). Schema files are stored in the `schema` folder in the root directory of your SpatialOS project.
+You define your schema in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang). Schema files are stored in the `schema` folder in the root directory of your SpatialOS project.
 
 SpatialOS uses the schema to [generate code](#code-generation). You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the SpatialOS world.
 
 > Related:
 >
-> * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
-> * [Schema reference](https://docs.improbable.io/reference/latest/shared/schema/reference)
+> * [Introduction to schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/introduction)
+> * [Schema reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference)
 
 ### Simulated Player
 
@@ -349,13 +349,13 @@ A simulated player coordinator is a server-worker responsible for launching simu
 
 ### Snapshot
 
-A snapshot is a representation of the state of a [SpatialOS world](#spatialos-world) at some point in time. It stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)' [properties](https://docs.improbable.io/reference/latest/shared/glossary#property).
+A snapshot is a representation of the state of a [SpatialOS world](#spatialos-world) at some point in time. It stores each [persistent](#persistence) [SpatialOS entity](#spatialos-entity) and the values of their [SpatialOS components](#spatialos-component)' [properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property).
 
-You'll use a snapshot as the starting point (an [initial snapshot](https://docs.improbable.io/reference/latest/shared/glossary#initial-snapshot)) for your [SpatialOS world](#spatialos-world) when you [deploy your game](#deploying).
+You'll use a snapshot as the starting point (an [initial snapshot](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#initial-snapshot)) for your [SpatialOS world](#spatialos-world) when you [deploy your game](#deploying).
 
 > Related:
 >
-> * [Snapshots](https://docs.improbable.io/reference/latest/shared/operate/snapshots)
+> * [Snapshots](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/snapshots)
 
 ### SpatialOS Assembly
 
@@ -367,17 +367,17 @@ The SpatialOS assembly is stored locally at `build\assembly` in the root directo
 
 > Related:
 >
-> * [spatial cloud upload](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-upload)
+> * [spatial cloud upload](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial-cloud-upload)
 > * [Deploying to the cloud]({{urlRoot}}/reference/concepts/deployments#cloud-deployment)
 
 ### `spatial` command-line tool (CLI)
 
-The `spatial` command-line tool provides a set of commands that you use to interact with a [SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game (using [`spatial local launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-local-launch) or [`spatial cloud launch`](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial-cloud-launch)).
+The `spatial` command-line tool provides a set of commands that you use to interact with a [SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game (using [`spatial local launch`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial-local-launch) or [`spatial cloud launch`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial-cloud-launch)).
 
 > Related:
 >
-> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/latest/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
-> * [`spatial` reference](https://docs.improbable.io/reference/latest/shared/spatial-cli/spatial)
+> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
+> * [`spatial` reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial)
 
 
 ### SpatialOS component
@@ -388,12 +388,12 @@ A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Commo
 
 Components can contain:
 
-* [properties](https://docs.improbable.io/reference/latest/shared/glossary#property), which describe persistent values that change over time (for example, a property for a `Health` component could be “the current health value for this entity”.)
-* [events](https://docs.improbable.io/reference/latest/shared/glossary#event), which are transient things that can happen to an entity (for example, `StartedWalking`)
-* [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
+* [properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property), which describe persistent values that change over time (for example, a property for a `Health` component could be “the current health value for this entity”.)
+* [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event), which are transient things that can happen to an entity (for example, `StartedWalking`)
+* [commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
 
-A SpatialOS entity can have as many components as you like, but it must have at least [`Position`](https://docs.improbable.io/reference/latest/shared/glossary#position) and
-[`EntityAcl`](#access-control-list-acl). Most entities will have the [`Metadata`](https://docs.improbable.io/reference/latest/shared/glossary#metadata) component.
+A SpatialOS entity can have as many components as you like, but it must have at least [`Position`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#position) and
+[`EntityAcl`](#access-control-list-acl). Most entities will have the [`Metadata`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#metadata) component.
 
 > Unlike Unity ECS components, it is not possible to add or remove SpatialOS components on already existing SpatialOS entities.
 
@@ -403,9 +403,9 @@ Components are defined as files in your [schema](#schema).
 
 > Related:
 >
-> * [Designing components](https://docs.improbable.io/reference/latest/shared/design/design-components)
-> * [Component best practices](https://docs.improbable.io/reference/latest/shared/design/component-best-practices)
-> * [Introduction to schema](https://docs.improbable.io/reference/latest/shared/schema/introduction)
+> * [Designing components](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/design-components)
+> * [Component best practices](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/component-best-practices)
+> * [Introduction to schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/introduction)
 
 ### SpatialOS entity
 
@@ -415,16 +415,16 @@ All of the objects inside a [SpatialOS world](#spatialos-world) are SpatialOS en
 
 SpatialOS entities are made up of [SpatialOS components](#spatialos-component), which store data associated with that entity.
 
-[Workers](#worker) can only see the entities they're [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
+[Workers](#worker) can only see the entities they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest).
 
-For example, for client-workers built using Unity, you might want to have a prefab associated with each entity type, and spawn a GameObject for each entity the worker has [checked out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out).
+For example, for client-workers built using Unity, you might want to have a prefab associated with each entity type, and spawn a GameObject for each entity the worker has [checked out](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#checking-out).
 
 You can have other objects that are *not* entities locally on workers - like UI for a player - but no other worker will be able to see them, because they're not part of the [SpatialOS world](#spatialos-world).
 
 > Related:
 >
-> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/latest/shared/concepts/world-entities-components#entities)
-> * [Designing SpatialOS entities](https://docs.improbable.io/reference/latest/shared/design/design-entities)
+> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/world-entities-components#entities)
+> * [Designing SpatialOS entities](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/design-entities)
 
 
 ### SpatialOS project
@@ -439,12 +439,12 @@ A SpatialOS project includes (but isn't limited to):
 
 * The source code of all [workers](#worker) used by the project
 * The project’s [schema](#schema)
-* Optional [snapshots](#snapshot) of the project’s [SpatialOS world](https://docs.improbable.io/reference/latest/shared/glossary#spatialos-world)
-* Configuration files, mostly containing settings for [deployments](#deploying) (for example, [launch configuration files](https://docs.improbable.io/reference/latest/shared/worker-configuration/launch-configuration))
+* Optional [snapshots](#snapshot) of the project’s [SpatialOS world](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#spatialos-world)
+* Configuration files, mostly containing settings for [deployments](#deploying) (for example, [launch configuration files](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/launch-configuration))
 
 > Related:
 >
-> * [Project directory structure](https://docs.improbable.io/reference/latest/shared/reference/project-structure)
+> * [Project directory structure](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/project-structure)
 
 ### SpatialOS Runtime
 
@@ -458,18 +458,18 @@ A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of 
 From SpatialOS version 13.4 there is a new SpatialOS Runtime.
 It consists of three elements:
 
-* The new [bridge](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#bridge-configuration).
-* The new [load balancer](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
+* The new [bridge](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#bridge-configuration).
+* The new [load balancer](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing).
 * The new entity database.
 
-It also contains a new feature: [Query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#query-based-interest-beta).
+It also contains a new feature: [Query-based interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/query-based-interest#query-based-interest-beta).
 
 The GDK for Unity version Alpha 0.1.4, uses the new SpatialOS Runtime (available from SpatialOS version 13.4); wherever the documentation refers to the “Runtime”, it means the new v13.4+ SpatialOS Runtime.
 
 > Related:
 >
 > * [The new Runtime (blog post)](https://improbable.io/games/blog/the-new-runtime-is-here-with-a-new-feature-for-managing-areas-of-interest)
-> * [Upgrade to the new Runtime](https://docs.improbable.io/reference/latest/releases/upgrade-guides/upgrade-runtime)
+> * [Upgrade to the new Runtime](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/releases/upgrade-guides/upgrade-runtime)
 
 ### SpatialOS world
 
@@ -479,9 +479,9 @@ The SpatialOS world is a central concept in SpatialOS. It’s the canonical sour
 
 SpatialOS manages the world, keeping track of all entities and their state.
 
-Changes to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest)), and SpatialOS sends them updates when anything changes in that view.
+Changes to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)), and SpatialOS sends them updates when anything changes in that view.
 
-It's important to recognize this fundamental separation between the SpatialOS world and the subset view of that world that an individual worker [checks out](https://docs.improbable.io/reference/latest/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must use the [Worker SDK](https://docs.improbable.io/reference/latest/shared/glossary#worker-sdk) API to change it.
+It's important to recognize this fundamental separation between the SpatialOS world and the subset view of that world that an individual worker [checks out](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#sending-an-update) to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must use the [Worker SDK](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-sdk) API to change it.
 
 ### Standard replication
 
@@ -607,41 +607,41 @@ There are two types of workers, [server-workers](#server-worker) and [client-wor
 
 In order to achieve huge scale, SpatialOS divides up the SpatialOS entities in the world between workers, balancing the work so none of them are overloaded. For each SpatialOS entity in the world, it decides which worker should have [write access](#write-access) to each SpatialOS component on the SpatialOS entity. To prevent multiple workers writing to a component at the same time, only one worker at a time can have write access to a SpatialOS component.
 
-As the world changes over time, the position of SpatialOS entities and the amount of work associated with them changes. [Server-workers](#server-worker) report back to SpatialOS how much load they're under, and SpatialOS adjusts which workers have write access to components on which SpatialOS entities (and starts up new workers when needed). This is called [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing).
+As the world changes over time, the position of SpatialOS entities and the amount of work associated with them changes. [Server-workers](#server-worker) report back to SpatialOS how much load they're under, and SpatialOS adjusts which workers have write access to components on which SpatialOS entities (and starts up new workers when needed). This is called [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing).
 
-Around the SpatialOS entities they have write access to, each worker has an area of the world they are [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest).
+Around the SpatialOS entities they have write access to, each worker has an area of the world they are [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest).
 
-A worker can read the current properties of the SpatialOS entities within this area, and SpatialOS sends [updates and messages](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update) about these SpatialOS entities to the worker.
+A worker can read the current properties of the SpatialOS entities within this area, and SpatialOS sends [updates and messages](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#sending-an-update) about these SpatialOS entities to the worker.
 
-If the worker has write access to a SpatialOS component, it can [send updates and messages](https://docs.improbable.io/reference/latest/shared/glossary#sending-an-update):
-it can update [properties](https://docs.improbable.io/reference/latest/shared/glossary#property), send and handle [commands](https://docs.improbable.io/reference/latest/shared/glossary#command) and trigger [events](https://docs.improbable.io/reference/latest/shared/glossary#event).
+If the worker has write access to a SpatialOS component, it can [send updates and messages](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#sending-an-update):
+it can update [properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property), send and handle [commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command) and trigger [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event).
 
 See also the [Workers in the GDK]({{urlRoot}}/reference/concepts/worker) documentation.
 
 > Related:
 >
-> * [Concepts: Workers and load balancing](https://docs.improbable.io/reference/latest/shared/concepts/workers-load-balancing)
+> * [Concepts: Workers and load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/workers-load-balancing)
 
 ### Worker attribute
 
-Worker attributes are used to denote a [worker’s](#worker) capabilities. The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets).
+Worker attributes are used to denote a [worker’s](#worker) capabilities. The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#worker-attribute-sets).
 
 > Related:
 >
-> * [Worker attributes](https://docs.improbable.io/reference/latest/shared/glossary#worker-attribute)
-> * [Bridge configuration](https://docs.improbable.io/reference/latest/shared/worker-configuration/bridge-config#worker-attribute-sets)
+> * [Worker attributes](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-attribute)
+> * [Bridge configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#worker-attribute-sets)
 
 ### Worker flags
 
-A worker flag is a key-value pair that workers can access during runtime. Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/latest/shared/reference/file-formats/launch-config) or added/changed/removed at runtime through the SpatialOS console. [This SpatialOS documentation](https://docs.improbable.io/reference/latest/shared/worker-configuration/worker-flags#worker-flags) describes how to define and change worker flags.
+A worker flag is a key-value pair that workers can access during runtime. Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/launch-config) or added/changed/removed at runtime through the SpatialOS console. [This SpatialOS documentation](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/worker-flags#worker-flags) describes how to define and change worker flags.
 
 ### Worker SDK
 
-The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/latest/capi/introduction). The Worker SDK handles the implementation details of communicating to the SpatialOS runtime and provides a serialization library.
+The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/capi/introduction). The Worker SDK handles the implementation details of communicating to the SpatialOS runtime and provides a serialization library.
 
 > Related:
 >
-> * [Worker SDK](https://docs.improbable.io/reference/latest/shared/glossary#worker-sdk)
+> * [Worker SDK](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-sdk)
 
 ### Worker Origin
 
@@ -658,7 +658,7 @@ Within these broad types, users can define their own worker sub-types to create 
 
 ### Worker’s view
 
-A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is currently [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest) and has [checked out](#checking-out). In the GDK, this view is used to populate the [worker’s world](#worker-s-world) and to synchronize any changes between the worker’s view and the worker’s world.
+A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is currently [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) and has [checked out](#checking-out). In the GDK, this view is used to populate the [worker’s world](#worker-s-world) and to synchronize any changes between the worker’s view and the worker’s world.
 
 ### Worker’s world
 
@@ -668,7 +668,7 @@ In the GDK, during the creation of a [worker](#worker), the worker connects to t
 
 The SpatialOS world, also known as “the world” and “the game world”. The world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world’s data is stored within SpatialOS [entities](#spatialos-entity); specifically, within their [components](#spatialos-component).
 
-SpatialOS manages the world, keeping track of all the SpatialOS entities and what state they’re in. Changes to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they’re [interested in](https://docs.improbable.io/reference/latest/shared/glossary#interest)), and SpatialOS sends them updates when anything changes in that view.
+SpatialOS manages the world, keeping track of all the SpatialOS entities and what state they’re in. Changes to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they’re [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)), and SpatialOS sends them updates when anything changes in that view.
 
 It’s important to recognize this fundamental separation between the SpatialOS world and the view (or representation) of that world that a worker [checks out](#checking-out) locally. This is why workers must send updates to SpatialOS when they want to change the world: they don’t control the canonical state of the world, they must use SpatialOS APIs to change it.
 
@@ -678,8 +678,8 @@ It’s important to recognize this fundamental separation between the SpatialOS 
 
 Many [workers](#worker) can connect to a [SpatialOS world](#spatialos-world). To prevent them from clashing, SpatialOS only allows one worker at a time to write to each [SpatialOS component](#spatialos-component). Write access is defined at the component level.
 
-Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing](https://docs.improbable.io/reference/latest/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the [access control lists](#access-control-list-acl).
+Which individual worker *actually has* write access is managed by SpatialOS, and can change regularly because of [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing). However, the list of workers that could *possibly* gain write access is constrained by the [access control lists](#access-control-list-acl).
 
 > Related:
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/latest/shared/design/understanding-access)
+> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access)

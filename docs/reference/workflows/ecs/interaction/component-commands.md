@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [SpatialOS component commands](https://docs.improbable.io/reference/latest/shared/design/commands#component-commands)
+* [SpatialOS component commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands#component-commands)
 ")%>
 
 For each command defined in your schema components, the GDK generates the following types:

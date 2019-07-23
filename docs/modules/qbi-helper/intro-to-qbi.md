@@ -5,7 +5,7 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-  * [Query-based interest](https://docs.improbable.io/reference/latest/shared/worker-configuration/query-based-interest#query-based-interest-beta)
+  * [Query-based interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/query-based-interest#query-based-interest-beta)
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 ")%>
 
@@ -13,7 +13,7 @@ This page provides a quick overview of the key primitives in query-based interes
 
 ## Interest
 
-Query-based interest is enabled for an entity by adding the [`improbable.Interest`](https://docs.improbable.io/reference/latest/shared/schema/standard-schema-library#interest-optional) component to that entity.
+Query-based interest is enabled for an entity by adding the [`improbable.Interest`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/standard-schema-library#interest-optional) component to that entity.
 
 `Interest` is effectively a mapping from a component ID to a list of queries, where each list of queries is only active on the worker that is authoritative over the component with that ID.
 

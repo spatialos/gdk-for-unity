@@ -61,7 +61,7 @@ Ensure the `Project Name` matches the one specified in your `spatialos.json`. If
 
 ### 2. Upload your worker assemblies
 
-An [assembly](https://docs.improbable.io/reference/latest/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
+An [assembly](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#assembly) is a bundle of code, art assets and other files necessary to run your game in the cloud.
 
 To run a deployment in the cloud, you need to upload the worker assemblies to your SpatialOS project.
 
