@@ -2,7 +2,7 @@
 
 # Logging
 
-The SpatialOS GDK for Unity provides a [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher) interface for logging, which gives more flexibility to handle logs separately in different workers and allows you to attach more context to your logs. 
+The SpatialOS GDK for Unity provides an [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher) interface for logging, which provides more flexibility to handle logs based on the worker instance and allows you to attach additional context to your logs.
 
 There are two implementations of this interface in the Core package:
 
@@ -13,7 +13,7 @@ There are two implementations of this interface in the Core package:
 
 ## Setting up a log dispatcher
 
-When you create a worker with the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector), you pass in a `ILogDispatcher` instance. This `ILogDispatcher` instance is then associated with that worker.
+When you create a worker using the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector), you pass in an `ILogDispatcher` instance. This associates the `ILogDispatcher` instance with that worker.
 
 ```csharp
 private async void Start()
@@ -28,7 +28,7 @@ private async void Start()
 
 ```
 
-All logging from the Core and Feature Modules for that worker will be sent through this instance and this instance is avaiable for you to use through the the methods described below.
+This instance handles all logging from the Core and Feature Modules for that worker and it is available for you to use through the methods described below
 
 ## Accessing the log dispatcher
 
@@ -120,7 +120,7 @@ The `ForwardingDispatcher` converts the Unity `LogType` enum to the SpatialOS `L
 | `LogType.Warning`   | `LogLevel.Warning` |
 | `LogType.Log`       | `LogLevel.Info`    |
 
-> **Note:** By default, messages sent with the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with the log level `LogType.Log` are not sent to SpatialOS. You can change this by instantiating the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with a different `minimumLogLevel` parameter.
+> **Note:** By default, messages with log level `LogType.Log`  and sent using the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) are not forwarded to SpatialOS. You can change this by instantiating the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with a different `minimumLogLevel` parameter.
 
 The `ForwardingDispatcher` recognises two special structured logging keys that can be used with the `LogEvent.WithField(string key, object value)` method:
 
@@ -147,4 +147,4 @@ public class MyCustomDispatcher: ILogDispatcher
 }
 ```
 
-To use this dispatcher in a specific worker, provide it as an argument when calling `Connect` in the worker connector as [described above](#setting-up-a-log-dispatcher).
+To use this dispatcher in a specific worker, provide it as an argument when calling `Connect` in your worker connector as [described above](#setting-up-a-log-dispatcher).
