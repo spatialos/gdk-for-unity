@@ -85,9 +85,9 @@ namespace Improbable.Gdk.Core
         {
             var handler = new SchemaEntitySerializer(inObj, components);
 
-            foreach (var componentId in components.Keys)
+            foreach (var pair in components)
             {
-                Dynamic.ForComponent(componentId, handler);
+                Dynamic.ForComponent(pair.Key, handler);
             }
         }
     }
