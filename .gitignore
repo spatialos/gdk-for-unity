@@ -51,18 +51,5 @@ _ReSharper.Caches
 workers/unity/Assets/Plugins/Editor/Jetbrains
 workers/unity/Assets/Plugins/Editor/Jetbrains.meta
 
-# Test project.
-/test-project/build
-test-project/*.csproj
-test-project/*.sln
-test-project/[Ll]ibrary/
-test-project/[Tt]emp/
-test-project/[Ll]ogs/
-test-project/Assets/Plugins/Improbable/
-test-project/Assets/Plugins/Improbable.meta
-test-project/ProjectSettings/UnityConnectSettings.asset
-test-project/Assets/Generated/Source.meta
-test-project/Assets/Generated/Source/**/*.*
-!test-project/Assets/Generated/Source/improbable/gdk/tests/**/*.cs
 
 .shared-ci/
