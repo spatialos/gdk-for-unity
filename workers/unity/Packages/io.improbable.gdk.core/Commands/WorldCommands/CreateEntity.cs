@@ -277,7 +277,6 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
-
             public class CommandComponentManager : IReactiveCommandComponentManager
             {
                 public void PopulateReactiveCommandComponents(CommandSystem commandSystem, EntityManager entityManager,
