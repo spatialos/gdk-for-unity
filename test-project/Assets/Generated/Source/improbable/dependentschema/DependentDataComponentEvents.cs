@@ -25,7 +25,7 @@ namespace Improbable.DependentSchema
         }
 
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
             public struct FooEvent : IComponentData

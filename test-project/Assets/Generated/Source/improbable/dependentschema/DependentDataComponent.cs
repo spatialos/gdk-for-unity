@@ -2906,7 +2906,7 @@ namespace Improbable.DependentSchema
             public Option<global::Improbable.TestSchema.SomeEnum?> Field18;
         }
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;

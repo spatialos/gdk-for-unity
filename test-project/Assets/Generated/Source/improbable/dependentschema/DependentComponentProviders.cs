@@ -13,7 +13,7 @@ namespace Improbable.DependentSchema
     {
         internal static class ReferenceTypeProviders
         {
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
             public static class UpdatesProvider 
             {
                 private static readonly Dictionary<uint, List<global::Improbable.DependentSchema.DependentComponent.Update>> Storage = new Dictionary<uint, List<global::Improbable.DependentSchema.DependentComponent.Update>>();

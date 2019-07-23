@@ -969,7 +969,7 @@ namespace Improbable.TestSchema
             public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>> Field5;
         }
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;

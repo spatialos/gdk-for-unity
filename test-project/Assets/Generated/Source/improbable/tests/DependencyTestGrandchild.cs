@@ -291,7 +291,7 @@ namespace Improbable.Tests
             public Option<uint> Grandchild;
         }
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;
