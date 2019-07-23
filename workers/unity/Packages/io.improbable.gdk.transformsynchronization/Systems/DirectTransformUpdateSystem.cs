@@ -48,7 +48,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     {
                         Position = transformInternal.Location.ToUnityVector() + worker.Origin,
                         Velocity = transformInternal.Velocity.ToUnityVector(),
-                        Orientation = TransformUtils.ToUnityQuaternion(transformInternal.Rotation)
+                        Orientation = transformInternal.Rotation.ToUnityQuaternion()
                     };
                 });
         }

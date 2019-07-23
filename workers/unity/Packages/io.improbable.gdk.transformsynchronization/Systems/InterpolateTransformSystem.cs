@@ -161,7 +161,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 Position = transform.Location.ToUnityVector(),
                 Velocity = transform.Velocity.ToUnityVector(),
-                Orientation = TransformUtils.ToUnityQuaternion(transform.Rotation),
+                Orientation = transform.Rotation.ToUnityQuaternion(),
                 PhysicsTick = transform.PhysicsTick
             };
         }
@@ -172,7 +172,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 Position = component.Location.ToUnityVector(),
                 Velocity = component.Velocity.ToUnityVector(),
-                Orientation = TransformUtils.ToUnityQuaternion(component.Rotation),
+                Orientation = component.Rotation.ToUnityQuaternion(),
                 PhysicsTick = tick
             };
         }

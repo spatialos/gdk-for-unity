@@ -61,8 +61,8 @@ namespace Improbable.Gdk.TransformSynchronization
                         transformHasChanged = true;
                     }
 
-                    var newRotation = TransformUtils.ToCompressedQuaternion(transformToSend.Orientation);
-                    if (TransformUtils.HasChanged(newRotation, transform.Rotation))
+                    var newRotation = CompressedQuaternion.FromUnityQuaternion(transformToSend.Orientation);
+                    if (newRotation != transform.Rotation)
                     {
                         transform.Rotation = newRotation;
                         transformHasChanged = true;
