@@ -3,9 +3,11 @@
 # ECS: Reactive components
 
 <%(Callout type="warn" message="
-You can enable reactive components and their related systems by removing `DISABLE_REACTIVE_COMPONENTS` from your **Scripting Define Symbols**.
+You can enable reactive components and their related systems by adding `USE_LEGACY_REACTIVE_COMPONENTS` to your **Scripting Define Symbols**.
 
 Please note that the FPS and Blank starter projects disable this functionality by default, as reactive components have a **significant overhead** and **noticeable performance degradation** over time.
+
+**Reactive components will be removed in a future release.**
 ")%>
 
 When the GDK receives an update or message from SpatialOS, a _reactive component_  is placed on the associated ECS entity at the start of the frame. A reactive component contains a list of all the updates or messages received, so they can be processed by any system that you want to _react_ to the change or message.
