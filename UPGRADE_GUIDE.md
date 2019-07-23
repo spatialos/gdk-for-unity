@@ -69,6 +69,12 @@ private class MyDynamicHandler : Dynamic.IHandler
 }
 ```
 
+#### Reactive components
+
+If you previously were not using reactive components, no action is required on your part.
+
+Reactive components are now **opt in** instead of **opt out**. To enable them, add the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to your project. Reactive components will be removed in a future release, **we strongly recommend to migrate off reactive components**. You can find the APIs to replace reactive components in the [ECS section of the workflows documentation](https://docs.improbable.io/unity/alpha/reference/workflows/overview).
+
 ## From `0.2.4` to `0.2.5`
 
 ### NPM Packages
