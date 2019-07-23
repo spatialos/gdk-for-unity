@@ -2884,7 +2884,9 @@ namespace Improbable.DependentSchema
 
         public struct Update : ISpatialComponentUpdate
         {
+#if USE_LEGACY_REACTIVE_COMPONENTS
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+#endif
 
             public Option<bool?> Field1;
             public Option<float?> Field2;

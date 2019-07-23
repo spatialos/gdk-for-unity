@@ -286,7 +286,9 @@ namespace Improbable.Tests
 
         public struct Update : ISpatialComponentUpdate
         {
+#if USE_LEGACY_REACTIVE_COMPONENTS
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+#endif
 
             public Option<uint> Grandchild;
         }
