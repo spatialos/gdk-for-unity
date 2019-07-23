@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="3")%>
 
 # Logging
 
@@ -38,7 +38,9 @@ There are a few ways you can access the `ILogDispatcher` instance that is associ
 
 If your GameObject is linked to a SpatialOS entity through the [GameObject Creation Feature Modules]({{urlRoot}}/modules/game-object-creation/overview), you can either:
 
-Require the `ILogDispatcher`. This is injected when the `MonoBehaviour` is enabled:
+##### 1. Require the `ILogDispatcher`. 
+
+This is injected when the `MonoBehaviour` is enabled:
 
 ```csharp
 public class MyMonoBehaviour : MonoBehaviour
@@ -53,7 +55,9 @@ public class MyMonoBehaviour : MonoBehaviour
 }
 ```
 
-Or access it through the `LinkedEntityComponent` MonoBehaviour which will be on the linked GameObject:
+##### 2. Access it through the `LinkedEntityComponent` MonoBehaviour 
+
+This MonoBehaviour will be on the linked GameObject:
 
 ```csharp
 public class MyMonoBehaviour : MonoBehaviour
@@ -108,20 +112,20 @@ logger.HandleLog(LogType.Error,
 
 The `ForwardingDispatcher` converts the Unity `LogType` enum to the SpatialOS `LogLevel` enum using the following table:
 
-| Unity | SpatialOS |
-| --- | --- |
-| `LogType.Exception` | `LogLevel.Error` |
-| `LogType.Error` | `LogLevel.Error` |
-| `LogType.Assert` | `LogLevel.Error` |
-| `LogType.Warning` | `LogLevel.Warning` |
-| `LogType.Log` | `LogLevel.Info` |
+| Unity               | SpatialOS          |
+| ---                 | ---                |
+| `LogType.Exception` | `LogLevel.Error`   |
+| `LogType.Error`     | `LogLevel.Error`   |
+| `LogType.Assert`    | `LogLevel.Error`   |
+| `LogType.Warning`   | `LogLevel.Warning` |
+| `LogType.Log`       | `LogLevel.Info`    |
 
 > **Note:** By default, messages sent with the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with the log level `LogType.Log` are not sent to SpatialOS. You can change this by instantiating the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with a different `minimumLogLevel` parameter.
 
 The `ForwardingDispatcher` recognises two special structured logging keys that can be used with the `LogEvent.WithField(string key, object value)` method:
 
 * `LoggingUtils.LoggerName`, which specifies where the log was sent from.
-* `LoggingUtils.EntityId`, which links the log to a specific entity. This lets you filter for a particular entity's logs using the Logger.
+* `LoggingUtils.EntityId`, which links the log to a specific entity. This lets you filter for a particular entity's logs using the [Logger](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments).
 
 Other context variables are formatted into a string and sent with the log message as normal.
 
