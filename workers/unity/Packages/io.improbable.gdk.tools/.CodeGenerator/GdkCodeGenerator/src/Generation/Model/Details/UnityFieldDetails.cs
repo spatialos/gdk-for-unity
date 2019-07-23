@@ -1,6 +1,4 @@
-using System;
-using System.Collections.ObjectModel;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -18,32 +16,32 @@ namespace Improbable.Gdk.CodeGenerator
 
         private IFieldType fieldType;
 
-        public UnityFieldDetails(Field field, DetailsStore store)
+        public UnityFieldDetails(FieldDefinition field, DetailsStore store)
         {
-            PascalCaseName = Formatting.SnakeCaseToPascalCase(field.Identifier.Name);
+            PascalCaseName = Formatting.SnakeCaseToPascalCase(field.Name);
             CamelCaseName = Formatting.PascalCaseToCamelCase(PascalCaseName);
             FieldNumber = field.FieldId;
 
-            IsBlittable = store.BlittableMap.Contains(field.Identifier);
+            IsBlittable = store.CheckBlittable(field);
 
-            if (field.Option != null)
+            if (field.OptionType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new OptionFieldType(field.Option.InnerType, store);
+                fieldType = new OptionFieldType(field.OptionType.InnerType, store);
             }
-            else if (field.List != null)
+            else if (field.ListType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new ListFieldType(field.List.InnerType, store);
+                fieldType = new ListFieldType(field.ListType.InnerType, store);
             }
-            else if (field.Map != null)
+            else if (field.MapType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new MapFieldType(field.Map.KeyType, field.Map.ValueType, store);
+                fieldType = new MapFieldType(field.MapType.KeyType, field.MapType.ValueType, store);
             }
             else
             {
-                var singularType = field.Singular.Type;
+                var singularType = field.SingularType.Type;
                 fieldType = new SingularFieldType(singularType, store);
             }
         }

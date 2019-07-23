@@ -1,84 +1,74 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Improbable.Gdk.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public static class SchemaFunctionMappings
     {
-        private static readonly HashSet<string> BuiltInTypeWithSchemaFunctions = new HashSet<string>
+        private static readonly HashSet<PrimitiveType> BuiltInTypeWithSchemaFunctions = new HashSet<PrimitiveType>
         {
-            BuiltInSchemaTypes.BuiltInBool,
-            BuiltInSchemaTypes.BuiltInBytes,
-            BuiltInSchemaTypes.BuiltInDouble,
-            BuiltInSchemaTypes.BuiltInEntityId,
-            BuiltInSchemaTypes.BuiltInFixed32,
-            BuiltInSchemaTypes.BuiltInFixed64,
-            BuiltInSchemaTypes.BuiltInFloat,
-            BuiltInSchemaTypes.BuiltInInt32,
-            BuiltInSchemaTypes.BuiltInInt64,
-            BuiltInSchemaTypes.BuiltInSfixed32,
-            BuiltInSchemaTypes.BuiltInSfixed64,
-            BuiltInSchemaTypes.BuiltInUint32,
-            BuiltInSchemaTypes.BuiltInUint64,
-            BuiltInSchemaTypes.BuiltInSint32,
-            BuiltInSchemaTypes.BuiltInSint64,
-            BuiltInSchemaTypes.BuiltInString,
+            PrimitiveType.Bool,
+            PrimitiveType.Bytes,
+            PrimitiveType.Double,
+            PrimitiveType.EntityId,
+            PrimitiveType.Fixed32,
+            PrimitiveType.Fixed64,
+            PrimitiveType.Float,
+            PrimitiveType.Int32,
+            PrimitiveType.Int64,
+            PrimitiveType.Sfixed32,
+            PrimitiveType.Sfixed64,
+            PrimitiveType.Uint32,
+            PrimitiveType.Uint64,
+            PrimitiveType.Sint32,
+            PrimitiveType.Sint64,
+            PrimitiveType.String,
+            PrimitiveType.Entity,
         };
 
-        public static string AddSchemaFunctionFromType(string builtInType)
+        public static string AddSchemaFunctionFromType(PrimitiveType builtInType)
         {
             if (!BuiltInTypeWithSchemaFunctions.Contains(builtInType))
             {
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return $"Add{ToUppercase(builtInType)}";
+            return $"Add{builtInType.ToString()}";
         }
 
-        public static string GetSchemaFunctionFromType(string builtInType)
+        public static string GetSchemaFunctionFromType(PrimitiveType builtInType)
         {
             if (!BuiltInTypeWithSchemaFunctions.Contains(builtInType))
             {
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return builtInType == BuiltInSchemaTypes.BuiltInEntityId
-                ? $"Get{ToUppercase(builtInType)}Struct"
-                : $"Get{ToUppercase(builtInType)}";
+            return builtInType == PrimitiveType.EntityId
+                ? $"Get{builtInType.ToString()}Struct"
+                : $"Get{builtInType.ToString()}";
         }
 
-        public static string GetCountSchemaFunctionFromType(string builtInType)
+        public static string GetCountSchemaFunctionFromType(PrimitiveType builtInType)
         {
             if (!BuiltInTypeWithSchemaFunctions.Contains(builtInType))
             {
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return $"Get{ToUppercase(builtInType)}Count";
+            return $"Get{builtInType.ToString()}Count";
         }
 
-        public static string IndexSchemaFunctionFromType(string builtInType)
+        public static string IndexSchemaFunctionFromType(PrimitiveType builtInType)
         {
             if (!BuiltInTypeWithSchemaFunctions.Contains(builtInType))
             {
                 throw new ArgumentException($"There are no raw schema functions defined for {builtInType}");
             }
 
-            return builtInType == BuiltInSchemaTypes.BuiltInEntityId
-                ? $"Index{ToUppercase(builtInType)}Struct"
-                : $"Index{ToUppercase(builtInType)}";
-        }
-
-        private static string ToUppercase(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-            {
-                return s;
-            }
-
-            return s.First().ToString().ToUpper() + s.Substring(1);
+            return builtInType == PrimitiveType.EntityId
+                ? $"Index{builtInType.ToString()}Struct"
+                : $"Index{builtInType.ToString()}";
         }
     }
 }

@@ -1,6 +1,5 @@
 using System.IO;
 using System.Reflection;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1
@@ -19,9 +18,9 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1
             "CodeGeneration.Tests.Model.SchemaBundleV1.Resources.exhaustive_bundle.json";
 
         [Test]
-        public void ParsingSchemaBundleV1_does_not_throw()
+        public void ParsingSchemaBundle_does_not_throw()
         {
-            Assert.DoesNotThrow(() => SchemaBundle.FromJson(GetBundleContents()));
+            Assert.DoesNotThrow(() => SchemaBundle.LoadBundle(GetBundleContents()));
         }
     }
 }

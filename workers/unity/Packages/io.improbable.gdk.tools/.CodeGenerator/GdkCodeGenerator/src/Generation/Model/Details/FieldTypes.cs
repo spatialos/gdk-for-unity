@@ -1,7 +1,7 @@
 using System;
-using Improbable.Gdk.CodeGeneration.Model;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGenerator.Utils;
+using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -43,13 +43,13 @@ namespace Improbable.Gdk.CodeGenerator
 
     public class SingularFieldType : IFieldType
     {
-        public string Type => containedType.Type;
+        public string Type => containedType.FqnType;
 
         private ContainedType containedType;
 
-        public SingularFieldType(Field.InnerType innerType, DetailsStore store)
+        public SingularFieldType(TypeReference innerType, DetailsStore store)
         {
-            containedType = new ContainedType(innerType, store);
+            containedType = new ContainedType(innerType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
@@ -113,24 +113,24 @@ namespace Improbable.Gdk.CodeGenerator
         {
             get
             {
-                if (containedType.Type ==
-                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInSchemaTypes.BuiltInString]
+                if (containedType.FqnType ==
+                    UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.String]
                     ||
-                    containedType.Type ==
-                    UnityTypeMappings.BuiltInSchemaTypeToUnityNativeType[BuiltInSchemaTypes.BuiltInBytes])
+                    containedType.FqnType ==
+                    UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.Bytes])
                 {
-                    return $"global::Improbable.Gdk.Core.Option<{containedType.Type}>";
+                    return $"global::Improbable.Gdk.Core.Option<{containedType.FqnType}>";
                 }
 
-                return $"{containedType.Type}?";
+                return $"{containedType.FqnType}?";
             }
         }
 
         private ContainedType containedType;
 
-        public OptionFieldType(Field.InnerType innerType, DetailsStore store)
+        public OptionFieldType(TypeReference innerType, DetailsStore store)
         {
-            containedType = new ContainedType(innerType, store);
+            containedType = new ContainedType(innerType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
@@ -234,13 +234,13 @@ namespace Improbable.Gdk.CodeGenerator
 
     public class ListFieldType : IFieldType
     {
-        public string Type => $"global::System.Collections.Generic.List<{containedType.Type}>";
+        public string Type => $"global::System.Collections.Generic.List<{containedType.FqnType}>";
 
         private ContainedType containedType;
 
-        public ListFieldType(Field.InnerType innerType, DetailsStore store)
+        public ListFieldType(TypeReference innerType, DetailsStore store)
         {
-            containedType = new ContainedType(innerType, store);
+            containedType = new ContainedType(innerType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
@@ -353,15 +353,15 @@ namespace Improbable.Gdk.CodeGenerator
 
     public class MapFieldType : IFieldType
     {
-        public string Type => $"global::System.Collections.Generic.Dictionary<{keyType.Type},{valueType.Type}>";
+        public string Type => $"global::System.Collections.Generic.Dictionary<{keyType.FqnType},{valueType.FqnType}>";
 
         private ContainedType keyType;
         private ContainedType valueType;
 
-        public MapFieldType(Field.InnerType keyType, Field.InnerType valueType, DetailsStore store)
+        public MapFieldType(TypeReference keyType, TypeReference valueType, DetailsStore store)
         {
-            this.keyType = new ContainedType(keyType, store);
-            this.valueType = new ContainedType(valueType, store);
+            this.keyType = new ContainedType(keyType);
+            this.valueType = new ContainedType(valueType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
@@ -485,41 +485,31 @@ namespace Improbable.Gdk.CodeGenerator
 
     public class ContainedType
     {
-        private enum ContainedTypeCategory
-        {
-            Primitive = 0,
-            Enum = 1,
-            UserDefined = 2
-        }
+        public string FqnType;
+        private ValueType category;
+        private PrimitiveType? primitiveType;
 
-        public string Type;
-        private ContainedTypeCategory category;
-        private string rawType;
-
-        // TODO: This can probably be reworked with the inner type concept.
-        public ContainedType(Field.InnerType innerType, DetailsStore store)
+        public ContainedType(TypeReference innerType)
         {
-            if (innerType.Primitive != null)
+            switch (innerType.ValueTypeSelector)
             {
-                category = ContainedTypeCategory.Primitive;
-                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Primitive);
-                rawType = innerType.Primitive;
-            }
-            else if (innerType.UserType != null)
-            {
-                category = ContainedTypeCategory.UserDefined;
-                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.UserType.QualifiedName);
-                rawType = innerType.UserType.QualifiedName;
-            }
-            else if (innerType.EnumType != null)
-            {
-                category = ContainedTypeCategory.Enum;
-                Type = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.EnumType.QualifiedName);
-                rawType = innerType.EnumType.QualifiedName;
-            }
-            else
-            {
-                throw new ArgumentException("Malformed inner type.");
+                case ValueType.Enum:
+                    category = ValueType.Enum;
+                    FqnType = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Enum);
+                    primitiveType = null;
+                    break;
+                case ValueType.Primitive:
+                    category = ValueType.Primitive;
+                    FqnType = UnityTypeMappings.SchemaTypeToUnityType[innerType.Primitive];
+                    primitiveType = innerType.Primitive;
+                    break;
+                case ValueType.Type:
+                    category = ValueType.Type;
+                    FqnType = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Type);
+                    primitiveType = null;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Malformed inner type.");
             }
         }
 
@@ -527,12 +517,12 @@ namespace Improbable.Gdk.CodeGenerator
         {
             switch (category)
             {
-                case ContainedTypeCategory.Primitive:
-                    return $"{schemaObject}.{SchemaFunctionMappings.AddSchemaFunctionFromType(rawType)}({fieldNumber}, {instance});";
-                case ContainedTypeCategory.Enum:
+                case ValueType.Primitive:
+                    return $"{schemaObject}.{SchemaFunctionMappings.AddSchemaFunctionFromType(primitiveType.Value)}({fieldNumber}, {instance});";
+                case ValueType.Enum:
                     return $"{schemaObject}.AddEnum({fieldNumber}, (uint) {instance});";
-                case ContainedTypeCategory.UserDefined:
-                    return $"{Type}.Serialization.Serialize({instance}, {schemaObject}.AddObject({fieldNumber}));";
+                case ValueType.Type:
+                    return $"{FqnType}.Serialization.Serialize({instance}, {schemaObject}.AddObject({fieldNumber}));";
                 default:
                     throw new ArgumentOutOfRangeException("Unknown type category encountered.");
             }
@@ -542,13 +532,13 @@ namespace Improbable.Gdk.CodeGenerator
         {
             switch (category)
             {
-                case ContainedTypeCategory.Primitive:
+                case ValueType.Primitive:
                     return
-                        $"{schemaObject}.{SchemaFunctionMappings.GetSchemaFunctionFromType(rawType)}({fieldNumber})";
-                case ContainedTypeCategory.Enum:
-                    return $"({Type}) {schemaObject}.GetEnum({fieldNumber})";
-                case ContainedTypeCategory.UserDefined:
-                    return $"{Type}.Serialization.Deserialize({schemaObject}.GetObject({fieldNumber}))";
+                        $"{schemaObject}.{SchemaFunctionMappings.GetSchemaFunctionFromType(primitiveType.Value)}({fieldNumber})";
+                case ValueType.Enum:
+                    return $"({FqnType}) {schemaObject}.GetEnum({fieldNumber})";
+                case ValueType.Type:
+                    return $"{FqnType}.Serialization.Deserialize({schemaObject}.GetObject({fieldNumber}))";
                 default:
                     throw new ArgumentOutOfRangeException("Unknown type category encountered.");
             }
@@ -558,12 +548,12 @@ namespace Improbable.Gdk.CodeGenerator
         {
             switch (category)
             {
-                case ContainedTypeCategory.Primitive:
+                case ValueType.Primitive:
                     return
-                        $"{schemaObject}.{SchemaFunctionMappings.GetCountSchemaFunctionFromType(rawType)}({fieldNumber})";
-                case ContainedTypeCategory.Enum:
+                        $"{schemaObject}.{SchemaFunctionMappings.GetCountSchemaFunctionFromType(primitiveType.Value)}({fieldNumber})";
+                case ValueType.Enum:
                     return $"{schemaObject}.GetEnumCount({fieldNumber})";
-                case ContainedTypeCategory.UserDefined:
+                case ValueType.Type:
                     return $"{schemaObject}.GetObjectCount({fieldNumber})";
                 default:
                     throw new ArgumentOutOfRangeException("Unknown type category encountered.");
@@ -574,13 +564,13 @@ namespace Improbable.Gdk.CodeGenerator
         {
             switch (category)
             {
-                case ContainedTypeCategory.Primitive:
+                case ValueType.Primitive:
                     return
-                        $"{schemaObject}.{SchemaFunctionMappings.IndexSchemaFunctionFromType(rawType)}({fieldNumber}, (uint) {index})";
-                case ContainedTypeCategory.Enum:
-                    return $"({Type}) {schemaObject}.IndexEnum({fieldNumber}, (uint) {index})";
-                case ContainedTypeCategory.UserDefined:
-                    return $"{Type}.Serialization.Deserialize({schemaObject}.IndexObject({fieldNumber}, (uint) {index}))";
+                        $"{schemaObject}.{SchemaFunctionMappings.IndexSchemaFunctionFromType(primitiveType.Value)}({fieldNumber}, (uint) {index})";
+                case ValueType.Enum:
+                    return $"({FqnType}) {schemaObject}.IndexEnum({fieldNumber}, (uint) {index})";
+                case ValueType.Type:
+                    return $"{FqnType}.Serialization.Deserialize({schemaObject}.IndexObject({fieldNumber}, (uint) {index}))";
                 default:
                     throw new ArgumentOutOfRangeException("Unknown type category encountered.");
             }

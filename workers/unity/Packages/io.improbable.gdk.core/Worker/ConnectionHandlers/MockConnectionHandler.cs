@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core
         public void CreateEntity(long entityId, EntityTemplate template)
         {
             var handler = new EntityTemplateDynamicHandler(template, entityId, currentDiff);
-            DynamicConverter.ForEachComponent(handler);
+            Dynamic.ForEachComponent(handler);
         }
 
         public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
@@ -113,7 +113,7 @@ namespace Improbable.Gdk.Core
 
         #endregion
 
-        private class EntityTemplateDynamicHandler : DynamicConverter.IConverterHandler
+        private class EntityTemplateDynamicHandler : Dynamic.IHandler
         {
             private EntityTemplate template;
             private ViewDiff viewDiff;
@@ -128,10 +128,10 @@ namespace Improbable.Gdk.Core
                 viewDiff.AddEntity(this.entityId);
             }
 
-            public void Accept<TSnapshot, TUpdate>(uint componentId,
-                DynamicConverter.SnapshotToUpdate<TSnapshot, TUpdate> snapshotToUpdate)
-                where TSnapshot : struct, ISpatialComponentSnapshot
+            public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
+                where TData : struct, ISpatialComponentData
                 where TUpdate : struct, ISpatialComponentUpdate
+                where TSnapshot : struct, ISpatialComponentSnapshot
             {
                 var maybeSnapshot = template.GetComponent<TSnapshot>();
 
@@ -141,7 +141,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var snapshot = maybeSnapshot.Value;
-                viewDiff.AddComponent(snapshotToUpdate(snapshot), entityId, componentId);
+                viewDiff.AddComponent(vtable.ConvertSnapshotToUpdate(snapshot), entityId, componentId);
             }
         }
 

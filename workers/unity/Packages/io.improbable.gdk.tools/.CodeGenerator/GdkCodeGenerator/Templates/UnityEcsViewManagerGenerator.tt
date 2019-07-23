@@ -86,7 +86,7 @@ namespace <#= qualifiedNamespace #>
             {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(world);
+                <#= componentNamespace #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.CleanDataInWorld(world);
 <# } #>
 <# } #>
             }
@@ -99,7 +99,7 @@ namespace <#= qualifiedNamespace #>
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
+                component.<#= fieldDetails.CamelCaseName#>Handle = <#= componentNamespace #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
 <# } #>
                 component.MarkDataClean();
@@ -116,7 +116,7 @@ namespace <#= qualifiedNamespace #>
                 var data = entityManager.GetComponentData<<#= componentNamespace #>.Component>(entity);
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                <#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
+                <#= componentNamespace #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Free(data.<#= fieldDetails.CamelCaseName #>Handle);
 <# } #>
 <# } #>
 <# } #>

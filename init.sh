@@ -6,6 +6,7 @@ cd "$(dirname "$0")"
 PKG_ROOT="workers/unity/Packages"
 SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
+TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
 
 SDK_VERSION="$(cat "${SDK_PATH}"/package.json | jq -r '.version')"
 
@@ -30,6 +31,7 @@ update_package worker_sdk core-dynamic-x86_64-win32 "${SDK_PATH}/Plugins/Improba
 update_package worker_sdk csharp-c-interop "${SDK_PATH}/Plugins/Improbable/Sdk/Common" "Improbable.Worker.CInterop.pdb"
 
 update_package schema standard_library "${SDK_PATH}/.schema"
+update_package schema test_schema_library "${TEST_SDK_PATH}/.schema" "test_schema/recursion.schema"
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"

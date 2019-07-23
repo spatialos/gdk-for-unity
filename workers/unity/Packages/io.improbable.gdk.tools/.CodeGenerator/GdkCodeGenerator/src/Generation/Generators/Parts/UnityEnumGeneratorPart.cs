@@ -1,4 +1,3 @@
-
 namespace Improbable.Gdk.CodeGenerator
 {
     public partial class UnityEnumGenerator

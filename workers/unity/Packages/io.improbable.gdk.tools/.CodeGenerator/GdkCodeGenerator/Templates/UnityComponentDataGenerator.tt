@@ -143,11 +143,11 @@ var fieldDetails = fieldDetailsList[i]; #>
 
             public <#= fieldDetails.Type #> <#= fieldDetails.PascalCaseName #>
             {
-                get => <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
+                get => global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Get(<#= fieldDetails.CamelCaseName #>Handle);
                 set
                 {
                     MarkDataDirty(<#= i #>);
-                    <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
+                    global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Set(<#= fieldDetails.CamelCaseName #>Handle, value);
                 }
             }
 <# } #>
@@ -277,7 +277,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-                component.<#= fieldDetails.CamelCaseName#>Handle = <#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
+                component.<#= fieldDetails.CamelCaseName#>Handle = global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
                 {
                     <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
@@ -384,6 +384,17 @@ var fieldDetails = fieldDetailsList[i]; #>
         {
             public uint ComponentId => <#= componentDetails.ComponentName  #>.ComponentId;
 
+            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            {
+                DeserializeComponent = DeserializeData,
+                DeserializeUpdate = DeserializeUpdate,
+                DeserializeSnapshot = DeserializeSnapshot,
+                SerializeSnapshot = SerializeSnapshot,
+                DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
+                SerializeSnapshotRaw = Serialization.SerializeSnapshot,
+                ConvertSnapshotToUpdate = SnapshotToUpdate
+            };
+
             private static Component DeserializeData(ComponentData data, World world)
             {
                 var schemaDataOpt = data.SchemaData;
@@ -439,17 +450,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update>(ComponentId, DeserializeData, DeserializeUpdate);
-            }
-
-            public void InvokeSnapshotHandler(DynamicSnapshot.ISnapshotHandler handler)
-            {
-                handler.Accept<Snapshot>(ComponentId, DeserializeSnapshot, SerializeSnapshot);
-            }
-
-            public void InvokeConvertHandler(DynamicConverter.IConverterHandler handler)
-            {
-                handler.Accept<Snapshot, Update>(ComponentId, SnapshotToUpdate);
+                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
             }
         }
     }

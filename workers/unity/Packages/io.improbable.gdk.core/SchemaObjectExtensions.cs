@@ -18,5 +18,28 @@ namespace Improbable.Gdk.Core
         {
             return new EntityId(obj.IndexEntityId(fieldId, index));
         }
+
+        public static void AddEntity(this SchemaObject obj, uint fieldId, EntitySnapshot snapshot)
+        {
+            var entityObject = obj.AddObject(fieldId);
+            snapshot.SerializeToSchemaObject(entityObject);
+        }
+
+        public static EntitySnapshot GetEntity(this SchemaObject obj, uint fieldId)
+        {
+            var entityObj = obj.GetObject(fieldId);
+            return new EntitySnapshot(entityObj);
+        }
+
+        public static EntitySnapshot IndexEntity(this SchemaObject obj, uint fieldId, uint index)
+        {
+            var entityObj = obj.IndexObject(fieldId, index);
+            return new EntitySnapshot(entityObj);
+        }
+
+        public static uint GetEntityCount(this SchemaObject obj, uint fieldId)
+        {
+            return obj.GetObjectCount(fieldId);
+        }
     }
 }

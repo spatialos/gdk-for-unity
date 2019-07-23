@@ -64,7 +64,7 @@ namespace Improbable.Gdk.Core.Commands
                 ///     A dictionary that represents the results of a <see cref="SnapshotResultType"/> entity query.
                 ///     This is null for <see cref="CountResultType"/> entity queries.
                 /// </summary>
-                public readonly Dictionary<EntityId, EntityQuerySnapshot> Result;
+                public readonly Dictionary<EntityId, EntitySnapshot> Result;
 
                 /// <summary>
                 ///     The number of entities that matched the entity query constraints.
@@ -102,10 +102,10 @@ namespace Improbable.Gdk.Core.Commands
                         return;
                     }
 
-                    Result = new Dictionary<EntityId, EntityQuerySnapshot>();
+                    Result = new Dictionary<EntityId, EntitySnapshot>();
                     foreach (var entityIdToEntity in op.Result)
                     {
-                        Result.Add(new EntityId(entityIdToEntity.Key), new EntityQuerySnapshot(entityIdToEntity.Value));
+                        Result.Add(new EntityId(entityIdToEntity.Key), new EntitySnapshot(entityIdToEntity.Value));
                     }
                 }
 

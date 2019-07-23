@@ -1,6 +1,6 @@
 ﻿using System;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Tests;
+using Improbable.TestSchema;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 
@@ -133,7 +133,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var exhaustiveSingular = new ExhaustiveSingular.Snapshot
             {
                 Field7 = "",
-                Field3 = new byte[] { }
+                Field3 = new byte[] { },
             };
 
             var template = GetBasicTemplate();

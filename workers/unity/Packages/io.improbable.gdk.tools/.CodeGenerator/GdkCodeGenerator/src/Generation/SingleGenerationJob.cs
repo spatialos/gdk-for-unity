@@ -29,16 +29,16 @@ namespace Improbable.Gdk.CodeGenerator
 
             typesToGenerate = store.Types
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Key.PackagePath))
+                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
             enumsToGenerate = store.Enums
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Key.PackagePath))
+                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
             componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Key.PackagePath))
+                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
             foreach (var typeTarget in typesToGenerate)

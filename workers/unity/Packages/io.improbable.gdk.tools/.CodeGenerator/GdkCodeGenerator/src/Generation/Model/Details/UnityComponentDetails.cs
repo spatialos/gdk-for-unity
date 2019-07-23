@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class UnityComponentDetails
     {
+        public string Package { get; }
         public string ComponentName { get; }
         public uint ComponentId { get; }
 
@@ -15,15 +16,14 @@ namespace Improbable.Gdk.CodeGenerator
         public IReadOnlyList<UnityCommandDetails> CommandDetails { get; }
         public IReadOnlyList<UnityEventDetails> EventDetails { get; }
 
-        public Identifier Identifier { get; }
+        private ComponentDefinition raw;
 
-        private ComponentDefinitionRaw raw;
-
-        public UnityComponentDetails(ComponentDefinitionRaw componentDefinitionRaw, DetailsStore store)
+        public UnityComponentDetails(string package, ComponentDefinition componentDefinitionRaw, DetailsStore store)
         {
-            ComponentName = componentDefinitionRaw.Identifier.Name;
+            Package = package;
+            ComponentName = componentDefinitionRaw.Name;
             ComponentId = componentDefinitionRaw.ComponentId;
-            IsBlittable = store.BlittableMap.Contains(componentDefinitionRaw.Identifier);
+            IsBlittable = store.BlittableSet.Contains(componentDefinitionRaw.QualifiedName);
 
             CommandDetails = componentDefinitionRaw.Commands
                 .Select(command => new UnityCommandDetails(command))
@@ -35,15 +35,14 @@ namespace Improbable.Gdk.CodeGenerator
                 .ToList()
                 .AsReadOnly();
 
-            Identifier = componentDefinitionRaw.Identifier;
             raw = componentDefinitionRaw;
         }
 
         public void PopulateFields(DetailsStore store)
         {
-            if (raw.Data != null)
+            if (!string.IsNullOrEmpty(raw.DataDefinition))
             {
-                FieldDetails = store.Types[CommonDetailsUtils.CreateIdentifier(raw.Data.QualifiedName)].FieldDetails;
+                FieldDetails = store.Types[raw.DataDefinition].FieldDetails;
             }
             else
             {

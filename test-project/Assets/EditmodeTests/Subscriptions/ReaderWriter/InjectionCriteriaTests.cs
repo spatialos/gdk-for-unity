@@ -1,9 +1,8 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Gdk.Tests;
+using Improbable.TestSchema;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
-using Unity.Entities;
 using UnityEngine;
 
 namespace Improbable.Gdk.EditmodeTests.Subscriptions.ReaderWriter

@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Improbable.Gdk.CodeGeneration.Model;
-using Improbable.Gdk.CodeGeneration.Model.SchemaBundleV1;
+using Improbable.Gdk.CodeGeneration;
+using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
 
 namespace Improbable.Gdk.CodeGenerator
 {
     public class DetailsStore
     {
-        public IReadOnlyDictionary<Identifier, UnityTypeDetails> Types { get; }
-        public IReadOnlyDictionary<Identifier, UnityEnumDetails> Enums { get; }
-        public IReadOnlyDictionary<Identifier, UnityComponentDetails> Components { get; }
-        public readonly ImmutableHashSet<Identifier> BlittableMap;
+        public IReadOnlyDictionary<string, UnityTypeDetails> Types { get; }
+        public IReadOnlyDictionary<string, UnityEnumDetails> Enums { get; }
+        public IReadOnlyDictionary<string, UnityComponentDetails> Components { get; }
+        public readonly ImmutableHashSet<string> BlittableSet;
         public IReadOnlyList<string> SchemaFiles { get; }
 
-        public static readonly HashSet<string> NonBlittableSchemaTypes = new HashSet<string> { BuiltInSchemaTypes.BuiltInString, BuiltInSchemaTypes.BuiltInBytes };
+        public static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
+            { PrimitiveType.Bytes, PrimitiveType.String, PrimitiveType.Entity };
 
-        private Dictionary<Identifier, bool> blittableMap = new Dictionary<Identifier, bool>();
+        private Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
 
         private readonly SchemaBundle bundle;
 
@@ -28,31 +28,37 @@ namespace Improbable.Gdk.CodeGenerator
             this.bundle = bundle;
 
             PopulateBlittableMaps();
-            BlittableMap = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
+            BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
 
-            var enums = bundle.BundleContents.EnumDefinitions
-                .Select(enumm => (enumm.EnumIdentifier, new UnityEnumDetails(enumm)))
-                .ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+            var enums = new Dictionary<string, UnityEnumDetails>();
+            var types = new Dictionary<string, UnityTypeDetails>();
+            var components = new Dictionary<string, UnityComponentDetails>();
 
-            Enums = new ReadOnlyDictionary<Identifier, UnityEnumDetails>(enums);
+            foreach (var file in bundle.SchemaFiles)
+            {
+                foreach (var enumm in file.Enums)
+                {
+                    enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
+                }
 
-            var types = bundle.BundleContents.TypeDefinitions
-                .Select(type => (type.Identifier, new UnityTypeDetails(type)))
-                .ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+                foreach (var type in file.Types)
+                {
+                    types.Add(type.QualifiedName, new UnityTypeDetails(file.Package.Name, type));
+                }
 
-            Types = new ReadOnlyDictionary<Identifier, UnityTypeDetails>(types);
+                foreach (var component in file.Components)
+                {
+                    components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
+                }
+            }
 
-            var components = bundle.BundleContents.ComponentDefinitions
-                .Select(component => (component.Identifier, new UnityComponentDetails(component, this)))
-                .ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+            Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
+            Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
+            Components = new ReadOnlyDictionary<string, UnityComponentDetails>(components);
 
-            Components = new ReadOnlyDictionary<Identifier, UnityComponentDetails>(components);
-
-            SchemaFiles = bundle.SourceMap.SourceReferences.Values
-                .Select(sourceRef => sourceRef.FilePath)
-                .Distinct()
-                .ToList()
-                .AsReadOnly();
+            SchemaFiles = bundle.SchemaFiles
+                .Select(file => file.CanonicalPath)
+                .ToList().AsReadOnly();
 
             foreach (var kv in Types)
             {
@@ -66,55 +72,56 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public HashSet<Identifier> GetNestedTypes(Identifier identifier)
+        public HashSet<string> GetNestedTypes(string qualifiedName)
         {
-            return Types.Select(t => t.Key).Where(t => IsIdentifierChild(identifier, t))
-                .Concat(Enums.Select(t => t.Key).Where(t => IsIdentifierChild(identifier, t)))
-                .ToHashSet();
+            var typeChildren = Types.Select(pair => pair.Key).Where(maybeChild => IsChild(qualifiedName, maybeChild));
+            var enumChildren = Enums.Select(pair => pair.Key).Where(maybeChild => IsChild(qualifiedName, maybeChild));
+
+            return typeChildren.Concat(enumChildren).ToHashSet();
         }
 
-        private bool IsIdentifierChild(Identifier parent, Identifier potentialChild)
+        private bool IsChild(string parent, string potentialChild)
         {
-            return potentialChild.QualifiedName.StartsWith($"{parent.QualifiedName}.")
-                && potentialChild.Path.Count == parent.Path.Count + 1;
+            return potentialChild.StartsWith(parent) &&
+                potentialChild.Split(".").Length == parent.Split(".").Length + 1;
         }
 
         private void PopulateBlittableMaps()
         {
-            // Populate all enums.
-            foreach (var enumm in bundle.BundleContents.EnumDefinitions)
+            foreach (var enumm in bundle.SchemaFiles.SelectMany(file => file.Enums))
             {
-                blittableMap.Add(enumm.EnumIdentifier, true);
+                blittableMap.Add(enumm.QualifiedName, true);
             }
 
-            var typesToTraverse = new Queue<TypeDefinitionRaw>(bundle.BundleContents.TypeDefinitions);
+            var typesToTraverse = new Queue<TypeDefinition>(bundle.SchemaFiles.SelectMany(file => file.Types));
 
             while (typesToTraverse.Count > 0)
             {
                 var type = typesToTraverse.Dequeue();
-                var blittableCheckResult = CheckBlittable(type.Fields);
 
-                if (!blittableCheckResult.HasValue)
+                if (!CanCheckBlittable(type))
                 {
                     typesToTraverse.Enqueue(type);
                     continue;
                 }
 
-                blittableMap.Add(type.Identifier, blittableCheckResult.Value);
+                blittableMap.Add(type.QualifiedName, CheckBlittable(type.Fields));
             }
 
-            foreach (var component in bundle.BundleContents.ComponentDefinitions)
+            foreach (var component in bundle.SchemaFiles.SelectMany(file => file.Components))
             {
-                List<Field> fields;
+                IReadOnlyList<FieldDefinition> fields;
 
-                if (component.Data != null)
+                if (!string.IsNullOrEmpty(component.DataDefinition))
                 {
-                    var dataType = bundle.BundleContents.TypeDefinitions.FirstOrDefault(type =>
-                        type.Identifier.QualifiedName == component.Data.QualifiedName);
+                    var dataType = bundle.SchemaFiles
+                        .SelectMany(file => file.Types)
+                        .FirstOrDefault(type => type.QualifiedName == component.DataDefinition);
 
                     if (dataType == null)
                     {
-                        throw new Exception($"Invalid bundle JSON. Could not find type reference: {component.Data.QualifiedName}");
+                        throw new Exception(
+                            $"Invalid bundle JSON. Could not find type reference: {component.QualifiedName}");
                     }
 
                     fields = dataType.Fields;
@@ -124,59 +131,44 @@ namespace Improbable.Gdk.CodeGenerator
                     fields = component.Fields;
                 }
 
-                var blittableCheckResult = CheckBlittable(fields);
-
-                if (!blittableCheckResult.HasValue)
-                {
-                    throw new InvalidOperationException("Could not check blittable-ness of component");
-                }
-
-                blittableMap.Add(component.Identifier, blittableCheckResult.Value);
+                blittableMap.Add(component.QualifiedName, CheckBlittable(fields));
             }
         }
 
-        private bool? CheckBlittable(IEnumerable<Field> fields)
+        private bool CheckBlittable(IEnumerable<FieldDefinition> fields)
         {
-            var results = fields.Select(CheckBlittable);
-
-            if (results.Any(res => res == null))
-            {
-                return null;
-            }
-
-            return !results.Any(res => res.HasValue && !res.Value);
+            // Any isn't specialized.
+            return fields.Select(CheckBlittable).All(@bool => @bool);
         }
 
-        private bool? CheckBlittable(Field field)
+        public bool CheckBlittable(FieldDefinition field)
         {
-            if (field.Map != null || field.List != null || field.Option != null)
+            if (field.MapType != null || field.ListType != null || field.OptionType != null)
             {
-                blittableMap[field.Identifier] = false;
                 return false;
             }
 
-            var innerSingularType = field.Singular.Type;
+            var innerSingularType = field.SingularType;
 
-            if (innerSingularType.UserType != null)
+            switch (innerSingularType.Type.ValueTypeSelector)
             {
-                if (!blittableMap.TryGetValue(CommonDetailsUtils.CreateIdentifier(innerSingularType.UserType.QualifiedName), out var isFieldBlittable))
-                {
-                    return null;
-                }
-
-                blittableMap[field.Identifier] = isFieldBlittable;
-                return isFieldBlittable;
+                case ValueType.Enum:
+                    return true;
+                case ValueType.Primitive:
+                    return !NonBlittableSchemaTypes.Contains(innerSingularType.Type.Primitive);
+                case ValueType.Type:
+                    return blittableMap[innerSingularType.Type.Type];
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
 
-            if (innerSingularType.Primitive != null && NonBlittableSchemaTypes.Contains(innerSingularType.Primitive))
-            {
-                blittableMap[field.Identifier] = false;
-                return false;
-            }
-
-            // No need to check enums - they are always blittable.
-            blittableMap[field.Identifier] = true;
-            return true;
+        private bool CanCheckBlittable(TypeDefinition typeDefinition)
+        {
+            return typeDefinition.Fields
+                .Where(type => type.SingularType != null && type.SingularType.Type.ValueTypeSelector == ValueType.Type)
+                .Select(type => type.SingularType.Type.Type)
+                .All(qualifiedName => blittableMap.ContainsKey(qualifiedName));
         }
     }
 }
