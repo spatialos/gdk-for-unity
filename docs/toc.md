@@ -66,7 +66,7 @@
         - [Connection flows]({{urlRoot}}/reference/concepts/connection-flows)
         - [Deployments]({{urlRoot}}/reference/concepts/deployments)
         - [Entity templates]({{urlRoot}}/reference/concepts/entity-templates)
-        - [Logs]({{urlRoot}}/reference/concepts/logging)
+        - [Logging]({{urlRoot}}/reference/concepts/logging)
         - [Snapshots]({{urlRoot}}/reference/concepts/snapshots)
         - [Worker]({{urlRoot}}/reference/concepts/worker)
     - Workflows
