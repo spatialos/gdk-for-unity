@@ -53,7 +53,7 @@ namespace Playground.MonoBehaviours
 
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
 
-            cubeEntityTemplate.SetComponent(new Position.Snapshot(location.ToCoordinates()));
+            cubeEntityTemplate.SetComponent(new Position.Snapshot(Coordinates.FromUnityVector(location)));
             cubeEntityTemplate.SetComponent(TransformUtils.CreateTransformSnapshot(location, Quaternion.identity));
 
             var expectedEntityId = response.FirstEntityId.Value;

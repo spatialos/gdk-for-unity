@@ -84,7 +84,7 @@ namespace Playground.Editor.SnapshotGenerator
                     }
 
                     var location = new Vector3(x, 1, z);
-                    var positionSnapshot = new Position.Snapshot(location.ToCoordinates());
+                    var positionSnapshot = new Position.Snapshot(Coordinates.FromUnityVector(location));
                     var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, Quaternion.identity);
 
                     cubeTemplate.SetComponent(positionSnapshot);

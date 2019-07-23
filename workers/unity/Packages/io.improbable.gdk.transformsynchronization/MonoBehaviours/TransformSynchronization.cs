@@ -138,8 +138,8 @@ namespace Improbable.Gdk.TransformSynchronization
 
             var defaultToSet = new TransformToSet
             {
-                Position = TransformUtils.ToUnityVector3(transformComponent.Location) + world.GetExistingSystem<WorkerSystem>().Origin,
-                Velocity = TransformUtils.ToUnityVector3(transformComponent.Velocity),
+                Position = transformComponent.Location.ToUnityVector() + world.GetExistingSystem<WorkerSystem>().Origin,
+                Velocity = transformComponent.Velocity.ToUnityVector(),
                 Orientation = TransformUtils.ToUnityQuaternion(transformComponent.Rotation),
                 ApproximateRemoteTick = 0
             };
@@ -162,8 +162,8 @@ namespace Improbable.Gdk.TransformSynchronization
 
             var defaultToSend = new TransformToSend
             {
-                Position = TransformUtils.ToUnityVector3(transformComponent.Location) - world.GetExistingSystem<WorkerSystem>().Origin,
-                Velocity = TransformUtils.ToUnityVector3(transformComponent.Velocity),
+                Position = transformComponent.Location.ToUnityVector() - world.GetExistingSystem<WorkerSystem>().Origin,
+                Velocity = transformComponent.Velocity.ToUnityVector(),
                 Orientation = TransformUtils.ToUnityQuaternion(transformComponent.Rotation)
             };
 

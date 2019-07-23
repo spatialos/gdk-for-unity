@@ -47,15 +47,15 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var transformHasChanged = false;
 
-                    var newVelocity = TransformUtils.ToFixedPointVector3(transformToSend.Velocity);
-                    if (TransformUtils.HasChanged(newVelocity, transform.Velocity))
+                    var newVelocity = FixedPointVector3.FromUnityVector(transformToSend.Velocity);
+                    if (newVelocity != transform.Velocity)
                     {
                         transform.Velocity = newVelocity;
                         transformHasChanged = true;
                     }
 
-                    var newLocation = TransformUtils.ToFixedPointVector3(transformToSend.Position - worker.Origin);
-                    if (TransformUtils.HasChanged(newLocation, transform.Location))
+                    var newLocation = FixedPointVector3.FromUnityVector(transformToSend.Position - worker.Origin);
+                    if (newLocation != transform.Location)
                     {
                         transform.Location = newLocation;
                         transformHasChanged = true;

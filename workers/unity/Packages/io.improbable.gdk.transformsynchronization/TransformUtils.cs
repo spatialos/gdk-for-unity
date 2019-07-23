@@ -29,9 +29,9 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             return new TransformInternal.Snapshot
             {
-                Location = ToFixedPointVector3(location),
+                Location = FixedPointVector3.FromUnityVector(location),
                 Rotation = ToCompressedQuaternion(rotation),
-                Velocity = ToFixedPointVector3(velocity),
+                Velocity = FixedPointVector3.FromUnityVector(velocity),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
         }
@@ -58,22 +58,11 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             return new TransformInternal.Snapshot
             {
-                Location = ToFixedPointVector3(location),
+                Location = FixedPointVector3.FromCoordinates(location),
                 Rotation = ToCompressedQuaternion(rotation),
-                Velocity = ToFixedPointVector3(velocity),
+                Velocity = FixedPointVector3.FromUnityVector(velocity),
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
-        }
-
-        /// <summary>
-        ///     Returns whether two Coordinates variables are different.
-        /// </summary>
-        /// <remarks>
-        ///     This method is used to check if there have been no changes, so exact equality of floats is fine.
-        /// </remarks>
-        internal static bool HasChanged(Coordinates a, Coordinates b)
-        {
-            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
 
         /// <summary>
@@ -82,14 +71,6 @@ namespace Improbable.Gdk.TransformSynchronization
         internal static bool HasChanged(CompressedQuaternion a, CompressedQuaternion b)
         {
             return a.Data != b.Data;
-        }
-
-        /// <summary>
-        ///     Returns whether two FixedPointVector3 variables are different.
-        /// </summary>
-        internal static bool HasChanged(FixedPointVector3 a, FixedPointVector3 b)
-        {
-            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
         }
 
         /// <summary>
@@ -227,99 +208,6 @@ namespace Improbable.Gdk.TransformSynchronization
             }
 
             return new CompressedQuaternion(compressedQuaternion);
-        }
-
-        /// <summary>
-        ///     Converts a FixedPointVector3 to a Unity Vector3.
-        /// </summary>
-        /// <remarks>
-        ///     Converts each component from a Q21.10 fixed point value to a float.
-        /// </remarks>
-        internal static UnityEngine.Vector3 ToUnityVector3(FixedPointVector3 fixedPointVector3)
-        {
-            return new Vector3
-            {
-                x = FixedToFloat(fixedPointVector3.X),
-                y = FixedToFloat(fixedPointVector3.Y),
-                z = FixedToFloat(fixedPointVector3.Z)
-            };
-        }
-
-        /// <summary>
-        ///     Converts a Unity Vector3 to a FixedPointVector3.
-        /// </summary>
-        /// <remarks>
-        ///     Converts each component from a float to a Q21.10 fixed point value.
-        /// </remarks>
-        internal static FixedPointVector3 ToFixedPointVector3(Vector3 vector3)
-        {
-            return new FixedPointVector3
-            {
-                X = FloatToFixed(vector3.x),
-                Y = FloatToFixed(vector3.y),
-                Z = FloatToFixed(vector3.z)
-            };
-        }
-
-        /// <summary>
-        ///     Converts a Coordinates value to a FixedPointVector3.
-        /// </summary>
-        /// <remarks>
-        ///     Converts each component from a double to a Q21.10 fixed point value.
-        /// </remarks>
-        internal static FixedPointVector3 ToFixedPointVector3(Coordinates coordinates)
-        {
-            return new FixedPointVector3
-            {
-                X = FloatToFixed((float) coordinates.X),
-                Y = FloatToFixed((float) coordinates.Y),
-                Z = FloatToFixed((float) coordinates.Z)
-            };
-        }
-
-        /// <summary>
-        ///     Converts a Unity Vector3 to a Coordinates value.
-        /// </summary>
-        /// <remarks>
-        ///     Converts each component from a float to a double.
-        /// </remarks>
-        public static Coordinates ToCoordinates(this Vector3 vector3)
-        {
-            return new Coordinates
-            {
-                X = vector3.x,
-                Y = vector3.y,
-                Z = vector3.z
-            };
-        }
-
-        /// <summary>
-        ///     Converts a FixedPointVector3 to a Coordinates value.
-        /// </summary>
-        /// <remarks>
-        ///     Converts each component from a Q21.10 fixed point value to a double.
-        /// </remarks>
-        internal static Coordinates ToCoordinates(this FixedPointVector3 fixedPointVector3)
-        {
-            return new Coordinates
-            {
-                X = FixedToFloat(fixedPointVector3.X),
-                Y = FixedToFloat(fixedPointVector3.Y),
-                Z = FixedToFloat(fixedPointVector3.Z)
-            };
-        }
-
-        // 2^-10 => 0.0009765625 precision
-        private const int FixedPointOne = (int) (1u << 10);
-
-        private static int FloatToFixed(float a)
-        {
-            return (int) (a * FixedPointOne);
-        }
-
-        private static float FixedToFloat(int a)
-        {
-            return (float) a / FixedPointOne;
         }
     }
 }
