@@ -3478,7 +3478,9 @@ namespace Improbable.TestSchema
 
         public struct Update : ISpatialComponentUpdate
         {
+#if USE_LEGACY_REACTIVE_COMPONENTS
             internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
+#endif
 
             public Option<global::System.Collections.Generic.Dictionary<string,bool>> Field1;
             public Option<global::System.Collections.Generic.Dictionary<string,float>> Field2;
@@ -3500,7 +3502,7 @@ namespace Improbable.TestSchema
             public Option<global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum>> Field18;
         }
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public struct ReceivedUpdates : IComponentData
         {
             internal uint handle;

@@ -1,9 +1,11 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.ReactiveComponents;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
+#endif
+using Improbable.Worker.CInterop;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.Commands
@@ -107,6 +109,7 @@ namespace Improbable.Gdk.Core.Commands
                 }
             }
 
+#if USE_LEGACY_REACTIVE_COMPONENTS
             /// <summary>
             ///     ECS component is for sending CreateEntity command requests to the SpatialOS runtime.
             /// </summary>
@@ -318,6 +321,7 @@ namespace Improbable.Gdk.Core.Commands
                     ResponsesProvider.CleanDataInWorld(world);
                 }
             }
+#endif
         }
     }
 }

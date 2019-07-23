@@ -1,3 +1,4 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -12,3 +13,4 @@ namespace Improbable.Gdk.ReactiveComponents
             ComponentUpdateSystem updateSystem);
     }
 }
+#endif
