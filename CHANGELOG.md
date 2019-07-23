@@ -8,6 +8,8 @@
 - `DynamicSnapshot` and `DynamicConverter` have been collapsed into `Dynamic`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
     - The delegates from all of these classes are now available in the `Dynamic.VTable<TData, TUpdate, TSnapshot>` struct.
     - `Dynamic.IHandler.Accept` now takes a `Dynamic.Vtable<TData, TUpdate, TSnapshot` parameter.
+- Reactive components are now **opt in** instead of **opt out**. Use the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to re-enable them. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
+    - Note that these will be removed in a future release.
 
 ### Added
 
@@ -19,6 +21,10 @@
 
 - Upgraded to Worker SDK 13.8.2. [#1052](https://github.com/spatialos/gdk-for-unity/pull/1052)
     - The new [`Entity` schema type](https://docs.improbable.io/reference/13.8/shared/schema/reference#primitive-types) is deserialized as an `Improbable.Gdk.Core.EntitySnapshot`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+
+### Fixed
+
+- The world command sender reactive components and reactive component systems are now properly conditionally compiled. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
 
 ### Internal
 
