@@ -22,7 +22,7 @@
 
 ### Internal
 
-- Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type.
+- Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 
 ## `0.2.5` - 2019-07-18
 
