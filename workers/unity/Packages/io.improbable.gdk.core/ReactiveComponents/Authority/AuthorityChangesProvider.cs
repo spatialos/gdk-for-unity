@@ -1,4 +1,4 @@
-﻿#if !DISABLE_REACTIVE_COMPONENTS
+﻿#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using System.Linq;

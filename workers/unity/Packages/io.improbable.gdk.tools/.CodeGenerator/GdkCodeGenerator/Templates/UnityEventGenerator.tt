@@ -33,7 +33,7 @@ namespace <#= qualifiedNamespace #>
 
 <# } #>
 
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
         public static class ReceivedEvents
         {
 <# foreach (var eventDetails in eventDetailsList) { #>

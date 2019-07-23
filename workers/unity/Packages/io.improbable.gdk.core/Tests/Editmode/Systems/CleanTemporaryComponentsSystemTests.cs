@@ -1,3 +1,4 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
 using Improbable.Gdk.ReactiveComponents;
 using NUnit.Framework;
@@ -44,3 +45,4 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
     }
 }
+#endif

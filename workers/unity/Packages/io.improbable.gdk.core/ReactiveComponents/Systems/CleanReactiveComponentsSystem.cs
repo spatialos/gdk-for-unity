@@ -1,10 +1,10 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.ReactiveComponents
@@ -83,3 +83,4 @@ namespace Improbable.Gdk.ReactiveComponents
         }
     }
 }
+#endif

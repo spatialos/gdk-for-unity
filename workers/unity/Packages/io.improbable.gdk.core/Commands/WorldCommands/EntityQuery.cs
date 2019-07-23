@@ -1,10 +1,12 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.ReactiveComponents;
+using Unity.Entities;
+#endif
+using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
-using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core.Commands
@@ -114,7 +116,7 @@ namespace Improbable.Gdk.Core.Commands
                     return RequestId;
                 }
             }
-
+#if USE_LEGACY_REACTIVE_COMPONENTS
             /// <summary>
             ///     ECS component is for sending EntityQuery command requests to the SpatialOS runtime.
             /// </summary>
@@ -326,6 +328,7 @@ namespace Improbable.Gdk.Core.Commands
                     ResponsesProvider.CleanDataInWorld(world);
                 }
             }
+#endif
         }
     }
 }

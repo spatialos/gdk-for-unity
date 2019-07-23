@@ -1,3 +1,4 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using Unity.Collections;
 using Unity.Entities;
 
@@ -11,3 +12,4 @@ namespace Improbable.Gdk.ReactiveComponents
             EntityCommandBuffer buffer);
     }
 }
+#endif

@@ -22,7 +22,7 @@ namespace <#= qualifiedNamespace #>
     {
         internal static class ReferenceTypeProviders
         {
-#if !DISABLE_REACTIVE_COMPONENTS
+#if USE_LEGACY_REACTIVE_COMPONENTS
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentNamespace}.Update>"), 3) #>
 #endif
 

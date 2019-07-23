@@ -1,3 +1,4 @@
+#if USE_LEGACY_REACTIVE_COMPONENTS
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -159,3 +160,4 @@ namespace Improbable.Gdk.ReactiveComponents
         }
     }
 }
+#endif

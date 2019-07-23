@@ -1,4 +1,4 @@
-﻿#if !DISABLE_REACTIVE_COMPONENTS
+﻿#if EUSE_LEGACY_REACTIVE_COMPONENTS
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
