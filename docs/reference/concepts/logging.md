@@ -27,7 +27,7 @@ private async void Start()
 }
 ```
 
-This instance handles all logging from the Core and Feature Modules for that worker and is available for you to use through the methods described below
+This instance handles all logging from the Core and Feature Modules for that worker and is available for you to use through the methods described below.
 
 ## Accessing the log dispatcher
 
@@ -128,7 +128,7 @@ The `ForwardingDispatcher` recognises two special structured logging keys that c
 
 ## Creating your own log dispatcher
 
-To create your own log dispatcher, create a new class which implements [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
+To create your own log dispatcher, create a new class which implements the [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
 
 ```csharp
 public class MyCustomDispatcher: ILogDispatcher
