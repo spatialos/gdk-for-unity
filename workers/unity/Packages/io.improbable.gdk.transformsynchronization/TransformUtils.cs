@@ -77,17 +77,6 @@ namespace Improbable.Gdk.TransformSynchronization
         }
 
         /// <summary>
-        ///     Extension method for converting a Unity Vector to an EdgeLength.
-        /// </summary>
-        /// <remarks>
-        ///     This method wraps EdgeLength.FromUnityVector.
-        /// </remarks>
-        public static EdgeLength ToEdgeLength(this Vector3 unityVector)
-        {
-            return EdgeLength.FromUnityVector(unityVector);
-        }
-
-        /// <summary>
         ///     Extension method for converting a Unity Vector to a FixedPointVector3.
         /// </summary>
         /// <remarks>
