@@ -9,6 +9,7 @@ namespace Improbable.Gdk.TransformSynchronization
     public class DefaultUpdateLatestTransformSystem : ComponentSystem
     {
         private EntityQuery rigidbodyGroup;
+        private EntityQuery rigidbody2DGroup;
         private EntityQuery transformGroup;
 
         protected override void OnCreate()
@@ -22,9 +23,18 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            
+            rigidbody2DGroup = GetEntityQuery(
+                ComponentType.ReadOnly<Rigidbody2D>(),
+                ComponentType.ReadWrite<TransformToSend>(),
+                ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            rigidbody2DGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
             transformGroup = GetEntityQuery(
                 ComponentType.Exclude<Rigidbody>(),
+                ComponentType.Exclude<Rigidbody2D>(),
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
                 ComponentType.ReadWrite<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
@@ -48,6 +58,16 @@ namespace Improbable.Gdk.TransformSynchronization
                     Position = rigidbody.position,
                     Velocity = rigidbody.velocity,
                     Orientation = rigidbody.rotation
+                };
+            });
+            
+            Entities.With(rigidbody2DGroup).ForEach((ref TransformToSend transformToSend, Rigidbody2D rigidbody) =>
+            {
+                transformToSend = new TransformToSend
+                {
+                    Position = rigidbody.position,
+                    Velocity = rigidbody.velocity,
+                    Orientation = Quaternion.Euler(0, 0, rigidbody.rotation)
                 };
             });
         }

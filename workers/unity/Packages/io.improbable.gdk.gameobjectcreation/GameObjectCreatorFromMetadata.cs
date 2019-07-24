@@ -24,6 +24,7 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             typeof(Transform),
             typeof(Rigidbody),
+            typeof(Rigidbody2D),
             typeof(MeshRenderer)
         };
 

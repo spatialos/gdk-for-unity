@@ -12,6 +12,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
         private EntityQuery rigidbodyGroup;
+        private EntityQuery rigidbody2DGroup;
         private EntityQuery transformGroup;
 
         protected override void OnCreate()
@@ -34,6 +35,17 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            
+            rigidbody2DGroup = GetEntityQuery(
+                ComponentType.ReadOnly<Rigidbody>(),
+                ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
+                ComponentType.ReadWrite<BufferedTransform>(),
+                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
+                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+            );
+            rigidbody2DGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
 
             transformGroup = GetEntityQuery(
                 ComponentType.ReadOnly<UnityEngine.Transform>(),
@@ -43,6 +55,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<BufferedTransform>(),
                 ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
                 ComponentType.Exclude<Rigidbody>(),
+                ComponentType.Exclude<Rigidbody2D>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
             transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
@@ -74,6 +87,29 @@ namespace Improbable.Gdk.TransformSynchronization
                     rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
                     rigidbody.AddForce(transformInternal.Velocity.ToUnityVector() - rigidbody.velocity,
                         ForceMode.VelocityChange);
+
+                    buffer.Clear();
+                    ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
+                });
+            
+            Entities.With(rigidbody2DGroup).ForEach(
+                (Entity entity, DynamicBuffer<BufferedTransform> buffer,
+                    ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate,
+                    ref TransformInternal.Component transformInternal,
+                    ref SpatialEntityId spatialEntityId) =>
+                {
+                    if (updateSystem
+                            .GetAuthorityChangesReceived(spatialEntityId.EntityId, TransformInternal.ComponentId)
+                            .Count == 0)
+                    {
+                        return;
+                    }
+
+                    var rigidbody = EntityManager.GetComponentObject<Rigidbody2D>(entity);
+                    rigidbody.MovePosition(TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin);
+                    rigidbody.MoveRotation(TransformUtils.ToUnityQuaternion(transformInternal.Rotation));
+                    rigidbody.AddForce((Vector2)TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
+                        ForceMode2D.Impulse);
 
                     buffer.Clear();
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
