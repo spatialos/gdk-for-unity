@@ -380,7 +380,7 @@ SpatialOS entities are made up of [SpatialOS components](#spatialos-component), 
 
 ## SpatialOS project
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also referred to as "your game".</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as "your game".</i></span>
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [Unity Project](#unity-project) or [project name](#project-name).</i></span>
 
@@ -399,7 +399,7 @@ A SpatialOS project includes (but isn't limited to):
 
 ## SpatialOS Runtime
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also sometimes just called "SpatialOS".</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as "SpatialOS".</i></span>
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [SpatialOS world](#spatialos-world).</i></span>
 
@@ -613,7 +613,7 @@ Additionally, the worker adds [ECS systems](#unity-ecs-system) to this world to 
 
 ## Write access
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also referred to as "authority".</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as "authority".</i></span>
 
 Many [worker instances](#worker) can connect to a [SpatialOS world](#spatialos-world). However, at most one worker instance can have write acesss on a component on a [SpatialOS entity](#spatialos-entity). This worker instance is the only one that can modify the component’s state and handle commands for that component.
 
