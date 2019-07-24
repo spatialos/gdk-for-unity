@@ -1,73 +1,147 @@
-<%(TOC)%>
+<%(TOC max="3")%>
 
-#  Logs
+# Logging
 
- _This document relates to both the [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview)._
+The SpatialOS GDK for Unity provides an [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher) interface for logging, which provides more flexibility to handle logs based on the worker instance and allows you to attach additional context to your logs.
 
-The SpatialOS GDK for Unity uses a custom [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher) interface instead of `UnityEngine.Debug`, which gives more flexibility to handle logs separately in different workers and gives more context when handling the logs. There are two provided implementations of this interface:
+There are two implementations of this interface in the Core package:
 
-*  [`LoggingDispatcher`]({{urlRoot}}/api/core/logging-dispatcher), which simply logs to the Unity console
-*  [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher), which logs to the Unity console and sends it to the SpatialOS Console
-    * Note: By default, messages with the log level `LogType.Log` are not sent to SpatialOS. This can be changed by instantiating the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with a different `minimumLogLevel` parameter.
+*  The [`LoggingDispatcher`]({{urlRoot}}/api/core/logging-dispatcher), which logs to the Unity console.
+*  The [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher), which logs to the Unity console and sends it to the SpatialOS Console.
 
-All workers use the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) by default in the Playground. If you want to use the [`LoggingDispatcher`]({{urlRoot}}/api/core/logging-dispatcher), see the last step of [Creating and using your own dispatcher]({{urlRoot}}/reference/concepts/logging#creating-and-using-your-own-dispatcher).
+> All workers in the FPS Starter Project and the Blank Project use the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) by default.
 
-## Using the ILogDispatcher
+## Setting up a log dispatcher
 
-You can access the dispatcher through the [`WorkerSystem`]({{urlRoot}}/api/core/worker-system). The dispatcher provides a single `HandleLog` function, which takes two arguments:
-
-* `LogType` (e.g. `UnityEngine.LogType.Error`)
-* `LogEvent`, which stores the message and other context variables in the Data dictionary
-
-There are two log context variables:
-
-* `LoggingUtils.LoggerName`, which specifies where the log was sent from.
-* `LoggingUtils.EntityId`, which links the log to a specific entity. When running the game in the cloud using the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher), this lets you filter for a particular entity's logs using the Inspector and Logger.
-
-These are automatically picked up by the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) if provided. Other context variables are formatted in a string and sent with the log message.
-
-For example, if you want to use one of the dispatchers in a system, you can use the following code:
+When you create a worker using the [`WorkerConnector`]({{urlRoot}}/api/core/worker-connector), you pass in an `ILogDispatcher` instance. This associates the `ILogDispatcher` instance with that worker.
 
 ```csharp
-var workerSystem = World.GetExistingSystem<WorkerSystem>();
+private async void Start()
+{
+    var builder = new SpatialOSConnectionHandlerBuilder()
+        .SetConnectionParameters(CreateConnectionParameters(WorkerUtils.UnityClient))
+        .SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)));
 
-workerSystem.LogDispatcher.HandleLog(LogType.Error, new LogEvent(
-        "Custom error message.")
-    .WithField(LoggingUtils.LoggerName, LoggerName)
-    .WithField(LoggingUtils.EntityId, entityId)
-    .WithField("CustomKey", "CustomValue"));
+    // Associate a new ForwardingDispatcher instance with this worker.
+    await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
+}
 ```
 
-The `LogEvent` class allows construction of enhanced log messages.
+This instance handles all logging from the Core and Feature Modules for that worker and is available for you to use through the methods described below.
 
-* Use the `WithField` method to set additional information to be displayed with the log message.
-* Use the `WithContext(UnityEngine.Object)` method to add a context object to be passed into the Unity console.
+## Accessing the log dispatcher
 
-**Note**: For `LogType.Exception`, add a relevant exception to the `LogEvent` class using the `WithException(Exception)` method. The `WithException` method will be ignored for other `LogType` values.
+There are a few ways you can access the `ILogDispatcher` instance that is associated with your worker.
 
-## Creating and using your own dispatcher
+### In a MonoBehaviour
 
-To create your own dispatcher, make a new class which implements [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
+If your GameObject is linked to a SpatialOS entity through the [GameObject Creation Feature Modules]({{urlRoot}}/modules/game-object-creation/overview), you can either:
+
+##### 1. Require the `ILogDispatcher`. 
+
+This is injected when the `MonoBehaviour` is enabled:
+
+```csharp
+public class MyMonoBehaviour : MonoBehaviour
+{
+    [Require] private ILogDispatcher logger;
+
+    private void OnEnable() 
+    {
+        // The logger is now available.
+        logger.HandleLog(...);
+    }
+}
+```
+
+##### 2. Access it through the `LinkedEntityComponent` MonoBehaviour 
+
+This MonoBehaviour will be on the linked GameObject:
+
+```csharp
+public class MyMonoBehaviour : MonoBehaviour
+{
+    private ILogDispatcher logger;
+
+    private void OnEnable() 
+    {
+        logger = GetComponent<LinkedEntityComponent>().WorkerSystem.LogDispatcher;
+        logger.HandleLog(...);
+    }
+}
+```
+
+### In the ECS
+
+You can access the dispatcher through the [`WorkerSystem`]({{urlRoot}}/api/core/worker-system):
+
+```csharp
+public class MySystem : ComponentSystem 
+{
+    private ILogDispatcher logger;
+
+    protected override void OnCreate()
+    {
+        logger = World.GetExistingSystem<WorkerSystem>().LogDispatcher;
+        logger.HandleLog(...);
+    }
+
+    ...
+}
+```
+
+## Using the log dispatcher
+
+The dispatcher provides a single `HandleLog` function, which takes two arguments:
+
+1. `LogType`, which specifies the verbosity level of the log (e.g. `UnityEngine.LogType.Error`)
+2. `LogEvent`, which stores the message, structured logging data, and the context of the log. See [the API documentation]({{urlRoot}}/api/core/log-event) for usage details.
+
+For example:
+
+```csharp
+logger.HandleLog(LogType.Error, 
+    new LogEvent("Custom error message.")
+        .WithField(LoggingUtils.LoggerName, LoggerName)
+        .WithField(LoggingUtils.EntityId, entityId)
+        .WithField("CustomKey", "CustomValue"));
+```
+
+### The `ForwardingDispatcher`
+
+The `ForwardingDispatcher` converts the Unity `LogType` enum to the SpatialOS `LogLevel` enum using the following table:
+
+| Unity               | SpatialOS          |
+| ---                 | ---                |
+| `LogType.Exception` | `LogLevel.Error`   |
+| `LogType.Error`     | `LogLevel.Error`   |
+| `LogType.Assert`    | `LogLevel.Error`   |
+| `LogType.Warning`   | `LogLevel.Warning` |
+| `LogType.Log`       | `LogLevel.Info`    |
+
+> **Note:** By default, messages with log level `LogType.Log`  and sent using the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) are not forwarded to SpatialOS. You can change this by instantiating the [`ForwardingDispatcher`]({{urlRoot}}/api/core/forwarding-dispatcher) with a different `minimumLogLevel` parameter.
+
+The `ForwardingDispatcher` recognises two special structured logging keys that can be used with the `LogEvent.WithField(string key, object value)` method:
+
+* `LoggingUtils.LoggerName`, which specifies where the log was sent from.
+* `LoggingUtils.EntityId`, which links the log to a specific entity. This lets you filter for a particular entity's logs using the [Logger](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments).
+
+## Creating your own log dispatcher
+
+To create your own log dispatcher, create a new class which implements the [`ILogDispatcher`]({{urlRoot}}/api/core/i-log-dispatcher):
 
 ```csharp
 public class MyCustomDispatcher: ILogDispatcher
 {
+    public Worker Worker { get; set; }
+
+    public string WorkerType { get; set; }
+
     public void HandleLog(LogType type, LogEvent logEvent)
     {
-        // Handle Log
+        // Handle logs however you please
     }
 }
 ```
 
-To use this dispatcher in a specific worker, provide it as an argument when calling `Connect` in the worker connector.
-
-```csharp
-public class ClientWorkerConnector : WorkerConnector
-{
-    private async void Start()
-    {
-        /* ... */
-        await Connect(WorkerUtils.UnityClient, new MyCustomDispatcher()).ConfigureAwait(false);
-    }
-}
-```
+To use this dispatcher in a specific worker, provide it as an argument when calling `Connect` in your worker connector as [described above](#setting-up-a-log-dispatcher).
