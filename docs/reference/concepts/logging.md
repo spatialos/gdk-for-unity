@@ -19,16 +19,15 @@ When you create a worker using the [`WorkerConnector`]({{urlRoot}}/api/core/work
 private async void Start()
 {
     var builder = new SpatialOSConnectionHandlerBuilder()
-        .SetConnectionParameters(CreateConnectionParameters(WorkerUtils.UnityClient));
-        .SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)))
+        .SetConnectionParameters(CreateConnectionParameters(WorkerUtils.UnityClient))
+        .SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)));
 
     // Associate a new ForwardingDispatcher instance with this worker.
     await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
 }
-
 ```
 
-This instance handles all logging from the Core and Feature Modules for that worker and it is available for you to use through the methods described below
+This instance handles all logging from the Core and Feature Modules for that worker and is available for you to use through the methods described below
 
 ## Accessing the log dispatcher
 
