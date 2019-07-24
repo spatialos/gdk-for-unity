@@ -25,7 +25,7 @@ In the GDK for Unity, the [EntityTemplate class]({{urlRoot}}/reference/concepts/
 
 ## Authority
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as “write access”</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as “write access”.</i></span>
 
 Many [worker instances](#worker) can connect to a [SpatialOS world](#spatialos-world). However, at most one worker instance is authoritative over each component on a [SpatialOS Entity](#spatialos-entity). This worker instance is the only one that can modify the component’s state and handle commands for that component.
 
@@ -74,7 +74,7 @@ You only need to manually generate code when you have:
 
 ## Console
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity Console Window](https://docs.unity3d.com/Manual/Console.html</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity Console Window](https://docs.unity3d.com/Manual/Console.html).</i></span>
 
 The [Console](https://console.improbable.io/) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It shows you:
 
@@ -132,7 +132,7 @@ They are intended to:
 
 ## Game client
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [client-worker](#client-worker)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [client-worker](#client-worker).</i></span>
 
 A game client is a binary. A [client-worker](#client-worker) is an object instantiated by said binary.
 
@@ -319,7 +319,7 @@ You use a snapshot as [the starting point](https://docs.improbable.io/reference/
 
 ## SpatialOS Assembly
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [.NET assembly (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [.NET assembly (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime).</i></span>
 
 A SpatialOS assembly is created when you build your workers. It contains all the files that your game uses at runtime. This includes the compiled code, an executable and the assets your [workers](#worker) require.
 
@@ -341,7 +341,7 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 
 ## SpatialOS component
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [Unity ECS component](#unity-ecs-component)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [Unity ECS component](#unity-ecs-component).</i></span>
 
 A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Common components in a game might be things like `Health`, `Position`, or `PlayerControls`. They're the storage mechanism for data about your [entities](#spatialos-world) that you want to be shared between [workers](#worker). Components are defined as files in your [schema](#schema).
 
@@ -380,7 +380,7 @@ SpatialOS entities are made up of [SpatialOS components](#spatialos-component), 
 
 ## SpatialOS project
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also referred to as "your game"</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also referred to as "your game".</i></span>
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [Unity Project](#unity-project) or [project name](#project-name).</i></span>
 
@@ -409,7 +409,7 @@ A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of 
 
 ## SpatialOS world
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity ECS World](#unity-ecs-world)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity ECS World](#unity-ecs-world).</i></span>
 
 The SpatialOS world is a central concept in SpatialOS. It’s the canonical source of truth about your game. All the world's data is stored within [SpatialOS entities](#spatialos-entity) - specifically, within their [SpatialOS components](#spatialos-component).
 
@@ -462,7 +462,7 @@ The GDK uses the Unity ECS as the underlying implementation of its Core while en
 
 ## Unity ECS component
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [SpatialOS component](#spatialos-component)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [SpatialOS component](#spatialos-component).</i></span>
 
 Just as [Unity ECS Entities](#unity-ecs-entity) represent [SpatialOS entities](#spatialos-entity), Unity ECS components represent [SpatialOS components](#spatialos-component) in the [Unity ECS World](#unity-ecs-world).
 
@@ -476,7 +476,7 @@ Generated Unity ECS components can be injected into systems, read, and modified 
 
 ## Unity ECS Entity
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [SpatialOS entity](#spatialos-entity)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with a [SpatialOS entity](#spatialos-entity).</i></span>
 
 In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS Entity. Every [SpatialOS component](#spatialos-component) that belongs to a SpatialOS entity is represented as an [Unity ECS component](#unity-ecs-component) on the corresponding ECS Entity.
 
@@ -494,7 +494,7 @@ For example, a health system might iterate over all entities that have health an
 
 ## Unity ECS world
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [SpatialOS world](#spatialos-world)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [SpatialOS world](#spatialos-world).</i></span>
 
 An ECS world contains a collection of ECS entities and systems to perform logic on these entities.
 
@@ -515,7 +515,7 @@ In the GDK each feature module, and the core modules are Unity packages.
 
 ## Unity Project
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [SpatialOS Project](#spatialos-project) or [project name](#project-name)</i></span>
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [SpatialOS Project](#spatialos-project) or [project name](#project-name).</i></span>
 
 A Unity project is the source code and assets of a SpatialOS game's Unity [workers](#worker).
 
