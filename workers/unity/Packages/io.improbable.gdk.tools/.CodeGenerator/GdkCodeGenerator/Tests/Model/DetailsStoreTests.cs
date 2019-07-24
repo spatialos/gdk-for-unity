@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
@@ -15,7 +16,12 @@ namespace GdkCodeGenerator.Tests.Model
         public void OneTimeSetup()
         {
             var json = JsonParsingTests.GetBundleContents();
-            store = new DetailsStore(SchemaBundle.LoadBundle(json));
+            var overrides = new List<string>
+            {
+                "global::Improbable.Gdk.Tests.SomeType;global::UserCode.SerializationExtensions.Type"
+            };
+
+            store = new DetailsStore(SchemaBundle.LoadBundle(json), overrides);
         }
 
         [Test]
@@ -68,6 +74,15 @@ namespace GdkCodeGenerator.Tests.Model
             var nestedTypes = store.GetNestedTypes(fqn);
 
             Assert.AreEqual(0, nestedTypes.Count);
+        }
+
+        [Test]
+        public void Serialization_overrides_are_correctly_propagated()
+        {
+            var fqn = "improbable.gdk.tests.SomeType";
+            var details = store.Types[fqn];
+
+            Assert.IsTrue(details.HasSerializationOverride);
         }
     }
 }
