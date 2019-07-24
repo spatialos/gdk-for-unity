@@ -1,35 +1,5 @@
 public static readonly FixedPointVector3 Zero = new FixedPointVector3(0, 0, 0);
 
-// public static FixedPointVector3 operator -(FixedPointVector3 v1, FixedPointVector3 v2)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static FixedPointVector3 operator +(FixedPointVector3 a, FixedPointVector3 b)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static FixedPointVector3 operator *(FixedPointVector3 coords, float f)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static FixedPointVector3 operator *(FixedPointVector3 coords, double d)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static FixedPointVector3 operator /(FixedPointVector3 coords, float f)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static FixedPointVector3 operator /(FixedPointVector3 coords, double d)
-// {
-//     throw new NotImplementedException();
-// }
-
 public static bool operator ==(FixedPointVector3 a, FixedPointVector3 b) => a.Equals(b);
 public static bool operator !=(FixedPointVector3 a, FixedPointVector3 b) => !a.Equals(b);
 

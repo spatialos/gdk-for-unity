@@ -2,36 +2,6 @@ private const float SqrtHalf = 0.70710678118f;
 
 public static readonly CompressedQuaternion Identity = FromUnityQuaternion(Quaternion.identity);
 
-// public static CompressedQuaternion operator -(CompressedQuaternion v1, CompressedQuaternion v2)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static CompressedQuaternion operator +(CompressedQuaternion a, CompressedQuaternion b)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static CompressedQuaternion operator *(CompressedQuaternion coords, float f)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static CompressedQuaternion operator *(CompressedQuaternion coords, double d)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static CompressedQuaternion operator /(CompressedQuaternion coords, float f)
-// {
-//     throw new NotImplementedException();
-// }
-//
-// public static CompressedQuaternion operator /(CompressedQuaternion coords, double d)
-// {
-//     throw new NotImplementedException();
-// }
-
 public static bool operator ==(CompressedQuaternion a, CompressedQuaternion b) => a.Equals(b);
 public static bool operator !=(CompressedQuaternion a, CompressedQuaternion b) => !a.Equals(b);
 
