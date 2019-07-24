@@ -23,9 +23,21 @@ namespace Improbable.Gdk.CodeGenerator
 
         private readonly SchemaBundle bundle;
 
-        public DetailsStore(SchemaBundle bundle)
+        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides)
         {
             this.bundle = bundle;
+
+            var overrideMap = serializationOverrides.Select(@override =>
+            {
+                var parts = @override.Split(";");
+
+                if (parts.Length != 2)
+                {
+                    throw new ArgumentException($"Serialization override malformed: {@override}");
+                }
+
+                return (parts[0], parts[1]);
+            }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -43,7 +55,14 @@ namespace Improbable.Gdk.CodeGenerator
 
                 foreach (var type in file.Types)
                 {
-                    types.Add(type.QualifiedName, new UnityTypeDetails(file.Package.Name, type));
+                    var typeDetails = new UnityTypeDetails(file.Package.Name, type);
+
+                    if (overrideMap.TryGetValue(typeDetails.FullyQualifiedTypeName, out var staticClassFqn))
+                    {
+                        typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
+                    }
+
+                    types.Add(type.QualifiedName, typeDetails);
                 }
 
                 foreach (var component in file.Components)

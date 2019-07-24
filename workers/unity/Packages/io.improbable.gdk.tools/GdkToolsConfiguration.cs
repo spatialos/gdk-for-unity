@@ -14,6 +14,7 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
+        public List<string> SerializationOverrides = new List<string>();
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");

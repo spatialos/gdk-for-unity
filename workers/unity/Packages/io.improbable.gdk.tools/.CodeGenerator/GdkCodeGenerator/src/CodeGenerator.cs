@@ -57,7 +57,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var bundlePath = GenerateBundle();
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
-            var store = new DetailsStore(schemaBundle);
+            var store = new DetailsStore(schemaBundle, options.SerializationOverrides);
             var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
             var singleJob = new SingleGenerationJob(options.NativeOutputDirectory, store, fileSystem);
 

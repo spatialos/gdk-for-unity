@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Tools
             return !File.Exists(StartupCodegenMarkerFile);
         }
 
-        [MenuItem("SpatialOS/Generate code", false, MenuPriorities.GenerateCodePriority)]
+        [MenuItem("SpatialOS/Generate code", isValidateFunction: false, priority: MenuPriorities.GenerateCodePriority)]
         private static void GenerateMenu()
         {
             Debug.Log("Generating code...");
@@ -215,10 +215,14 @@ namespace Improbable.Gdk.Tools
             // Schema Descriptor
             baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
 
+            baseArgs.AddRange(
+                toolsConfig.SerializationOverrides.Select(@override => $"--serialization-override=\"{@override}\""));
+
             return baseArgs.ToArray();
         }
 
-        [MenuItem("SpatialOS/Generate code (force)", false, MenuPriorities.GenerateCodeForcePriority)]
+        [MenuItem("SpatialOS/Generate code (force)", isValidateFunction: false,
+            priority: MenuPriorities.GenerateCodeForcePriority)]
         private static void ForceGenerateMenu()
         {
             Debug.Log("Generating code (forced rebuild)...");
@@ -230,7 +234,7 @@ namespace Improbable.Gdk.Tools
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
-                Directory.Delete(toolsConfig.CodegenOutputDir, true);
+                Directory.Delete(toolsConfig.CodegenOutputDir, recursive: true);
             }
 
             Generate();
