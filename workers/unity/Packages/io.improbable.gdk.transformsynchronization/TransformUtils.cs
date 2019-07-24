@@ -64,5 +64,60 @@ namespace Improbable.Gdk.TransformSynchronization
                 TicksPerSecond = 1f / Time.fixedDeltaTime
             };
         }
+
+        /// <summary>
+        ///     Extension method for converting a Unity Vector to a Coordinates value.
+        /// </summary>
+        /// <remarks>
+        ///     This method wraps Coordinates.FromUnityVector.
+        /// </remarks>
+        public static Coordinates ToCoordinates(this Vector3 unityVector)
+        {
+            return Coordinates.FromUnityVector(unityVector);
+        }
+
+        /// <summary>
+        ///     Extension method for converting a Unity Vector to an EdgeLength.
+        /// </summary>
+        /// <remarks>
+        ///     This method wraps EdgeLength.FromUnityVector.
+        /// </remarks>
+        public static EdgeLength ToEdgeLength(this Vector3 unityVector)
+        {
+            return EdgeLength.FromUnityVector(unityVector);
+        }
+
+        /// <summary>
+        ///     Extension method for converting a Unity Vector to a FixedPointVector3.
+        /// </summary>
+        /// <remarks>
+        ///     This method wraps FixedPointVector3.FromUnityVector.
+        /// </remarks>
+        public static FixedPointVector3 ToFixedPointVector3(this Vector3 unityVector)
+        {
+            return FixedPointVector3.FromUnityVector(unityVector);
+        }
+
+        /// <summary>
+        ///     Extension method for converting a Coordinates value to a FixedPointVector3.
+        /// </summary>
+        /// <remarks>
+        ///     This method wraps FixedPointVector3.FromCoordinates.
+        /// </remarks>
+        public static FixedPointVector3 ToFixedPointVector3(this Coordinates coordinates)
+        {
+            return FixedPointVector3.FromCoordinates(coordinates);
+        }
+
+        /// <summary>
+        ///     Extension method for converting a Quaternion to a CompressedQuaternion.
+        /// </summary>
+        /// <remarks>
+        ///     This method wraps CompressedQuaternion.FromUnityQuaternion.
+        /// </remarks>
+        public static CompressedQuaternion ToCompressedQuaternion(this Quaternion quaternion)
+        {
+            return CompressedQuaternion.FromUnityQuaternion(quaternion);
+        }
     }
 }

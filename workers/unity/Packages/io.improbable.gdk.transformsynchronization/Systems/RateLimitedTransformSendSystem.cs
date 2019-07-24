@@ -47,21 +47,21 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var transformHasChanged = false;
 
-                    var newVelocity = FixedPointVector3.FromUnityVector(transformToSend.Velocity);
+                    var newVelocity = transformToSend.Velocity.ToFixedPointVector3();
                     if (newVelocity != transform.Velocity)
                     {
                         transform.Velocity = newVelocity;
                         transformHasChanged = true;
                     }
 
-                    var newLocation = FixedPointVector3.FromUnityVector(transformToSend.Position - worker.Origin);
+                    var newLocation = (transformToSend.Position - worker.Origin).ToFixedPointVector3();
                     if (newLocation != transform.Location)
                     {
                         transform.Location = newLocation;
                         transformHasChanged = true;
                     }
 
-                    var newRotation = CompressedQuaternion.FromUnityQuaternion(transformToSend.Orientation);
+                    var newRotation = transformToSend.Orientation.ToCompressedQuaternion();
                     if (newRotation != transform.Rotation)
                     {
                         transform.Rotation = newRotation;
