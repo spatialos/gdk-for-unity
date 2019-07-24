@@ -17,6 +17,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string HelpText { get; private set; }
         public List<string> SchemaInputDirs { get; } = new List<string>();
         public string SchemaCompilerPath { get; private set; }
+        public List<string> SerializationOverrides { get; } = new List<string>();
 
         public static CodeGeneratorOptions ParseArguments(ICollection<string> args)
         {
@@ -46,6 +47,10 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     "schema-compiler-path=", "REQUIRED: the path to the CoreSdk schema compiler",
                     u => options.SchemaCompilerPath = u
+                },
+                {
+                    "serialization-override=", "OPTIONAL: defines an override for serialization of a single type",
+                    u => options.SerializationOverrides.Add(u)
                 },
                 {
                     "h|help", "show help",

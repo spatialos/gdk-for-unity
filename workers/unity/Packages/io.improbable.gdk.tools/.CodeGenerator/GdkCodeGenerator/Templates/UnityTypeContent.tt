@@ -34,15 +34,22 @@ if (fieldDetailsList.Count > 0)
     {
         public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.CInterop.SchemaObject obj)
         {
+<# if (typeDetails.HasSerializationOverride) { #>
+            <#= typeDetails.SerializationOverride.GetSerializationString("instance", "obj") #>
+<# } else { #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
             {
                 <#= fieldDetails.GetSerializationString("instance." + fieldDetails.PascalCaseName, "obj", 4) #>
             }
 <# } #>
+<# } #>
         }
 
         public static <#= typeDetails.CapitalisedName #> Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
         {
+<# if (typeDetails.HasSerializationOverride) { #>
+            return <#= typeDetails.SerializationOverride.GetDeserializeString("obj") #>;
+<# } else { #>
             var instance = new <#= typeDetails.CapitalisedName #>();
 <# foreach (var fieldDetails in fieldDetailsList) { #>
             {
@@ -50,6 +57,7 @@ if (fieldDetailsList.Count > 0)
             }
 <# } #>
             return instance;
+<# } #>
         }
     }
 <#

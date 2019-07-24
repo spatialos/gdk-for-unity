@@ -17,6 +17,10 @@ namespace Improbable.Gdk.CodeGenerator
         public IReadOnlyList<UnityTypeDetails> ChildTypes;
         public IReadOnlyList<UnityEnumDetails> ChildEnums;
 
+        public SerializationOverride SerializationOverride;
+
+        public bool HasSerializationOverride => SerializationOverride != null;
+
         private TypeDefinition raw;
 
         public UnityTypeDetails(string package, TypeDefinition typeDefinitionRaw)
@@ -57,6 +61,26 @@ namespace Improbable.Gdk.CodeGenerator
                 .Select(field => new UnityFieldDetails(field, store))
                 .ToList()
                 .AsReadOnly();
+        }
+    }
+
+    public class SerializationOverride
+    {
+        private string staticClassFqn;
+
+        public SerializationOverride(string staticClassFqn)
+        {
+            this.staticClassFqn = staticClassFqn;
+        }
+
+        public string GetSerializationString(string instance, string schemaObject)
+        {
+            return $"{staticClassFqn}.Serialize({instance}, {schemaObject});";
+        }
+
+        public string GetDeserializeString(string schemaObject)
+        {
+            return $"{staticClassFqn}.Deserialize({schemaObject})";
         }
     }
 }
