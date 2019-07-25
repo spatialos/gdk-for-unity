@@ -39,23 +39,23 @@ The delegates that were previously passed into the `Accept` method for the respe
 Before:
 
 ```csharp
-private class MyDynamicHandler : DynamicSnapshot.ISnapshotHandler 
+private class MyDynamicHandler : DynamicSnapshot.ISnapshotHandler
 {
-    public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot, 
-        DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot) 
+    public void Accept<T>(uint componentId, DynamicSnapshot.SnapshotDeserializer<T> deserializeSnapshot,
+        DynamicSnapshot.SnapshotSerializer<T> serializeSnapshot)
         where T : struct, ISpatialComponentSnapshot
     {
         var redundantComponentId = DynamicSnapshot.GetComponentSnapshotId<T>();
-        deserializeSnapshot(...); 
-        serializeSnapshot(...); 
+        deserializeSnapshot(...);
+        serializeSnapshot(...);
     }
 }
 ```
 
-After: 
+After:
 
 ```csharp
-private class MyDynamicHandler : Dynamic.IHandler 
+private class MyDynamicHandler : Dynamic.IHandler
 {
     public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
         where TData : struct, ISpatialComponentData
@@ -63,8 +63,8 @@ private class MyDynamicHandler : Dynamic.IHandler
         where TSnapshot : struct, ISpatialComponentSnapshot
     {
         var redundantComponentId = Dynamic.GetComponentSnapshotId<TSnapshot>();
-        vtable.DeserializeSnapshot(...); 
-        vtable.SerializeSnapshot(...); 
+        vtable.DeserializeSnapshot(...);
+        vtable.SerializeSnapshot(...);
     }
 }
 ```
@@ -76,6 +76,45 @@ private class MyDynamicHandler : Dynamic.IHandler
 Reactive components are now **opt in** instead of **opt out**. To enable them, add the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to your project.
 
 Reactive components will be removed in a future release, **we strongly recommend to migrate off reactive components**. You can find the APIs to replace reactive components in the [ECS workflows documentation](https://docs.improbable.io/unity/alpha/reference/workflows/overview).
+
+### Improved GDK type utility methods
+
+#### Arithmetic and equality operators
+
+A set of arithmetic and equality operators have been implemented for the standard library's `EdgeLength` type. This means you can now use `+`, `-`, `*`, `/` with this type.
+
+The equality operators `==` and `!=` have also been implemented for the `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` types.
+
+> Note: The `Coordinates` type already provides these operators.
+
+#### Type conversion
+
+New methods are exposed for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to and from native Unity `Vector3` and `Quaternion` types.
+
+#### Static methods
+
+| Method | Result Type | Module Dependency |
+| - | - | - |
+| `Coordinates.FromUnityVector(Vector3 v)` | `Coordinates` | - |
+| `EdgeLength.FromUnityVector(Vector3 v)` | `EdgeLength` | - |
+| `FixedPointVector3.FromUnityVector(Vector3 v)` | `FixedPointVector3` | Transform Sync |
+| `FixedPointVector3.FromCoordinates(Coordinates c)` | `FixedPointVector3` | Transform Sync |
+| `CompressedQuaternion.FromUnityQuaternion(Quaternion q)` | `CompressedQuaternion` | Transform Sync |
+
+#### Methods
+
+| Source Type |  Method | Result Type | Module Dependency |
+| - | - | - | - |
+| `Vector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
+| `Vector3` | `.ToFixedPointVector3()` | `FixedPointVector3` | Transform Sync |
+| `Vector3` | `.ToEdgeLength()` | `EdgeLength` | QBI Helper |
+| `Coordinates` | `.ToUnityVector()` | `Vector3` | - |
+| `Coordinates` | `.ToFixedPointVector3()` | `FixedPointVector3` | Transform Sync |
+| `FixedPointVector3` | `.ToUnityVector()` | `Vector3` | Transform Sync |
+| `FixedPointVector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
+| `EdgeLength` | `.ToUnityVector()` | `Vector3` | - |
+| `CompressedQuaternion` | `.ToUnityQuaternion()` | `Quaternion` | Transform Sync |
+| `Quaternion` | `.ToCompressedQuaternion()` | `CompressedQuaternion` | Transform Sync |
 
 ## From `0.2.4` to `0.2.5`
 
