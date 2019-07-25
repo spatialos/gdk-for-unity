@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-set -e -u -x -o pipefail
+set -e -u -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 cd "$(dirname "$0")/../"
+
+echo "--- Bootstrapping :boot:"
 
 SHARED_CI_DIR="$(pwd)/.shared-ci"
 CLONE_URL="git@github.com:spatialos/gdk-for-unity-shared-ci.git"
@@ -24,4 +30,5 @@ pushd "${SHARED_CI_DIR}"
 popd
 
 # Download local copy of the SDK packages.
+echo "--- Hit init :right-facing_fist::red_button:"
 ./init.sh

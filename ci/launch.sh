@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 
-set -e -u -x -o pipefail
+set -e -u -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
 
 cd "$(dirname "$0")/../"
 
 source ".shared-ci/scripts/pinned-tools.sh"
 
+echo "--- Downloading assembly :inbox_tray:"
+
 buildkite-agent artifact download "build\assembly\**\*" .
 
 uploadAssembly "${ASSEMBLY_PREFIX}" "${PROJECT_NAME}"
 
-echo "Launching deployment"
+echo "--- Launching deployment :airplane_departure:"
 
 dotnet run -p workers/unity/Packages/io.improbable.gdk.deploymentlauncher/.DeploymentLauncher/DeploymentLauncher.csproj -- \
     create \
