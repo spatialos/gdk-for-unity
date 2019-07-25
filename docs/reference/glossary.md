@@ -72,20 +72,6 @@ You only need to manually generate code when you have:
 
 > **Note:** The GDK does not support the [`spatial` CLI](#spatial-command-line-tool-cli) command `spatial worker codegen`.
 
-## Core module
-
-The GDK for Unity is made up of the core module and a number of [feature modules](#feature-modules). The core module is compulsory and provides functionality to enable your game to run on SpatialOS. The core module consists out of the following [Unity packages](#unity-packages):
-
-* SpatialOS GDK Core (`io.improbable.gdk.core`)
-* SpatialOS GDK Test Utils (`io.improbable.gdk.testutils`)
-* SpatialOS GDK Tools (`io.improbable.gdk.tools`)
-
-These packages provide the base implementation for synchronizing your worker instance's local state with the SpatialOS Runtime.
-
-> **Related:**
->
-> * [Core and Feature modules]({{urlRoot}}/modules/core-and-feature-module-overview)
-
 ## Deploying
 
 When you want to try out your game, you need to deploy it. This means launching SpatialOS itself.
@@ -103,7 +89,7 @@ There are two types of deployment: local and cloud.
 
 ## Feature modules
 
-The GDK for Unity is made up of the [core module](#core-module) and a number of [feature modules](#feature-modules). Feature modules are optional features that you can choose to include in your game (player lifecycle, for example). 
+The GDK for Unity offers a number of [feature modules](#feature-modules). Feature modules are optional features that you can choose to include in your game (player lifecycle, for example).
 
 They are intended to:
 
