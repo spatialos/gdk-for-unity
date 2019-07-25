@@ -104,11 +104,11 @@ They are intended to:
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [client-worker](#client-worker).</i></span>
 
-A game client is a binary. A [client-worker](#client-worker) is an object instantiated by said binary.
+A game client is a binary that you use to launch your game. This binary instantiates a [client-worker](#client-worker) to connect to SpatialOS.
 
 ## GameObject
 
-In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker instance](#worker) has checked out can optionally be represented as a GameObject.
+In the GDK, each [SpatialOS entity](#spatialos-entity) that a [worker instance](#worker) has checked out can be represented as a GameObject.
 
 See [the GameObject Creation feature module]({{urlRoot}}/modules/game-object-creation/overview) documentation for more info.
 
@@ -121,7 +121,7 @@ See [the GameObject Creation feature module]({{urlRoot}}/modules/game-object-cre
 
 The term “inject” refers to when a field is populated automatically by the SpatialOS GDK for Unity.
 
-In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle), the GDK performs injection on fields that have the [`[Require]` attribute]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). A MonoBehaviour is only enabled when all of its dependencies are populated.
+In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle), the GDK performs injection on fields that have the [`[Require]` attribute]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). A MonoBehaviour is only enabled when all those fields are populated.
 
 ## Inspector
 
@@ -181,9 +181,9 @@ Use this Locator connection flow to:
 
 A [worker instance](#worker) can send and receive messages to and from the [SpatialOS Runtime](#spatialos-runtime). These messages can be:
 
-* Component updates: messages that describe property updates for any [SpatialOS component](#spatialos-component)
-* [Events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event): messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
-* [Commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command): Messages used to send a direct message to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
+* Component updates: Messages that describe property updates for any [SpatialOS component](#spatialos-component)
+* [Events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event): Messages about something that happened to a SpatialOS entity that are broadcasted to all workers.
+* [Commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command): Messages that are sent directly to another worker that has [write access](#write-access) over the corresponding SpatialOS component.
 
 > **Related:**
 >
@@ -214,7 +214,7 @@ If an entity doesn’t have this component, it won’t be captured in snapshots.
 
 ## Position
 
-Position is a [component](#spatialos-component) in the standard [schema](#schema) library. Every SpatialOS [entities](#spatialos-entity) must have this component. It defines the position of an entity in the [SpatialOS world](#spatialos-world).
+This is a [SpatialOS component](#spatialos-component) defining the position of an entity in the [SpatialOS world](#spatialos-world). Every SpatialOS [entities](#spatialos-entity) must have this component. 
 
 This is used by SpatialOS for a few specific purposes, like [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries).
 
@@ -222,9 +222,8 @@ This is used by SpatialOS for a few specific purposes, like [load balancing](htt
 
 <%(Callout type="warn" message="Please note that reactive components will be removed in a future release. We recommend that you do not use them.")%>
 
-Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received from the [SpatialOS Runtime](#spatialos-runtime). The GDK for Unity attaches reactive components to the [Unity ECS Entity](#unity-ecs-entity) representing a SpatialOS entity for the duration of one [update loop](#update-loop).
+Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received from the [SpatialOS Runtime](#spatialos-runtime).
 
-An example reactive component is the `ComponentAdded` component. It is added to an Unity ECS Entity representing a SpatialOS entity when a new SpatialOS component has been added to the SpatialOS entity. The GDK adds the corresponding ECS component automatically to the ECS entity, however you might want to run additional systems to react to this change in the current update loop. The `ComponentAdded` component is removed when the `CleanReactiveComponentsSystem` runs.
 
 Reactive components contain all updates and messages received during the last [update loop](#update-loop). In every update loop, the contents of a reactive component are processed by whichever [Unity ECS System](#unity-ecs-system) is set up to react to those state changes or messages.
 
@@ -234,11 +233,11 @@ Reactive components contain all updates and messages received during the last [u
 
 ## Receptionist connection flow
 
-The Receptionist service allows for a direct connection to the SpatialOS runtime and is the standard flow used to:
+The Receptionist service allows for a direct connection to the SpatialOS Runtime and is the standard flow used to:
 
-* connect any type of worker in a local deployment
-* connecting a [server-worker](#server-worker) in a cloud deployment
-* connecting a [client-worker](#client-worker) when using `spatial cloud connect external`.
+* connect any type of worker to a local deployment
+* connect a [server-worker](#server-worker) to a cloud deployment
+* connect a [client-worker](#client-worker) when using `spatial cloud connect external`.
 
 > Related:
 >
@@ -258,7 +257,7 @@ The Receptionist service allows for a direct connection to the SpatialOS runtime
 
 Schema is how you define [SpatialOS components](#spatialos-component) in your [SpatialOS world](#spatialos-world).
 
-You define your SpatialOS components in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang). Schema files are stored in the `schema` folder in the root directory of your SpatialOS project.
+You define your SpatialOS components in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang). 
 
 SpatialOS uses schema to [generate code](#code-generation). You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the SpatialOS world.
 
@@ -269,7 +268,7 @@ SpatialOS uses schema to [generate code](#code-generation). You can use this gen
 
 ## Simulated Player
 
-Simulated players are client-worker instances running in the cloud, mimicking real players of your game from a connection flow and server-worker load perspective. To SpatialOS they are indistinguishable from real players, so this is the recommended approach to regular scale testing.
+Simulated players are client-worker instances, mimicking real players of your game from a connection flow and server-worker load perspective. To SpatialOS they are indistinguishable from real players, so this is the recommended approach to regular scale testing.
 
 In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [Simulated Player Coordinator](#simulated-player-coordinator) worker-instances.
 
@@ -504,7 +503,7 @@ In the GDK each feature module, and the core modules are Unity packages.
 
 A Unity project is the source code and assets of a SpatialOS game's Unity [workers](#worker).
 
-## Update Loop
+## Update Order
 
 The Unity ECS updates all systems on the main thread. The order in which they are updated is based on constraints that you can add to your systems.
 
@@ -547,7 +546,7 @@ Server-workers are typically tasked with running game logic and physics simulati
 
 Worker attributes are used to denote a [worker’s](#worker) capabilities. 
 
-The [SpatialOS runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). 
+The [SpatialOS Runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). 
 
 A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#worker-attribute-sets).
 
@@ -578,7 +577,7 @@ Worker flags can be modified at runtime through:
 
 The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/capi/introduction). 
 
-The Worker SDK handles the implementation details of communicating to the SpatialOS runtime and provides a serialization library.
+The Worker SDK handles the implementation details of communicating to the SpatialOS Runtime and provides a serialization library.
 
 > **Related:**
 >
@@ -602,7 +601,7 @@ In the GDK, during the creation of a [worker](#worker), the worker connects to t
 
 The GDK populates this world with [ECS entities](#unity-ecs-entity) that represent [SpatialOS entities](#spatialos-entity) and are currently in the [worker’s view](#worker-s-view). 
 
-Additionally, the worker adds [ECS systems](#unity-ecs-system) to this world to define the logic that should be run on those ECS entities. The GDK synchronizes this world with the worker’s view stored in the [SpatialOS runtime](#spatialos-runtime).
+Additionally, the worker adds [ECS systems](#unity-ecs-system) to this world to define the logic that should be run on those ECS entities. The GDK synchronizes this world with the worker’s view stored in the [SpatialOS Runtime](#spatialos-runtime).
 
 ## Write access
 
