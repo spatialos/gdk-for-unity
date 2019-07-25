@@ -6,7 +6,8 @@
         "Improbable.Gdk.Core",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.Gdk.PlayerLifecycle"
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.TransformSynchronization"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
