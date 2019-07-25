@@ -16,8 +16,8 @@
 - Added a `bool TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049)
 - Added the `void AddComponentSnapshot<T>(T componentSnapshot)` and `bool TryGetComponent<T>(out T componentSnapshot)` methods to the `Improbable.Gdk.Core.EntitySnapshot` struct. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
-- Added methods for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to/from native Unity `Vector3` and `Quaternion` types. [#PRNUM](TODO_ADD_LINK)
-- Added basic arithmetic and equality operators for the `EdgeLength` standard library type. [#PRNUM](TODO_ADD_LINK)
+- Added methods for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to/from native Unity `Vector3` and `Quaternion` types. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
+- Added basic arithmetic and equality operators for the `EdgeLength` standard library type.
 
 ### Changed
 
@@ -32,7 +32,7 @@
 
 - Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added options and functionality for serialization overrides for schema types only. [#1061](https://github.com/spatialos/gdk-for-unity/pull/1061)
-- The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs. [#PRNUM](TODO_ADD_LINK)
+- The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ## `0.2.5` - 2019-07-18
 

@@ -91,17 +91,13 @@ The equality operators `==` and `!=` have also been implemented for the `EdgeLen
 
 New methods are exposed for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to and from native Unity `Vector3` and `Quaternion` types.
 
-#### Static methods
-
-| Method | Result Type | Module Dependency |
+| Static method | Result Type | Module Dependency |
 | - | - | - |
 | `Coordinates.FromUnityVector(Vector3 v)` | `Coordinates` | - |
 | `EdgeLength.FromUnityVector(Vector3 v)` | `EdgeLength` | - |
 | `FixedPointVector3.FromUnityVector(Vector3 v)` | `FixedPointVector3` | Transform Sync |
 | `FixedPointVector3.FromCoordinates(Coordinates c)` | `FixedPointVector3` | Transform Sync |
 | `CompressedQuaternion.FromUnityQuaternion(Quaternion q)` | `CompressedQuaternion` | Transform Sync |
-
-#### Methods
 
 | Source Type |  Method | Result Type | Module Dependency |
 | - | - | - | - |
