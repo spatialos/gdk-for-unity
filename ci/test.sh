@@ -8,8 +8,6 @@ fi
 
 cd "$(dirname "$0")/../"
 
-ci/bootstrap.sh
-
 source .shared-ci/scripts/pinned-tools.sh
 
 PROJECT_DIR="$(pwd)"
@@ -23,7 +21,7 @@ TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmo
 
 echo "--- Testing Code Generator :gear:"
 
-dotnet test \ 
+dotnet test \
     --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" \
     workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
 
