@@ -72,22 +72,6 @@ You only need to manually generate code when you have:
 
 > **Note:** The GDK does not support the [`spatial` CLI](#spatial-command-line-tool-cli) command `spatial worker codegen`.
 
-## Console
-
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity Console Window](https://docs.unity3d.com/Manual/Console.html).</i></span>
-
-The [Console](https://console.improbable.io/) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It shows you:
-
-* Your [project name](#project-name)
-* Your past and present [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment)
-* All of the [SpatialOS assemblies](#spatialos-assembly) you’ve uploaded
-* Links to the [Inspector](#inspector), [Launcher](#launcher), and the logs and metrics page for your deployments.
-
-> **Related:**
->
-> * [Logs](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments)
-> * [Metrics](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics)
-
 ## Core module
 
 The GDK for Unity is made up of the core module and a number of [feature modules](#feature-modules). The core module is compulsory and provides functionality to enable your game to run on SpatialOS. The core module consists out of the following [Unity packages](#unity-packages):
@@ -175,7 +159,7 @@ Among other things, it displays:
 
 The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It is available as an application for Windows and macOS. 
 
-From the [SpatialOS Console](#console), you can use the Launcher to connect a game client to your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) or generate a share link so anyone with the link can download a game client and join your game.
+From the [SpatialOS Console](#spatialos-console), you can use the Launcher to connect a game client to your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) or generate a share link so anyone with the link can download a game client and join your game.
 
 The Launcher downloads the game client from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
@@ -244,7 +228,7 @@ If an entity doesn’t have this component, it won’t be captured in snapshots.
 
 ## Position
 
-Position is a [component](#spatialos-component) in the standard [schema](#schema) library. Every SpatialOS [entities](#spatialos-entity) must have this component. It defines the position of an entity in the [SpatialOS world](#spatialos-world) is.
+Position is a [component](#spatialos-component) in the standard [schema](#schema) library. Every SpatialOS [entities](#spatialos-entity) must have this component. It defines the position of an entity in the [SpatialOS world](#spatialos-world).
 
 This is used by SpatialOS for a few specific purposes, like [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries).
 
@@ -361,6 +345,22 @@ A SpatialOS entity can have as many components as you like, but it must have at 
 > * [Designing components](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/design-components)
 > * [Component best practices](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/component-best-practices)
 > * [Introduction to schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/introduction)
+
+## SpatialOS Console
+
+<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [Unity Console Window](https://docs.unity3d.com/Manual/Console.html).</i></span>
+
+The [Console](https://console.improbable.io/) is the main landing page for managing [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It shows you:
+
+* Your [project name](#project-name)
+* Your past and present [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment)
+* All of the [SpatialOS assemblies](#spatialos-assembly) you’ve uploaded
+* Links to the [Inspector](#inspector), [Launcher](#launcher), and the logs and metrics page for your deployments.
+
+> **Related:**
+>
+> * [Logs](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/logs#cloud-deployments)
+> * [Metrics](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics)
 
 ## SpatialOS entity
 
@@ -574,11 +574,19 @@ A worker’s attributes are defined in its [worker configuration JSON](https://d
 
 A worker flag is a key-value pair that workers can access during runtime. 
 
-Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/launch-config) or added/changed/removed at runtime through the SpatialOS console. 
+Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/launch-config). 
+
+Worker flags can be modified at runtime through:
+
+* The [`spatial` CLI](#spatial-command-line-tool-cli) for local and cloud deployments.
+* The [SpatialOS Console](#spatialos-console) for cloud deployments.
+* The Platform SDK for cloud deployments.
 
 > **Related:**
 >
 > * [Worker flag documentation](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/worker-flags#worker-flags)
+> * [`spatial` CLI documentation](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatialos-cli-introduction)
+> * [Platform SDK API reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/platform-sdk/reference/home)
 
 ## Worker SDK
 
