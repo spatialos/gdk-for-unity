@@ -39,9 +39,6 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <summary>
         ///     Extension method for converting a Unity Vector to a Coordinates value.
         /// </summary>
-        /// <remarks>
-        ///     This method wraps Coordinates.FromUnityVector.
-        /// </remarks>
         public static Coordinates ToCoordinates(this Vector3 unityVector)
         {
             return Coordinates.FromUnityVector(unityVector);
@@ -50,9 +47,6 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <summary>
         ///     Extension method for converting a Unity Vector to a FixedPointVector3.
         /// </summary>
-        /// <remarks>
-        ///     This method wraps FixedPointVector3.FromUnityVector.
-        /// </remarks>
         public static FixedPointVector3 ToFixedPointVector3(this Vector3 unityVector)
         {
             return FixedPointVector3.FromUnityVector(unityVector);
@@ -61,9 +55,6 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <summary>
         ///     Extension method for converting a Quaternion to a CompressedQuaternion.
         /// </summary>
-        /// <remarks>
-        ///     This method wraps CompressedQuaternion.FromUnityQuaternion.
-        /// </remarks>
         public static CompressedQuaternion ToCompressedQuaternion(this Quaternion quaternion)
         {
             return CompressedQuaternion.FromUnityQuaternion(quaternion);

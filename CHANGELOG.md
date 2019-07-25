@@ -33,7 +33,7 @@
 
 - Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added options and functionality for serialization overrides for schema types only. [#1061](https://github.com/spatialos/gdk-for-unity/pull/1061)
-- The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
+- The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs and are now public. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ## `0.2.5` - 2019-07-18
 

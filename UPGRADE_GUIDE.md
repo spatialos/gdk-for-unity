@@ -81,36 +81,54 @@ Reactive components will be removed in a future release, **we strongly recommend
 
 To better enforce the range of `FixedPointVector3`, the `CreateTransformSnapshot(Coordinates location, Quaternion rotation, Vector3 velocity)` method has been removed. This means that `CreateTransformSnapshot` requires `location` to be a `Vector3`.
 
+Previously:
+```csharp
+var coords = new Coordinates(10, 20, 30);
+var transformSnapshot = TransformUtils.CreateTransformSnapshot(
+    coords,
+    Quaternion.identity,
+    Vector3.zero);
+```
+
+Now:
+```csharp
+var coords = new Coordinates(10, 20, 30);
+var transformSnapshot = TransformUtils.CreateTransformSnapshot(
+    coords.ToUnityVector(),
+    Quaternion.identity,
+    Vector3.zero);
+```
+
 #### Arithmetic and equality operators
 
 A set of arithmetic and equality operators have been implemented for the standard library's `EdgeLength` type. This means you can now use `+`, `-`, `*`, `/` with this type.
 
 The equality operators `==` and `!=` have also been implemented for the `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` types.
 
-> Note: The `Coordinates` type already provides these operators.
+> Note: The `Coordinates` type already provided these operators.
 
 #### Type conversion
 
 New methods are exposed for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to and from native Unity `Vector3` and `Quaternion` types.
 
-| Static method | Result Type | Module Dependency |
-| - | - | - |
-| `Coordinates.FromUnityVector(Vector3 v)` | `Coordinates` | - |
-| `EdgeLength.FromUnityVector(Vector3 v)` | `EdgeLength` | - |
-| `FixedPointVector3.FromUnityVector(Vector3 v)` | `FixedPointVector3` | Transform Sync |
-| `CompressedQuaternion.FromUnityQuaternion(Quaternion q)` | `CompressedQuaternion` | Transform Sync |
+| Static Method                                            | Result Type            | Module Dependency |
+|----------------------------------------------------------|------------------------|-------------------|
+| `Coordinates.FromUnityVector(Vector3 v)`                 | `Coordinates`          | -                 |
+| `EdgeLength.FromUnityVector(Vector3 v)`                  | `EdgeLength`           | -                 |
+| `FixedPointVector3.FromUnityVector(Vector3 v)`           | `FixedPointVector3`    | Transform Sync    |
+| `CompressedQuaternion.FromUnityQuaternion(Quaternion q)` | `CompressedQuaternion` | Transform Sync    |
 
-| Source Type |  Method | Result Type | Module Dependency |
-| - | - | - | - |
-| `Vector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
-| `Vector3` | `.ToFixedPointVector3()` | `FixedPointVector3` | Transform Sync |
-| `Vector3` | `.ToEdgeLength()` | `EdgeLength` | QBI Helper |
-| `FixedPointVector3` | `.ToUnityVector()` | `Vector3` | Transform Sync |
-| `FixedPointVector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
-| `Coordinates` | `.ToUnityVector()` | `Vector3` | - |
-| `EdgeLength` | `.ToUnityVector()` | `Vector3` | - |
-| `CompressedQuaternion` | `.ToUnityQuaternion()` | `Quaternion` | Transform Sync |
-| `Quaternion` | `.ToCompressedQuaternion()` | `CompressedQuaternion` | Transform Sync |
+| Type                   | Method                      | Result Type            | Module Dependency |
+|------------------------|-----------------------------|------------------------|-------------------|
+| `Vector3`              | `.ToCoordinates()`          | `Coordinates`          | Transform Sync    |
+| `Vector3`              | `.ToFixedPointVector3()`    | `FixedPointVector3`    | Transform Sync    |
+| `Vector3`              | `.ToEdgeLength()`           | `EdgeLength`           | QBI Helper        |
+| `FixedPointVector3`    | `.ToUnityVector()`          | `Vector3`              | Transform Sync    |
+| `FixedPointVector3`    | `.ToCoordinates()`          | `Coordinates`          | Transform Sync    |
+| `Coordinates`          | `.ToUnityVector()`          | `Vector3`              | -                 |
+| `EdgeLength`           | `.ToUnityVector()`          | `Vector3`              | -                 |
+| `CompressedQuaternion` | `.ToUnityQuaternion()`      | `Quaternion`           | Transform Sync    |
+| `Quaternion`           | `.ToCompressedQuaternion()` | `CompressedQuaternion` | Transform Sync    |
 
 ## From `0.2.4` to `0.2.5`
 
