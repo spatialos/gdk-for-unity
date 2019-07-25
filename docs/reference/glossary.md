@@ -17,7 +17,7 @@ A [worker](#worker) must have access to a [SpatalOS component](#spatialos-compon
 
 The `EntityAcl` component describes a [SpatialOS entity's](#spatialos-entity) ACl and is required on every SpatialOS entity.
 
-In the GDK for Unity, the [EntityTemplate class]({{urlRoot}}/reference/concepts/entity-templates) allows you build an entity's ACL.
+In the GDK for Unity, the [EntityTemplate class]({{urlRoot}}/reference/concepts/entity-templates) allows you to build an entity's ACL.
 
 > **Related:**
 >
@@ -177,7 +177,7 @@ The Launcher is a tool that can download and launch [game clients](#game-client)
 
 From the [SpatialOS Console](#console), you can use the Launcher to connect a game client to your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) or generate a share link so anyone with the link can download a game client and join your game.
 
-The Launcher downloads the client executable from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
+The Launcher downloads the game client from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
 > Related:
 >
@@ -374,13 +374,12 @@ SpatialOS entities are made up of [SpatialOS components](#spatialos-component), 
 
 > **Related:**
 >
-> * [SpatialOS Concepts:Entities](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/world-entities-components#entities)
+> * [SpatialOS Concepts: Entities](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/world-entities-components#entities)
 > * [Designing SpatialOS entities](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/design-entities)
 
 
 ## SpatialOS project
 
-<span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Also known as "your game".</i></span>
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [Unity Project](#unity-project) or [project name](#project-name).</i></span>
 
@@ -591,7 +590,7 @@ The Worker SDK handles the implementation details of communicating to the Spatia
 >
 > * [Worker SDK](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-sdk)
 
-## Worker Origin
+## Worker origin
 
 The worker origin allows you to translate the origin of all SpatialOS entities checkout out by a given worker. 
 
