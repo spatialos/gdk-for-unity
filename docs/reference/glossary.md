@@ -145,7 +145,7 @@ Among other things, it displays:
 
 The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It is available as an application for Windows and macOS. 
 
-From the [SpatialOS Console](#spatialos-console), you can use the Launcher to connect a game client to your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) or generate a share link so anyone with the link can download a game client and join your game.
+From the [SpatialOS Console](#spatialos-console) for your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment), you can use the Launcher to download your game client or generate a share link so anyone with the link can download your game client and join your game.
 
 The Launcher downloads the game client from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
@@ -225,7 +225,7 @@ This is used by SpatialOS for a few specific purposes, like [load balancing](htt
 Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received from the [SpatialOS Runtime](#spatialos-runtime).
 
 
-Reactive components contain all updates and messages received during the last [update loop](#update-loop). In every update loop, the contents of a reactive component are processed by whichever [Unity ECS System](#unity-ecs-system) is set up to react to those state changes or messages.
+Reactive components contain all updates and messages received during the last frame. In every update loop, the contents of a reactive component are processed by whichever [Unity ECS System](#unity-ecs-system) is set up to react to those state changes or messages.
 
 > **Related:**
 >
@@ -316,9 +316,9 @@ A [SpatialOS entity](#spatialos-entity) is defined by a set of components. Commo
 
 Components can contain:
 
-* [properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property), which describe persistent values that change over time (for example, a property for a `Health` component could be “the current health value for this entity”.)
-* [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event), which are transient things that can happen to an entity (for example, `StartedWalking`)
-* [commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
+* [Properties](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#property), which describe persistent values that change over time (for example, a property for a `Health` component could be “the current health value for this entity”.)
+* [Events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#event), which are transient things that can happen to an entity (for example, `StartedWalking`)
+* [Commands](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#command) that another worker can call to ask the component to do something, optionally returning a value (for example, `Teleport`)
 
 A SpatialOS entity can have as many components as you like, but it must have at least [`Position`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#position) and
 [`EntityAcl`](#access-control-list-acl). Most entities will have the [`Metadata`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#metadata) component.
@@ -411,7 +411,7 @@ They provide a solid foundation for you to build an entirely new game on-top of 
 
 ## Temporary Components
 
-Temporary components are a special type of [Unity ECS components](#unity-ecs-component). By adding the `[RemoveAtEnd]` attribute to an ECS component, the GDK will remove components at the end of an [update](#update-loop).
+Temporary components are a special type of [Unity ECS components](#unity-ecs-component). By adding the `[RemoveAtEnd]` attribute to an ECS component, the GDK will remove components at the end of an [update](#update-order).
 
 ## Unity Assembly Definition files
 
@@ -575,7 +575,7 @@ Worker flags can be modified at runtime through:
 
 ## Worker SDK
 
-The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/capi/introduction). 
+The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/csdk/introduction). 
 
 The Worker SDK handles the implementation details of communicating to the SpatialOS Runtime and provides a serialization library.
 
