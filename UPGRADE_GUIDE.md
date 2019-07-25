@@ -79,6 +79,8 @@ Reactive components will be removed in a future release, **we strongly recommend
 
 ### Improved GDK type utility methods
 
+To better enforce the range of `FixedPointVector3`, the `CreateTransformSnapshot(Coordinates location, Quaternion rotation, Vector3 velocity)` method has been removed. This means that `CreateTransformSnapshot` requires `location` to be a `Vector3`.
+
 #### Arithmetic and equality operators
 
 A set of arithmetic and equality operators have been implemented for the standard library's `EdgeLength` type. This means you can now use `+`, `-`, `*`, `/` with this type.
@@ -96,7 +98,6 @@ New methods are exposed for conversion of `Coordinates`, `EdgeLength`, `FixedPoi
 | `Coordinates.FromUnityVector(Vector3 v)` | `Coordinates` | - |
 | `EdgeLength.FromUnityVector(Vector3 v)` | `EdgeLength` | - |
 | `FixedPointVector3.FromUnityVector(Vector3 v)` | `FixedPointVector3` | Transform Sync |
-| `FixedPointVector3.FromCoordinates(Coordinates c)` | `FixedPointVector3` | Transform Sync |
 | `CompressedQuaternion.FromUnityQuaternion(Quaternion q)` | `CompressedQuaternion` | Transform Sync |
 
 | Source Type |  Method | Result Type | Module Dependency |
@@ -104,10 +105,9 @@ New methods are exposed for conversion of `Coordinates`, `EdgeLength`, `FixedPoi
 | `Vector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
 | `Vector3` | `.ToFixedPointVector3()` | `FixedPointVector3` | Transform Sync |
 | `Vector3` | `.ToEdgeLength()` | `EdgeLength` | QBI Helper |
-| `Coordinates` | `.ToUnityVector()` | `Vector3` | - |
-| `Coordinates` | `.ToFixedPointVector3()` | `FixedPointVector3` | Transform Sync |
 | `FixedPointVector3` | `.ToUnityVector()` | `Vector3` | Transform Sync |
 | `FixedPointVector3` | `.ToCoordinates()` | `Coordinates` | Transform Sync |
+| `Coordinates` | `.ToUnityVector()` | `Vector3` | - |
 | `EdgeLength` | `.ToUnityVector()` | `Vector3` | - |
 | `CompressedQuaternion` | `.ToUnityQuaternion()` | `Quaternion` | Transform Sync |
 | `Quaternion` | `.ToCompressedQuaternion()` | `CompressedQuaternion` | Transform Sync |

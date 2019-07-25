@@ -10,6 +10,7 @@
     - `Dynamic.IHandler.Accept` now takes a `Dynamic.Vtable<TData, TUpdate, TSnapshot` parameter.
 - Reactive components are now **opt in** instead of **opt out**. Use the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to re-enable them. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
     - Note that these will be removed in a future release.
+- Removed the `CreateTransformSnapshot(Coordinates location, Quaternion rotation, Vector3 velocity)` method. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Added
 
@@ -17,7 +18,7 @@
 - Added the `void AddComponentSnapshot<T>(T componentSnapshot)` and `bool TryGetComponent<T>(out T componentSnapshot)` methods to the `Improbable.Gdk.Core.EntitySnapshot` struct. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added methods for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to/from native Unity `Vector3` and `Quaternion` types. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
-- Added basic arithmetic and equality operators for the `EdgeLength` standard library type.
+- Added basic arithmetic and equality operators for the `EdgeLength` standard library type. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Changed
 

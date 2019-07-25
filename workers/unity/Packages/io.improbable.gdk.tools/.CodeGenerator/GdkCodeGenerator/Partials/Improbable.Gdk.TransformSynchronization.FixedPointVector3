@@ -70,22 +70,6 @@ public Vector3 ToUnityVector()
 }
 
 /// <summary>
-///     Converts a Coordinates value to a FixedPointVector3.
-/// </summary>
-/// <remarks>
-///     Converts each component from a double to a Q21.10 fixed point value.
-/// </remarks>
-public static FixedPointVector3 FromCoordinates(Coordinates coordinates)
-{
-    return new FixedPointVector3
-    {
-        X = FloatToFixed((float) coordinates.X),
-        Y = FloatToFixed((float) coordinates.Y),
-        Z = FloatToFixed((float) coordinates.Z)
-    };
-}
-
-/// <summary>
 ///     Converts a FixedPointVector3 to a Coordinates value.
 /// </summary>
 /// <remarks>
