@@ -1,31 +1,31 @@
-using Improbable;
+using System;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace EditmodeTests.Conversions
+namespace Improbable.Gdk.EditmodeTests.Conversions
 {
     public class EdgeLengthTests
     {
         [Test]
         public void EdgeLength_from_Vector3_has_equal_component_values()
         {
-            var v1 = new Vector3(10, 20, 30);
-            var c1 = EdgeLength.FromUnityVector(v1);
+            var vector = new Vector3(10f, 20f, 30f);
+            var edgeLength = EdgeLength.FromUnityVector(vector);
 
-            Assert.IsTrue(c1.X == v1.x);
-            Assert.IsTrue(c1.Y == v1.y);
-            Assert.IsTrue(c1.Z == v1.z);
+            Assert.IsTrue(Math.Abs(edgeLength.X - vector.x) < float.Epsilon);
+            Assert.IsTrue(Math.Abs(edgeLength.Y - vector.y) < float.Epsilon);
+            Assert.IsTrue(Math.Abs(edgeLength.Z - vector.z) < float.Epsilon);
         }
 
         [Test]
         public void EdgeLength_to_Vector3_has_equal_component_values()
         {
-            var c1 = new EdgeLength(10, 20, 30);
-            var v1 = c1.ToUnityVector();
+            var edgeLength = new EdgeLength(10f, 20f, 30f);
+            var vector = edgeLength.ToUnityVector();
 
-            Assert.IsTrue(c1.X == v1.x);
-            Assert.IsTrue(c1.Y == v1.y);
-            Assert.IsTrue(c1.Z == v1.z);
+            Assert.IsTrue(Math.Abs(edgeLength.X - vector.x) < float.Epsilon);
+            Assert.IsTrue(Math.Abs(edgeLength.Y - vector.y) < float.Epsilon);
+            Assert.IsTrue(Math.Abs(edgeLength.Z - vector.z) < float.Epsilon);
         }
     }
 }
