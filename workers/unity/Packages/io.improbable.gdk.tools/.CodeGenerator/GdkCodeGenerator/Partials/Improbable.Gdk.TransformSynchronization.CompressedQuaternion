@@ -127,11 +127,11 @@ public static CompressedQuaternion FromUnityQuaternion(UnityEngine.Quaternion qu
     var q = new Unity.Mathematics.float4(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 
     // Iterate through quaternion to find the index of the largest component.
-    uint largestIndex = 0;
-    var largestValue = Mathf.Abs(q[(int) largestIndex]);
-    for (uint i = 1; i < 4; ++i)
+    int largestIndex = 0;
+    var largestValue = Mathf.Abs(q[largestIndex]);
+    for (int i = 1; i < 4; ++i)
     {
-        var componentAbsolute = Mathf.Abs(q[(int) i]);
+        var componentAbsolute = Mathf.Abs(q[i]);
         if (componentAbsolute > largestValue)
         {
             largestIndex = i;
@@ -141,12 +141,12 @@ public static CompressedQuaternion FromUnityQuaternion(UnityEngine.Quaternion qu
 
     // Since -q == q, transform the quaternion so that the largest component is positive. This means the sign
     // bit of the largest component does not need to be sent.
-    uint negativeBit = quaternion[(int) largestIndex] < 0 ? 1u : 0u;
+    uint negativeBit = quaternion[largestIndex] < 0 ? 1u : 0u;
 
     // Initialise a uint with the index of the largest component. The variable is shifted left after each
     // section of the uint is populated. At the end of the loop, the uint has the following structure:
     // |largest index (2)|signbit (1) + component (9)|signbit (1) + component (9)|signbit (1) + component (9)|
-    uint compressedQuaternion = largestIndex;
+    uint compressedQuaternion = (uint) largestIndex;
     for (int i = 0; i < 4; i++)
     {
         if (i != largestIndex)
