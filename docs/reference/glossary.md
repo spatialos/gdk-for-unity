@@ -80,12 +80,13 @@ SpatialOS sets up the [world](#spatialos-world) based on a [snapshot](#snapshot)
 
 There are two types of deployment: local and cloud.
 
-1. [Local deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment) allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
-2. [Cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/deploy/deploy-cloud) run in the cloud. They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
+1. Local deployments allow you to start the [SpatialOS Runtime](#spatialos-runtime) locally to test changes quickly.
+2. Cloud deployments run in the cloud. They allow you to share your game with other people, and run your game at a scale not possible on one local machine. Once a cloud deployment is running, you can connect [game clients](#game-client) to it using the [Launcher](#launcher).
 
 > **Related:**
 >
 > * [How to deploy your game]({{urlRoot}}/reference/concepts/deployments)
+> * [Deployment Launcher]({{urlRoot}}/modules/deployment-launcher/overview)
 
 ## Feature modules
 
