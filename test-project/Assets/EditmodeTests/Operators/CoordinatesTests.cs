@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Improbable.Gdk.EditmodeTests.Operators
 {
@@ -48,9 +49,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
 
             var c3 = c1 + c2;
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.X, 50f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Y, 70f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Z, 90f);
+            Assert.AreApproximatelyEqual((float) c3.X, 50f);
+            Assert.AreApproximatelyEqual((float) c3.Y, 70f);
+            Assert.AreApproximatelyEqual((float) c3.Z, 90f);
         }
 
         [Test]
@@ -61,9 +62,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
 
             var c3 = c2 - c1;
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.X, 30f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Y, 30f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Z, 30f);
+            Assert.AreApproximatelyEqual((float) c3.X, 30f);
+            Assert.AreApproximatelyEqual((float) c3.Y, 30f);
+            Assert.AreApproximatelyEqual((float) c3.Z, 30f);
         }
 
         [Test]
@@ -72,9 +73,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             var c1 = new Coordinates(10d, 20d, 30d);
             var c2 = c1 * 10d;
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.X, 100f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Y, 200f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Z, 300f);
+            Assert.AreApproximatelyEqual((float) c2.X, 100f);
+            Assert.AreApproximatelyEqual((float) c2.Y, 200f);
+            Assert.AreApproximatelyEqual((float) c2.Z, 300f);
         }
 
         [Test]
@@ -83,9 +84,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             var c1 = new Coordinates(10d, 20d, 30d);
             var c2 = c1 / 10d;
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.X, 1f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Y, 2f);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Z, 3f);
+            Assert.AreApproximatelyEqual((float) c2.X, 1f);
+            Assert.AreApproximatelyEqual((float) c2.Y, 2f);
+            Assert.AreApproximatelyEqual((float) c2.Z, 3f);
         }
     }
 }

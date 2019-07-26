@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Improbable.Gdk.EditmodeTests.Conversions
 {
@@ -11,9 +12,9 @@ namespace Improbable.Gdk.EditmodeTests.Conversions
             var vector = new Vector3(10f, 20f, 30f);
             var edgeLength = EdgeLength.FromUnityVector(vector);
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.X, vector.x);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.Y, vector.y);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.Z, vector.z);
+            Assert.AreApproximatelyEqual((float) edgeLength.X, vector.x);
+            Assert.AreApproximatelyEqual((float) edgeLength.Y, vector.y);
+            Assert.AreApproximatelyEqual((float) edgeLength.Z, vector.z);
         }
 
         [Test]
@@ -22,9 +23,9 @@ namespace Improbable.Gdk.EditmodeTests.Conversions
             var edgeLength = new EdgeLength(10f, 20f, 30f);
             var vector = edgeLength.ToUnityVector();
 
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.X, vector.x);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.Y, vector.y);
-            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) edgeLength.Z, vector.z);
+            Assert.AreApproximatelyEqual((float) edgeLength.X, vector.x);
+            Assert.AreApproximatelyEqual((float) edgeLength.Y, vector.y);
+            Assert.AreApproximatelyEqual((float) edgeLength.Z, vector.z);
         }
     }
 }
