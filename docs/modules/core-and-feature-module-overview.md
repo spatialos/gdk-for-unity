@@ -45,7 +45,7 @@ Feature Modules are also delivered as [UPM](https://docs.unity3d.com/Packages/co
 
 This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor.
 
-See the [build system documentation]({{urlRoot}}/modules/build-system/overview) for details on installation and usage.
+See the [Build System documentation]({{urlRoot}}/modules/build-system/overview) for details on installation and usage.
 
 ### Deployment Launcher
 
@@ -75,7 +75,7 @@ See the [Player Lifecycle documentation]({{urlRoot}}/modules/player-lifecycle/ov
 
 This feature module contains methods that enable you to easily define the `Interest` component used by Query-based interest.
 
-See the [Query-base Interest Helper documentation]({{urlRoot}}/modules/qbi-helper/overview) for details on installation and usage.
+See the [Query-based Interest Helper documentation]({{urlRoot}}/modules/qbi-helper/overview) for details on installation and usage.
 
 ### Transform Synchronization
 

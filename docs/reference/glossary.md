@@ -270,7 +270,7 @@ SpatialOS uses schema to [generate code](#code-generation). You can use this gen
 
 Simulated players are client-worker instances, mimicking real players of your game from a connection flow and server-worker load perspective. To SpatialOS they are indistinguishable from real players, so this is the recommended approach to regular scale testing.
 
-In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [Simulated Player Coordinator](#simulated-player-coordinator) worker-instances.
+In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [simulated player coordinator](#simulated-player-coordinator) worker-instances.
 
 ## Simulated Player Coordinator
 
@@ -387,7 +387,7 @@ A SpatialOS project includes (but isn't limited to):
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [SpatialOS world](#spatialos-world).</i></span>
 
-A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of each [deployment](#deploying) by storing all [SpatialOS entities](#spatialos-entity) and the current state of their [SpatialOS components](#spatialos-component). 
+A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of its [deployment](#deploying) by storing all [SpatialOS entities](#spatialos-entity) and the current state of their [SpatialOS components](#spatialos-component). 
 
 [Workers](#worker) interact with the SpatialOS Runtime to read and modify the components of an entity as well as send messages between workers.
 
@@ -495,13 +495,13 @@ In Unity there are two [types of packages](https://docs.unity3d.com/Manual/Asset
 * Asset packages, available on the Unity Asset Store, which allow you to share and re-use Unity Projects and collections of assets.
 * Unity packages, available through the Package Manager window. You can import a wide range of assets, including plugins directly into Unity with this type of package.
 
-In the GDK each feature module, and the core modules are Unity packages.
+In the GDK, each feature module and the core packages are Unity packages.
 
 ## Unity Project
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with [SpatialOS Project](#spatialos-project) or [project name](#project-name).</i></span>
 
-A Unity project is the source code and assets of a SpatialOS game's Unity [workers](#worker).
+A Unity project using the SpatialOS GDK contains the source code and assets of a SpatialOS game's Unity [workers](#worker).
 
 ## Update Order
 
@@ -518,7 +518,7 @@ Workers are server-side and client-side software. They perform the computation a
 
 ### Worker types and worker instances
 
-When you develop your game, you set up worker types. These are like molds for the worker instances which actually do the computation.
+When you develop your game, you set up worker types. These are like molds for the worker instances which do the actual computation.
 
 Worker instances are the programs that compute and connect a SpatialOS world. In general, you use one or more server-worker instances to compute the world, and each player’s client software uses a client-worker instance to interact with the world.
 
@@ -585,13 +585,13 @@ The Worker SDK handles the implementation details of communicating to the Spatia
 
 ## Worker origin
 
-The worker origin allows you to translate the origin of all SpatialOS entities checkout out by a given worker. 
+The worker origin allows you to translate the origin of all SpatialOS entities checked out by a given worker. 
 
-When connecting multiple workers in the same scene, you can use this origin as an offset to ensure no unwanted physical interactions between those game objects occur.
+When connecting multiple workers in the same Scene, you can use this origin as an offset to ensure no unwanted physical interactions between those game objects occur.
 
 ## Worker’s view
 
-A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is currently [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) and has [checked out](#checking-out). 
+A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) and has [checked out](#checking-out). 
 
 In the GDK, this view is used to populate the [worker’s world](#worker-s-world) and to synchronize any changes between the worker’s view and the worker’s world.
 
@@ -599,7 +599,7 @@ In the GDK, this view is used to populate the [worker’s world](#worker-s-world
 
 In the GDK, during the creation of a [worker](#worker), the worker connects to the [SpatialOS Runtime](#spatialos-runtime) and creates an [ECS world](#unity-ecs-world). 
 
-The GDK populates this world with [ECS entities](#unity-ecs-entity) that represent [SpatialOS entities](#spatialos-entity) and are currently in the [worker’s view](#worker-s-view). 
+The GDK populates this world with [ECS entities](#unity-ecs-entity) that represent [SpatialOS entities](#spatialos-entity) and are in the [worker’s view](#worker-s-view). 
 
 Additionally, the worker adds [ECS systems](#unity-ecs-system) to this world to define the logic that should be run on those ECS entities. The GDK synchronizes this world with the worker’s view stored in the [SpatialOS Runtime](#spatialos-runtime).
 
