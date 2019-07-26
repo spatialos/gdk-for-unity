@@ -13,7 +13,10 @@
             - [5. Get playing]({{urlRoot}}/projects/fps/get-started/get-playing)
             - [6. View your game world]({{urlRoot}}/projects/fps/get-started/view-game-world)
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
-    - [Blank Starter Project]({{urlRoot}}/projects/blank/overview)
+    - Blank Starter Project
+        - [Overview]({{urlRoot}}/projects/blank/overview)
+        - Setup
+            - [Add a schema source]({{urlRoot}}/projects/blank/setup/schema)
     - Make your own
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
