@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -12,9 +11,9 @@ namespace Improbable.Gdk.EditmodeTests.Conversions
             var vector = new Vector3(10f, 20f, 30f);
             var coords = Coordinates.FromUnityVector(vector);
 
-            Assert.IsTrue(Math.Abs(coords.X - vector.x) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(coords.Y - vector.y) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(coords.Z - vector.z) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.X, vector.x);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.Y, vector.y);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.Z, vector.z);
         }
 
         [Test]
@@ -23,9 +22,9 @@ namespace Improbable.Gdk.EditmodeTests.Conversions
             var coords = new Coordinates(10f, 20f, 30f);
             var vector = coords.ToUnityVector();
 
-            Assert.IsTrue(Math.Abs(coords.X - vector.x) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(coords.Y - vector.y) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(coords.Z - vector.z) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.X, vector.x);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.Y, vector.y);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) coords.Z, vector.z);
         }
     }
 }

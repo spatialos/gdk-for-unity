@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.EditmodeTests.Operators
@@ -49,9 +48,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
 
             var c3 = c1 + c2;
 
-            Assert.IsTrue(Math.Abs(c3.X - 50) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c3.Y - 70) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c3.Z - 90) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.X, 50f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Y, 70f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Z, 90f);
         }
 
         [Test]
@@ -62,9 +61,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
 
             var c3 = c2 - c1;
 
-            Assert.IsTrue(Math.Abs(c3.X - 30) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c3.Y - 30) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c3.Z - 30) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.X, 30f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Y, 30f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c3.Z, 30f);
         }
 
         [Test]
@@ -73,9 +72,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             var c1 = new Coordinates(10d, 20d, 30d);
             var c2 = c1 * 10d;
 
-            Assert.IsTrue(Math.Abs(c2.X - 100) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c2.Y - 200) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c2.Z - 300) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.X, 100f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Y, 200f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Z, 300f);
         }
 
         [Test]
@@ -84,9 +83,9 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             var c1 = new Coordinates(10d, 20d, 30d);
             var c2 = c1 / 10d;
 
-            Assert.IsTrue(Math.Abs(c2.X - 1) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c2.Y - 2) < float.Epsilon);
-            Assert.IsTrue(Math.Abs(c2.Z - 3) < float.Epsilon);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.X, 1f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Y, 2f);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual((float) c2.Z, 3f);
         }
     }
 }
