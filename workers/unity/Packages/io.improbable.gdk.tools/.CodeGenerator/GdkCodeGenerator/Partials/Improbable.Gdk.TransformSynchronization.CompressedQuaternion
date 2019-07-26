@@ -59,7 +59,7 @@ public UnityEngine.Quaternion ToUnityQuaternion()
 
     // Borrow array from pool.
     // q[x, y, z, w]
-    var q = QuaternionPool.Borrow();
+    var q = Unity.Mathematics.float4.zero;
 
     // Mask of 23 0's and 9 1's.
     const uint mask = (1u << 9) - 1u;
@@ -97,8 +97,7 @@ public UnityEngine.Quaternion ToUnityQuaternion()
     // The value of the largest component is 1 - the sum of the squares of the smallest three components.
     q[largestIndex] = Mathf.Sqrt(1f - sumSquares);
 
-    // Gives array back to pool and returns a Unity Quaternion.
-    return QuaternionPool.GetUnityQuaternion(q);
+    return new Quaternion(q[0], q[1], q[2], q[3]);
 }
 
 /// <summary>
@@ -125,15 +124,14 @@ public static CompressedQuaternion FromUnityQuaternion(UnityEngine.Quaternion qu
     // Ensure we have a unit quaternion before compression.
     quaternion = quaternion.normalized;
 
-    // Borrow array from pool and initialise values.
-    var q = QuaternionPool.BorrowAndInitialize(quaternion);
+    var q = new Unity.Mathematics.float4(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 
     // Iterate through quaternion to find the index of the largest component.
     uint largestIndex = 0;
-    var largestValue = Mathf.Abs(q[largestIndex]);
+    var largestValue = Mathf.Abs(q[(int) largestIndex]);
     for (uint i = 1; i < 4; ++i)
     {
-        var componentAbsolute = Mathf.Abs(q[i]);
+        var componentAbsolute = Mathf.Abs(q[(int) i]);
         if (componentAbsolute > largestValue)
         {
             largestIndex = i;
@@ -149,7 +147,7 @@ public static CompressedQuaternion FromUnityQuaternion(UnityEngine.Quaternion qu
     // section of the uint is populated. At the end of the loop, the uint has the following structure:
     // |largest index (2)|signbit (1) + component (9)|signbit (1) + component (9)|signbit (1) + component (9)|
     uint compressedQuaternion = largestIndex;
-    for (uint i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         if (i != largestIndex)
         {
@@ -166,50 +164,5 @@ public static CompressedQuaternion FromUnityQuaternion(UnityEngine.Quaternion qu
         }
     }
 
-    // Return array to pool.
-    QuaternionPool.ReturnArray(q);
-
     return new CompressedQuaternion(compressedQuaternion);
-}
-
-private static class QuaternionPool
-{
-    private static System.Collections.Concurrent.ConcurrentStack<float[]> pool;
-
-    public static float[] Borrow()
-    {
-        if (pool == null)
-        {
-            pool = new System.Collections.Concurrent.ConcurrentStack<float[]>();
-        }
-
-        if (pool.TryPop(out var obj))
-        {
-            return obj;
-        }
-
-        return new float[4];
-    }
-
-    public static float[] BorrowAndInitialize(Quaternion q)
-    {
-        var array = Borrow();
-        array[0] = q.x;
-        array[1] = q.y;
-        array[2] = q.z;
-        array[3] = q.w;
-        return array;
-    }
-
-    public static void ReturnArray(float[] obj)
-    {
-        pool.Push(obj);
-    }
-
-    public static Quaternion GetUnityQuaternion(float[] obj)
-    {
-        var q = new Quaternion(obj[0], obj[1], obj[2], obj[3]);
-        ReturnArray(obj);
-        return q;
-    }
 }
