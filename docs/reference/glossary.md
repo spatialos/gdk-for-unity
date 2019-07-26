@@ -266,13 +266,13 @@ SpatialOS uses schema to [generate code](#code-generation). You can use this gen
 > * [Introduction to schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/introduction)
 > * [Schema reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference)
 
-## Simulated Player
+## Simulated player
 
-Simulated players are client-worker instances, mimicking real players of your game from a connection flow and server-worker load perspective. To SpatialOS they are indistinguishable from real players, so this is the recommended approach to regular scale testing.
+A simulated player is a client-worker instance that is controlled by simulated player logic as opposed to real player input. You can use simulated players to scale-test your game. 
 
 In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [simulated player coordinator](#simulated-player-coordinator) worker-instances.
 
-## Simulated Player Coordinator
+## Simulated player coordinator
 
 A simulated player coordinator is a server-worker responsible for launching simulated players, connecting them into a game deployment, and managing their lifetime.
 
