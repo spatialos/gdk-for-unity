@@ -548,7 +548,7 @@ Worker attributes are used to denote a [worker’s](#worker) capabilities.
 
 The [SpatialOS Runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). 
 
-A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#worker-attribute-sets).
+A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/bridge-config).
 
 > **Related:**
 >
@@ -559,7 +559,7 @@ A worker’s attributes are defined in its [worker configuration JSON](https://d
 
 A worker flag is a key-value pair that workers can access during runtime. 
 
-Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/launch-config). 
+Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/launch-config). 
 
 Worker flags can be modified at runtime through:
 
