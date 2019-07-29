@@ -1,4 +1,7 @@
-﻿using Improbable.Gdk.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
@@ -13,10 +16,15 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private ComponentUpdateSystem updateSystem;
 
-        private EntityQuery newEntityGroup;
-        private EntityQuery newEntity2DGroup;
-        private EntityQuery authChangeGroup;
-        private EntityQuery authChange2DGroup;
+        private ComponentType[] initBaseComponentTypes;
+        private ComponentType[] authBaseComponentTypes;
+
+        private readonly Dictionary<Type, Action> initKinematicActions = new Dictionary<Type, Action>();
+        private readonly Dictionary<Type, Action> authKinematicActions = new Dictionary<Type, Action>();
+
+        public delegate void AuthChangeFunc<in T>(ref KinematicStateWhenAuth state, AuthorityChangeReceived auth,
+            T component)
+            where T : class;
 
         protected override void OnCreate()
         {
@@ -24,35 +32,143 @@ namespace Improbable.Gdk.TransformSynchronization
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            newEntityGroup = GetEntityQuery(
+            initBaseComponentTypes = new[]
+            {
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-            
-            newEntity2DGroup = GetEntityQuery(
-                ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody2D>(),
-                ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            newEntity2DGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            };
 
-            authChangeGroup = GetEntityQuery(
+            authBaseComponentTypes = new[]
+            {
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Exclude<NewlyAddedSpatialOSEntity>()
-            );
-            
-            authChange2DGroup = GetEntityQuery(
-                ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody2D>(),
-                ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Exclude<NewlyAddedSpatialOSEntity>()
-            );
+            };
+
+
+            RegisterType<Rigidbody>(
+                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    Rigidbody rigidbody) =>
+                {
+                    kinematicStateWhenAuth = new KinematicStateWhenAuth
+                    {
+                        KinematicWhenAuthoritative = rigidbody.isKinematic
+                    };
+
+                    rigidbody.isKinematic = true;
+                },
+                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    AuthorityChangeReceived auth,
+                    Rigidbody rigidbody) =>
+                {
+                    switch (auth.Authority)
+                    {
+                        case Authority.NotAuthoritative:
+                            kinematicStateWhenAuth = new KinematicStateWhenAuth
+                            {
+                                KinematicWhenAuthoritative = rigidbody.isKinematic
+                            };
+                            rigidbody.isKinematic = true;
+                            break;
+                        case Authority.Authoritative:
+                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
+                            break;
+                    }
+                });
+
+            RegisterType<Rigidbody2D>(
+                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    Rigidbody2D rigidbody) =>
+                {
+                    kinematicStateWhenAuth = new KinematicStateWhenAuth
+                    {
+                        KinematicWhenAuthoritative = rigidbody.isKinematic
+                    };
+
+                    rigidbody.isKinematic = true;
+                },
+                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    AuthorityChangeReceived auth,
+                    Rigidbody2D rigidbody) =>
+                {
+                    switch (auth.Authority)
+                    {
+                        case Authority.NotAuthoritative:
+                            kinematicStateWhenAuth = new KinematicStateWhenAuth
+                            {
+                                KinematicWhenAuthoritative = rigidbody.isKinematic
+                            };
+                            rigidbody.isKinematic = true;
+                            break;
+                        case Authority.Authoritative:
+                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
+                            break;
+                    }
+                });
+        }
+
+        public void RegisterType<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc,
+            AuthChangeFunc<T> authFunc)
+            where T : class
+        {
+            CreateInitAction(initFunc);
+            CreateAuthChangeAction(authFunc);
+        }
+
+        private void CreateInitAction<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc)
+            where T : class
+        {
+            var componentType = ComponentType.ReadOnly<T>();
+
+            var includedComponentTypes = initBaseComponentTypes
+                .Concat(new[] { componentType })
+                .ToArray();
+
+            var componentQueryDesc = new EntityQueryDesc()
+            {
+                All = includedComponentTypes
+            };
+
+            var entityQuery = GetEntityQuery(componentQueryDesc);
+            entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            initKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(initFunc));
+        }
+
+        private void CreateAuthChangeAction<T>(AuthChangeFunc<T> authFunc)
+            where T : class
+        {
+            var componentType = ComponentType.ReadOnly<T>();
+
+            var includedComponentTypes = authBaseComponentTypes
+                .Concat(new[] { componentType })
+                .ToArray();
+
+            var componentQueryDesc = new EntityQueryDesc()
+            {
+                All = includedComponentTypes,
+                None = new[] { ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>() }
+            };
+
+            var entityQuery = GetEntityQuery(componentQueryDesc);
+
+            authKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(
+                (
+                    T component,
+                    ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    ref SpatialEntityId spatialEntityId) =>
+                {
+                    var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
+                        TransformInternal.ComponentId);
+                    if (changes.Count == 0)
+                    {
+                        return;
+                    }
+
+                    var auth = changes[changes.Count - 1];
+
+                    authFunc(ref kinematicStateWhenAuth, auth, component);
+                }));
         }
 
         protected override void OnUpdate()
@@ -63,82 +179,18 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateNewEntityGroup()
         {
-            Entities.With(newEntityGroup).ForEach((ref KinematicStateWhenAuth kinematicStateWhenAuth, Rigidbody rigidbody) =>
+            foreach (var initAction in initKinematicActions)
             {
-                kinematicStateWhenAuth = new KinematicStateWhenAuth
-                {
-                    KinematicWhenAuthoritative = rigidbody.isKinematic
-                };
-
-                rigidbody.isKinematic = true;
-            });
-            
-            Entities.With(newEntity2DGroup).ForEach((ref KinematicStateWhenAuth kinematicStateWhenAuth, Rigidbody2D rigidbody) =>
-            {
-                kinematicStateWhenAuth = new KinematicStateWhenAuth
-                {
-                    KinematicWhenAuthoritative = rigidbody.isKinematic
-                };
-
-                rigidbody.isKinematic = true;
-            });
+                initAction.Value();
+            }
         }
 
         private void UpdateAuthChangeGroup()
         {
-            Entities.With(authChangeGroup).ForEach(
-                (Rigidbody rigidbody, ref KinematicStateWhenAuth kinematicStateWhenAuth, ref SpatialEntityId spatialEntityId) =>
-                {
-                    var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
-                        TransformInternal.ComponentId);
-                    if (changes.Count == 0)
-                    {
-                        return;
-                    }
-
-                    var auth = changes[changes.Count - 1];
-                    switch (auth.Authority)
-                    {
-                        case Authority.NotAuthoritative:
-                            kinematicStateWhenAuth = new KinematicStateWhenAuth
-                            {
-                                KinematicWhenAuthoritative = rigidbody.isKinematic
-                            };
-                            rigidbody.isKinematic = true;
-                            break;
-                        case Authority.Authoritative:
-                        case Authority.AuthorityLossImminent:
-                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
-                            break;
-                    }
-                });
-            
-            Entities.With(authChange2DGroup).ForEach(
-                (Rigidbody2D rigidbody, ref KinematicStateWhenAuth kinematicStateWhenAuth, ref SpatialEntityId spatialEntityId) =>
-                {
-                    var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
-                        TransformInternal.ComponentId);
-                    if (changes.Count == 0)
-                    {
-                        return;
-                    }
-
-                    var auth = changes[changes.Count - 1];
-                    switch (auth.Authority)
-                    {
-                        case Authority.NotAuthoritative:
-                            kinematicStateWhenAuth = new KinematicStateWhenAuth
-                            {
-                                KinematicWhenAuthoritative = rigidbody.isKinematic
-                            };
-                            rigidbody.isKinematic = true;
-                            break;
-                        case Authority.Authoritative:
-                        case Authority.AuthorityLossImminent:
-                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
-                            break;
-                    }
-                });
+            foreach (var authChangeAction in authKinematicActions)
+            {
+                authChangeAction.Value();
+            }
         }
     }
 }

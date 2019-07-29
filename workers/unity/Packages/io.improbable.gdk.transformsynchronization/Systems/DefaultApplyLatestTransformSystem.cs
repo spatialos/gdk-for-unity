@@ -1,4 +1,7 @@
-﻿using Improbable.Gdk.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,67 +11,95 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class DefaultApplyLatestTransformSystem : ComponentSystem
     {
-        private EntityQuery rigidbodyGroup;
-        private EntityQuery rigidbody2DGroup;
-        private EntityQuery transformGroup;
+        private ComponentType[] baseComponentTypes;
+        private EntityQuery transformQuery;
+
+        private readonly Dictionary<Type, Action> applyLatestTransformActions = new Dictionary<Type, Action>();
 
         protected override void OnCreate()
         {
             base.OnCreate();
 
-            rigidbodyGroup = GetEntityQuery(
-                ComponentType.ReadOnly<Rigidbody>(),
+            baseComponentTypes = new[]
+            {
                 ComponentType.ReadOnly<TransformToSet>(),
                 ComponentType.ReadOnly<SetTransformToGameObjectTag>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-            
-            rigidbody2DGroup = GetEntityQuery(
-                ComponentType.ReadOnly<Rigidbody2D>(),
-                ComponentType.ReadOnly<TransformToSet>(),
-                ComponentType.ReadOnly<SetTransformToGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            rigidbody2DGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            };
 
-            transformGroup = GetEntityQuery(
-                ComponentType.Exclude<Rigidbody>(),
-                ComponentType.Exclude<Rigidbody2D>(),
-                ComponentType.ReadOnly<UnityEngine.Transform>(),
-                ComponentType.ReadOnly<TransformToSet>(),
-                ComponentType.ReadOnly<SetTransformToGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
-        }
+            UpdateTransformQuery();
 
-        protected override void OnUpdate()
-        {
-            UpdateRigidbodyData();
-            UpdateTransformData();
-        }
-
-        private void UpdateRigidbodyData()
-        {
-            Entities.With(rigidbodyGroup).ForEach((Rigidbody rigidbody, ref TransformToSet transformToSet) =>
+            RegisterType<Rigidbody>((ref TransformToSet transformToSet, Rigidbody rigidbody) =>
             {
                 rigidbody.MovePosition(transformToSet.Position);
                 rigidbody.MoveRotation(transformToSet.Orientation);
                 rigidbody.AddForce(transformToSet.Velocity - rigidbody.velocity, ForceMode.VelocityChange);
             });
-            
-            Entities.With(rigidbody2DGroup).ForEach((Rigidbody2D rigidbody, ref TransformToSet transformToSet) =>
+
+            RegisterType<Rigidbody2D>((ref TransformToSet transformToSet, Rigidbody2D rigidbody) =>
             {
                 rigidbody.MovePosition(transformToSet.Position);
                 rigidbody.MoveRotation(transformToSet.Orientation);
-                rigidbody.AddForce((Vector2)transformToSet.Velocity - rigidbody.velocity, ForceMode2D.Impulse);
+                rigidbody.AddForce((Vector2) transformToSet.Velocity - rigidbody.velocity, ForceMode2D.Impulse);
             });
         }
 
-        private void UpdateTransformData()
+        public void RegisterType<T>(EntityQueryBuilder.F_DC<TransformToSet, T> func)
+            where T : class
         {
-            Entities.With(transformGroup).ForEach((Transform transform, ref TransformToSet transformToSet) =>
+            var componentType = ComponentType.ReadOnly<T>();
+
+            var includedComponentTypes = baseComponentTypes
+                .Concat(new[] { componentType })
+                .ToArray();
+
+            var componentQueryDesc = new EntityQueryDesc()
+            {
+                All = includedComponentTypes
+            };
+
+            var entityQuery = GetEntityQuery(componentQueryDesc);
+            entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            applyLatestTransformActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(func));
+            UpdateTransformQuery();
+        }
+
+        private void UpdateTransformQuery()
+        {
+            var excludedComponentTypes = applyLatestTransformActions.Keys.Select(ComponentType.ReadOnly).ToArray();
+
+            var componentType = ComponentType.ReadOnly<UnityEngine.Transform>();
+            var transformQueryDesc = new EntityQueryDesc()
+            {
+                All = new ComponentType[baseComponentTypes.Length + 1],
+                None = excludedComponentTypes
+            };
+
+            Array.Copy(baseComponentTypes, transformQueryDesc.All, baseComponentTypes.Length);
+            transformQueryDesc.All[baseComponentTypes.Length] = componentType;
+
+            transformQuery = GetEntityQuery(transformQueryDesc);
+            transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+        }
+
+        protected override void OnUpdate()
+        {
+            ApplyDataToType();
+            ApplyDataToTransform();
+        }
+
+        private void ApplyDataToType()
+        {
+            foreach (var latestTransformAction in applyLatestTransformActions)
+            {
+                latestTransformAction.Value();
+            }
+        }
+
+        private void ApplyDataToTransform()
+        {
+            Entities.With(transformQuery).ForEach((Transform transform, ref TransformToSet transformToSet) =>
             {
                 transform.localPosition = transformToSet.Position;
                 transform.localRotation = transformToSet.Orientation;
