@@ -19,6 +19,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private ComponentType[] baseExcludeComponentTypes;
         private EntityQuery transformQuery;
 
+        public delegate void ResetAuthFunc<in T>(WorkerSystem Worker, Entity entity, ref TransformInternal.Component transformComponent, T component)
+            where T : class;
+
         private readonly Dictionary<Type, Action> resetAuthorityActions = new Dictionary<Type, Action>();
 
         protected override void OnCreate()
@@ -45,6 +48,7 @@ namespace Improbable.Gdk.TransformSynchronization
             UpdateTransformQuery();
 
             RegisterType<Rigidbody>((
+                WorkerSystem worker,
                 Entity entity,
                 ref TransformInternal.Component transformInternal,
                 Rigidbody rigidbody) =>
@@ -54,21 +58,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 rigidbody.AddForce(TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
                     ForceMode.VelocityChange);
             });
-
-            RegisterType<Rigidbody2D>((
-                Entity entity,
-                ref TransformInternal.Component transformInternal,
-                Rigidbody2D rigidbody) =>
-            {
-                rigidbody.MovePosition(TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin);
-                rigidbody.MoveRotation(TransformUtils.ToUnityQuaternion(transformInternal.Rotation));
-                rigidbody.AddForce(
-                    (Vector2) TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
-                    ForceMode2D.Impulse);
-            });
         }
 
-        public void RegisterType<T>(EntityQueryBuilder.F_EDC<TransformInternal.Component, T> func)
+        public void RegisterType<T>(ResetAuthFunc<T> func)
             where T : class
         {
             var componentType = ComponentType.ReadOnly<T>();
@@ -102,7 +94,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var component = EntityManager.GetComponentObject<T>(entity);
 
-                    func(entity, ref transformInternal, component);
+                    func(worker, entity, ref transformInternal, component);
 
                     buffer.Clear();
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();

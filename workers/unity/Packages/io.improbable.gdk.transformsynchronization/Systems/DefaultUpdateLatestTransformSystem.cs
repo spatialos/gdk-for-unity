@@ -27,8 +27,6 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             };
 
-            UpdateTransformQuery();
-
             RegisterType<Rigidbody>((ref TransformToSend transformToSend, Rigidbody rigidbody) =>
             {
                 transformToSend = new TransformToSend
@@ -36,16 +34,6 @@ namespace Improbable.Gdk.TransformSynchronization
                     Position = rigidbody.position,
                     Velocity = rigidbody.velocity,
                     Orientation = rigidbody.rotation
-                };
-            });
-
-            RegisterType<Rigidbody2D>((ref TransformToSend transformToSend, Rigidbody2D rigidbody) =>
-            {
-                transformToSend = new TransformToSend
-                {
-                    Position = rigidbody.position,
-                    Velocity = rigidbody.velocity,
-                    Orientation = Quaternion.Euler(0, 0, rigidbody.rotation)
                 };
             });
         }

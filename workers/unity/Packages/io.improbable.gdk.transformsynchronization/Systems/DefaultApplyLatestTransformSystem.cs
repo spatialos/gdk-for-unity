@@ -27,20 +27,11 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             };
 
-            UpdateTransformQuery();
-
             RegisterType<Rigidbody>((ref TransformToSet transformToSet, Rigidbody rigidbody) =>
             {
                 rigidbody.MovePosition(transformToSet.Position);
                 rigidbody.MoveRotation(transformToSet.Orientation);
                 rigidbody.AddForce(transformToSet.Velocity - rigidbody.velocity, ForceMode.VelocityChange);
-            });
-
-            RegisterType<Rigidbody2D>((ref TransformToSet transformToSet, Rigidbody2D rigidbody) =>
-            {
-                rigidbody.MovePosition(transformToSet.Position);
-                rigidbody.MoveRotation(transformToSet.Orientation);
-                rigidbody.AddForce((Vector2) transformToSet.Velocity - rigidbody.velocity, ForceMode2D.Impulse);
             });
         }
 

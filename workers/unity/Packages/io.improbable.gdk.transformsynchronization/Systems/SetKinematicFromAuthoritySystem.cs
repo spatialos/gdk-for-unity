@@ -75,36 +75,6 @@ namespace Improbable.Gdk.TransformSynchronization
                             break;
                     }
                 });
-
-            RegisterType<Rigidbody2D>(
-                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
-                    Rigidbody2D rigidbody) =>
-                {
-                    kinematicStateWhenAuth = new KinematicStateWhenAuth
-                    {
-                        KinematicWhenAuthoritative = rigidbody.isKinematic
-                    };
-
-                    rigidbody.isKinematic = true;
-                },
-                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
-                    AuthorityChangeReceived auth,
-                    Rigidbody2D rigidbody) =>
-                {
-                    switch (auth.Authority)
-                    {
-                        case Authority.NotAuthoritative:
-                            kinematicStateWhenAuth = new KinematicStateWhenAuth
-                            {
-                                KinematicWhenAuthoritative = rigidbody.isKinematic
-                            };
-                            rigidbody.isKinematic = true;
-                            break;
-                        case Authority.Authoritative:
-                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
-                            break;
-                    }
-                });
         }
 
         public void RegisterType<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc,
