@@ -587,7 +587,7 @@ This function will be called any time a player walks through a health pack. It h
 This coroutine re-activates consumed health packs after a cool-down period. It starts at the end of the `HandleCollisionWithPlayer` function as well as in `OnEnable` for any health pack entities which are inactive. Any running coroutines are stopped in `OnDisable`.
 
 <%(#Expandable title="Why is only one worker at a time able to have write-access for a component?")%>
-This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access).
+This prevents simultaneous changes putting the world into an inconsistent state. It is known as the single writer principle. If you want to learn more when you're done with the tutorial, have a look at [Authority and interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/introduction).
 <%(/Expandable)%>
 
 <%(#Expandable title="How are clients prevented from sending health-giving commands?")%>
