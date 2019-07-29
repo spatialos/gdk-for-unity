@@ -36,6 +36,8 @@ fi
 
 setup_improbadoc
 
+echo "--- Tagging docs for ${DOCS_TARGET} :pushpin:"
+
 improbadoc list \
     "${DOCS_TYPE}" \
     --target="${DOCS_TARGET}" \

@@ -41,28 +41,26 @@ DOCS_PATH_TMP="docs-build/"
 DOCS_PATH="docs/"
 ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
-echo "Setting up Improbadoc linter"
 setup_improbadoc
 
 echo $(date +%s%N | cut -b1-13) > "${DOCS_PATH}/timestamp.txt"
 
-echo "Building docs"
+echo "--- Building docs :hammer_and_wrench:"
 improbadoc build \
     "${DOCS_PATH}" \
     "${DOCS_PATH_TMP}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
-echo "Running Improbadoc Linter"
+echo "--- Running Improbadoc Linter :lint-roller:"
 improbadoc lint \
     "${DOCS_PATH_TMP}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
-echo "Setting up Docs Linter"
 setup_docs_linter "${DOCS_PATH_TMP}"
 
 mkdir -p ./logs
 
-echo "Running Docs Linter"
+echo "--- Running DocsLinter :link:"
 trap display_annotations ERR
 docker run \
     -v $(pwd)/logs:/var/logs \
@@ -72,6 +70,7 @@ docker run \
 
 display_annotations
 
+echo "--- Uploading docs :outbox_tray:"
 improbadoc upload \
     "${DOCS_TYPE}" \
     "${DOCS_PATH_TMP}" \
