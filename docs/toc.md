@@ -61,7 +61,7 @@
         - [How it works]({{urlRoot}}/modules/transform-sync/how-it-works)
         - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
         - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
-        - [Transform utils]({{urlRoot}}/modules/transform-sync/utilities)
+        - [Transform utilities]({{urlRoot}}/modules/transform-sync/utilities)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)
