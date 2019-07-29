@@ -32,8 +32,11 @@ function setup_improbadoc() {
 }
 
 function setup_docs_linter() {
+    local DOCS_BUILD_PATH="${1}"
+
     docker build \
         --tag local:gdk-docs-linter \
         --file ./ci/docker/docs-linter.Dockerfile \
+        --build-arg DOCS_PATH="${DOCS_BUILD_PATH}" \
         .
 }

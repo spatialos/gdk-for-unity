@@ -37,10 +37,20 @@ function display_annotations() {
     fi
 }
 
+DOCS_PATH_TMP="$(mktemp -d)"
 DOCS_PATH="./docs"
+ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
 echo "Setting up Improbadoc linter"
 setup_improbadoc
+
+echo $(date +%s%N | cut -b1-13) > "${DOCS_PATH}/timestamp.txt"
+
+echo "Building docs"
+improbadoc build \
+    "${DOCS_PATH}" \
+    "${DOCS_PATH_TMP}" \
+    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
 echo "Running Improbadoc Linter"
 improbadoc lint \
@@ -48,7 +58,7 @@ improbadoc lint \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
 echo "Setting up Docs Linter"
-setup_docs_linter
+setup_docs_linter "${DOCS_PATH_TMP}"
 
 mkdir -p ./logs
 
@@ -61,3 +71,15 @@ docker run \
         "/var/logs/errors.txt"
 
 display_annotations
+
+improbadoc upload \
+    "${DOCS_TYPE}" \
+    "${DOCS_PATH_TMP}" \
+    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}" \
+    --json | jq '.' | tee "${ARTIFACT_FILE_NAME}"
+
+HASH=$(jq -r .output.hash "${ARTIFACT_FILE_NAME}")
+
+buildkite-agent meta-data set "docs-hash" "${HASH}"
+
+ci/tag-docs.sh
