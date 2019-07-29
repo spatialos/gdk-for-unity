@@ -41,4 +41,4 @@ Launch your Unity Editor. It should automatically detect the project but if it d
 
 <br/>
 
-#### Next: [Build your workers]({{urlRoot}}/projects/fps/get-started/build-workers.md)
+#### Next: [Build your workers]({{urlRoot}}/projects/fps/get-started/build-workers)
