@@ -37,8 +37,8 @@ function display_annotations() {
     fi
 }
 
-DOCS_PATH_TMP="$(mktemp -d)"
-DOCS_PATH="./docs"
+DOCS_PATH_TMP="docs-build/"
+DOCS_PATH="docs/"
 ARTIFACT_FILE_NAME="improbadoc.upload.output.json"
 
 echo "Setting up Improbadoc linter"
