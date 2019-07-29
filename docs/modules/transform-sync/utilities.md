@@ -2,7 +2,7 @@
 
 # Transform utilities
 
-The transform synchronization module includes a [`TransformUtils`]({{urlRoot}}/api/transform-synchronization/transform-utils) class, populated with a set of static methods that make it nicer to use the feature module.
+The transform synchronization module includes a [`TransformUtils`]({{urlRoot}}/api/transform-synchronization/transform-utils) class, populated with a set of static methods that makes it nicer to use the feature module.
 
 ## Type conversion methods
 
@@ -26,7 +26,7 @@ The methods below can be called to easily convert a variable to and from native 
 
 ## Snapshot constructor
 
-The `CreateTransformSnapshot` method takes can construct `TransformInternal` snapshot, given uncompressed position, rotation or velocity as arguments.
+The `CreateTransformSnapshot` method constructs a `TransformInternal` snapshot, given uncompressed position, rotation or velocity as arguments.
 
 ```csharp
 var coords = new Coordinates(10, 20, 30);

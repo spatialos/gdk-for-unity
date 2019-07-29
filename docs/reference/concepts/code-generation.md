@@ -41,7 +41,7 @@ The code generator also maps [schema collection types](https://docs.improbable.i
 
 The code generator generates a C# struct for each type defined in the [standard schema library](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/standard-schema-library). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
 
-The GDK also implements the `+`, `-`, `*`, `/`, `==` and `!=` operators for the `Coordinates` and `EdgeLength` structs. In addition, the structs implement methods for converting to and from the Unity `Vector3` type.
+The GDK also implements the `+`, `-`, `*`, `/`, `==` and `!=` operators for the `Coordinates` and `EdgeLength` structs. In addition, the structs implement methods for converting their data to and from the Unity `Vector3` type.
 
 | Static Method                                            | Result Type            |
 |----------------------------------------------------------|------------------------|
