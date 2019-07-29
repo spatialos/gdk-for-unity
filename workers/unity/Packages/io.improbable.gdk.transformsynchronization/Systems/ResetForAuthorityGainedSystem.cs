@@ -70,9 +70,9 @@ namespace Improbable.Gdk.TransformSynchronization
                     }
 
                     var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
-                    rigidbody.MovePosition(TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin);
-                    rigidbody.MoveRotation(TransformUtils.ToUnityQuaternion(transformInternal.Rotation));
-                    rigidbody.AddForce(TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
+                    rigidbody.MovePosition(transformInternal.Location.ToUnityVector() + worker.Origin);
+                    rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
+                    rigidbody.AddForce(transformInternal.Velocity.ToUnityVector() - rigidbody.velocity,
                         ForceMode.VelocityChange);
 
                     buffer.Clear();
@@ -96,8 +96,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 var unityTransform = EntityManager.GetComponentObject<UnityEngine.Transform>(entity);
-                unityTransform.position = TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin;
-                unityTransform.rotation = TransformUtils.ToUnityQuaternion(transformInternal.Rotation);
+                unityTransform.position = transformInternal.Location.ToUnityVector() + worker.Origin;
+                unityTransform.rotation = transformInternal.Rotation.ToUnityQuaternion();
 
                 buffer.Clear();
                 ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();

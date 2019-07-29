@@ -10,17 +10,21 @@
     - `Dynamic.IHandler.Accept` now takes a `Dynamic.Vtable<TData, TUpdate, TSnapshot` parameter.
 - Reactive components are now **opt in** instead of **opt out**. Use the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to re-enable them. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
     - Note that these will be removed in a future release.
+- Removed the `CreateTransformSnapshot(Coordinates location, Quaternion rotation, Vector3 velocity)` method. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Added
 
 - Added a `bool TryGetComponent<T>(out T component);` method to the `SpatialOSEntity` struct. This can help reduce boilerplate when writing custom `IEntityGameObjectCreator` implementations. [#1049](https://github.com/spatialos/gdk-for-unity/pull/1049)
 - Added the `void AddComponentSnapshot<T>(T componentSnapshot)` and `bool TryGetComponent<T>(out T componentSnapshot)` methods to the `Improbable.Gdk.Core.EntitySnapshot` struct. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+- Added methods for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to/from native Unity `Vector3` and `Quaternion` types. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
+- Added basic arithmetic and equality operators for the `EdgeLength` standard library type. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Changed
 
 - Upgraded to Worker SDK 13.8.2. [#1052](https://github.com/spatialos/gdk-for-unity/pull/1052)
     - The new [`Entity` schema type](https://docs.improbable.io/reference/13.8/shared/schema/reference#primitive-types) is deserialized as an `Improbable.Gdk.Core.EntitySnapshot`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+- The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs and are now public. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Fixed
 

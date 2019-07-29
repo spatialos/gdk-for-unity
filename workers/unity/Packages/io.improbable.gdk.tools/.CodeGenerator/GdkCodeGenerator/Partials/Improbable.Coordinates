@@ -64,7 +64,15 @@ public override int GetHashCode()
 /// </summary>
 public override string ToString()
 {
-    return "Coordinates(" + X + ", " + Y + ", " + Z + ")";
+    return $"Coordinates({X}, {Y}, {Z})";
+}
+
+/// <summary>
+///     Converts from a Unity Vector3.
+/// </summary>
+public static Coordinates FromUnityVector(Vector3 v)
+{
+    return new Coordinates(v.x, v.y, v.z);
 }
 
 /// <summary>

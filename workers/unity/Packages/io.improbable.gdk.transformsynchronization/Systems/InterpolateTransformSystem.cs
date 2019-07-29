@@ -159,9 +159,9 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             return new BufferedTransform
             {
-                Position = TransformUtils.ToUnityVector3(transform.Location),
-                Velocity = TransformUtils.ToUnityVector3(transform.Velocity),
-                Orientation = TransformUtils.ToUnityQuaternion(transform.Rotation),
+                Position = transform.Location.ToUnityVector(),
+                Velocity = transform.Velocity.ToUnityVector(),
+                Orientation = transform.Rotation.ToUnityQuaternion(),
                 PhysicsTick = transform.PhysicsTick
             };
         }
@@ -170,9 +170,9 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             return new BufferedTransform
             {
-                Position = TransformUtils.ToUnityVector3(component.Location),
-                Velocity = TransformUtils.ToUnityVector3(component.Velocity),
-                Orientation = TransformUtils.ToUnityQuaternion(component.Rotation),
+                Position = component.Location.ToUnityVector(),
+                Velocity = component.Velocity.ToUnityVector(),
+                Orientation = component.Rotation.ToUnityQuaternion(),
                 PhysicsTick = tick
             };
         }

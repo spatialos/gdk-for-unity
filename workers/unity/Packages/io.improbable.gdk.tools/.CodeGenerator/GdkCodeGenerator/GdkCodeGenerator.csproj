@@ -17,6 +17,12 @@
     <EmbeddedResource Include="Partials\Improbable.Vector3f" />
     <None Remove="Partials\Improbable.Coordinates" />
     <EmbeddedResource Include="Partials\Improbable.Coordinates" />
+    <None Remove="Partials\Improbable.EdgeLength" />
+    <EmbeddedResource Include="Partials\Improbable.EdgeLength" />
+    <None Remove="Partials\Improbable.Gdk.TransformSynchronization.FixedPointVector3" />
+    <EmbeddedResource Include="Partials\Improbable.Gdk.TransformSynchronization.FixedPointVector3" />
+    <None Remove="Partials\Improbable.Gdk.TransformSynchronization.CompressedQuaternion" />
+    <EmbeddedResource Include="Partials\Improbable.Gdk.TransformSynchronization.CompressedQuaternion" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

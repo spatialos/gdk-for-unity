@@ -39,7 +39,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 var coords = transformInternal.Location.ToCoordinates();
-                if (!TransformUtils.HasChanged(coords, position.Coords))
+                if (coords == position.Coords)
                 {
                     return;
                 }
