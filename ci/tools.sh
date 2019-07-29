@@ -37,6 +37,6 @@ function setup_docs_linter() {
     docker build \
         --tag local:gdk-docs-linter \
         --file ./ci/docker/docs-linter.Dockerfile \
-        --build-arg DOCS_PATH="${DOCS_BUILD_PATH}" \
+        --build-arg DOCS_BUILD_PATH="${DOCS_BUILD_PATH}" \
         .
 }

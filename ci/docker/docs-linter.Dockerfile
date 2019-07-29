@@ -1,5 +1,4 @@
 FROM microsoft/dotnet:2.2-sdk as build
-ARG DOCS_PATH
 
 # Copy everything and build
 WORKDIR /app
@@ -12,7 +11,8 @@ WORKDIR /app
 COPY --from=build /app/*/out ./
 
 # Copy docs folder
-COPY "$DOCS_PATH/" /app/docs/
+ARG DOCS_BUILD_PATH
+COPY "$DOCS_BUILD_PATH/" /app/docs/
 
 # Volume to output linter warnings/errors to
 VOLUME /var/logs

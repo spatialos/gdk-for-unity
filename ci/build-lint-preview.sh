@@ -54,7 +54,7 @@ improbadoc build \
 
 echo "Running Improbadoc Linter"
 improbadoc lint \
-    "${DOCS_PATH}" \
+    "${DOCS_PATH_TMP}" \
     --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
 
 echo "Setting up Docs Linter"
