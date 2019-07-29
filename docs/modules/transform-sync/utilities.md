@@ -6,7 +6,7 @@ The transform synchronization module includes a [`TransformUtils`]({{urlRoot}}/a
 
 ## Type conversion methods
 
-The following static methods can be used to construct a `FixedPointVector` or `CompressedQuaternion` from their respective native Unity types.
+The following static methods can be used to construct a `FixedPointVector3` or `CompressedQuaternion` from their respective native Unity types.
 
 | Static Method                                            | Result Type            |
 |----------------------------------------------------------|------------------------|
