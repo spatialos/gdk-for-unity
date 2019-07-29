@@ -144,11 +144,10 @@ Among other things, it displays:
 
 ## Launcher
 
-The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). It is available as an application for Windows and macOS. 
+The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) from the [SpatialOS assembly](#spatialos-assembly) you uploaded. It is available as an application for Windows and macOS. 
 
 From the [SpatialOS Console](#spatialos-console) for your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment), you can use the Launcher to download your game client or generate a share link so anyone with the link can download your game client and join your game.
 
-The Launcher downloads the game client from the [SpatialOS assembly](#spatialos-assembly) you uploaded.
 
 > Related:
 >
