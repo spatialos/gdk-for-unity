@@ -305,7 +305,7 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 
 > Related:
 >
-> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
+> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatialos-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
 > * [`spatial` reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial)
 
 ## SpatialOS component
