@@ -400,7 +400,7 @@ The SpatialOS world is a central concept in SpatialOS. It’s the canonical sour
 
 SpatialOS manages the world, keeping track of all entities and their state.
 
-Changes to the world are made by [workers](#worker). Each worker has a [view](#workers-view) onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)) and SpatialOS sends them updates when anything changes in that view. It's important to recognize and understand the difference between the SpatialOS world and a [worker's view](#workers-view).
+Changes to the world are made by [workers](#worker). Each worker has a [view](#worker-s-view) onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)) and SpatialOS sends them updates when anything changes in that view. It's important to recognize and understand the difference between the SpatialOS world and a [worker's view](#worker-s-view).
 
 ## Starter project
 
