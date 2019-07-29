@@ -209,9 +209,9 @@ You must specify this name in the [spatialos.json](https://docs.improbable.io/re
 
 ## Persistence
 
-Persistence is a SpatialOS [component](#spatialos-component) in the standard [schema](#schema) library. It’s optional, but all SpatialOS [entities](#spatialos-entity) that you want to persist in the [world](#spatialos-world) must have this component. Persistence means that entities are saved into [snapshots](#snapshot).
+This is a [SpatialOS component](#spatialos-component) that denotes whether an entity will be saved into a snapshot. If this component is present on an entity, the entity will be captured in a [snapshot](#snapshot). If it is not present, it will not be captured,
 
-If an entity doesn’t have this component, it won’t be captured in snapshots. For example, you probably don’t want the entities associated with players to be saved into a snapshot you take of a deployment, because the players won’t be connected when you restart the deployment.
+Not all entities belong in a snapshot. For example, you probably don’t want the entities associated with players to be saved into a snapshot you take of a deployment, because the players won’t be connected when you restart the deployment.
 
 ## Position
 
@@ -400,9 +400,7 @@ The SpatialOS world is a central concept in SpatialOS. It’s the canonical sour
 
 SpatialOS manages the world, keeping track of all entities and their state.
 
-Changes to the world are made by [workers](#worker). Each worker has a view onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)), and SpatialOS sends them updates when anything changes in that view.
-
-It's important to recognize this fundamental separation between the SpatialOS world and the subset view of that world that an individual worker [checks out](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#checking-out). This is why workers must [send updates](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#sending-an-update) to SpatialOS when they want to change the world: they don't control the canonical state of the world, they must use the [Worker SDK](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-sdk) API to change it.
+Changes to the world are made by [workers](#worker). Each worker has a [view](#workers-view) onto the world (the part of the world that they're [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest)) and SpatialOS sends them updates when anything changes in that view. It's important to recognize and understand the difference between the SpatialOS world and a [worker's view](#workers-view).
 
 ## Starter project
 
