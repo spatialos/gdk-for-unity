@@ -56,7 +56,7 @@ A worker checks out all chunks that it is [interested in](https://docs.improbabl
 
 > **Related:**
 >
-> * [Entity interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#entity-interest)
+> * [Entity interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/bridge-config#bridge-configuration)
 
 
 ## Code generation
@@ -204,7 +204,7 @@ A MonoBehaviour stores the data and logic that defines the behaviour of the Game
 
 Your project name is randomly generated when you sign up for SpatialOS. It’s usually something like `beta_someword_anotherword_000`. You can find your project name in the [Console](https://console.improbable.io/).
 
-You must specify this name in the [spatialos.json](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/file-formats/spatialos-json) file in the root of your [SpatialOS project](#spatialos-project).
+You must specify this name in the [spatialos.json](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/spatialos-json#project-definition-file-spatialos-json) file in the root of your [SpatialOS project](#spatialos-project).
 
 ## Persistence
 
@@ -301,6 +301,8 @@ The SpatialOS assembly is stored locally at `build\assembly` in the root directo
 
 ## `spatial` command-line tool (CLI)
 
+<%(Callout type="warn" message="We recommend that you use the in-Editor tooling for interacting with the `spatial` CLI. Some commands may not work out of the box otherwise.")%>
+
 The `spatial` command-line tool provides a set of commands that you use to interact with a [SpatialOS project](#spatialos-project). Among other things, you use it to [deploy](#deploying) your game (using [`spatial local launch`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial-local-launch) or [`spatial cloud launch`](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial-cloud-launch)).
 
 > Related:
@@ -375,11 +377,11 @@ A SpatialOS project includes (but isn't limited to):
 * The source code of all [workers](#worker) used by the project
 * The project’s [schema](#schema)
 * Optional [snapshots](#snapshot) of the project’s [SpatialOS world](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#spatialos-world)
-* Configuration files, mostly containing settings for [deployments](#deploying) (for example, [launch configuration files](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/launch-configuration))
+* Configuration files, mostly containing settings for [deployments](#deploying) (for example, [launch configuration files](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/launch-config))
 
 > **Related:**
 >
-> * [Project directory structure](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/reference/project-structure)
+> * [Project directory structure](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/files-and-directories)
 
 ## SpatialOS Runtime
 
@@ -538,7 +540,7 @@ Server-workers are typically tasked with running game logic and physics simulati
 
 > **Related:**
 >
-> * [Managed worker (server-worker) launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/launch-configuration#managed-worker-launch-configuration)
+> * [Managed worker (server-worker) launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/launch-configuration)
 
 ## Worker attribute
 
@@ -550,8 +552,8 @@ A worker’s attributes are defined in its [worker configuration JSON](https://d
 
 > **Related:**
 >
-> * [Worker attributes](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-attribute)
-> * [Bridge configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/bridge-config#worker-attribute-sets)
+> * [Worker attributes](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#worker-attribute-sets)
+> * [Bridge configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/bridge-config#bridge-configuration)
 
 ## Worker flags
 
@@ -613,4 +615,4 @@ SpatialOS manages which specific worker instance has write access over a compone
 
 > **Related:**
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access)
+> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/introduction)
