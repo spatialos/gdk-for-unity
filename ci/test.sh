@@ -18,6 +18,8 @@ CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-result
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmode-test-results.xml"
+TEST_PROJECT_PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-playmode-test-results.xml"
+
 
 echo "--- Testing Code Generator :gear:"
 
@@ -55,7 +57,7 @@ pushd "workers/unity"
         -testResults "${PLAYMODE_TEST_RESULTS_FILE}"
 popd
 
-echo "--- Testing Unity: Test Project :microscope:"
+echo "--- Testing Unity: Test Project Editmode :microscope:"
 
 pushd "test-project"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -65,4 +67,16 @@ pushd "test-project"
         -testPlatform editmode \
         -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
         -testResults "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
+popd
+
+echo "--- Testing Unity: Test Project Playmode :joystick:"
+
+pushd "test-project"
+    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath "${PROJECT_DIR}/test-project" \
+        -runTests \
+        -testPlatform playmode \
+        -logfile "${PROJECT_DIR}/logs/test-project-playmode-test-run.log" \
+        -testResults "${TEST_PROJECT_PLAYMODE_TEST_RESULTS_FILE}"
 popd
