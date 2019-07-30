@@ -21,7 +21,7 @@ public static void GenerateSnapshot()
     // Create a template...
     var template = new EntityTemplate();
     template.AddComponent(new Position.Snapshot(playerSpawnerLocation), WorkerUtils.UnityGameLogic);
-    template.AddComponent(new Metadata.Snapshot { EntityType = "Cube" }, WorkerUtils.UnityGameLogic);
+    template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
     template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
     template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
     template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
@@ -29,7 +29,7 @@ public static void GenerateSnapshot()
     // ..and add it to the snapshot.
     snapshot.AddEntity(template);
 
-    // WriteToFile operates realtive to your working directory.
+    // WriteToFile operates relative to your working directory.
     // In the Unity Editor, this is the Assets directory of your Unity project.
     snapshot.WriteToFile("../../../snapshots/default.snapshot");
 }
@@ -39,9 +39,9 @@ A common usage pattern is to expose the snapshot generation through a Unity Edit
 
 ## How to start a deployment from a snapshot
 
-You can start a local deployment via the Unity Editor menu: **SpatialOS** > **Local launch** (Ctrl+L/Cmd+L). This starts a deployment with the snapshot found at `<your_spatialos_project>/snapshots/default.snapshot`. If you wish to launch via the CLI or with a different snapshot, see the section below.
+You can start a local deployment via the Unity Editor menu: **SpatialOS** > **Local launch** (Ctrl+L/Cmd+L). This starts a deployment with the snapshot found at `<spatialos_project_root>/snapshots/default.snapshot`. If you wish to launch via the CLI or with a different snapshot, see the section below.
 
-You can start a cloud deployment using [Deployment Launcher Feature Module]({{urlRoot}}/modules/deployment-launcher/overview). This feature module allows you to configure which snapshot you want to start a deployment with.
+You can start a cloud deployment using the [Deployment Launcher Feature Module]({{urlRoot}}/modules/deployment-launcher/overview). This feature module allows you to configure which snapshot you want to start your cloud deployment with.
 
 <%(#Expandable title="Launching a local deployment via the CLI or with a different snapshot")%>
 You can launch a local deployment with the CLI using the following command:
