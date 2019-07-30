@@ -6,7 +6,7 @@
 Before reading this document, make sure you are familiar with:
 
 * [Authority in SpatialOS](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/interest-authority#authority-also-known-as-write-access)
-* [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access)
+* [Authority and interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/introduction)
 ")%>
 
 Authority is how SpatialOS represents which worker instances can write to a specific [SpatialOS component]({{urlRoot}}/reference/glossary#spatialos-component).

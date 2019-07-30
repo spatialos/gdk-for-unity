@@ -3,7 +3,7 @@
 # Glossary
 
 <%(Callout message="
-This glossary only contains the concepts you need to understand in order to use the SpatialOS GDK for Unity. 
+This glossary only contains the concepts you need to understand in order to use the SpatialOS GDK for Unity.
 
 See the [core concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos) and [glossary](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary) sections for a full glossary of generic SpatialOS concepts.
 ")%>
@@ -35,7 +35,7 @@ SpatialOS manages which specific worker instance has write access over a compone
 
 > **Related:**
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access#understanding-read-and-write-access-authority)
+> * [Authority and interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/introduction)
 
 ## Building
 
@@ -128,7 +128,7 @@ In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/in
 
 The Inspector is a web-based tool that you use to explore the internal state of a [SpatialOS world](#spatialos-world).
 It gives you a real time view of what’s happening in a [deployment](#deploying), both [locally](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment)
-or in the [cloud](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment). 
+or in the [cloud](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment).
 
 Among other things, it displays:
 
@@ -144,7 +144,7 @@ Among other things, it displays:
 
 ## Launcher
 
-The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) from the [SpatialOS assembly](#spatialos-assembly) you uploaded. It is available as an application for Windows and macOS. 
+The Launcher is a tool that can download and launch [game clients](#game-client) that connect to [cloud deployments](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment) from the [SpatialOS assembly](#spatialos-assembly) you uploaded. It is available as an application for Windows and macOS.
 
 From the [SpatialOS Console](#spatialos-console) for your [cloud deployment](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment), you can use the Launcher to download your game client or generate a share link so anyone with the link can download your game client and join your game.
 
@@ -214,7 +214,7 @@ Not all entities belong in a snapshot. For example, you probably don’t want th
 
 ## Position
 
-This is a [SpatialOS component](#spatialos-component) defining the position of an entity in the [SpatialOS world](#spatialos-world). Every SpatialOS [entities](#spatialos-entity) must have this component. 
+This is a [SpatialOS component](#spatialos-component) defining the position of an entity in the [SpatialOS world](#spatialos-world). Every SpatialOS [entities](#spatialos-entity) must have this component.
 
 This is used by SpatialOS for a few specific purposes, like [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries).
 
@@ -249,15 +249,13 @@ The Receptionist service allows for a direct connection to the SpatialOS Runtime
 
 > **Related:**
 >
-> * [Understanding read and write access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access)
-
-
+> * [Active read access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/interest/active-read-access)
 
 ## Schema
 
 Schema is how you define [SpatialOS components](#spatialos-component) in your [SpatialOS world](#spatialos-world).
 
-You define your SpatialOS components in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang). 
+You define your SpatialOS components in `.schema` files that are written in [schemalang](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#schemalang).
 
 SpatialOS uses schema to [generate code](#code-generation). You can use this generated code in your [workers](#worker) to interact with [SpatialOS entities](#spatialos-entity) in the SpatialOS world.
 
@@ -268,7 +266,7 @@ SpatialOS uses schema to [generate code](#code-generation). You can use this gen
 
 ## Simulated player
 
-A simulated player is a client-worker instance that is controlled by simulated player logic as opposed to real player input. You can use simulated players to scale-test your game. 
+A simulated player is a client-worker instance that is controlled by simulated player logic as opposed to real player input. You can use simulated players to scale-test your game.
 
 In the FPS Starter Project, simulated players are hosted in a separate deployment to ensure that they do not share resources with `UnityGameLogic` server-worker instances. They are managed by [simulated player coordinator](#simulated-player-coordinator) worker-instances.
 
@@ -307,7 +305,7 @@ The `spatial` command-line tool provides a set of commands that you use to inter
 
 > Related:
 >
-> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
+> * [An introduction to the `spatial` command-line tool](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatialos-cli-introduction). Note that the GDK does not support any `spatial worker` commands.
 > * [`spatial` reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatial-cli/spatial)
 
 ## SpatialOS component
@@ -389,7 +387,7 @@ A SpatialOS project includes (but isn't limited to):
 
 <span style="display: block;margin-top: -20px;font-size: 10pt;"><i>Not to be confused with the [SpatialOS world](#spatialos-world).</i></span>
 
-A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of its [deployment](#deploying) by storing all [SpatialOS entities](#spatialos-entity) and the current state of their [SpatialOS components](#spatialos-component). 
+A SpatialOS Runtime instance manages the [SpatialOS world](#spatialos-world) of its [deployment](#deploying) by storing all [SpatialOS entities](#spatialos-entity) and the current state of their [SpatialOS components](#spatialos-component).
 
 [Workers](#worker) interact with the SpatialOS Runtime to read and modify the components of an entity as well as send messages between workers.
 
@@ -405,7 +403,7 @@ Changes to the world are made by [workers](#worker). Each worker has a [view](#w
 
 ## Starter project
 
-The GDK has two starter projects, the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) and the [Blank Starter Project]({{urlRoot}}/projects/blank/overview). 
+The GDK has two starter projects, the [First Person Shooter (FPS) Starter Project]({{urlRoot}}/projects/fps/overview) and the [Blank Starter Project]({{urlRoot}}/projects/blank/overview).
 
 They provide a solid foundation for you to build an entirely new game on-top of SpatialOS GDK for Unity.
 
@@ -415,7 +413,7 @@ Temporary components are a special type of [Unity ECS components](#unity-ecs-com
 
 ## Unity Assembly Definition files
 
-We use [.NET assemblies (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) to structure the GDK. 
+We use [.NET assemblies (.NET documentation)](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assemblies-in-the-common-language-runtime) to structure the GDK.
 
 Unity Assembly Definition (.`asmdef`) files define a set of scripts as a .NET assembly. They also define how, and under what circumstances, these .NET assemblies should be generated.
 
@@ -470,9 +468,9 @@ In the GDK you represent a [SpatialOS entity](#spatialos-entity) as a Unity ECS 
 
 ## Unity ECS system
 
-The code you write to perform operations on [Unity ECS Entities](#unity-ecs-entity) and their [components](#unity-ecs-component) exist in the form of Unity ECS Systems that can be added to ECS worlds. 
+The code you write to perform operations on [Unity ECS Entities](#unity-ecs-entity) and their [components](#unity-ecs-component) exist in the form of Unity ECS Systems that can be added to ECS worlds.
 
-They act, in bulk, on all of the entities in the [Unity ECS world](#unity-ecs-world) that contain the components you tell them to act on. 
+They act, in bulk, on all of the entities in the [Unity ECS world](#unity-ecs-world) that contain the components you tell them to act on.
 
 For example, a health system might iterate over all entities that have health and damage components, and decrement health components by the value of the damage components.
 
@@ -544,9 +542,9 @@ Server-workers are typically tasked with running game logic and physics simulati
 
 ## Worker attribute
 
-Worker attributes are used to denote a [worker’s](#worker) capabilities. 
+Worker attributes are used to denote a [worker’s](#worker) capabilities.
 
-The [SpatialOS Runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl). 
+The [SpatialOS Runtime](#spatialos-runtime) uses these attributes to delegate [authority](#authority) over [SpatialOS components](#spatialos-component) in combination with the defined [ACL](#access-control-list-acl).
 
 A worker’s attributes are defined in its [worker configuration JSON](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/bridge-config).
 
@@ -557,9 +555,9 @@ A worker’s attributes are defined in its [worker configuration JSON](https://d
 
 ## Worker flags
 
-A worker flag is a key-value pair that workers can access during runtime. 
+A worker flag is a key-value pair that workers can access during runtime.
 
-Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/launch-config). 
+Worker flags can be set in their [launch configuration](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/project-layout/launch-config).
 
 Worker flags can be modified at runtime through:
 
@@ -575,7 +573,7 @@ Worker flags can be modified at runtime through:
 
 ## Worker SDK
 
-The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/csdk/introduction). 
+The GDK is built on top of a specialized version of the C# Worker SDK. This specialized C# Worker SDK is itself built on top of the [C API](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/csdk/introduction).
 
 The Worker SDK handles the implementation details of communicating to the SpatialOS Runtime and provides a serialization library.
 
@@ -585,21 +583,21 @@ The Worker SDK handles the implementation details of communicating to the Spatia
 
 ## Worker origin
 
-The worker origin allows you to translate the origin of all SpatialOS entities checked out by a given worker. 
+The worker origin allows you to translate the origin of all SpatialOS entities checked out by a given worker.
 
 When connecting multiple workers in the same Scene, you can use this origin as an offset to ensure no unwanted physical interactions between those game objects occur.
 
 ## Worker’s view
 
-A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) and has [checked out](#checking-out). 
+A worker’s view consists of all [SpatialOS entities](#spatialos-entity) that a worker is [interested in](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#interest) and has [checked out](#checking-out).
 
 In the GDK, this view is used to populate the [worker’s world](#worker-s-world) and to synchronize any changes between the worker’s view and the worker’s world.
 
 ## Worker’s world
 
-In the GDK, during the creation of a [worker](#worker), the worker connects to the [SpatialOS Runtime](#spatialos-runtime) and creates an [ECS world](#unity-ecs-world). 
+In the GDK, during the creation of a [worker](#worker), the worker connects to the [SpatialOS Runtime](#spatialos-runtime) and creates an [ECS world](#unity-ecs-world).
 
-The GDK populates this world with [ECS entities](#unity-ecs-entity) that represent [SpatialOS entities](#spatialos-entity) and are in the [worker’s view](#worker-s-view). 
+The GDK populates this world with [ECS entities](#unity-ecs-entity) that represent [SpatialOS entities](#spatialos-entity) and are in the [worker’s view](#worker-s-view).
 
 Additionally, the worker adds [ECS systems](#unity-ecs-system) to this world to define the logic that should be run on those ECS entities. The GDK synchronizes this world with the worker’s view stored in the [SpatialOS Runtime](#spatialos-runtime).
 

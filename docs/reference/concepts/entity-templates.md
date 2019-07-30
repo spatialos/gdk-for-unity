@@ -25,7 +25,7 @@ An `EntityTemplate` can be mutated and used multiple times.
 
 All SpatialOS entities require the `Position` and `EntityAcl` components.
 
-The `Position` component must be added to the entity template manually. It is used by SpatialOS for [load-balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/load-balancing) purposes and [relative constraints in query-based interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/query-based-interest#relative-constraints).
+The `Position` component must be added to the entity template manually. It is used by SpatialOS for [load-balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/load-balancing) purposes and [relative constraints in query-based interest](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/interest/query-based-interest-qbi#constraints).
 
 The `EntityAcl` component is automatically handled by the [`EntityTemplate`]({{urlRoot}}/api/core/entity-template) class. This component determines which types of workers have read access to an entity and, for each component, which type of worker can have write access. Note that at any point in time, only instance of a worker can be authoritative over an entity's component.
 

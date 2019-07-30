@@ -18,7 +18,7 @@ Reactive components are removed by the GDK at the end of each frame, as they are
 
 These are the types of reactive component available:
 
-* `AuthorityChanges`: All updates to the [authority](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/understanding-access#understanding-read-and-write-access-authority) the current worker instance has over a SpatialOS component.
+* `AuthorityChanges`: All updates to the [authority](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/introduction) the current worker instance has over a SpatialOS component.
 * `ReceivedUpdates`:  All received [SpatialOS component updates](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/operations#component-related-operations) for the current SpatialOS entity.
 * `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/object-interaction#events) for the current entity.
 * `CommandRequests`: All received [command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands) requests.
