@@ -57,6 +57,16 @@ namespace Improbable.Gdk.Core
             currentDiff.AddEvent(ev, entityId, componentId, updateId++);
         }
 
+        public void RemoveEntity(long entityId)
+        {
+            currentDiff.RemoveEntity(entityId);
+        }
+
+        public void RemoveComponent(long entityId, uint componentId)
+        {
+            currentDiff.RemoveComponent(entityId, componentId);
+        }
+
         public void UpdateComponentAndAddEvents<TUpdate, TEvent>(long entityId, uint componentId, TUpdate update,
             params TEvent[] events)
             where TUpdate : ISpatialComponentUpdate
