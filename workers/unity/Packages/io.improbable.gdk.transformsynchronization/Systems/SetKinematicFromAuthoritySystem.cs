@@ -22,7 +22,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private readonly Dictionary<Type, Action> initKinematicActions = new Dictionary<Type, Action>();
         private readonly Dictionary<Type, Action> authKinematicActions = new Dictionary<Type, Action>();
 
-        public delegate void AuthChangeFunc<in T>(ref KinematicStateWhenAuth state, AuthorityChangeReceived auth,
+        internal delegate void AuthChangeFunc<in T>(ref KinematicStateWhenAuth state, AuthorityChangeReceived auth,
             T component)
             where T : class;
 
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 });
         }
 
-        public void RegisterType<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc,
+        internal void RegisterType<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc,
             AuthChangeFunc<T> authFunc)
             where T : class
         {
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.TransformSynchronization
             var componentType = ComponentType.ReadOnly<T>();
 
             var includedComponentTypes = initBaseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
 
             var componentQueryDesc = new EntityQueryDesc()
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.TransformSynchronization
             var componentType = ComponentType.ReadOnly<T>();
 
             var includedComponentTypes = authBaseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
 
             var componentQueryDesc = new EntityQueryDesc()

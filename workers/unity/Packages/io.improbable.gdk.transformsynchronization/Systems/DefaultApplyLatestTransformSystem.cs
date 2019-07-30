@@ -35,13 +35,13 @@ namespace Improbable.Gdk.TransformSynchronization
             });
         }
 
-        public void RegisterType<T>(EntityQueryBuilder.F_DC<TransformToSet, T> func)
+        internal void RegisterType<T>(EntityQueryBuilder.F_DC<TransformToSet, T> func)
             where T : class
         {
             var componentType = ComponentType.ReadOnly<T>();
 
             var includedComponentTypes = baseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
 
             var componentQueryDesc = new EntityQueryDesc()
@@ -58,17 +58,20 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformQuery()
         {
-            var excludedComponentTypes = applyLatestTransformActions.Keys.Select(ComponentType.ReadOnly).ToArray();
-
             var componentType = ComponentType.ReadOnly<UnityEngine.Transform>();
+
+            var includedComponentTypes = baseComponentTypes
+                .Append(componentType)
+                .ToArray();
+            var excludedComponentTypes = applyLatestTransformActions.Keys
+                .Select(ComponentType.ReadOnly)
+                .ToArray();
+
             var transformQueryDesc = new EntityQueryDesc()
             {
-                All = new ComponentType[baseComponentTypes.Length + 1],
+                All = includedComponentTypes,
                 None = excludedComponentTypes
             };
-
-            Array.Copy(baseComponentTypes, transformQueryDesc.All, baseComponentTypes.Length);
-            transformQueryDesc.All[baseComponentTypes.Length] = componentType;
 
             transformQuery = GetEntityQuery(transformQueryDesc);
             transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);

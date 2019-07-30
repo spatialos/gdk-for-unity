@@ -38,13 +38,13 @@ namespace Improbable.Gdk.TransformSynchronization
             });
         }
 
-        public void RegisterType<T>(EntityQueryBuilder.F_DC<TransformToSend, T> func)
+        internal void RegisterType<T>(EntityQueryBuilder.F_DC<TransformToSend, T> func)
             where T : class
         {
             var componentType = ComponentType.ReadOnly<T>();
 
             var includedComponentTypes = baseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
 
             var componentQueryDesc = new EntityQueryDesc()
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.TransformSynchronization
             var componentType = ComponentType.ReadOnly<UnityEngine.Transform>();
 
             var includedComponentTypes = baseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
             var excludedComponentTypes = updateLatestTransformActions.Keys
                 .Select(ComponentType.ReadOnly)

@@ -60,13 +60,13 @@ namespace Improbable.Gdk.TransformSynchronization
             });
         }
 
-        public void RegisterType<T>(ResetAuthFunc<T> func)
+        internal void RegisterType<T>(ResetAuthFunc<T> func)
             where T : class
         {
             var componentType = ComponentType.ReadOnly<T>();
 
             var includedComponentTypes = baseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
 
             var componentQueryDesc = new EntityQueryDesc()
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.TransformSynchronization
             var componentType = ComponentType.ReadOnly<UnityEngine.Transform>();
 
             var includedComponentTypes = baseComponentTypes
-                .Concat(new[] { componentType })
+                .Append(componentType)
                 .ToArray();
             var excludedComponentTypes = resetAuthorityActions.Keys
                 .Select(ComponentType.ReadOnly)
