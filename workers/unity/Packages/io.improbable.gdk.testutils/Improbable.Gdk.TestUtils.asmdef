@@ -3,12 +3,21 @@
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Unity.Entities.Hybrid"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Unity.Entities.Hybrid",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Improbable.Worker.CInterop.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": []
 }

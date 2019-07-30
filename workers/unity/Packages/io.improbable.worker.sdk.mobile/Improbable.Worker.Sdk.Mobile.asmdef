@@ -1,7 +1,6 @@
 {
     "name": "Improbable.Worker.Sdk.Mobile",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],

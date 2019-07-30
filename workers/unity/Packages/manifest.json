@@ -1,6 +1,10 @@
 {
   "dependencies": {
-    "com.unity.package-manager-ui": "2.1.2",
+    "com.unity.ext.nunit": "1.0.0",
+    "com.unity.ide.rider": "1.0.8",
+    "com.unity.ide.vscode": "1.0.7",
+    "com.unity.package-manager-ui": "2.2.0",
+    "com.unity.ugui": "1.0.0",
     "io.improbable.gdk.buildsystem": "file:io.improbable.gdk.buildsystem",
     "io.improbable.gdk.core": "file:io.improbable.gdk.core",
     "io.improbable.gdk.deploymentlauncher": "file:io.improbable.gdk.deploymentlauncher",
@@ -11,10 +15,11 @@
     "io.improbable.gdk.testutils": "file:io.improbable.gdk.testutils",
     "io.improbable.gdk.tools": "file:io.improbable.gdk.tools",
     "io.improbable.gdk.transformsynchronization": "file:io.improbable.gdk.transformsynchronization",
+    "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.physics2d": "1.0.0",
     "com.unity.modules.ui": "1.0.0"
   },
-  "registry": "https://staging-packages.unity.com"
+  "registry": "https://packages.unity.com"
 }
