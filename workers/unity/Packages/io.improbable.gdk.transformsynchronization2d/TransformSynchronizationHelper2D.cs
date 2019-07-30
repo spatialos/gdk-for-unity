@@ -38,10 +38,9 @@ namespace Improbable.Gdk.TransformSynchronization
                 ref TransformInternal.Component transformInternal,
                 Rigidbody2D rigidbody) =>
             {
-                rigidbody.MovePosition(TransformUtils.ToUnityVector3(transformInternal.Location) + worker.Origin);
-                rigidbody.MoveRotation(TransformUtils.ToUnityQuaternion(transformInternal.Rotation));
-                rigidbody.AddForce(
-                    (Vector2) TransformUtils.ToUnityVector3(transformInternal.Velocity) - rigidbody.velocity,
+                rigidbody.MovePosition(transformInternal.Location.ToUnityVector() + worker.Origin);
+                rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
+                rigidbody.AddForce((Vector2) transformInternal.Velocity.ToUnityVector() - rigidbody.velocity,
                     ForceMode2D.Impulse);
             });
 
