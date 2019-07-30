@@ -1,4 +1,7 @@
-﻿using Improbable.Gdk.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
@@ -11,8 +14,12 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
-        private EntityQuery rigidbodyGroup;
-        private EntityQuery transformGroup;
+
+        private ComponentType[] baseComponentTypes;
+        private ComponentType[] baseExcludeComponentTypes;
+        private EntityQuery transformQuery;
+
+        private readonly Dictionary<Type, Action> resetAuthorityActions = new Dictionary<Type, Action>();
 
         protected override void OnCreate()
         {
@@ -21,43 +28,37 @@ namespace Improbable.Gdk.TransformSynchronization
             worker = World.GetExistingSystem<WorkerSystem>();
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            // TODO: we need "auth loss" exposed to set the component group filters below correctly.
-            // Alternatively, we need an authority changed component that is filled at the beginning of the tick.
-
-            rigidbodyGroup = GetEntityQuery(
-                ComponentType.ReadOnly<Rigidbody>(),
+            baseComponentTypes = new[]
+            {
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadWrite<BufferedTransform>(),
-                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            };
 
-            transformGroup = GetEntityQuery(
-                ComponentType.ReadOnly<UnityEngine.Transform>(),
-                ComponentType.ReadOnly<TransformInternal.Component>(),
-                ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
-                ComponentType.ReadWrite<BufferedTransform>(),
-                ComponentType.Exclude<NewlyAddedSpatialOSEntity>(),
-                ComponentType.Exclude<Rigidbody>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            baseExcludeComponentTypes = new[]
+            {
+                ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>()
+            };
+
+            UpdateTransformQuery();
+
+            RegisterTransformSyncType(new RigidbodyTransformSync());
         }
 
-        protected override void OnUpdate()
+        internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
+            where T : class
         {
-            UpdateRigidbodyData();
-            UpdateTransformData();
-        }
+            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes);
+            componentQueryDesc.None = baseExcludeComponentTypes;
 
-        private void UpdateRigidbodyData()
-        {
-            Entities.With(rigidbodyGroup).ForEach(
-                (Entity entity, DynamicBuffer<BufferedTransform> buffer,
+            var entityQuery = GetEntityQuery(componentQueryDesc);
+            entityQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            resetAuthorityActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(
+                (Entity entity,
+                    DynamicBuffer<BufferedTransform> buffer,
                     ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate,
                     ref TransformInternal.Component transformInternal,
                     ref SpatialEntityId spatialEntityId) =>
@@ -69,20 +70,46 @@ namespace Improbable.Gdk.TransformSynchronization
                         return;
                     }
 
-                    var rigidbody = EntityManager.GetComponentObject<Rigidbody>(entity);
-                    rigidbody.MovePosition(transformInternal.Location.ToUnityVector() + worker.Origin);
-                    rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
-                    rigidbody.AddForce(transformInternal.Velocity.ToUnityVector() - rigidbody.velocity,
-                        ForceMode.VelocityChange);
+                    var component = EntityManager.GetComponentObject<T>(entity);
+
+                    impl.OnResetAuth(worker, entity, ref transformInternal, component);
 
                     buffer.Clear();
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
-                });
+                }));
+
+            UpdateTransformQuery();
         }
 
-        private void UpdateTransformData()
+        private void UpdateTransformQuery()
         {
-            Entities.With(transformGroup).ForEach((Entity entity,
+            var transformQueryDesc = TransformUtils.ConstructEntityQueryDesc<UnityEngine.Transform>(baseComponentTypes);
+            transformQueryDesc.None = resetAuthorityActions.Keys
+                .Select(ComponentType.ReadOnly)
+                .Concat(baseExcludeComponentTypes)
+                .ToArray();
+
+            transformQuery = GetEntityQuery(transformQueryDesc);
+            transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+        }
+
+        protected override void OnUpdate()
+        {
+            ResetDataFromType();
+            ResetTransforms();
+        }
+
+        private void ResetDataFromType()
+        {
+            foreach (var resetAction in resetAuthorityActions)
+            {
+                resetAction.Value();
+            }
+        }
+
+        private void ResetTransforms()
+        {
+            Entities.With(transformQuery).ForEach((Entity entity,
                 DynamicBuffer<BufferedTransform> buffer,
                 ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate,
                 ref TransformInternal.Component transformInternal,

@@ -1,4 +1,7 @@
-﻿using Improbable.Gdk.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,53 +11,66 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class DefaultUpdateLatestTransformSystem : ComponentSystem
     {
-        private EntityQuery rigidbodyGroup;
-        private EntityQuery transformGroup;
+        private ComponentType[] baseComponentTypes;
+        private EntityQuery transformQuery;
+
+        private readonly Dictionary<Type, Action> updateLatestTransformActions = new Dictionary<Type, Action>();
 
         protected override void OnCreate()
         {
             base.OnCreate();
 
-            rigidbodyGroup = GetEntityQuery(
-                ComponentType.ReadOnly<Rigidbody>(),
+            baseComponentTypes = new[]
+            {
                 ComponentType.ReadWrite<TransformToSend>(),
                 ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            rigidbodyGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            };
 
-            transformGroup = GetEntityQuery(
-                ComponentType.Exclude<Rigidbody>(),
-                ComponentType.ReadOnly<UnityEngine.Transform>(),
-                ComponentType.ReadWrite<TransformToSend>(),
-                ComponentType.ReadOnly<GetTransformFromGameObjectTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            RegisterTransformSyncType(new RigidbodyTransformSync());
+        }
+
+        internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
+            where T : class
+        {
+            var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes));
+            entityQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+
+            updateLatestTransformActions.Add(typeof(T),
+                () => Entities.With(entityQuery)
+                    .ForEach((EntityQueryBuilder.F_DC<TransformToSend, T>) impl.UpdateLatestTransform));
+
+            UpdateTransformQuery();
+        }
+
+        private void UpdateTransformQuery()
+        {
+            var transformQueryDesc = TransformUtils.ConstructEntityQueryDesc<UnityEngine.Transform>(baseComponentTypes);
+            transformQueryDesc.None = updateLatestTransformActions.Keys
+                .Select(ComponentType.ReadOnly)
+                .ToArray();
+
+            transformQuery = GetEntityQuery(transformQueryDesc);
+            transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
         {
-            UpdateRigidbodyData();
-            UpdateTransformData();
+            UpdateDataFromTypes();
+            UpdateDataFromTransform();
         }
 
-        private void UpdateRigidbodyData()
+        private void UpdateDataFromTypes()
         {
-            Entities.With(rigidbodyGroup).ForEach((ref TransformToSend transformToSend, Rigidbody rigidbody) =>
+            foreach (var latestTransformAction in updateLatestTransformActions)
             {
-                transformToSend = new TransformToSend
-                {
-                    Position = rigidbody.position,
-                    Velocity = rigidbody.velocity,
-                    Orientation = rigidbody.rotation
-                };
-            });
+                latestTransformAction.Value();
+            }
         }
 
-        private void UpdateTransformData()
+        private void UpdateDataFromTransform()
         {
-            Entities.With(transformGroup).ForEach((ref TransformToSend transformToSend, Transform transform) =>
+            Entities.With(transformQuery).ForEach((ref TransformToSend transformToSend, Transform transform) =>
             {
                 transformToSend = new TransformToSend
                 {

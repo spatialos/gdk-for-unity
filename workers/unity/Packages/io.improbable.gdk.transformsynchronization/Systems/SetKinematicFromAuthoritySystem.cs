@@ -1,7 +1,7 @@
-﻿using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
+﻿using System;
+using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -13,8 +13,15 @@ namespace Improbable.Gdk.TransformSynchronization
     {
         private ComponentUpdateSystem updateSystem;
 
-        private EntityQuery newEntityGroup;
-        private EntityQuery authChangeGroup;
+        private ComponentType[] initBaseComponentTypes;
+        private ComponentType[] authBaseComponentTypes;
+
+        private readonly Dictionary<Type, Action> initKinematicActions = new Dictionary<Type, Action>();
+        private readonly Dictionary<Type, Action> authKinematicActions = new Dictionary<Type, Action>();
+
+        internal delegate void AuthChangeFunc<in T>(ref KinematicStateWhenAuth state, AuthorityChangeReceived auth,
+            T component)
+            where T : class;
 
         protected override void OnCreate()
         {
@@ -22,20 +29,63 @@ namespace Improbable.Gdk.TransformSynchronization
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            newEntityGroup = GetEntityQuery(
+            initBaseComponentTypes = new[]
+            {
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            newEntityGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            };
 
-            authChangeGroup = GetEntityQuery(
+            authBaseComponentTypes = new[]
+            {
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
-                ComponentType.ReadOnly<Rigidbody>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Exclude<NewlyAddedSpatialOSEntity>()
-            );
+            };
+
+            RegisterTransformSyncType(new RigidbodyTransformSync());
+        }
+
+        internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
+            where T : class
+        {
+            CreateInitAction((EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T>) impl.InitKinematicState);
+            CreateAuthChangeAction((AuthChangeFunc<T>) impl.ApplyKinematicStateOnAuthChange);
+        }
+
+        private void CreateInitAction<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc)
+            where T : class
+        {
+            var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(initBaseComponentTypes));
+            entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+
+            initKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(initFunc));
+        }
+
+        private void CreateAuthChangeAction<T>(AuthChangeFunc<T> authFunc)
+            where T : class
+        {
+            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(authBaseComponentTypes);
+            componentQueryDesc.None = new[] { ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>() };
+
+            var entityQuery = GetEntityQuery(componentQueryDesc);
+
+            authKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(
+                (
+                    T component,
+                    ref KinematicStateWhenAuth kinematicStateWhenAuth,
+                    ref SpatialEntityId spatialEntityId) =>
+                {
+                    var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
+                        TransformInternal.ComponentId);
+                    if (changes.Count == 0)
+                    {
+                        return;
+                    }
+
+                    var auth = changes[changes.Count - 1];
+
+                    authFunc(ref kinematicStateWhenAuth, auth, component);
+                }));
         }
 
         protected override void OnUpdate()
@@ -46,45 +96,18 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateNewEntityGroup()
         {
-            Entities.With(newEntityGroup).ForEach((ref KinematicStateWhenAuth kinematicStateWhenAuth, Rigidbody rigidbody) =>
+            foreach (var initAction in initKinematicActions)
             {
-                kinematicStateWhenAuth = new KinematicStateWhenAuth
-                {
-                    KinematicWhenAuthoritative = rigidbody.isKinematic
-                };
-
-                rigidbody.isKinematic = true;
-            });
+                initAction.Value();
+            }
         }
 
         private void UpdateAuthChangeGroup()
         {
-            Entities.With(authChangeGroup).ForEach(
-                (Rigidbody rigidbody, ref KinematicStateWhenAuth kinematicStateWhenAuth, ref SpatialEntityId spatialEntityId) =>
-                {
-                    var changes = updateSystem.GetAuthorityChangesReceived(spatialEntityId.EntityId,
-                        TransformInternal.ComponentId);
-                    if (changes.Count == 0)
-                    {
-                        return;
-                    }
-
-                    var auth = changes[changes.Count - 1];
-                    switch (auth.Authority)
-                    {
-                        case Authority.NotAuthoritative:
-                            kinematicStateWhenAuth = new KinematicStateWhenAuth
-                            {
-                                KinematicWhenAuthoritative = rigidbody.isKinematic
-                            };
-                            rigidbody.isKinematic = true;
-                            break;
-                        case Authority.Authoritative:
-                        case Authority.AuthorityLossImminent:
-                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
-                            break;
-                    }
-                });
+            foreach (var authChangeAction in authKinematicActions)
+            {
+                authChangeAction.Value();
+            }
         }
     }
 }
