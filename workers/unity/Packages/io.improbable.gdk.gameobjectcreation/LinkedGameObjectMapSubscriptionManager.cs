@@ -8,7 +8,6 @@ namespace Improbable.Gdk.GameObjectCreation
     internal class LinkedGameObjectMapSubscriptionManager : SubscriptionManager<LinkedGameObjectMap>
     {
         private readonly World world;
-        private Subscription<LinkedGameObjectMap> linkedGameObjectMapSubscription;
 
         public LinkedGameObjectMapSubscriptionManager(World world)
         {
@@ -17,15 +16,12 @@ namespace Improbable.Gdk.GameObjectCreation
 
         public override Subscription<LinkedGameObjectMap> Subscribe(EntityId entityId)
         {
-            if (linkedGameObjectMapSubscription == null)
-            {
-                linkedGameObjectMapSubscription = new Subscription<LinkedGameObjectMap>(this, new EntityId(0));
+            var linkedGameObjectMapSubscription = new Subscription<LinkedGameObjectMap>(this, new EntityId(0));
 
-                var goSystem = world.GetExistingSystem<GameObjectInitializationSystem>();
-                if (goSystem != null)
-                {
-                    linkedGameObjectMapSubscription.SetAvailable(new LinkedGameObjectMap(goSystem.Linker));
-                }
+            var goSystem = world.GetExistingSystem<GameObjectInitializationSystem>();
+            if (goSystem != null)
+            {
+                linkedGameObjectMapSubscription.SetAvailable(new LinkedGameObjectMap(goSystem.Linker));
             }
 
             return linkedGameObjectMapSubscription;

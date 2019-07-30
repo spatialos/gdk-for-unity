@@ -7,7 +7,6 @@ namespace Improbable.Gdk.Subscriptions
     public class LogDispatcherSubscriptionManager : SubscriptionManager<ILogDispatcher>
     {
         private readonly ILogDispatcher logger;
-        private Subscription<ILogDispatcher> subscription;
 
         public LogDispatcherSubscriptionManager(World world)
         {
@@ -16,11 +15,8 @@ namespace Improbable.Gdk.Subscriptions
 
         public override Subscription<ILogDispatcher> Subscribe(EntityId entityId)
         {
-            if (subscription == null)
-            {
-                subscription = new Subscription<ILogDispatcher>(this, new EntityId(0));
-                subscription.SetAvailable(logger);
-            }
+            var subscription = new Subscription<ILogDispatcher>(this, new EntityId(0));
+            subscription.SetAvailable(logger);
 
             return subscription;
         }
