@@ -10,32 +10,51 @@ The code generator runs when you do one of the following:
 * Select **SpatialOS** > **Generate Code** from the Unity Editor menu
 * Select **SpatialOS** > **Generate Code (force)** from the Unity Editor menu
 
-## Type mappings
+## Types
+
+### Type mappings
 
 The code generator maps from the [schema primitive types](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#primitive-types) to C# types according to the following table:
 
-| Schemalang type                | C# type      |
-| ------------------------------ | :---------------------: |
-| `int32` / `sint32` / `fixed32` | `int`                   |
-| `uint32`                       | `uint`                  |
-| `int64` / `sint64`/ `fixed64`  | `long`                  |
-| `uint64`                       | `ulong`                 |
-| `float`                        | `float`                 |
-| `bool`                         | `BlittableBool`         |
-| `string`                       | `string`                |
-| `bytes`                        | `byte[]`                |
-| `EntityId`                     | `Improbable.Gdk.Core.EntityId` |
+| Schemalang type                |               C# type                |
+|--------------------------------|:------------------------------------:|
+| `int32` / `sint32` / `fixed32` |                `int`                 |
+| `uint32`                       |                `uint`                |
+| `int64` / `sint64`/ `fixed64`  |                `long`                |
+| `uint64`                       |               `ulong`                |
+| `float`                        |               `float`                |
+| `bool`                         |           `BlittableBool`            |
+| `string`                       |               `string`               |
+| `bytes`                        |               `byte[]`               |
+| `EntityId`                     |    `Improbable.Gdk.Core.EntityId`    |
 | `Entity`                       | `Improbable.Gdk.Core.EntitySnapshot` |
 
 The code generator also maps [schema collection types](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#collection-types) to C# collections according to the following table:
 
-| Schemalang collection | C# collection                         |
-| --------------------- | :-----------------------------------------------: |
-| `map<K, V>`           | `System.Collections.Generic.Dictionary<K, V>`     |
-| `list<T>`             | `System.Collections.Generic.List<T>`              |
-| `option<T>`           | `Improbable.Gdk.Core.Option<T>`                   |
+| Schemalang collection |                 C# collection                 |
+|-----------------------|:---------------------------------------------:|
+| `map<K, V>`           | `System.Collections.Generic.Dictionary<K, V>` |
+| `list<T>`             |     `System.Collections.Generic.List<T>`      |
+| `option<T>`           |        `Improbable.Gdk.Core.Option<T>`        |
 
-## User defined types
+### Standard schema library types
+
+The code generator generates a C# struct for each type defined in the [standard schema library](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/standard-schema-library). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
+
+The GDK also implements the `+`, `-`, `*`, `/`, `==` and `!=` operators for the `Coordinates` and `EdgeLength` structs. In addition, the structs implement methods for converting their data to and from the Unity `Vector3` type.
+
+| Static Method                                            | Result Type            |
+|----------------------------------------------------------|------------------------|
+| `Coordinates.FromUnityVector(Vector3 v)`                 | `Coordinates`          |
+| `EdgeLength.FromUnityVector(Vector3 v)`                  | `EdgeLength`           |
+
+| Type                   | Method                      | Result Type            |
+|------------------------|-----------------------------|------------------------|
+| `Coordinates`          | `.ToUnityVector()`          | `Vector3`              |
+| `EdgeLength`           | `.ToUnityVector()`          | `Vector3`              |
+
+
+### User defined types
 
 The code generator generates a C# struct for each [user defined type in schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#user-defined-types). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
 
