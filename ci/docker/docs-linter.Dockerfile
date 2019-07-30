@@ -11,7 +11,8 @@ WORKDIR /app
 COPY --from=build /app/*/out ./
 
 # Copy docs folder
-COPY docs/ /app/docs/
+ARG DOCS_BUILD_PATH
+COPY "$DOCS_BUILD_PATH/" /app/docs/
 
 # Volume to output linter warnings/errors to
 VOLUME /var/logs

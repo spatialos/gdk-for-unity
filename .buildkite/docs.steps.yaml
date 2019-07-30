@@ -20,24 +20,8 @@ common: &common
         limit: 3
 
 steps:
-  - label: "Lint docs"
-    command: bash -c ci/lint-docs.sh
-    <<: *common
-
-  - wait
-
-  - label: "Build and upload"
-    command: bash -c ci/build-upload-docs.sh
-    <<: *common
-    artifact_paths:
-      - "./improbadoc.upload.output.json"
-    env:
-      DOCS_TYPE: "unity"
-
-  - wait
-
-  - label: "Preview docs in staging"
-    command: bash -c ci/tag-docs.sh
+  - label: "Build, lint and preview docs"
+    command: bash -c ci/build-lint-preview.sh
     <<: *common
     artifact_paths:
       - "./improbadoc.tag.output.json"
