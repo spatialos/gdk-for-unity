@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -58,6 +60,29 @@ namespace Improbable.Gdk.TransformSynchronization
         public static CompressedQuaternion ToCompressedQuaternion(this Quaternion quaternion)
         {
             return CompressedQuaternion.FromUnityQuaternion(quaternion);
+        }
+
+        /// <summary>
+        ///     Constructs an <see cref="EntityQueryDesc"/> given an array of base types and
+        ///     a generic component type.
+        /// </summary>
+        /// <param name="baseTypes">The base set of types.</param>
+        /// <typeparam name="T">The type to add.</typeparam>
+        /// <returns>An <see cref="EntityQueryDesc"/> that is the union of <see cref="baseTypes"/> and typeof(<see cref="T"/>)</returns>
+        internal static EntityQueryDesc ConstructEntityQueryDesc<T>(params ComponentType[] baseTypes)
+        {
+            var componentType = ComponentType.ReadOnly<T>();
+
+            var includedComponentTypes = baseTypes
+                .Append(componentType)
+                .ToArray();
+
+            var componentQueryDesc = new EntityQueryDesc
+            {
+                All = includedComponentTypes
+            };
+
+            return componentQueryDesc;
         }
     }
 }
