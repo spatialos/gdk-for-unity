@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.Subscriptions;
 using NUnit.Framework;
 using UnityEngine;
@@ -17,17 +18,25 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
         private SpatialOSReceiveSystem receiveSystem;
         private RequireLifecycleSystem requireLifecycleSystem;
 
+        private const string WorkerType = "TestWorkerType";
+
         [SetUp]
         public void Setup()
         {
+            var logDispatcher = new IgnoreLogsDispatcher();
+
             var connectionBuilder = new MockConnectionHandlerBuilder();
             connectionHandler = connectionBuilder.ConnectionHandler;
             workerInWorld = WorkerInWorld
-                .CreateWorkerInWorldAsync(connectionBuilder, "TestWorkerType", new IgnoreLogsDispatcher(), Vector3.zero)
+                .CreateWorkerInWorldAsync(connectionBuilder, WorkerType, logDispatcher, Vector3.zero)
                 .Result;
-            linker = new EntityGameObjectLinker(workerInWorld.World);
             receiveSystem = workerInWorld.World.GetExistingSystem<SpatialOSReceiveSystem>();
             requireLifecycleSystem = workerInWorld.World.GetExistingSystem<RequireLifecycleSystem>();
+
+            var goInitSystem = workerInWorld.World
+                .CreateSystem<GameObjectInitializationSystem>(
+                    new GameObjectCreatorFromMetadata(WorkerType, Vector3.zero, logDispatcher), null);
+            linker = goInitSystem.Linker;
         }
 
         [TearDown]
@@ -55,6 +64,10 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
             {
             }
 
+            public class LinkedGameObjectMap : Base<Improbable.Gdk.Subscriptions.LinkedGameObjectMap>
+            {
+            }
+
             public class LogDispatcher : Base<ILogDispatcher>
             {
             }
@@ -78,6 +91,7 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
 
         [TestCase(typeof(TestMonoBehaviours.EntityId))]
         [TestCase(typeof(TestMonoBehaviours.Entity))]
+        [TestCase(typeof(TestMonoBehaviours.LinkedGameObjectMap))]
         [TestCase(typeof(TestMonoBehaviours.LogDispatcher))]
         [TestCase(typeof(TestMonoBehaviours.WorkerFlagReader))]
         [TestCase(typeof(TestMonoBehaviours.WorkerId))]

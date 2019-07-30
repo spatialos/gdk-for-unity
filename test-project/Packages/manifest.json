@@ -2,6 +2,7 @@
   "dependencies": {
     "io.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/io.improbable.gdk.buildsystem",
     "io.improbable.gdk.core": "file:../../workers/unity/Packages/io.improbable.gdk.core",
+    "io.improbable.gdk.gameobjectcreation": "file:../../workers/unity/Packages/io.improbable.gdk.gameobjectcreation",
     "io.improbable.gdk.dependencytest": "file:io.improbable.gdk.dependencytest",
     "io.improbable.gdk.querybasedinteresthelper": "file:../../workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper",
     "io.improbable.gdk.testutils": "file:../../workers/unity/Packages/io.improbable.gdk.testutils",
