@@ -7,7 +7,7 @@ We expose a single static method: [`Improbable.Gdk.BuildSystem.WorkerBuilder.Bui
 - `buildWorkerTypes`: REQUIRED. The type of the worker to build.
 - `buildEnvironment`: REQUIRED. The target for the worker build. Either `local` or `cloud`.
 - `scriptingBackend`: Optional. Which scripting backend to use for the build. Either `mono` or `il2cpp`. If ommitted, this defaults to `mono`.
-- `buildTargetFilter`: Optional. A comma delimited list of build targets to filter for. For example, "win, macos". If ommitted, this defaults to all targets for the given environment.
+- `buildTargetFilter`: Optional. A comma delimited list of build targets to filter for. For example, "win,macos". If ommitted, this defaults to all targets for the given environment.
 
 ## Example
 
@@ -46,4 +46,4 @@ Unity.exe -projectPath "${GDK_PROJECT_PATH}" \
 
 This command builds the `UnityClient` worker type for cloud with the `mono` scripting backend, but only for MacOS. A `UnityClient` for Windows is _not_ built.
 
-> **Note:** The build target filter must be a subset of the available build targets for a given worker type on a given environment.
+> **Note:** The build target filter must be a subset of the available build targets for a given worker type on a given environment. Otherwise, an error will be thrown.
