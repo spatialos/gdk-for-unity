@@ -19,9 +19,6 @@ namespace Improbable.Gdk.TransformSynchronization
         private ComponentType[] baseExcludeComponentTypes;
         private EntityQuery transformQuery;
 
-        public delegate void ResetAuthFunc<in T>(WorkerSystem Worker, Entity entity, ref TransformInternal.Component transformComponent, T component)
-            where T : class;
-
         private readonly Dictionary<Type, Action> resetAuthorityActions = new Dictionary<Type, Action>();
 
         protected override void OnCreate()
