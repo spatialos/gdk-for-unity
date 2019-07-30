@@ -47,33 +47,14 @@ namespace Improbable.Gdk.TransformSynchronization
 
             UpdateTransformQuery();
 
-            RegisterType<Rigidbody>((
-                WorkerSystem worker,
-                Entity entity,
-                ref TransformInternal.Component transformInternal,
-                Rigidbody rigidbody) =>
-            {
-                rigidbody.MovePosition(transformInternal.Location.ToUnityVector() + worker.Origin);
-                rigidbody.MoveRotation(transformInternal.Rotation.ToUnityQuaternion());
-                rigidbody.AddForce(transformInternal.Velocity.ToUnityVector() - rigidbody.velocity,
-                    ForceMode.VelocityChange);
-            });
+            RegisterType(new RigidbodyTransformSync());
         }
 
-        internal void RegisterType<T>(ResetAuthFunc<T> func)
+        internal void RegisterType<T>(ITransformSync<T> impl)
             where T : class
         {
-            var componentType = ComponentType.ReadOnly<T>();
-
-            var includedComponentTypes = baseComponentTypes
-                .Append(componentType)
-                .ToArray();
-
-            var componentQueryDesc = new EntityQueryDesc()
-            {
-                All = includedComponentTypes,
-                None = baseExcludeComponentTypes
-            };
+            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes);
+            componentQueryDesc.None = baseExcludeComponentTypes;
 
             var entityQuery = GetEntityQuery(componentQueryDesc);
             entityQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
@@ -94,7 +75,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     var component = EntityManager.GetComponentObject<T>(entity);
 
-                    func(worker, entity, ref transformInternal, component);
+                    impl.OnResetAuth(worker, entity, ref transformInternal, component);
 
                     buffer.Clear();
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate();
@@ -105,21 +86,11 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformQuery()
         {
-            var componentType = ComponentType.ReadOnly<UnityEngine.Transform>();
-
-            var includedComponentTypes = baseComponentTypes
-                .Append(componentType)
-                .ToArray();
-            var excludedComponentTypes = resetAuthorityActions.Keys
+            var transformQueryDesc = TransformUtils.ConstructEntityQueryDesc<UnityEngine.Transform>(baseComponentTypes);
+            transformQueryDesc.None = resetAuthorityActions.Keys
                 .Select(ComponentType.ReadOnly)
                 .Concat(baseExcludeComponentTypes)
                 .ToArray();
-
-            var transformQueryDesc = new EntityQueryDesc()
-            {
-                All = includedComponentTypes,
-                None = excludedComponentTypes
-            };
 
             transformQuery = GetEntityQuery(transformQueryDesc);
             transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);

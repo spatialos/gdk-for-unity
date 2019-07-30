@@ -46,60 +46,20 @@ namespace Improbable.Gdk.TransformSynchronization
             };
 
 
-            RegisterType<Rigidbody>(
-                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
-                    Rigidbody rigidbody) =>
-                {
-                    kinematicStateWhenAuth = new KinematicStateWhenAuth
-                    {
-                        KinematicWhenAuthoritative = rigidbody.isKinematic
-                    };
-
-                    rigidbody.isKinematic = true;
-                },
-                (ref KinematicStateWhenAuth kinematicStateWhenAuth,
-                    AuthorityChangeReceived auth,
-                    Rigidbody rigidbody) =>
-                {
-                    switch (auth.Authority)
-                    {
-                        case Authority.NotAuthoritative:
-                            kinematicStateWhenAuth = new KinematicStateWhenAuth
-                            {
-                                KinematicWhenAuthoritative = rigidbody.isKinematic
-                            };
-                            rigidbody.isKinematic = true;
-                            break;
-                        case Authority.Authoritative:
-                            rigidbody.isKinematic = kinematicStateWhenAuth.KinematicWhenAuthoritative;
-                            break;
-                    }
-                });
+            RegisterType(new RigidbodyTransformSync());
         }
 
-        internal void RegisterType<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc,
-            AuthChangeFunc<T> authFunc)
+        internal void RegisterType<T>(ITransformSync<T> impl)
             where T : class
         {
-            CreateInitAction(initFunc);
-            CreateAuthChangeAction(authFunc);
+            CreateInitAction((EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T>) impl.InitKinematicState);
+            CreateAuthChangeAction((AuthChangeFunc<T>) impl.ApplyKinematicStateOnAuthChange);
         }
 
         private void CreateInitAction<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc)
             where T : class
         {
-            var componentType = ComponentType.ReadOnly<T>();
-
-            var includedComponentTypes = initBaseComponentTypes
-                .Append(componentType)
-                .ToArray();
-
-            var componentQueryDesc = new EntityQueryDesc()
-            {
-                All = includedComponentTypes
-            };
-
-            var entityQuery = GetEntityQuery(componentQueryDesc);
+            var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(initBaseComponentTypes));
             entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             initKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(initFunc));
@@ -108,17 +68,8 @@ namespace Improbable.Gdk.TransformSynchronization
         private void CreateAuthChangeAction<T>(AuthChangeFunc<T> authFunc)
             where T : class
         {
-            var componentType = ComponentType.ReadOnly<T>();
-
-            var includedComponentTypes = authBaseComponentTypes
-                .Append(componentType)
-                .ToArray();
-
-            var componentQueryDesc = new EntityQueryDesc()
-            {
-                All = includedComponentTypes,
-                None = new[] { ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>() }
-            };
+            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(authBaseComponentTypes);
+            componentQueryDesc.None = new[] { ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>() };
 
             var entityQuery = GetEntityQuery(componentQueryDesc);
 
