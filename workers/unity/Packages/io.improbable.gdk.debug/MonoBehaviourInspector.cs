@@ -12,7 +12,7 @@ using Sirenix.OdinInspector.Editor;
 
 namespace Improbable.Gdk.Debug
 {
-    //[CustomEditor(typeof(MonoBehaviour), true)]
+    [CustomEditor(typeof(MonoBehaviour), true)]
     public class MonoBehaviourInspector :
 #if ODIN_INSPECTOR
         OdinEditor
