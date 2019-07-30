@@ -29,6 +29,7 @@
 ### Fixed
 
 - The world command sender reactive components and reactive component systems are now properly conditionally compiled. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
+- Subscribing to the `World`, `ILogDispatcher`, `WorkerId`, and `LinkedGameObjectMap` types no longer cause different MonoBehaviour/GameObject subscriptions to cross-talk. This previously would result in Monobehaviours disabling unexpectedly. [#1071](https://github.com/spatialos/gdk-for-unity/pull/1071)
 
 ### Internal
 

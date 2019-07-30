@@ -8,7 +8,6 @@ namespace Improbable.Gdk.Subscriptions
     public class WorkerIdSubscriptionManager : SubscriptionManager<WorkerId>
     {
         private readonly World world;
-        private Subscription<WorkerId> cachedSubscription;
 
         public WorkerIdSubscriptionManager(World world)
         {
@@ -17,16 +16,11 @@ namespace Improbable.Gdk.Subscriptions
 
         public override Subscription<WorkerId> Subscribe(EntityId entityId)
         {
-            if (cachedSubscription != null)
-            {
-                return cachedSubscription;
-            }
-
-            cachedSubscription = new Subscription<WorkerId>(this, new EntityId(0));
+            var subscription = new Subscription<WorkerId>(this, new EntityId(0));
             var workerId = world.GetExistingSystem<WorkerSystem>().WorkerId;
-            cachedSubscription.SetAvailable(new WorkerId(workerId));
+            subscription.SetAvailable(new WorkerId(workerId));
 
-            return cachedSubscription;
+            return subscription;
         }
 
         public override void Cancel(ISubscription subscription)

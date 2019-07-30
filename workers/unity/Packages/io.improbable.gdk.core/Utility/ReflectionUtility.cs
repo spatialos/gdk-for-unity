@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
@@ -9,16 +10,38 @@ namespace Improbable.Gdk.Core
     internal static class ReflectionUtility
     {
         /// <summary>
+        ///     Get all non-abstract types that implement a given interface, have the specified attributes present,
+        ///     and are not in a blacklisted assembly.
+        /// </summary>
+        /// <param name="interfaceType">The interface that should be implemented by each type.</param>
+        /// <param name="assemblyBlacklist">A list of blacklisted assembly names</param>
+        /// <param name="attributes">An array of attributes that must be present on each type.</param>
+        public static List<Type> GetNonAbstractTypesWithBlacklist(Type interfaceType, string[] assemblyBlacklist,
+            params Type[] attributes)
+        {
+            var validAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(assembly => !assemblyBlacklist.Any(blackListed => assembly.FullName.Contains(blackListed)));
+
+            return GetNonAbstractTypes(validAssemblies, interfaceType, attributes);
+        }
+
+        /// <summary>
         ///     Get all non-abstract types that implement a given interface and have the specified attributes present.
         /// </summary>
         /// <param name="interfaceType">The interface that should be implemented by each type.</param>
         /// <param name="attributes">An array of attributes that must be present on each type.</param>
         public static List<Type> GetNonAbstractTypes(Type interfaceType, params Type[] attributes)
         {
+            return GetNonAbstractTypes(AppDomain.CurrentDomain.GetAssemblies(), interfaceType, attributes);
+        }
+
+        private static List<Type> GetNonAbstractTypes(IEnumerable<Assembly> assemblies, Type interfaceType,
+            params Type[] attributes)
+        {
             List<Type> matchingTypes = new List<Type>();
 
             // If there are no known types then search all loaded assemblies
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in assemblies)
             {
                 try
                 {

@@ -1,0 +1,23 @@
+{
+    "name": "Improbable.Gdk.PlaymodeTests",
+    "references": [
+        "Improbable.Gdk.QueryBasedInterestHelper",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Core",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.GameObjectCreation"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

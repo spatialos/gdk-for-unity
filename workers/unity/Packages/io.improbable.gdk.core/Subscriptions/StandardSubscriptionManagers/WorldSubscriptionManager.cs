@@ -6,7 +6,6 @@ namespace Improbable.Gdk.Subscriptions
     [AutoRegisterSubscriptionManager]
     public class WorldSubscriptionManager : SubscriptionManager<World>
     {
-        private Subscription<World> worldSubscription;
         private World world;
 
         public WorldSubscriptionManager(World world)
@@ -16,11 +15,8 @@ namespace Improbable.Gdk.Subscriptions
 
         public override Subscription<World> Subscribe(EntityId entityId)
         {
-            if (worldSubscription == null)
-            {
-                worldSubscription = new Subscription<World>(this, new EntityId(0));
-                worldSubscription.SetAvailable(world);
-            }
+            var worldSubscription = new Subscription<World>(this, new EntityId(0));
+            worldSubscription.SetAvailable(world);
 
             return worldSubscription;
         }
