@@ -9,16 +9,16 @@ namespace Improbable.Gdk.TransformSynchronization
             var syncImpl = new Rigidbody2DTransformSync();
 
             var defaultApplyLatestTransformSystem = world.GetOrCreateSystem<DefaultApplyLatestTransformSystem>();
-            defaultApplyLatestTransformSystem.RegisterType(syncImpl);
+            defaultApplyLatestTransformSystem.RegisterTransformSyncType(syncImpl);
 
             var defaultUpdateLatestTransformSystem = world.GetOrCreateSystem<DefaultUpdateLatestTransformSystem>();
-            defaultUpdateLatestTransformSystem.RegisterType(syncImpl);
+            defaultUpdateLatestTransformSystem.RegisterTransformSyncType(syncImpl);
 
             var authorityGainedSystem = world.GetOrCreateSystem<ResetForAuthorityGainedSystem>();
-            authorityGainedSystem.RegisterType(syncImpl);
+            authorityGainedSystem.RegisterTransformSyncType(syncImpl);
 
             var kinematicSystem = world.GetOrCreateSystem<SetKinematicFromAuthoritySystem>();
-            kinematicSystem.RegisterType(syncImpl);
+            kinematicSystem.RegisterTransformSyncType(syncImpl);
         }
     }
 }

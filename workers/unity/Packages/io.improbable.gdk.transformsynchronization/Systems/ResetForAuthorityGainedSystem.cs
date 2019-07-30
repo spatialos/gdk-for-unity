@@ -47,10 +47,10 @@ namespace Improbable.Gdk.TransformSynchronization
 
             UpdateTransformQuery();
 
-            RegisterType(new RigidbodyTransformSync());
+            RegisterTransformSyncType(new RigidbodyTransformSync());
         }
 
-        internal void RegisterType<T>(ITransformSync<T> impl)
+        internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
             where T : class
         {
             var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes);

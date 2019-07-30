@@ -27,10 +27,10 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             };
 
-            RegisterType(new RigidbodyTransformSync());
+            RegisterTransformSyncType(new RigidbodyTransformSync());
         }
 
-        internal void RegisterType<T>(ITransformSync<T> impl)
+        internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
             where T : class
         {
             var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes));
