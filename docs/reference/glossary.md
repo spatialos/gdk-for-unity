@@ -249,7 +249,7 @@ The Receptionist service allows for a direct connection to the SpatialOS Runtime
 
 > **Related:**
 >
-> * [Active read acess](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/interest/active-read-access)
+> * [Active read access](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/authority-and-interest/interest/active-read-access)
 
 ## Schema
 
