@@ -36,7 +36,9 @@ namespace Improbable.Gdk.TransformSynchronization
             var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes));
             entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
-            applyLatestTransformActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach((EntityQueryBuilder.F_DC<TransformToSet, T>) impl.ApplyLatestTransform));
+            applyLatestTransformActions.Add(typeof(T),
+                () => Entities.With(entityQuery)
+                    .ForEach((EntityQueryBuilder.F_DC<TransformToSet, T>) impl.ApplyLatestTransform));
             UpdateTransformQuery();
         }
 

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -44,7 +41,6 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
             };
-
 
             RegisterTransformSyncType(new RigidbodyTransformSync());
         }
