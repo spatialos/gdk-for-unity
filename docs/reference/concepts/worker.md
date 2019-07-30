@@ -4,7 +4,7 @@
 
 ## What is a SpatialOS worker?
 
-The SpatialOS [Runtime]({{urlRoot}}/reference/glossary.md#spatialos-runtime) manages your [game world]({{urlRoot}}/reference/glossary#world) by keeping track of all [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/reference/glossary#spatialos-component).
+The SpatialOS [Runtime]({{urlRoot}}/reference/glossary#spatialos-runtime) manages your [game world]({{urlRoot}}/reference/glossary#world) by keeping track of all [SpatialOS entities]({{urlRoot}}/reference/glossary#spatialos-entity) and the current state of their [components]({{urlRoot}}/reference/glossary#spatialos-component).
 
 To execute any kind of logic on these entities, we use [workers]({{urlRoot}}/reference/glossary#worker).
 They perform the computation associated with a world: they can read what’s happening, watch for changes, and make changes of their own.

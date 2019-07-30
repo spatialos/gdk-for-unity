@@ -110,4 +110,4 @@ It’s finished when the notification at the bottom of the Deployment Launcher w
 
 It’s time to play your game.
 
-#### Next: [Get playing!]({{urlRoot}}/projects/fps/get-started/get-playing.md)
+#### Next: [Get playing!]({{urlRoot}}/projects/fps/get-started/get-playing)
