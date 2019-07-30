@@ -20,7 +20,6 @@ PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmode-test-results.xml"
 TEST_PROJECT_PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-playmode-test-results.xml"
 
-
 echo "--- Testing Code Generator :gear:"
 
 dotnet test \
