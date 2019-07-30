@@ -6,10 +6,19 @@ using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEngine;
 
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector.Editor;
+#endif
+
 namespace Improbable.Gdk.Debug
 {
-    [CustomEditor(typeof(MonoBehaviour), true)]
-    public class MonoBehaviourInspector : UnityEditor.Editor
+    //[CustomEditor(typeof(MonoBehaviour), true)]
+    public class MonoBehaviourInspector :
+#if ODIN_INSPECTOR
+        OdinEditor
+#else
+        UnityEditor.Editor
+#endif
     {
         private MonoBehaviour script;
         private LinkedEntityComponent linkedEntityComponent;
@@ -24,7 +33,11 @@ namespace Improbable.Gdk.Debug
 
         private bool foldout;
 
-        private void OnEnable()
+#if ODIN_INSPECTOR
+        protected override void OnEnable()
+#else
+        protected void OnEnable()
+#endif
         {
             // Get type info
             script = (MonoBehaviour) target;
@@ -39,9 +52,7 @@ namespace Improbable.Gdk.Debug
             var requiredWorkerTypes = GetRequiredWorkerTypes(scriptType);
 
             subscriptions = new Dictionary<FieldInfo, ISubscription>();
-            var requiredFields = scriptType
-                .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .Where(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
+            var subscriptionsInfo = RequiredSubscriptionsDatabase.GetOrCreateRequiredSubscriptionsInfo(scriptType);
 
             // Get subscription info when playing
             if (Application.isPlaying && linkedEntityComponent != null)
@@ -55,7 +66,7 @@ namespace Improbable.Gdk.Debug
 
                 var subscriptionSystem = linkedEntityComponent.World.GetExistingSystem<SubscriptionSystem>();
 
-                foreach (var fieldInfo in requiredFields)
+                foreach (var fieldInfo in subscriptionsInfo.RequiredFields)
                 {
                     var subscription =
                         subscriptionSystem.Subscribe(linkedEntityComponent.EntityId, fieldInfo.FieldType);
@@ -69,14 +80,18 @@ namespace Improbable.Gdk.Debug
                     requiredWorkerTypesLabel = string.Join(" || ", requiredWorkerTypes);
                 }
 
-                foreach (var fieldInfo in requiredFields)
+                foreach (var fieldInfo in subscriptionsInfo.RequiredFields)
                 {
                     subscriptions.Add(fieldInfo, null);
                 }
             }
         }
 
-        private void OnDisable()
+#if ODIN_INSPECTOR
+        protected override void OnDisable()
+#else
+        protected void OnDisable()
+#endif
         {
             if (subscriptions != null)
             {
@@ -109,7 +124,7 @@ namespace Improbable.Gdk.Debug
                 }
             }
 
-            DrawDefaultInspector();
+            base.OnInspectorGUI();
         }
 
         private void DrawEditorInspector()
