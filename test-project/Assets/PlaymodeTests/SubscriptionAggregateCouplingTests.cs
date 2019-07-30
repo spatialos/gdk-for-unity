@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectCreation;
@@ -23,7 +25,7 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
         [SetUp]
         public void Setup()
         {
-            var logDispatcher = new IgnoreLogsDispatcher();
+            var logDispatcher = new LoggingDispatcher();
 
             var connectionBuilder = new MockConnectionHandlerBuilder();
             connectionHandler = connectionBuilder.ConnectionHandler;
@@ -45,12 +47,55 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
             workerInWorld.Dispose();
         }
 
+        [Test]
+        public void All_non_generated_subscription_managers_have_a_test()
+        {
+            // Find all non-generated subscription manager implementations.
+            var subscriptionManagersTypes = ReflectionUtility.GetNonAbstractTypesWithBlacklist(typeof(SubscriptionManagerBase), new[] { "Improbable.Gdk.Generated" });
+
+            // Get the subscription payload type.
+            var subscriptionManagerContainedTypes = subscriptionManagersTypes
+                .Select(type => type.BaseType.GenericTypeArguments[0])
+                .ToList();
+
+            var method = typeof(SubscriptionAggregateCouplingTests)
+                .GetMethod("DifferentAggregateSubscriptions_should_not_couple_together",
+                    BindingFlags.Instance | BindingFlags.Public);
+
+            Assert.NotNull(method);
+
+            // Get the types of the MonoBehaviours from the TestCase attributes
+            var typesWithTestCase = method.GetCustomAttributes<TestCaseAttribute>()
+                .Where(attr => attr.Arguments.Length == 1 && attr.Arguments[0] is Type)
+                .Select(attr => (Type) attr.Arguments[0])
+                .ToList();
+
+            // Get the dummy classes defined in TestMonoBehaviours
+            var testMonobehaviourTypes = typeof(TestMonoBehaviours)
+                .GetNestedTypes()
+                .Where(type => !type.IsAbstract)
+                .ToList();
+
+            // Filter out the MonoBehaviour types that we don't have a corresponding TestCase attribute for
+            // and get the contained type (subscription payload).
+            var testMonobehaviourContainedTypes = testMonobehaviourTypes
+                .Where(typesWithTestCase.Contains)
+                .Select(type => type.BaseType.GenericTypeArguments[0])
+                .ToList();
+
+            // Get symmetric difference (everything except for the intersection) of the types.
+            var difference = new HashSet<Type>(subscriptionManagerContainedTypes);
+            difference.SymmetricExceptWith(testMonobehaviourContainedTypes);
+
+            Assert.IsEmpty(difference, "Subscription manager defined for the following types, but no test found");
+        }
+
         // Workaround due to the lack of support for generic MonoBehaviours. Instead have a concrete implementation
         // that we use. Little bit more boilerplate, but still less than manually writing _everything_.
         // Alternative would be to use Reflection.Emit, but this would fail on IL2CPP platforms (notably iOS).
         private static class TestMonoBehaviours
         {
-            public class Base<T> : MonoBehaviour
+            public abstract class Base<T> : MonoBehaviour
             {
                 [Require] public T Requireable;
                 [Require] public PositionReader Reader;
@@ -151,21 +196,6 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
             requireLifecycleSystem.Update();
 
             Object.DestroyImmediate(gameObject);
-        }
-
-        // Drop all logs, we don't care about them for this test.
-        private class IgnoreLogsDispatcher : ILogDispatcher
-        {
-            public void Dispose()
-            {
-            }
-
-            public Core.Worker Worker { get; set; }
-            public string WorkerType { get; set; }
-
-            public void HandleLog(LogType type, LogEvent logEvent)
-            {
-            }
         }
     }
 }
