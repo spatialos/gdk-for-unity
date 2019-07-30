@@ -41,7 +41,7 @@ public class EntityCreationBehaviour : MonoBehaviour
     public void CreateExampleEntity()
     {
         var exampleEntity = CreateExampleEntityTemplate();
-        var request = new WorldCommands.CreateEntity.Request(entityTemplate);
+        var request = new WorldCommands.CreateEntity.Request(exampleEntity);
         commandSender.SendCreateEntityCommand(request, OnCreateEntityResponse);
     }
 
