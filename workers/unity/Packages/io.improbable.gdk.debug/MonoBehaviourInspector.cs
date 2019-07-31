@@ -33,12 +33,19 @@ namespace Improbable.Gdk.Debug
 
         private bool foldout;
 
+        private GUIContent enabledContent;
+        private GUIContent disabledContent;
+
 #if ODIN_INSPECTOR
         protected override void OnEnable()
 #else
         protected void OnEnable()
 #endif
         {
+            // Fetch styles
+            enabledContent = EditorGUIUtility.IconContent("sv_icon_dot3_pix16_gizmo");
+            disabledContent = EditorGUIUtility.IconContent("sv_icon_dot0_pix16_gizmo");
+
             // Get type info
             script = (MonoBehaviour) target;
             scriptType = script.GetType();
@@ -148,8 +155,9 @@ namespace Improbable.Gdk.Debug
         {
             if (isWorkerType.HasValue)
             {
-                EditorGUILayout.ToggleLeft(isWorkerType.Value ? workerType : requiredWorkerTypesLabel,
-                    isWorkerType.Value);
+                var style = isWorkerType.Value ? enabledContent : disabledContent;
+                style.text = isWorkerType.Value ? workerType : requiredWorkerTypesLabel;
+                EditorGUILayout.LabelField(style);
             }
 
             if (subscriptions != null)
@@ -158,7 +166,9 @@ namespace Improbable.Gdk.Debug
                 {
                     var field = pair.Key;
                     var subscription = pair.Value;
-                    EditorGUILayout.ToggleLeft(field.FieldType.Name, subscription.HasValue);
+                    var style = subscription.HasValue ? enabledContent : disabledContent;
+                    style.text = field.FieldType.Name;
+                    EditorGUILayout.LabelField(style);
                 }
             }
         }
