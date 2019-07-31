@@ -34,6 +34,8 @@ function display_annotations() {
             buildkite-agent annotate --style 'error' --context 'ctx-error' --append "<li>${LINE}</li>"
         done < "${ERRORS_FILE}"
         buildkite-agent annotate --style 'error' --context 'ctx-error' --append "</ul>"
+
+        exit 1
     fi
 }
 
