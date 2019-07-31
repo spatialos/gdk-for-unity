@@ -12,7 +12,7 @@ using Sirenix.OdinInspector.Editor;
 
 namespace Improbable.Gdk.Debug
 {
-    [CustomEditor(typeof(MonoBehaviour), true)]
+    [CustomEditor(typeof(MonoBehaviour), editorForChildClasses: true)]
     public class MonoBehaviourInspector :
 #if ODIN_INSPECTOR
         OdinEditor
@@ -49,7 +49,8 @@ namespace Improbable.Gdk.Debug
             // Get type info
             script = (MonoBehaviour) target;
             scriptType = script.GetType();
-            isSpatialBehaviour = HasWorkerTypeAttribute(scriptType) || HasRequireAttributes(scriptType);
+            isSpatialBehaviour = HasWorkerTypeAttribute(scriptType) ||
+                RequiredSubscriptionsDatabase.HasRequiredSubscriptions(scriptType);
             if (!isSpatialBehaviour)
             {
                 return;
@@ -155,9 +156,9 @@ namespace Improbable.Gdk.Debug
         {
             if (isWorkerType.HasValue)
             {
-                var style = isWorkerType.Value ? enabledContent : disabledContent;
-                style.text = isWorkerType.Value ? workerType : requiredWorkerTypesLabel;
-                EditorGUILayout.LabelField(style);
+                var guiContent = isWorkerType.Value ? enabledContent : disabledContent;
+                guiContent.text = isWorkerType.Value ? workerType : requiredWorkerTypesLabel;
+                EditorGUILayout.LabelField(guiContent);
             }
 
             if (subscriptions != null)
@@ -181,12 +182,6 @@ namespace Improbable.Gdk.Debug
         private static bool HasWorkerTypeAttribute(Type targetType)
         {
             return GetRequiredWorkerTypes(targetType) != null;
-        }
-
-        private static bool HasRequireAttributes(Type targetType)
-        {
-            return targetType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .Any(field => Attribute.IsDefined(field, typeof(RequireAttribute), false));
         }
     }
 }
