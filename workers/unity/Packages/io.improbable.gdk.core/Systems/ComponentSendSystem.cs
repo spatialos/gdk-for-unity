@@ -65,18 +65,18 @@ namespace Improbable.Gdk.Core
 
             Profiler.EndSample();
 
-            JobHandle.CompleteAll(gatheringJobs);
-
             for (var i = 0; i < componentReplicators.Count; i++)
             {
+                Profiler.BeginSample("ExecuteReplication");
+
+                gatheringJobs[i].Complete();
                 var replicator = componentReplicators[i];
                 var chunkArray = chunkArrayCache[i];
 
-                Profiler.BeginSample("ExecuteReplication");
                 replicator.Handler.SendUpdates(chunkArray, this, EntityManager, componentUpdateSystem);
-                Profiler.EndSample();
-
                 chunkArray.Dispose();
+
+                Profiler.EndSample();
             }
         }
 
