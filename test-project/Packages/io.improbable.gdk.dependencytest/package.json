@@ -1,12 +1,12 @@
 {
   "name": "io.improbable.gdk.dependencytest",
   "displayName": "SpatialOS GDK Dependency Test",
-  "version": "0.2.5",
+  "version": "0.2.6-release-pipeline-test",
   "unity": "2019.1",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Dependency Test Root.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.5",
-    "io.improbable.gdk.dependencytestchild": "0.2.5"
+    "io.improbable.gdk.core": "0.2.6-release-pipeline-test",
+    "io.improbable.gdk.dependencytestchild": "0.2.6-release-pipeline-test"
   }
 }
