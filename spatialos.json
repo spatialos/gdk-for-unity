@@ -1,8 +1,8 @@
 {
     "name": "unity_gdk",
     "project_version": "0.0.1",
-    "sdk_version": "13.7.1-gdk-for-unity",
+    "sdk_version": "13.8.2",
     "dependencies": [
-        {"name": "standard_library", "version": "13.7.1-gdk-for-unity"}
+        {"name": "standard_library", "version": "13.8.2"}
     ]
 }

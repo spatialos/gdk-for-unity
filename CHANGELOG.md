@@ -36,6 +36,7 @@
 - Added extension methods on the `SchemaObject` struct for easy serializing/deserializing of the `Entity` schema type. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added options and functionality for serialization overrides for schema types only. [#1061](https://github.com/spatialos/gdk-for-unity/pull/1061)
 - Laid the groundwork for 2D support in the Transform Synchronization Feature Module. [#1064](https://github.com/spatialos/gdk-for-unity/pull/1064)
+- Removed `core-sdk.pinned` from the tools package.
 
 ## `0.2.5` - 2019-07-18
 
