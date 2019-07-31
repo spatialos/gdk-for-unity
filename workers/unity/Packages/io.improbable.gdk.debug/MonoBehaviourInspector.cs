@@ -6,16 +6,12 @@ using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEngine;
 
-#if ODIN_INSPECTOR
-using Sirenix.OdinInspector.Editor;
-#endif
-
 namespace Improbable.Gdk.Debug
 {
     [CustomEditor(typeof(MonoBehaviour), editorForChildClasses: true)]
     public class MonoBehaviourInspector :
 #if ODIN_INSPECTOR
-        OdinEditor
+        Sirenix.OdinInspector.Editor.OdinEditor
 #else
         UnityEditor.Editor
 #endif
