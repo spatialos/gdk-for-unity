@@ -1,8 +1,7 @@
 {
     "name": "Improbable.Gdk.Core.Subscriptions.Editor",
     "references": [
-        "Improbable.Gdk.Core",
-        "Unity.Entities"
+        "Improbable.Gdk.Core"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
