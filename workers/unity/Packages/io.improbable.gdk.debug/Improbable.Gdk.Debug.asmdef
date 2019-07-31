@@ -1,7 +1,9 @@
 {
-    "name": "Improbable.Gdk.Core.Subscriptions.Editor",
+    "name": "Improbable.Gdk.Debug",
     "references": [
-        "Improbable.Gdk.Core"
+        "Improbable.Gdk.Core",
+        "Unity.Entities",
+        "Sirenix.OdinInspector.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

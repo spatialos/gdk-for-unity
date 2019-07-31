@@ -32,17 +32,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public static bool HasRequiredSubscriptions(Type type)
         {
-            if (!typeToRequiredSubscriptionsInfo.TryGetValue(type, out var info))
-            {
-                info = new RequiredSubscriptionsInfo(type);
-                if (info.RequiredFields.Count == 0)
-                {
-                    info = null;
-                }
-
-                typeToRequiredSubscriptionsInfo.Add(type, info);
-            }
-
+            var info = GetOrCreateRequiredSubscriptionsInfo(type);
             return info != null;
         }
 

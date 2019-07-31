@@ -19,6 +19,7 @@
 - Added a `EntitySnapshot GetEntitySnapshot()` method to the `Improbable.Gdk.Core.EntityTemplate` class. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - Added methods for conversion of `Coordinates`, `EdgeLength`, `FixedPointVector3` and `CompressedQuaternion` to/from native Unity `Vector3` and `Quaternion` types. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 - Added basic arithmetic and equality operators for the `EdgeLength` standard library type. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
+- Added a new `io.improbable.gdk.debug` package which contains an inspector extension for viewing `[Require]` states in the editor [#1082](https://github.com/spatialos/gdk-for-unity/pull/1082)
 
 ### Changed
 
