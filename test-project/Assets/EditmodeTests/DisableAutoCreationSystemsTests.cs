@@ -13,6 +13,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             "Improbable.Gdk.Core",
             "Improbable.Gdk.TransformSynchronization",
             "Improbable.Gdk.PlayerLifecycle",
+            "Improbable.Gdk.GameObjectCreation"
         };
 
         private static readonly string[] WhiteListedSystems = { };
