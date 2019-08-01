@@ -6,6 +6,7 @@ namespace Improbable.Gdk.GameObjectCreation
 {
     [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
     [UpdateAfter(typeof(RequireLifecycleGroup))]
+    [DisableAutoCreation]
     public class GameObjectInitializationGroup : ComponentSystemGroup
     {
     }

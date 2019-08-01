@@ -11,6 +11,8 @@
 - Reactive components are now **opt in** instead of **opt out**. Use the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to re-enable them. [#1059](https://github.com/spatialos/gdk-for-unity/pull/1059)
     - Note that these will be removed in a future release.
 - Removed the `CreateTransformSnapshot(Coordinates location, Quaternion rotation, Vector3 velocity)` method. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
+- Removed the `WorkerOpFactory` from the `io.improbable.gdk.testutils` package. Please use the `MockConnectionHandler` in the `io.improbable.gdk.core` package instead. [#1085](https://github.com/spatialos/gdk-for-unity/pull/1085)
+- Removed the `TestMonoBehaviour` from the `io.improbable.gdk.testutils` package. [#1085](https://github.com/spatialos/gdk-for-unity/pull/1085)
 
 ### Added
 
@@ -38,6 +40,7 @@
 - Added options and functionality for serialization overrides for schema types only. [#1061](https://github.com/spatialos/gdk-for-unity/pull/1061)
 - Laid the groundwork for 2D support in the Transform Synchronization Feature Module. [#1064](https://github.com/spatialos/gdk-for-unity/pull/1064)
 - Removed `core-sdk.pinned` from the tools package.
+- Moved `DisableAutoCreationTests` into the test project [#1085](https://github.com/spatialos/gdk-for-unity/pull/1085)
 
 ## `0.2.5` - 2019-07-18
 

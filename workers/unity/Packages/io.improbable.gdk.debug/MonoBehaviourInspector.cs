@@ -70,12 +70,12 @@ namespace Improbable.Gdk.Debug
 
                 var subscriptionSystem = linkedEntityComponent.World.GetExistingSystem<SubscriptionSystem>();
 
-                foreach (var fieldInfo in subscriptionsInfo.RequiredFields)
+                subscriptionsInfo?.RequiredFields?.ForEach(fieldInfo =>
                 {
                     var subscription =
                         subscriptionSystem.Subscribe(linkedEntityComponent.EntityId, fieldInfo.FieldType);
                     subscriptions.Add(fieldInfo, subscription);
-                }
+                });
             }
             else
             {
@@ -84,10 +84,10 @@ namespace Improbable.Gdk.Debug
                     requiredWorkerTypesLabel = string.Join(" || ", requiredWorkerTypes);
                 }
 
-                foreach (var fieldInfo in subscriptionsInfo.RequiredFields)
+                subscriptionsInfo?.RequiredFields?.ForEach(fieldInfo =>
                 {
                     subscriptions.Add(fieldInfo, null);
-                }
+                });
             }
         }
 
