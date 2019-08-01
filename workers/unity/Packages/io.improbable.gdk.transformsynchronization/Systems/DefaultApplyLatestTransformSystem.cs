@@ -50,7 +50,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 .ToArray();
 
             transformQuery = GetEntityQuery(transformQueryDesc);
-            transformQuery.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            transformQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()
