@@ -31,7 +31,6 @@ namespace Improbable.Gdk.TestUtils.Editor
                     new ArgumentException($"Could not find snapshot at {snapshotPath}"));
             }
 
-
             var tcs = new TaskCompletionSource<SpatialDeploymentManager>();
 
             var processInfo =
@@ -116,7 +115,6 @@ namespace Improbable.Gdk.TestUtils.Editor
                     out _,
                     out _);
             }
-
 
             var children = new HashSet<int>();
             if (GetAllChildIdsUnix(process.Id, children, timeout) != 0)
