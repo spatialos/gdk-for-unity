@@ -35,4 +35,4 @@ The GDK currently uses Unity's `0.0.12-preview.21` version of the entities previ
 For information on the ECS system, see:
 
 * This overview [YouTube video](https://www.youtube.com/watch?v=_U9wRgQyy6s) from [Brackeys](http://brackeys.com/).
-* The more detailed documentation from Unity on the [ECS GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/tree/master/Documentation~).
+* The more detailed documentation from Unity on the [ECS GitHub repository](https://github.com/Unity-Technologies/EntityComponentSystemSamples/tree/master/ECSSamples/Documentation).

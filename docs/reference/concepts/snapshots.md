@@ -2,32 +2,52 @@
 
 # Snapshots
 
-_This document relates to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview)._
+A [snapshot]({{urlRoot}}/reference/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [persistent]({{urlRoot}}/reference/glossary#persistence) [entity]({{urlRoot}}/reference/glossary#spatialos-entity) and the values of their [components’]({{urlRoot}}/reference/glossary#spatialos-component) properties.
 
-A [snapshot](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#snapshot) is a representation of the state of a simulated world at some point in time. It stores each [entity](https://docs.improbable.io/reference/13.2/shared/glossary#entity) (as long as the entity has the [Persistence component](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#persistence)) and the values of the entity’s [components’](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#component) [properties](https://docs.improbable.io/reference/13.2/shared/glossary#property).
-
-You use a snapshot as the starting point for your [world](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#spatialos-world) when you [deploy](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#deploying), [locally](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#local-deployment) or [to the cloud](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#cloud-deployment).
+You use a snapshot as the starting point for your [world]({{urlRoot}}/reference/glossary#spatialos-world) when you [deploy]({{urlRoot}}/reference/glossary#deploying).
 
 ## How to create a snapshot
 
-You set up snapshots through code and generate them through your Unity Editor.
+Currently, you generate a snapshot with code. The GDK provides a [`Snapshot`]({{urlRoot}}/api/core/snapshot) class which allows you to easily add entities and write the snapshot to disk. A snapshot consists of a set of entities. In the GDK, these entities are defined by [its template]({{urlRoot}}/reference/concepts/entity-templates).
 
-### Set up the snapshot
+A simple example of generating a snapshot:
 
-To do this, look at the [Playground project](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Assets/Playground) which comes with the GDK for Unity.
+```csharp
+public static void GenerateSnapshot() 
+{
+    // Create a snapshot object
+    var snapshot = new Snapshot();
 
-In the project’s [`Editor/SnapshotGenerator`](https://github.com/spatialos/UnityGDK/tree/master/workers/unity/Assets/Playground/Editor/SnapshotGenerator) folder, there is a simple example of generating a snapshot through code.
+    // Create a template...
+    var template = new EntityTemplate();
+    template.AddComponent(new Position.Snapshot(playerSpawnerLocation), WorkerUtils.UnityGameLogic);
+    template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
+    template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+    template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
+    template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
-You can use this as a base for your own project’s snapshot generation by copying the file to the same folder in your own project and editing the `SnapshotGenerator` class to add SpatialOS entities to a snapshot.
+    // ..and add it to the snapshot.
+    snapshot.AddEntity(template);
 
-### Generate the snapshot
+    // WriteToFile operates relative to your working directory.
+    // In the Unity Editor, this is the Assets directory of your Unity project.
+    snapshot.WriteToFile("../../../snapshots/default.snapshot");
+}
+```
 
-To generate the snapshot, in your Unity Editor menu: **SpatialOS** > **Generate snapshot** to open the snapshot generator window, then select `Generate snapshot` there.
-
-This saves the generated snapshot to `snapshots/default.snapshot`, which is where SpatialOS expects to find it unless explicitly told to use another path when you start the deployment.
+A common usage pattern is to expose the snapshot generation through a Unity Editor menu item or window. You can see an example of this in the [FPS Starter Project](https://github.com/spatialos/gdk-for-unity-fps-starter-project/blob/<%(Var key="current_version")%>/workers/unity/Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs). This allows you to quickly generate a snapshot with a few clicks!
 
 ## How to start a deployment from a snapshot
 
-You can start local or cloud deployments using the `spatial local launch` and `spatial cloud launch` commands respectively - see the documentation on [Deploying your game]({{urlRoot}}/reference/concepts/deployments) for details.
+You can start a local deployment via the Unity Editor menu: **SpatialOS** > **Local launch** (Ctrl+L/Cmd+L). This starts a deployment with the snapshot found at `<spatialos_project_root>/snapshots/default.snapshot`. If you wish to launch via the CLI or with a different snapshot, see the section below.
 
-Both of these commands can take the optional command line parameter `--snapshot=<path>`. This starts the deployment with the snapshot at the given path instead of the default `snapshots/default.snapshot`.
+You can start a cloud deployment using the [Deployment Launcher Feature Module]({{urlRoot}}/modules/deployment-launcher/overview). This feature module allows you to configure which snapshot you want to start your cloud deployment with.
+
+<%(#Expandable title="Launching a local deployment via the CLI or with a different snapshot")%>
+You can launch a local deployment with the CLI using the following command:
+
+```text
+spatial local launch --snapshot=<path_to_snapshot> --enable_pre_run_check=false
+```
+
+<%(/Expandable)%>

@@ -23,7 +23,7 @@ In the GDK, each SpatialOS entity checked out by a worker has a corresponding EC
 
 To learn more about ECS, check out:
 
-* [Unity’s GitHub](https://github.com/Unity-Technologies/EntityComponentSystemSamples/tree/master/Documentation~)
+* [Unity’s GitHub](https://github.com/Unity-Technologies/EntityComponentSystemSamples/tree/master/ECSSamples/Documentation)
 * [DOTS: Entity Component System](https://blogs.unity3d.com/2019/03/08/on-dots-entity-component-system/)
 * [What is the ECS?](https://improbable.io/blog/unity-ecs-1)
 * [Choosing between the ECS and MonoBehaviours workflows](https://improbable.io/blog/unity-ecs-2)
