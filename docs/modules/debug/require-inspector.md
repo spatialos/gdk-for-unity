@@ -1,8 +1,8 @@
 <%( TOC )%>
 
-# Require Inspector extension
+# Require Inspector
 
-The Require Inspector extension is a debugging extension for the Unity Inspector, which helps visualize the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
+The Require Inspector is a debugging extension for the Unity Inspector, which helps visualize the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
 
 ## Usage
 
@@ -29,7 +29,7 @@ If you have a grey indicator on a [`Reader`]({{urlRoot}}/reference/workflows/mon
 * The [entity]({{urlRoot}}/reference/glossary#spatialos-entity) does not have the [component]({{urlRoot}}/reference/glossary#spatialos-component) present.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [read access]({{urlRoot}}/reference/glossary#read-access) on the [component]({{urlRoot}}/reference/glossary#spatialos-component).
 
-A grey indicator for a [`Writer`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) can be due to:
+A grey indicator for a [`Writer`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) or [`CommandReceiver`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands) can be due to:
 
 * The above `Reader` reasons.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [authority]({{urlRoot}}/reference/glossary#authority) over the [component]({{urlRoot}}/reference/glossary#spatialos-component).
