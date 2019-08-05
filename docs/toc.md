@@ -29,7 +29,7 @@
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
     - Debug
         - [Overview]({{urlRoot}}/modules/debug/overview)
-        - [Require Inspector]({{urlRoot}}/modules/debug/require-inspector)
+        - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
     - Deployment Launcher
         - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
         - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)

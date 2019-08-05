@@ -1,8 +1,8 @@
 <%( TOC )%>
 
-# Require Inspector
+# Requirable Inspector
 
-The Require Inspector is a debugging extension for the Unity Inspector, which helps visualize the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
+The Requirable Inspector is a debugging extension for the Unity Inspector, which helps visualize the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
 
 ## Usage
 
