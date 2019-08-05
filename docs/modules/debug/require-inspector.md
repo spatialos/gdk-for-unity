@@ -2,7 +2,7 @@
 
 # Require Inspector extension
 
-The Require Inspector extension is a debugging extension for the Unity Inspector, which helps with visualizing the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
+The Require Inspector extension is a debugging extension for the Unity Inspector, which helps visualize the use of [`[Require]`]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) in MonoBehaviour components.
 
 ## Usage
 
