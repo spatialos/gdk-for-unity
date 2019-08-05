@@ -21,9 +21,9 @@ This documentation describes the guarantees we provide for the reactive componen
 
 At least one authority component is available on these entities based on the worker's component write access.
 
-* [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative): If the worker has write access to the component.
-* [`NotAuthoritative<T>`]({{urlRoot}}/api/reactive-components/not-authoritative): If the worker only has read access to the component.
-* [`AuthorityLostImminent<T>`]({{urlRoot}}/api/reactive-components/authority-loss-imminent): If the worker is about to lose write access to the component. Note that the [`Authoritative<T>`]({{urlRoot}}/api/reactive-components/authoritative) component is still attached to these entities.
+* `Authoritative<T>`: If the worker has write access to the component.
+* `NotAuthoritative<T>`): If the worker only has read access to the component.
+* `AuthorityLostImminent<T>`: If the worker is about to lose write access to the component. Note that the `Authoritative<T>` component is still attached to these entities.
 
 ## Receiving updates or messages
 
