@@ -27,6 +27,9 @@
         - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
         - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
+    - Debug
+        - [Overview]({{urlRoot}}/modules/debug/overview)
+        - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
     - Deployment Launcher
         - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
         - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)
