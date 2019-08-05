@@ -14,16 +14,20 @@ GDK package: QueryBasedInterest<br />
 
 <table>
 <tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a></td>
+<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a></td>
 <td style="padding: 14px; border: none;">Utility class to help define QueryConstraint objects for Interest queries. </td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a></td>
+<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a></td>
 <td style="padding: 14px; border: none;">Utility class to help construct ComponentInterest.Query objects. </td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a></td>
+<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a></td>
 <td style="padding: 14px; border: none;">Utility class to help construct Interest component snapshots. </td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/query-based-interest-utils">QueryBasedInterestUtils</a></td>
+<td style="padding: 14px; border: none;"></td>
 </tr>
 </table>
 

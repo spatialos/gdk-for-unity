@@ -83,6 +83,10 @@ GDK package: TransformSynchronization<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-helper2d">TransformSynchronizationHelper2D</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 39ch"><a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-receive-strategy">TransformSynchronizationReceiveStrategy</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

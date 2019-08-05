@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/game-object-creation-index">GameObjectCreation</a><br/>
 GDK package: GameObjectCreation<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -43,7 +43,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SpatialOSEntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -74,14 +74,23 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L23">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L28">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>bool HasComponent&lt;T&gt;()</code></p>
+Checks if this entity has a component of type T 
+</p><b>Returns:</b></br>True, if the entity has the component; false otherwise.
 
 
 
+</p>
+
+<b>Type parameters:</b>
+
+<ul>
+<li><code>T</code> : The SpatialOS component.</li>
+</ul>
 
 
 
@@ -93,14 +102,69 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L28">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code>T GetComponent&lt;T&gt;()</code></p>
+Gets a component of type T attached to this entity. 
+</p><b>Returns:</b></br>The component T attached to this entity.
 
 
 
+</p>
+
+<b>Type parameters:</b>
+
+<ul>
+<li><code>T</code> : The SpatialOS component.</li>
+</ul>
+
+
+
+</p>
+
+<b>Exceptions:</b>
+
+<ul>
+<li><code>System.ArgumentException</code> : Thrown if the component T is not attached to this entity.</li>
+</ul>
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>TryGetComponent&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L53">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>bool TryGetComponent&lt;T&gt;(out T component)</code></p>
+Attempts to get a component of type T attached to this entity. 
+</p><b>Returns:</b></br>True, if the entity has the component; false otherwise.
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>out T component</code> : When this method returns, this will be the component attached to this entity if it exists; default constructed otherwise. </li>
+</ul>
+
+
+
+
+</p>
+
+<b>Type parameters:</b>
+
+<ul>
+<li><code>T</code> : The SpatialOS component.</li>
+</ul>
 
 
 

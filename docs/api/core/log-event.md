@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,7 +45,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Message</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -60,7 +60,7 @@ The main content of the log.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Data</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -75,7 +75,7 @@ The data used for structured logging.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -90,7 +90,7 @@ Optional context object used with Unity logging.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Exception</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ An exception if the <a href="{{urlRoot}}/api/core/log-event">LogEvent</a> is ass
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LogEvent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -160,7 +160,7 @@ Constructor for the log event
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WithField</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -189,7 +189,7 @@ Sets additional information to be displayed with the log message.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WithContext</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L62">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L62">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -217,7 +217,7 @@ Adds a context object to be passed as the second parameter into UnityEngine.Debu
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WithException</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L73">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L73">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -257,7 +257,7 @@ Associates an exception to the <a href="{{urlRoot}}/api/core/log-event">LogEvent
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ToString</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L79">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Logging/LogEvent.cs/#L79">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

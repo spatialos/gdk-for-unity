@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L13">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L13">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -51,7 +51,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L18">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L18">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,7 +66,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LogDispatcher</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -81,7 +81,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L21">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L21">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,7 +96,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -111,7 +111,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Origin</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L23">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L23">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -141,7 +141,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>WorkerSystem</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L34">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L34">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -181,7 +181,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>TryGetEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L56">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L56">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -210,7 +210,7 @@ Attempts to find an ECS entity associated with a SpatialOS entity ID.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L66">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L66">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -238,7 +238,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendLogMessage</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L71">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L71">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -269,7 +269,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendMetrics</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L76">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L76">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -309,7 +309,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L91">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L91">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -328,7 +328,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L100">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L100">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

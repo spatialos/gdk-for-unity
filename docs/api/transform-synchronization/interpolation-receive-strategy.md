@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -42,7 +42,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>TargetBufferSize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -57,7 +57,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>MaxBufferSize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/ReceiveStrategies/InterpolationReceiveStrategy.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

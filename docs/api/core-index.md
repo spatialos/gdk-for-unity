@@ -114,14 +114,6 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/dynamic-converter">DynamicConverter</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/dynamic-snapshot">DynamicSnapshot</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/ecs-view-system">EcsViewSystem</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
@@ -351,8 +343,8 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;">A unique identifier used to look up an entity in SpatialOS. </td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/entity-query-snapshot">EntityQuerySnapshot</a></td>
-<td style="padding: 14px; border: none;">A snapshot of a SpatialOS entity, containing the result of a entity query. </td>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/entity-snapshot">EntitySnapshot</a></td>
+<td style="padding: 14px; border: none;">A snapshot of a SpatialOS entity. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/log-event">LogEvent</a></td>
