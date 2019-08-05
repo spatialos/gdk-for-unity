@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L3">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L3">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L5">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L5">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -69,7 +69,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>InvokeHandler</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L6">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L6">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -83,62 +83,6 @@ code {
 
 <ul>
 <li><code><a href="{{urlRoot}}/api/core/dynamic/i-handler">Dynamic.IHandler</a> handler</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>InvokeSnapshotHandler</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L7">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>void InvokeSnapshotHandler(<a href="{{urlRoot}}/api/core/dynamic-snapshot/i-snapshot-handler">DynamicSnapshot.ISnapshotHandler</a> handler)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code><a href="{{urlRoot}}/api/core/dynamic-snapshot/i-snapshot-handler">DynamicSnapshot.ISnapshotHandler</a> handler</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><b>InvokeConvertHandler</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/6689e30/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L8">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>void InvokeConvertHandler(<a href="{{urlRoot}}/api/core/dynamic-converter/i-converter-handler">DynamicConverter.IConverterHandler</a> handler)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code><a href="{{urlRoot}}/api/core/dynamic-converter/i-converter-handler">DynamicConverter.IConverterHandler</a> handler</code> : </li>
 </ul>
 
 
