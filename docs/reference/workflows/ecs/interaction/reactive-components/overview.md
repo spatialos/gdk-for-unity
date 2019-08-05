@@ -23,8 +23,8 @@ These are the types of reactive component available:
 * `ReceivedEvents`: All received [events](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/object-interaction#events) for the current entity.
 * `CommandRequests`: All received [command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands) requests.
 * `CommandResponses`: All received [command](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands) responses.
-* [`ComponentAdded<T>`]({{urlRoot}}/api/reactive-components/component-added): Denotes that a SpatialOS component of type `T` has been added to this entity.
-* [`ComponentRemoved<T>`]({{urlRoot}}/api/reactive-components/component-removed): Denotes that a SpatialOS component of type `T` has been removed to this entity.
+* `ComponentAdded<T>`: Denotes that a SpatialOS component of type `T` has been added to this entity.
+* `ComponentRemoved<T>`: Denotes that a SpatialOS component of type `T` has been removed to this entity.
 
 ## Example of a system using a reactive component
 
@@ -60,6 +60,6 @@ public class ReactiveSystem : ComponentSystem
 
 ## Removal of reactive components
 
-The GDK automatically removes reactive components from the ECS entity as soon as the [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system) is run at the end of each frame. This means that you must run any logic for processing that reactive component _before_ [`CleanReactiveComponentsSystem`]({{urlRoot}}/api/reactive-components/clean-reactive-components-system).
+The GDK automatically removes reactive components from the ECS entity as soon as the `CleanReactiveComponentsSystem` is run at the end of each frame. This means that you must run any logic for processing that reactive component _before_ `CleanReactiveComponentsSystem`.
 
 

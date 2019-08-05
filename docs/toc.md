@@ -27,6 +27,9 @@
         - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
         - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
+    - Debug
+        - [Overview]({{urlRoot}}/modules/debug/overview)
+        - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
     - Deployment Launcher
         - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
         - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)
@@ -106,6 +109,7 @@
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
     - [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
 - <h3>API reference</h3>
+    - <h3>API reference</h3>
     - [BuildSystem]({{urlRoot}}/api/build-system-index)
         - [Configuration]({{urlRoot}}/api/build-system/configuration-index)
             - <a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a>
@@ -153,12 +157,10 @@
         - <a href="{{urlRoot}}/api/core/created-option-with-null-payload-exception">CreatedOptionWithNullPayloadException</a>
         - <a href="{{urlRoot}}/api/core/custom-spatial-os-send-system">CustomSpatialOSSendSystem</a>
         - <a href="{{urlRoot}}/api/core/dynamic">Dynamic</a>
-        - <a href="{{urlRoot}}/api/core/dynamic-converter">DynamicConverter</a>
-        - <a href="{{urlRoot}}/api/core/dynamic-snapshot">DynamicSnapshot</a>
         - <a href="{{urlRoot}}/api/core/ecs-view-system">EcsViewSystem</a>
         - <a href="{{urlRoot}}/api/core/entity-component">EntityComponent</a>
         - <a href="{{urlRoot}}/api/core/entity-id">EntityId</a>
-        - <a href="{{urlRoot}}/api/core/entity-query-snapshot">EntityQuerySnapshot</a>
+        - <a href="{{urlRoot}}/api/core/entity-snapshot">EntitySnapshot</a>
         - <a href="{{urlRoot}}/api/core/entity-system">EntitySystem</a>
         - <a href="{{urlRoot}}/api/core/entity-template">EntityTemplate</a>
         - <a href="{{urlRoot}}/api/core/fixed-update-system-group">FixedUpdateSystemGroup</a>
@@ -252,6 +254,8 @@
         - <a href="{{urlRoot}}/api/core/world-commands-received-storage">WorldCommandsReceivedStorage</a>
         - <a href="{{urlRoot}}/api/core/world-commands-to-send-storage">WorldCommandsToSendStorage</a>
         - <a href="{{urlRoot}}/api/core/worlds-initialization-helper">WorldsInitializationHelper</a>
+    - [Debug]({{urlRoot}}/api/debug-index)
+        - <a href="{{urlRoot}}/api/debug/mono-behaviour-inspector">MonoBehaviourInspector</a>
     - [GameObjectCreation]({{urlRoot}}/api/game-object-creation-index)
         - <a href="{{urlRoot}}/api/game-object-creation/game-object-creation-helper">GameObjectCreationHelper</a>
         - <a href="{{urlRoot}}/api/game-object-creation/game-object-creator-from-metadata">GameObjectCreatorFromMetadata</a>
@@ -284,29 +288,7 @@
         - <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a>
         - <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a>
         - <a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a>
-    - [ReactiveComponents]({{urlRoot}}/api/reactive-components-index)
-        - <a href="{{urlRoot}}/api/reactive-components/abstract-acknowledge-authority-loss-handler">AbstractAcknowledgeAuthorityLossHandler</a>
-        - <a href="{{urlRoot}}/api/reactive-components/acknowledge-authority-loss-system">AcknowledgeAuthorityLossSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/authoritative">Authoritative</a>
-        - <a href="{{urlRoot}}/api/reactive-components/authority-changes">AuthorityChanges</a>
-        - <a href="{{urlRoot}}/api/reactive-components/authority-changes-provider">AuthorityChangesProvider</a>
-        - <a href="{{urlRoot}}/api/reactive-components/authority-loss-imminent">AuthorityLossImminent</a>
-        - <a href="{{urlRoot}}/api/reactive-components/clean-reactive-components-system">CleanReactiveComponentsSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/command-sender-component-system">CommandSenderComponentSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/component-added">ComponentAdded</a>
-        - <a href="{{urlRoot}}/api/reactive-components/component-cleanup-handler">ComponentCleanupHandler</a>
-        - <a href="{{urlRoot}}/api/reactive-components/component-removed">ComponentRemoved</a>
-        - <a href="{{urlRoot}}/api/reactive-components/i-command-sender-component-manager">ICommandSenderComponentManager</a>
-        - <a href="{{urlRoot}}/api/reactive-components/i-reactive-command-component-manager">IReactiveCommandComponentManager</a>
-        - <a href="{{urlRoot}}/api/reactive-components/i-reactive-component-manager">IReactiveComponentManager</a>
-        - <a href="{{urlRoot}}/api/reactive-components/i-reactive-component-replication-handler">IReactiveComponentReplicationHandler</a>
-        - <a href="{{urlRoot}}/api/reactive-components/not-authoritative">NotAuthoritative</a>
-        - <a href="{{urlRoot}}/api/reactive-components/reactive-command-component-system">ReactiveCommandComponentSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/reactive-component-send-system">ReactiveComponentSendSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/reactive-components-helper">ReactiveComponentsHelper</a>
-        - <a href="{{urlRoot}}/api/reactive-components/reactive-component-system">ReactiveComponentSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/world-commands-clean-system">WorldCommandsCleanSystem</a>
-        - <a href="{{urlRoot}}/api/reactive-components/world-commands-send-system">WorldCommandsSendSystem</a>
+        - <a href="{{urlRoot}}/api/query-based-interest/query-based-interest-utils">QueryBasedInterestUtils</a>
     - [Subscriptions]({{urlRoot}}/api/subscriptions-index)
         - [Editor]({{urlRoot}}/api/subscriptions/editor-index)
             - <a href="{{urlRoot}}/api/subscriptions/editor/prefab-preprocessor">PrefabPreprocessor</a>
@@ -343,10 +325,12 @@
         - <a href="{{urlRoot}}/api/subscriptions/worker-type-attribute">WorkerTypeAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/world-subscription-manager">WorldSubscriptionManager</a>
     - [TestUtils]({{urlRoot}}/api/test-utils-index)
+        - [Editor]({{urlRoot}}/api/test-utils/editor-index)
+            - [Tests]({{urlRoot}}/api/test-utils/editor/tests-index)
+                - <a href="{{urlRoot}}/api/test-utils/editor/tests/spatial-deployment-manager-tests">SpatialDeploymentManagerTests</a>
+            - <a href="{{urlRoot}}/api/test-utils/editor/process-extensions">ProcessExtensions</a>
+            - <a href="{{urlRoot}}/api/test-utils/editor/spatial-deployment-manager">SpatialDeploymentManager</a>
         - <a href="{{urlRoot}}/api/test-utils/test-log-dispatcher">TestLogDispatcher</a>
-        - <a href="{{urlRoot}}/api/test-utils/test-mono-behaviour">TestMonoBehaviour</a>
-        - <a href="{{urlRoot}}/api/test-utils/worker-op-factory">WorkerOpFactory</a>
-        - <a href="{{urlRoot}}/api/test-utils/wrapped-op">WrappedOp</a>
     - [Tools]({{urlRoot}}/api/tools-index)
         - [MiniJSON]({{urlRoot}}/api/tools/mini-json-index)
             - <a href="{{urlRoot}}/api/tools/mini-json/json">Json</a>
@@ -393,6 +377,7 @@
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-defaults">TransformDefaults</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization">TransformSynchronization</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-helper">TransformSynchronizationHelper</a>
+        - <a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-helper2d">TransformSynchronizationHelper2D</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-receive-strategy">TransformSynchronizationReceiveStrategy</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-send-strategy">TransformSynchronizationSendStrategy</a>
         - <a href="{{urlRoot}}/api/transform-synchronization/transform-to-send">TransformToSend</a>
