@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.6` - 2019-08-05
+
 ### Breaking Changes
 
 - Renamed `Improbable.Gdk.Core.EntityQuerySnapshot` to `Improbable.Gdk.Core.EntitySnapshot`. The `Improbable.Gdk.Core.Commands.WorldCommands.EntityQuery.ReceivedResponse` has been updated accordingly. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
