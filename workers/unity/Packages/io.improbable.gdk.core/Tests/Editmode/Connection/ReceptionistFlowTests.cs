@@ -14,7 +14,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         private Improbable.Worker.CInterop.Connection connection;
 
         private static string LaunchConfigPath = Path.Combine(Common.SpatialProjectRootDir, "default_launch.json");
-        private static string SnapshotPath = Path.Combine(Common.SpatialProjectRootDir, "snapshots", "default.snapshot");
+
+        private static string SnapshotPath =
+            Path.Combine(Common.SpatialProjectRootDir, "snapshots", "default.snapshot");
 
         [SetUp]
         public void Setup()
@@ -54,7 +56,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 ReceptionistHost = "not-localhost"
             };
 
-            var aggregateException = Assert.Throws<AggregateException>(() => connection = receptionistFlow.CreateAsync(GetConnectionParameters()).Result);
+            var aggregateException = Assert.Throws<AggregateException>(() =>
+                connection = receptionistFlow.CreateAsync(GetConnectionParameters()).Result);
             Assert.IsInstanceOf<ConnectionFailedException>(aggregateException.InnerExceptions[0]);
         }
 
@@ -66,7 +69,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 ReceptionistPort = 1337
             };
 
-            var aggregateException = Assert.Throws<AggregateException>(() => connection = receptionistFlow.CreateAsync(GetConnectionParameters()).Result);
+            var aggregateException = Assert.Throws<AggregateException>(() =>
+                connection = receptionistFlow.CreateAsync(GetConnectionParameters()).Result);
             Assert.IsInstanceOf<ConnectionFailedException>(aggregateException.InnerExceptions[0]);
         }
 
