@@ -4,7 +4,7 @@
 
 ### Internal
 
-- Added tests for the `ReceptionistFlow` class [#1095](https://github.com/spatialos/gdk-for-unity/pull/1095)
+- Added tests for the `ReceptionistFlow` class. [#1095](https://github.com/spatialos/gdk-for-unity/pull/1095)
 
 ## `0.2.6` - 2019-08-05
 
