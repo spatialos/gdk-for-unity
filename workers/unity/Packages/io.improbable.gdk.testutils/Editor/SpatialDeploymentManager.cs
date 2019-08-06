@@ -125,7 +125,6 @@ namespace Improbable.Gdk.TestUtils.Editor
             return tcs.Task;
         }
 
-
         public void Dispose()
         {
             var success = spatialProcess.KillTree();
