@@ -1,0 +1,7 @@
+# Ignore hidden folders
+/.*/
+
+# Ignore everything besides .meta in Plugins
+Plugins/**/*.*
+!Plugins/**/*.meta
+!.npmignore

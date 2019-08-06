@@ -7,6 +7,7 @@ PKG_ROOT="workers/unity/Packages"
 SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
 TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
+PLATFORM_SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk.platform"
 
 SDK_VERSION="$(cat "${SDK_PATH}"/package.json | jq -r '.version')"
 
@@ -22,6 +23,31 @@ update_package() {
         rm "${path}/${file}"
     done
 }
+
+update_nuget_package() {
+    local name=$1
+    local version=$2
+    local path=$3
+
+    curl -sSL "https://www.nuget.org/api/v2/package/${name}/${version}" > ./tmp/${name}-${version}.zip
+
+    unzip ./tmp/${name}-${version}.zip -d "${path}"
+
+    local files=${4:-""}
+    for file in $(echo $files | tr ";" "\n"); do
+        rm -rf "${path}/${file}"
+    done
+}
+
+mkdir -p ./tmp
+update_nuget_package "Improbable.SpatialOS.Platform" "14.0.0" "${PLATFORM_SDK_PATH}/Plugins/Improbable" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Improbable.SpatialOS.Platform.nuspec"
+update_nuget_package "Google.Longrunning" "1.0.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Longrunning" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
+update_nuget_package "Google.Api.Gax.Grpc" "2.6.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Api.Gax.Grpc" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Google.Api.Gax.Grpc.nuspec"
+update_nuget_package "Grpc.Core" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Core/" "_rels;lib/netstandard2.0;package;.signature.p7s;[Content_Types].xml;Grpc.Core.nuspec;native"
+# update_nuget_package "Grpc.Core.Api" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Api/" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
+rm -rf ./tmp
+
+exit 0
 
 # Update Core SDK
 update_package worker_sdk core-dynamic-x86_64-linux "${SDK_PATH}/Plugins/Improbable/Core/Linux/x86_64"
