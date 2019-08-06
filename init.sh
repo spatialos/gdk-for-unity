@@ -43,7 +43,7 @@ mkdir -p ./tmp
 update_nuget_package "Improbable.SpatialOS.Platform" "14.0.0" "${PLATFORM_SDK_PATH}/Plugins/Improbable" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Improbable.SpatialOS.Platform.nuspec"
 update_nuget_package "Google.Longrunning" "1.0.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Longrunning" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
 update_nuget_package "Google.Api.Gax.Grpc" "2.6.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Api" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Google.Api.Gax.Grpc.nuspec"
-update_nuget_package "Grpc.Core" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Core/" "_rels;lib/netstandard2.0;netstandard1.5;package;.signature.p7s;[Content_Types].xml;Grpc.Core.nuspec;native;build"
+update_nuget_package "Grpc.Core" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Core/" "_rels;lib/netstandard2.0;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Grpc.Core.nuspec;native;build"
 # update_nuget_package "Grpc.Core.Api" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Api/" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
 rm -rf ./tmp
 
