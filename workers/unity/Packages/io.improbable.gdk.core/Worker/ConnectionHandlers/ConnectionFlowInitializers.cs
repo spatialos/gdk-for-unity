@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -32,13 +34,18 @@ namespace Improbable.Gdk.Core
             commandLineArgs = CommandLineArgs.FromCommandLine();
         }
 
+        internal CommandLineConnectionFlowInitializer(Dictionary<string, string> commandLineArgs)
+        {
+            this.commandLineArgs = CommandLineArgs.From(commandLineArgs);
+        }
+
         /// <summary>
         ///     Gets the connection service to use based on command line arguments.
         /// </summary>
         /// <returns>The connection service to use.</returns>
         public ConnectionService GetConnectionService()
         {
-            if (commandLineArgs.Contains(RuntimeConfigNames.SteamDeploymentTag) ||
+            if (commandLineArgs.Contains(RuntimeConfigNames.SteamDeploymentTag) &&
                 commandLineArgs.Contains(RuntimeConfigNames.SteamTicket))
             {
                 return ConnectionService.Locator;
@@ -73,13 +80,13 @@ namespace Improbable.Gdk.Core
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.SteamTicket,
                 ref locator.LocatorParameters.Steam.Ticket);
 
-            if (!string.IsNullOrEmpty(locator.LocatorParameters.LoginToken.Token))
-            {
-                locator.LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
-            }
-            else if (!string.IsNullOrEmpty(locator.LocatorParameters.Steam.Ticket) && !string.IsNullOrEmpty(locator.LocatorParameters.Steam.DeploymentTag))
+            if (!string.IsNullOrEmpty(locator.LocatorParameters.Steam.Ticket) && !string.IsNullOrEmpty(locator.LocatorParameters.Steam.DeploymentTag))
             {
                 locator.LocatorParameters.CredentialsType = LocatorCredentialsType.Steam;
+            }
+            else if (!string.IsNullOrEmpty(locator.LocatorParameters.LoginToken.Token))
+            {
+                locator.LocatorParameters.CredentialsType = LocatorCredentialsType.LoginToken;
             }
         }
 
