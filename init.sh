@@ -24,28 +24,31 @@ update_package() {
     done
 }
 
-update_nuget_package() {
-    local name=$1
-    local version=$2
-    local path=$3
+build_platform_sdk() {
+    PROJECT_DIR="$(pwd)"
+    TMP_DIR="$(mktemp -d)"
+    PLATFORM_SDK_DIR="${TMP_DIR}/platform-sdk"
 
-    curl -sSL "https://www.nuget.org/api/v2/package/${name}/${version}" > ./tmp/${name}-${version}.zip
+    mkdir -p "${PLATFORM_SDK_DIR}"
+    pushd "${PLATFORM_SDK_DIR}"
+        git init
+        git remote add origin git@github.com:spatialos/platform-sdk-csharp.git
+        git fetch --depth 50 origin master
+        git checkout 69970ca2c71049f94b1dadd76bc3616096ab6a8a
 
-    unzip ./tmp/${name}-${version}.zip -d "${path}"
+        cd apis
+        dotnet build -c Release
+        cd bin/Release/net451/
+        mv Improbable.SpatialOS.Platform* "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Improbable/"
+        mv grpc_csharp_ext.*.dll "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/Windows/"
+        mv libgrpc_csharp_ext.*.so "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/Linux/"
+        mv libgrpc_csharp_ext.*.dylib "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/OSX/"
+    popd
 
-    local files=${4:-""}
-    for file in $(echo $files | tr ";" "\n"); do
-        rm -rf "${path}/${file}"
-    done
+    rm -rf ${TMP_DIR}
 }
 
-mkdir -p ./tmp
-update_nuget_package "Improbable.SpatialOS.Platform" "14.0.0" "${PLATFORM_SDK_PATH}/Plugins/Improbable" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Improbable.SpatialOS.Platform.nuspec"
-update_nuget_package "Google.Longrunning" "1.0.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Longrunning" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
-update_nuget_package "Google.Api.Gax.Grpc" "2.6.0" "${PLATFORM_SDK_PATH}/Plugins/Google/Api" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Google.Api.Gax.Grpc.nuspec"
-update_nuget_package "Grpc.Core" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Core/" "_rels;lib/netstandard2.0;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;Grpc.Core.nuspec;native;build"
-# update_nuget_package "Grpc.Core.Api" "1.22.0" "${PLATFORM_SDK_PATH}/Plugins/Grpc/Api/" "_rels;lib/netstandard1.5;package;.signature.p7s;[Content_Types].xml;GoogleLongrunning.nuspec"
-rm -rf ./tmp
+build_platform_sdk
 
 # Update Core SDK
 update_package worker_sdk core-dynamic-x86_64-linux "${SDK_PATH}/Plugins/Improbable/Core/Linux/x86_64"
