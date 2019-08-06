@@ -17,21 +17,68 @@ namespace Improbable.Gdk.TestUtils.Editor
     {
         private Process spatialProcess;
 
-        public static Task<SpatialDeploymentManager> Start(string deploymentJsonPath, string snapshotPath)
+        public static async Task<SpatialDeploymentManager> Start(string deploymentJsonPath, string snapshotPath)
         {
             if (!File.Exists(Path.Combine(Common.SpatialProjectRootDir, deploymentJsonPath)))
             {
-                return Task.FromException<SpatialDeploymentManager>(
-                    new ArgumentException($"Could not find deployment config at {deploymentJsonPath}"));
+                throw new ArgumentException($"Could not find deployment config at {deploymentJsonPath}");
             }
 
             if (!File.Exists(Path.Combine(Common.SpatialProjectRootDir, snapshotPath)))
             {
-                return Task.FromException<SpatialDeploymentManager>(
-                    new ArgumentException($"Could not find snapshot at {snapshotPath}"));
+                throw new ArgumentException($"Could not find snapshot at {snapshotPath}");
             }
 
-            var tcs = new TaskCompletionSource<SpatialDeploymentManager>();
+            await BuildWorkerConfigs().ConfigureAwait(false);
+            var process = await StartSpatial(deploymentJsonPath, snapshotPath).ConfigureAwait(false);
+
+            return new SpatialDeploymentManager
+            {
+                spatialProcess = process
+            };
+        }
+
+        private static Task BuildWorkerConfigs()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            var processInfo =
+                new ProcessStartInfo("spatial", "build build-config")
+                {
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    WorkingDirectory = Common.SpatialProjectRootDir
+                };
+
+            var process = new Process
+            {
+                StartInfo = processInfo,
+                EnableRaisingEvents = true
+            };
+
+            process.Exited += (sender, args) =>
+            {
+                if (process.ExitCode == 0)
+                {
+                    tcs.SetResult(true);
+                }
+                else
+                {
+                    tcs.TrySetException(
+                        new Exception($"Failed to build worker configs. Raw output:\n{process.StandardOutput.ReadToEnd()}\n Raw stderr: \n{process.StandardError.ReadToEnd()}"));
+                }
+            };
+
+            process.Start();
+
+            return tcs.Task;
+        }
+
+        private static Task<Process> StartSpatial(string deploymentJsonPath, string snapshotPath)
+        {
+            var tcs = new TaskCompletionSource<Process>();
 
             var processInfo =
                 new ProcessStartInfo("spatial", $"local launch {deploymentJsonPath} --snapshot {snapshotPath} --enable_pre_run_check=false")
@@ -66,10 +113,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
                 if (args.Data.Contains("localhost:21000/inspector-v2"))
                 {
-                    tcs.TrySetResult(new SpatialDeploymentManager
-                    {
-                        spatialProcess = process
-                    });
+                    tcs.TrySetResult(process);
                 }
 
                 output.AppendLine(args.Data);
@@ -80,6 +124,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             return tcs.Task;
         }
+
 
         public void Dispose()
         {
