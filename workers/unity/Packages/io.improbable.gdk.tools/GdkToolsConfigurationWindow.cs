@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -172,15 +173,14 @@ namespace Improbable.Gdk.Tools
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(CustomSnapshotPathLabel, PlayerPrefs.GetString("CustomSnapshotPath", "snapshots/default.snapshot"));
+                EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
                 EditorGUI.EndDisabledGroup();
-
                 if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.ExpandWidth(false)))
                 {
-                    var path = EditorUtility.OpenFilePanel("Select snapshot", "", "snapshot");
+                    var path = EditorUtility.OpenFilePanel("Select snapshot", Path.GetFullPath(toolsConfig.CustomSnapshotPath), "snapshot");
                     if (path.Length != 0)
                     {
-                        PlayerPrefs.SetString("CustomSnapshotPath", path);
+                        toolsConfig.CustomSnapshotPath = path;
                     }
                 }
             }

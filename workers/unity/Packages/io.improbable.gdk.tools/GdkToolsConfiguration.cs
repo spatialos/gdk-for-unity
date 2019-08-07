@@ -20,6 +20,14 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
+        private const string CustomSnapshotPathPrefKey = "CustomSnapshotPath";
+
+        public string CustomSnapshotPath
+        {
+            get => PlayerPrefs.GetString(CustomSnapshotPathPrefKey, "snapshots/default.snapshot");
+            set => PlayerPrefs.SetString(CustomSnapshotPathPrefKey, value);
+        }
+
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 
         private GdkToolsConfiguration()
@@ -95,7 +103,6 @@ namespace Improbable.Gdk.Tools
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
-            //CustomSnapshotPath = DefaultValues.CustomSnapshotPath;
 
             SchemaSourceDirs.Clear();
             SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);

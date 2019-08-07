@@ -27,6 +27,8 @@ namespace Improbable.Gdk.Tools
         // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
 
+        private static GdkToolsConfiguration toolsConfig;
+
         [MenuItem("SpatialOS/Build worker configs", false, MenuPriorities.BuildWorkerConfigs)]
         private static void BuildConfigMenu()
         {
@@ -37,7 +39,14 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Local launch %l", false, MenuPriorities.LocalLaunch)]
         private static void LaunchMenu()
         {
-            Debug.Log($"Launching SpatialOS locally with custom snapshot {PlayerPrefs.GetString("CustomSnapshotPath", "snapshots/default.snapshot")}.");
+            toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+            if (!File.Exists(toolsConfig.CustomSnapshotPath))
+            {
+                Debug.LogError($"Snapsthot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
+                return;
+            }
+
+            Debug.Log($"Launching SpatialOS locally with custom snapshot {toolsConfig.CustomSnapshotPath}.");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
@@ -204,7 +213,7 @@ namespace Improbable.Gdk.Tools
             BuildConfig();
 
             var command = Common.SpatialBinary;
-            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{PlayerPrefs.GetString("CustomSnapshotPath", "snapshots/default.snapshot")}\"";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
 
 
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
