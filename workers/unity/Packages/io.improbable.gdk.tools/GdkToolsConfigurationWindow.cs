@@ -171,7 +171,9 @@ namespace Improbable.Gdk.Tools
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
+                EditorGUI.BeginDisabledGroup(true);
+                    EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
+                EditorGUI.EndDisabledGroup();
                 if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.ExpandWidth(false)))
                 {
                     string path = EditorUtility.OpenFilePanel("Select snapshot", "", "snapshot");
