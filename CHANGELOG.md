@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added a local launch with custom snapshot feature. [#1098](https://github.com/spatialos/gdk-for-unity/pull/1098)
+
 ## `0.2.6` - 2019-08-05
 
 ### Breaking Changes
