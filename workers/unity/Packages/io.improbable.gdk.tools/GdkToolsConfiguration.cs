@@ -12,7 +12,6 @@ namespace Improbable.Gdk.Tools
         public string CodegenOutputDir;
         public string DescriptorOutputDir;
         public string DevAuthTokenDir;
-        public string CustomSnapshotPath;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
         public List<string> SerializationOverrides = new List<string>();
@@ -96,7 +95,7 @@ namespace Improbable.Gdk.Tools
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
-            CustomSnapshotPath = DefaultValues.CustomSnapshotPath;
+            //CustomSnapshotPath = DefaultValues.CustomSnapshotPath;
 
             SchemaSourceDirs.Clear();
             SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
@@ -127,7 +126,6 @@ namespace Improbable.Gdk.Tools
             public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
             public const string DevAuthTokenDir = "Resources";
-            public const string CustomSnapshotPath = "snapshots/default.snapshot";
             public const int DevAuthTokenLifetimeDays = 30;
         }
     }

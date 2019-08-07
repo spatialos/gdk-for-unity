@@ -27,8 +27,6 @@ namespace Improbable.Gdk.Tools
         // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
 
-        private static GdkToolsConfiguration gdkToolsConfig;
-
         [MenuItem("SpatialOS/Build worker configs", false, MenuPriorities.BuildWorkerConfigs)]
         private static void BuildConfigMenu()
         {
@@ -39,16 +37,8 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Local launch %l", false, MenuPriorities.LocalLaunch)]
         private static void LaunchMenu()
         {
-            Debug.Log("Launching SpatialOS locally...");
-            EditorApplication.delayCall += ConfigureLocalDeployment;
-        }
-
-        [MenuItem("SpatialOS/Local launch with custom snapshot", false, MenuPriorities.LocalLaunch)]
-        private static void LaunchWithSnapshotMenu()
-        {
-            gdkToolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-            Debug.Log("Launching SpatialOS locally with custom snapshot " + gdkToolsConfig.CustomSnapshotPath + "...");
-            EditorApplication.delayCall += ConfigureLocalDeploymentWithCustomSnapshot;
+            Debug.Log($"Launching SpatialOS locally with custom snapshot {PlayerPrefs.GetString("CustomSnapshotPath", "snapshots/default.snapshot")}.");
+            EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
         [MenuItem("SpatialOS/Launch standalone client", false, MenuPriorities.LaunchStandaloneClient)]
@@ -209,28 +199,14 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static void ConfigureLocalDeployment()
+        public static void LaunchLocalDeployment()
         {
             BuildConfig();
 
             var command = Common.SpatialBinary;
-            var commandArgs = "local launch --enable_pre_run_check=false";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{PlayerPrefs.GetString("CustomSnapshotPath", "snapshots/default.snapshot")}\"";
 
-            LaunchLocalDeployment(command, commandArgs);
-        }
 
-        public static void ConfigureLocalDeploymentWithCustomSnapshot()
-        {
-            BuildConfig();
-
-            var command = Common.SpatialBinary;
-            var commandArgs = "local launch --enable_pre_run_check=false --snapshot " + gdkToolsConfig.CustomSnapshotPath;
-
-            LaunchLocalDeployment(command, commandArgs);
-        }
-
-        private static void LaunchLocalDeployment(string command, string commandArgs)
-        {
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))
             {
