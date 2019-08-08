@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Tools
 
         public string CustomSnapshotPath
         {
-            get => PlayerPrefs.GetString(CustomSnapshotPathPrefKey, Path.GetFullPath("../../snapshots"));
+            get => PlayerPrefs.GetString(CustomSnapshotPathPrefKey, Path.GetFullPath("../../snapshots/default.snapshot"));
             set => PlayerPrefs.SetString(CustomSnapshotPathPrefKey, value);
         }
 

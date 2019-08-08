@@ -209,6 +209,7 @@ namespace Improbable.Gdk.Tools
         public static void LaunchLocalDeployment()
         {
             BuildConfig();
+            GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var command = Common.SpatialBinary;
             var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
