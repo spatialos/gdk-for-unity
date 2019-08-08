@@ -40,9 +40,9 @@ build_platform_sdk() {
         dotnet build -c Release
         cd bin/Release/net451/
         mv Improbable.SpatialOS.Platform* "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Improbable/"
-        mv grpc_csharp_ext.*.dll "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/Windows/"
-        mv libgrpc_csharp_ext.*.so "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/Linux/"
-        mv libgrpc_csharp_ext.*.dylib "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Grpc/OSX/"
+        mv grpc_csharp_ext.*.dll "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Improbable/runtimes/win/native"
+        mv libgrpc_csharp_ext.*.so "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Improbable/runtimes/linux/native"
+        mv libgrpc_csharp_ext.*.dylib "${PROJECT_DIR}/${PLATFORM_SDK_PATH}/Plugins/Improbable/runtimes/osx/native"
     popd
 
     rm -rf ${TMP_DIR}
