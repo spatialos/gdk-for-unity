@@ -27,8 +27,6 @@ namespace Improbable.Gdk.Tools
         // Unix-like: The exit code is 128 + SIGINT (2).
         private const int UnixSigIntExitCode = 128 + 2;
 
-        private static GdkToolsConfiguration toolsConfig;
-
         [MenuItem("SpatialOS/Build worker configs", false, MenuPriorities.BuildWorkerConfigs)]
         private static void BuildConfigMenu()
         {
@@ -39,14 +37,14 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Local launch %l", false, MenuPriorities.LocalLaunch)]
         private static void LaunchMenu()
         {
-            toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+            GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (!File.Exists(toolsConfig.CustomSnapshotPath))
             {
-                Debug.LogError($"Snapsthot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
+                Debug.LogError($"Snapshot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
                 return;
             }
 
-            Debug.Log($"Launching SpatialOS locally with custom snapshot {toolsConfig.CustomSnapshotPath}.");
+            Debug.Log($"Launching SpatialOS locally with snapshot {toolsConfig.CustomSnapshotPath}.");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 

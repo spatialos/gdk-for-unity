@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Tools
         private const string DevAuthTokenSectionLabel = "Dev Auth Token Settings";
         private const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
         private const string CodeGeneratorLabel = "Code generator";
-        private const string CustomSnapshotPathLabel = "Custom snapshot path";
+        private const string CustomSnapshotPathLabel = "Selected snapshot path";
         private const string ResetConfigurationButtonText = "Reset to default";
         private const string SaveConfigurationButtonText = "Save";
 
@@ -169,16 +169,18 @@ namespace Improbable.Gdk.Tools
         {
             GUILayout.Label(CustomSnapshotPathLabel, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
-
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
-                EditorGUI.EndDisabledGroup();
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
+                }
+
                 if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.ExpandWidth(false)))
                 {
-                    var path = EditorUtility.OpenFilePanel("Select snapshot", Path.GetFullPath(toolsConfig.CustomSnapshotPath), "snapshot");
-                    if (path.Length != 0)
+                    var path = EditorUtility.OpenFilePanel("Select snapshot", toolsConfig.CustomSnapshotPath, "snapshot");
+
+                    if (!string.IsNullOrEmpty(path))
                     {
                         toolsConfig.CustomSnapshotPath = path;
                     }
