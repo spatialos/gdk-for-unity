@@ -109,7 +109,6 @@
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)
     - [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
 - <h3>API reference</h3>
-    - <h3>API reference</h3>
     - [BuildSystem]({{urlRoot}}/api/build-system-index)
         - [Configuration]({{urlRoot}}/api/build-system/configuration-index)
             - <a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a>
