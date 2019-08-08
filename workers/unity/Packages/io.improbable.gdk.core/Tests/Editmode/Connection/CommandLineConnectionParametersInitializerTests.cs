@@ -8,19 +8,21 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
     [TestFixture]
     public class CommandLineConnectionParametersInitializerTests
     {
-        [Test]
-        public void Initialize_should_set_network_protocol()
+        [TestCase("RakNet", NetworkConnectionType.RakNet)]
+        [TestCase("Tcp", NetworkConnectionType.Tcp)]
+        [TestCase("Kcp", NetworkConnectionType.Kcp)]
+        public void Initialize_should_set_network_protocol(string protocolStr, NetworkConnectionType connectionType)
         {
             var args = new Dictionary<string, string>
             {
-                { RuntimeConfigNames.LinkProtocol, "RakNet" }
+                { RuntimeConfigNames.LinkProtocol, protocolStr }
             };
 
             var connParams = new ConnectionParameters();
 
             new CommandLineConnectionParameterInitializer(args).Initialize(connParams);
 
-            Assert.AreEqual(NetworkConnectionType.RakNet, connParams.Network.ConnectionType);
+            Assert.AreEqual(connectionType, connParams.Network.ConnectionType);
         }
 
         [Test]
