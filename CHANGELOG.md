@@ -10,6 +10,7 @@
 
 - Added tests for the `ReceptionistFlow` class. [#1095](https://github.com/spatialos/gdk-for-unity/pull/1095)
 - Added tests for the `CommandLineConnectionFlowInitializer` class. [#1096](https://github.com/spatialos/gdk-for-unity/pull/1096)
+- Added tests for the `CommandLineConnectionParametersInitializer` class. [#1103](https://github.com/spatialos/gdk-for-unity/pull/1103)
 
 ## `0.2.6` - 2019-08-05
 
