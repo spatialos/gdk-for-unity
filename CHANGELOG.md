@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed a bug where `RedirectedProcess.RunAsync()` could deadlock if you did not provide a `CancellationToken`. [#1102](https://github.com/spatialos/gdk-for-unity/pull/1102)
+
 ### Internal
 
 - Added tests for the `ReceptionistFlow` class. [#1095](https://github.com/spatialos/gdk-for-unity/pull/1095)
