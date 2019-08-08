@@ -25,12 +25,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             Assert.AreEqual(connectionType, connParams.Network.ConnectionType);
         }
 
-        [Test]
-        public void Initialize_should_throw_with_invalid_protocol()
+        [TestCase("ranket")]
+        [TestCase("raknet")]
+        [TestCase("")]
+        public void Initialize_should_throw_with_invalid_protocol(string protocolStr)
         {
             var args = new Dictionary<string, string>
             {
-                { RuntimeConfigNames.LinkProtocol, "ranket" }
+                { RuntimeConfigNames.LinkProtocol, protocolStr }
             };
 
             var connParams = new ConnectionParameters();
