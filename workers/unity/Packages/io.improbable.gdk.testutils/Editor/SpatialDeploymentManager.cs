@@ -67,8 +67,16 @@ namespace Improbable.Gdk.TestUtils.Editor
                 else
                 {
                     tcs.TrySetException(
-                        new Exception($"Failed to build worker configs. Raw output:\n{process.StandardOutput.ReadToEnd()}\n Raw stderr: \n{process.StandardError.ReadToEnd()}"));
+                        new Exception($@"Failed to build worker configs with exit code: {process.ExitCode}.
+
+Raw output:
+{process.StandardOutput.ReadToEnd()}
+
+Raw stderr:
+{process.StandardError.ReadToEnd()}"));
                 }
+
+                process.Dispose();
             };
 
             process.Start();
@@ -81,7 +89,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             var tcs = new TaskCompletionSource<Process>();
 
             var processInfo =
-                new ProcessStartInfo("spatial", $"local launch {deploymentJsonPath} --snapshot {snapshotPath} --enable_pre_run_check=false")
+                new ProcessStartInfo("spatial", $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false")
                 {
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
