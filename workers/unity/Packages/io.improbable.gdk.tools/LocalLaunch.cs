@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
-            Debug.Log($"Launching SpatialOS locally with custom snapshot {toolsConfig.CustomSnapshotPath}.");
+            Debug.Log($"Launching SpatialOS locally with snapshot {toolsConfig.CustomSnapshotPath}.");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
