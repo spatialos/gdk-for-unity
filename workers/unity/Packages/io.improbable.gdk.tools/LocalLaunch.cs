@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Tools
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (!File.Exists(toolsConfig.CustomSnapshotPath))
             {
-                Debug.LogError($"Snapsthot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
+                Debug.LogError($"Snapshot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
                 return;
             }
 
