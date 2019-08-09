@@ -153,7 +153,13 @@ namespace Improbable.Gdk.TestUtils.Editor
                 {
                     var id = (string) data["id"];
                     var name = (string) data["name"];
-                    var tags = (List<object>) data["tag"];
+
+                    if (!data.TryGetValue("tag", out var tagsObj))
+                    {
+                        tagsObj = new List<object>();
+                    }
+
+                    var tags = (List<object>) tagsObj;
                     return new LocalDeployment(this, id, name, ProjectName, tags.Cast<string>().ToArray());
                 })
                 .ToList();
