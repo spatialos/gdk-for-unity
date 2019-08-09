@@ -22,6 +22,8 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
+        private static string SchemaCompilingErrorMessage = "Error(s) compiling schema files!";
+
         /// <summary>
         ///     This regex matches a C# compile error or warning log.
         ///     It captures the following components:
@@ -128,7 +130,7 @@ namespace Improbable.Gdk.Tools
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddErrorProcessing(Debug.LogError)
+                        .AddErrorProcessing(SchemaCompilerErrorProcessing)
                         .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
@@ -136,6 +138,7 @@ namespace Improbable.Gdk.Tools
                     {
                         if (!Application.isBatchMode)
                         {
+                            Debug.LogError(SchemaCompilingErrorMessage);
                             EditorApplication.delayCall += () =>
                             {
                                 EditorUtility.DisplayDialog("Generate Code",
@@ -160,6 +163,11 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.UnlockReloadAssemblies();
             }
+        }
+
+        public static void SchemaCompilerErrorProcessing(string s)
+        {
+            SchemaCompilingErrorMessage = $"{SchemaCompilingErrorMessage}\n{s}";
         }
 
         private static void ProcessStdOut(string output)
