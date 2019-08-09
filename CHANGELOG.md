@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added the ability to specify a snapshot to be used when launching a deployment in the Editor [#1098](https://github.com/spatialos/gdk-for-unity/pull/1098)
+- Added the ability to specify a snapshot to be used when launching a deployment in the Editor. [#1098](https://github.com/spatialos/gdk-for-unity/pull/1098)
 
 ### Fixed
 
