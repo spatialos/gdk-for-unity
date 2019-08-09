@@ -177,14 +177,14 @@ namespace Improbable.Gdk.Core
     public class AlphaLocatorFlow : IConnectionFlow
     {
         /// <summary>
-        ///     The IP address of the Locator to use when connecting.
+        ///     The host of the Locator to use for the development authentication flow and the Locator.
         /// </summary>
         public string LocatorHost = RuntimeConfigDefaults.LocatorHost;
 
         /// <summary>
-        ///     The port to use when connecting via development authentication.
+        ///     The port of the Locator to use for the development authentication flow and the Locator.
         /// </summary>
-        public ushort AnonymousAuthPort = RuntimeConfigDefaults.AnonymousAuthenticationPort;
+        public ushort LocatorPort = RuntimeConfigDefaults.LocatorPort;
 
         /// <summary>
         ///     The development authentication token to use when connecting via with development authentication.
@@ -235,7 +235,7 @@ namespace Improbable.Gdk.Core
                 LocatorParameters.PlayerIdentity.LoginToken = SelectLoginToken(loginTokenDetails);
             }
 
-            using (var locator = new AlphaLocator(LocatorHost, LocatorParameters))
+            using (var locator = new AlphaLocator(LocatorHost, LocatorPort, LocatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(parameters))
                 {
@@ -253,12 +253,13 @@ namespace Improbable.Gdk.Core
         {
             var result = DevelopmentAuthentication.CreateDevelopmentPlayerIdentityTokenAsync(
                 LocatorHost,
-                AnonymousAuthPort,
+                LocatorPort,
                 new PlayerIdentityTokenRequest
                 {
                     DevelopmentAuthenticationToken = DevAuthToken,
                     PlayerId = GetPlayerId(),
                     DisplayName = GetDisplayName(),
+                    UseInsecureConnection = LocatorParameters.UseInsecureConnection,
                 }
             ).Get();
 
@@ -286,13 +287,13 @@ namespace Improbable.Gdk.Core
         protected virtual List<LoginTokenDetails> GetDevelopmentLoginTokens(string workerType, string playerIdentityToken)
         {
             var result = DevelopmentAuthentication.CreateDevelopmentLoginTokensAsync(
-                RuntimeConfigDefaults.LocatorHost,
-                RuntimeConfigDefaults.AnonymousAuthenticationPort,
+                LocatorHost,
+                LocatorPort,
                 new LoginTokensRequest
                 {
                     WorkerType = workerType,
                     PlayerIdentityToken = playerIdentityToken,
-                    UseInsecureConnection = false,
+                    UseInsecureConnection = LocatorParameters.UseInsecureConnection,
                     DurationSeconds = 120,
                 }
             ).Get();

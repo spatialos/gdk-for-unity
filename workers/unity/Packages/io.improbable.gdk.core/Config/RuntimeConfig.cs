@@ -1,4 +1,3 @@
-using System;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -14,7 +13,7 @@ namespace Improbable.Gdk.Core
         public const string LocalEnvironment = "local";
         public const string CloudEnvironment = "cloud";
         public const ushort ReceptionistPort = 7777;
-        public const ushort AnonymousAuthenticationPort = 444;
+        public const ushort LocatorPort = 444;
     }
 
     /// <summary>
