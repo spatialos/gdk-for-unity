@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -21,6 +22,11 @@ namespace Improbable.Gdk.Core
         public CommandLineConnectionParameterInitializer()
         {
             commandLineArgs = CommandLineArgs.FromCommandLine();
+        }
+
+        internal CommandLineConnectionParameterInitializer(Dictionary<string, string> args)
+        {
+            commandLineArgs = CommandLineArgs.From(args);
         }
 
         public void Initialize(ConnectionParameters connectionParameters)
