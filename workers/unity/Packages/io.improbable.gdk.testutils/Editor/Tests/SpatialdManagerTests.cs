@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using Improbable.Gdk.Tools;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils.Editor.Tests
 {
@@ -55,7 +56,7 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
                     deployment.Dispose();
                 });
 
-                Assert.IsInstanceOf<ArgumentException>(aggregateException.InnerExceptions[index: 0]);
+                Assert.IsInstanceOf<ArgumentException>(aggregateException.InnerExceptions[0]);
             }
         }
 
@@ -79,6 +80,22 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
                 }
 
                 Assert.IsEmpty(manager.GetRunningDeployments().Result);
+            }
+        }
+
+        [Test]
+        public void LocalDeployment_can_add_dev_login_tag()
+        {
+            using (var manager = SpatialdManager.Start().Result)
+            {
+                using (var depl = manager.StartLocalDeployment("test", "default_launch.json").Result)
+                {
+                    Assert.DoesNotThrow(() => depl.AddDevLoginTag().Wait());
+                    var deployments = manager.GetRunningDeployments().Result;
+                    var myDeployment = deployments[0];
+                    Assert.Contains("dev_login", myDeployment.Tags);
+                    Assert.Contains("dev_login", depl.Tags);
+                }
             }
         }
     }

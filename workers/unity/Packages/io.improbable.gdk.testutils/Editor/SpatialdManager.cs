@@ -14,6 +14,8 @@ namespace Improbable.Gdk.TestUtils.Editor
         private static readonly string SpotBinary;
         private static readonly string ProjectName;
 
+        private static readonly string SpotShimPath;
+
         static SpatialdManager()
         {
             var spotPath = Path.Combine(Common.GetPackagePath("io.improbable.worker.sdk"), ".spot/spot");
@@ -25,7 +27,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             SpotBinary = spotPath;
 
-            var spatialJsonFile = Path.Combine(Tools.Common.SpatialProjectRootDir, "spatialos.json");
+            var spatialJsonFile = Path.Combine(Common.SpatialProjectRootDir, "spatialos.json");
 
             if (!File.Exists(spatialJsonFile))
             {
@@ -47,6 +49,10 @@ namespace Improbable.Gdk.TestUtils.Editor
             {
                 throw new FormatException($"Could not find a \"name\" field in {spatialJsonFile}.\n Raw exception: {e.Message}");
             }
+
+            var packagePath = Common.GetPackagePath("io.improbable.gdk.testutils");
+
+            SpotShimPath = Path.Combine(packagePath, ".SpotShim", "SpotShim", "SpotShim");
         }
 
         public static async Task<SpatialdManager> Start()
@@ -101,8 +107,8 @@ namespace Improbable.Gdk.TestUtils.Editor
             }
 
             var deploymentData = Json.Deserialize(string.Join("", result.Stdout));
-
-            var id = (string) ((Dictionary<string, object>) deploymentData["content"])["id"];
+            var content = (Dictionary<string, object>) deploymentData["content"];
+            var id = (string) content["id"];
 
             return new LocalDeployment(this, id, name, ProjectName);
         }
@@ -147,7 +153,8 @@ namespace Improbable.Gdk.TestUtils.Editor
                 {
                     var id = (string) data["id"];
                     var name = (string) data["name"];
-                    return new LocalDeployment(this, id, name, ProjectName);
+                    var tags = (List<object>) data["tag"];
+                    return new LocalDeployment(this, id, name, ProjectName, tags.Cast<string>().ToArray());
                 })
                 .ToList();
         }
@@ -167,20 +174,39 @@ namespace Improbable.Gdk.TestUtils.Editor
             }
         }
 
-        public class LocalDeployment : IDisposable
+        public struct LocalDeployment : IDisposable
         {
             public readonly string Id;
             public readonly string Name;
             public readonly string ProjectName;
+            public readonly List<string> Tags;
 
             private readonly SpatialdManager spatiald;
 
-            internal LocalDeployment(SpatialdManager spatiald, string id, string name, string projectName)
+            internal LocalDeployment(SpatialdManager spatiald, string id, string name, string projectName, params string[] tags)
             {
                 this.spatiald = spatiald;
                 Id = id;
                 Name = name;
                 ProjectName = projectName;
+                Tags = tags.ToList();
+            }
+
+            public async Task AddDevLoginTag()
+            {
+                var result = await RedirectedProcess.Command(Common.DotNetBinary)
+                    .WithArgs("run", Id, Name, ProjectName)
+                    .InDirectory(SpotShimPath)
+                    .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                    .RunAsync()
+                    .ConfigureAwait(false);
+
+                if (result.ExitCode != 0)
+                {
+                    throw new InvalidOperationException($"Failed to set deployment tag with error: {string.Join("\n", result.Stderr)}");
+                }
+
+                Tags.Add("dev_login");
             }
 
             public void Dispose()
