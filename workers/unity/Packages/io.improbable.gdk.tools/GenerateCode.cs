@@ -165,7 +165,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        public static void SchemaCompilerErrorProcessing(string s)
+        private static void SchemaCompilerErrorProcessing(string s)
         {
             SchemaCompilingErrorMessage = $"{SchemaCompilingErrorMessage}\n{s}";
         }

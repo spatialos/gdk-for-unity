@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Changed the way error messages are handled and show on the Console when schema compilation fails. [#1106](https://github.com/spatialos/gdk-for-unity/pull/1106)
+
 ## `0.2.6` - 2019-08-05
 
 ### Breaking Changes
