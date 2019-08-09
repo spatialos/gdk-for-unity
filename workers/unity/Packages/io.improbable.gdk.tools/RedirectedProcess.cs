@@ -187,7 +187,7 @@ namespace Improbable.Gdk.Tools
 
             if (token == null)
             {
-                var exitCode = await Task.Run(Run);
+                var exitCode = await Task.Run(Run).ConfigureAwait(false);
 
                 return new RedirectedProcessResult
                 {
