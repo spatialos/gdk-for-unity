@@ -265,7 +265,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             /// <exception cref="InvalidOperationException">Thrown if the operation to set the tag fails.</exception>
             public async Task AddDevLoginTag()
             {
-                // TODO: Remove shim once tag functionality is added to `spot`: WF-1487 to track.
+                // TODO: Remove shim once tag functionality is added to `spot`: UTY-2212 to track.
                 var result = await RedirectedProcess.Command(Common.DotNetBinary)
                     .WithArgs("run", Id, Name, ProjectName)
                     .InDirectory(SpotShimPath)
