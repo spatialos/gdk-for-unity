@@ -124,6 +124,18 @@ namespace Improbable.Gdk.TestUtils.Editor
                 throw new ArgumentException($"Could not find launch config file at {fullSnapshotPath}");
             }
 
+            var buildConfigResult = await RedirectedProcess.Command(Common.SpatialBinary)
+                .WithArgs("build", "build-config")
+                .InDirectory(Common.SpatialProjectRootDir)
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                .RunAsync()
+                .ConfigureAwait(false);
+
+            if (buildConfigResult.ExitCode != 0)
+            {
+                throw new Exception($"Failed to build worker configs with error: {string.Join("\n", buildConfigResult.Stderr)}");
+            }
+
             var snapshotFile = Path.GetFileNameWithoutExtension(snapshotFileName);
 
             var result = await RedirectedProcess.Command(SpotBinary)
