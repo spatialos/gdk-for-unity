@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils.Editor
 {
+    /// <summary>
+    ///     Manages the lifecycle of SpatialD and provides methods to interact with it.
+    /// </summary>
     public class SpatialdManager : IDisposable
     {
         private static readonly string SpotBinary;
@@ -55,6 +58,13 @@ namespace Improbable.Gdk.TestUtils.Editor
             SpotShimPath = Path.Combine(packagePath, ".SpotShim", "SpotShim", "SpotShim");
         }
 
+        /// <summary>
+        ///     Starts SpatialD.
+        /// </summary>
+        /// <remarks>
+        ///     If SpatialD is already running, it will stop that instance and start a new one.
+        /// </remarks>
+        /// <exception cref="Exception">Thrown if this fails to start SpatialD.</exception>
         public static async Task<SpatialdManager> Start()
         {
             await RedirectedProcess.Command(Common.SpatialBinary)
@@ -84,8 +94,21 @@ namespace Improbable.Gdk.TestUtils.Editor
         {
         }
 
-        // TODO: Implement snapshot support?
-        public async Task<LocalDeployment> StartLocalDeployment(string name, string deploymentJsonPath, string snapshotPath = null)
+        /// <summary>
+        ///     Starts a local deployment asynchronously.
+        /// </summary>
+        /// <param name="name">The name for the local deployment.</param>
+        /// <param name="deploymentJsonPath">
+        ///     The path to the launch configuration JSON relative to the root of the SpatialOS project.
+        /// </param>
+        /// <param name="snapshotFileName">
+        ///     The name of the snapshot to use for this deployment. Must be in the snapshots directory of your
+        ///     SpatialOS project.
+        /// </param>
+        /// <returns>A task which represents the deployment that was started.</returns>
+        /// <exception cref="ArgumentException">Thrown if <see cref="deploymentJsonPath"/> does not exist.</exception>
+        /// <exception cref="Exception">Thrown if the deployment fails to start.</exception>
+        public async Task<LocalDeployment> StartLocalDeployment(string name, string deploymentJsonPath, string snapshotFileName = "default.snapshot")
         {
             var fullJsonPath = Path.Combine(Common.SpatialProjectRootDir, deploymentJsonPath);
 
@@ -94,8 +117,17 @@ namespace Improbable.Gdk.TestUtils.Editor
                 throw new ArgumentException($"Could not find launch config file at {fullJsonPath}");
             }
 
+            var fullSnapshotPath = Path.Combine(Common.SpatialProjectRootDir, "snapshots", snapshotFileName);
+
+            if (!File.Exists(fullSnapshotPath))
+            {
+                throw new ArgumentException($"Could not find launch config file at {fullSnapshotPath}");
+            }
+
+            var snapshotFile = Path.GetFileNameWithoutExtension(snapshotFileName);
+
             var result = await RedirectedProcess.Command(SpotBinary)
-                .WithArgs("alpha", "deployment", "create", "-p", ProjectName, "-n", name, "-c", $"\"{fullJsonPath}\"", "--json")
+                .WithArgs("alpha", "deployment", "create", "-p", ProjectName, "-n", name, "-c", $"\"{fullJsonPath}\"", "-s", snapshotFile, "--json")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()
@@ -113,6 +145,12 @@ namespace Improbable.Gdk.TestUtils.Editor
             return new LocalDeployment(this, id, name, ProjectName);
         }
 
+        /// <summary>
+        ///     Stops a local deployment asynchronously.
+        /// </summary>
+        /// <param name="deployment">The deployment to stop.</param>
+        /// <returns>A task which represents the operation to stop the deployment.</returns>
+        /// <exception cref="Exception">Thrown if the deployment fails to be stopped.</exception>
         public async Task StopLocalDeployment(LocalDeployment deployment)
         {
             var result = await RedirectedProcess.Command(SpotBinary)
@@ -128,6 +166,10 @@ namespace Improbable.Gdk.TestUtils.Editor
             }
         }
 
+        /// <summary>
+        ///     Gets the details of currently running deployments asynchronously.
+        /// </summary>
+        /// <returns>A task which represents list of</returns>
         public async Task<List<LocalDeployment>> GetRunningDeployments()
         {
             var result = await RedirectedProcess.Command(SpotBinary)
@@ -180,11 +222,29 @@ namespace Improbable.Gdk.TestUtils.Editor
             }
         }
 
+        /// <summary>
+        ///     Represents a local deployment.
+        /// </summary>
         public struct LocalDeployment : IDisposable
         {
+            /// <summary>
+            ///     The ID of this deployment.
+            /// </summary>
             public readonly string Id;
+
+            /// <summary>
+            ///     The name of this deployment.
+            /// </summary>
             public readonly string Name;
+
+            /// <summary>
+            ///     The project that this deployment belongs to.
+            /// </summary>
             public readonly string ProjectName;
+
+            /// <summary>
+            ///     The tags that are present on this deployment.
+            /// </summary>
             public readonly List<string> Tags;
 
             private readonly SpatialdManager spatiald;
@@ -198,6 +258,11 @@ namespace Improbable.Gdk.TestUtils.Editor
                 Tags = tags.ToList();
             }
 
+            /// <summary>
+            ///     Adds the "dev_login" tag to this deployment asynchronously.
+            /// </summary>
+            /// <returns>A task which represents the underlying operation to add the tag.</returns>
+            /// <exception cref="InvalidOperationException">Thrown if the operation to set the tag fails.</exception>
             public async Task AddDevLoginTag()
             {
                 // TODO: Remove shim once tag functionality is added to `spot`: WF-1487 to track.

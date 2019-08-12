@@ -61,6 +61,23 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
         }
 
         [Test]
+        public void StartLocalDeployment_throws_if_invalid_snapshot_name()
+        {
+            using (var manager = SpatialdManager.Start().Result)
+            {
+                var aggregateException = Assert.Throws<AggregateException>(() =>
+                {
+                    var deployment = manager.StartLocalDeployment("test", "default_launch.json", "doesnt_exist.snapshot").Result;
+
+                    // Shouldn't get here, but just in case ;)
+                    deployment.Dispose();
+                });
+
+                Assert.IsInstanceOf<ArgumentException>(aggregateException.InnerExceptions[0]);
+            }
+        }
+
+        [Test]
         public void StartLocalDeployment_starts_a_deployment()
         {
             using (var manager = SpatialdManager.Start().Result)
