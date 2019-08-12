@@ -71,7 +71,6 @@ namespace Improbable.Gdk.Tools
 
         private static void Generate()
         {
-            var errorMessage = new StringBuilder();
             try
             {
                 if (!Common.CheckDependencies())
@@ -127,6 +126,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
+                    var errorMessage = new StringBuilder();
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
