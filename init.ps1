@@ -5,7 +5,7 @@ $SdkPath = $PkgRoot + "/io.improbable.worker.sdk"
 $SdkMobilePath = $PkgRoot + "/io.improbable.worker.sdk.mobile"
 
 $SdkVersion = Get-Content ($SdkPath + "/package.json") | jq -r '.version'
-$SpotVersion = "20190626.145947.9ed060f1af"
+$SpotVersion = Get-Content ($SdkPath + "/.spot.version")
 
 function UpdatePackage($type, $identifier, $path, $removes)
 {
