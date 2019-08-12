@@ -4,7 +4,9 @@
         "Improbable.Gdk.Core",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.Gdk.TestUtils"
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.TestUtils.Editor",
+        "Improbable.Gdk.Tools"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -13,5 +15,10 @@
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }
