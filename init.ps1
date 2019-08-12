@@ -5,6 +5,7 @@ $SdkPath = $PkgRoot + "/io.improbable.worker.sdk"
 $SdkMobilePath = $PkgRoot + "/io.improbable.worker.sdk.mobile"
 
 $SdkVersion = Get-Content ($SdkPath + "/package.json") | jq -r '.version'
+$SpotVersion = "20190626.145947.9ed060f1af"
 
 function UpdatePackage($type, $identifier, $path, $removes)
 {
@@ -18,6 +19,11 @@ function UpdatePackage($type, $identifier, $path, $removes)
     }
 }
 
+function UpdateSpot($identifier, $path)
+{
+    spatial package get spot $identifier $SpotVersion "$path" --json_output
+}
+
 UpdatePackage worker_sdk core-dynamic-x86_64-linux "$SdkPath/Plugins/Improbable/Core/Linux/x86_64"
 UpdatePackage worker_sdk core-bundle-x86_64-macos "$SdkPath/Plugins/Improbable/Core/OSX"
 UpdatePackage worker_sdk core-dynamic-x86_64-win32 "$SdkPath/Plugins/Improbable/Core/Windows/x86_64" "CoreSdkDll.lib"
@@ -28,6 +34,9 @@ UpdatePackage schema standard_library "$SdkPath/.schema"
 
 UpdatePackage tools schema_compiler-x86_64-win32 "$SdkPath/.schema_compiler"
 UpdatePackage tools schema_compiler-x86_64-macos "$SdkPath/.schema_compiler"
+
+UpdateSpot spot-win64 "$SdkPath/.spot/spot.exe"
+UpdateSpot spot-macos "$SdkPath/.spot/spot"
 
 #Update Mobile SDK
 UpdatePackage worker_sdk core-static-fullylinked-arm-ios "$SdkMobilePath/Plugins/Improbable/Core/iOS/arm" "CoreSdkStatic.lib;libCoreSdkStatic.a.pic"
