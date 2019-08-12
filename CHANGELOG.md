@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Renamed the public field `AnonymousAuthenticationPort` to `LocatorPort` on the `AlphaLocatorFlow` class. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
+- Renamed the public field `AnonymousAuthenticationPort` to `LocatorPort` on the `AlphaLocatorFlow` class and the `RuntimeConfigDefaults` static class. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
 
 ### Added
 
