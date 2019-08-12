@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -21,8 +22,6 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
-
-        private static string SchemaCompilingErrorMessage = "Error(s) compiling schema files!";
 
         /// <summary>
         ///     This regex matches a C# compile error or warning log.
@@ -72,6 +71,7 @@ namespace Improbable.Gdk.Tools
 
         private static void Generate()
         {
+            var errorMessage = new StringBuilder();
             try
             {
                 if (!Common.CheckDependencies())
@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Tools
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddErrorProcessing(SchemaCompilerErrorProcessing)
+                        .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
                         .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Tools
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError(SchemaCompilingErrorMessage);
+                            Debug.LogError($"Error(s) compiling schema files!{errorMessage.ToString()}");
                             EditorApplication.delayCall += () =>
                             {
                                 EditorUtility.DisplayDialog("Generate Code",
@@ -163,11 +163,6 @@ namespace Improbable.Gdk.Tools
             {
                 EditorApplication.UnlockReloadAssemblies();
             }
-        }
-
-        private static void SchemaCompilerErrorProcessing(string s)
-        {
-            SchemaCompilingErrorMessage = $"{SchemaCompilingErrorMessage}\n{s}";
         }
 
         private static void ProcessStdOut(string output)
