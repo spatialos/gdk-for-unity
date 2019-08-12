@@ -239,7 +239,7 @@ namespace Improbable.Gdk.Core
             {
                 using (var connectionFuture = locator.ConnectAsync(parameters))
                 {
-                    return await Utils.TryToConnectAsync(connectionFuture, token);
+                    return await Utils.TryToConnectAsync(connectionFuture, token).ConfigureAwait(false);
                 }
             }
         }
