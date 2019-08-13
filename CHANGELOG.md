@@ -19,6 +19,7 @@
 
 - Fixed a bug where `RedirectedProcess.RunAsync()` could deadlock if you did not provide a `CancellationToken`. [#1102](https://github.com/spatialos/gdk-for-unity/pull/1102)
 - Fixed a bug in the `AlphaLocatorFlow` where the default implementation of `GetDevelopmentLoginTokens` did not respect the host/port fields. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
+- Fixed a bug where `AlphaLocatorFlow.CreateAsync()` could deadlock. [#1108](https://github.com/spatialos/gdk-for-unity/pull/1108)
 
 ### Internal
 
@@ -26,6 +27,7 @@
 - Added tests for the `CommandLineConnectionFlowInitializer` class. [#1096](https://github.com/spatialos/gdk-for-unity/pull/1096)
 - Added tests for the `CommandLineConnectionParametersInitializer` class. [#1103](https://github.com/spatialos/gdk-for-unity/pull/1103)
 - Added `spot` downloading to `init.sh` & `init.ps` into the `io.improbable.worker.sdk` package. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
+- Added tests for the `AlphaLocatorFlow` class. [#1108](https://github.com/spatialos/gdk-for-unity/pull/1108)
 
 ## `0.2.6` - 2019-08-05
 
