@@ -8,25 +8,6 @@ If you're an Unity game developer and you're ready to try out the GDK, follow th
 
 > The SpatialOS GDK for Unity is in alpha. We are committed to rapid development of the GDK to improve stability, usability, and performance - for information on this, see our [development roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) and contact us via our [forums](https://forums.improbable.io/latest?tags=unity-gdk), or on [Discord](https://discord.gg/SCZTCYm). Sign onto our [mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb) to get updates about the GDK for Unity.
 
-
-## Anatomy of the GDK
-
-The GDK is composed of three layers:
-
-**The GDK Core:** a performant, data-oriented integration with our cloud platform SpatialOS, based on the familiar Unity-native workflows.
-
-**The GDK Feature Modules:** a library of solutions for hard or common networked game development problems, such as Character Movement and Shooting.
-
-**The GDK Starter Projects:**
-
-* The [**First Person Shooter (FPS) Starter Project**](https://github.com/spatialos/gdk-for-unity-fps-starter-project/)
-
-  This project enables you and your friends to experience the true scale of SpatialOS, providing a solid foundation for entirely new games in the FPS genre.
-  
-* The [**Blank Starter Project**](https://github.com/spatialos/gdk-for-unity-blank-project) 
-
-  This project contains the minimum GDK feature set you need to start developing games for SpatialOS.
-
 ## Developing on the GDK
 
 We recommend that you start developing with the [**Blank Starter Project**](https://github.com/spatialos/gdk-for-unity-blank-project) or the [**First Person Shooter (FPS) Starter Project**](https://github.com/spatialos/gdk-for-unity-fps-starter-project/).
