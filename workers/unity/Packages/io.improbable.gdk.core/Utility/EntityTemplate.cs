@@ -245,7 +245,7 @@ namespace Improbable.Gdk.Core
 
             public ComponentData Build()
             {
-                var schemaComponentData = new SchemaComponentData();
+                var schemaComponentData = SchemaComponentData.Create();
                 var fields = schemaComponentData.GetFields();
 
                 // Write the read acl
@@ -292,7 +292,7 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
-                var componentData = new ComponentData(componentId, new SchemaComponentData());
+                var componentData = new ComponentData(componentId, SchemaComponentData.Create());
                 vtable.SerializeSnapshot((TSnapshot) data[componentId], componentData);
                 Entity.Add(componentData);
             }
