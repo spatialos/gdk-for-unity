@@ -1,5 +1,6 @@
 package playground;
-import "improbable/vector3.schema";
+
+import "playground/shared.schema";
 
 // Launcher represents an entity that can launch Launchables.
 // The act of launching costs the launcher energy.
@@ -8,8 +9,8 @@ import "improbable/vector3.schema";
 // Command sent by clients to request launching a Launchable.
 type LaunchCommandRequest {
     EntityId entity_to_launch = 1;
-    improbable.Vector3f impact_point = 2;
-    improbable.Vector3f launch_direction = 3;
+    playground.Vector3f impact_point = 2;
+    playground.Vector3f launch_direction = 3;
     float launch_energy = 4;
     EntityId player = 5;
 }
@@ -18,8 +19,8 @@ type LaunchCommandResponse {}
 
 // Command sent by gamelogic to get a Launchable to launch itself.
 type LaunchMeCommandRequest {
-    improbable.Vector3f impact_point = 1;
-    improbable.Vector3f launch_direction = 2;
+    playground.Vector3f impact_point = 1;
+    playground.Vector3f launch_direction = 2;
     float launch_energy = 3;
     EntityId player = 4;
 }
