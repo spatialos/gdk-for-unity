@@ -133,7 +133,7 @@ namespace Improbable.Gdk.Core
             for (int i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                var id = connection.SendCommandRequest(request.EntityId, request.Request, request.CommandId, request.Timeout);
+                var id = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout);
                 metaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId, id);
             }
 

@@ -52,11 +52,11 @@ namespace Improbable.Gdk.Core
         public static void DeserializeAndApplyCommandRequestReceived(CommandRequestOp op, ViewDiff viewDiff)
         {
             if (!CommandIdsToCommandDeserializer.TryGetValue(
-                (op.Request.ComponentId, op.Request.SchemaData.Value.GetCommandIndex()),
+                (op.Request.ComponentId, op.Request.CommandIndex),
                 out var deserializer))
             {
                 throw new ArgumentException($"Can not deserialize command request with command index " +
-                    $"{op.Request.SchemaData.Value.GetCommandIndex()} on component with ID {op.Request.ComponentId}");
+                    $"{op.Request.CommandIndex} on component with ID {op.Request.ComponentId}");
             }
 
             deserializer.AddRequestToDiff(op, viewDiff);
@@ -65,11 +65,11 @@ namespace Improbable.Gdk.Core
         public static void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff,
             CommandMetaDataAggregate commandMetaData)
         {
-            if (!CommandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.CommandIndex),
+            if (!CommandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.Response.CommandIndex),
                 out var deserializer))
             {
                 throw new ArgumentException($"Can not deserialize command response command index " +
-                    $"{op.Response.SchemaData.Value.GetCommandIndex()} on component with ID {op.Response.ComponentId}");
+                    $"{op.Response.CommandIndex} on component with ID {op.Response.ComponentId}");
             }
 
             deserializer.AddResponseToDiff(op, viewDiff, commandMetaData);

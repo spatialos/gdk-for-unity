@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<CommandMetaData> metaData = new List<CommandMetaData>();
 
-        public void MarkIdForRemoval(uint componentId, uint commandId, uint internalRequestId)
+        public void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)
         {
             foreach (var data in metaData)
             {
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public CommandContext<T> GetContext<T>(uint componentId, uint commandId, uint internalRequestId)
+        public CommandContext<T> GetContext<T>(uint componentId, uint commandId, long internalRequestId)
         {
             foreach (var data in metaData)
             {

@@ -5,14 +5,14 @@ namespace Improbable.Gdk.Core
         uint GetComponentId();
         uint GetCommandId();
 
-        void RemoveMetaData(uint internalRequestId);
+        void RemoveMetaData(long internalRequestId);
 
-        void SetInternalRequestId(uint internalRequestId, long requestId);
+        void SetInternalRequestId(long internalRequestId, long requestId);
     }
 
     public interface ICommandPayloadStorage<T>
     {
-        CommandContext<T> GetPayload(uint internalRequestId);
+        CommandContext<T> GetPayload(long internalRequestId);
         void AddRequest(in CommandContext<T> context);
     }
 }
