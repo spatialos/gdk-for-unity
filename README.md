@@ -4,9 +4,9 @@
 
 The SpatialOS Game Development Kit (GDK) for Unity allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
 
-If you're an Unity game developer and you're ready to try out the GDK, follow the [Get started guide](https://docs.improbable.io/unity/alpha/projects/fps/get-started/get-started).
+If you're a Unity game developer and ready to try out the GDK, follow the [Get started guide](https://docs.improbable.io/unity/alpha/projects/fps/get-started/get-started).
 
-> The SpatialOS GDK for Unity is in alpha. We are committed to rapid development of the GDK to improve stability, usability, and performance - for information on this, see our [development roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) and contact us via our [forums](https://forums.improbable.io/latest?tags=unity-gdk), or on [Discord](https://discord.gg/SCZTCYm). Sign onto our [mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb) to get updates about the GDK for Unity.
+> The SpatialOS GDK for Unity is in alpha. We are committed to rapid development of the GDK to improve stability, usability, and performance - for information on this, see our [development roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) and contact us via our [forums](https://forums.improbable.io/latest?tags=unity-gdk), or on [Discord](https://discord.gg/SCZTCYm). Sign up to our [mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb) to get updates about the GDK for Unity.
 
 ## Developing on the GDK
 
@@ -62,7 +62,7 @@ We have released the GDK this early in development because we want your feedback
 
 ## Contributions
 
-We are not currently accepting public contributions - see our [contributions](https://docs.improbable.io/unity/alpha/contributing) policy. However, we are accepting issues and we do want your feedback.
+We are not currently accepting public contributions - see our [contributions](https://docs.improbable.io/unity/alpha/contributing) policy. However, we are accepting issues and will gratefully appreciate your feedback.
 
 ---
 
