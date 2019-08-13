@@ -78,8 +78,8 @@ namespace Playground
                     return;
                 }
 
-                var impactPoint = Vector3f.FromUnityVector(info.point);
-                var launchDirection = Vector3f.FromUnityVector(ray.direction);
+                var impactPoint = new Vector3f(info.point.x, info.point.y, info.point.z);
+                var launchDirection = new Vector3f(ray.direction.x, ray.direction.y, ray.direction.z);
 
                 var request = new Launcher.LaunchEntity.Request(playerId,
                     new LaunchCommandRequest(component.EntityId, impactPoint, launchDirection,
