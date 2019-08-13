@@ -10,21 +10,21 @@ namespace Improbable.Gdk.Core
     ///     This is required because bool is not blittable by default.
     /// </remarks>
     /// <typeparam name="T">The contained type in the Option.</typeparam>
-    public struct Option<T> : IEquatable<Option<T>>
+    public readonly struct Option<T> : IEquatable<Option<T>>
     {
         public static readonly Option<T> Empty = new Option<T>();
 
         /// <summary>
         ///     True if the Option contains a value, false if not.
         /// </summary>
-        public bool HasValue { get; }
+        public readonly bool HasValue;
 
         private readonly T value;
 
         /// <summary>
         ///     Returns the value contained inside the Option.
         /// </summary>
-        /// <exception cref="CalledValueOnEmptyOptionException">
+        /// <exception cref="EmptyOptionException">
         ///    Thrown if the Option is empty.
         /// </exception>
         public T Value
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
             {
                 if (!HasValue)
                 {
-                    throw new CalledValueOnEmptyOptionException("Called Value on empty Option.");
+                    throw new EmptyOptionException("Called Value on empty Option.");
                 }
 
                 return value;
@@ -46,16 +46,8 @@ namespace Improbable.Gdk.Core
         /// <param name="value">
         ///    The value to be contained in the option
         /// </param>
-        /// <exception cref="CreatedOptionWithNullPayloadException">
-        ///    Thrown if the value parameter is null.
-        /// </exception>
         public Option(T value)
         {
-            if (!typeof(T).IsValueType && value == null)
-            {
-                throw new CreatedOptionWithNullPayloadException("Options may not have null payloads.");
-            }
-
             HasValue = true;
             this.value = value;
         }
@@ -72,14 +64,8 @@ namespace Improbable.Gdk.Core
         /// </returns>
         public bool TryGetValue(out T outValue)
         {
-            if (!HasValue)
-            {
-                outValue = default(T);
-                return false;
-            }
-
             outValue = value;
-            return true;
+            return HasValue;
         }
 
         /// <summary>
@@ -110,7 +96,7 @@ namespace Improbable.Gdk.Core
 
             if (HasValue && other.HasValue)
             {
-                return value.Equals(other.Value);
+                return value.Equals(other.value);
             }
 
             return false;
@@ -148,22 +134,11 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Represents an error that occurs when an Option is created with an invalid initial state.
-    /// </summary>
-    public class CreatedOptionWithNullPayloadException : Exception
-    {
-        public CreatedOptionWithNullPayloadException(string message)
-            : base(message)
-        {
-        }
-    }
-
-    /// <summary>
     ///     Represents an error when an Option's contained value is attempted to be accessed when the option is empty.
     /// </summary>
-    public class CalledValueOnEmptyOptionException : Exception
+    public class EmptyOptionException : Exception
     {
-        public CalledValueOnEmptyOptionException(string message)
+        public EmptyOptionException(string message)
             : base(message)
         {
         }
