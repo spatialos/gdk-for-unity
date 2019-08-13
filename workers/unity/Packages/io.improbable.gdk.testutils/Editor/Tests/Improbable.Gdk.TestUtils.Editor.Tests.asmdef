@@ -1,7 +1,8 @@
 {
     "name": "Improbable.Gdk.TestUtils.Editor.Tests",
     "references": [
-        "Improbable.Gdk.TestUtils.Editor"
+        "Improbable.Gdk.TestUtils.Editor",
+        "Improbable.Gdk.Tools"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

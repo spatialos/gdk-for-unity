@@ -9,6 +9,7 @@
 ### Added
 
 - Added the ability to connect to an arbitrary host/port combo for the `AlphaLocatorFlow`. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
+- Added a `SpatialdManager` class for managing local deployments with `SpatialD` into `io.improbable.gdk.testutils`. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
 
 ### Changed
 
@@ -24,7 +25,7 @@
 - Added tests for the `ReceptionistFlow` class. [#1095](https://github.com/spatialos/gdk-for-unity/pull/1095)
 - Added tests for the `CommandLineConnectionFlowInitializer` class. [#1096](https://github.com/spatialos/gdk-for-unity/pull/1096)
 - Added tests for the `CommandLineConnectionParametersInitializer` class. [#1103](https://github.com/spatialos/gdk-for-unity/pull/1103)
-
+- Added `spot` downloading to `init.sh` & `init.ps` into the `io.improbable.worker.sdk` package. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
 
 ## `0.2.6` - 2019-08-05
 

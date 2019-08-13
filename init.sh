@@ -9,6 +9,7 @@ SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
 TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
 
 SDK_VERSION="$(cat "${SDK_PATH}"/package.json | jq -r '.version')"
+SPOT_VERSION="$(cat "${SDK_PATH}"/.spot.version)"
 
 update_package() {
     local type=$1
@@ -23,6 +24,13 @@ update_package() {
     done
 }
 
+update_spot() {
+    local identifer=$1
+    local path=$2
+
+    spatial package get spot $identifer $SPOT_VERSION "${path}" --force --json_output
+}
+
 # Update Core SDK
 update_package worker_sdk core-dynamic-x86_64-linux "${SDK_PATH}/Plugins/Improbable/Core/Linux/x86_64"
 update_package worker_sdk core-bundle-x86_64-macos "${SDK_PATH}/Plugins/Improbable/Core/OSX"
@@ -35,6 +43,9 @@ update_package schema test_schema_library "${TEST_SDK_PATH}/.schema" "test_schem
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
+
+update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
+update_spot spot-macos "${SDK_PATH}/.spot/spot"
 
 #Update Mobile SDK
 update_package worker_sdk core-static-fullylinked-arm-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm" "CoreSdkStatic.lib;libCoreSdkStatic.a.pic"
