@@ -5,3 +5,7 @@
 Plugins/**/*.*
 !Plugins/**/*.meta
 !.npmignore
+
+# MacOS workarounds
+!Plugins/**/*.bundle 
+Plugins/Improbable/Core/OSX/improbable_worker.bundle/Contents/MacOS/improbable_worker
