@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -125,10 +126,11 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
+                    var errorMessage = new StringBuilder();
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddErrorProcessing(Debug.LogError)
+                        .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
                         .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
@@ -136,6 +138,7 @@ namespace Improbable.Gdk.Tools
                     {
                         if (!Application.isBatchMode)
                         {
+                            Debug.LogError($"Error(s) compiling schema files!{errorMessage.ToString()}");
                             EditorApplication.delayCall += () =>
                             {
                                 EditorUtility.DisplayDialog("Generate Code",
