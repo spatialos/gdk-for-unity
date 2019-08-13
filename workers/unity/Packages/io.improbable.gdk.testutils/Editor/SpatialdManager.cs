@@ -83,7 +83,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             if (result.ExitCode != 0)
             {
-                throw new Exception($"Could not start spatiald with error: {string.Join("\n", result.Stderr)}");
+                throw new Exception($"Could not start spatiald with error:\n {string.Join("\n", result.Stderr)}");
             }
 
             return new SpatialdManager();
@@ -133,7 +133,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             if (buildConfigResult.ExitCode != 0)
             {
-                throw new Exception($"Failed to build worker configs with error: {string.Join("\n", buildConfigResult.Stderr)}");
+                throw new Exception($"Failed to build worker configs with error:\n {string.Join("\n", buildConfigResult.Stderr)}");
             }
 
             var snapshotFile = Path.GetFileNameWithoutExtension(snapshotFileName);
@@ -147,7 +147,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             if (result.ExitCode != 0)
             {
-                throw new Exception($"Failed to start deployment with error: {string.Join("\n", result.Stderr)}");
+                throw new Exception($"Failed to start deployment with error:\n {string.Join("\n", result.Stderr)}");
             }
 
             var deploymentData = Json.Deserialize(string.Join("", result.Stdout));
@@ -174,7 +174,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             if (result.ExitCode != 0)
             {
-                throw new Exception($"Failed to stop deployment with error: {string.Join("\n", result.Stderr)}");
+                throw new Exception($"Failed to stop deployment with error:\n {string.Join("\n", result.Stderr)}");
             }
         }
 
@@ -230,7 +230,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
             if (result.ExitCode != 0)
             {
-                Debug.LogWarning($"Failed to stop spatiald with error: {string.Join("\n", result.Stderr)}");
+                Debug.LogWarning($"Failed to stop spatiald with error:\n {string.Join("\n", result.Stderr)}");
             }
         }
 
@@ -287,7 +287,7 @@ namespace Improbable.Gdk.TestUtils.Editor
 
                 if (result.ExitCode != 0)
                 {
-                    throw new InvalidOperationException($"Failed to set deployment tag with error: {string.Join("\n", result.Stderr)}");
+                    throw new InvalidOperationException($"Failed to set deployment tag with error:\n {string.Join("\n", result.Stderr)}");
                 }
 
                 Tags.Add("dev_login");
