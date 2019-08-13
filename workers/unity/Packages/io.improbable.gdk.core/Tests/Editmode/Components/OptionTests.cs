@@ -148,7 +148,7 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var option = new Option<bool>();
             Assert.Throws<EmptyOptionException>(() =>
             {
-                bool _ = option.Value;
+                bool _ = option;
             });
         }
     }
