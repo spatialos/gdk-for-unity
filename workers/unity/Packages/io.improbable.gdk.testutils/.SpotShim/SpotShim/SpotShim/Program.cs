@@ -7,6 +7,8 @@ namespace SpotShim
 {
     class Program
     {
+        private const ushort SpatialdPort = 9876;
+
         public static async Task Main(string[] args)
         {
             if (args.Length != 3)
@@ -14,7 +16,7 @@ namespace SpotShim
                 throw new ArgumentException("Expected usage: SpotShim.exe <deployment_id> <deployment_name> <project_name>");
             }
 
-            var localApiEndpoint = new PlatformApiEndpoint("localhost", 9876, insecure: true);
+            var localApiEndpoint = new PlatformApiEndpoint("localhost", SpatialdPort, insecure: true);
             var deploymentServiceClient = DeploymentServiceClient.Create(localApiEndpoint);
 
             var request = new UpdateDeploymentRequest
