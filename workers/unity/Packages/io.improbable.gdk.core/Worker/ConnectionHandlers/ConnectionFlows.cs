@@ -4,9 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Alpha;
-using Locator = Improbable.Worker.CInterop.Locator;
-using LocatorParameters = Improbable.Worker.CInterop.LocatorParameters;
-using AlphaLocator = Improbable.Worker.CInterop.Alpha.Locator;
 
 namespace Improbable.Gdk.Core
 {
@@ -67,114 +64,9 @@ namespace Improbable.Gdk.Core
     }
 
     /// <summary>
-    ///     Represents the Locator connection flow.
-    /// </summary>
-    public class LocatorFlow : IConnectionFlow
-    {
-        /// <summary>
-        ///     The IP address of the Locator to use when connecting.
-        /// </summary>
-        public string LocatorHost = RuntimeConfigNames.LocatorHost;
-
-        /// <summary>
-        ///     The parameters to use to connect to the Locator.
-        /// </summary>
-        public LocatorParameters LocatorParameters = new LocatorParameters
-        {
-            LoginToken = new LoginTokenCredentials
-            {
-                Token = string.Empty
-            },
-            Steam = new SteamCredentials
-            {
-                Ticket = string.Empty,
-                DeploymentTag = string.Empty
-            },
-            Logging = new ProtocolLoggingParameters(),
-            ProjectName = string.Empty,
-            CredentialsType = LocatorCredentialsType.LoginToken,
-            EnableLogging = false,
-        };
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="LocatorFlow"/> class.
-        /// </summary>
-        /// <param name="initializer">Optional. An initializer to seed the data required to connect via the Locator flow.</param>
-        public LocatorFlow(IConnectionFlowInitializer<LocatorFlow> initializer = null)
-        {
-            initializer?.Initialize(this);
-        }
-
-        public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
-        {
-            parameters.Network.UseExternalIp = true;
-
-            using (var locator = new Locator(LocatorHost, LocatorParameters))
-            {
-                var deploymentList = await GetDeploymentList(locator);
-
-                var deploymentName = SelectDeploymentName(deploymentList);
-                if (string.IsNullOrEmpty(deploymentName))
-                {
-                    throw new ConnectionFailedException("No deployment name chosen",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                using (var connectionFuture = locator.ConnectAsync(deploymentName, parameters, _ => true))
-                {
-                    return await Utils.TryToConnectAsync(connectionFuture, token).ConfigureAwait(false);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Selects a deployment to connect to.
-        /// </summary>
-        /// <param name="deploymentList">The list of deployments to choose from.</param>
-        /// <returns>The name of the deployment to connect to.</returns>
-        /// <exception cref="ConnectionFailedException">The deployment list contains an error or is empty.</exception>
-        protected virtual string SelectDeploymentName(DeploymentList deploymentList)
-        {
-            if (deploymentList.Error != null)
-            {
-                throw new ConnectionFailedException($"Failed to list deployments with error: ${deploymentList.Error}", ConnectionErrorReason.DeploymentNotFound);
-            }
-
-            if (deploymentList.Deployments.Count == 0)
-            {
-                throw new ConnectionFailedException("Could not find any deployments to connect to.", ConnectionErrorReason.DeploymentNotFound);
-            }
-
-            return deploymentList.Deployments[0].DeploymentName;
-        }
-
-        private static async Task<DeploymentList> GetDeploymentList(Locator locator)
-        {
-            using (var deploymentsFuture = locator.GetDeploymentListAsync())
-            {
-                var deploymentList = await Task.Run(() => deploymentsFuture.Get()).ConfigureAwait(false);
-                // Guard against null refs. This shouldn't be triggered.
-                if (!deploymentList.HasValue)
-                {
-                    throw new ConnectionFailedException("Deployment list future returned null.",
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                if (deploymentList.Value.Error != null)
-                {
-                    throw new ConnectionFailedException(deploymentList.Value.Error,
-                        ConnectionErrorReason.DeploymentNotFound);
-                }
-
-                return deploymentList.Value;
-            }
-        }
-    }
-
-    /// <summary>
     ///     Represents the Alpha Locator connection flow.
     /// </summary>
-    public class AlphaLocatorFlow : IConnectionFlow
+    public class LocatorFlow : IConnectionFlow
     {
         /// <summary>
         ///     The host of the Locator to use for the development authentication flow and the Locator.
@@ -201,23 +93,25 @@ namespace Improbable.Gdk.Core
         public bool UseDevAuthFlow = true;
 
         /// <summary>
-        ///     The parameters to use to connect to the Locator.
+        ///     The login token to use to connect via the Locator.
         /// </summary>
-        public Improbable.Worker.CInterop.Alpha.LocatorParameters LocatorParameters =
-            new Improbable.Worker.CInterop.Alpha.LocatorParameters
-            {
-                PlayerIdentity = new PlayerIdentityCredentials
-                {
-                    LoginToken = string.Empty,
-                    PlayerIdentityToken = string.Empty
-                }
-            };
+        public string LoginToken = string.Empty;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AlphaLocatorFlow"/> class.
+        ///     The player identity token to use to connect via the Locator.
+        /// </summary>
+        public string PlayerIdentityToken = string.Empty;
+
+        /// <summary>
+        ///     Denotes whether to connect to the Locator via an insecure connection or not.
+        /// </summary>
+        public bool UseInsecureConnection = false;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="LocatorFlow"/> class.
         /// </summary>
         /// <param name="initializer">Optional. An initializer to seed the data required to connect via the Alpha Locator flow.</param>
-        public AlphaLocatorFlow(IConnectionFlowInitializer<AlphaLocatorFlow> initializer = null)
+        public LocatorFlow(IConnectionFlowInitializer<LocatorFlow> initializer = null)
         {
             initializer?.Initialize(this);
         }
@@ -228,14 +122,23 @@ namespace Improbable.Gdk.Core
 
             if (UseDevAuthFlow)
             {
-                var pit = GetDevelopmentPlayerIdentityToken();
-                var loginTokenDetails = GetDevelopmentLoginTokens(parameters.WorkerType, pit);
-
-                LocatorParameters.PlayerIdentity.PlayerIdentityToken = pit;
-                LocatorParameters.PlayerIdentity.LoginToken = SelectLoginToken(loginTokenDetails);
+                PlayerIdentityToken = GetDevelopmentPlayerIdentityToken();
+                var loginTokenDetails = GetDevelopmentLoginTokens(parameters.WorkerType, PlayerIdentityToken);
+                LoginToken = SelectLoginToken(loginTokenDetails);
             }
 
-            using (var locator = new AlphaLocator(LocatorHost, LocatorPort, LocatorParameters))
+            var locatorParameters = new LocatorParameters
+            {
+                PlayerIdentity = new PlayerIdentityCredentials
+                {
+                    PlayerIdentityToken = PlayerIdentityToken,
+                    LoginToken = LoginToken
+                },
+                CredentialsType = LocatorCredentialsType.PlayerIdentity,
+                UseInsecureConnection = UseInsecureConnection
+            };
+
+            using (var locator = new Locator(LocatorHost, LocatorPort, locatorParameters))
             {
                 using (var connectionFuture = locator.ConnectAsync(parameters))
                 {
@@ -259,7 +162,7 @@ namespace Improbable.Gdk.Core
                     DevelopmentAuthenticationToken = DevAuthToken,
                     PlayerId = GetPlayerId(),
                     DisplayName = GetDisplayName(),
-                    UseInsecureConnection = LocatorParameters.UseInsecureConnection,
+                    UseInsecureConnection = UseInsecureConnection,
                 }
             ).Get();
 
@@ -293,7 +196,7 @@ namespace Improbable.Gdk.Core
                 {
                     WorkerType = workerType,
                     PlayerIdentityToken = playerIdentityToken,
-                    UseInsecureConnection = LocatorParameters.UseInsecureConnection,
+                    UseInsecureConnection = UseInsecureConnection,
                     DurationSeconds = 120,
                 }
             ).Get();

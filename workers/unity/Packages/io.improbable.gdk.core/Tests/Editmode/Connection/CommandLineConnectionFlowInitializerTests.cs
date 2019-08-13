@@ -11,44 +11,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         {
             return new Dictionary<string, string>
             {
-                { RuntimeConfigNames.SteamDeploymentTag, "my_steam_deployment" },
-                { RuntimeConfigNames.SteamTicket, "steam_ticket" },
                 { RuntimeConfigNames.LoginToken, "login_token" },
                 { RuntimeConfigNames.PlayerIdentityToken, "pit" },
                 { RuntimeConfigNames.ReceptionistHost, "receptionist_host" },
                 { RuntimeConfigNames.ReceptionistPort, "1337" },
                 { RuntimeConfigNames.WorkerId, "my_worker_id" },
                 { RuntimeConfigNames.LocatorHost, "locator_host" },
-                { RuntimeConfigNames.ProjectName, "my_project" },
             };
-        }
-
-        [Test]
-        public void GetConnectionService_returns_locator_if_steam_is_set()
-        {
-            var service = new CommandLineConnectionFlowInitializer(GetBaseArgs()).GetConnectionService();
-            Assert.AreEqual(ConnectionService.Locator, service);
         }
 
         [Test]
         public void GetConnectionService_returns_alpha_locator_if_pit_and_login_token_are_present()
         {
             var args = GetBaseArgs();
-            args.Remove(RuntimeConfigNames.SteamDeploymentTag);
-            args.Remove(RuntimeConfigNames.SteamTicket);
-
-            var service = new CommandLineConnectionFlowInitializer(args).GetConnectionService();
-            Assert.AreEqual(ConnectionService.AlphaLocator, service);
-        }
-
-        [Test]
-        public void GetConnectionService_returns_locator_if_only_login_token_is_present()
-        {
-            var args = GetBaseArgs();
-            args.Remove(RuntimeConfigNames.SteamDeploymentTag);
-            args.Remove(RuntimeConfigNames.SteamTicket);
-            args.Remove(RuntimeConfigNames.PlayerIdentityToken);
-
             var service = new CommandLineConnectionFlowInitializer(args).GetConnectionService();
             Assert.AreEqual(ConnectionService.Locator, service);
         }
@@ -83,57 +58,22 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         }
 
         [Test]
-        public void Initialize_locator_flow_correctly()
-        {
-            var initializer = new CommandLineConnectionFlowInitializer(GetBaseArgs());
-            var flow = new LocatorFlow(initializer);
-
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LocatorHost], flow.LocatorHost);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.ProjectName], flow.LocatorParameters.ProjectName);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LoginToken], flow.LocatorParameters.LoginToken.Token);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.SteamDeploymentTag], flow.LocatorParameters.Steam.DeploymentTag);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.SteamTicket], flow.LocatorParameters.Steam.Ticket);
-        }
-
-        [Test]
-        public void Initialize_locator_flow_uses_steam_credentials_if_present()
-        {
-            var initializer = new CommandLineConnectionFlowInitializer(GetBaseArgs());
-            var flow = new LocatorFlow(initializer);
-
-            Assert.AreEqual(LocatorCredentialsType.Steam, flow.LocatorParameters.CredentialsType);
-        }
-
-        [Test]
-        public void Initialize_locator_flow_uses_login_token_credentials_if_present()
-        {
-            var args = GetBaseArgs();
-            args.Remove(RuntimeConfigNames.SteamDeploymentTag);
-            args.Remove(RuntimeConfigNames.SteamTicket);
-
-            var initializer = new CommandLineConnectionFlowInitializer(args);
-            var flow = new LocatorFlow(initializer);
-
-            Assert.AreEqual(LocatorCredentialsType.LoginToken, flow.LocatorParameters.CredentialsType);
-        }
-
-        [Test]
         public void Initialize_alpha_locator_flow_correctly()
         {
             var initializer = new CommandLineConnectionFlowInitializer(GetBaseArgs());
-            var flow = new AlphaLocatorFlow(initializer);
+            var flow = new LocatorFlow(initializer);
 
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LocatorHost], flow.LocatorHost);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LoginToken], flow.LocatorParameters.PlayerIdentity.LoginToken);
-            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.PlayerIdentityToken], flow.LocatorParameters.PlayerIdentity.PlayerIdentityToken);
+            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LoginToken], flow.LoginToken);
+            Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.PlayerIdentityToken], flow.PlayerIdentityToken);
         }
 
         [Test]
-        public void Initialize_alpha_locator_sets_dev_auth_flow_correctly()
+        public void Initialize_locator_sets_dev_auth_flow_correctly()
         {
             {
                 var initializer = new CommandLineConnectionFlowInitializer(GetBaseArgs());
-                var flow = new AlphaLocatorFlow(initializer);
+                var flow = new LocatorFlow(initializer);
                 Assert.IsFalse(flow.UseDevAuthFlow);
             }
 
@@ -143,7 +83,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 args.Remove(RuntimeConfigNames.LoginToken);
 
                 var initializer = new CommandLineConnectionFlowInitializer(args);
-                var flow = new AlphaLocatorFlow(initializer);
+                var flow = new LocatorFlow(initializer);
                 Assert.IsTrue(flow.UseDevAuthFlow);
             }
         }
