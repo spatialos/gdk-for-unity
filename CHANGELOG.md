@@ -29,6 +29,7 @@
 - Added tests for the `CommandLineConnectionParametersInitializer` class. [#1103](https://github.com/spatialos/gdk-for-unity/pull/1103)
 - Added `spot` downloading to `init.sh` & `init.ps` into the `io.improbable.worker.sdk` package. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
 - Added tests for the `AlphaLocatorFlow` class. [#1108](https://github.com/spatialos/gdk-for-unity/pull/1108)
+- `Option<T>` is now explicitly immutable as a `readonly struct`. [#1110](https://github.com/spatialos/gdk-for-unity/pull/1110)
 
 ## `0.2.6` - 2019-08-05
 
