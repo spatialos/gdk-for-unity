@@ -38,7 +38,7 @@ In addition to the dependencies listed [here](https://docs.improbable.io/unity/a
 * [Troubleshooting](https://docs.improbable.io/unity/alpha/reference/troubleshooting)
 * [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
 
-If you are unable to resolve your issue, please raise an issue [in this repository](https://github.com/spatialos/UnityGDK/issues) or find us on the [forums](https://forums.improbable.io/latest?tags=unity-gdk) or [Discord](https://discord.gg/SCZTCYm).
+If you are unable to resolve your issue, please raise an issue [in this repository](https://github.com/spatialos/gdk-for-unity/issues) or find us on the [forums](https://forums.improbable.io/latest?tags=unity-gdk) or [Discord](https://discord.gg/SCZTCYm).
 
 ## Recommended use
 
@@ -58,7 +58,7 @@ We have released the GDK this early in development because we want your feedback
 
 * **Github issues**
 
-  Create an issue [in this repository](https://github.com/spatialos/UnityGDK/issues).
+  Create an issue [in this repository](https://github.com/spatialos/gdk-for-unity/issues).
 
 ## Contributions
 
