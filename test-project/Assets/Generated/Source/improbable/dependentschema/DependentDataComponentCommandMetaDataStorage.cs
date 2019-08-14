@@ -14,7 +14,7 @@ namespace Improbable.DependentSchema
             private readonly Dictionary<long, CommandContext<global::Improbable.TestSchema.SomeType>> requestIdToRequest =
                 new Dictionary<long, CommandContext<global::Improbable.TestSchema.SomeType>>();
 
-            private readonly Dictionary<uint, long> internalRequestIdToRequestId = new Dictionary<uint, long>();
+            private readonly Dictionary<long, long> internalRequestIdToRequestId = new Dictionary<long, long>();
 
             public uint GetComponentId()
             {
@@ -26,14 +26,14 @@ namespace Improbable.DependentSchema
                 return 1;
             }
 
-            public void RemoveMetaData(uint internalRequestId)
+            public void RemoveMetaData(long internalRequestId)
             {
                 var requestId = internalRequestIdToRequestId[internalRequestId];
                 internalRequestIdToRequestId.Remove(internalRequestId);
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void SetInternalRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(long internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
@@ -43,7 +43,7 @@ namespace Improbable.DependentSchema
                 requestIdToRequest[context.RequestId] = context;
             }
 
-            public CommandContext<global::Improbable.TestSchema.SomeType> GetPayload(uint internalRequestId)
+            public CommandContext<global::Improbable.TestSchema.SomeType> GetPayload(long internalRequestId)
             {
                 var id = internalRequestIdToRequestId[internalRequestId];
                 return requestIdToRequest[id];

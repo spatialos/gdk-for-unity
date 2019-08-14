@@ -84,9 +84,9 @@ namespace Improbable.DependentSchema
                     var context = new CommandContext<global::Improbable.TestSchema.SomeType>(request.SendingEntity, request.Request.Payload, request.Request.Context, request.RequestId);
                     commandMetaData.AddRequest<global::Improbable.TestSchema.SomeType>(ComponentId, 1, in context);
 
-                    var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, 1);
+                    var schemaCommandRequest = global::Improbable.Worker.CInterop.SchemaCommandRequest.Create();
                     global::Improbable.TestSchema.SomeType.Serialization.Serialize(request.Request.Payload, schemaCommandRequest.GetObject());
-                    var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest);
+                    var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(ComponentId, 1, schemaCommandRequest);
 
                     serializedMessages.AddRequest(serializedRequest, 1,
                         request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
@@ -104,10 +104,10 @@ namespace Improbable.DependentSchema
                         continue;
                     }
 
-                    var schemaCommandResponse = new global::Improbable.Worker.CInterop.SchemaCommandResponse(ComponentId, 1);
+                    var schemaCommandResponse = global::Improbable.Worker.CInterop.SchemaCommandResponse.Create();
                     global::Improbable.TestSchema.SomeType.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
 
-                    var serializedResponse = new global::Improbable.Worker.CInterop.CommandResponse(schemaCommandResponse);
+                    var serializedResponse = new global::Improbable.Worker.CInterop.CommandResponse(ComponentId, 1, schemaCommandResponse);
 
                     serializedMessages.AddResponse(serializedResponse, (uint) response.RequestId);
                 }
