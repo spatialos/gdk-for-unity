@@ -47,7 +47,7 @@ namespace Improbable.Gdk.Core
                     {
                         outputStream.WriteEntity(entry.Key.Id, entry.Value);
                     }
-                    catch (System.IO.InvalidDataException e)
+                    catch (StreamBadStateException e)
                     {
                         Debug.LogError(e.Message);
                     }
