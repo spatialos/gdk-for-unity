@@ -27,7 +27,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         [Test]
         public void Can_create_from_schema_object()
         {
-            var data = new ComponentData(new SchemaComponentData(0)); // Easiest way to get a valid `SchemaObject`.
+            var data = new ComponentData(0, SchemaComponentData.Create()); // Easiest way to get a valid `SchemaObject`.
             try
             {
                 var schemaObject = data.SchemaData.Value.GetFields();
