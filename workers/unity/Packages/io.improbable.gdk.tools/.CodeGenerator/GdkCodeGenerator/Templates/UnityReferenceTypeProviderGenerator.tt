@@ -22,26 +22,29 @@ namespace <#= qualifiedNamespace #>
     {
         internal static class ReferenceTypeProviders
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentNamespace}.Update>"), 3) #>
-#endif
-
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(fieldDetails.PascalCaseName, fieldDetails.Type), 3) #>
 
 <# } #>
 <# } #>
+#if USE_LEGACY_REACTIVE_COMPONENTS
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate("Updates", $"List<{componentNamespace}.Update>"), 3) #>
 <# foreach(var eventDetails in eventDetailsList) { #>
+
             <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(eventDetails.EventName, $"List<{eventDetails.FqnPayloadType}>"), 3) #>
 <# } #>
 <# foreach (var commandDetails in commandDetailsList) { #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Sender", $"List<{componentNamespace}.{commandDetails.CommandName}.Request>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Requests", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responder", $"List<{componentNamespace}.{commandDetails.CommandName}.Response>"), 3) #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responses", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse>"), 3) #>
 
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Sender", $"List<{componentNamespace}.{commandDetails.CommandName}.Request>"), 3) #>
+
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Requests", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest>"), 3) #>
+
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responder", $"List<{componentNamespace}.{commandDetails.CommandName}.Response>"), 3) #>
+
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate($"{commandDetails.CommandName}Responses", $"List<{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse>"), 3) #>
 <# } #>
+#endif
         }
     }
 }

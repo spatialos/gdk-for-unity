@@ -37,7 +37,14 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Local launch %l", false, MenuPriorities.LocalLaunch)]
         private static void LaunchMenu()
         {
-            Debug.Log("Launching SpatialOS locally...");
+            GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+            if (!File.Exists(toolsConfig.CustomSnapshotPath))
+            {
+                Debug.LogError($"Snapshot {toolsConfig.CustomSnapshotPath} not found. Make sure the file exists and it has not been moved or renamed");
+                return;
+            }
+
+            Debug.Log($"Launching SpatialOS locally with snapshot {toolsConfig.CustomSnapshotPath}.");
             EditorApplication.delayCall += LaunchLocalDeployment;
         }
 
@@ -202,9 +209,10 @@ namespace Improbable.Gdk.Tools
         public static void LaunchLocalDeployment()
         {
             BuildConfig();
+            GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var command = Common.SpatialBinary;
-            var commandArgs = "local launch --enable_pre_run_check=false";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
 
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))

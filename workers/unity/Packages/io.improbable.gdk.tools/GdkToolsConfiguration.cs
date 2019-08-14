@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -19,6 +19,14 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
+
+        private const string CustomSnapshotPathPrefKey = "CustomSnapshotPath";
+
+        public string CustomSnapshotPath
+        {
+            get => PlayerPrefs.GetString(CustomSnapshotPathPrefKey, Path.GetFullPath("../../snapshots/default.snapshot"));
+            set => PlayerPrefs.SetString(CustomSnapshotPathPrefKey, value);
+        }
 
         private static readonly string JsonFilePath = Path.GetFullPath("Assets/Config/GdkToolsConfiguration.json");
 

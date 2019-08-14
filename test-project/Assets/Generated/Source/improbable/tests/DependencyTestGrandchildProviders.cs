@@ -17,7 +17,7 @@ namespace Improbable.Tests
             public static class UpdatesProvider 
             {
                 private static readonly Dictionary<uint, List<global::Improbable.Tests.DependencyTestGrandchild.Update>> Storage = new Dictionary<uint, List<global::Improbable.Tests.DependencyTestGrandchild.Update>>();
-                private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, Unity.Entities.World>();
+                private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
             
@@ -81,7 +81,6 @@ namespace Improbable.Tests
             }
             
 #endif
-
         }
     }
 }
