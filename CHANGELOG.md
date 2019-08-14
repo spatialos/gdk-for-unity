@@ -10,6 +10,7 @@
 
 - Added the ability to connect to an arbitrary host/port combo for the `AlphaLocatorFlow`. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
 - Added a `SpatialdManager` class for managing local deployments with `SpatialD` into `io.improbable.gdk.testutils`. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
+- Added the ability to specify a snapshot to be used when launching a deployment in the Editor. [#1098](https://github.com/spatialos/gdk-for-unity/pull/1098)
 
 ### Changed
 
