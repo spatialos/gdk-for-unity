@@ -212,7 +212,12 @@ namespace Improbable.Gdk.Tools
             GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var command = Common.SpatialBinary;
+
+#if UNITY_EDITOR_OSX
             var commandArgs = $"local launch --enable_pre_run_check=false --snapshot '{toolsConfig.CustomSnapshotPath}'";
+#else
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
+#endif
 
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))
