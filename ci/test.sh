@@ -61,10 +61,9 @@ pushd "test-project"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/test-project" \
-        -runTests \
-        -testPlatform editmode \
+        -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
-        -testResults "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
+        -editorTestsResultFile "${TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE}"
 popd
 
 echo "--- Testing Unity: Test Project Playmode :joystick:"
