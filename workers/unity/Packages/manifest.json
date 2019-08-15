@@ -2,7 +2,6 @@
   "dependencies": {
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.0.8",
-    "com.unity.ide.vscode": "1.0.7",
     "com.unity.package-manager-ui": "2.2.0",
     "com.unity.ugui": "1.0.0",
     "io.improbable.gdk.buildsystem": "file:io.improbable.gdk.buildsystem",

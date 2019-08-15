@@ -6,7 +6,7 @@
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Dependency Test Root.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.7",
     "io.improbable.gdk.dependencytestchild": "0.2.7"
-  }
+  },
+  "type": "tests"
 }

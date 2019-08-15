@@ -7,19 +7,23 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.TransformSynchronization"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Improbable.Gdk.TransformSynchronization",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Improbable.Worker.CInterop.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }
