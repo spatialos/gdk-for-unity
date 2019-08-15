@@ -18,13 +18,13 @@
         - Setup
             - [Add a schema source]({{urlRoot}}/projects/blank/setup/schema)
         - Tutorial
-            - 1. Blank Project 101
-                - [Overview]({{urlRoot}}/projects/blank/tutorial/1/overview)
-                - [What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/1/spatialos)
-                - [Key pieces]({{urlRoot}}/projects/blank/tutorial/1/key-pieces)
-                - [What it does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
-                - [Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)
-                - [Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)
+            - Blank Project 101
+                - [Overview]({{urlRoot}}/projects/blank/tutorial/0/overview)
+                - [What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/0/spatialos)
+                - [Key pieces]({{urlRoot}}/projects/blank/tutorial/0/key-pieces)
+                - [What it does]({{urlRoot}}/projects/blank/tutorial/0/what-it-does)
+                - [Player lifecycle]({{urlRoot}}/projects/blank/tutorial/0/player-lifecycle)
+                - [Summary]({{urlRoot}}/projects/blank/tutorial/0/summary)
     - Make your own
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
