@@ -36,10 +36,9 @@ pushd "workers/unity"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/workers/unity" \
-        -runTests \
-        -testPlatform editmode \
+        -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
-        -testResults "${EDITMODE_TEST_RESULTS_FILE}"
+        -editorTestsResultFile "${EDITMODE_TEST_RESULTS_FILE}"
 popd
 
 cleanUnity "$(pwd)/workers/unity"
