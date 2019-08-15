@@ -16,11 +16,11 @@ You can find out more about World Commands [here](https://docs.improbable.io/ref
 
 ## Player creation
 
-By default, the module sends a player creation request to a randomly chosen PlayerCreator entity as soon as the client-worker instance connects to SpatialOS. The server-worker instance responsible for simulating the PlayerCreator instance receives the request and then spawns a SpatialOS entity to represent the player. By choosing a random PlayerCreator entity for each request, you can distribute the load of player creation requests across multiple server-workers.
+By default, the module sends a player creation request to a randomly chosen `PlayerCreator` entity as soon as the client-worker instance connects to SpatialOS. The server-worker instance responsible for simulating the `PlayerCreator` instance receives the request and then spawns a SpatialOS entity to represent the player. By choosing a random `PlayerCreator` entity for each request, you can distribute the load of player creation requests across multiple server-workers.
 
 <%(#Expandable title="Custom player creation")%>
 
-You can also customise this behaviour to not automatically create a Player entity, instead opting to manually send the player creation request. This option allows you to provide arbitrary serialized data that you can deserialize on a server-worker when handling the request. It also allows you to register a callback on the client-worker, which is run when it receives a player creation response.
+You can also customise this behaviour to not automatically create a `Player` entity, instead opting to manually send the player creation request. This option allows you to provide arbitrary serialized data that you can deserialize on a server-worker when handling the request. It also allows you to register a callback on the client-worker, which is run when it receives a player creation response.
 
 You can find out more about custom player creation [here]({{urlRoot}}/modules/player-lifecycle/custom-player-creation).
 
@@ -30,22 +30,22 @@ You can find out more about custom player creation [here]({{urlRoot}}/modules/pl
 
 To ensure that the deployment is not polluted with player entities of unresponsive or disconnected client-workers, the module implements a technique known as Heartbeating to periodically remove unresponsive or disconnected clients.
 
-To demonstrate this, first look at the top-right corner of your local Inspector. You should see that a UnityClient and UnityGameLogic worker instance are connected. Select the UnityClient from the list of workers and then select the red `Stop worker` button.
+To demonstrate this, first look at the top-right corner of your local Inspector. You should see that a `UnityClient` and `UnityGameLogic` worker instance are connected. Select the `UnityClient` from the list of workers and then select the red `Stop worker` button.
 
 <div style="text-align:center;">
 <img src="{{assetRoot}}assets/blank/tutorial/0/inspector-workers-list-hover-client.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
 <img src="{{assetRoot}}assets/blank/tutorial/0/stop-worker-button.png" style="margin: 0 auto; width: 23%; display: inline-block;" />
 </div>
 
-A dialogue window should appear asking if you’re sure. We are - so select `stop worker` from the window to kill the client-worker. Immediately you should notice that the UnityGameLogic worker is still there and the UnityClient-worker entity has been removed, but the player entity is still in the world!
+A dialogue window should appear asking if you’re sure. We are - so select `Stop worker` from the window to kill the client-worker. Immediately you should notice that the `UnityGameLogic` worker is still there and the `UnityClient-worker` entity has been removed, but the player entity is still in the world!
 
 <div style="text-align:center">
 <img src="{{assetRoot}}assets/blank/tutorial/0/stop-worker-window.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
 <img src="{{assetRoot}}assets/blank/tutorial/0/no-more-client.png" style="margin: 0 auto; width: 37%; display: inline-block;" />
 </div>
 
-Not to fear, because after a few seconds you’ll notice the player entity is swiftly removed from the world. The UnityClient-worker entity is managed by SpatialOS, which means that it is deleted as soon as the respective client-worker is disconnected.
+Not to fear, because after a few seconds you’ll notice the player entity is swiftly removed from the world. The `UnityClient-worker` entity is managed by SpatialOS, which means that it is deleted as soon as the respective client-worker is disconnected.
 
-The delay in removing the player entity exists because the Heartbeat system requires a minimum number of failed heartbeats before deleting the Player entity. This is to allow some failure tolerance from the client-worker, to avoid removing players for being a little slow at responding to heartbeat requests.
+The delay in removing the player entity exists because the Heartbeat system requires a minimum number of failed heartbeats before deleting the `Player` entity. This is to allow some failure tolerance from the client-worker, to avoid removing players for being a little slow at responding to heartbeat requests.
 
 To understand more about how this works, read the [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating) documentation.

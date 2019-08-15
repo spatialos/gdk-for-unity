@@ -85,7 +85,7 @@ You can find the root of the Unity project in `workers/unity/`.
 
 Here, you will find the client-worker and server-worker configurations. They are used to configure how a worker should be launched and specify particular Runtime settings for the given worker type.
 
-Under `Assets/Config` of the Unity Project, there is a `BuildConfiguration` asset.
+Under `Assets/Config/` of the Unity Project, there is a `BuildConfiguration` asset.
 
 ```text
 
@@ -107,7 +107,7 @@ See below to learn more about:
 
 ## Scenes
 
-You may have noticed that there are a set of Scenes present at `Assets/Scenes`.
+You may have noticed that there are a set of Scenes present at `Assets/Scenes/`.
 
 ```text
 
@@ -119,7 +119,7 @@ You may have noticed that there are a set of Scenes present at `Assets/Scenes`.
 
 ```
 
-The ClientScene contains a ClientWorker prefab to represent a client-worker and similarly the GameLogicScene contains a GameLogicWorker prefab to represent a server-side worker. By playing either of these Scenes, these prefabs will try to connect their respective client-worker or server-worker to your SpatialOS deployment.
+The `ClientScene` contains a `ClientWorker` prefab to represent a client-worker and similarly the `GameLogicScene` contains a `GameLogicWorker` prefab to represent a server-side worker. By playing either of these Scenes, these prefabs will try to connect their respective client-worker or server-worker to your SpatialOS deployment.
 
 ```text
 
@@ -135,7 +135,7 @@ The ClientScene contains a ClientWorker prefab to represent a client-worker and 
 
 ```
 
-The GDK also allows you to run more than one worker in your Unity Editor. The DevelopmentScene contains both ClientWorker and GameLogicWorker prefabs, which in turn runs both a client-worker and a server-worker side-by-side in your Editor. By running both workers you don’t need to build out workers with every new change. This greatly speeds up local iteration times, as you’ll discover later on in this tutorial.
+The GDK also allows you to run more than one worker in your Unity Editor. The `DevelopmentScene` contains both `ClientWorker` and `GameLogicWorker` prefabs, which in turn runs both a client-worker and a server-worker side-by-side in your Editor. By running both workers you don’t need to build out workers with every new change. This greatly speeds up local iteration times, as you’ll discover later on in this tutorial.
 
 ## Packages and assembly definitions
 

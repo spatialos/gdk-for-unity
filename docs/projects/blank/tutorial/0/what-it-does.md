@@ -8,7 +8,7 @@ On this page, we’ll walk you through this functionality, and introduce the too
 
 ## Opening the project
 
-First, open the Unity Project found at `workers/unity/`. The first time you open the project, Unity will retrieve all the packages defined in the `manifest.json` and cache them on your machine. After resolving the packages, you’ll see a popup that says `Generating code...`.
+First, open the Unity Project found at `workers/unity/`. The first time you open the project, Unity will retrieve all the packages defined in the `manifest.json` and cache them on your machine. After resolving the packages, you’ll see a popup that says `Generating code`.
 
 <img src="{{assetRoot}}assets/blank/tutorial/0/generating-code.png" style="margin: 0 auto; width: 50%; display: block;" />
 
@@ -20,7 +20,7 @@ Once the project is ready, hit `Ctrl+L` on Windows, or `Cmd+L` on Mac, to launch
 
 <%(#Expandable title="What is inside default_launch.json?")%>
 
-This `default_launch.json` includes a load balancing configuration where SpatialOS expects at most one UnityGameLogic worker to be spawned in the world. The `manual_worker_connection_only` argument is specified to tell your local SpatialOS instance that you will manually connect a worker of that type to the deployment.
+This `default_launch.json` includes a load balancing configuration where SpatialOS expects at most one `UnityGameLogic` worker to be spawned in the world. The `manual_worker_connection_only` argument is specified to tell your local SpatialOS instance that you will manually connect a worker of that type to the deployment.
 
 <%(/Expandable)%>
 
@@ -36,7 +36,7 @@ When your local instance of SpatialOS is ready, you should see the following mes
 
 ## Connect workers to your local deployment
 
-Open the DevelopmentScene found in the Assets/Scenes folder. You should find a ClientWorker and GameLogicWorker present in the Scene hierarchy.
+Open the `DevelopmentScene` found in the `Assets/Scenes/` folder. You should find a `ClientWorker` and `GameLogicWorker` present in the Scene hierarchy.
 
 <img src="{{assetRoot}}assets/blank/tutorial/0/development-scene-hierarchy.png" style="margin: 0 auto; width: 25%; display: block;" />
 
@@ -85,6 +85,6 @@ Looking further down, notice that there are four entities in your world:
 
 The `UnityGameLogic-worker` and `UnityClient-worker` are worker entities. These types of entities are spawned and deleted automatically by SpatialOS when a worker of that type connects or disconnects. We will not cover worker entities or system entities in this tutorial, but you can read more about them [here](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/system-entities).
 
-PlayerCreator entities are used by the PlayerLifecycle module to handle player creation requests. If your world does not contain at least one PlayerCreator entity, the PlayerLifecycle module will not work. To meet this minimum requirement, the default snapshot in the Blank Project includes a PlayerCreator entity.
+`PlayerCreator` entities are used by the PlayerLifecycle module to handle player creation requests. If your world does not contain at least one `PlayerCreator` entity, the PlayerLifecycle module will not work. To meet this minimum requirement, the default snapshot in the Blank Project includes a `PlayerCreator` entity.
 
-The Player entity is then created by the Player Lifecycle module as soon as the client-worker connects to the deployment.
+The `Player` entity is then created by the Player Lifecycle module as soon as the client-worker connects to the deployment.
