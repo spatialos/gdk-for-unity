@@ -44,7 +44,7 @@ At the root of the project you’ll find two launch configurations; one for loca
 
 ```text
 
-    gdk-for-unity-blank-project
+    gdk-for-unity-blank-project/
         ├── snapshots/
         ├── workers/
         ├── cloud_launch.json
@@ -59,7 +59,7 @@ The snapshots directory contains a default snapshot defining the initial state o
 
 ```text
 
-    gdk-for-unity-blank-project
+    gdk-for-unity-blank-project/
         ├── snapshots/
                 ├── default.snapshot
         ...
@@ -70,7 +70,7 @@ You can find the root of the Unity project in `workers/unity/`.
 
 ```text
 
-    gdk-for-unity-blank-project
+    gdk-for-unity-blank-project/
         ...
         ├── workers/
             ├── unity/
@@ -143,7 +143,7 @@ Within your Unity Project there is a `Packages/manifest.json` file, which define
 
 ```text
 
-    unity
+    unity/
         ├── Assets/
             ├── BlankProject.asmdef
             ...
