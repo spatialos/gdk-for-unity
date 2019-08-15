@@ -18,8 +18,8 @@
         - Setup
             - [Add a schema source]({{urlRoot}}/projects/blank/setup/schema)
         - Tutorial
+            - [Overview]({{urlRoot}}/projects/blank/tutorial/overview)
             - Blank Project 101
-                - [Overview]({{urlRoot}}/projects/blank/tutorial/0/overview)
                 - [What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/0/spatialos)
                 - [Key pieces]({{urlRoot}}/projects/blank/tutorial/0/key-pieces)
                 - [What it does]({{urlRoot}}/projects/blank/tutorial/0/what-it-does)
