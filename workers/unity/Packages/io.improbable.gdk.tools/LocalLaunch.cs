@@ -212,7 +212,7 @@ namespace Improbable.Gdk.Tools
             GdkToolsConfiguration toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var command = Common.SpatialBinary;
-            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot '{toolsConfig.CustomSnapshotPath}'";
 
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))
