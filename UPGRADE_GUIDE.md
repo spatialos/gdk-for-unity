@@ -4,11 +4,11 @@
 
 ### Worker SDK `14.0.1` upgrade
 
-There are a number of breaking changes to contend with for the Worker SDK upgrade:
+The Worker SDK upgrade introduces breaking changes to the connection flow, and removes the `Vector3f` and `Vector3d` types from the standard schema library.
 
 #### Removal of `Vector3f` and `Vector3d`
 
-These two schema types are no longer available in the schema standard library. You can replace their definitions by defining a schema file in your project:
+These two schema types are no longer available in the standard schema library. You can replace their definitions by first defining a schema file in your project:
 
 ```
 package my_game;
@@ -26,7 +26,7 @@ type Vector3d {
 }
 ```
 
-And replacing the import of `improbable/vector.schema` and usage of `improbable.Vector3f`/`improbable.Vector3d` with the schema file you defined.
+You should then replace the import of `improbable/vector.schema` and usage of `improbable.Vector3f`/`improbable.Vector3d` with the schema file you defined.
 
 > Note that methods such as `Vector3f.ToUnityVector();` are no longer available and you'll need to reimplement them yourself as extension/static methods. You can find the old implementations here: [`Vector3f`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3f) and [`Vector3d`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3d).
 > 

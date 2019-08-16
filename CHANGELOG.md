@@ -5,13 +5,13 @@
 ### Breaking Changes
 
 - Renamed the public field `AnonymousAuthenticationPort` to `LocatorPort` on the `AlphaLocatorFlow` class and the `RuntimeConfigDefaults` static class. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
-- Upgraded to Worker SDK `14.0.1`. This brings a number of breaking changes [#1112](https://github.com/spatialos/gdk-for-unity/pull/1112)
+- Upgraded to Worker SDK `14.0.1`. This brings a number of breaking changes. [#1112](https://github.com/spatialos/gdk-for-unity/pull/1112)
     - `Vector3f` and `Vector3d` are no longer available in the schema standard library.
-    - The `Improbable.Coordinates.TpSpatialVector3d()` method has been removed.
+    - The `Improbable.Coordinates.ToSpatialVector3d()` method has been removed.
     - `LocatorFlow` and `AlphaLocatorFlow` have been merged.
-    - The implementation of the old `LocatorFlow` have been removed.
+    - The implementation of the old `LocatorFlow` has been removed.
     - The `ConnectionService.AlphaLocator` enum value has been removed.
-- The following constants have been removed from the `RuntimeConfigNames` static class: `ProjectName`, `SteamDeploymentTag`, and `SteamTicket`.
+- The `ProjectName`, `SteamDeploymentTag`, and `SteamTicket` constants have been removed from the `RuntimeConfigNames` static class.
 
 ### Added
 
