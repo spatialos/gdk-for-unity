@@ -5,7 +5,8 @@ $SdkPath = $PkgRoot + "/io.improbable.worker.sdk"
 $SdkMobilePath = $PkgRoot + "/io.improbable.worker.sdk.mobile"
 $TestSdkPath="test-project/Packages/io.improbable.worker.sdk.testschema"
 
-$SdkVersion = Get-Content ($SdkPath + "/package.json") | jq -r '.version'
+$SdkVersion = "14.0.1-b1352-614f42b-WORKER-SNAPSHOT"
+# $SdkVersion = Get-Content ($SdkPath + "/package.json") | jq -r '.version'
 $SpotVersion = Get-Content ($SdkPath + "/.spot.version")
 
 function UpdatePackage($type, $identifier, $path, $removes)
