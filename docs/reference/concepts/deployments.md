@@ -32,7 +32,7 @@ For more information, see the [comprehensive worker configuration documentation]
 
 ## Local deployment
 
-Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > 
+Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > **GDK tools configuration** and then select the file on the **Selected snapshot path** option.
 
 To start a local deployment, in your Unity Editor, select **SpatialOS** > **Local Launch**.
 
