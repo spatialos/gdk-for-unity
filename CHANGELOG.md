@@ -5,12 +5,20 @@
 ### Breaking Changes
 
 - Renamed the public field `AnonymousAuthenticationPort` to `LocatorPort` on the `AlphaLocatorFlow` class and the `RuntimeConfigDefaults` static class. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
+- Upgraded to Worker SDK `14.0.1`. This brings a number of breaking changes. [#1112](https://github.com/spatialos/gdk-for-unity/pull/1112)
+    - `Vector3f` and `Vector3d` are no longer available in the schema standard library.
+    - The `Improbable.Coordinates.ToSpatialVector3d()` method has been removed.
+    - `LocatorFlow` and `AlphaLocatorFlow` have been merged.
+    - The implementation of the old `LocatorFlow` has been removed.
+    - The `ConnectionService.AlphaLocator` enum value has been removed.
+- The `ProjectName`, `SteamDeploymentTag`, and `SteamTicket` constants have been removed from the `RuntimeConfigNames` static class.
 
 ### Added
 
 - Added the ability to connect to an arbitrary host/port combo for the `AlphaLocatorFlow`. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)
 - Added a `SpatialdManager` class for managing local deployments with `SpatialD` into `io.improbable.gdk.testutils`. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
 - Added the ability to specify a snapshot to be used when launching a deployment in the Editor. [#1098](https://github.com/spatialos/gdk-for-unity/pull/1098)
+- Added the ability to select the modular UDP network type as part of the Worker SDK 14.0.1 upgrade. [#1112](https://github.com/spatialos/gdk-for-unity/pull/1112)
 
 ### Changed
 
@@ -32,6 +40,7 @@
 - Added `spot` downloading to `init.sh` & `init.ps` into the `io.improbable.worker.sdk` package. [#1104](https://github.com/spatialos/gdk-for-unity/pull/1104)
 - Added tests for the `AlphaLocatorFlow` class. [#1108](https://github.com/spatialos/gdk-for-unity/pull/1108)
 - `Option<T>` is now explicitly immutable as a `readonly struct`. [#1110](https://github.com/spatialos/gdk-for-unity/pull/1110)
+- Removed unused arguments from worker configuration files. [#1112](https://github.com/spatialos/gdk-for-unity/pull/1112)
 
 ## `0.2.6` - 2019-08-05
 

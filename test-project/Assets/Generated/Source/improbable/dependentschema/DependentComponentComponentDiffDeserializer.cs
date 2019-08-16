@@ -45,8 +45,8 @@ namespace Improbable.DependentSchema
                 for (int i = 0; i < updates.Count; ++i)
                 {
                     ref readonly var update = ref updates[i];
-                    var schemaUpdate = new SchemaComponentUpdate(ComponentId);
-                    var componentUpdate = new ComponentUpdate(schemaUpdate);
+                    var schemaUpdate = SchemaComponentUpdate.Create();
+                    var componentUpdate = new ComponentUpdate(ComponentId, schemaUpdate);
                     Serialization.SerializeUpdate(update.Update, schemaUpdate);
                     serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
                 }

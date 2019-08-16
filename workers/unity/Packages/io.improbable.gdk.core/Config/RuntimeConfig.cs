@@ -26,11 +26,8 @@ namespace Improbable.Gdk.Core
         public const string LoginToken = "loginToken";
         public const string DevAuthTokenKey = "devAuthTokenSecret";
         public const string PlayerIdentityToken = "playerIdentityToken";
-        public const string ProjectName = "projectName";
         public const string ReceptionistHost = "receptionistHost";
         public const string ReceptionistPort = "receptionistPort";
-        public const string SteamDeploymentTag = "steamDeploymentTag";
-        public const string SteamTicket = "steamTicket";
         public const string WorkerId = "workerId";
         public const string Environment = "environment";
     }
@@ -42,6 +39,5 @@ namespace Improbable.Gdk.Core
     {
         Receptionist,
         Locator,
-        AlphaLocator,
     }
 }

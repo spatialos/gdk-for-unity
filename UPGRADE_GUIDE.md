@@ -1,5 +1,80 @@
 # Upgrade Guide
 
+## From `0.2.6` to `0.2.7`
+
+### Worker SDK `14.0.1` upgrade
+
+The Worker SDK upgrade introduces breaking changes to the connection flow, and removes the `Vector3f` and `Vector3d` types from the standard schema library.
+
+#### Removal of `Vector3f` and `Vector3d`
+
+These two schema types are no longer available in the standard schema library. You can replace their definitions by first defining a schema file in your project:
+
+```
+package my_game;
+
+type Vector3f {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+type Vector3d {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+```
+
+You should then replace the import of `improbable/vector.schema` and usage of `improbable.Vector3f`/`improbable.Vector3d` with the schema file you defined.
+
+> Note that methods such as `Vector3f.ToUnityVector();` are no longer available and you'll need to reimplement them yourself as extension/static methods. You can find the old implementations here: [`Vector3f`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3f) and [`Vector3d`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3d).
+> 
+> You will be unable to reimplement the operators since C# lacks the ability to define operations via extension methods.
+>
+> Note that the `Coordinates` type can be used as a replacement for `Vector3d` as they are structurally the same.
+
+#### Connection flow changes
+
+The `AlphaLocatorFlow` and the `LocatorFlow` have been merged. This means that your worker connectors may require some changes. Wherever you were previously using the `AlphaLocatorFlow` or the `ConnectionService.AlphaLocator` enum value, you should now be using the `LocatorFlow` and the `ConnectionService.Locator` enum value.
+
+For example:
+
+```csharp
+var initializer = new CommandLineConnectionFlowInitializer();
+switch (initializer.GetConnectionService())
+{
+    case ConnectionService.Receptionist:
+        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient), initializer));
+        break;
+    case ConnectionService.Locator:
+        builder.SetConnectionFlow(new LocatorFlow(initializer));
+        break;
+    case ConnectionService.AlphaLocator:
+        builder.SetConnectionFlow(new AlphaLocatorFlow(initializer));
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+```
+
+Would change into:
+
+```csharp
+var initializer = new CommandLineConnectionFlowInitializer();
+switch (initializer.GetConnectionService())
+{
+    case ConnectionService.Receptionist:
+        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient), initializer));
+        break;
+    case ConnectionService.Locator:
+        builder.SetConnectionFlow(new LocatorFlow(initializer));
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+```
+
 ## From `0.2.5` to `0.2.6`
 
 ### General changes

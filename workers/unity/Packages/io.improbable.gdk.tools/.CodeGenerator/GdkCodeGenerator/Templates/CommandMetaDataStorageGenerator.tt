@@ -23,7 +23,7 @@ namespace <#= qualifiedNamespace #>
             private readonly Dictionary<long, CommandContext<<#= command.FqnRequestType #>>> requestIdToRequest =
                 new Dictionary<long, CommandContext<<#= command.FqnRequestType #>>>();
 
-            private readonly Dictionary<uint, long> internalRequestIdToRequestId = new Dictionary<uint, long>();
+            private readonly Dictionary<long, long> internalRequestIdToRequestId = new Dictionary<long, long>();
 
             public uint GetComponentId()
             {
@@ -35,14 +35,14 @@ namespace <#= qualifiedNamespace #>
                 return <#= command.CommandIndex #>;
             }
 
-            public void RemoveMetaData(uint internalRequestId)
+            public void RemoveMetaData(long internalRequestId)
             {
                 var requestId = internalRequestIdToRequestId[internalRequestId];
                 internalRequestIdToRequestId.Remove(internalRequestId);
                 requestIdToRequest.Remove(requestId);
             }
 
-            public void SetInternalRequestId(uint internalRequestId, long requestId)
+            public void SetInternalRequestId(long internalRequestId, long requestId)
             {
                 internalRequestIdToRequestId.Add(internalRequestId, requestId);
             }
@@ -52,7 +52,7 @@ namespace <#= qualifiedNamespace #>
                 requestIdToRequest[context.RequestId] = context;
             }
 
-            public CommandContext<<#= command.FqnRequestType #>> GetPayload(uint internalRequestId)
+            public CommandContext<<#= command.FqnRequestType #>> GetPayload(long internalRequestId)
             {
                 var id = internalRequestIdToRequestId[internalRequestId];
                 return requestIdToRequest[id];

@@ -89,7 +89,7 @@ namespace Improbable.Tests
 
             public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
             {
-                var componentDataSchema = new ComponentData(new SchemaComponentData(11111));
+                var componentDataSchema = new ComponentData(11111, SchemaComponentData.Create());
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 

@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Improbable.Gdk.Core.EditmodeTests.Connection
 {
     [TestFixture]
-    public class AlphaLocatorTests
+    public class LocatorTests
     {
         private SpatialdManager spatiald;
         private Improbable.Worker.CInterop.Connection connection;
@@ -37,29 +37,29 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         }
 
         [Test]
-        public void AlphaLocatorFlow_dev_auth_fails_if_invalid_dev_auth_token()
+        public void LocatorFlow_dev_auth_fails_if_invalid_dev_auth_token()
         {
-            var flow = GetAlphaLocatorFlow();
+            var flow = GetLocatorFlow();
             flow.DevAuthToken = "notvalid";
             var aggregateException = Assert.Throws<AggregateException>(() => connection = flow.CreateAsync(GetConnectionParameters()).Result);
             Assert.IsInstanceOf<AuthenticationFailedException>(aggregateException.InnerExceptions[0]);
         }
 
         [Test]
-        public void AlphaLocatorFlow_dev_auth_fails_if_no_deployment_running()
+        public void LocatorFlow_dev_auth_fails_if_no_deployment_running()
         {
-            var flow = GetAlphaLocatorFlow();
+            var flow = GetLocatorFlow();
             flow.DevAuthToken = DevAuthTokenUtils.DevAuthToken;
             var aggregateException = Assert.Throws<AggregateException>(() => connection = flow.CreateAsync(GetConnectionParameters()).Result);
             Assert.IsInstanceOf<AuthenticationFailedException>(aggregateException.InnerExceptions[0]);
         }
 
         [Test]
-        public void AlphaLocatorFlow_dev_auth_fails_if_depl_isnt_tagged()
+        public void LocatorFlow_dev_auth_fails_if_depl_isnt_tagged()
         {
             using (spatiald.StartLocalDeployment("test", "default_launch.json").Result)
             {
-                var flow = GetAlphaLocatorFlow();
+                var flow = GetLocatorFlow();
                 flow.DevAuthToken = DevAuthTokenUtils.DevAuthToken;
 
                 var aggregateException = Assert.Throws<AggregateException>(() => connection = flow.CreateAsync(GetConnectionParameters()).Result);
@@ -68,12 +68,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         }
 
         [Test]
-        public void AlphaLocatorFlow_dev_auth_works_with_tagged_depl()
+        public void LocatorFlow_dev_auth_works_with_tagged_depl()
         {
             using (var depl = spatiald.StartLocalDeployment("test", "default_launch.json").Result)
             {
                 depl.AddDevLoginTag().Wait();
-                var flow = GetAlphaLocatorFlow();
+                var flow = GetLocatorFlow();
                 flow.DevAuthToken = DevAuthTokenUtils.DevAuthToken;
 
                 Assert.DoesNotThrow(() => connection = flow.CreateAsync(GetConnectionParameters()).Result);
@@ -81,16 +81,13 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             }
         }
 
-        private static AlphaLocatorFlow GetAlphaLocatorFlow()
+        private static LocatorFlow GetLocatorFlow()
         {
-            return new AlphaLocatorFlow
+            return new LocatorFlow
             {
                 LocatorHost = "localhost",
                 LocatorPort = 9876,
-                LocatorParameters =
-                {
-                    UseInsecureConnection = true
-                }
+                UseInsecureConnection = true
             };
         }
 

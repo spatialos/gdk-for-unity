@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core
         // Cache the types needed to instantiate a new CommandMetaData
         private static List<Type> storageTypes;
 
-        private readonly HashSet<uint> internalRequestIds = new HashSet<uint>();
+        private readonly HashSet<long> internalRequestIds = new HashSet<long>();
 
         private readonly Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>>();
@@ -54,7 +54,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void MarkIdForRemoval(uint componentId, uint commandId, uint internalRequestId)
+        public void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)
         {
             requestsToRemove.Add(new CommandIds(componentId, commandId, internalRequestId));
         }
@@ -77,20 +77,20 @@ namespace Improbable.Gdk.Core
             s.AddRequest(in context);
         }
 
-        public void AddInternalRequestId(uint componentId, uint commandId, long requestId, uint internalRequestId)
+        public void AddInternalRequestId(uint componentId, uint commandId, long requestId, long internalRequestId)
         {
             internalRequestIds.Add(internalRequestId);
             var s = GetCommandDiffStorage(componentId, commandId);
             s.SetInternalRequestId(internalRequestId, requestId);
         }
 
-        public CommandContext<T> GetContext<T>(uint componentId, uint commandId, uint internalRequestId)
+        public CommandContext<T> GetContext<T>(uint componentId, uint commandId, long internalRequestId)
         {
             var s = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
             return s.GetPayload(internalRequestId);
         }
 
-        internal bool ContainsCommandMetaData(uint internalRequestId)
+        internal bool ContainsCommandMetaData(long internalRequestId)
         {
             return internalRequestIds.Contains(internalRequestId);
         }
@@ -119,9 +119,9 @@ namespace Improbable.Gdk.Core
         {
             public readonly uint ComponentId;
             public readonly uint CommandId;
-            public readonly uint InternalRequestId;
+            public readonly long InternalRequestId;
 
-            public CommandIds(uint componentId, uint commandId, uint internalRequestId)
+            public CommandIds(uint componentId, uint commandId, long internalRequestId)
             {
                 ComponentId = componentId;
                 CommandId = commandId;

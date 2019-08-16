@@ -105,7 +105,7 @@ namespace Improbable.DependentSchema
 
             public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
             {
-                var componentDataSchema = new ComponentData(new SchemaComponentData(198801));
+                var componentDataSchema = new ComponentData(198801, SchemaComponentData.Create());
                 Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
                 var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
 

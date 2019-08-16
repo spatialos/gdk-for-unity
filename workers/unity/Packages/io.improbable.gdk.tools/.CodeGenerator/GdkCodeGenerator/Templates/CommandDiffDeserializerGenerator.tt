@@ -95,9 +95,9 @@ namespace <#= qualifiedNamespace #>
                     var context = new CommandContext<<#= command.FqnRequestType #>>(request.SendingEntity, request.Request.Payload, request.Request.Context, request.RequestId);
                     commandMetaData.AddRequest<<#= command.FqnRequestType #>>(ComponentId, <#= command.CommandIndex #>, in context);
 
-                    var schemaCommandRequest = new global::Improbable.Worker.CInterop.SchemaCommandRequest(ComponentId, <#= command.CommandIndex #>);
+                    var schemaCommandRequest = global::Improbable.Worker.CInterop.SchemaCommandRequest.Create();
                     <#= command.FqnRequestType #>.Serialization.Serialize(request.Request.Payload, schemaCommandRequest.GetObject());
-                    var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(schemaCommandRequest);
+                    var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(ComponentId, <#= command.CommandIndex #>, schemaCommandRequest);
 
                     serializedMessages.AddRequest(serializedRequest, <#= command.CommandIndex #>,
                         request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
@@ -115,10 +115,10 @@ namespace <#= qualifiedNamespace #>
                         continue;
                     }
 
-                    var schemaCommandResponse = new global::Improbable.Worker.CInterop.SchemaCommandResponse(ComponentId, <#= command.CommandIndex #>);
+                    var schemaCommandResponse = global::Improbable.Worker.CInterop.SchemaCommandResponse.Create();
                     <#= command.FqnResponseType #>.Serialization.Serialize(response.Payload.Value, schemaCommandResponse.GetObject());
 
-                    var serializedResponse = new global::Improbable.Worker.CInterop.CommandResponse(schemaCommandResponse);
+                    var serializedResponse = new global::Improbable.Worker.CInterop.CommandResponse(ComponentId, <#= command.CommandIndex #>, schemaCommandResponse);
 
                     serializedMessages.AddResponse(serializedResponse, (uint) response.RequestId);
                 }

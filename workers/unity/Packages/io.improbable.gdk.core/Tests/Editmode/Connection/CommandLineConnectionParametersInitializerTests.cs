@@ -11,6 +11,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         [TestCase("RakNet", NetworkConnectionType.RakNet)]
         [TestCase("Tcp", NetworkConnectionType.Tcp)]
         [TestCase("Kcp", NetworkConnectionType.Kcp)]
+        [TestCase("ModularUdp", NetworkConnectionType.ModularUdp)]
         public void Initialize_should_set_network_protocol(string protocolStr, NetworkConnectionType connectionType)
         {
             var args = new Dictionary<string, string>

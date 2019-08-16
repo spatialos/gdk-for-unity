@@ -39,7 +39,7 @@ namespace Playground
                     cubeComponent.TargetVelocity = new Vector3f { X = 2.0f };
                 }
 
-                rigidbody.MovePosition(rigidbody.position + cubeComponent.TargetVelocity.ToUnityVector() * Time.fixedDeltaTime);
+                rigidbody.MovePosition(rigidbody.position + new Vector3(cubeComponent.TargetVelocity.X, cubeComponent.TargetVelocity.Y, cubeComponent.TargetVelocity.Z) * Time.fixedDeltaTime);
             });
         }
     }

@@ -33,8 +33,8 @@ namespace Playground
                     builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.MobileClient),
                         flowInitializer));
                     break;
-                case ConnectionService.AlphaLocator:
-                    builder.SetConnectionFlow(new AlphaLocatorFlow(flowInitializer));
+                case ConnectionService.Locator:
+                    builder.SetConnectionFlow(new LocatorFlow(flowInitializer));
                     break;
                 default:
                     throw new ArgumentException("Received unsupported connection service.");

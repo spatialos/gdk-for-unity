@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Improbable.Gdk.Mobile
 {
     public class MobileConnectionFlowInitializer : IConnectionFlowInitializer<ReceptionistFlow>,
-        IConnectionFlowInitializer<AlphaLocatorFlow>
+        IConnectionFlowInitializer<LocatorFlow>
     {
         private readonly IMobileSettingsProvider[] settingsProviders;
 
@@ -39,9 +39,9 @@ namespace Improbable.Gdk.Mobile
                 .FirstOrDefault() ?? RuntimeConfigDefaults.ReceptionistHost;
         }
 
-        public void Initialize(AlphaLocatorFlow alphaLocator)
+        public void Initialize(LocatorFlow locator)
         {
-            alphaLocator.DevAuthToken = settingsProviders
+            locator.DevAuthToken = settingsProviders
                 .Select(provider => provider.GetDevAuthToken())
                 .FilterOption()
                 .FirstOrDefault() ?? string.Empty;
@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Mobile
 
                 return environment == RuntimeConfigDefaults.LocalEnvironment
                     ? ConnectionService.Receptionist
-                    : ConnectionService.AlphaLocator;
+                    : ConnectionService.Locator;
             }
         }
 
@@ -135,7 +135,7 @@ namespace Improbable.Gdk.Mobile
 
                 return environment == RuntimeConfigDefaults.LocalEnvironment
                     ? ConnectionService.Receptionist
-                    : ConnectionService.AlphaLocator;
+                    : ConnectionService.Locator;
             }
         }
     }

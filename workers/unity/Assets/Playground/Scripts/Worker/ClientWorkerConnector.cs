@@ -36,9 +36,6 @@ namespace Playground
                     case ConnectionService.Locator:
                         builder.SetConnectionFlow(new LocatorFlow(initializer));
                         break;
-                    case ConnectionService.AlphaLocator:
-                        builder.SetConnectionFlow(new AlphaLocatorFlow(initializer));
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

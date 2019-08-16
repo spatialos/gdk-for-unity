@@ -70,9 +70,6 @@ namespace Improbable.Gdk.Core
                         case OpType.RemoveEntity:
                             DeserializationDiff.RemoveEntity(opList.GetRemoveEntityOp(i).EntityId);
                             break;
-                        case OpType.ReserveEntityIdResponse:
-                            throw new InvalidOperationException(
-                                "Reserve Entity ID is deprecated. Please use Reserve Entity IDs");
                         case OpType.ReserveEntityIdsResponse:
                             var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);
                             ComponentOpDeserializer.ApplyReserveEntityIdsResponse(reserveEntityIdsOp,

@@ -11,10 +11,6 @@
     <Compile Remove="dependencies\**" />
     <EmbeddedResource Remove="dependencies\**" />
     <None Remove="dependencies\**" />
-    <None Remove="Partials\Improbable.Vector3d" />
-    <EmbeddedResource Include="Partials\Improbable.Vector3d" />
-    <None Remove="Partials\Improbable.Vector3f" />
-    <EmbeddedResource Include="Partials\Improbable.Vector3f" />
     <None Remove="Partials\Improbable.Coordinates" />
     <EmbeddedResource Include="Partials\Improbable.Coordinates" />
     <None Remove="Partials\Improbable.EdgeLength" />
