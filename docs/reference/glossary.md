@@ -155,17 +155,7 @@ From the [SpatialOS Console](#spatialos-console) for your [cloud deployment](htt
 
 ## Locator connection flow
 
-From SpatialOS v13.5, there are two versions of the Locator connection.
-
-**v10.4+ Locator connection flow (stable version)**
-
-Use this Locator connection flow to:
-
-* Connect a client worker instance to a cloud deployment via the [SpatialOS Launcher](#launcher).
-
-**New v13.5+ Locator connection flow (alpha version)**
-
-Use this Locator connection flow to:
+Use this connection flow to:
 
 * Connect a client worker instance to a cloud deployment via the [SpatialOS Launcher](#launcher).
 * Connect a mobile worker instance to a cloud deployment.
