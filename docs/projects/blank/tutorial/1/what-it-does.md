@@ -32,7 +32,7 @@ When your local instance of SpatialOS is ready, you should see the following mes
 
 Open the `DevelopmentScene` found in the `Assets/Scenes/` folder. You should find a `ClientWorker` and `GameLogicWorker` present in the Scene hierarchy.
 
-<img src="{{assetRoot}}assets/blank/tutorial/0/development-scene-hierarchy.png" style="margin: 0 auto; width: 25%; display: block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/development-scene-hierarchy.png" style="margin: 0 auto; width: 25%; display: block;" />
 
 Select the Play button. This connects both a client-worker and a server-worker to your local deployment.
 
@@ -68,13 +68,13 @@ You can learn more about the Inspector [here](https://docs.improbable.io/referen
 
 In a browser of your choice, navigate to `localhost:21000/inspector`. You should be able to validate that two workers are connected to the deployment:
 
-<img src="{{assetRoot}}assets/blank/tutorial/0/inspector-workers-list.png" style="margin: 0 auto; width: 50%; display: block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/inspector-workers-list.png" style="margin: 0 auto; width: 50%; display: block;" />
 
 Looking further down, notice that there are four entities in your world:
 
 <div style="text-align:center">
-<img src="{{assetRoot}}assets/blank/tutorial/0/inspector-entities-hover.png" style="margin: 0 auto; width: 27%; display: inline-block;" />
-<img src="{{assetRoot}}assets/blank/tutorial/0/inspector-entities-list.png" style="margin: 0 auto; width: 55%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/inspector-entities-hover.png" style="margin: 0 auto; width: 27%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/inspector-entities-list.png" style="margin: 0 auto; width: 55%; display: inline-block;" />
 </div>
 
 The `UnityGameLogic-worker` and `UnityClient-worker` are worker entities. These types of entities are spawned and deleted automatically by SpatialOS when a worker of that type connects or disconnects. We will not cover worker entities or system entities in this tutorial, but you can read more about them [here](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/system-entities).

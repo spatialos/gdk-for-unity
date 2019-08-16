@@ -18,11 +18,11 @@
         - Tutorial
             - [Overview]({{urlRoot}}/projects/blank/tutorial/overview)
             - 1. Introduction
-                - [1. What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/0/spatialos)
-                - [2. Project walkthrough]({{urlRoot}}/projects/blank/tutorial/0/project-walkthrough)
-                - [3. What the Project does]({{urlRoot}}/projects/blank/tutorial/0/what-it-does)
-                - [4. GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/0/player-lifecycle)
-                - [5. Summary]({{urlRoot}}/projects/blank/tutorial/0/summary)
+                - [1. What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/1/spatialos)
+                - [2. Project walkthrough]({{urlRoot}}/projects/blank/tutorial/1/project-walkthrough)
+                - [3. What the Project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
+                - [4. GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)
+                - [5. Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)
     - Make your own
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)

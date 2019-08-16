@@ -109,13 +109,13 @@ See below to learn more about:
 
 Open the Unity Project found at `workers/unity/`. The first time you open the project, Unity will retrieve all the packages defined in the `manifest.json` and cache them on your machine. After resolving the packages, you’ll see a popup that says `Generating code`.
 
-<img src="{{assetRoot}}assets/blank/tutorial/0/generating-code.png" style="margin: 0 auto; width: 50%; display: block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/generating-code.png" style="margin: 0 auto; width: 50%; display: block;" />
 
 ## Scenes
 
 You may have noticed that there are a set of Scenes present at `Assets/Scenes/`.
 
-<img src="{{assetRoot}}assets/blank/tutorial/0/scenes-list.png" style="margin: 0 auto; width: 25%; display: block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/scenes-list.png" style="margin: 0 auto; width: 25%; display: block;" />
 
 The `ClientScene` contains a `ClientWorker` prefab to represent a client-worker and similarly the `GameLogicScene` contains a `GameLogicWorker` prefab to represent a server-side worker. By playing either of these Scenes, these prefabs will try to connect their respective client-worker or server-worker to your SpatialOS deployment.
 

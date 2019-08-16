@@ -33,15 +33,15 @@ To ensure that the deployment is not polluted with player entities of unresponsi
 To demonstrate this, first look at the top-right corner of your local Inspector. You should see that a `UnityClient` and `UnityGameLogic` worker instance are connected. Select the `UnityClient` from the list of workers and then select the red `Stop worker` button.
 
 <div style="text-align:center;">
-<img src="{{assetRoot}}assets/blank/tutorial/0/inspector-workers-list-hover-client.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
-<img src="{{assetRoot}}assets/blank/tutorial/0/stop-worker-button.png" style="margin: 0 auto; width: 23%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/inspector-workers-list-hover-client.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/stop-worker-button.png" style="margin: 0 auto; width: 23%; display: inline-block;" />
 </div>
 
 A dialogue window should appear asking if you’re sure. We are - so select `Stop worker` from the window to kill the client-worker. Immediately you should notice that the `UnityGameLogic` worker is still there and the `UnityClient-worker` entity has been removed, but the player entity is still in the world!
 
 <div style="text-align:center">
-<img src="{{assetRoot}}assets/blank/tutorial/0/stop-worker-window.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
-<img src="{{assetRoot}}assets/blank/tutorial/0/no-more-client.png" style="margin: 0 auto; width: 37%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/stop-worker-window.png" style="margin: 0 auto; width: 50%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/1/no-more-client.png" style="margin: 0 auto; width: 37%; display: inline-block;" />
 </div>
 
 Not to fear, because after a few seconds you’ll notice the player entity is swiftly removed from the world. The `UnityClient-worker` entity is managed by SpatialOS, which means that it is deleted as soon as the respective client-worker is disconnected.
