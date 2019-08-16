@@ -14,7 +14,9 @@ First, hit `Ctrl+L` on Windows, or `Cmd+L` on Mac, to launch a local deployment.
 
 <%(#Expandable title="What is inside default_launch.json?")%>
 
-This `default_launch.json` includes a load balancing configuration where SpatialOS expects at most one `UnityGameLogic` worker to be spawned in the world. The `manual_worker_connection_only` argument is specified to tell your local SpatialOS instance that you will manually connect a worker of that type to the deployment.
+This `default_launch.json` includes a load balancing configuration where SpatialOS expects at most one `UnityGameLogic` worker to be spawned in the world.
+
+The `manual_worker_connection_only` argument is specified to tell your local SpatialOS instance that you will manually connect a worker of that type to the deployment.
 
 <%(/Expandable)%>
 

@@ -10,7 +10,9 @@ At a high-level, the client-worker finds all PlayerCreator entities in the world
 
 World commands are built-in SpatialOS commands that allow you to create entities (`CreateEntity`), delete entities (`DeleteEntity`) and query the world for entities (`EntityQuery`).
 
-An `EntityQuery` is used to initially find all PlayerCreator entities in the world. When handling a player creation request, the `CreateEntity` world command is called to create the Player entity. If the client-worker disconnects or becomes unresponsive, the Heartbeat system steps in to delete the Player entity using a `DeleteEntity` world command.
+1. An `EntityQuery` is used to initially find all PlayerCreator entities in the world.
+1. When handling a player creation request, the `CreateEntity` world command is called to create the Player entity.
+1. If the client-worker disconnects or becomes unresponsive, the Heartbeat system steps in to delete the Player entity using a `DeleteEntity` world command.
 
 You can find out more about World Commands [here](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/design/commands#world-commands).
 
@@ -28,7 +30,7 @@ You can find out more about custom player creation [here]({{urlRoot}}/modules/pl
 
 ## Heartbeats
 
-To ensure that the deployment is not polluted with player entities of unresponsive or disconnected client-workers, the module implements a technique known as Heartbeating to periodically remove unresponsive or disconnected clients.
+To ensure that the deployment is not polluted with player entities of unresponsive or disconnected client-workers, the module implements a technique known as heartbeating to periodically remove unresponsive or disconnected clients.
 
 To demonstrate this, first look at the top-right corner of your local Inspector. You should see that a `UnityClient` and `UnityGameLogic` worker instance are connected. Select the `UnityClient` from the list of workers and then select the red `Stop worker` button.
 
