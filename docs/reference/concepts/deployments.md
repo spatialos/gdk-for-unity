@@ -32,6 +32,8 @@ For more information, see the [comprehensive worker configuration documentation]
 
 ## Local deployment
 
+Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > 
+
 To start a local deployment, in your Unity Editor, select **SpatialOS** > **Local Launch**.
 
 This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you selected.
