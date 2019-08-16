@@ -108,18 +108,18 @@ The `HealthPickup` entity is a new type of entity, so we must create a new entit
 
 **Step 1.** In your Unity Editor, locate `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs` and open it in your code editor.
 
-**Step 2.** Add `using Pickups;` to the top of the file to ensure that we can reference the generated `Pickups` namespace.
+**Step 2.** Add `using Pickups;` and `using UnityEngine;` to the top of the file to ensure that we can reference the generated `Pickups` namespace and Unity engine types.
 
 **Step 3.** Define a new static function within the `FpsEntityTemplates` class which takes the position of the health pack and the value of the health pack as parameters and returns an `EntityTemplate` instance:
 
 ```csharp
-public static EntityTemplate HealthPickup(Vector3f position, uint healthValue)
+public static EntityTemplate HealthPickup(Vector3 position, uint healthValue)
 {
     // Create a HealthPickup component snapshot which is initially active and grants "heathValue" on pickup.
     var healthPickupComponent = new Pickups.HealthPickup.Snapshot(true, healthValue);
 
     var entityTemplate = new EntityTemplate();
-    entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(position.X, position.Y, position.Z)), WorkerUtils.UnityGameLogic);
+    entityTemplate.AddComponent(new Position.Snapshot(Coordinates.FromUnityVector(position)), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(new Metadata.Snapshot("HealthPickup"), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);
@@ -172,15 +172,13 @@ The **SpatialOS** menu in your Unity Editor contains a **"Generate FPS Snapshot"
 
 **Step 1.** In your Unity Editor, locate `Assets/Fps/Scripts/Editor/SnapshotGenerator/SnapshotMenu.cs` and open it in your code editor.
 
-**Step 2.** Add `using Improbable;` to the top of the file to ensure that we can reference the generated `Vector3f` struct.
-
 **Step 3.** Copy and paste the function below into the `SnapshotMenu` class.
 
 ```csharp
 private static void AddHealthPacks(Snapshot snapshot)
 {
     // Invoke our static function to create an entity template of our health pack with 100 heath.
-    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(5, 0, 0), 100);
+    var healthPack = FpsEntityTemplates.HealthPickup(new Vector3(5, 0, 0), 100);
 
     // Add the entity template to the snapshot.
     snapshot.AddEntity(healthPack);
@@ -250,7 +248,7 @@ namespace Fps
         private static void AddHealthPacks(Snapshot snapshot)
         {
             // Invoke our static function to create an entity template of our health pack with 100 heath.
-            var healthPack = FpsEntityTemplates.HealthPickup(new Vector3f(5, 0, 0), 100);
+            var healthPack = FpsEntityTemplates.HealthPickup(new Vector3(5, 0, 0), 100);
 
             // Add the entity template to the snapshot.
             snapshot.AddEntity(healthPack);

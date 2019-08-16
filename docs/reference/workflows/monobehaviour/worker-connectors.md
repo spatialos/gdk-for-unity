@@ -52,9 +52,6 @@ public class ClientWorkerConnector : WorkerConnector
                 case ConnectionService.Locator:
                     builder.SetConnectionFlow(new LocatorFlow(initializer));
                     break;
-                case ConnectionService.AlphaLocator:
-                    builder.SetConnectionFlow(new AlphaLocatorFlow(initializer));
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -110,14 +107,14 @@ Each of the [connection flows]({{urlRoot}}/reference/concepts/connection-flows) 
 
 The GDK provides the `IConnectionFlowInitializer<TConnectionFlow>` interface as part of the small framework mentioned above. This interface represents an object which knows how to initialize a connection flow of type `TConnectionFlow`. The GDK provides two implementations:
 
-- `CommandLineConnectionFlowInitializer` which can initialize the `ReceptionistFlow,` `LocatorFlow`, and `AlphaLocatorFlow` from command line parameters.
-- `MobileConnectionFlowInitializer` which can initialize the `ReceptionistFlow` and `AlphaLocatorFlow`.
+- `CommandLineConnectionFlowInitializer` which can initialize the `ReceptionistFlow` and `LocatorFlow` from command line parameters.
+- `MobileConnectionFlowInitializer` which can initialize the `ReceptionistFlow` and `LocatorFlow`.
 
 ## How do I customize the connection flows
 
-The Locator and AlphaLocator connection flows both have callbacks to the user during the connection process. The `LocatorFlow` and `AlphaLocatorFlow` objects provide a reasonable default implementation for these callbacks, but you may want to customize this to suit your connection & authentication logic. 
+The Locator connection flow has callbacks to the user during the connection process. The `LocatorFlow` object provides a reasonable default implementation for these callbacks, but you may want to customize this to suit your connection & authentication logic. 
 
-To customize these flows, simply inherit from the relevant flow object and override the methods that you want to tweak. Please refer to the API documentation for more detail on the [`LocatorFlow`]({{urlRoot}}/api/core/locator-flow) and [`AlphaLocatorFlow`]({{urlRoot}}/api/core/alpha-locator-flow).
+To customize these flows, simply inherit from the relevant flow object and override the methods that you want to tweak. Please refer to the API documentation for more detail on the [`LocatorFlow`]({{urlRoot}}/api/core/locator-flow).
 
 ## Example implementation
 
