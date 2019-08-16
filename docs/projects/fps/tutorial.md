@@ -108,7 +108,7 @@ The `HealthPickup` entity is a new type of entity, so we must create a new entit
 
 **Step 1.** In your Unity Editor, locate `Assets/Fps/Scripts/Config/FpsEntityTemplates.cs` and open it in your code editor.
 
-**Step 2.** Add `using Pickups;` to the top of the file to ensure that we can reference the generated `Pickups` namespace.
+**Step 2.** Add `using Pickups;` and `using UnityEngine;` to the top of the file to ensure that we can reference the generated `Pickups` namespace and Unity engine types.
 
 **Step 3.** Define a new static function within the `FpsEntityTemplates` class which takes the position of the health pack and the value of the health pack as parameters and returns an `EntityTemplate` instance:
 
@@ -119,7 +119,7 @@ public static EntityTemplate HealthPickup(Vector3 position, uint healthValue)
     var healthPickupComponent = new Pickups.HealthPickup.Snapshot(true, healthValue);
 
     var entityTemplate = new EntityTemplate();
-    entityTemplate.AddComponent(new Position.Snapshot(Coordinates.FromUnityVector(position), WorkerUtils.UnityGameLogic);
+    entityTemplate.AddComponent(new Position.Snapshot(Coordinates.FromUnityVector(position)), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(new Metadata.Snapshot("HealthPickup"), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
     entityTemplate.AddComponent(healthPickupComponent, WorkerUtils.UnityGameLogic);
