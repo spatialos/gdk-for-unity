@@ -13,7 +13,7 @@ The Blank Project is a barebones SpatialOS project containing the minimal functi
 
 ## Clone the project
 
-Before exploring the contents of the Blank Project, we recommend you first download the source code. There are two ways you can do this: _either_ get the source code as one zip file download _or_ clone the repository using Git. (To find out more about Git, see [github.io](https://try.github.io)).
+Before exploring the contents of the Blank Project, we recommend you first download the source code. There are two ways you can do this: _either_ get the source code as one zip file download _or_ clone the repository using [Git](https://try.github.io).
 
 <%(Callout message="We recommend using Git, as Git's version control makes it easier for you to get updates in the future.")%>
 
@@ -29,8 +29,8 @@ If you haven't downloaded the zip file, you need the Blank Project repository.
 
 Clone the Blank Project using one of the following commands:
 
-|       |                                                                                |
-| ----- | ------------------------------------------------------------------------------ |
+|       |                                                                          |
+| ----- | ------------------------------------------------------------------------ |
 | HTTPS | `git clone https://github.com/spatialos/gdk-for-unity-blank-project.git` |
 | SSH   | `git clone git@github.com:spatialos/gdk-for-unity-blank-project.git`     |
 
@@ -40,7 +40,10 @@ Clone the Blank Project using one of the following commands:
 
 ## Configurations
 
-At the root of the project you’ll find two launch configurations; one for local deployments and one for cloud deployments.
+At the root of the project you’ll find two launch configurations:
+
+* `default_launch.json` for local deployments.
+* `cloud_launch.json` for cloud deployments.
 
 ```text
 
@@ -105,19 +108,17 @@ See below to learn more about:
 * [Snapshots]({{urlRoot}}/reference/concepts/snapshots)
 * [GDK worker build configurations]({{urlRoot}}/modules/build-system/build-config)
 
+## Opening the project
+
+Open the Unity Project found at `workers/unity/`. The first time you open the project, Unity will retrieve all the packages defined in the `manifest.json` and cache them on your machine. After resolving the packages, you’ll see a popup that says `Generating code`.
+
+<img src="{{assetRoot}}assets/blank/tutorial/0/generating-code.png" style="margin: 0 auto; width: 50%; display: block;" />
+
 ## Scenes
 
 You may have noticed that there are a set of Scenes present at `Assets/Scenes/`.
 
-```text
-
-    Assets/
-        ├── Scenes/
-            ├── ClientScene.unity
-            ├── DevelopmentScene.unity
-            ├── GameLogicScene.unity
-
-```
+<img src="{{assetRoot}}assets/blank/tutorial/0/scenes-list.png" style="margin: 0 auto; width: 25%; display: block;" />
 
 The `ClientScene` contains a `ClientWorker` prefab to represent a client-worker and similarly the `GameLogicScene` contains a `GameLogicWorker` prefab to represent a server-side worker. By playing either of these Scenes, these prefabs will try to connect their respective client-worker or server-worker to your SpatialOS deployment.
 

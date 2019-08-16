@@ -6,15 +6,9 @@ The Blank Project offers the basic ability to launch a deployment, connect a cli
 
 On this page, we’ll walk you through this functionality, and introduce the tooling and workflows that you should become familiar with along the way.
 
-## Opening the project
-
-First, open the Unity Project found at `workers/unity/`. The first time you open the project, Unity will retrieve all the packages defined in the `manifest.json` and cache them on your machine. After resolving the packages, you’ll see a popup that says `Generating code`.
-
-<img src="{{assetRoot}}assets/blank/tutorial/0/generating-code.png" style="margin: 0 auto; width: 50%; display: block;" />
-
 ## Launch a local deployment
 
-Once the project is ready, hit `Ctrl+L` on Windows, or `Cmd+L` on Mac, to launch a local deployment. This opens a new terminal window and launches a local instance of SpatialOS using the `default_launch.json` launch configuration (located at the root of your SpatialOS project).
+First, hit `Ctrl+L` on Windows, or `Cmd+L` on Mac, to launch a local deployment. This opens a new terminal window and launches a local instance of SpatialOS using the `default_launch.json` launch configuration (located at the root of your SpatialOS project).
 
 > **Note: you can only have one instance of SpatialOS running on your local machine at a time.**
 
