@@ -1,8 +1,8 @@
 <%(TOC)%>
 
-# Player lifecycle
+# 1.4 - Player lifecycle
 
-As you can see, the Player Lifecycle module creates an entity representing a player when a client-worker connects, and manages the lifecycle of this entity with the [Heartbeat system]({{urlRoot}}/modules/player-lifecycle/heartbeating) (which we’ll cover later).
+As you can see, the GDK's Player Lifecycle module creates an entity representing a player when a client-worker connects, and manages the lifecycle of this entity with the [Heartbeat system]({{urlRoot}}/modules/player-lifecycle/heartbeating) (which we’ll cover later).
 
 At a high-level, the client-worker finds all PlayerCreator entities in the world, sends a request to one of them, and waits for a server-worker to create the requested player entity in the world. To do this, the module makes use of World Commands.
 

@@ -1,6 +1,6 @@
 <%(TOC)%>
 
-# What the Blank Project does
+# 1.3 - What the Blank Project does
 
 The Blank Project offers the basic ability to launch a deployment, connect a client-worker and server-worker to it, and let the Player Lifecycle module create a player entity to represent the client.
 

@@ -1,6 +1,6 @@
 <%(TOC max="2")%>
 
-# What is SpatialOS?
+# 1.1 - What is SpatialOS?
 
 **SpatialOS** is a platform-as-a-service that runs and manages online games in the cloud.
 

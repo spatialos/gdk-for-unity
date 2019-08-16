@@ -1,6 +1,6 @@
 <%(TOC)%>
 
-# Key pieces
+# 1.2 - Project walkthrough
 
 The Blank Project is a barebones SpatialOS project containing the minimal functionality required to begin development with the GDK. It includes:
 
@@ -40,64 +40,61 @@ Clone the Blank Project using one of the following commands:
 
 ## Configurations
 
-At the root of the project you’ll find two launch configurations:
+At the root of the project you’ll find two launch configurations: one for local deployments and one for cloud deployments.
 
-* `default_launch.json` for local deployments.
-* `cloud_launch.json` for cloud deployments.
-
-```text
+<pre>
 
     gdk-for-unity-blank-project/
         ├── snapshots/
         ├── workers/
-        ├── cloud_launch.json
-        ├── default_launch.json
+        ├── <b><font color="white">cloud_launch.json</font></b>
+        ├── <b><font color="white">default_launch.json</font></b>
         ├── spatialos.json
 
-```
+</pre>
 
 These configurations are used to determine what template your deployment uses, the world size, the load balancing policies, and some worker-specific configuration parameters.
 
 The snapshots directory contains a default snapshot defining the initial state of your game world.
 
-```text
+<pre>
 
     gdk-for-unity-blank-project/
         ├── snapshots/
-                ├── default.snapshot
+                ├── <b><font color="white">default.snapshot</font></b>
         ...
 
-```
+</pre>
 
 You can find the root of the Unity project in `workers/unity/`.
 
-```text
+<pre>
 
     gdk-for-unity-blank-project/
         ...
         ├── workers/
-            ├── unity/
-                ├── Assets/
-                ├── Packages/
-                ├── ProjectSettings/
-                ├── spatialos.UnityClient.worker.json
-                ├── spatialos.UnityGameLogic.worker.json
+            ├── <b><font color="white">unity/</font></b>
+                ├── <b><font color="white">Assets/</font></b>
+                ├── <b><font color="white">Packages/</font></b>
+                ├── <b><font color="white">ProjectSettings/</font></b>
+                ├── <b><font color="white">spatialos.UnityClient.worker.json</font></b>
+                ├── <b><font color="white">spatialos.UnityGameLogic.worker.json</font></b>
         ...
 
-```
+</pre>
 
 Here, you will find the client-worker and server-worker configurations. They are used to configure how a worker should be launched and specify particular Runtime settings for the given worker type.
 
 Under `Assets/Config/` of the Unity Project, there is a `BuildConfiguration` asset.
 
-```text
+<pre>
 
     Assets/
         ├── Config/
-            ├── BuildConfiguration.asset
+            ├── <b><font color="white">BuildConfiguration.asset</font></b>
             ...
 
-```
+</pre>
 
 This asset defines for each worker type the target platforms to build and which Scenes to include. By default the GDK builds both Windows and MacOS UnityClients for cloud deployments, but only build a single platform (Windows or MacOS depending on your machine) for local deployments. This is because you will only ever run a client for local deployments on your machine, but may want to distribute your game to both Windows and MacOS users when running a cloud deployment.
 
@@ -142,16 +139,16 @@ The GDK also allows you to run more than one worker in your Unity Editor. The `D
 
 Within your Unity Project there is a `Packages/manifest.json` file, which defines all the package dependencies of your project. The Blank Project includes dependencies to all Feature Modules, to make it easier to adopt and include them in your user code.
 
-```text
+<pre>
 
     unity/
         ├── Assets/
-            ├── BlankProject.asmdef
+            ├── <b><font color="white">BlankProject.asmdef</font></b>
             ...
         ├── Packages/
-            ├── manifest.json
+            ├── <b><font color="white">manifest.json</font></b>
         ...
 
-```
+</pre>
 
 There is also a BlankProject assembly definition in your project’s Assets folder. Although the project `manifest.json` defines dependencies to all GDK Feature Modules, only the Core and Player Lifecycle modules are referenced in the assembly definition. This is because the Blank Project has minimal game code, and only makes use of the Player Lifecycle module. You can read more about assembly definitions [here](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html).
