@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="2")%>
 
 # 1.3 - What the Blank Project does
 
@@ -82,3 +82,5 @@ The `UnityGameLogic-worker` and `UnityClient-worker` are worker entities. These 
 `PlayerCreator` entities are used by the PlayerLifecycle module to handle player creation requests. If your world does not contain at least one `PlayerCreator` entity, the PlayerLifecycle module will not work. To meet this minimum requirement, the default snapshot in the Blank Project includes a `PlayerCreator` entity.
 
 The `Player` entity is then created by the Player Lifecycle module as soon as the client-worker connects to the deployment.
+
+#### Next: [GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)

@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="2")%>
 
 # 1.2 - Project walkthrough
 
@@ -152,3 +152,5 @@ Within your Unity Project there is a `Packages/manifest.json` file, which define
 </pre>
 
 There is also a BlankProject assembly definition in your project’s Assets folder. Although the project `manifest.json` defines dependencies to all GDK Feature Modules, only the Core and Player Lifecycle modules are referenced in the assembly definition. This is because the Blank Project has minimal game code, and only makes use of the Player Lifecycle module. You can read more about assembly definitions [here](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html).
+
+#### Next: [What the Blank Project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)

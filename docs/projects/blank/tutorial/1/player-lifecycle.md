@@ -49,3 +49,5 @@ Not to fear, because after a few seconds you’ll notice the player entity is sw
 The delay in removing the player entity exists because the Heartbeat system requires a minimum number of failed heartbeats before deleting the `Player` entity. This is to allow some failure tolerance from the client-worker, to avoid removing players for being a little slow at responding to heartbeat requests.
 
 To understand more about how this works, read the [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating) documentation.
+
+#### Next: [Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)

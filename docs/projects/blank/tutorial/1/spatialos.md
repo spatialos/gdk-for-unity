@@ -114,3 +114,5 @@ Like server-workers, client-workers can only see a part of the world. However, c
 We run your game in the cloud for you, managing all the infrastructure, so you don't have to worry about how to make your game run on a distributed architecture. We also provide a [collection of tools](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/tools-overview) to help test, deploy and run your games.
 
 The GDK for Unity is an integration built on top of a low-level [SDK](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/sdks-and-data-overview), enabling developers to more naturally create Unity games for SpatialOS.
+
+#### Next: [Project walkthrough]({{urlRoot}}/projects/blank/tutorial/1/project-walkthrough)

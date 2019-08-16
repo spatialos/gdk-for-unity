@@ -20,7 +20,7 @@
             - 1. Introduction
                 - [1. What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/1/spatialos)
                 - [2. Project walkthrough]({{urlRoot}}/projects/blank/tutorial/1/project-walkthrough)
-                - [3. What the Project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
+                - [3. What the project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
                 - [4. GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)
                 - [5. Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)
     - Make your own

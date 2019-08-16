@@ -1,5 +1,3 @@
-<%(TOC)%>
-
 # Overview
 
 This tutorial series aims to teach you how to perform basic SpatialOS interactions using the GDK for Unity.
@@ -17,3 +15,5 @@ Starting from the [Blank Project](https://github.com/spatialos/gdk-for-unity-bla
 ---
 
 In the first chapter of the series, you’re going to look at what the Blank Project contains, run the Blank project locally on your machine, and explore how the included Player Lifecycle module works.
+
+#### Next: [What is SpatialOS?]({{urlRoot}}/projects/blank/tutorial/1/spatialos)
