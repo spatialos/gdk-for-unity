@@ -39,10 +39,6 @@
         "arguments": [
           "+workerType",
           "UnityClient",
-          "+infraServicesUrl",
-          "http://127.0.0.1:21000",
-          "+projectName",
-          "${IMPROBABLE_PROJECT_NAME}",
           "-logfile",
           "../../logs/external-default-unityclient.log"
         ]
@@ -53,14 +49,8 @@
           "-n",
           "./build/worker/UnityClient@Mac/UnityClient@Mac.app",
           "--args",
-          "+assemblyName",
-          "local_assembly",
           "+workerType",
           "UnityClient",
-          "+infraServicesUrl",
-          "http://127.0.0.1:21000",
-          "+projectName",
-          "${IMPROBABLE_PROJECT_NAME}",
           "-logfile",
           "../../logs/external-default-unityclient.log"
         ]
