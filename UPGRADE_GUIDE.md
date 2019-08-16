@@ -2,7 +2,7 @@
 
 ## From `0.2.6` to `0.2.7`
 
-### Worker SDK `14.0.0` upgrade
+### Worker SDK `14.0.1` upgrade
 
 There are a number of breaking changes to contend with for the Worker SDK upgrade:
 
