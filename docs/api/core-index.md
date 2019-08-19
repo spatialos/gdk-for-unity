@@ -42,16 +42,8 @@ GDK package: Core<br />
 
 <table>
 <tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a></td>
-<td style="padding: 14px; border: none;">Represents the Alpha Locator connection flow. </td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/authentication-failed-exception">AuthenticationFailedException</a></td>
 <td style="padding: 14px; border: none;">Represents an error that occurs when the player fails to authenticate via the anonymous authentication flow. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/called-value-on-empty-option-exception">CalledValueOnEmptyOptionException</a></td>
-<td style="padding: 14px; border: none;">Represents an error when an <a href="{{urlRoot}}/api/core/option">Option</a>'s contained value is attempted to be accessed when the option is empty. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/clean-temporary-components-system">CleanTemporaryComponentsSystem</a></td>
@@ -63,7 +55,7 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/command-line-connection-flow-initializer">CommandLineConnectionFlowInitializer</a></td>
-<td style="padding: 14px; border: none;">Represents an object which can initialize the <a href="{{urlRoot}}/api/core/receptionist-flow">ReceptionistFlow</a>, <a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a>, and <a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a> connection flows from the command line. </td>
+<td style="padding: 14px; border: none;">Represents an object which can initialize the <a href="{{urlRoot}}/api/core/receptionist-flow">ReceptionistFlow</a>, <a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a>, and <a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a> connection flows from the command line. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/command-line-connection-parameter-initializer">CommandLineConnectionParameterInitializer</a></td>
@@ -102,10 +94,6 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;">Represents an error that occurs when a connection attempt failed. </td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/created-option-with-null-payload-exception">CreatedOptionWithNullPayloadException</a></td>
-<td style="padding: 14px; border: none;">Represents an error that occurs when an <a href="{{urlRoot}}/api/core/option">Option</a> is created with an invalid initial state. </td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/custom-spatial-os-send-system">CustomSpatialOSSendSystem</a></td>
 <td style="padding: 14px; border: none;">Base class for custom replication. </td>
 </tr>
@@ -116,6 +104,10 @@ GDK package: Core<br />
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/ecs-view-system">EcsViewSystem</a></td>
 <td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/empty-option-exception">EmptyOptionException</a></td>
+<td style="padding: 14px; border: none;">Represents an error when an <a href="{{urlRoot}}/api/core/option">Option</a>'s contained value is attempted to be accessed when the option is empty. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/entity-system">EntitySystem</a></td>
@@ -143,7 +135,7 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a></td>
-<td style="padding: 14px; border: none;">Represents the Locator connection flow. </td>
+<td style="padding: 14px; border: none;">Represents the Alpha Locator connection flow. </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/logging-dispatcher">LoggingDispatcher</a></td>

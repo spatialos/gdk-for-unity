@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L23">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L23">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CommandMetaData</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,11 +72,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>MarkIdForRemoval</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L57">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L57">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void MarkIdForRemoval(uint componentId, uint commandId, uint internalRequestId)</code></p>
+<code>void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)</code></p>
 
 
 
@@ -87,7 +87,7 @@ code {
 <ul>
 <li><code>uint componentId</code> : </li>
 <li><code>uint commandId</code> : </li>
-<li><code>uint internalRequestId</code> : </li>
+<li><code>long internalRequestId</code> : </li>
 </ul>
 
 
@@ -102,7 +102,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>FlushRemovedIds</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L62">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L62">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -121,7 +121,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddRequest&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L74">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L74">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -151,11 +151,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AddInternalRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L80">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L80">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void AddInternalRequestId(uint componentId, uint commandId, long requestId, uint internalRequestId)</code></p>
+<code>void AddInternalRequestId(uint componentId, uint commandId, long requestId, long internalRequestId)</code></p>
 
 
 
@@ -167,7 +167,7 @@ code {
 <li><code>uint componentId</code> : </li>
 <li><code>uint commandId</code> : </li>
 <li><code>long requestId</code> : </li>
-<li><code>uint internalRequestId</code> : </li>
+<li><code>long internalRequestId</code> : </li>
 </ul>
 
 
@@ -182,11 +182,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetContext&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L87">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L87">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;T&gt; GetContext&lt;T&gt;(uint componentId, uint commandId, uint internalRequestId)</code></p>
+<code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;T&gt; GetContext&lt;T&gt;(uint componentId, uint commandId, long internalRequestId)</code></p>
 
 
 
@@ -197,7 +197,7 @@ code {
 <ul>
 <li><code>uint componentId</code> : </li>
 <li><code>uint commandId</code> : </li>
-<li><code>uint internalRequestId</code> : </li>
+<li><code>long internalRequestId</code> : </li>
 </ul>
 
 

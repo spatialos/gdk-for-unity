@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L17">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L18">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CommandLineConnectionParameterInitializer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L21">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -78,7 +78,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Initialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

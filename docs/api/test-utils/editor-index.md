@@ -34,6 +34,10 @@ GDK package: TestUtils<br />
 <td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/test-utils/editor/spatial-deployment-manager">SpatialDeploymentManager</a></td>
 <td style="padding: 14px; border: none;">Manages a single  instance. </td>
 </tr>
+<tr>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/test-utils/editor/spatiald-manager">SpatialdManager</a></td>
+<td style="padding: 14px; border: none;">Manages the lifecycle of SpatialD and provides methods to interact with it. </td>
+</tr>
 </table>
 
 
