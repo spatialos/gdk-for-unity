@@ -6,6 +6,6 @@
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS Worker SDK Exhaustive Test Schema",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.6"
+    "io.improbable.gdk.core": "0.2.7"
   }
 }
