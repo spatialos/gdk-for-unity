@@ -56,7 +56,10 @@ improbadoc build \
 echo "--- Running Improbadoc Linter :lint-roller:"
 improbadoc lint \
     "${DOCS_PATH_TMP}" \
-    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}"
+    --oauth2_client_cli_token_directory="${SPATIAL_OAUTH_DIR}" \
+    --enable_cross_lint=true \
+    --doc_type="${DOCS_TYPE}" \
+    --version="${DOCS_VERSION}"
 
 setup_docs_linter "${DOCS_PATH_TMP}"
 
