@@ -24,10 +24,8 @@
             - <a href="{{urlRoot}}/api/core/editor/common-ui-elements">CommonUIElements</a>
             - <a href="{{urlRoot}}/api/core/editor/singleton-scriptable-object">SingletonScriptableObject</a>
             - <a href="{{urlRoot}}/api/core/editor/ui-state-manager">UIStateManager</a>
-        - <a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a>
         - <a href="{{urlRoot}}/api/core/authentication-failed-exception">AuthenticationFailedException</a>
         - <a href="{{urlRoot}}/api/core/authority-change-received">AuthorityChangeReceived</a>
-        - <a href="{{urlRoot}}/api/core/called-value-on-empty-option-exception">CalledValueOnEmptyOptionException</a>
         - <a href="{{urlRoot}}/api/core/clean-temporary-components-system">CleanTemporaryComponentsSystem</a>
         - <a href="{{urlRoot}}/api/core/command-context">CommandContext</a>
         - <a href="{{urlRoot}}/api/core/command-line-args">CommandLineArgs</a>
@@ -47,10 +45,10 @@
         - <a href="{{urlRoot}}/api/core/connection-error-reason">ConnectionErrorReason</a>
         - <a href="{{urlRoot}}/api/core/connection-failed-exception">ConnectionFailedException</a>
         - <a href="{{urlRoot}}/api/core/connection-service">ConnectionService</a>
-        - <a href="{{urlRoot}}/api/core/created-option-with-null-payload-exception">CreatedOptionWithNullPayloadException</a>
         - <a href="{{urlRoot}}/api/core/custom-spatial-os-send-system">CustomSpatialOSSendSystem</a>
         - <a href="{{urlRoot}}/api/core/dynamic">Dynamic</a>
         - <a href="{{urlRoot}}/api/core/ecs-view-system">EcsViewSystem</a>
+        - <a href="{{urlRoot}}/api/core/empty-option-exception">EmptyOptionException</a>
         - <a href="{{urlRoot}}/api/core/entity-component">EntityComponent</a>
         - <a href="{{urlRoot}}/api/core/entity-id">EntityId</a>
         - <a href="{{urlRoot}}/api/core/entity-snapshot">EntitySnapshot</a>
@@ -221,8 +219,10 @@
         - [Editor]({{urlRoot}}/api/test-utils/editor-index)
             - [Tests]({{urlRoot}}/api/test-utils/editor/tests-index)
                 - <a href="{{urlRoot}}/api/test-utils/editor/tests/spatial-deployment-manager-tests">SpatialDeploymentManagerTests</a>
+                - <a href="{{urlRoot}}/api/test-utils/editor/tests/spatiald-manager-tests">SpatialdManagerTests</a>
             - <a href="{{urlRoot}}/api/test-utils/editor/process-extensions">ProcessExtensions</a>
             - <a href="{{urlRoot}}/api/test-utils/editor/spatial-deployment-manager">SpatialDeploymentManager</a>
+            - <a href="{{urlRoot}}/api/test-utils/editor/spatiald-manager">SpatialdManager</a>
         - <a href="{{urlRoot}}/api/test-utils/test-log-dispatcher">TestLogDispatcher</a>
     - [Tools]({{urlRoot}}/api/tools-index)
         - [MiniJSON]({{urlRoot}}/api/tools/mini-json-index)

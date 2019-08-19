@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L9">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L9">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,7 +48,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendUpdate&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,7 +77,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SendEvent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L19">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -106,7 +106,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetEventsReceived&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -125,7 +125,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetEventsReceived&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -153,7 +153,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentUpdatesReceived&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -172,7 +172,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetEntityComponentUpdatesReceived&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -200,7 +200,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAuthorityChangesReceived</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -228,7 +228,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAuthorityChangesReceived</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L56">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L56">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -257,7 +257,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentsAdded</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L63">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -285,7 +285,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponentsRemoved</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L69">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L69">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -313,7 +313,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetAuthority</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L75">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L75">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -342,7 +342,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L80">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L80">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -370,7 +370,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>AcknowledgeAuthorityLoss</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L85">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L85">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -399,7 +399,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>HasComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L90">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L90">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -440,7 +440,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L95">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L95">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -459,7 +459,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L104">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Systems/ComponentUpdateSystem.cs/#L104">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

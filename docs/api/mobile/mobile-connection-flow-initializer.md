@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -24,7 +24,7 @@ code {
 <b>Inheritance</b>
 
 <code><a href="{{urlRoot}}/api/core/i-connection-flow-initializer">Improbable.Gdk.Core.IConnectionFlowInitializer&lt;ReceptionistFlow&gt;</a></code>
-<code><a href="{{urlRoot}}/api/core/i-connection-flow-initializer">Improbable.Gdk.Core.IConnectionFlowInitializer&lt;AlphaLocatorFlow&gt;</a></code>
+<code><a href="{{urlRoot}}/api/core/i-connection-flow-initializer">Improbable.Gdk.Core.IConnectionFlowInitializer&lt;LocatorFlow&gt;</a></code>
 
 
 
@@ -68,7 +68,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>MobileConnectionFlowInitializer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -108,7 +108,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetConnectionService</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -127,7 +127,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Initialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -155,11 +155,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Initialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void Initialize(<a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a> alphaLocator)</code></p>
+<code>void Initialize(<a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a> locator)</code></p>
 
 
 
@@ -168,7 +168,7 @@ code {
 <b>Parameters</b>
 
 <ul>
-<li><code><a href="{{urlRoot}}/api/core/alpha-locator-flow">AlphaLocatorFlow</a> alphaLocator</code> : </li>
+<li><code><a href="{{urlRoot}}/api/core/locator-flow">LocatorFlow</a> locator</code> : </li>
 </ul>
 
 

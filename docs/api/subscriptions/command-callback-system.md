@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L14">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L14">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,7 +48,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RegisterCommandRequestCallback&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,7 +77,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>RegisterCommandResponseCallback&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L38">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -106,7 +106,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>UnregisterCommandRequestCallback</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L52">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -146,7 +146,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L68">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L68">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -165,7 +165,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L74">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/CommandCallbackSystem.cs/#L74">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
