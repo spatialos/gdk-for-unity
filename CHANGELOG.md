@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.7` - 2019-08-19
+
 ### Breaking Changes
 
 - Renamed the public field `AnonymousAuthenticationPort` to `LocatorPort` on the `AlphaLocatorFlow` class and the `RuntimeConfigDefaults` static class. [#1105](https://github.com/spatialos/gdk-for-unity/pull/1105)

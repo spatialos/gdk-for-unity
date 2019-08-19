@@ -1,11 +1,11 @@
 {
   "name": "io.improbable.gdk.testutils",
   "displayName": "SpatialOS GDK Test Utils",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "unity": "2019.1",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Test Utils.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.6"
+    "io.improbable.gdk.core": "0.2.7"
   }
 }
