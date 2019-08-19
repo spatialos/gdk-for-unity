@@ -17,6 +17,10 @@ GDK package: TestUtils<br />
 <td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/test-utils/editor/tests/spatial-deployment-manager-tests">SpatialDeploymentManagerTests</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
+<tr>
+<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/test-utils/editor/tests/spatiald-manager-tests">SpatialdManagerTests</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
 </table>
 
 

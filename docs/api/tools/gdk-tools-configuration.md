@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a><br/>
 GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L9">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L9">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -14,6 +14,7 @@ code {
 </style>
 </sup>
 <nav id="pageToc" class="page-toc"><ul><li><a href="#fields">Fields</a>
+<li><a href="#properties">Properties</a>
 <li><a href="#static-methods">Static Methods</a>
 <li><a href="#methods">Methods</a>
 </ul></nav>
@@ -38,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SchemaSourceDirs</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -53,7 +54,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>CodegenOutputDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -68,7 +69,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DescriptorOutputDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -83,7 +84,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthTokenDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L14">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +99,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthTokenLifetimeDays</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -113,7 +114,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SaveDevAuthTokenToFile</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -128,7 +129,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SerializationOverrides</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -143,7 +144,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthTokenFullDir</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L19">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -158,7 +159,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthTokenFilepath</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -173,7 +174,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DevAuthTokenLifetimeHours</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L21">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L21">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -185,6 +186,33 @@ code {
 </table>
 
 
+
+
+
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Properties
+
+
+</p>
+
+
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><b>CustomSnapshotPath</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L25">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> string CustomSnapshotPath { get; set; }</code></p>
+
+
+
+</td>
+    </tr>
+</table>
 
 
 
@@ -202,7 +230,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetOrCreateInstance</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L103">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L111">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -234,7 +262,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Save</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/e31c47b5050ee67cafe8962204aa86a259095db0/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfiguration.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
