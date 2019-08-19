@@ -40,6 +40,8 @@ This starts a local version of the SpatialOS Runtime on your development machine
 
 > **Note:** You can only have one instance of a local deployment running at any given time. If you already have one instance running, you may see an error like: `listen tcp :22000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.`
 
+Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > **GDK tools configuration** and then select the file on the **Selected snapshot path** option.
+
 ### Start a standalone client worker
 
 The GDK provides tooling for starting client workers from the Unity Editor.
