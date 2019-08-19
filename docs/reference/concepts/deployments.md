@@ -32,8 +32,6 @@ For more information, see the [comprehensive worker configuration documentation]
 
 ## Local deployment
 
-Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > **GDK tools configuration** and then select the file on the **Selected snapshot path** option.
-
 To start a local deployment, in your Unity Editor, select **SpatialOS** > **Local Launch**.
 
 This starts a local version of the SpatialOS Runtime on your development machine together with all server-workers specified in the launch configuration you selected.
@@ -41,6 +39,8 @@ This starts a local version of the SpatialOS Runtime on your development machine
 <%(Callout message="Its done when you see the following message in the console window which opens:<br/><br/>```SpatialOS ready. Access the Inspector at https://localhost:21000/inspector```")%>
 
 > **Note:** You can only have one instance of a local deployment running at any given time. If you already have one instance running, you may see an error like: `listen tcp :22000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.`
+
+Before starting a local deployment, you can set a custom snapshot as your deployment's launch snapshot. To do so select **SpatialOS** > **GDK tools configuration** and then select the file on the **Selected snapshot path** option.
 
 ### Start a standalone client worker
 
