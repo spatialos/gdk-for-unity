@@ -25,7 +25,7 @@ mkdir "${SHARED_CI_DIR}"
 pushd "${SHARED_CI_DIR}"
     git init
     git remote add origin "${CLONE_URL}"
-    git fetch --depth 20 origin master
+    git fetch --depth 20 origin feature/unity-2019.2.0f1
     git checkout "${PINNED_SHARED_CI_VERSION}"
 popd
 
