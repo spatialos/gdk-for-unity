@@ -101,6 +101,7 @@
             - [System update order]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
             - [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
             - [ECS entity contracts]({{urlRoot}}/workflows/ecs/concepts/entity-contracts)
+    - [Remote profiling]({{urlRoot}}/workflows/remote-profiling)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)
