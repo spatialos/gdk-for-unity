@@ -23,6 +23,7 @@ The code generator maps from the [schema primitive types](https://docs.improbabl
 | `int64` / `sint64`/ `fixed64`  |                `long`                |
 | `uint64`                       |               `ulong`                |
 | `float`                        |               `float`                |
+| `double`                       |               `double`               |
 | `bool`                         |           `BlittableBool`            |
 | `string`                       |               `string`               |
 | `bytes`                        |               `byte[]`               |
