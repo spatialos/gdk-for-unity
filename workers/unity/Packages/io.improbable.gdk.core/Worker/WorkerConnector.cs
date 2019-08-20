@@ -135,11 +135,11 @@ namespace Improbable.Gdk.Core
             try
             {
                 var port = GetPlayerConnectionPort();
-                Worker.SendLogMessage(LogLevel.Info, $"Unity player connection port: {port}.", Worker.WorkerId, null);
+                Worker.SendLogMessage(LogLevel.Info, $"Unity PlayerConnection port: {port}.", Worker.WorkerId, null);
             }
             catch (Exception e)
             {
-                logger.HandleLog(LogType.Exception, new LogEvent("Could not find player connection port.").WithException(e));
+                logger.HandleLog(LogType.Exception, new LogEvent("Could not find the Unity PlayerConnection port.").WithException(e));
             }
 #endif
 
