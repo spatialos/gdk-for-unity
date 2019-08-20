@@ -84,5 +84,27 @@ namespace GdkCodeGenerator.Tests.Model
 
             Assert.IsTrue(details.HasSerializationOverride);
         }
+
+        [TestCase("TypeA")]
+        [TestCase("TypeB")]
+        [TestCase("TypeC")]
+        public void No_recursive_options_allowed(string schemaType)
+        {
+            var fqn = $"improbable.test_schema.{schemaType}";
+
+            var type = store.Types[fqn];
+
+            // The third one has been stripped (recursive optional)
+            Assert.AreEqual(2, type.FieldDetails.Count);
+        }
+
+        [Test]
+        public void Non_recursive_options_are_left()
+        {
+            var fqn = "improbable.test_schema.ExhaustiveOptionalData";
+            var type = store.Types[fqn];
+
+            Assert.AreEqual(18, type.FieldDetails.Count);
+        }
     }
 }
