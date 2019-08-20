@@ -16,6 +16,8 @@ namespace Improbable.Gdk.CodeGenerator
 
         private IFieldType fieldType;
 
+        internal FieldDefinition Raw;
+
         public UnityFieldDetails(FieldDefinition field, DetailsStore store)
         {
             PascalCaseName = Formatting.SnakeCaseToPascalCase(field.Name);
@@ -44,6 +46,8 @@ namespace Improbable.Gdk.CodeGenerator
                 var singularType = field.SingularType.Type;
                 fieldType = new SingularFieldType(singularType, store);
             }
+
+            Raw = field;
         }
 
         /// <summary>
