@@ -58,6 +58,8 @@ The GDK also implements the `+`, `-`, `*`, `/`, `==` and `!=` operators for the 
 
 The code generator generates a C# struct for each [user defined type in schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#user-defined-types). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
 
+<%(Callout type="warn" message="Currently any fields on schema types that are recursive through an `option<>` will be skipped.")%>
+
 ## Enums
 
 The code generator generates a C# enum for each [enum in schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#enumerations). The generated enum is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html).
