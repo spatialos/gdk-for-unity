@@ -13,13 +13,21 @@
             - [5. Get playing]({{urlRoot}}/projects/fps/get-started/get-playing)
             - [6. View your game world]({{urlRoot}}/projects/fps/get-started/view-game-world)
         - [Health packs tutorial]({{urlRoot}}/projects/fps/tutorial)
-    - Blank Starter Project
+    - Blank Project
         - [Overview]({{urlRoot}}/projects/blank/overview)
-        - Setup
-            - [Add a schema source]({{urlRoot}}/projects/blank/setup/schema)
+        - Tutorial
+            - [Overview]({{urlRoot}}/projects/blank/tutorial/overview)
+            - 1. Introduction
+                - [1. What is SpatialOS]({{urlRoot}}/projects/blank/tutorial/1/spatialos)
+                - [2. Project walkthrough]({{urlRoot}}/projects/blank/tutorial/1/project-walkthrough)
+                - [3. What the project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
+                - [4. GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)
+                - [5. Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)
     - Make your own
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
+        - Setup
+            - [Add a schema source]({{urlRoot}}/projects/myo/setup/schema)
 - <h3>Feature Modules</h3>
     - [Overview]({{urlRoot}}/modules/core-and-feature-module-overview)
     - Build System
