@@ -5,7 +5,7 @@ Before reading this document, make sure you have read:
 
 * [Setting up Android support for the GDK]({{urlRoot}}/modules/mobile/setup-android)
 * [Setting up iOS Support for the GDK]({{urlRoot}}/modules/mobile/setup-ios)
-* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/reference/workflows/monobehaviour/worker-connectors)
+* [Creating workers with WorkerConnector](https://docs.improbable.io/unity/alpha/workflows/monobehaviour/worker-connectors)
 * [Development authentication flow](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/auth/development-authentication)
 ")%>
 

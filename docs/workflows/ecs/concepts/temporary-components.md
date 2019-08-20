@@ -2,7 +2,7 @@
 
 # ECS: Temporary components
 
-A temporary component is a type of component which only exists for a single frame. This pattern is useful when you want to represent transient events as an ECS component, for example, the [`OnConnected`]({{urlRoot}}/api/core/on-connected) component which denotes that your worker has connected to the SpatialOS Runtime as described in the [ECS: Worker entity documentation]({{urlRoot}}/reference/workflows/ecs/worker-entity).
+A temporary component is a type of component which only exists for a single frame. This pattern is useful when you want to represent transient events as an ECS component, for example, the [`OnConnected`]({{urlRoot}}/api/core/on-connected) component which denotes that your worker has connected to the SpatialOS Runtime as described in the [ECS: Worker entity documentation]({{urlRoot}}/workflows/ecs/worker-entity).
 
 We provide you with the [`Improbable.Gdk.Core.RemoveAtEndOfTick`]({{urlRoot}}/api/core/remove-at-end-of-tick-attribute) attribute, which can be applied to any ECS component to make it a temporary component.
 

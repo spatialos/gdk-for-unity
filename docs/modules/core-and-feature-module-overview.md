@@ -10,7 +10,7 @@ The core packages provide the base implementation for:
 
 * generating code from [schema]({{urlRoot}}/reference/glossary#schema)
 * synchronizing your worker instance's local state with the SpatialOS Runtime
-* exposing SpatialOS data in both the [ECS and MonoBehaviour workflows]({{urlRoot}}/reference/workflows/overview)
+* exposing SpatialOS data in both the [ECS and MonoBehaviour workflows]({{urlRoot}}/workflows/overview)
 * providing in-Editor tooling for local development
 
 The core packages are delivered as [UPM](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@1.8/manual/index.html) packages. You can add them to your project by opening the `Packages/manifest.json` file and add the following:

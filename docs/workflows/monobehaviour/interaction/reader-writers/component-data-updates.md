@@ -2,11 +2,11 @@
 
 # Readers and Writers: Component data and updates
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
-* [Reader and Writer]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+* [Reader and Writer]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
 * [SpatialOS components]({{urlRoot}}/reference/glossary#spatialos-component)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Schema]({{urlRoot}}/reference/glossary#schema)

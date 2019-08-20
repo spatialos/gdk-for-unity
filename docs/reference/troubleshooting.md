@@ -60,6 +60,6 @@ This can be caused by one of multiple problems. Please check the list below for 
 * Ensure that `GameObjectRepresentationHelper.AddSystems` is called when initializing your [worker]({{urlRoot}}/reference/glossary#worker).
 * Ensure that the GameObject containing your MonoBehaviour is associated with a [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity). 
   * You can verify this by examining whether a `LinkedEntityComponent` is attached to the GameObject after it is created.
-* Ensure that the [requirements]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle) for all your fields in your MonoBehaviour are satisfied. 
+* Ensure that the [requirements]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle) for all your fields in your MonoBehaviour are satisfied. 
   * You can verify this by examining the [SpatialOS entity]({{urlRoot}}/reference/glossary#spatialos-entity) associated with your GameObject in the [SpatialOS Inspector]({{urlRoot}}/reference/glossary#inspector). 
   * In the SpatialOS Inspector, ensure that all relevant SpatialOS components are attached to your SpatialOS entity and that read and write access is delegated correctly for your worker.

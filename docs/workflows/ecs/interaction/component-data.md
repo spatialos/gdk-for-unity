@@ -6,7 +6,7 @@
 Before reading this document, make sure you are familiar with
 
   * [ECS component generation]({{urlRoot}}/reference/concepts/code-generation)
-  * [ECS system update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
+  * [ECS system update order]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
 ")%>
 
 When a SpatialOS entity is [checked out]({{urlRoot}}/reference/glossary#checking-out), its components are added to the corresponding ECS entity as part of the entity's check out process.

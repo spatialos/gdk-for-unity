@@ -2,7 +2,7 @@
 
 # Readers and Writers
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
@@ -34,16 +34,16 @@ For every SpatialOS component defined in schema, the GDK generates a Reader and 
   * `<namespace of schema component>.<component name>Reader`
   * `<namespace of schema component>.<component name>Writer`
 
-You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
+You can use Readers and Writers by declaring a field in your MonoBehaviour and decorating it with the `[Require]` attribute (See documentation on [interacting with SpatialOS using MonoBehaviours)]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle). The GDK automatically injects these fields with their corresponding Readers and Writers, if the following requirements are fulfilled:
 
   * A reader for a specific component can be injected as long as the worker has read access over this component.
   * A writer for a specific component can only be injected, if the worker has write access over this component.
 
 You can find out more about how to work with Readers and Writers in:
 
-  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
-  * [How to read, update and react to changes]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
-  * [How to send and receive events]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/events)
+  * [How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle)
+  * [How to read, update and react to changes]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
+  * [How to send and receive events]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/events)
 
 ## Reader API
 

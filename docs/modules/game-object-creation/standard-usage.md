@@ -32,7 +32,7 @@ This leads to the following rules for representing a SpatialOS Entity as a GameO
 
 ## Set up your worker connector
 
-You then need to add the underlying systems to your worker. Open your [`WorkerConnector` implementation]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors) and add the following line to the `HandleWorkerConnectionEstablished` method.
+You then need to add the underlying systems to your worker. Open your [`WorkerConnector` implementation]({{urlRoot}}/workflows/monobehaviour/worker-connectors) and add the following line to the `HandleWorkerConnectionEstablished` method.
 
 ```csharp
     GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World);
