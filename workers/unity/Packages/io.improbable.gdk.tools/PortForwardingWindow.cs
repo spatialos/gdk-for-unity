@@ -93,6 +93,11 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        private void OnDisable()
+        {
+            Cleanup();
+        }
+
         private void OnDestroy()
         {
             Cleanup();
@@ -168,10 +173,13 @@ namespace Improbable.Gdk.Tools
 
         private void Cleanup()
         {
-            activePortForwarding.Dispose();
-            activePortForwarding = null;
-            tokenSrc.Dispose();
+            tokenSrc?.Cancel();
+            tokenSrc?.Dispose();
             tokenSrc = null;
+
+            activePortForwarding?.Wait();
+            activePortForwarding?.Dispose();
+            activePortForwarding = null;
 
             EditorApplication.UnlockReloadAssemblies();
         }
