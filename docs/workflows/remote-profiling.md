@@ -43,21 +43,50 @@ Use the Deployment Launcher feature module to upload the built out worker assemb
 
 See the [feature module documentation]({{urlRoot}}/modules/deployment-launcher/overview) if you are unsure on how to do this.
 
-## 4. Forward the profiling port
+## 4. Find the profiling port
 
 At this point, your deployment should be up and running and your workers connected to that deployment.
 
 Since your workers are running in the cloud, we will need to forward the port that is exposed by those workers to our local machine in order to connect the profiler to it. Each worker should log a single message to SpatialOS detailing which port it is currently exposing.
 
-To find this port:
-
 1. Open the deployment in the SpatialOS console.
 2. Navigate to the logs for your deployment.
-3. Look for a message similar to the following: `[UnityGameLogic0:UnityGameLogic0] Unity PlayerConnection port: 55464.`
-4. Note down both the worker ID (`UnityGameLogic0` in the example above) and the port (`55464` in the example above).
-
+3. Look for a message similar to the following: `[UnityGameLogic0:UnityGameLogic0] Unity PlayerConnection port: 55203.`
+4. Note down both the worker ID (`UnityGameLogic0` in the example above) and the port (`55203` in the example above).
 
 > **Note:** Since each worker will log their port, you will have more than 1 of these if you have more than one worker running! Select the worker that you are most interested in.
+
+## 5. Forward the profiling port
+
+You can forward the profiling port two different ways, either through a Unity Editor window or using the `spatial` CLI directly.
+
+<%(#Expandable title="Using the Unity Editor")%>
+
+Open the Port Forwarding window by selecting **SpatialOS** > **Port Forwarding** in the Unity Editor menu.
+
+Fill in the following information in the Port Forwarding window:
+
+* Deployment Name: the name of the deployment that your worker is running in
+* Worker ID: the ID for the worker which you wish to profile. (`UnityGameLogic0` in the example above)
+* Port: is the port that this worker is exposing. (`55203` in the example above)
+
+It should look similar to the following:
+
+![]({{assetRoot}}assets/workflows/remote-profiling-window.png)
+
+> **Note:** The window will do some validation on the input and let you know if something looks a little off.
+
+Select the `Forward Port` button to start the port forwarding in the background.
+
+Its done when the window looks something like:
+
+![]({{assetRoot}}assets/workflows/remote-profiling-window-success.png)
+
+> **Note:** You must leave this window open until you are done profiling your worker. Closing the window will stop the port forwarding operation in the background.
+
+<%(/Expandable)%>
+
+<%(#Expandable title="Using the spatial CLI")%>
 
 Run the following command in your terminal:
 
@@ -67,19 +96,21 @@ spatial project deployment worker port-forward -d ${DEPLOYMENT_NAME} -w ${WORKER
 
 where:
 
-- `${DEPLOYMENT_NAME}` is the name of the deployment that your worker is running in.
-- `${WORKER_ID}` is the ID for the worker which you wish to profile. (`UnityGameLogic0` in the example above)
-- `${PORT}` is the port that this worker is exposing. (`55464` in the example above)
+* `${DEPLOYMENT_NAME}` is the name of the deployment that your worker is running in.
+* `${WORKER_ID}` is the ID for the worker which you wish to profile. (`UnityGameLogic0` in the example above)
+* `${PORT}` is the port that this worker is exposing. (`55203` in the example above)
 
 Its done when you see a message similar to the following in your console:
 
 ```text
-Established tunnel with worker instance UnityGameLogic0:55464, listening locally on 55464
+Established tunnel with worker instance UnityGameLogic0:55203, listening locally on 55203
 ```
 
 > **Note:** You should leave this terminal open until you are done profiling your worker. If you close the terminal or kill the `spatial` process, the port-forwarding will terminate and you will be unable to connect the profiler to that worker.
 
-## 5. Connect the Unity Profiler to your worker
+<%(/Expandable)%>
+
+## 6. Connect the Unity Profiler to your worker
 
 Now all that's left to do is to connect the Unity Profiler to the worker!
 
