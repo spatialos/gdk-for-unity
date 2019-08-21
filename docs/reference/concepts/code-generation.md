@@ -24,7 +24,7 @@ The code generator maps from the [schema primitive types](https://docs.improbabl
 | `uint64`                       |               `ulong`                |
 | `float`                        |               `float`                |
 | `double`                       |               `double`               |
-| `bool`                         |           `BlittableBool`            |
+| `bool`                         |                `bool`                |
 | `string`                       |               `string`               |
 | `bytes`                        |               `byte[]`               |
 | `EntityId`                     |    `Improbable.Gdk.Core.EntityId`    |
