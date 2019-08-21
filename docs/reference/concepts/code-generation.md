@@ -23,7 +23,8 @@ The code generator maps from the [schema primitive types](https://docs.improbabl
 | `int64` / `sint64`/ `fixed64`  |                `long`                |
 | `uint64`                       |               `ulong`                |
 | `float`                        |               `float`                |
-| `bool`                         |           `BlittableBool`            |
+| `double`                       |               `double`               |
+| `bool`                         |                `bool`                |
 | `string`                       |               `string`               |
 | `bytes`                        |               `byte[]`               |
 | `EntityId`                     |    `Improbable.Gdk.Core.EntityId`    |
@@ -57,6 +58,8 @@ The GDK also implements the `+`, `-`, `*`, `/`, `==` and `!=` operators for the 
 ### User defined types
 
 The code generator generates a C# struct for each [user defined type in schema](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#user-defined-types). The generated struct is annotated with the [`System.Serializable` attribute](https://docs.unity3d.com/ScriptReference/Serializable.html) and has a constructor with a parameter per schema field.
+
+<%(Callout type="warn" message="Currently any fields on schema types that are recursive through an `option<>` will be skipped.")%>
 
 ## Enums
 
