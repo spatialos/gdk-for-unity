@@ -77,7 +77,7 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < args.Count; i++)
             {
                 var flag = args[i];
-                if (flag.StartsWith("+"))
+                if (flag.StartsWith("+") || flag.StartsWith("-"))
                 {
                     if (i + 1 >= args.Count)
                     {

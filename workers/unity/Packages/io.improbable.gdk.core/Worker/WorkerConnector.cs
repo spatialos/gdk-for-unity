@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
+using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -128,6 +131,18 @@ namespace Improbable.Gdk.Core
                 WorkerConnectionSemaphore.Release();
             }
 
+#if !UNITY_EDITOR && DEVELOPMENT_BUILD && !UNITY_ANDROID && !UNITY_IPHONE
+            try
+            {
+                var port = GetPlayerConnectionPort();
+                Worker.SendLogMessage(LogLevel.Info, $"Unity PlayerConnection port: {port}.", Worker.WorkerId, null);
+            }
+            catch (Exception e)
+            {
+                logger.HandleLog(LogType.Exception, new LogEvent("Could not find the Unity PlayerConnection port.").WithException(e));
+            }
+#endif
+
             foreach (var callback in workerConnectedCallbacks)
             {
                 callback(Worker);
@@ -235,6 +250,55 @@ namespace Improbable.Gdk.Core
                 // Remove root systems from the disposing world from the PlayerLoop
                 // This only affects the loop next frame
                 PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
+            }
+        }
+
+        private ushort GetPlayerConnectionPort()
+        {
+            var companyName = Application.companyName;
+            var productName = Application.productName;
+
+            string logPath;
+
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsPlayer:
+                    logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", companyName, productName,
+                        "Player.log");
+                    break;
+                case RuntimePlatform.OSXPlayer:
+                    // On MacOS it always goes in the Unity folder regardless of what companyName and productName are set to.
+                    logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs", "Unity", "Player.log");
+                    break;
+                case RuntimePlatform.LinuxPlayer:
+                    logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "unity3d", companyName, productName, "Player.log");
+                    break;
+                default:
+                    throw new InvalidOperationException($"Cannot find log file on platform: {Application.platform}");
+            }
+
+            CommandLineArgs.FromCommandLine().TryGetCommandLineValue("logfile", ref logPath);
+
+            logPath = Path.GetFullPath(logPath);
+
+            // We need to open the File as ReadWrite since this process _already_ has it open as ReadWrite.
+            // Attempting to open it as Read only results in IO exceptions due to permissions. Go figure.
+            using (var stream = new FileStream(logPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var readStream = new StreamReader(stream))
+            {
+                var logContents = readStream.ReadToEnd();
+
+                const string portRegex =
+                    "PlayerConnection initialized network socket : [0-9]\\.[0-9]\\.[0-9]\\.[0-9] ([0-9]*)";
+
+                var regex = new Regex(portRegex, RegexOptions.Compiled);
+
+                if (!regex.IsMatch(logContents))
+                {
+                    throw new Exception("Could not find PlayerConnection port in logfile");
+                }
+
+                return ushort.Parse(regex.Match(logContents).Groups[1].Value);
             }
         }
     }
