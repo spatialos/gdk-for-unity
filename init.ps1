@@ -33,7 +33,7 @@ UpdatePackage worker_sdk c-dynamic-x86_64-vc140_mt-win32 "$SdkPath/Plugins/Impro
 UpdatePackage worker_sdk csharp_cinterop "$SdkPath/Plugins/Improbable/Sdk/Common" "Improbable.Worker.CInterop.pdb"
 
 UpdatePackage schema standard_library "$SdkPath/.schema"
-UpdatePackage schema test_schema_library "$TestSdkPath/.schema" "test_schema/recursion.schema"
+UpdatePackage schema test_schema_library "$TestSdkPath/.schema"
 
 UpdatePackage tools schema_compiler-x86_64-win32 "$SdkPath/.schema_compiler"
 UpdatePackage tools schema_compiler-x86_64-macos "$SdkPath/.schema_compiler"

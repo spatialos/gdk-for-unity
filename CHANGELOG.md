@@ -7,6 +7,12 @@
 - Workers will now log their `PlayerConnection` ports to SpatialOS after connecting. This port can be used for connecting the Unity profiler to workers running in the cloud. [#1128](https://github.com/spatialos/gdk-for-unity/pull/1128)
     - Note that this will only happen if the worker was built as a "Development Build".
 
+### Fixed
+
+- Fixed a bug where recursive options in schema types would cause a Mono hard crash. [#1131](https://github.com/spatialos/gdk-for-unity/pull/1131)
+    - Any fields in a schema type that are a recursive option will now be _skipped_.
+    - This is a workaround until full recursive option support is implemented.
+
 ## `0.2.7` - 2019-08-19
 
 ### Breaking Changes

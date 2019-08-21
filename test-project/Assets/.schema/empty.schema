@@ -1,5 +1,0 @@
-package improbable.gdk.test;
-
-component Empty {
-    id = 28901;
-}

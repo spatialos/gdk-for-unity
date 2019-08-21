@@ -12,7 +12,7 @@ namespace Improbable.Gdk.CodeGenerator
         public string CamelCaseName { get; }
         public string FullyQualifiedTypeName { get; }
 
-        public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
+        public IReadOnlyList<UnityFieldDetails> FieldDetails { get; internal set; }
 
         public IReadOnlyList<UnityTypeDetails> ChildTypes;
         public IReadOnlyList<UnityEnumDetails> ChildEnums;

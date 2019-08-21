@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration;
+using Improbable.Gdk.CodeGeneration.Utils;
 using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -89,6 +90,8 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 kv.Value.PopulateFields(this);
             }
+
+            RemoveRecursiveOptions();
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -188,6 +191,54 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => type.SingularType != null && type.SingularType.Type.ValueTypeSelector == ValueType.Type)
                 .Select(type => type.SingularType.Type.Type)
                 .All(qualifiedName => blittableMap.ContainsKey(qualifiedName));
+        }
+
+        private void RemoveRecursiveOptions()
+        {
+            bool IsRecursive(string fieldType, IEnumerable<string> parentTypes)
+            {
+                var typeDetails = Types[fieldType];
+
+                var directChildTypes = typeDetails.FieldDetails
+                    .Where(field => field.Raw.TypeSelector == FieldType.Singular)
+                    .Where(field => field.Raw.SingularType.Type.ValueTypeSelector == ValueType.Type)
+                    .Select(field => field.Raw.SingularType.Type.Type);
+
+                var optionChildTypes = typeDetails.FieldDetails
+                    .Where(field => field.Raw.TypeSelector == FieldType.Option)
+                    .Where(field => field.Raw.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
+                    .Select(field => field.Raw.OptionType.InnerType.Type);
+
+                return directChildTypes.Any(parentTypes.Contains) ||
+                    optionChildTypes.Any(parentTypes.Contains) ||
+                    directChildTypes.Any(childType => IsRecursive(childType, parentTypes.Append(childType))) ||
+                    optionChildTypes.Any(childType => IsRecursive(childType, parentTypes.Append(childType)));
+            }
+
+            var toRemove = new Dictionary<string, List<UnityFieldDetails>>();
+
+            foreach (var type in Types)
+            {
+                var recursiveOptions = type.Value.FieldDetails
+                    .Where(field => field.Raw.TypeSelector == FieldType.Option && field.Raw.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
+                    .Where(field => IsRecursive(field.Raw.OptionType.InnerType.Type, new[] { type.Key }))
+                    .ToList();
+
+                if (recursiveOptions.Any())
+                {
+                    toRemove[type.Key] = recursiveOptions;
+                }
+            }
+
+            foreach (var pair in toRemove)
+            {
+                var type = Types[pair.Key];
+
+                type.FieldDetails = type.FieldDetails
+                    .Except(pair.Value)
+                    .ToList()
+                    .AsReadOnly();
+            }
         }
     }
 }
