@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandsReceivedStorage worldCommandsReceivedStorage = new WorldCommandsReceivedStorage();
 
-        private readonly NetStats netStats = new NetStats();
+        private readonly NetStats netStats;
 
         public ViewDiff()
         {
@@ -93,6 +93,8 @@ namespace Improbable.Gdk.Core
             typeToCommandStorage.Add(typeof(WorldCommands.DeleteEntity.ReceivedResponse), worldCommandsReceivedStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.ReserveEntityIds.ReceivedResponse), worldCommandsReceivedStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.EntityQuery.ReceivedResponse), worldCommandsReceivedStorage);
+
+            netStats = NetStats.Pool.Rent();
         }
 
         public void Clear()

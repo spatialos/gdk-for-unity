@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
-    internal class NetStats
+    public class NetStats
     {
         public enum WorldCommand
         {
@@ -23,6 +23,10 @@ namespace Improbable.Gdk.Core.NetworkStats
         private readonly Dictionary<(uint, uint), DataPoint> commandResponses = new Dictionary<(uint, uint), DataPoint>();
         private readonly Dictionary<WorldCommand, DataPoint> worldCommandRequests = new Dictionary<WorldCommand, DataPoint>();
         private readonly Dictionary<WorldCommand, DataPoint> worldCommandResponses = new Dictionary<WorldCommand, DataPoint>();
+
+        private NetStats()
+        {
+        }
 
         public void AddUpdate(uint componentId, uint size)
         {
@@ -62,13 +66,64 @@ namespace Improbable.Gdk.Core.NetworkStats
             worldCommandResponses[command] = metrics;
         }
 
-        public void Clear()
+        internal void CopyFrom(NetStats other)
+        {
+            Clear();
+
+            foreach (var pair in other.updates)
+            {
+                updates[pair.Key] = pair.Value;
+            }
+
+            foreach (var pair in other.commandRequests)
+            {
+                commandRequests[pair.Key] = pair.Value;
+            }
+
+            foreach (var pair in other.commandResponses)
+            {
+                commandResponses[pair.Key] = pair.Value;
+            }
+
+            foreach (var pair in other.worldCommandRequests)
+            {
+                worldCommandRequests[pair.Key] = pair.Value;
+            }
+
+            foreach (var pair in other.worldCommandResponses)
+            {
+                worldCommandResponses[pair.Key] = pair.Value;
+            }
+        }
+
+        internal void Clear()
         {
             updates.Clear();
             commandRequests.Clear();
             commandResponses.Clear();
             worldCommandRequests.Clear();
             worldCommandResponses.Clear();
+        }
+
+        public static class Pool
+        {
+            private static readonly Queue<NetStats> data = new Queue<NetStats>();
+
+            public static NetStats Rent()
+            {
+                if (data.Count != 0)
+                {
+                    return data.Dequeue();
+                }
+
+                return new NetStats();
+            }
+
+            public static void Return(NetStats stats)
+            {
+                stats.Clear();
+                data.Enqueue(stats);
+            }
         }
     }
 }
