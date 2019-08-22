@@ -44,6 +44,11 @@ namespace <#= qualifiedNamespace #>
                     deserializedRequest);
 
                 diff.AddCommandRequest(request, ComponentId, <#= command.CommandIndex #>);
+
+#if UNITY_EDITOR
+                var size = op.Request.SchemaData.Value.GetObject().GetWriteBufferLength();
+                diff.AddCommandRequestMetric(ComponentId, <#= command.CommandIndex #>, size);
+#endif
             }
 
             public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
@@ -68,6 +73,22 @@ namespace <#= qualifiedNamespace #>
                     commandContext.RequestId);
 
                 diff.AddCommandResponse(response, ComponentId, <#= command.CommandIndex #>);
+
+#if UNITY_EDITOR
+                uint size;
+
+                if (op.Response.SchemaData.HasValue)
+                {
+                    size = op.Response.SchemaData.Value.GetObject().GetWriteBufferLength();
+                }
+                else
+                {
+                    // Approximation of on-wire size.
+                    size = (uint) global::System.Text.Encoding.UTF8.GetByteCount(op.Message);
+                }
+
+                diff.AddCommandResponseMetric(ComponentId, <#= command.CommandIndex #>, size);
+#endif
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -41,7 +42,7 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandsReceivedStorage worldCommandsReceivedStorage = new WorldCommandsReceivedStorage();
 
-        public readonly MetricsFrame MetricsFrame = new MetricsFrame();
+        private readonly NetStats netStats = new NetStats();
 
         public ViewDiff()
         {
@@ -115,7 +116,7 @@ namespace Improbable.Gdk.Core
             Disconnected = false;
             DisconnectMessage = null;
 
-            MetricsFrame.Clear();
+            netStats.Clear();
         }
 
         public void AddEntity(long entityId)
@@ -200,7 +201,7 @@ namespace Improbable.Gdk.Core
 #if UNITY_EDITOR
         public void AddComponentUpdateMetric(uint componentId, uint size)
         {
-            MetricsFrame.AddUpdate(componentId, size);
+            netStats.AddUpdate(componentId, size);
         }
 #endif
 
@@ -232,6 +233,13 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandRequestStorage<T>) storage).AddRequest(request);
         }
 
+#if UNITY_EDITOR
+        public void AddCommandRequestMetric(uint componentId, uint commandId, uint size)
+        {
+            netStats.AddCommandRequest(componentId, commandId, size);
+        }
+#endif
+
         public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
             where T : struct, IReceivedCommandResponse
         {
@@ -248,24 +256,47 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandResponseStorage<T>) storage).AddResponse(response);
         }
 
+#if UNITY_EDITOR
+        public void AddCommandResponseMetric(uint componentId, uint commandId, uint size)
+        {
+            netStats.AddCommandResponse(componentId, commandId, size);
+        }
+#endif
+
         public void AddCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
+
+#if UNITY_EDITOR
+            netStats.AddWorldCommandResponse(NetStats.WorldCommand.CreateEntity);
+#endif
         }
 
         public void AddDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
+
+#if UNITY_EDITOR
+            netStats.AddWorldCommandResponse(NetStats.WorldCommand.DeleteEntity);
+#endif
         }
 
         public void AddReserveEntityIdsResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
+
+#if UNITY_EDITOR
+            netStats.AddWorldCommandResponse(NetStats.WorldCommand.ReserveEntityIds);
+#endif
         }
 
         public void AddEntityQueryResponse(WorldCommands.EntityQuery.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
+
+#if UNITY_EDITOR
+            netStats.AddWorldCommandResponse(NetStats.WorldCommand.EntityQuery);
+#endif
         }
 
         public void AddLogMessage(string message, LogLevel level)
@@ -369,6 +400,11 @@ namespace Improbable.Gdk.Core
         internal HashSet<EntityId> GetEntitiesRemoved()
         {
             return entitiesRemoved;
+        }
+
+        internal NetStats GetNetStats()
+        {
+            return netStats;
         }
     }
 }
