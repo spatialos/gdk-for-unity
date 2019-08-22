@@ -10,9 +10,11 @@ namespace Improbable.Gdk.Tools
 {
     internal class PortForwardingWindow : EditorWindow
     {
-        private string deploymentName = "";
-        private string workerId = "";
-        private int port;
+        [SerializeField] private string deploymentName = "";
+
+        [SerializeField] private string workerId = "";
+
+        [SerializeField] private int port;
 
         private Task<RedirectedProcessResult> activePortForwarding;
         private CancellationTokenSource tokenSrc;
