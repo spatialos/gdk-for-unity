@@ -2,7 +2,7 @@
   "name": "io.improbable.gdk.gameobjectcreation",
   "displayName": "SpatialOS GDK GameObject Creation",
   "version": "0.2.7",
-  "unity": "2019.1",
+  "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK GameObject Creation Module.",
   "dependencies": {

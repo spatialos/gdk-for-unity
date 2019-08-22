@@ -2,7 +2,7 @@
   "name": "io.improbable.gdk.core",
   "displayName": "SpatialOS GDK Core",
   "version": "0.2.7",
-  "unity": "2019.1",
+  "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Core Module.",
   "dependencies": {

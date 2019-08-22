@@ -2,7 +2,7 @@
   "name": "io.improbable.gdk.tools",
   "displayName": "SpatialOS GDK Tools",
   "version": "0.2.7",
-  "unity": "2019.1",
+  "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Support Tools.",
   "dependencies": {}
