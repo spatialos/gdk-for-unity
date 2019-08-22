@@ -41,6 +41,8 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandsReceivedStorage worldCommandsReceivedStorage = new WorldCommandsReceivedStorage();
 
+        public readonly MetricsFrame MetricsFrame = new MetricsFrame();
+
         public ViewDiff()
         {
             if (componentStorageTypes == null)
@@ -112,6 +114,8 @@ namespace Improbable.Gdk.Core
             InCriticalSection = false;
             Disconnected = false;
             DisconnectMessage = null;
+
+            MetricsFrame.Clear();
         }
 
         public void AddEntity(long entityId)
@@ -192,6 +196,13 @@ namespace Improbable.Gdk.Core
             ((IDiffUpdateStorage<T>) storage).AddUpdate(new ComponentUpdateReceived<T>(update, new EntityId(entityId),
                 updateId));
         }
+
+#if UNITY_EDITOR
+        public void AddComponentUpdateMetric(uint componentId, uint size)
+        {
+            MetricsFrame.AddUpdate(componentId, size);
+        }
+#endif
 
         public void AddEvent<T>(T ev, long entityId, uint componentId, uint updateId) where T : IEvent
         {

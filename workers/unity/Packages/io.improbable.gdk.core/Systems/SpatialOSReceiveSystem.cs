@@ -16,6 +16,10 @@ namespace Improbable.Gdk.Core
         private EcsViewSystem ecsViewSystem;
         private EntitySystem entitySystem;
 
+#if UNITY_EDITOR
+        private NetworkStatisticsSystem networkStatisticsSystem;
+#endif
+
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -23,6 +27,9 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();
             entitySystem = World.GetOrCreateSystem<EntitySystem>();
+#if UNITY_EDITOR
+            networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
+#endif
         }
 
         protected override void OnUpdate()
@@ -42,6 +49,12 @@ namespace Improbable.Gdk.Core
                 Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
                 Profiler.EndSample();
+
+#if UNITY_EDITOR
+                Profiler.BeginSample("ApplyDiff Networking Statistics");
+                networkStatisticsSystem.ApplyDiff(diff);
+                Profiler.EndSample();
+#endif
             }
             catch (Exception e)
             {
