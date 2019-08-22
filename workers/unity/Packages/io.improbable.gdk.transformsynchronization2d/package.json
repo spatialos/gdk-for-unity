@@ -7,6 +7,7 @@
   "description": "SpatialOS GDK Transform Synchronization Module 2D.",
   "dependencies": {
     "io.improbable.gdk.core": "0.2.7",
-    "io.improbable.gdk.transformsynchronization": "0.2.7"
+    "io.improbable.gdk.transformsynchronization": "0.2.7",
+    "com.unity.modules.physics2d": "1.0.0"
   }
 }

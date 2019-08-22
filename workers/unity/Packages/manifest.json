@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.0.8",
     "com.unity.package-manager-ui": "2.2.0",
     "com.unity.ugui": "1.0.0",
@@ -17,7 +16,6 @@
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
-    "com.unity.modules.physics2d": "1.0.0",
     "com.unity.modules.ui": "1.0.0"
   },
   "registry": "https://packages.unity.com"
