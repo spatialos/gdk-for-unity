@@ -13,7 +13,7 @@ common: &common
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=v3-1566482268-59af5d3c321df4ed-------z"
+    - "queue=v3-1566498801-2844898b9918279a-------z"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
