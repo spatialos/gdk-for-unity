@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>LinkedGameObjectMap</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L19">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -87,7 +87,7 @@ Initializes a new instance of the <a href="{{urlRoot}}/api/subscriptions/linked-
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>GetLinkedGameObjects</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L29">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L29">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -115,7 +115,7 @@ Gets the GameObjects that are linked to a given SpatialOS entity ID.
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>TryGetLinkedGameObjects</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

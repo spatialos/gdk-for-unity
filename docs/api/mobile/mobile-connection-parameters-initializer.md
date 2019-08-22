@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionParametersInitializer.cs/#L6">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionParametersInitializer.cs/#L6">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Initialize</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionParametersInitializer.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionParametersInitializer.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

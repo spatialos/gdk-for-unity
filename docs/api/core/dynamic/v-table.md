@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/dynamic">Dynamic</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L34">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L34">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -36,7 +36,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DeserializeComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -51,7 +51,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DeserializeUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L37">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L37">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,7 +66,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DeserializeSnapshot</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L38">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -81,7 +81,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SerializeSnapshot</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,7 +96,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>DeserializeSnapshotRaw</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L40">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -111,7 +111,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>SerializeSnapshotRaw</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L41">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L41">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -126,7 +126,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>ConvertSnapshotToUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

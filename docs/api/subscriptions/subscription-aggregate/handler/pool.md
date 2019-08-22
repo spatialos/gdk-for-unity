@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a>.<a href="{{urlRoot}}/api/subscriptions/subscription-aggregate">SubscriptionAggregate</a>.Handler<br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L124">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L124">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Rent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L128">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L128">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><b>Return</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L139">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L139">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
