@@ -5,8 +5,8 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
-* [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
+* [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
+* [Reactive components]({{urlRoot}}/workflows/ecs/interaction/reactive-components/overview)
 ")%>
 
 This documentation describes the guarantees we provide for the reactive components that an ECS entity can have.

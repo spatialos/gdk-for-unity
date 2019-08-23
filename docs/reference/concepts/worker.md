@@ -15,7 +15,7 @@ We differentiate between [client-workers]({{urlRoot}}/reference/glossary#client-
 
 ## Workers and ECS worlds
 
-As mentioned in the [MonoBehaviour and ECS workflow]({{urlRoot}}/reference/workflows/overview) document, the GDK uses ECS under the hood, even if you are using the MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
+As mentioned in the [MonoBehaviour and ECS workflow]({{urlRoot}}/workflows/overview) document, the GDK uses ECS under the hood, even if you are using the MonoBehaviour workflow. So, in your project, the GDK represents SpatialOS entities as ECS entities.
 
 In the GDK, any server-worker or client-worker essentially consists of its connection to the SpatialOS Runtime and a list of ECS systems - which hold the logic relevant to the game world. When your GDK-created game runs and creates either a client-worker or server-worker, that worker tries to connect to the SpatialOS Runtime.
 
@@ -33,8 +33,8 @@ To learn about a workers’ connection to the SpatialOS Runtime, see:
 
 To learn more about how to create and use workers in the GDK, please see the following documentation:
 
-  * MonoBehaviour workflow - [Workers: Creating workers with the WorkerConnector]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
-  * ECS workflow - [worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
+  * MonoBehaviour workflow - [Workers: Creating workers with the WorkerConnector]({{urlRoot}}/workflows/monobehaviour/worker-connectors)
+  * ECS workflow - [worker entity]({{urlRoot}}/workflows/ecs/worker-entity)
 
 ## Example implementation
 

@@ -73,6 +73,35 @@
         - [Set up transform synchronization]({{urlRoot}}/modules/transform-sync/setup-transform)
         - [Strategies]({{urlRoot}}/modules/transform-sync/strategies)
         - [Transform utilities]({{urlRoot}}/modules/transform-sync/utilities)
+- <h3>Workflows</h3>
+    - [Overview]({{urlRoot}}/workflows/overview)
+    - MonoBehaviours
+        - [Worker connectors]({{urlRoot}}/workflows/monobehaviour/worker-connectors)
+        - Interacting with SpatialOS
+            - [Readers & Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+                - [Lifecycle]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle)
+                - [Component data & updates]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
+                - [Events]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/events)
+            - Commands
+                - [Component commands]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands)
+                - [World commands]({{urlRoot}}/workflows/monobehaviour/interaction/commands/world-commands)
+                - [Create & delete SpatialOS entities]({{urlRoot}}/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
+    - ECS
+        - [Worker entity]({{urlRoot}}/workflows/ecs/worker-entity)
+        - Interacting with SpatialOS
+            - [Authority]({{urlRoot}}/workflows/ecs/interaction/authority)
+            - [Component data]({{urlRoot}}/workflows/ecs/interaction/component-data)
+            - [Events]({{urlRoot}}/workflows/ecs/interaction/events)
+            - [Component commands]({{urlRoot}}/workflows/ecs/interaction/component-commands)
+            - [World commands]({{urlRoot}}/workflows/ecs/interaction/world-commands)
+            - Reactive components
+                - [Overview]({{urlRoot}}/workflows/ecs/interaction/reactive-components/overview)
+                - [Entity contracts]({{urlRoot}}/workflows/ecs/interaction/reactive-components/entity-contracts)
+        - Concepts
+            - [System update order]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
+            - [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
+            - [ECS entity contracts]({{urlRoot}}/workflows/ecs/concepts/entity-contracts)
+    - [Remote profiling]({{urlRoot}}/workflows/remote-profiling)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)
@@ -84,34 +113,6 @@
         - [Logging]({{urlRoot}}/reference/concepts/logging)
         - [Snapshots]({{urlRoot}}/reference/concepts/snapshots)
         - [Worker]({{urlRoot}}/reference/concepts/worker)
-    - Workflows
-        - [Overview]({{urlRoot}}/reference/workflows/overview)
-        - MonoBehaviours
-            - [Worker connectors]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors)
-            - Interacting with SpatialOS
-                - [Readers & Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
-                    - [Lifecycle]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
-                    - [Component data & updates]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
-                    - [Events]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/events)
-                - Commands
-                    - [Component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
-                    - [World commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
-                    - [Create & delete SpatialOS entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities)
-        - ECS
-            - [Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
-            - Interacting with SpatialOS
-                - [Authority]({{urlRoot}}/reference/workflows/ecs/interaction/authority)
-                - [Component data]({{urlRoot}}/reference/workflows/ecs/interaction/component-data)
-                - [Events]({{urlRoot}}/reference/workflows/ecs/interaction/events)
-                - [Component commands]({{urlRoot}}/reference/workflows/ecs/interaction/component-commands)
-                - [World commands]({{urlRoot}}/reference/workflows/ecs/interaction/world-commands)
-                - Reactive components
-                    - [Overview]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
-                    - [Entity contracts]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/entity-contracts)
-            - Concepts
-                - [System update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
-                - [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
-                - [ECS entity contracts]({{urlRoot}}/reference/workflows/ecs/concepts/entity-contracts)
     - [SpatialOS glossary](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#concepts-glossary)
     - [GDK glossary]({{urlRoot}}/reference/glossary)
     - [Troubleshooting]({{urlRoot}}/reference/troubleshooting)

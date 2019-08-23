@@ -2,7 +2,7 @@
 
 # Readers and Writers: Events
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview#monobehaviour-centric-workflow)._
 
 Events are SpatialOS's equivalent of broadcasted messages. They allow you to send messages to all interested workers.
 
@@ -10,7 +10,7 @@ Events are SpatialOS's equivalent of broadcasted messages. They allow you to sen
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
 
-* [Reader and Writer]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+* [Reader and Writer]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 

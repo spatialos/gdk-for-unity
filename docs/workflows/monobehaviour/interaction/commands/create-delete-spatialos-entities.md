@@ -2,25 +2,25 @@
 
 # How to create and delete entities
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview)._
 
 Before reading this document, make sure you are familiar with:
 
   * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
-  * [(MonoBehaviour) World commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
-  * [(MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle)
+  * [(MonoBehaviour) World commands]({{urlRoot}}/workflows/monobehaviour/interaction/commands/world-commands)
+  * [(MonoBehaviour) How to interact with SpatialOS using MonoBehaviours]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle)
   * [SpatialOS entities: Creating entity templates]({{urlRoot}}/reference/concepts/entity-templates)
 
 
-To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands)
+To see the exact API for using world commands inside a MonoBehaviour, take a look at the [World command request sender and receiver API]({{urlRoot}}/workflows/monobehaviour/interaction/commands/world-commands)
 
 ### How to create a SpatialOS entity
 
 To create an entity, you
 
   * [define an entity template]({{urlRoot}}/reference/concepts/entity-templates)
-  * [send the `CreateEntity` world command]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands#create-an-entity).
+  * [send the `CreateEntity` world command]({{urlRoot}}/workflows/monobehaviour/interaction/commands/world-commands#create-an-entity).
 
 > When you create an entity, the SpatialOS GDK for Unity by default does not associate a GameObject with it. For more information on how to enable this, see [the GameObject Creation Feature Module]({{urlRoot}}/modules/game-object-creation/overview) documentation.
 
@@ -135,7 +135,7 @@ public class MultipleEntityCreationBehaviour : MonoBehaviour
 To delete an entity, you
 
   * identify the SpatialOS entity ID of the entity that you want to delete
-  * [send the `DeleteEntity` world command]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/world-commands#delete-an-entity).
+  * [send the `DeleteEntity` world command]({{urlRoot}}/workflows/monobehaviour/interaction/commands/world-commands#delete-an-entity).
 
 > Do not delete the linked GameObjects unless you are writing a [custom `IEntityGameObjectCreator` implementation]({{urlRoot}}/modules/game-object-creation/custom-usage).
 

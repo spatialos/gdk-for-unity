@@ -14,7 +14,7 @@ The worker entity enables you to react to changes in the connection to the Runti
 
 ## How to run logic when the worker has just connected
 
-The GDK adds the [`OnConnected`]({{urlRoot}}/api/core/on-connected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just connected.
+The GDK adds the [`OnConnected`]({{urlRoot}}/api/core/on-connected) [temporary component]({{urlRoot}}/workflows/ecs/concepts/temporary-components) to your worker entity when it has just connected.
 
 **Example usage**
 
@@ -46,7 +46,7 @@ public class HandleConnectSystem : ComponentSystem
 
 ## How to run logic when the worker has just disconnected
 
-The GDK adds the [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) [temporary component]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components) to your worker entity when it has just disconnected. This component contains a single string field storing the reason for disconnecting.
+The GDK adds the [`OnDisconnected`]({{urlRoot}}/api/core/on-disconnected) [temporary component]({{urlRoot}}/workflows/ecs/concepts/temporary-components) to your worker entity when it has just disconnected. This component contains a single string field storing the reason for disconnecting.
 
 **Example usage**
 

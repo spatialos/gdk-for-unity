@@ -5,9 +5,9 @@
 <%(Callout message="
 Before reading this document, make sure you are familiar with:
 
-* [Temporary components]({{urlRoot}}/reference/workflows/ecs/concepts/temporary-components)
-* [Worker entity]({{urlRoot}}/reference/workflows/ecs/worker-entity)
-* [System update order]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
+* [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
+* [Worker entity]({{urlRoot}}/workflows/ecs/worker-entity)
+* [System update order]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
 ")%>
 
 This documentation describes the guarantees we provide for the components that an ECS Entity has.
@@ -35,7 +35,7 @@ The following guarantees hold for any ECS Entity representing a SpatialOS entity
 * A [`SpatialEntityId`]({{urlRoot}}/api/core/spatial-entity-id) component is always available on these entities.
 * `{component name}.Component` components are always available on these entities for all schema components that belong to these entities.
 * `{component name}.ComponentAuthority` components are always available on these entities for all schema components that belong to these entities.
-* `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/reference/workflows/ecs/interaction/world-commands).
+* `WorldCommands.{name of world command}.CommandSender` components are always available on these entities and contain the API to send [world commands]({{urlRoot}}/workflows/ecs/interaction/world-commands).
 
 ### Guarantees when receiving updates or messages
 
