@@ -11,17 +11,17 @@ Before reading this page, make sure you are familiar with:
   * [Deploying]({{urlRoot}}/modules/deployment-launcher/overview)
 ")%>
 
-The [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) offers the ability to connect to an instance of your game running on a different machine. We can utilize this to profile a Unity worker running in a cloud deployment.
+The [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) offers the ability to connect to an instance of your game running on a different machine. You can utilize this to profile a Unity worker running in a cloud deployment.
 
 ## 1. Configure your workers
 
-The Unity Profiler connects to your worker via a host and port combination. The worker will only expose this port if it is built as a `Development Build`. We can configure this via the [build configuration]({{urlRoot}}/modules/build-system/build-config) asset.
+The Unity Profiler connects to your worker via a host and port combination. The worker will only expose this port, if you enable the `Development Build` option for this worker. You can configure this via the [build configuration]({{urlRoot}}/modules/build-system/build-config) asset.
 
 1. Find and open the instance of the [build configuration]({{urlRoot}}/modules/build-system/build-config) asset in the Unity Editor Inspector.
 2. Expand the section for the worker type that you want to profile.
 3. Expand the `Cloud Build Options` section within that worker type.
 4. Click on the `Linux` tab to configure the `Linux` build options.
-5. Make sure that the `Development` box is ticked.
+5. Ensure that the `Development` box is ticked.
 
 <%(#Expandable title="What should it look like when you're done?")%>
 
@@ -31,7 +31,7 @@ The Unity Profiler connects to your worker via a host and port combination. The 
 
 ## 2. Build the workers
 
-Now that the worker is configured correctly to allow remote profiling, lets build our workers.
+Now that you configured your worker correctly to allow remote profiling, you can build your workers.
 
 1. Select **SpatialOS** > **Build for cloud** > **All workers** from the Unity Editor menu to build all workers.
 
@@ -47,7 +47,7 @@ See the [feature module documentation]({{urlRoot}}/modules/deployment-launcher/o
 
 At this point, your deployment should be up and running and your workers connected to that deployment.
 
-Since your workers are running in the cloud, we will need to forward the port that is exposed by those workers to our local machine in order to connect the profiler to it. Each worker should log a single message to SpatialOS detailing which port it is currently exposing.
+Since your workers are running in the cloud, you need to forward the port that is exposed by those workers to your local machine in order to connect the profiler to it. Each worker should log a single message to SpatialOS detailing which port it is currently exposing.
 
 1. Open the deployment in the SpatialOS console.
 2. Navigate to the logs for your deployment.
@@ -58,7 +58,7 @@ Since your workers are running in the cloud, we will need to forward the port th
 
 ## 5. Forward the profiling port
 
-You can forward the profiling port two different ways, either through a Unity Editor window or using the `spatial` CLI directly.
+You can forward the profiling port in two different ways, either through a Unity Editor window or using the `spatial` CLI directly.
 
 <%(#Expandable title="Using the Unity Editor")%>
 
@@ -112,7 +112,7 @@ Established tunnel with worker instance UnityGameLogic0:55203, listening locally
 
 ## 6. Connect the Unity Profiler to your worker
 
-Now all that's left to do is to connect the Unity Profiler to the worker!
+Now all that's left to do is to connect the Unity Profiler to your worker!
 
 1. Select **Window** > **Analysis** > **Profiler** to open the Unity Profiler window.
 2. Select the `Editor` button on the toolbar in the Unity Profiler window.
@@ -120,4 +120,4 @@ Now all that's left to do is to connect the Unity Profiler to the worker!
 4. Enter `127.0.0.1` to the box that pops up.
 5. Select `Connect` on the popup.
 
-The `Unity Profiler` is now connected to the worker that is running in the cloud deployment!
+The Unity Profiler is now connected to the worker that is running in the cloud deployment!
