@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.NetworkStats
 {
     public class NetworkStatisticsSystem : ComponentSystem
     {

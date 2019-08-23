@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Profiling;
