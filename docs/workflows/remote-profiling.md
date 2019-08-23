@@ -49,7 +49,7 @@ Since your workers are running in the cloud, you need to forward the port that i
 
 1. Open the deployment in the SpatialOS console.
 2. Navigate to the logs for your deployment.
-3. Look for a message similar to the following: `[UnityGameLogic0:UnityGameLogic0] Unity PlayerConnection port: 55203.`
+3. Look for a message similar to the following: `[UnityGameLogic0:UnityGameLogic0] Unity PlayerConnection port: 55203.`. If you have a lot of logs and are having trouble spotting the message, you can search for `PlayerConnection` in the message search box on the left hand side of the Logs page.
 4. Note down both the worker ID (`UnityGameLogic0` in the example above) and the port (`55203` in the example above).
 
 > **Note:** Since each worker will log their port, you will have more than 1 of these if you have more than one worker running! Select the worker that you are most interested in.
