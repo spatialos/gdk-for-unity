@@ -39,9 +39,7 @@ Now that you configured your worker correctly to allow remote profiling, you can
 
 ## 3. Upload worker assemblies & launch deployment
 
-Use the Deployment Launcher feature module to upload the built out worker assemblies and launch a deployment.
-
-See the [feature module documentation]({{urlRoot}}/modules/deployment-launcher/overview) if you are unsure on how to do this.
+Use the [Deployment Launcher feature module]({{urlRoot}}/modules/deployment-launcher/overview) to upload the built out worker assemblies and launch a deployment.
 
 ## 4. Find the profiling port
 
@@ -66,9 +64,9 @@ Open the Port Forwarding window by selecting **SpatialOS** > **Port Forwarding**
 
 Fill in the following information in the Port Forwarding window:
 
-* Deployment Name: the name of the deployment that your worker is running in
-* Worker ID: the ID for the worker which you wish to profile. (`UnityGameLogic0` in the example above)
-* Port: is the port that this worker is exposing. (`55203` in the example above)
+* `Deployment Name` is the name of the deployment that your worker is running in
+* `Worker ID` is the ID for the worker which you wish to profile. (`UnityGameLogic0` in the example above)
+* `Port` is the port that this worker is exposing. (`55203` in the example above)
 
 It should look similar to the following:
 
@@ -106,7 +104,7 @@ Its done when you see a message similar to the following in your console:
 Established tunnel with worker instance UnityGameLogic0:55203, listening locally on 55203
 ```
 
-> **Note:** You should leave this terminal open until you are done profiling your worker. If you close the terminal or kill the `spatial` process, the port-forwarding will terminate and you will be unable to connect the profiler to that worker.
+> **Note:** You should leave this terminal open until you are done profiling your worker. If you close the terminal or kill the `spatial` process, the port forwarding will terminate and you will be unable to connect the profiler to that worker.
 
 <%(/Expandable)%>
 
