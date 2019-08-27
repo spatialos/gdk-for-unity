@@ -31,7 +31,7 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            if (group.CalculateLength() != 1)
+            if (group.CalculateEntityCount() != 1)
             {
                 worker.LogDispatcher.HandleLog(LogType.Error,
                     new LogEvent($"{typeof(WorkerEntityTag)} should only be present on a single entity"));

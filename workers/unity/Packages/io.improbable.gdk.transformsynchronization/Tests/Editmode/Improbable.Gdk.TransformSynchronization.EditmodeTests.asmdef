@@ -2,14 +2,22 @@
     "name": "Improbable.Gdk.TransformSynchronization.EditmodeTests",
     "references": [
         "Improbable.Gdk.TransformSynchronization",
-        "Unity.Entities"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Unity.Entities",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": []
 }

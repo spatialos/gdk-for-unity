@@ -3,7 +3,6 @@
     "references": [
         "Improbable.Gdk.Core"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],

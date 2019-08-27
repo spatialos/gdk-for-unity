@@ -7,17 +7,21 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.GameObjectCreation"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Improbable.Gdk.GameObjectCreation",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Improbable.Worker.CInterop.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

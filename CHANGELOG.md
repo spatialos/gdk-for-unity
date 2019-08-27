@@ -10,6 +10,10 @@
     - You can find this window in the Unity Editor menu at: **SpatialOS** > **Port Forwarding**.
     - This can be used to connect the Unity profile to workers running in the cloud.
 
+### Changed
+
+- Upgraded the project to be compatible with `2019.2.0f1`.
+
 ### Fixed
 
 - Fixed a bug where recursive options in schema types would cause a Mono hard crash. [#1131](https://github.com/spatialos/gdk-for-unity/pull/1131)

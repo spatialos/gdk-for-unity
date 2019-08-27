@@ -11,7 +11,8 @@ echo "--- Bootstrapping :boot:"
 
 SHARED_CI_DIR="$(pwd)/.shared-ci"
 CLONE_URL="git@github.com:spatialos/gdk-for-unity-shared-ci.git"
-PINNED_SHARED_CI_VERSION=$(cat ./ci/shared-ci.pinned)
+PINNED_SHARED_CI_BRANCH=$(cat ./ci/shared-ci.pinned | cut -d' ' -f 1)
+PINNED_SHARED_CI_VERSION=$(cat ./ci/shared-ci.pinned | cut -d' ' -f 2)
 
 # Clone the HEAD of the shared CI repo into ".shared-ci"
 
@@ -25,7 +26,7 @@ mkdir "${SHARED_CI_DIR}"
 pushd "${SHARED_CI_DIR}"
     git init
     git remote add origin "${CLONE_URL}"
-    git fetch --depth 20 origin master
+    git fetch --depth 20 origin "${PINNED_SHARED_CI_BRANCH}"
     git checkout "${PINNED_SHARED_CI_VERSION}"
 popd
 

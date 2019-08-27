@@ -1,14 +1,18 @@
 {
     "name": "Improbable.Gdk.TestUtils",
     "references": [
-        "Improbable.Gdk.Core",
-        "Unity.Entities",
-        "Unity.Entities.Hybrid"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Improbable.Gdk.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": []
 }

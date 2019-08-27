@@ -103,7 +103,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     case RuntimePlatform.OSXEditor:
                         return BuildTarget.StandaloneOSX;
                     case RuntimePlatform.LinuxEditor:
-                        return BuildTarget.StandaloneLinux;
+                        return BuildTarget.StandaloneLinux64;
                     default:
                         return BuildTarget.NoTarget;
                 }
