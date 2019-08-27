@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Upgraded the project to be compatible with `2018.3.5f1`.
+- Upgraded the project to be compatible with `2019.2.0f1`.
 
 ### Added
 
