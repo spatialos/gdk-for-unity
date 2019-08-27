@@ -2,10 +2,6 @@
 
 ## Unreleased
 
-### Changed
-
-- Upgraded the project to be compatible with `2019.2.0f1`.
-
 ### Added
 
 - Workers will now log their `PlayerConnection` ports to SpatialOS after connecting. This port can be used for connecting the Unity profiler to workers running in the cloud. [#1128](https://github.com/spatialos/gdk-for-unity/pull/1128)
@@ -13,6 +9,10 @@
 - Added a new Unity Editor window for forwarding a port from a worker that is running in the cloud. [#1133](https://github.com/spatialos/gdk-for-unity/pull/1133)
     - You can find this window in the Unity Editor menu at: **SpatialOS** > **Port Forwarding**.
     - This can be used to connect the Unity profile to workers running in the cloud.
+
+### Changed
+
+- Upgraded the project to be compatible with `2019.2.0f1`.
 
 ### Fixed
 
