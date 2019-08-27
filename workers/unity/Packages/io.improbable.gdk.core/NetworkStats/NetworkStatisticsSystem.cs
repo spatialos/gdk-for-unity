@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
+    [DisableAutoCreation]
     public class NetworkStatisticsSystem : ComponentSystem
     {
         private const int DefaultBufferSize = 60;
