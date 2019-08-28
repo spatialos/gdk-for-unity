@@ -200,13 +200,6 @@ namespace Improbable.Gdk.Core
                 updateId));
         }
 
-#if UNITY_EDITOR
-        public void AddComponentUpdateMetric(uint componentId, uint size)
-        {
-            netStats.AddUpdate(componentId, size);
-        }
-#endif
-
         public void AddEvent<T>(T ev, long entityId, uint componentId, uint updateId) where T : IEvent
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
@@ -235,13 +228,6 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandRequestStorage<T>) storage).AddRequest(request);
         }
 
-#if UNITY_EDITOR
-        public void AddCommandRequestMetric(uint componentId, uint commandId, uint size)
-        {
-            netStats.AddCommandRequest(componentId, commandId, size);
-        }
-#endif
-
         public void AddCommandResponse<T>(T response, uint componentId, uint commandId)
             where T : struct, IReceivedCommandResponse
         {
@@ -258,47 +244,24 @@ namespace Improbable.Gdk.Core
             ((IDiffCommandResponseStorage<T>) storage).AddResponse(response);
         }
 
-#if UNITY_EDITOR
-        public void AddCommandResponseMetric(uint componentId, uint commandId, uint size)
-        {
-            netStats.AddCommandResponse(componentId, commandId, size);
-        }
-#endif
-
         public void AddCreateEntityResponse(WorldCommands.CreateEntity.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
-
-#if UNITY_EDITOR
-            netStats.AddWorldCommandResponse(NetStats.WorldCommand.CreateEntity);
-#endif
         }
 
         public void AddDeleteEntityResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
-
-#if UNITY_EDITOR
-            netStats.AddWorldCommandResponse(NetStats.WorldCommand.DeleteEntity);
-#endif
         }
 
         public void AddReserveEntityIdsResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
-
-#if UNITY_EDITOR
-            netStats.AddWorldCommandResponse(NetStats.WorldCommand.ReserveEntityIds);
-#endif
         }
 
         public void AddEntityQueryResponse(WorldCommands.EntityQuery.ReceivedResponse response)
         {
             worldCommandsReceivedStorage.AddResponse(response);
-
-#if UNITY_EDITOR
-            netStats.AddWorldCommandResponse(NetStats.WorldCommand.EntityQuery);
-#endif
         }
 
         public void AddLogMessage(string message, LogLevel level)

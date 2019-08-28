@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -23,7 +24,9 @@ namespace Improbable.Gdk.Core
                 shouldClear = false;
             }
 
-            for (int i = 0; i < opList.GetOpCount(); ++i)
+            var netStats = viewDiff.GetNetStats();
+
+            for (var i = 0; i < opList.GetOpCount(); ++i)
             {
                 switch (opList.GetOpType(i))
                 {
@@ -56,18 +59,22 @@ namespace Improbable.Gdk.Core
                         var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);
                         ComponentOpDeserializer.ApplyReserveEntityIdsResponse(reserveEntityIdsOp, viewDiff,
                             commandMetaData);
+                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.ReserveEntityIds);
                         break;
                     case OpType.CreateEntityResponse:
                         var createEntityOp = opList.GetCreateEntityResponseOp(i);
                         ComponentOpDeserializer.ApplyCreateEntityResponse(createEntityOp, viewDiff, commandMetaData);
+                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.CreateEntity);
                         break;
                     case OpType.DeleteEntityResponse:
                         var deleteEntityOp = opList.GetDeleteEntityResponseOp(i);
                         ComponentOpDeserializer.ApplyDeleteEntityResponse(deleteEntityOp, viewDiff, commandMetaData);
+                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.DeleteEntity);
                         break;
                     case OpType.EntityQueryResponse:
                         var entityQueryOp = opList.GetEntityQueryResponseOp(i);
                         ComponentOpDeserializer.ApplyEntityQueryResponse(entityQueryOp, viewDiff, commandMetaData);
+                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.EntityQuery);
                         break;
                     case OpType.AddComponent:
                         ComponentOpDeserializer.DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff);
@@ -81,18 +88,22 @@ namespace Improbable.Gdk.Core
                         viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority);
                         break;
                     case OpType.ComponentUpdate:
-                        ComponentOpDeserializer.DeserializeAndApplyComponentUpdate(opList.GetComponentUpdateOp(i),
-                            viewDiff, componentUpdateId);
+                        var updateOp = opList.GetComponentUpdateOp(i);
+                        ComponentOpDeserializer.DeserializeAndApplyComponentUpdate(updateOp, viewDiff,
+                            componentUpdateId);
                         ++componentUpdateId;
+                        netStats.AddUpdate(updateOp.Update);
                         break;
                     case OpType.CommandRequest:
-                        ComponentOpDeserializer.DeserializeAndApplyCommandRequestReceived(opList.GetCommandRequestOp(i),
-                            viewDiff);
+                        var commandRequestOp = opList.GetCommandRequestOp(i);
+                        ComponentOpDeserializer.DeserializeAndApplyCommandRequestReceived(commandRequestOp, viewDiff);
+                        netStats.AddCommandRequest(commandRequestOp.Request);
                         break;
                     case OpType.CommandResponse:
+                        var commandResponseOp = opList.GetCommandResponseOp(i);
                         ComponentOpDeserializer.DeserializeAndApplyCommandResponseReceived(
-                            opList.GetCommandResponseOp(i), viewDiff,
-                            commandMetaData);
+                            commandResponseOp, viewDiff, commandMetaData);
+                        netStats.AddCommandResponse(commandResponseOp.Response, commandResponseOp.Message);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(

@@ -47,12 +47,6 @@ namespace <#= qualifiedNamespace #>
                 }
 <# } #>
 <# } #>
-
-#if UNITY_EDITOR
-                var size = op.Update.SchemaData.Value.GetFields().GetWriteBufferLength() +
-                    op.Update.SchemaData.Value.GetEvents().GetWriteBufferLength();
-                diff.AddComponentUpdateMetric(ComponentId, size);
-#endif
             }
 
             public void AddComponentToDiff(AddComponentOp op, ViewDiff diff)

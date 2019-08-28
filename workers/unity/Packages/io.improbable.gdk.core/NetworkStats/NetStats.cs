@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
@@ -28,30 +30,58 @@ namespace Improbable.Gdk.Core.NetworkStats
         {
         }
 
-        public void AddUpdate(uint componentId, uint size)
+        [Conditional("UNITY_EDITOR")]
+        public void AddUpdate(in ComponentUpdate update)
         {
+            var componentId = update.ComponentId;
+            var size = update.SchemaData.Value.GetFields().GetWriteBufferLength() +
+                update.SchemaData.Value.GetEvents().GetWriteBufferLength();
+
             updates.TryGetValue(componentId, out var metrics);
             metrics.Count += 1;
             metrics.Size += size;
             updates[componentId] = metrics;
         }
 
-        public void AddCommandRequest(uint componentId, uint commandIndex, uint size)
+        [Conditional("UNITY_EDITOR")]
+        public void AddCommandRequest(in CommandRequest request)
         {
-            commandRequests.TryGetValue((componentId, commandIndex), out var metrics);
+            var componentId = request.ComponentId;
+            var commandIndex = request.CommandIndex;
+            var size = request.SchemaData.Value.GetObject().GetWriteBufferLength();
+
+            var key = (componentId, commandIndex);
+            commandRequests.TryGetValue(key, out var metrics);
             metrics.Count += 1;
             metrics.Size += size;
-            commandRequests[(componentId, commandIndex)] = metrics;
+            commandRequests[key] = metrics;
         }
 
-        public void AddCommandResponse(uint componentId, uint commandIndex, uint size)
+        [Conditional("UNITY_EDITOR")]
+        public void AddCommandResponse(in CommandResponse response, string message)
         {
-            commandResponses.TryGetValue((componentId, commandIndex), out var metrics);
+            var componentId = response.ComponentId;
+            var commandIndex = response.CommandIndex;
+            uint size;
+
+            if (response.SchemaData.HasValue)
+            {
+                size = response.SchemaData.Value.GetObject().GetWriteBufferLength();
+            }
+            else
+            {
+                // Approximation of on-wire size.
+                size = (uint) System.Text.Encoding.UTF8.GetByteCount(message);
+            }
+
+            var key = (componentId, commandIndex);
+            commandResponses.TryGetValue(key, out var metrics);
             metrics.Count += 1;
             metrics.Size += size;
-            commandResponses[(componentId, commandIndex)] = metrics;
+            commandResponses[key] = metrics;
         }
 
+        [Conditional("UNITY_EDITOR")]
         public void AddWorldCommandRequest(WorldCommand command)
         {
             worldCommandRequests.TryGetValue(command, out var metrics);
@@ -59,6 +89,7 @@ namespace Improbable.Gdk.Core.NetworkStats
             worldCommandRequests[command] = metrics;
         }
 
+        [Conditional("UNITY_EDITOR")]
         public void AddWorldCommandResponse(WorldCommand command)
         {
             worldCommandResponses.TryGetValue(command, out var metrics);
