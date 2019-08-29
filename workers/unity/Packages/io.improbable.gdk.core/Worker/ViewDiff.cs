@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -40,6 +41,8 @@ namespace Improbable.Gdk.Core
         private readonly List<ICommandDiffStorage> commandStorageList = new List<ICommandDiffStorage>();
 
         private readonly WorldCommandsReceivedStorage worldCommandsReceivedStorage = new WorldCommandsReceivedStorage();
+
+        private readonly NetFrameStats netFrameStats;
 
         public ViewDiff()
         {
@@ -90,6 +93,8 @@ namespace Improbable.Gdk.Core
             typeToCommandStorage.Add(typeof(WorldCommands.DeleteEntity.ReceivedResponse), worldCommandsReceivedStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.ReserveEntityIds.ReceivedResponse), worldCommandsReceivedStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.EntityQuery.ReceivedResponse), worldCommandsReceivedStorage);
+
+            netFrameStats = NetFrameStats.Pool.Rent();
         }
 
         public void Clear()
@@ -112,6 +117,8 @@ namespace Improbable.Gdk.Core
             InCriticalSection = false;
             Disconnected = false;
             DisconnectMessage = null;
+
+            netFrameStats.Clear();
         }
 
         public void AddEntity(long entityId)
@@ -358,6 +365,11 @@ namespace Improbable.Gdk.Core
         internal HashSet<EntityId> GetEntitiesRemoved()
         {
             return entitiesRemoved;
+        }
+
+        internal NetFrameStats GetNetStats()
+        {
+            return netFrameStats;
         }
     }
 }
