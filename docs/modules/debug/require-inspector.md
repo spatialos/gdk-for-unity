@@ -29,7 +29,7 @@ If you have a grey indicator on a [`Reader`]({{urlRoot}}/workflows/monobehaviour
 * The [entity]({{urlRoot}}/reference/glossary#spatialos-entity) does not have the [component]({{urlRoot}}/reference/glossary#spatialos-component) present.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [read access]({{urlRoot}}/reference/glossary#read-access) on the [component]({{urlRoot}}/reference/glossary#spatialos-component).
 
-A grey indicator for a [`Writer`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index) or [`CommandReceiver`]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) can be due to:
+A grey indicator for a [`Writer`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) or [`CommandReceiver`]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) can be due to:
 
 * The above `Reader` reasons.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [authority]({{urlRoot}}/reference/glossary#authority) over the [component]({{urlRoot}}/reference/glossary#spatialos-component).

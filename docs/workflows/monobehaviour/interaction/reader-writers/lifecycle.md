@@ -12,7 +12,7 @@ Before reading this document, make sure you are familiar with
 You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/modules/game-object-creation/overview). By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
 This is enabled by code-generating the following types:
 
- * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index) - For accessing the component data of the SpatialOS entity.
+ * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) - For accessing the component data of the SpatialOS entity.
  * [Sending and Receiving component commands]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) - For sending and receiving commands.
 
 To use these types, you define fields in a MonoBehaviour that is attached to
