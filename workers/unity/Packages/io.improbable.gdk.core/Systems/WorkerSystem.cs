@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
@@ -83,9 +84,9 @@ namespace Improbable.Gdk.Core
             Worker.Tick();
         }
 
-        internal void SendMessages()
+        internal void SendMessages(NetFrameStats frameStats)
         {
-            Worker.EnsureMessagesFlushed();
+            Worker.EnsureMessagesFlushed(frameStats);
         }
 
         protected override void OnCreate()
