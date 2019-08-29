@@ -100,7 +100,7 @@ namespace Improbable.DependentSchema
                     {
                         // Send a command failure if the string is non-null.
 
-                        serializedMessages.AddFailure(response.FailureMessage, (uint) response.RequestId);
+                        serializedMessages.AddFailure(ComponentId, 1, response.FailureMessage, (uint) response.RequestId);
                         continue;
                     }
 
