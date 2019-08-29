@@ -12,13 +12,11 @@ namespace Improbable.TestSchema
     [global::System.Serializable]
     public struct TypeC
     {
-        public global::Improbable.TestSchema.TypeB? BOption;
         public global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB> BList;
         public global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.TypeB> BMap;
     
-        public TypeC(global::Improbable.TestSchema.TypeB? bOption, global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB> bList, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.TypeB> bMap)
+        public TypeC(global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB> bList, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.TypeB> bMap)
         {
-            BOption = bOption;
             BList = bList;
             BMap = bMap;
         }
@@ -26,13 +24,6 @@ namespace Improbable.TestSchema
         {
             public static void Serialize(TypeC instance, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
-                {
-                    if (instance.BOption.HasValue)
-                    {
-                        global::Improbable.TestSchema.TypeB.Serialization.Serialize(instance.BOption.Value, obj.AddObject(1));
-                    }
-                    
-                }
                 {
                     foreach (var value in instance.BList)
                     {
@@ -54,13 +45,6 @@ namespace Improbable.TestSchema
             public static TypeC Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new TypeC();
-                {
-                    if (obj.GetObjectCount(1) == 1)
-                    {
-                        instance.BOption = new global::Improbable.TestSchema.TypeB?(global::Improbable.TestSchema.TypeB.Serialization.Deserialize(obj.GetObject(1)));
-                    }
-                    
-                }
                 {
                     instance.BList = new global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB>();
                     var list = instance.BList;
