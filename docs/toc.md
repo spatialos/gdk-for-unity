@@ -78,7 +78,7 @@
     - MonoBehaviours
         - [Worker connectors]({{urlRoot}}/workflows/monobehaviour/worker-connectors)
         - Interacting with SpatialOS
-            - [Readers & Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+            - Readers & Writers
                 - [Lifecycle]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle)
                 - [Component data & updates]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/component-data-updates)
                 - [Events]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/events)
