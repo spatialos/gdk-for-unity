@@ -27,9 +27,6 @@ namespace Improbable.Gdk.Core.NetworkStats
 
             lastIncomingData.Clear();
             lastOutgoingData.Clear();
-
-            var position = netStats.GetSummary(MessageTypeUnion.Update(54), 10, Direction.Incoming);
-            UnityEngine.Debug.Log($"Count: {position.Count}, Size: {position.Size}");
         }
 
         internal void ApplyDiff(ViewDiff diff)
