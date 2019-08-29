@@ -59,22 +59,22 @@ namespace Improbable.Gdk.Core
                         var reserveEntityIdsOp = opList.GetReserveEntityIdsResponseOp(i);
                         ComponentOpDeserializer.ApplyReserveEntityIdsResponse(reserveEntityIdsOp, viewDiff,
                             commandMetaData);
-                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.ReserveEntityIds);
+                        netStats.AddWorldCommandResponse(WorldCommand.ReserveEntityIds);
                         break;
                     case OpType.CreateEntityResponse:
                         var createEntityOp = opList.GetCreateEntityResponseOp(i);
                         ComponentOpDeserializer.ApplyCreateEntityResponse(createEntityOp, viewDiff, commandMetaData);
-                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.CreateEntity);
+                        netStats.AddWorldCommandResponse(WorldCommand.CreateEntity);
                         break;
                     case OpType.DeleteEntityResponse:
                         var deleteEntityOp = opList.GetDeleteEntityResponseOp(i);
                         ComponentOpDeserializer.ApplyDeleteEntityResponse(deleteEntityOp, viewDiff, commandMetaData);
-                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.DeleteEntity);
+                        netStats.AddWorldCommandResponse(WorldCommand.DeleteEntity);
                         break;
                     case OpType.EntityQueryResponse:
                         var entityQueryOp = opList.GetEntityQueryResponseOp(i);
                         ComponentOpDeserializer.ApplyEntityQueryResponse(entityQueryOp, viewDiff, commandMetaData);
-                        netStats.AddWorldCommandResponse(NetStats.WorldCommand.EntityQuery);
+                        netStats.AddWorldCommandResponse(WorldCommand.EntityQuery);
                         break;
                     case OpType.AddComponent:
                         ComponentOpDeserializer.DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff);
