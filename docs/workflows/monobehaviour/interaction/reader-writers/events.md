@@ -10,7 +10,7 @@ Events are SpatialOS's equivalent of broadcasted messages. They allow you to sen
 
 We provide code-generated Readers and Writers for sending and receiving SpatialOS events. Before reading this document, make sure you are familiar with
 
-* [Reader and Writer]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+* [Reader and Writer]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
 * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 * [Workers in the GDK]({{urlRoot}}/reference/concepts/worker)
 

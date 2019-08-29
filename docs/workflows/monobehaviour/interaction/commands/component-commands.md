@@ -6,7 +6,7 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/ove
 
 Before reading this document, make sure you are familiar with:
 
-  * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+  * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ### About commands

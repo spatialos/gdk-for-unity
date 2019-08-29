@@ -7,7 +7,7 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/ove
 Before reading this document, make sure you are familiar with
 
 * [Workers]({{urlRoot}}/reference/concepts/worker)
-* [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+* [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
 
 You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/modules/game-object-creation/overview). By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
 This is enabled by code-generating the following types:
