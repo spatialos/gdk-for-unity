@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -89,9 +90,9 @@ namespace Improbable.Gdk.Core
             View.ApplyDiff(ViewDiff);
         }
 
-        public void EnsureMessagesFlushed()
+        public void EnsureMessagesFlushed(NetFrameStats frameStats)
         {
-            ConnectionHandler.PushMessagesToSend(MessagesToSend);
+            ConnectionHandler.PushMessagesToSend(MessagesToSend, frameStats);
             MessagesToSend = ConnectionHandler.GetMessagesToSendContainer();
         }
 
