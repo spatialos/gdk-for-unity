@@ -1,35 +1,45 @@
-using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
     [DisableAutoCreation]
+    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
+    [UpdateBefore(typeof(SpatialOSReceiveSystem))]
     public class NetworkStatisticsSystem : ComponentSystem
     {
         private const int DefaultBufferSize = 60;
 
-        private Queue<NetStats> incomingNetworkStats;
+        private readonly NetStats netStats = new NetStats(DefaultBufferSize);
+        private readonly NetFrameStats lastIncomingData = NetFrameStats.Pool.Rent();
+        private readonly NetFrameStats lastOutgoingData = NetFrameStats.Pool.Rent();
 
-        protected override void OnCreate()
+        protected override void OnDestroy()
         {
-            Enabled = false;
-            incomingNetworkStats = new Queue<NetStats>(DefaultBufferSize);
+            NetFrameStats.Pool.Return(lastIncomingData);
+            NetFrameStats.Pool.Return(lastOutgoingData);
         }
 
         protected override void OnUpdate()
         {
+            netStats.AddFrame(lastIncomingData, Direction.Incoming);
+            netStats.AddFrame(lastOutgoingData, Direction.Outgoing);
+
+            lastIncomingData.Clear();
+            lastOutgoingData.Clear();
+
+            var position = netStats.GetSummary(MessageTypeUnion.Update(54), 10, Direction.Incoming);
+            UnityEngine.Debug.Log($"Count: {position.Count}, Size: {position.Size}");
         }
 
         internal void ApplyDiff(ViewDiff diff)
         {
-            if (incomingNetworkStats.Count == DefaultBufferSize)
-            {
-                NetStats.Pool.Return(incomingNetworkStats.Dequeue());
-            }
+            lastIncomingData.CopyFrom(diff.GetNetStats());
+        }
 
-            var data = NetStats.Pool.Rent();
-            data.CopyFrom(diff.GetNetStats());
-            incomingNetworkStats.Enqueue(data);
+        internal void AddOutgoingSample(NetFrameStats frameStats)
+        {
+            lastOutgoingData.CopyFrom(frameStats);
         }
     }
 }
