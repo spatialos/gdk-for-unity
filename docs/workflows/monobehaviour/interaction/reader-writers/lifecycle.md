@@ -27,7 +27,7 @@ Parent or child GameObjects will be ignored.
 
 The requirements depend on which types are marked as required in the Monobehaviour. Please read their API documentation to learn more:
 
-  * [Readers and Writers API]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+  * [Readers and Writers API]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
   * [Command sender and handler API]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands)
 
 The SpatialOS GDK for Unity automatically injects the correct values into the these fields
