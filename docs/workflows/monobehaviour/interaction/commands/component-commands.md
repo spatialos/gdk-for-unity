@@ -6,7 +6,7 @@ _This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/ove
 
 Before reading this document, make sure you are familiar with:
 
-  * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index)
+  * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ### About commands
@@ -25,7 +25,7 @@ To send and handle commands the GDK automatically generates the following types 
   * `{component name}CommandSender` for sending command requests and handling command responses.
   * `{component name}CommandReceiver` for handling command requests and sending command responses.
 
-These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
+These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
 
 Any worker can send command requests and handle command responses for any command. However, only workers that have [write access]({{urlRoot}}/reference/glossary#authority) over the component that the command was defined in are able to handle command requests and send command responses.
 

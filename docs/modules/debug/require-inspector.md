@@ -24,12 +24,12 @@ The extension lists all objects that are required through the [`[Require]`]({{ur
 
 Each object that you require may have requirements that need to be fulfilled, before the GDK is able to make the object available and enable this MonoBehaviour.
 
-If you have a grey indicator on a [`Reader`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index) it can be due to one the following reasons:
+If you have a grey indicator on a [`Reader`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) it can be due to one the following reasons:
 
 * The [entity]({{urlRoot}}/reference/glossary#spatialos-entity) does not have the [component]({{urlRoot}}/reference/glossary#spatialos-component) present.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [read access]({{urlRoot}}/reference/glossary#read-access) on the [component]({{urlRoot}}/reference/glossary#spatialos-component).
 
-A grey indicator for a [`Writer`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/index) or [`CommandReceiver`]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) can be due to:
+A grey indicator for a [`Writer`]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) or [`CommandReceiver`]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) can be due to:
 
 * The above `Reader` reasons.
 * The [worker instance]({{urlRoot}}/reference/glossary#worker) does not have [authority]({{urlRoot}}/reference/glossary#authority) over the [component]({{urlRoot}}/reference/glossary#spatialos-component).

@@ -91,5 +91,5 @@ void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request, Action<Wo
 
 Parameters:
 
-  * `WorldCommands.EntityQuery.Request request`: The command request payload.
+  * [`WorldCommands.EntityQuery.Request request`]({{urlRoot}}/api/core/commands/world-commands/entity-query/request): The command request payload.
   * `Action<WorldCommands.EntityQuery.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
