@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L16">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L16">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -51,8 +51,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Origin</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L21">Source</a></td>
+        <td style="border-right:none"><a id="origin"></a><b>Origin</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L21">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,8 +79,8 @@ The origin of the worker in global Unity space.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>World</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L26">Source</a></td>
+        <td style="border-right:none"><a id="world"></a><b>World</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,8 +95,8 @@ The ECS world associated with this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnDisconnect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L31">Source</a></td>
+        <td style="border-right:none"><a id="ondisconnect"></a><b>OnDisconnect</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -123,8 +123,8 @@ An event that triggers when the worker is disconnected.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateWorkerInWorldAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L63">Source</a></td>
+        <td style="border-right:none"><a id="createworkerinworldasync-iconnectionhandlerbuilder-string-ilogdispatcher-vector3-cancellationtoken"></a><b>CreateWorkerInWorldAsync</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -167,8 +167,8 @@ Creates a <a href="{{urlRoot}}/api/core/worker-in-world">WorkerInWorld</a> objec
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerInWorld</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L40">Source</a></td>
+        <td style="border-right:none"><a id="workerinworld-iconnectionhandler-string-ilogdispatcher-vector3"></a><b>WorkerInWorld</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -211,8 +211,8 @@ Creates a <a href="{{urlRoot}}/api/core/worker-in-world">WorkerInWorld</a> objec
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L96">Source</a></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerInWorld.cs/#L96">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

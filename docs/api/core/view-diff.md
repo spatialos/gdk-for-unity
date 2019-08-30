@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -38,8 +38,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>DisconnectMessage</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L10">Source</a></td>
+        <td style="border-right:none"><a id="disconnectmessage"></a><b>DisconnectMessage</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,8 +66,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Disconnected</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L12">Source</a></td>
+        <td style="border-right:none"><a id="disconnected"></a><b>Disconnected</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -82,8 +82,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InCriticalSection</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L14">Source</a></td>
+        <td style="border-right:none"><a id="incriticalsection"></a><b>InCriticalSection</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -111,8 +111,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ViewDiff</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L44">Source</a></td>
+        <td style="border-right:none"><a id="viewdiff"></a><b>ViewDiff</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -142,8 +142,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Clear</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L95">Source</a></td>
+        <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L95">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -161,8 +161,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L117">Source</a></td>
+        <td style="border-right:none"><a id="addentity-long"></a><b>AddEntity</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L117">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -189,8 +189,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RemoveEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L125">Source</a></td>
+        <td style="border-right:none"><a id="removeentity-long"></a><b>RemoveEntity</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L125">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -217,8 +217,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L133">Source</a></td>
+        <td style="border-right:none"><a id="addcomponent-t-t-long-uint"></a><b>AddComponent&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L133">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -247,8 +247,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RemoveComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L145">Source</a></td>
+        <td style="border-right:none"><a id="removecomponent-long-uint"></a><b>RemoveComponent</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L145">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -276,8 +276,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetAuthority</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L157">Source</a></td>
+        <td style="border-right:none"><a id="setauthority-long-uint-authority"></a><b>SetAuthority</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L157">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -306,8 +306,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponentUpdate&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L182">Source</a></td>
+        <td style="border-right:none"><a id="addcomponentupdate-t-t-long-uint-uint"></a><b>AddComponentUpdate&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L182">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -337,8 +337,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddEvent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L196">Source</a></td>
+        <td style="border-right:none"><a id="addevent-t-t-long-uint-uint"></a><b>AddEvent&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L196">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -368,8 +368,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddCommandRequest&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L209">Source</a></td>
+        <td style="border-right:none"><a id="addcommandrequest-t-t-uint-uint"></a><b>AddCommandRequest&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L209">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -398,8 +398,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddCommandResponse&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L224">Source</a></td>
+        <td style="border-right:none"><a id="addcommandresponse-t-t-uint-uint"></a><b>AddCommandResponse&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L224">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -428,8 +428,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddCreateEntityResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L240">Source</a></td>
+        <td style="border-right:none"><a id="addcreateentityresponse-worldcommands-createentity-receivedresponse"></a><b>AddCreateEntityResponse</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L240">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -456,8 +456,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddDeleteEntityResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L245">Source</a></td>
+        <td style="border-right:none"><a id="adddeleteentityresponse-worldcommands-deleteentity-receivedresponse"></a><b>AddDeleteEntityResponse</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L245">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -484,8 +484,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddReserveEntityIdsResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L250">Source</a></td>
+        <td style="border-right:none"><a id="addreserveentityidsresponse-worldcommands-reserveentityids-receivedresponse"></a><b>AddReserveEntityIdsResponse</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L250">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -512,8 +512,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddEntityQueryResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L255">Source</a></td>
+        <td style="border-right:none"><a id="addentityqueryresponse-worldcommands-entityquery-receivedresponse"></a><b>AddEntityQueryResponse</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L255">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -540,8 +540,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddLogMessage</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L260">Source</a></td>
+        <td style="border-right:none"><a id="addlogmessage-string-loglevel"></a><b>AddLogMessage</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L260">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -569,8 +569,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddMetrics</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L265">Source</a></td>
+        <td style="border-right:none"><a id="addmetrics-metrics"></a><b>AddMetrics</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L265">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -597,8 +597,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetWorkerFlag</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L277">Source</a></td>
+        <td style="border-right:none"><a id="setworkerflag-string-string"></a><b>SetWorkerFlag</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L277">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -626,8 +626,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Disconnect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L282">Source</a></td>
+        <td style="border-right:none"><a id="disconnect-string"></a><b>Disconnect</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L282">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -654,8 +654,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetCriticalSection</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L288">Source</a></td>
+        <td style="border-right:none"><a id="setcriticalsection-bool"></a><b>SetCriticalSection</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ViewDiff.cs/#L288">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

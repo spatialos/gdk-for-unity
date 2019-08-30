@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/debug-index">Debug</a><br/>
 GDK package: Debug<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L17">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L17">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,8 +47,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEnable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L38">Source</a></td>
+        <td style="border-right:none"><a id="onenable"></a><b>OnEnable</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,8 +66,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnDisable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L97">Source</a></td>
+        <td style="border-right:none"><a id="ondisable"></a><b>OnDisable</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L97">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -97,8 +97,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnInspectorGUI</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L110">Source</a></td>
+        <td style="border-right:none"><a id="oninspectorgui"></a><b>OnInspectorGUI</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L110">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

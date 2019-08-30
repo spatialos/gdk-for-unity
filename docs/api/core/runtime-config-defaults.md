@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,8 +39,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LinkProtocol</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L10">Source</a></td>
+        <td style="border-right:none"><a id="linkprotocol"></a><b>LinkProtocol</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -54,8 +54,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LocatorHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L11">Source</a></td>
+        <td style="border-right:none"><a id="locatorhost"></a><b>LocatorHost</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -69,8 +69,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReceptionistHost</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L12">Source</a></td>
+        <td style="border-right:none"><a id="receptionisthost"></a><b>ReceptionistHost</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -84,8 +84,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LocalEnvironment</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L13">Source</a></td>
+        <td style="border-right:none"><a id="localenvironment"></a><b>LocalEnvironment</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -99,8 +99,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CloudEnvironment</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L14">Source</a></td>
+        <td style="border-right:none"><a id="cloudenvironment"></a><b>CloudEnvironment</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -114,8 +114,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReceptionistPort</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L15">Source</a></td>
+        <td style="border-right:none"><a id="receptionistport"></a><b>ReceptionistPort</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -129,8 +129,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LocatorPort</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L16">Source</a></td>
+        <td style="border-right:none"><a id="locatorport"></a><b>LocatorPort</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a><br/>
 GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L51">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L51">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,8 +45,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Command</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L67">Source</a></td>
+        <td style="border-right:none"><a id="command-string"></a><b>Command</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L67">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -86,8 +86,8 @@ Creates the redirected process for the command.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WithArgs</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L77">Source</a></td>
+        <td style="border-right:none"><a id="withargs-params-string"></a><b>WithArgs</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L77">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -114,8 +114,8 @@ Adds arguments to process command call.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InDirectory</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L87">Source</a></td>
+        <td style="border-right:none"><a id="indirectory-string"></a><b>InDirectory</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L87">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -142,8 +142,8 @@ Sets which directory run the process in.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddOutputProcessing</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L101">Source</a></td>
+        <td style="border-right:none"><a id="addoutputprocessing-action-string"></a><b>AddOutputProcessing</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L101">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -179,8 +179,8 @@ Adds custom processing for regular output of process.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddErrorProcessing</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L115">Source</a></td>
+        <td style="border-right:none"><a id="adderrorprocessing-action-string"></a><b>AddErrorProcessing</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L115">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -216,8 +216,8 @@ Adds custom processing for error output of process.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RedirectOutputOptions</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L125">Source</a></td>
+        <td style="border-right:none"><a id="redirectoutputoptions-outputredirectbehaviour"></a><b>RedirectOutputOptions</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L125">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -244,8 +244,8 @@ Adds custom processing for error output of process.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Run</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L134">Source</a></td>
+        <td style="border-right:none"><a id="run"></a><b>Run</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L134">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -263,8 +263,8 @@ Runs the redirected process and waits for it to return.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RunAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L168">Source</a></td>
+        <td style="border-right:none"><a id="runasync-cancellationtoken"></a><b>RunAsync</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L168">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

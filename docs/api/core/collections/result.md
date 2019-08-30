@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/collections-index">Collections</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -50,8 +50,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsOkay</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L20">Source</a></td>
+        <td style="border-right:none"><a id="isokay"></a><b>IsOkay</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,8 +65,8 @@ True if the result contains a success, false otherwise.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsError</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L25">Source</a></td>
+        <td style="border-right:none"><a id="iserror"></a><b>IsError</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,8 +94,8 @@ True if the result contains an error, false otherwise.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Ok</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L32">Source</a></td>
+        <td style="border-right:none"><a id="ok-t"></a><b>Ok</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -122,8 +122,8 @@ Creates a result which contains a success value.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Error</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L46">Source</a></td>
+        <td style="border-right:none"><a id="error-e"></a><b>Error</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -163,8 +163,8 @@ Creates a result which contains an error.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Unwrap</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L60">Source</a></td>
+        <td style="border-right:none"><a id="unwrap"></a><b>Unwrap</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -191,8 +191,8 @@ Attempts to get the success value from the result.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnwrapError</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L75">Source</a></td>
+        <td style="border-right:none"><a id="unwraperror"></a><b>UnwrapError</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/Result.cs/#L75">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

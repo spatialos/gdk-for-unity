@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -40,8 +40,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Init</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L9">Source</a></td>
+        <td style="border-right:none"><a id="init-world"></a><b>Init</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -68,8 +68,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Clean</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L10">Source</a></td>
+        <td style="border-right:none"><a id="clean-world"></a><b>Clean</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,8 +96,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L12">Source</a></td>
+        <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -115,8 +115,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetInitialComponents</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L14">Source</a></td>
+        <td style="border-right:none"><a id="getinitialcomponents"></a><b>GetInitialComponents</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -134,8 +134,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ApplyDiff</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L16">Source</a></td>
+        <td style="border-right:none"><a id="applydiff-viewdiff"></a><b>ApplyDiff</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentManagers.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

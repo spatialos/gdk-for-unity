@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/query-based-interest-index">QueryBasedInterest</a><br/>
 GDK package: QueryBasedInterest<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,8 +45,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Query</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L30">Source</a></td>
+        <td style="border-right:none"><a id="query-constraint"></a><b>Query</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,8 +95,8 @@ Creates an <a href="{{urlRoot}}/api/query-based-interest/interest-query">Interes
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L78">Source</a></td>
+        <td style="border-right:none"><a id="filterresults-uint-params-uint"></a><b>FilterResults</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L78">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -133,8 +133,8 @@ Defines what components to return in the query results.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L99">Source</a></td>
+        <td style="border-right:none"><a id="filterresults-ienumerable-uint"></a><b>FilterResults</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L99">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -170,8 +170,8 @@ Defines what components to return in the query results.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AsComponentInterestQuery</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L115">Source</a></td>
+        <td style="border-right:none"><a id="ascomponentinterestquery"></a><b>AsComponentInterestQuery</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L115">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

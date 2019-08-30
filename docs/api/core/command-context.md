@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -36,8 +36,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendingEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L9">Source</a></td>
+        <td style="border-right:none"><a id="sendingentity"></a><b>SendingEntity</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -51,8 +51,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Request</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L10">Source</a></td>
+        <td style="border-right:none"><a id="request"></a><b>Request</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,8 +66,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L11">Source</a></td>
+        <td style="border-right:none"><a id="context"></a><b>Context</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -81,8 +81,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L12">Source</a></td>
+        <td style="border-right:none"><a id="requestid"></a><b>RequestId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -111,8 +111,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CommandContext</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L14">Source</a></td>
+        <td style="border-right:none"><a id="commandcontext-entity-t-object-long"></a><b>CommandContext</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

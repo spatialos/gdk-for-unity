@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/editor-index">Editor</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -46,8 +46,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetStateObjectOrDefault&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L25">Source</a></td>
+        <td style="border-right:none"><a id="getstateobjectordefault-t-int"></a><b>GetStateObjectOrDefault&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -92,8 +92,8 @@ Attempts to get the state object associated with the hash, else returns a defaul
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetStateObject&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L42">Source</a></td>
+        <td style="border-right:none"><a id="setstateobject-t-int-t"></a><b>SetStateObject&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

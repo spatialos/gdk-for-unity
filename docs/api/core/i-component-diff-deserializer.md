@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -40,8 +40,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L7">Source</a></td>
+        <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L7">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -59,8 +59,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddUpdateToDiff</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L9">Source</a></td>
+        <td style="border-right:none"><a id="addupdatetodiff-componentupdateop-viewdiff-uint"></a><b>AddUpdateToDiff</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -89,8 +89,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponentToDiff</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L10">Source</a></td>
+        <td style="border-right:none"><a id="addcomponenttodiff-addcomponentop-viewdiff"></a><b>AddComponentToDiff</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

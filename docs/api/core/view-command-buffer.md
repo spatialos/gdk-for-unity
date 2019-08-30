@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L15">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L15">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -46,8 +46,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ViewCommandBuffer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L32">Source</a></td>
+        <td style="border-right:none"><a id="viewcommandbuffer-entitymanager-ilogdispatcher"></a><b>ViewCommandBuffer</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -87,8 +87,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L46">Source</a></td>
+        <td style="border-right:none"><a id="addcomponent-t-entity-t"></a><b>AddComponent&lt;T&gt;</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -125,8 +125,8 @@ Adds a GameObject Component to an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L57">Source</a></td>
+        <td style="border-right:none"><a id="addcomponent-entity-componenttype-object"></a><b>AddComponent</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L57">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -155,8 +155,8 @@ Adds a GameObject Component to an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RemoveComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L73">Source</a></td>
+        <td style="border-right:none"><a id="removecomponent-entity-componenttype"></a><b>RemoveComponent</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L73">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -184,8 +184,8 @@ Removes a GameObject Component from an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FlushBuffer</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L87">Source</a></td>
+        <td style="border-right:none"><a id="flushbuffer"></a><b>FlushBuffer</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L87">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

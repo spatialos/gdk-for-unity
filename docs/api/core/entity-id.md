@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L12">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L12">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -57,8 +57,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Id</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L20">Source</a></td>
+        <td style="border-right:none"><a id="id"></a><b>Id</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,8 +96,8 @@ The value of the <a href="{{urlRoot}}/api/core/entity-id">EntityId</a>.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L25">Source</a></td>
+        <td style="border-right:none"><a id="entityid-long"></a><b>EntityId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -136,8 +136,8 @@ Constructs a new instance of an <a href="{{urlRoot}}/api/core/entity-id">EntityI
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsValid</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L34">Source</a></td>
+        <td style="border-right:none"><a id="isvalid"></a><b>IsValid</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L34">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -164,8 +164,8 @@ Whether this represents a valid SpatialOS entity ID. Specifically,
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L51">Source</a></td>
+        <td style="border-right:none"><a id="equals-entityid"></a><b>Equals</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L51">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -204,8 +204,8 @@ Whether this represents a valid SpatialOS entity ID. Specifically,
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L40">Source</a></td>
+        <td style="border-right:none"><a id="equals-object"></a><b>Equals</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -232,8 +232,8 @@ Whether this represents a valid SpatialOS entity ID. Specifically,
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetHashCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L73">Source</a></td>
+        <td style="border-right:none"><a id="gethashcode"></a><b>GetHashCode</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L73">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -251,8 +251,8 @@ Whether this represents a valid SpatialOS entity ID. Specifically,
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToString</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L81">Source</a></td>
+        <td style="border-right:none"><a id="tostring"></a><b>ToString</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L81">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -282,8 +282,8 @@ Whether this represents a valid SpatialOS entity ID. Specifically,
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>operator==</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L59">Source</a></td>
+        <td style="border-right:none"><a id="operator-entityid-entityid"></a><b>operator==</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L59">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -311,8 +311,8 @@ Returns true if entityId1 is exactly equal to entityId2.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>operator!=</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L67">Source</a></td>
+        <td style="border-right:none"><a id="operator-entityid-entityid"></a><b>operator!=</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/EntityId.cs/#L67">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
