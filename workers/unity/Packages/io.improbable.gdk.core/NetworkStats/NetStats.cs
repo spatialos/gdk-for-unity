@@ -54,6 +54,11 @@ namespace Improbable.Gdk.Core.NetworkStats
 
         public (DataPoint, float) GetSummary(MessageTypeUnion messageType, int numFrames, Direction direction)
         {
+            if (numFrames > sequenceLength)
+            {
+                throw new InvalidOperationException($"Cannot fetch {numFrames} worth of data. This instance can only store to up {sequenceLength} frames.");
+            }
+
             float totalTime = 0.0f;
 
             for (var i = 1; i <= numFrames; i++)

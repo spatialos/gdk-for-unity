@@ -8,6 +8,8 @@ namespace Improbable.Gdk.Core.NetworkStats
     {
         public readonly Dictionary<MessageTypeUnion, DataPoint> Messages = new Dictionary<MessageTypeUnion, DataPoint>();
 
+        internal TestDataInjector TestInjector => new TestDataInjector(this);
+
         private NetFrameStats()
         {
         }
@@ -138,6 +140,64 @@ namespace Improbable.Gdk.Core.NetworkStats
             {
                 frameStats.Clear();
                 data.Enqueue(frameStats);
+            }
+        }
+
+        internal class TestDataInjector
+        {
+            private NetFrameStats target;
+
+            public TestDataInjector(NetFrameStats target)
+            {
+                this.target = target;
+            }
+
+            public void AddComponentUpdate(uint componentId, uint size)
+            {
+                var messageType = MessageTypeUnion.Update(componentId);
+
+                target.Messages.TryGetValue(messageType, out var metrics);
+                metrics.Count += 1;
+                metrics.Size += size;
+                target.Messages[messageType] = metrics;
+            }
+
+            public void AddCommandRequest(uint componentId, uint commandIndex, uint size)
+            {
+                var messageType = MessageTypeUnion.CommandRequest(componentId, commandIndex);
+
+                target.Messages.TryGetValue(messageType, out var metrics);
+                metrics.Count += 1;
+                metrics.Size += size;
+                target.Messages[messageType] = metrics;
+            }
+
+            public void AddCommandResponse(uint componentId, uint commandIndex, uint size)
+            {
+                var messageType = MessageTypeUnion.CommandResponse(componentId, commandIndex);
+
+                target.Messages.TryGetValue(messageType, out var metrics);
+                metrics.Count += 1;
+                metrics.Size += size;
+                target.Messages[messageType] = metrics;
+            }
+
+            public void AddWorldCommandRequest(WorldCommand worldCommand)
+            {
+                var messageType = MessageTypeUnion.WorldCommandRequest(worldCommand);
+
+                target.Messages.TryGetValue(messageType, out var metrics);
+                metrics.Count += 1;
+                target.Messages[messageType] = metrics;
+            }
+
+            public void AddWorldCommandResponse(WorldCommand worldCommand)
+            {
+                var messageType = MessageTypeUnion.WorldCommandResponse(worldCommand);
+
+                target.Messages.TryGetValue(messageType, out var metrics);
+                metrics.Count += 1;
+                target.Messages[messageType] = metrics;
             }
         }
     }
