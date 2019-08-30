@@ -2,16 +2,16 @@
 
 # Component commands
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview#monobehaviour-centric-workflow)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview#monobehaviour-centric-workflow)._
 
 Before reading this document, make sure you are familiar with:
 
-  * [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+  * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
   * [Read and write access]({{urlRoot}}/reference/glossary#authority)
 
 ### About commands
 
-Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/reference/workflows/overview).<br/>
+Commands are SpatialOS's equivalent of [remote procedure calls (Wikipedia)](https://en.wikipedia.org/wiki/Remote_procedure_call). You use commands to send messages between two [workers]({{urlRoot}}/reference/concepts/worker). Commands are relevant to both [MonoBehaviour and ECS workflows]({{urlRoot}}/workflows/overview).<br/>
 
 There are two types of commands in SpatialOS:
 
@@ -25,7 +25,7 @@ To send and handle commands the GDK automatically generates the following types 
   * `{component name}CommandSender` for sending command requests and handling command responses.
   * `{component name}CommandReceiver` for handling command requests and sending command responses.
 
-These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
+These can be injected into your MonoBehaviour scripts in the same way as [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) by defining a field of one of the above-mentioned types and decorating it with the `[Require]` attribute.
 
 Any worker can send command requests and handle command responses for any command. However, only workers that have [write access]({{urlRoot}}/reference/glossary#authority) over the component that the command was defined in are able to handle command requests and send command responses.
 
@@ -125,7 +125,7 @@ public class SpawnCubeCommandRequestHandlerBehaviour : MonoBehaviour
 ```
 [//]: # (TODO - add how to do spawn logic in code example above)
 
-> For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) document.
+> For an example of how to create an entity, you can look at the [how to create and delete entities]({{urlRoot}}/workflows/monobehaviour/interaction/commands/create-delete-spatialos-entities) document.
 
 ### API
 

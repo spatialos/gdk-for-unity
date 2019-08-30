@@ -16,7 +16,7 @@ To change this behaviour, read the documentation on [custom player creation]({{u
 
 ## Set up your worker connector
 
-You need to add the underlying player lifecycle systems to your worker. Open your [`WorkerConnector` implementations]({{urlRoot}}/reference/workflows/monobehaviour/worker-connectors) and add one of the following lines to the `HandleWorkerConnectionEstablished` method.
+You need to add the underlying player lifecycle systems to your worker. Open your [`WorkerConnector` implementations]({{urlRoot}}/workflows/monobehaviour/worker-connectors) and add one of the following lines to the `HandleWorkerConnectionEstablished` method.
 
 **If this is a client-worker:**
 

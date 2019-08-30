@@ -14,7 +14,7 @@ If you are new to SpatialOS, you can check out the SpatialOS concept documentati
 
 We recommend you take a look at the following three pages first:
 
-* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/reference/workflows/overview).
+* The introduction to the two workflows: [the MonoBehaviour and ECS Workflows]({{urlRoot}}/workflows/overview).
 
 You can choose to work with either the traditional Unity MonoBehaviour approach or the new Unity Entity Component System (ECS) approach.
 

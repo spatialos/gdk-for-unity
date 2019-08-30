@@ -122,7 +122,7 @@ See [the GameObject Creation feature module]({{urlRoot}}/modules/game-object-cre
 
 The term “inject” refers to when a field is populated automatically by the SpatialOS GDK for Unity.
 
-In the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle), the GDK performs injection on fields that have the [`[Require]` attribute]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle). A MonoBehaviour is only enabled when all those fields are populated.
+In the [MonoBehaviour workflow]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle), the GDK performs injection on fields that have the [`[Require]` attribute]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle). A MonoBehaviour is only enabled when all those fields are populated.
 
 ## Inspector
 
@@ -177,12 +177,12 @@ A [worker instance](#worker) can send and receive messages to and from the [Spat
 
 > **Related:**
 >
-> * [Sending and receiving events using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/events)
-> * [Sending and receiving events using ECS]({{urlRoot}}/reference/workflows/ecs/interaction/events)
+> * [Sending and receiving events using MonoBehaviours]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/events)
+> * [Sending and receiving events using ECS]({{urlRoot}}/workflows/ecs/interaction/events)
 
 ## MonoBehaviour
 
-A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/lifecycle).
+A MonoBehaviour stores the data and logic that defines the behaviour of the GameObject they are attached to. We provide support to [interact with SpatialOS using MonoBehaviours]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/lifecycle).
 
 > **Related:**
 >
@@ -219,7 +219,7 @@ Reactive components contain all updates and messages received during the last fr
 
 > **Related:**
 >
-> * [Reactive components]({{urlRoot}}/reference/workflows/ecs/interaction/reactive-components/overview)
+> * [Reactive components]({{urlRoot}}/workflows/ecs/interaction/reactive-components/overview)
 
 ## Receptionist connection flow
 
@@ -498,7 +498,7 @@ The Unity ECS updates all systems on the main thread. The order in which they ar
 > **Related:**
 >
 > * [System update order](https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/system_update_order.html)
-> * [System update order in the GDK]({{urlRoot}}/reference/workflows/ecs/concepts/system-update-order)
+> * [System update order in the GDK]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
 
 ## Worker
 

@@ -2,18 +2,18 @@
 
 # Readers and Writers: Lifecycle
 
-_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/reference/workflows/overview)._
+_This document relates to the [MonoBehaviour workflow]({{urlRoot}}/workflows/overview)._
 
 Before reading this document, make sure you are familiar with
 
 * [Workers]({{urlRoot}}/reference/concepts/worker)
-* [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
+* [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
 
 You can [represent your SpatialOS entities as GameObjects]({{urlRoot}}/modules/game-object-creation/overview). By representing your SpatialOS entity by a GameObject, you are able to interact with the SpatialOS Runtime using the GameObject instead of the ECS entity.
 This is enabled by code-generating the following types:
 
- * [Readers and Writers]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index) - For accessing the component data of the SpatialOS entity.
- * [Sending and Receiving component commands]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands) - For sending and receiving commands.
+ * [Readers and Writers]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview) - For accessing the component data of the SpatialOS entity.
+ * [Sending and Receiving component commands]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands) - For sending and receiving commands.
 
 To use these types, you define fields in a MonoBehaviour that is attached to
 your linked GameObject and decorate these fields with the `[Require]` attribute.
@@ -27,8 +27,8 @@ Parent or child GameObjects will be ignored.
 
 The requirements depend on which types are marked as required in the Monobehaviour. Please read their API documentation to learn more:
 
-  * [Readers and Writers API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/reader-writers/index)
-  * [Command sender and handler API]({{urlRoot}}/reference/workflows/monobehaviour/interaction/commands/component-commands)
+  * [Readers and Writers API]({{urlRoot}}/workflows/monobehaviour/interaction/reader-writers/overview)
+  * [Command sender and handler API]({{urlRoot}}/workflows/monobehaviour/interaction/commands/component-commands)
 
 The SpatialOS GDK for Unity automatically injects the correct values into the these fields
 as soon as the worker that this GameObject belongs to fulfills all the requirements.
