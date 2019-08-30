@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core
 
         private CommandMetaData metaData;
 
-        private NetFrameStats netFrameStats = NetFrameStats.Pool.Rent();
+        private NetFrameStats netFrameStats = new NetFrameStats();
 
         public SerializedMessagesToSend()
         {

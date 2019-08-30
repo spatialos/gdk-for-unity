@@ -10,10 +10,6 @@ namespace Improbable.Gdk.Core.NetworkStats
 
         internal TestDataInjector TestInjector => new TestDataInjector(this);
 
-        private NetFrameStats()
-        {
-        }
-
         [Conditional("UNITY_EDITOR")]
         public void AddUpdate(in ComponentUpdate update)
         {
@@ -120,27 +116,6 @@ namespace Improbable.Gdk.Core.NetworkStats
         internal void Clear()
         {
             Messages.Clear();
-        }
-
-        public static class Pool
-        {
-            private static readonly Queue<NetFrameStats> data = new Queue<NetFrameStats>();
-
-            public static NetFrameStats Rent()
-            {
-                if (data.Count != 0)
-                {
-                    return data.Dequeue();
-                }
-
-                return new NetFrameStats();
-            }
-
-            public static void Return(NetFrameStats frameStats)
-            {
-                frameStats.Clear();
-                data.Enqueue(frameStats);
-            }
         }
 
         internal class TestDataInjector

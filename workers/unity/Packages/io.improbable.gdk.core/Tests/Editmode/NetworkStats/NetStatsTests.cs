@@ -62,7 +62,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.NetworkStats
         public void SetFrameStats_inserts_into_the_correct_direction_and_message_type(Direction direction)
         {
             var netStats = new NetStats(5);
-            var netFrameStats = NetFrameStats.Pool.Rent();
+            var netFrameStats = new NetFrameStats();
             var dataInjector = netFrameStats.TestInjector;
 
             dataInjector.AddComponentUpdate(5, 3);
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.NetworkStats
         public void FrameStats_is_summed_in_summary_stats_and_wraps_correctly()
         {
             var netStats = new NetStats(5);
-            var netFrameStats = NetFrameStats.Pool.Rent();
+            var netFrameStats = new NetFrameStats();
             var dataInjector = netFrameStats.TestInjector;
 
             var messageType = MessageTypeUnion.Update(10);

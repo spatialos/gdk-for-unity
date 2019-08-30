@@ -13,8 +13,8 @@ namespace Improbable.Gdk.Core.NetworkStats
         private const int DefaultBufferSize = 60;
 
         private readonly NetStats netStats = new NetStats(DefaultBufferSize);
-        private readonly NetFrameStats lastIncomingData = NetFrameStats.Pool.Rent();
-        private readonly NetFrameStats lastOutgoingData = NetFrameStats.Pool.Rent();
+        private readonly NetFrameStats lastIncomingData = new NetFrameStats();
+        private readonly NetFrameStats lastOutgoingData = new NetFrameStats();
 
         private float lastFrameTime;
 
@@ -24,12 +24,6 @@ namespace Improbable.Gdk.Core.NetworkStats
             Enabled = false;
         }
 #endif
-
-        protected override void OnDestroy()
-        {
-            NetFrameStats.Pool.Return(lastIncomingData);
-            NetFrameStats.Pool.Return(lastOutgoingData);
-        }
 
         protected override void OnUpdate()
         {

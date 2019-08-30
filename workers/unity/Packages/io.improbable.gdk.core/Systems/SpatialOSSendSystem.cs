@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Core
     {
         private WorkerSystem worker;
         private NetworkStatisticsSystem networkStatisticsSystem;
+        private NetFrameStats netFrameStats = new NetFrameStats();
 
         protected override void OnCreate()
         {
@@ -21,9 +22,9 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            var stats = NetFrameStats.Pool.Rent();
-            worker.SendMessages(stats);
-            networkStatisticsSystem.AddOutgoingSample(stats);
+            worker.SendMessages(netFrameStats);
+            networkStatisticsSystem.AddOutgoingSample(netFrameStats);
+            netFrameStats.Clear();
         }
     }
 }
