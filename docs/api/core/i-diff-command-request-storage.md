@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-right:none"><a id="addrequest-t"></a><b>AddRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L67">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetRequests</b></td>
+        <td style="border-right:none"><a id="getrequests"></a><b>GetRequests</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L68">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetRequests</b></td>
+        <td style="border-right:none"><a id="getrequests-entityid"></a><b>GetRequests</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L69">Source</a></td>
     </tr>
     <tr>

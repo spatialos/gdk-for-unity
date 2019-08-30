@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerFlagCallbackManager</b></td>
+        <td style="border-right:none"><a id="workerflagcallbackmanager-world"></a><b>WorkerFlagCallbackManager</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CalllbackManagers/WorkerFlagCallbackManager.cs/#L14">Source</a></td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RegisterCallback</b></td>
+        <td style="border-right:none"><a id="registercallback-action-string-string"></a><b>RegisterCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CalllbackManagers/WorkerFlagCallbackManager.cs/#L19">Source</a></td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnregisterCallback</b></td>
+        <td style="border-right:none"><a id="unregistercallback-ulong"></a><b>UnregisterCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CalllbackManagers/WorkerFlagCallbackManager.cs/#L25">Source</a></td>
     </tr>
     <tr>
@@ -142,7 +142,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InvokeCallbacks</b></td>
+        <td style="border-right:none"><a id="invokecallbacks"></a><b>InvokeCallbacks</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CalllbackManagers/WorkerFlagCallbackManager.cs/#L30">Source</a></td>
     </tr>
     <tr>

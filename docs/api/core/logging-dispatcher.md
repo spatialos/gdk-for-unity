@@ -56,7 +56,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingDispatcher.cs/#L14">Source</a></td>
     </tr>
     <tr>
@@ -72,7 +72,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingDispatcher.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -102,7 +102,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HandleLog</b></td>
+        <td style="border-right:none"><a id="handlelog-logtype-logevent"></a><b>HandleLog</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingDispatcher.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ Log locally to the console.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingDispatcher.cs/#L41">Source</a></td>
     </tr>
     <tr>

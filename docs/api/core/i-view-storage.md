@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetSnapshotType</b></td>
+        <td style="border-right:none"><a id="getsnapshottype"></a><b>GetSnapshotType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L8">Source</a></td>
     </tr>
     <tr>
@@ -59,7 +59,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetUpdateType</b></td>
+        <td style="border-right:none"><a id="getupdatetype"></a><b>GetUpdateType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L9">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentId</b></td>
+        <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HasComponent</b></td>
+        <td style="border-right:none"><a id="hascomponent-long"></a><b>HasComponent</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L12">Source</a></td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetAuthority</b></td>
+        <td style="border-right:none"><a id="getauthority-long"></a><b>GetAuthority</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L13">Source</a></td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ApplyDiff</b></td>
+        <td style="border-right:none"><a id="applydiff-viewdiff"></a><b>ApplyDiff</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L15">Source</a></td>
     </tr>
     <tr>

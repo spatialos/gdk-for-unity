@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ComponentId</b></td>
+        <td style="border-right:none"><a id="componentid"></a><b>ComponentId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L8">Source</a></td>
     </tr>
     <tr>
@@ -54,7 +54,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ComponentUpdateQuery</b></td>
+        <td style="border-right:none"><a id="componentupdatequery"></a><b>ComponentUpdateQuery</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L9">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendUpdates</b></td>
+        <td style="border-right:none"><a id="sendupdates-nativearray-archetypechunk-componentsystembase-entitymanager-componentupdatesystem"></a><b>SendUpdates</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L11">Source</a></td>
     </tr>
     <tr>

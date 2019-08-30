@@ -48,7 +48,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendingEntity</b></td>
+        <td style="border-right:none"><a id="sendingentity"></a><b>SendingEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L51">Source</a></td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>StatusCode</b></td>
+        <td style="border-right:none"><a id="statuscode"></a><b>StatusCode</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L57">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ The status code of the command response. If equal to StatusCode.Success then the
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Message</b></td>
+        <td style="border-right:none"><a id="message"></a><b>Message</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L62">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ The failure message of the command. Will only be non-null if the command failed.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FirstEntityId</b></td>
+        <td style="border-right:none"><a id="firstentityid"></a><b>FirstEntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L68">Source</a></td>
     </tr>
     <tr>
@@ -108,7 +108,7 @@ The first entity ID in the range that was reserved. Will only be non-null if the
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>NumberOfEntityIds</b></td>
+        <td style="border-right:none"><a id="numberofentityids"></a><b>NumberOfEntityIds</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L73">Source</a></td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ The number of entity IDs that were reserved.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RequestPayload</b></td>
+        <td style="border-right:none"><a id="requestpayload"></a><b>RequestPayload</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L78">Source</a></td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ The request payload that was originally sent with this command.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Context</b></td>
+        <td style="border-right:none"><a id="context"></a><b>Context</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L83">Source</a></td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ The context object that was provided when sending the command.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RequestId</b></td>
+        <td style="border-right:none"><a id="requestid"></a><b>RequestId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L88">Source</a></td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@ The unique request ID of this command. Will match the request ID in the correspo
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetRequestId</b></td>
+        <td style="border-right:none"><a id="getrequestid"></a><b>GetRequestId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L105">Source</a></td>
     </tr>
     <tr>

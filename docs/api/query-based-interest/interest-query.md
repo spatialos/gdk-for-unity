@@ -45,7 +45,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Query</b></td>
+        <td style="border-right:none"><a id="query-constraint"></a><b>Query</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L30">Source</a></td>
     </tr>
     <tr>
@@ -95,7 +95,7 @@ Creates an <a href="{{urlRoot}}/api/query-based-interest/interest-query">Interes
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FilterResults</b></td>
+        <td style="border-right:none"><a id="filterresults-uint-params-uint"></a><b>FilterResults</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L78">Source</a></td>
     </tr>
     <tr>
@@ -133,7 +133,7 @@ Defines what components to return in the query results.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FilterResults</b></td>
+        <td style="border-right:none"><a id="filterresults-ienumerable-uint"></a><b>FilterResults</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L99">Source</a></td>
     </tr>
     <tr>
@@ -170,7 +170,7 @@ Defines what components to return in the query results.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AsComponentInterestQuery</b></td>
+        <td style="border-right:none"><a id="ascomponentinterestquery"></a><b>AsComponentInterestQuery</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L115">Source</a></td>
     </tr>
     <tr>

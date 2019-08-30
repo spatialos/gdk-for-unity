@@ -41,7 +41,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ProductName</b></td>
+        <td style="border-right:none"><a id="productname"></a><b>ProductName</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L38">Source</a></td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SpatialProjectRootDir</b></td>
+        <td style="border-right:none"><a id="spatialprojectrootdir"></a><b>SpatialProjectRootDir</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ The absolute path to the root folder of the SpatialOS project.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>BuildScratchDirectory</b></td>
+        <td style="border-right:none"><a id="buildscratchdirectory"></a><b>BuildScratchDirectory</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L25">Source</a></td>
     </tr>
     <tr>
@@ -98,7 +98,7 @@ The path to the Unity project build directory that worker build artifacts are pl
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SpatialBinary</b></td>
+        <td style="border-right:none"><a id="spatialbinary"></a><b>SpatialBinary</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L31">Source</a></td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ The absolute path to the  binary, or an empty string if it doesn't exist.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>DotNetBinary</b></td>
+        <td style="border-right:none"><a id="dotnetbinary"></a><b>DotNetBinary</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L36">Source</a></td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ The absolute path to the  binary, or an empty string if it doesn't exist.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RuntimeIpEditorPrefKey</b></td>
+        <td style="border-right:none"><a id="runtimeipeditorprefkey"></a><b>RuntimeIpEditorPrefKey</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L43">Source</a></td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ The absolute path to the  binary, or an empty string if it doesn't exist.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetPackagePath</b></td>
+        <td style="border-right:none"><a id="getpackagepath-string"></a><b>GetPackagePath</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L54">Source</a></td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ Finds the path for a given package referenced directly in the manifest.json, or 
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CheckDependencies</b></td>
+        <td style="border-right:none"><a id="checkdependencies"></a><b>CheckDependencies</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/Common.cs/#L149">Source</a></td>
     </tr>
     <tr>

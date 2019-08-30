@@ -34,7 +34,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>PlayerHeartbeatIntervalSeconds</b></td>
+        <td style="border-right:none"><a id="playerheartbeatintervalseconds"></a><b>PlayerHeartbeatIntervalSeconds</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L35">Source</a></td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@ The time in seconds between player heartbeat requests.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxNumFailedPlayerHeartbeats</b></td>
+        <td style="border-right:none"><a id="maxnumfailedplayerheartbeats"></a><b>MaxNumFailedPlayerHeartbeats</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L44">Source</a></td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ The maximum number of failed heartbeats before a player is disconnected.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxPlayerCreationRetries</b></td>
+        <td style="border-right:none"><a id="maxplayercreationretries"></a><b>MaxPlayerCreationRetries</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L53">Source</a></td>
     </tr>
     <tr>
@@ -106,7 +106,7 @@ The maximum number of retries for player creation requests.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxPlayerCreatorQueryRetries</b></td>
+        <td style="border-right:none"><a id="maxplayercreatorqueryretries"></a><b>MaxPlayerCreatorQueryRetries</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L63">Source</a></td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ The maximum number of retries for finding player creator entities, before any pl
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AutoRequestPlayerCreation</b></td>
+        <td style="border-right:none"><a id="autorequestplayercreation"></a><b>AutoRequestPlayerCreation</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L73">Source</a></td>
     </tr>
     <tr>
@@ -154,7 +154,7 @@ This indicates whether a player should be created automatically upon a worker co
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreatePlayerEntityTemplate</b></td>
+        <td style="border-right:none"><a id="createplayerentitytemplate"></a><b>CreatePlayerEntityTemplate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L82">Source</a></td>
     </tr>
     <tr>

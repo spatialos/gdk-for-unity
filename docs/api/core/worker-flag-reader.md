@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsValid</b></td>
+        <td style="border-right:none"><a id="isvalid"></a><b>IsValid</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L49">Source</a></td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnWorkerFlagChange</b></td>
+        <td style="border-right:none"><a id="onworkerflagchange"></a><b>OnWorkerFlagChange</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L63">Source</a></td>
     </tr>
     <tr>
@@ -95,7 +95,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerFlagReader</b></td>
+        <td style="border-right:none"><a id="workerflagreader-world"></a><b>WorkerFlagReader</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L56">Source</a></td>
     </tr>
     <tr>
@@ -135,7 +135,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetFlag</b></td>
+        <td style="border-right:none"><a id="getflag-string"></a><b>GetFlag</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L101">Source</a></td>
     </tr>
     <tr>

@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HasValue</b></td>
+        <td style="border-right:none"><a id="hasvalue"></a><b>HasValue</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -54,7 +54,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
+        <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetAvailabilityHandler</b></td>
+        <td style="border-right:none"><a id="setavailabilityhandler-isubscriptionavailabilityhandler"></a><b>SetAvailabilityHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L14">Source</a></td>
     </tr>
     <tr>
@@ -112,7 +112,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetAvailabilityHandler</b></td>
+        <td style="border-right:none"><a id="getavailabilityhandler"></a><b>GetAvailabilityHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetErasedValue</b></td>
+        <td style="border-right:none"><a id="geterasedvalue"></a><b>GetErasedValue</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L16">Source</a></td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cancel</b></td>
+        <td style="border-right:none"><a id="cancel"></a><b>Cancel</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L18">Source</a></td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ResetValue</b></td>
+        <td style="border-right:none"><a id="resetvalue"></a><b>ResetValue</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L19">Source</a></td>
     </tr>
     <tr>

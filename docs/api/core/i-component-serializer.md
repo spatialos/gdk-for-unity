@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentId</b></td>
+        <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L24">Source</a></td>
     </tr>
     <tr>
@@ -59,7 +59,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Serialize</b></td>
+        <td style="border-right:none"><a id="serialize-messagestosend-serializedmessagestosend"></a><b>Serialize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/MessageSerialization.cs/#L26">Source</a></td>
     </tr>
     <tr>

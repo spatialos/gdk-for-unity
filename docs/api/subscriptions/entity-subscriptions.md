@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Subscribe&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="subscribe-t-entityid-world"></a><b>Subscribe&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntitySubscriptions.cs/#L9">Source</a></td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryRegisterManager&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="tryregistermanager-t-subscriptionmanagerbase-world"></a><b>TryRegisterManager&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntitySubscriptions.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryRegisterManager</b></td>
+        <td style="border-right:none"><a id="tryregistermanager-type-subscriptionmanagerbase-world"></a><b>TryRegisterManager</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntitySubscriptions.cs/#L25">Source</a></td>
     </tr>
     <tr>

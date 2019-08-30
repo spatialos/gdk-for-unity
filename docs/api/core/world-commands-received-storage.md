@@ -50,7 +50,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Clear</b></td>
+        <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L31">Source</a></td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddResponse</b></td>
+        <td style="border-right:none"><a id="addresponse-worldcommands-createentity-receivedresponse"></a><b>AddResponse</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L43">Source</a></td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddResponse</b></td>
+        <td style="border-right:none"><a id="addresponse-worldcommands-deleteentity-receivedresponse"></a><b>AddResponse</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L48">Source</a></td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddResponse</b></td>
+        <td style="border-right:none"><a id="addresponse-worldcommands-reserveentityids-receivedresponse"></a><b>AddResponse</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L53">Source</a></td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddResponse</b></td>
+        <td style="border-right:none"><a id="addresponse-worldcommands-entityquery-receivedresponse"></a><b>AddResponse</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/WorldCommandsReceivedStorage.cs/#L58">Source</a></td>
     </tr>
     <tr>

@@ -47,7 +47,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RegisterComponentUpdateCallback&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="registercomponentupdatecallback-t-entityid-action-t"></a><b>RegisterComponentUpdateCallback&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L26">Source</a></td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RegisterComponentEventCallback&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="registercomponenteventcallback-t-entityid-action-t"></a><b>RegisterComponentEventCallback&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L40">Source</a></td>
     </tr>
     <tr>
@@ -105,7 +105,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RegisterAuthorityCallback</b></td>
+        <td style="border-right:none"><a id="registerauthoritycallback-entityid-uint-action-authority"></a><b>RegisterAuthorityCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L54">Source</a></td>
     </tr>
     <tr>
@@ -135,7 +135,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnregisterCallback</b></td>
+        <td style="border-right:none"><a id="unregistercallback-ulong"></a><b>UnregisterCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L67">Source</a></td>
     </tr>
     <tr>
@@ -175,7 +175,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L89">Source</a></td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/ComponentCallbackSystem.cs/#L95">Source</a></td>
     </tr>
     <tr>

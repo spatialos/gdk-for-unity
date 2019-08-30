@@ -36,7 +36,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ShouldConnectLocally</b></td>
+        <td style="border-right:none"><a id="shouldconnectlocally"></a><b>ShouldConnectLocally</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Editor/MobileLaunchConfig.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RuntimeIp</b></td>
+        <td style="border-right:none"><a id="runtimeip"></a><b>RuntimeIp</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Editor/MobileLaunchConfig.cs/#L12">Source</a></td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>DevelopmentTeamId</b></td>
+        <td style="border-right:none"><a id="developmentteamid"></a><b>DevelopmentTeamId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Editor/MobileLaunchConfig.cs/#L18">Source</a></td>
     </tr>
     <tr>

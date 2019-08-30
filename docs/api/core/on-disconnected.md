@@ -56,7 +56,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReasonForDisconnect</b></td>
+        <td style="border-right:none"><a id="reasonfordisconnect"></a><b>ReasonForDisconnect</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L36">Source</a></td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@ The reported reason for disconnecting
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Equals</b></td>
+        <td style="border-right:none"><a id="equals-ondisconnected"></a><b>Equals</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L38">Source</a></td>
     </tr>
     <tr>
@@ -127,7 +127,7 @@ The reported reason for disconnecting
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Equals</b></td>
+        <td style="border-right:none"><a id="equals-object"></a><b>Equals</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L43">Source</a></td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@ The reported reason for disconnecting
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetHashCode</b></td>
+        <td style="border-right:none"><a id="gethashcode"></a><b>GetHashCode</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L48">Source</a></td>
     </tr>
     <tr>

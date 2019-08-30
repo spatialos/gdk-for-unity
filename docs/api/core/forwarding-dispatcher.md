@@ -51,7 +51,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ForwardingDispatcher.cs/#L17">Source</a></td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ForwardingDispatcher.cs/#L18">Source</a></td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ForwardingDispatcher</b></td>
+        <td style="border-right:none"><a id="forwardingdispatcher-logtype"></a><b>ForwardingDispatcher</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ForwardingDispatcher.cs/#L33">Source</a></td>
     </tr>
     <tr>
@@ -136,7 +136,7 @@ Constructor for the Forwarding Dispatcher
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HandleLog</b></td>
+        <td style="border-right:none"><a id="handlelog-logtype-logevent"></a><b>HandleLog</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ForwardingDispatcher.cs/#L60">Source</a></td>
     </tr>
     <tr>
@@ -165,7 +165,7 @@ Log locally and conditionally forward to the SpatialOS runtime.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ForwardingDispatcher.cs/#L114">Source</a></td>
     </tr>
     <tr>

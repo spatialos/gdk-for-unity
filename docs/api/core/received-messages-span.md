@@ -37,7 +37,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Count</b></td>
+        <td style="border-right:none"><a id="count"></a><b>Count</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/ReceivedMessagesSpan.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>this[int index]</b></td>
+        <td style="border-right:none"><a id="this-int-index"></a><b>this[int index]</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/ReceivedMessagesSpan.cs/#L33">Source</a></td>
     </tr>
     <tr>
@@ -95,7 +95,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToArray</b></td>
+        <td style="border-right:none"><a id="toarray"></a><b>ToArray</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Collections/ReceivedMessagesSpan.cs/#L46">Source</a></td>
     </tr>
     <tr>

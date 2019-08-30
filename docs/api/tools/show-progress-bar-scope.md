@@ -52,7 +52,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ShowProgressBarScope</b></td>
+        <td style="border-right:none"><a id="showprogressbarscope-string"></a><b>ShowProgressBarScope</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/ShowProgressBarScope.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -92,7 +92,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/ShowProgressBarScope.cs/#L16">Source</a></td>
     </tr>
     <tr>

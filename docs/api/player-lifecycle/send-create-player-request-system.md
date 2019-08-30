@@ -47,7 +47,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RequestPlayerCreation</b></td>
+        <td style="border-right:none"><a id="requestplayercreation-byte-action-playercreator-createplayer-receivedresponse"></a><b>RequestPlayerCreation</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L116">Source</a></td>
     </tr>
     <tr>
@@ -88,7 +88,7 @@ Queues a request for player creation, if none are currently in progress. If play
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L42">Source</a></td>
     </tr>
     <tr>
@@ -107,7 +107,7 @@ Queues a request for player creation, if none are currently in progress. If play
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L220">Source</a></td>
     </tr>
     <tr>

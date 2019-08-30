@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>DrawHorizontalLine</b></td>
+        <td style="border-right:none"><a id="drawhorizontalline-int-color"></a><b>DrawHorizontalLine</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/CommonUIElements.cs/#L8">Source</a></td>
     </tr>
     <tr>

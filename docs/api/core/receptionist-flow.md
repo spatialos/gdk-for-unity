@@ -49,7 +49,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReceptionistHost</b></td>
+        <td style="border-right:none"><a id="receptionisthost"></a><b>ReceptionistHost</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L32">Source</a></td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ The IP address of the Receptionist to use when connecting.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReceptionistPort</b></td>
+        <td style="border-right:none"><a id="receptionistport"></a><b>ReceptionistPort</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L37">Source</a></td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@ The port of the Receptionist to use when connecting.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerId</b></td>
+        <td style="border-right:none"><a id="workerid"></a><b>WorkerId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L43">Source</a></td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@ The worker ID to use for the worker connection that will be created when CreateA
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ReceptionistFlow</b></td>
+        <td style="border-right:none"><a id="receptionistflow-string-iconnectionflowinitializer-receptionistflow"></a><b>ReceptionistFlow</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L50">Source</a></td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ Initializes a new instance of the <a href="{{urlRoot}}/api/core/receptionist-flo
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateAsync</b></td>
+        <td style="border-right:none"><a id="createasync-connectionparameters-cancellationtoken"></a><b>CreateAsync</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlows.cs/#L56">Source</a></td>
     </tr>
     <tr>

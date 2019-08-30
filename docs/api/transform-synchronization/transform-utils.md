@@ -44,7 +44,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateTransformSnapshot</b></td>
+        <td style="border-right:none"><a id="createtransformsnapshot-vector3-quaternion-vector3"></a><b>CreateTransformSnapshot</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L27">Source</a></td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ Utility method for creating a TransformInternal Snapshot.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToCoordinates</b></td>
+        <td style="border-right:none"><a id="tocoordinates-this-vector3"></a><b>ToCoordinates</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L44">Source</a></td>
     </tr>
     <tr>
@@ -111,7 +111,7 @@ Extension method for converting a Unity Vector to a Coordinates value.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToFixedPointVector3</b></td>
+        <td style="border-right:none"><a id="tofixedpointvector3-this-vector3"></a><b>ToFixedPointVector3</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L52">Source</a></td>
     </tr>
     <tr>
@@ -139,7 +139,7 @@ Extension method for converting a Unity Vector to a FixedPointVector3.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ToCompressedQuaternion</b></td>
+        <td style="border-right:none"><a id="tocompressedquaternion-this-quaternion"></a><b>ToCompressedQuaternion</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L60">Source</a></td>
     </tr>
     <tr>

@@ -34,7 +34,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AndroidEmulatorDefaultCallbackIp</b></td>
+        <td style="border-right:none"><a id="androidemulatordefaultcallbackip"></a><b>AndroidEmulatorDefaultCallbackIp</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/DeviceInfo.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ The default IP address to connect your Android Studio emulator to localhost.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ActiveDeviceType</b></td>
+        <td style="border-right:none"><a id="activedevicetype"></a><b>ActiveDeviceType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/DeviceInfo.cs/#L15">Source</a></td>
     </tr>
     <tr>

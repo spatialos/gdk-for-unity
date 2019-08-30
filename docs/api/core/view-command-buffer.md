@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ViewCommandBuffer</b></td>
+        <td style="border-right:none"><a id="viewcommandbuffer-entitymanager-ilogdispatcher"></a><b>ViewCommandBuffer</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L32">Source</a></td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponent&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="addcomponent-t-entity-t"></a><b>AddComponent&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L46">Source</a></td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ Adds a GameObject Component to an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponent</b></td>
+        <td style="border-right:none"><a id="addcomponent-entity-componenttype-object"></a><b>AddComponent</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L57">Source</a></td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@ Adds a GameObject Component to an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RemoveComponent</b></td>
+        <td style="border-right:none"><a id="removecomponent-entity-componenttype"></a><b>RemoveComponent</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L73">Source</a></td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@ Removes a GameObject Component from an ECS entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FlushBuffer</b></td>
+        <td style="border-right:none"><a id="flushbuffer"></a><b>FlushBuffer</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/ViewCommandBuffer.cs/#L87">Source</a></td>
     </tr>
     <tr>

@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ComponentId</b></td>
+        <td style="border-right:none"><a id="componentid"></a><b>ComponentId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L5">Source</a></td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InvokeHandler</b></td>
+        <td style="border-right:none"><a id="invokehandler-dynamic-ihandler"></a><b>InvokeHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Dynamic/IDynamicInvokable.cs/#L6">Source</a></td>
     </tr>
     <tr>

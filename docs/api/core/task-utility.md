@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WithCancellation&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="withcancellation-t-this-task-t-cancellationtoken"></a><b>WithCancellation&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/TaskUtility.cs/#L9">Source</a></td>
     </tr>
     <tr>

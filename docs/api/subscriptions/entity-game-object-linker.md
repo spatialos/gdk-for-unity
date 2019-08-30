@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityGameObjectLinker</b></td>
+        <td style="border-right:none"><a id="entitygameobjectlinker-world"></a><b>EntityGameObjectLinker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L29">Source</a></td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LinkGameObjectToSpatialOSEntity</b></td>
+        <td style="border-right:none"><a id="linkgameobjecttospatialosentity-entityid-gameobject-params-type"></a><b>LinkGameObjectToSpatialOSEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L55">Source</a></td>
     </tr>
     <tr>
@@ -110,7 +110,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnlinkGameObjectFromEntity</b></td>
+        <td style="border-right:none"><a id="unlinkgameobjectfromentity-entityid-gameobject"></a><b>UnlinkGameObjectFromEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L112">Source</a></td>
     </tr>
     <tr>
@@ -139,7 +139,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnlinkAllGameObjects</b></td>
+        <td style="border-right:none"><a id="unlinkallgameobjects"></a><b>UnlinkAllGameObjects</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L162">Source</a></td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnlinkAllGameObjectsFromEntityId</b></td>
+        <td style="border-right:none"><a id="unlinkallgameobjectsfromentityid-entityid"></a><b>UnlinkAllGameObjectsFromEntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L171">Source</a></td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FlushCommandBuffer</b></td>
+        <td style="border-right:none"><a id="flushcommandbuffer"></a><b>FlushCommandBuffer</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/EntityGameObjectLinker.cs/#L186">Source</a></td>
     </tr>
     <tr>

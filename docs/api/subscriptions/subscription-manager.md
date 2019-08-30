@@ -43,7 +43,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SubscriptionType</b></td>
+        <td style="border-right:none"><a id="subscriptiontype"></a><b>SubscriptionType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L19">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Subscribe</b></td>
+        <td style="border-right:none"><a id="subscribe-entityid"></a><b>Subscribe</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L17">Source</a></td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SubscribeTypeErased</b></td>
+        <td style="border-right:none"><a id="subscribetypeerased-entityid"></a><b>SubscribeTypeErased</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L21">Source</a></td>
     </tr>
     <tr>

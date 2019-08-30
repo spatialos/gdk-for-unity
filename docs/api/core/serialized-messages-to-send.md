@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SerializedMessagesToSend</b></td>
+        <td style="border-right:none"><a id="serializedmessagestosend"></a><b>SerializedMessagesToSend</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L48">Source</a></td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SerializeFrom</b></td>
+        <td style="border-right:none"><a id="serializefrom-messagestosend-commandmetadata"></a><b>SerializeFrom</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L86">Source</a></td>
     </tr>
     <tr>
@@ -100,7 +100,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Clear</b></td>
+        <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L110">Source</a></td>
     </tr>
     <tr>
@@ -119,7 +119,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendAndClear</b></td>
+        <td style="border-right:none"><a id="sendandclear-connection"></a><b>SendAndClear</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L125">Source</a></td>
     </tr>
     <tr>
@@ -147,7 +147,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponentUpdate</b></td>
+        <td style="border-right:none"><a id="addcomponentupdate-componentupdate-long"></a><b>AddComponentUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L203">Source</a></td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-right:none"><a id="addrequest-commandrequest-uint-long-uint-long"></a><b>AddRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L208">Source</a></td>
     </tr>
     <tr>
@@ -208,7 +208,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddResponse</b></td>
+        <td style="border-right:none"><a id="addresponse-commandresponse-uint"></a><b>AddResponse</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L213">Source</a></td>
     </tr>
     <tr>
@@ -237,7 +237,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddFailure</b></td>
+        <td style="border-right:none"><a id="addfailure-string-uint"></a><b>AddFailure</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L218">Source</a></td>
     </tr>
     <tr>
@@ -266,7 +266,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddCreateEntityRequest</b></td>
+        <td style="border-right:none"><a id="addcreateentityrequest-entity-long-uint-long"></a><b>AddCreateEntityRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L223">Source</a></td>
     </tr>
     <tr>
@@ -297,7 +297,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddDeleteEntityRequest</b></td>
+        <td style="border-right:none"><a id="adddeleteentityrequest-long-uint-long"></a><b>AddDeleteEntityRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L228">Source</a></td>
     </tr>
     <tr>
@@ -327,7 +327,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddReserveEntityIdsRequest</b></td>
+        <td style="border-right:none"><a id="addreserveentityidsrequest-uint-uint-long"></a><b>AddReserveEntityIdsRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L233">Source</a></td>
     </tr>
     <tr>
@@ -357,7 +357,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddEntityQueryRequest</b></td>
+        <td style="border-right:none"><a id="addentityqueryrequest-entityquery-uint-long"></a><b>AddEntityQueryRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/SerializedMessagesToSend.cs/#L238">Source</a></td>
     </tr>
     <tr>

@@ -51,7 +51,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start</b></td>
+        <td style="border-right:none"><a id="start-string-string"></a><b>Start</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L136">Source</a></td>
     </tr>
     <tr>

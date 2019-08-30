@@ -36,7 +36,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Message</b></td>
+        <td style="border-right:none"><a id="message"></a><b>Message</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/LogMessages.cs/#L7">Source</a></td>
     </tr>
     <tr>
@@ -51,7 +51,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LogLevel</b></td>
+        <td style="border-right:none"><a id="loglevel"></a><b>LogLevel</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/LogMessages.cs/#L8">Source</a></td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LogMessageReceived</b></td>
+        <td style="border-right:none"><a id="logmessagereceived-string-loglevel"></a><b>LogMessageReceived</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/LogMessages.cs/#L10">Source</a></td>
     </tr>
     <tr>

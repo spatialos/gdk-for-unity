@@ -45,7 +45,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Sphere</b></td>
+        <td style="border-right:none"><a id="sphere-double-coordinates"></a><b>Sphere</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L41">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Sphere</b></td>
+        <td style="border-right:none"><a id="sphere-double-double-double-double"></a><b>Sphere</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L70">Source</a></td>
     </tr>
     <tr>
@@ -105,7 +105,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cylinder</b></td>
+        <td style="border-right:none"><a id="cylinder-double-coordinates"></a><b>Cylinder</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L91">Source</a></td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cylinder</b></td>
+        <td style="border-right:none"><a id="cylinder-double-double-double-double"></a><b>Cylinder</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L120">Source</a></td>
     </tr>
     <tr>
@@ -165,7 +165,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Box</b></td>
+        <td style="border-right:none"><a id="box-double-double-double-coordinates"></a><b>Box</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L147">Source</a></td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Box</b></td>
+        <td style="border-right:none"><a id="box-double-double-double-double-double-double"></a><b>Box</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L186">Source</a></td>
     </tr>
     <tr>
@@ -229,7 +229,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RelativeSphere</b></td>
+        <td style="border-right:none"><a id="relativesphere-double"></a><b>RelativeSphere</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L209">Source</a></td>
     </tr>
     <tr>
@@ -266,7 +266,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RelativeCylinder</b></td>
+        <td style="border-right:none"><a id="relativecylinder-double"></a><b>RelativeCylinder</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L231">Source</a></td>
     </tr>
     <tr>
@@ -303,7 +303,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RelativeBox</b></td>
+        <td style="border-right:none"><a id="relativebox-double-double-double"></a><b>RelativeBox</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L259">Source</a></td>
     </tr>
     <tr>
@@ -342,7 +342,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
+        <td style="border-right:none"><a id="entityid-entityid"></a><b>EntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L278">Source</a></td>
     </tr>
     <tr>
@@ -370,7 +370,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Component&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="component-t"></a><b>Component&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L294">Source</a></td>
     </tr>
     <tr>
@@ -398,7 +398,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Component</b></td>
+        <td style="border-right:none"><a id="component-uint"></a><b>Component</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L310">Source</a></td>
     </tr>
     <tr>
@@ -426,7 +426,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>All</b></td>
+        <td style="border-right:none"><a id="all-constraint-params-constraint"></a><b>All</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L332">Source</a></td>
     </tr>
     <tr>
@@ -464,7 +464,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>All</b></td>
+        <td style="border-right:none"><a id="all-ienumerable-constraint"></a><b>All</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L353">Source</a></td>
     </tr>
     <tr>
@@ -501,7 +501,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Any</b></td>
+        <td style="border-right:none"><a id="any-constraint-params-constraint"></a><b>Any</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L382">Source</a></td>
     </tr>
     <tr>
@@ -539,7 +539,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Any</b></td>
+        <td style="border-right:none"><a id="any-ienumerable-constraint"></a><b>Any</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L403">Source</a></td>
     </tr>
     <tr>
@@ -589,7 +589,7 @@ Creates a <a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AsQueryConstraint</b></td>
+        <td style="border-right:none"><a id="asqueryconstraint"></a><b>AsQueryConstraint</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/Constraint.cs/#L423">Source</a></td>
     </tr>
     <tr>

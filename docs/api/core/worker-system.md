@@ -50,7 +50,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerEntity</b></td>
+        <td style="border-right:none"><a id="workerentity"></a><b>WorkerEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L18">Source</a></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LogDispatcher</b></td>
+        <td style="border-right:none"><a id="logdispatcher"></a><b>LogDispatcher</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L21">Source</a></td>
     </tr>
     <tr>
@@ -95,7 +95,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerId</b></td>
+        <td style="border-right:none"><a id="workerid"></a><b>WorkerId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -110,7 +110,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Origin</b></td>
+        <td style="border-right:none"><a id="origin"></a><b>Origin</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L23">Source</a></td>
     </tr>
     <tr>
@@ -140,7 +140,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerSystem</b></td>
+        <td style="border-right:none"><a id="workersystem-workerinworld"></a><b>WorkerSystem</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L34">Source</a></td>
     </tr>
     <tr>
@@ -180,7 +180,7 @@ An ECS entity that represents the <a href="{{urlRoot}}/api/core/worker">Worker</
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryGetEntity</b></td>
+        <td style="border-right:none"><a id="trygetentity-entityid-out-entity"></a><b>TryGetEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L56">Source</a></td>
     </tr>
     <tr>
@@ -209,7 +209,7 @@ Attempts to find an ECS entity associated with a SpatialOS entity ID.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HasEntity</b></td>
+        <td style="border-right:none"><a id="hasentity-entityid"></a><b>HasEntity</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L66">Source</a></td>
     </tr>
     <tr>
@@ -237,7 +237,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendLogMessage</b></td>
+        <td style="border-right:none"><a id="sendlogmessage-string-string-loglevel-entityid"></a><b>SendLogMessage</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L71">Source</a></td>
     </tr>
     <tr>
@@ -268,7 +268,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SendMetrics</b></td>
+        <td style="border-right:none"><a id="sendmetrics-metrics"></a><b>SendMetrics</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L76">Source</a></td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L91">Source</a></td>
     </tr>
     <tr>
@@ -327,7 +327,7 @@ Checks whether a SpatialOS entity is checked out on this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/WorkerSystem.cs/#L100">Source</a></td>
     </tr>
     <tr>

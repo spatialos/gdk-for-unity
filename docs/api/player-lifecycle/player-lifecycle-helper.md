@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddPlayerLifecycleComponents</b></td>
+        <td style="border-right:none"><a id="addplayerlifecyclecomponents-entitytemplate-string-string"></a><b>AddPlayerLifecycleComponents</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ Adds the SpatialOS components used by the player lifecycle module to an entity t
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsOwningWorker</b></td>
+        <td style="border-right:none"><a id="isowningworker-entityid-world"></a><b>IsOwningWorker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L25">Source</a></td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ Adds the SpatialOS components used by the player lifecycle module to an entity t
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddClientSystems</b></td>
+        <td style="border-right:none"><a id="addclientsystems-world-bool"></a><b>AddClientSystems</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L55">Source</a></td>
     </tr>
     <tr>
@@ -126,7 +126,7 @@ Adds all the systems a client-worker requires for the player lifecycle module.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddServerSystems</b></td>
+        <td style="border-right:none"><a id="addserversystems-world"></a><b>AddServerSystems</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.playerlifecycle/PlayerLifecycleHelper.cs/#L66">Source</a></td>
     </tr>
     <tr>

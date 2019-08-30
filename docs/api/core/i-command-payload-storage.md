@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetPayload</b></td>
+        <td style="border-right:none"><a id="getpayload-long"></a><b>GetPayload</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ICommandMetaDataStorage.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddRequest</b></td>
+        <td style="border-right:none"><a id="addrequest-in-commandcontext-t"></a><b>AddRequest</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ICommandMetaDataStorage.cs/#L16">Source</a></td>
     </tr>
     <tr>

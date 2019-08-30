@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetStateObjectOrDefault&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getstateobjectordefault-t-int"></a><b>GetStateObjectOrDefault&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L25">Source</a></td>
     </tr>
     <tr>
@@ -92,7 +92,7 @@ Attempts to get the state object associated with the hash, else returns a defaul
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetStateObject&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="setstateobject-t-int-t"></a><b>SetStateObject&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Editor/UIStateManager.cs/#L42">Source</a></td>
     </tr>
     <tr>

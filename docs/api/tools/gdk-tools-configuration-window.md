@@ -51,7 +51,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ShowWindow</b></td>
+        <td style="border-right:none"><a id="showwindow"></a><b>ShowWindow</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfigurationWindow.cs/#L33">Source</a></td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnGUI</b></td>
+        <td style="border-right:none"><a id="ongui"></a><b>OnGUI</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/GdkToolsConfigurationWindow.cs/#L51">Source</a></td>
     </tr>
     <tr>

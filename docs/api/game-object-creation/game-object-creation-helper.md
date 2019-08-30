@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EnableStandardGameObjectCreation</b></td>
+        <td style="border-right:none"><a id="enablestandardgameobjectcreation-world-gameobject"></a><b>EnableStandardGameObjectCreation</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs/#L13">Source</a></td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EnableStandardGameObjectCreation</b></td>
+        <td style="border-right:none"><a id="enablestandardgameobjectcreation-world-ientitygameobjectcreator-gameobject"></a><b>EnableStandardGameObjectCreation</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/GameObjectCreationHelper.cs/#L26">Source</a></td>
     </tr>
     <tr>

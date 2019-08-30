@@ -68,7 +68,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L21">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HandleLog</b></td>
+        <td style="border-right:none"><a id="handlelog-logtype-logevent"></a><b>HandleLog</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L24">Source</a></td>
     </tr>
     <tr>
@@ -143,7 +143,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EnterExpectingScope</b></td>
+        <td style="border-right:none"><a id="enterexpectingscope"></a><b>EnterExpectingScope</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L43">Source</a></td>
     </tr>
     <tr>
@@ -171,7 +171,7 @@ Creates and returns an disposable <a href="{{urlRoot}}/api/test-utils/test-log-d
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ExitExpectingScope</b></td>
+        <td style="border-right:none"><a id="exitexpectingscope"></a><b>ExitExpectingScope</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L55">Source</a></td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ Creates and returns an disposable <a href="{{urlRoot}}/api/test-utils/test-log-d
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/TestLogDispatcher.cs/#L66">Source</a></td>
     </tr>
     <tr>

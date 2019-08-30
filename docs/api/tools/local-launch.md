@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>BuildConfig</b></td>
+        <td style="border-right:none"><a id="buildconfig"></a><b>BuildConfig</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/LocalLaunch.cs/#L64">Source</a></td>
     </tr>
     <tr>
@@ -57,7 +57,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LaunchClient</b></td>
+        <td style="border-right:none"><a id="launchclient"></a><b>LaunchClient</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/LocalLaunch.cs/#L77">Source</a></td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LaunchLocalDeployment</b></td>
+        <td style="border-right:none"><a id="launchlocaldeployment"></a><b>LaunchLocalDeployment</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/LocalLaunch.cs/#L209">Source</a></td>
     </tr>
     <tr>

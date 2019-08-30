@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SubscriptionAggregate</b></td>
+        <td style="border-right:none"><a id="subscriptionaggregate-subscriptionsystem-entityid-params-type"></a><b>SubscriptionAggregate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L16">Source</a></td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetAvailabilityHandler</b></td>
+        <td style="border-right:none"><a id="setavailabilityhandler-isubscriptionavailabilityhandler"></a><b>SetAvailabilityHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L31">Source</a></td>
     </tr>
     <tr>
@@ -110,7 +110,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetAvailabilityHandler</b></td>
+        <td style="border-right:none"><a id="getavailabilityhandler"></a><b>GetAvailabilityHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L40">Source</a></td>
     </tr>
     <tr>
@@ -129,7 +129,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetValue&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getvalue-t"></a><b>GetValue&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L45">Source</a></td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetErasedValue</b></td>
+        <td style="border-right:none"><a id="geterasedvalue-type"></a><b>GetErasedValue</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L62">Source</a></td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cancel</b></td>
+        <td style="border-right:none"><a id="cancel"></a><b>Cancel</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionAggregate.cs/#L77">Source</a></td>
     </tr>
     <tr>

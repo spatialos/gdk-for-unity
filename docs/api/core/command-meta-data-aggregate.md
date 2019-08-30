@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MarkIdForRemoval</b></td>
+        <td style="border-right:none"><a id="markidforremoval-uint-uint-long"></a><b>MarkIdForRemoval</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaDataAggregate.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FlushRemovedIds</b></td>
+        <td style="border-right:none"><a id="flushremovedids"></a><b>FlushRemovedIds</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaDataAggregate.cs/#L21">Source</a></td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetContext&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getcontext-t-uint-uint-long"></a><b>GetContext&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaDataAggregate.cs/#L29">Source</a></td>
     </tr>
     <tr>

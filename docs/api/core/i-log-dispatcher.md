@@ -50,7 +50,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ILogDispatcher.cs/#L16">Source</a></td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ The associated GDK <a href="{{urlRoot}}/api/core/worker">Worker</a>.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ILogDispatcher.cs/#L21">Source</a></td>
     </tr>
     <tr>
@@ -96,7 +96,7 @@ The worker type associated with this logger.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HandleLog</b></td>
+        <td style="border-right:none"><a id="handlelog-logtype-logevent"></a><b>HandleLog</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/ILogDispatcher.cs/#L23">Source</a></td>
     </tr>
     <tr>

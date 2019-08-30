@@ -42,7 +42,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>PhysicsTicksPerRealSecond</b></td>
+        <td style="border-right:none"><a id="physicsticksperrealsecond"></a><b>PhysicsTicksPerRealSecond</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Systems/TickRateEstimationSystem.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Systems/TickRateEstimationSystem.cs/#L21">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Systems/TickRateEstimationSystem.cs/#L27">Source</a></td>
     </tr>
     <tr>

@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEntityCreated</b></td>
+        <td style="border-right:none"><a id="onentitycreated-spatialosentity-entitygameobjectlinker"></a><b>OnEntityCreated</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ Called when a new SpatialOS Entity is checked out by the worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEntityRemoved</b></td>
+        <td style="border-right:none"><a id="onentityremoved-entityid"></a><b>OnEntityRemoved</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/IEntityGameObjectCreator.cs/#L25">Source</a></td>
     </tr>
     <tr>

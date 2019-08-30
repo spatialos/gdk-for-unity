@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerFlagSubscriptionManager</b></td>
+        <td style="border-right:none"><a id="workerflagsubscriptionmanager-world"></a><b>WorkerFlagSubscriptionManager</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cancel</b></td>
+        <td style="border-right:none"><a id="cancel-isubscription"></a><b>Cancel</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ResetValue</b></td>
+        <td style="border-right:none"><a id="resetvalue-isubscription"></a><b>ResetValue</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L29">Source</a></td>
     </tr>
     <tr>
@@ -143,7 +143,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Subscribe</b></td>
+        <td style="border-right:none"><a id="subscribe-entityid"></a><b>Subscribe</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L36">Source</a></td>
     </tr>
     <tr>

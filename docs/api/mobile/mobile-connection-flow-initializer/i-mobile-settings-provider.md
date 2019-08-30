@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetReceptionistHostIp</b></td>
+        <td style="border-right:none"><a id="getreceptionisthostip"></a><b>GetReceptionistHostIp</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L52">Source</a></td>
     </tr>
     <tr>
@@ -59,7 +59,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetDevAuthToken</b></td>
+        <td style="border-right:none"><a id="getdevauthtoken"></a><b>GetDevAuthToken</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L53">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetConnectionService</b></td>
+        <td style="border-right:none"><a id="getconnectionservice"></a><b>GetConnectionService</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileConnectionFlowInitializer.cs/#L54">Source</a></td>
     </tr>
     <tr>

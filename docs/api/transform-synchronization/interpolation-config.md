@@ -41,7 +41,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TargetBufferSize</b></td>
+        <td style="border-right:none"><a id="targetbuffersize"></a><b>TargetBufferSize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/InterpolationConfig.cs/#L7">Source</a></td>
     </tr>
     <tr>
@@ -56,7 +56,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxLoadMatchedBufferSize</b></td>
+        <td style="border-right:none"><a id="maxloadmatchedbuffersize"></a><b>MaxLoadMatchedBufferSize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/InterpolationConfig.cs/#L8">Source</a></td>
     </tr>
     <tr>

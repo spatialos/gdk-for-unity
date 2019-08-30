@@ -47,7 +47,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RegisterWorkerFlagChangeCallback</b></td>
+        <td style="border-right:none"><a id="registerworkerflagchangecallback-action-string-string"></a><b>RegisterWorkerFlagChangeCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/WorkerFlagCallbackSystem.cs/#L19">Source</a></td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UnregisterWorkerFlagChangeCallback</b></td>
+        <td style="border-right:none"><a id="unregisterworkerflagchangecallback-ulong"></a><b>UnregisterWorkerFlagChangeCallback</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/WorkerFlagCallbackSystem.cs/#L24">Source</a></td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/WorkerFlagCallbackSystem.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/WorkerFlagCallbackSystem.cs/#L34">Source</a></td>
     </tr>
     <tr>

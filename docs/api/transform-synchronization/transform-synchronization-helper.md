@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddTransformSynchronizationComponents</b></td>
+        <td style="border-right:none"><a id="addtransformsynchronizationcomponents-entitytemplate-string-vector3-vector3"></a><b>AddTransformSynchronizationComponents</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L9">Source</a></td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddTransformSynchronizationComponents</b></td>
+        <td style="border-right:none"><a id="addtransformsynchronizationcomponents-entitytemplate-string-unityengine-quaternion-vector3-vector3"></a><b>AddTransformSynchronizationComponents</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -101,7 +101,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddClientSystems</b></td>
+        <td style="border-right:none"><a id="addclientsystems-world"></a><b>AddClientSystems</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L30">Source</a></td>
     </tr>
     <tr>
@@ -129,7 +129,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddServerSystems</b></td>
+        <td style="border-right:none"><a id="addserversystems-world"></a><b>AddServerSystems</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformSynchronizationHelper.cs/#L45">Source</a></td>
     </tr>
     <tr>

@@ -41,7 +41,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
+        <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedEntityComponent.cs/#L9">Source</a></td>
     </tr>
     <tr>
@@ -56,7 +56,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>World</b></td>
+        <td style="border-right:none"><a id="world"></a><b>World</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedEntityComponent.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Worker</b></td>
+        <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedEntityComponent.cs/#L11">Source</a></td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsValid</b></td>
+        <td style="border-right:none"><a id="isvalid"></a><b>IsValid</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedEntityComponent.cs/#L12">Source</a></td>
     </tr>
     <tr>

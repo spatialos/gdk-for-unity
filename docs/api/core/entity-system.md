@@ -47,7 +47,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetEntitiesAdded</b></td>
+        <td style="border-right:none"><a id="getentitiesadded"></a><b>GetEntitiesAdded</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/EntitySystem.cs/#L17">Source</a></td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetEntitiesRemoved</b></td>
+        <td style="border-right:none"><a id="getentitiesremoved"></a><b>GetEntitiesRemoved</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/EntitySystem.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -85,7 +85,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetEntitiesInView</b></td>
+        <td style="border-right:none"><a id="getentitiesinview"></a><b>GetEntitiesInView</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/EntitySystem.cs/#L27">Source</a></td>
     </tr>
     <tr>
@@ -116,7 +116,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnCreate</b></td>
+        <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/EntitySystem.cs/#L49">Source</a></td>
     </tr>
     <tr>
@@ -135,7 +135,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnUpdate</b></td>
+        <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Systems/EntitySystem.cs/#L56">Source</a></td>
     </tr>
     <tr>

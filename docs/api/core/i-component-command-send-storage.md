@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentId</b></td>
+        <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandSendStorage .cs/#L14">Source</a></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetCommandId</b></td>
+        <td style="border-right:none"><a id="getcommandid"></a><b>GetCommandId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandSendStorage .cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetRequestType</b></td>
+        <td style="border-right:none"><a id="getrequesttype"></a><b>GetRequestType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandSendStorage .cs/#L17">Source</a></td>
     </tr>
     <tr>
@@ -103,7 +103,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetResponseType</b></td>
+        <td style="border-right:none"><a id="getresponsetype"></a><b>GetResponseType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandSendStorage .cs/#L18">Source</a></td>
     </tr>
     <tr>

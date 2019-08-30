@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GameObjectCreatorFromMetadata</b></td>
+        <td style="border-right:none"><a id="gameobjectcreatorfrommetadata-string-vector3-ilogdispatcher"></a><b>GameObjectCreatorFromMetadata</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/GameObjectCreatorFromMetadata.cs/#L30">Source</a></td>
     </tr>
     <tr>
@@ -88,7 +88,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEntityCreated</b></td>
+        <td style="border-right:none"><a id="onentitycreated-spatialosentity-entitygameobjectlinker"></a><b>OnEntityCreated</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/GameObjectCreatorFromMetadata.cs/#L37">Source</a></td>
     </tr>
     <tr>
@@ -117,7 +117,7 @@ Called when a new SpatialOS Entity is checked out by the worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEntityRemoved</b></td>
+        <td style="border-right:none"><a id="onentityremoved-entityid"></a><b>OnEntityRemoved</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/GameObjectCreatorFromMetadata.cs/#L69">Source</a></td>
     </tr>
     <tr>

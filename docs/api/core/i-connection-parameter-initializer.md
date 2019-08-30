@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Initialize</b></td>
+        <td style="border-right:none"><a id="initialize-connectionparameters"></a><b>Initialize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionParameterInitializers.cs/#L15">Source</a></td>
     </tr>
     <tr>

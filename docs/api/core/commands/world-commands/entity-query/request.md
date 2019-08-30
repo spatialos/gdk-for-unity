@@ -48,7 +48,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityQuery</b></td>
+        <td style="border-right:none"><a id="entityquery"></a><b>EntityQuery</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L23">Source</a></td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TimeoutMillis</b></td>
+        <td style="border-right:none"><a id="timeoutmillis"></a><b>TimeoutMillis</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L24">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Context</b></td>
+        <td style="border-right:none"><a id="context"></a><b>Context</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L25">Source</a></td>
     </tr>
     <tr>
@@ -108,7 +108,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Request</b></td>
+        <td style="border-right:none"><a id="request-improbable-worker-cinterop-query-entityquery-uint-object"></a><b>Request</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/EntityQuery.cs/#L38">Source</a></td>
     </tr>
     <tr>

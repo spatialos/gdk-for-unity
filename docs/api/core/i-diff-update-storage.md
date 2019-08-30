@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddUpdate</b></td>
+        <td style="border-right:none"><a id="addupdate-componentupdatereceived-t"></a><b>AddUpdate</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L51">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetUpdates</b></td>
+        <td style="border-right:none"><a id="getupdates"></a><b>GetUpdates</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L52">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetUpdates</b></td>
+        <td style="border-right:none"><a id="getupdates-entityid"></a><b>GetUpdates</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L53">Source</a></td>
     </tr>
     <tr>

@@ -39,7 +39,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FromCommandLine</b></td>
+        <td style="border-right:none"><a id="fromcommandline"></a><b>FromCommandLine</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L15">Source</a></td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>From</b></td>
+        <td style="border-right:none"><a id="from-dictionary-string-string"></a><b>From</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>From</b></td>
+        <td style="border-right:none"><a id="from-ilist-string"></a><b>From</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L28">Source</a></td>
     </tr>
     <tr>
@@ -127,7 +127,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Contains</b></td>
+        <td style="border-right:none"><a id="contains-string"></a><b>Contains</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L36">Source</a></td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetCommandLineValue&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getcommandlinevalue-t-string-t"></a><b>GetCommandLineValue&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L41">Source</a></td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryGetCommandLineValue&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="trygetcommandlinevalue-t-string-ref-t"></a><b>TryGetCommandLineValue&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/CommandLineUtility.cs/#L48">Source</a></td>
     </tr>
     <tr>

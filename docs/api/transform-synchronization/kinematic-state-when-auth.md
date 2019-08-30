@@ -41,7 +41,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>KinematicWhenAuthoritative</b></td>
+        <td style="border-right:none"><a id="kinematicwhenauthoritative"></a><b>KinematicWhenAuthoritative</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/KinematicStateWhenAuth.cs/#L7">Source</a></td>
     </tr>
     <tr>

@@ -33,7 +33,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InterpolationTargetBufferSize</b></td>
+        <td style="border-right:none"><a id="interpolationtargetbuffersize"></a><b>InterpolationTargetBufferSize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Config/TransformDefaults.cs/#L5">Source</a></td>
     </tr>
     <tr>
@@ -48,7 +48,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>InterpolationMaxBufferSize</b></td>
+        <td style="border-right:none"><a id="interpolationmaxbuffersize"></a><b>InterpolationMaxBufferSize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Config/TransformDefaults.cs/#L6">Source</a></td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxTickSmearFactor</b></td>
+        <td style="border-right:none"><a id="maxticksmearfactor"></a><b>MaxTickSmearFactor</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Config/TransformDefaults.cs/#L8">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxTransformUpdateRateHz</b></td>
+        <td style="border-right:none"><a id="maxtransformupdateratehz"></a><b>MaxTransformUpdateRateHz</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Config/TransformDefaults.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MaxPositionUpdateRateHz</b></td>
+        <td style="border-right:none"><a id="maxpositionupdateratehz"></a><b>MaxPositionUpdateRateHz</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Config/TransformDefaults.cs/#L11">Source</a></td>
     </tr>
     <tr>

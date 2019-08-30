@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>LinkedGameObjectMap</b></td>
+        <td style="border-right:none"><a id="linkedgameobjectmap-entitygameobjectlinker"></a><b>LinkedGameObjectMap</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L19">Source</a></td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ Initializes a new instance of the <a href="{{urlRoot}}/api/subscriptions/linked-
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetLinkedGameObjects</b></td>
+        <td style="border-right:none"><a id="getlinkedgameobjects-entityid"></a><b>GetLinkedGameObjects</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L29">Source</a></td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ Gets the GameObjects that are linked to a given SpatialOS entity ID.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryGetLinkedGameObjects</b></td>
+        <td style="border-right:none"><a id="trygetlinkedgameobjects-entityid-out-ireadonlylist-gameobject"></a><b>TryGetLinkedGameObjects</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/LinkedGameObjectMap.cs/#L43">Source</a></td>
     </tr>
     <tr>

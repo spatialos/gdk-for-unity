@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Clear</b></td>
+        <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandSendStorage .cs/#L9">Source</a></td>
     </tr>
     <tr>

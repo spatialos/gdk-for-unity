@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponentSnapshot&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getcomponentsnapshot-t"></a><b>GetComponentSnapshot&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/EntitySnapshot.cs/#L18">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ Gets the SpatialOS component snapshot if present.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryGetComponentSnapshot&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="trygetcomponentsnapshot-t-out-t"></a><b>TryGetComponentSnapshot&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/EntitySnapshot.cs/#L37">Source</a></td>
     </tr>
     <tr>
@@ -111,7 +111,7 @@ Attempts to get the SpatialOS component if present.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddComponentSnapshot&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="addcomponentsnapshot-t-t"></a><b>AddComponentSnapshot&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/EntitySnapshot.cs/#L52">Source</a></td>
     </tr>
     <tr>

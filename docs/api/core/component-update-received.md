@@ -43,7 +43,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Update</b></td>
+        <td style="border-right:none"><a id="update"></a><b>Update</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L31">Source</a></td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>UpdateId</b></td>
+        <td style="border-right:none"><a id="updateid"></a><b>UpdateId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L32">Source</a></td>
     </tr>
     <tr>
@@ -73,7 +73,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
+        <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L33">Source</a></td>
     </tr>
     <tr>
@@ -103,7 +103,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ComponentUpdateReceived</b></td>
+        <td style="border-right:none"><a id="componentupdatereceived-t-entityid-ulong"></a><b>ComponentUpdateReceived</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L35">Source</a></td>
     </tr>
     <tr>
@@ -145,7 +145,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetEntityId</b></td>
+        <td style="border-right:none"><a id="getentityid"></a><b>GetEntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L42">Source</a></td>
     </tr>
     <tr>

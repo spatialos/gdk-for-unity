@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>RequiredSubscriptionsInjector</b></td>
+        <td style="border-right:none"><a id="requiredsubscriptionsinjector-object-entityid-subscriptionsystem-action-action"></a><b>RequiredSubscriptionsInjector</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/RequiredSubscriptionsInjector.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CancelSubscriptions</b></td>
+        <td style="border-right:none"><a id="cancelsubscriptions"></a><b>CancelSubscriptions</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/RequiredSubscriptionsInjector.cs/#L38">Source</a></td>
     </tr>
     <tr>

@@ -42,7 +42,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SpatialOSEntityId</b></td>
+        <td style="border-right:none"><a id="spatialosentityid"></a><b>SpatialOSEntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L12">Source</a></td>
     </tr>
     <tr>
@@ -73,7 +73,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HasComponent&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="hascomponent-t"></a><b>HasComponent&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L28">Source</a></td>
     </tr>
     <tr>
@@ -101,7 +101,7 @@ Checks if this entity has a component of type T
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponent&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getcomponent-t"></a><b>GetComponent&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L39">Source</a></td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ Gets a component of type T attached to this entity.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>TryGetComponent&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="trygetcomponent-t-out-t"></a><b>TryGetComponent&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.gameobjectcreation/SpatialOSEntity.cs/#L53">Source</a></td>
     </tr>
     <tr>

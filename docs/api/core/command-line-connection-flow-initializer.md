@@ -53,7 +53,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CommandLineConnectionFlowInitializer</b></td>
+        <td style="border-right:none"><a id="commandlineconnectionflowinitializer"></a><b>CommandLineConnectionFlowInitializer</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlowInitializers.cs/#L28">Source</a></td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetConnectionService</b></td>
+        <td style="border-right:none"><a id="getconnectionservice"></a><b>GetConnectionService</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlowInitializers.cs/#L42">Source</a></td>
     </tr>
     <tr>
@@ -103,7 +103,7 @@ Gets the connection service to use based on command line arguments.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Initialize</b></td>
+        <td style="border-right:none"><a id="initialize-receptionistflow"></a><b>Initialize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlowInitializers.cs/#L52">Source</a></td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ Gets the connection service to use based on command line arguments.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Initialize</b></td>
+        <td style="border-right:none"><a id="initialize-locatorflow"></a><b>Initialize</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/ConnectionFlowInitializers.cs/#L61">Source</a></td>
     </tr>
     <tr>

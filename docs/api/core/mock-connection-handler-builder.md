@@ -44,7 +44,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>ConnectionHandler</b></td>
+        <td style="border-right:none"><a id="connectionhandler"></a><b>ConnectionHandler</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -72,7 +72,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -101,7 +101,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MockConnectionHandlerBuilder</b></td>
+        <td style="border-right:none"><a id="mockconnectionhandlerbuilder"></a><b>MockConnectionHandlerBuilder</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L12">Source</a></td>
     </tr>
     <tr>
@@ -132,7 +132,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateAsync</b></td>
+        <td style="border-right:none"><a id="createasync-cancellationtoken"></a><b>CreateAsync</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/MockConnectionHandler.cs/#L17">Source</a></td>
     </tr>
     <tr>

@@ -34,7 +34,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>iOSEnvironmentKey</b></td>
+        <td style="border-right:none"><a id="iosenvironmentkey"></a><b>iOSEnvironmentKey</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/LaunchArguments.cs/#L13">Source</a></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetArguments</b></td>
+        <td style="border-right:none"><a id="getarguments"></a><b>GetArguments</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.mobile/Utility/LaunchArguments.cs/#L15">Source</a></td>
     </tr>
     <tr>

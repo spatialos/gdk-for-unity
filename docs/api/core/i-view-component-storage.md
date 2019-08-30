@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetComponent</b></td>
+        <td style="border-right:none"><a id="getcomponent-long"></a><b>GetComponent</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/ViewStorage.cs/#L20">Source</a></td>
     </tr>
     <tr>

@@ -43,7 +43,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Authority</b></td>
+        <td style="border-right:none"><a id="authority"></a><b>Authority</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L69">Source</a></td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
+        <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L70">Source</a></td>
     </tr>
     <tr>
@@ -88,7 +88,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AuthorityChangeReceived</b></td>
+        <td style="border-right:none"><a id="authoritychangereceived-authority-entityid"></a><b>AuthorityChangeReceived</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L72">Source</a></td>
     </tr>
     <tr>
@@ -129,7 +129,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetEntityId</b></td>
+        <td style="border-right:none"><a id="getentityid"></a><b>GetEntityId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/UpdatesAndEvents/ComponentUpdateToSend.cs/#L78">Source</a></td>
     </tr>
     <tr>

@@ -52,7 +52,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetWorkerId</b></td>
+        <td style="border-right:none"><a id="getworkerid"></a><b>GetWorkerId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L16">Source</a></td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@ Gets the worker ID for this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetWorkerAttributes</b></td>
+        <td style="border-right:none"><a id="getworkerattributes"></a><b>GetWorkerAttributes</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -90,7 +90,7 @@ Gets the worker attributes for this worker.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetMessagesReceived</b></td>
+        <td style="border-right:none"><a id="getmessagesreceived-ref-viewdiff"></a><b>GetMessagesReceived</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L29">Source</a></td>
     </tr>
     <tr>
@@ -118,7 +118,7 @@ Populates the <a href="{{urlRoot}}/api/core/view-diff">ViewDiff</a> object using
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetMessagesToSendContainer</b></td>
+        <td style="border-right:none"><a id="getmessagestosendcontainer"></a><b>GetMessagesToSendContainer</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L35">Source</a></td>
     </tr>
     <tr>
@@ -137,7 +137,7 @@ Gets the current messages to send container.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>PushMessagesToSend</b></td>
+        <td style="border-right:none"><a id="pushmessagestosend-messagestosend"></a><b>PushMessagesToSend</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L44">Source</a></td>
     </tr>
     <tr>
@@ -174,7 +174,7 @@ Adds a set of <a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a>
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>IsConnected</b></td>
+        <td style="border-right:none"><a id="isconnected"></a><b>IsConnected</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandler.cs/#L50">Source</a></td>
     </tr>
     <tr>

@@ -44,7 +44,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WorkerType</b></td>
+        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandlerBuilder.cs/#L22">Source</a></td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ The type of worker that the resulting connection handler will represent.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CreateAsync</b></td>
+        <td style="border-right:none"><a id="createasync-cancellationtoken"></a><b>CreateAsync</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/IConnectionHandlerBuilder.cs/#L17">Source</a></td>
     </tr>
     <tr>

@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>CommandMetaData</b></td>
+        <td style="border-right:none"><a id="commandmetadata"></a><b>CommandMetaData</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L35">Source</a></td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>MarkIdForRemoval</b></td>
+        <td style="border-right:none"><a id="markidforremoval-uint-uint-long"></a><b>MarkIdForRemoval</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L57">Source</a></td>
     </tr>
     <tr>
@@ -101,7 +101,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>FlushRemovedIds</b></td>
+        <td style="border-right:none"><a id="flushremovedids"></a><b>FlushRemovedIds</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L62">Source</a></td>
     </tr>
     <tr>
@@ -120,7 +120,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddRequest&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="addrequest-t-uint-uint-in-commandcontext-t"></a><b>AddRequest&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L74">Source</a></td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddInternalRequestId</b></td>
+        <td style="border-right:none"><a id="addinternalrequestid-uint-uint-long-long"></a><b>AddInternalRequestId</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L80">Source</a></td>
     </tr>
     <tr>
@@ -181,7 +181,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetContext&lt;T&gt;</b></td>
+        <td style="border-right:none"><a id="getcontext-t-uint-uint-long"></a><b>GetContext&lt;T&gt;</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/CommandMetaData.cs/#L87">Source</a></td>
     </tr>
     <tr>

@@ -46,7 +46,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GUIColorScope</b></td>
+        <td style="border-right:none"><a id="guicolorscope-color"></a><b>GUIColorScope</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/GUIColorScope.cs/#L10">Source</a></td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.tools/GUIColorScope.cs/#L16">Source</a></td>
     </tr>
     <tr>

@@ -38,7 +38,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>KillTree</b></td>
+        <td style="border-right:none"><a id="killtree-this-process"></a><b>KillTree</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L154">Source</a></td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>KillTree</b></td>
+        <td style="border-right:none"><a id="killtree-this-process-timespan"></a><b>KillTree</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L159">Source</a></td>
     </tr>
     <tr>

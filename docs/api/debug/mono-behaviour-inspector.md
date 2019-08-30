@@ -47,7 +47,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnEnable</b></td>
+        <td style="border-right:none"><a id="onenable"></a><b>OnEnable</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L38">Source</a></td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnDisable</b></td>
+        <td style="border-right:none"><a id="ondisable"></a><b>OnDisable</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L97">Source</a></td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnInspectorGUI</b></td>
+        <td style="border-right:none"><a id="oninspectorgui"></a><b>OnInspectorGUI</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.debug/MonoBehaviourInspector.cs/#L110">Source</a></td>
     </tr>
     <tr>

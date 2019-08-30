@@ -40,7 +40,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start_throws_an_exception_if_deployment_config_does_not_exist</b></td>
+        <td style="border-right:none"><a id="start-throws-an-exception-if-deployment-config-does-not-exist"></a><b>Start_throws_an_exception_if_deployment_config_does_not_exist</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/Tests/SpatialDeploymentManagerTests.cs/#L12">Source</a></td>
     </tr>
     <tr>
@@ -59,7 +59,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start_throws_an_exception_if_snapshot_does_not_exist</b></td>
+        <td style="border-right:none"><a id="start-throws-an-exception-if-snapshot-does-not-exist"></a><b>Start_throws_an_exception_if_snapshot_does_not_exist</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/Tests/SpatialDeploymentManagerTests.cs/#L20">Source</a></td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start_correctly_starts_a_spatial_deployment</b></td>
+        <td style="border-right:none"><a id="start-correctly-starts-a-spatial-deployment"></a><b>Start_correctly_starts_a_spatial_deployment</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/Tests/SpatialDeploymentManagerTests.cs/#L28">Source</a></td>
     </tr>
     <tr>
@@ -97,7 +97,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Deployment_is_dead_after_Dispose</b></td>
+        <td style="border-right:none"><a id="deployment-is-dead-after-dispose"></a><b>Deployment_is_dead_after_Dispose</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/Tests/SpatialDeploymentManagerTests.cs/#L38">Source</a></td>
     </tr>
     <tr>
@@ -116,7 +116,7 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start_throws_if_deployment_fails_to_start</b></td>
+        <td style="border-right:none"><a id="start-throws-if-deployment-fails-to-start"></a><b>Start_throws_if_deployment_fails_to_start</b></td>
         <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/Tests/SpatialDeploymentManagerTests.cs/#L49">Source</a></td>
     </tr>
     <tr>
