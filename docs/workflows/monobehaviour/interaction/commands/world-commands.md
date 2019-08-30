@@ -110,5 +110,5 @@ worldCommandSender.SendEntityQueryCommand(
 Where `Callback` have the following signature:
 
 ```csharp
-void Callback(WorldCommands.EntityQuery.ReceivedResponse obj)
+void Callback(WorldCommands.EntityQuery.ReceivedResponse response)
 ```
