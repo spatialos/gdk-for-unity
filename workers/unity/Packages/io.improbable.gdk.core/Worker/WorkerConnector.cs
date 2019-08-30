@@ -253,7 +253,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private ushort GetPlayerConnectionPort()
+        private static ushort GetPlayerConnectionPort()
         {
             var companyName = Application.companyName;
             var productName = Application.productName;
@@ -287,19 +287,30 @@ namespace Improbable.Gdk.Core
             using (var readStream = new StreamReader(stream))
             {
                 var logContents = readStream.ReadToEnd();
-
-                const string portRegex =
-                    "PlayerConnection initialized network socket : [0-9]\\.[0-9]\\.[0-9]\\.[0-9] ([0-9]*)";
-
-                var regex = new Regex(portRegex, RegexOptions.Compiled);
-
-                if (!regex.IsMatch(logContents))
-                {
-                    throw new Exception("Could not find PlayerConnection port in logfile");
-                }
-
-                return ushort.Parse(regex.Match(logContents).Groups[1].Value);
+                return ExtractPlayerConnectionPort(logContents);
             }
+        }
+
+        internal static ushort ExtractPlayerConnectionPort(string fileContents)
+        {
+            const string portRegex =
+                "PlayerConnection initialized network socket : 0\\.0\\.0\\.0 ([0-9]+)";
+
+            var regex = new Regex(portRegex, RegexOptions.Compiled);
+
+            if (!regex.IsMatch(fileContents))
+            {
+                throw new Exception("Could not find PlayerConnection port in logfile");
+            }
+
+            var port = ushort.Parse(regex.Match(fileContents).Groups[1].Value);
+
+            if (port == 0)
+            {
+                throw new Exception("PlayerConnection port cannot be 0.");
+            }
+
+            return port;
         }
     }
 }
