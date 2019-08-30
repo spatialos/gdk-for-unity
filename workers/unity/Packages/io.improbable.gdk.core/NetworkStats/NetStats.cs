@@ -46,7 +46,7 @@ namespace Improbable.Gdk.Core.NetworkStats
 
         public void FinishFrame()
         {
-            if (--nextFrameIndex == -1)
+            if (--nextFrameIndex < 0)
             {
                 nextFrameIndex += sequenceLength;
             }
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.NetworkStats
         {
             if (numFrames > sequenceLength)
             {
-                throw new InvalidOperationException($"Cannot fetch {numFrames} worth of data. This instance can only store to up {sequenceLength} frames.");
+                throw new ArgumentOutOfRangeException($"Cannot fetch {numFrames} worth of data. This instance can only store to up {sequenceLength} frames.");
             }
 
             float totalTime = 0.0f;

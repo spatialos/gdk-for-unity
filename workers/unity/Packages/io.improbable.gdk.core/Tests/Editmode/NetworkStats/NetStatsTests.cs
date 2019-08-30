@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.NetworkStats
         public void GetSummary_throws_if_requested_frames_is_longer_than_sequence_stored()
         {
             var netStats = new NetStats(5);
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
                 netStats.GetSummary(MessageTypeUnion.Update(54), 10, Direction.Incoming));
         }
 
