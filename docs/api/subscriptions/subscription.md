@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L24">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L24">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,8 +45,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>HasValue</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L27">Source</a></td>
+        <td style="border-right:none"><a id="hasvalue"></a><b>HasValue</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L27">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -61,8 +61,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>EntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L28">Source</a></td>
+        <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L28">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,8 +77,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>OnAvailable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L36">Source</a></td>
+        <td style="border-right:none"><a id="onavailable"></a><b>OnAvailable</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -93,8 +93,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Value</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L59">Source</a></td>
+        <td style="border-right:none"><a id="value"></a><b>Value</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L59">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -122,8 +122,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Subscription</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L72">Source</a></td>
+        <td style="border-right:none"><a id="subscription-subscriptionmanagerbase-entityid"></a><b>Subscription</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L72">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -163,8 +163,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Cancel</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L78">Source</a></td>
+        <td style="border-right:none"><a id="cancel"></a><b>Cancel</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L78">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -182,8 +182,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetAvailable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L85">Source</a></td>
+        <td style="border-right:none"><a id="setavailable-t"></a><b>SetAvailable</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L85">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -210,8 +210,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>SetUnavailable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L101">Source</a></td>
+        <td style="border-right:none"><a id="setunavailable"></a><b>SetUnavailable</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Subscription.cs/#L101">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/test-utils-index">TestUtils</a>.<a href="{{urlRoot}}/api/test-utils/editor-index">Editor</a><br/>
 GDK package: TestUtils<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L15">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L15">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -63,8 +63,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Start</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L68">Source</a></td>
+        <td style="border-right:none"><a id="start"></a><b>Start</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L68">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -113,8 +113,8 @@ Starts SpatialD.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>StartLocalDeployment</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L111">Source</a></td>
+        <td style="border-right:none"><a id="startlocaldeployment-string-string-string"></a><b>StartLocalDeployment</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L111">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -153,8 +153,8 @@ Starts a local deployment asynchronously.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>StopLocalDeployment</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L166">Source</a></td>
+        <td style="border-right:none"><a id="stoplocaldeployment-localdeployment"></a><b>StopLocalDeployment</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L166">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -190,8 +190,8 @@ Stops a local deployment asynchronously.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>GetRunningDeployments</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L185">Source</a></td>
+        <td style="border-right:none"><a id="getrunningdeployments"></a><b>GetRunningDeployments</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L185">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -209,8 +209,8 @@ Gets the details of currently running deployments asynchronously.
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L222">Source</a></td>
+        <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L222">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

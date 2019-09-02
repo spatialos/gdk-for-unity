@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -42,8 +42,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>Count</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L14">Source</a></td>
+        <td style="border-right:none"><a id="count"></a><b>Count</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -73,8 +73,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>AddEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L24">Source</a></td>
+        <td style="border-right:none"><a id="addentity-entitytemplate"></a><b>AddEntity</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -110,8 +110,8 @@ Adds an entity to the snapshot
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><b>WriteToFile</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/06858069/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L35">Source</a></td>
+        <td style="border-right:none"><a id="writetofile-string"></a><b>WriteToFile</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Utility/Snapshot.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
