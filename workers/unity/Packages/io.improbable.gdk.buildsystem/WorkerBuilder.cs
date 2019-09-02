@@ -330,10 +330,37 @@ namespace Improbable.Gdk.BuildSystem
                 return true;
             }
 
+            if (buildTarget == BuildTarget.StandaloneOSX)
+            {
+                // Unity executable name has changed on MacOS
+                // This is a temp work around our Launcher trying to run the wrong file.
+                // See [UTY-2294]
+                CreateLaunchJson(workerBuildData.PackageName, Application.productName);
+            }
+
             var zipPath = Path.Combine(PlayerBuildDirectory, workerBuildData.PackageName);
             var basePath = Path.Combine(Common.BuildScratchDirectory, workerBuildData.PackageName);
             Zip(zipPath, basePath, targetEnvironment == BuildEnvironment.Cloud);
             return true;
+        }
+
+        private static void CreateLaunchJson(string packageName, string productName)
+        {
+            var basePath = Path.Combine(Common.BuildScratchDirectory, packageName);
+            using (var jsonWriter = File.CreateText(Path.Combine(basePath, "launcher_client_config.json")))
+            {
+                var json = @"{
+  ""command"": " + $"\"./{packageName}.app/Contents/MacOS/{productName}\"," + @"
+  ""arguments"": [
+    ""+projectName"", ""${IMPROBABLE_PROJECT_NAME}"",
+    ""+deploymentName"", ""${IMPROBABLE_DEPLOYMENT_NAME}"",
+    ""+loginToken"", ""${IMPROBABLE_LOGIN_TOKEN}"",
+    ""+playerIdentityToken"", ""${IMPROBABLE_PLAYER_IDENTITY_TOKEN}"",
+    ""+locatorHost"", ""${IMPROBABLE_LOCATOR_HOSTNAME}""
+  ]
+}";
+                jsonWriter.Write(json);
+            }
         }
 
         private static void Zip(string zipAbsolutePath, string basePath, bool useCompression)
