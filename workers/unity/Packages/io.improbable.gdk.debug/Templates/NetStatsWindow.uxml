@@ -1,0 +1,16 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <VisualElement name="HeaderBar" style="flex-direction: row; position: relative;">
+        <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
+        <Button text="Component" name="ComponentButton" style="height: 30px; min-width: 160px; flex-grow: 1;">
+            <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
+        </Button>
+        <Button text="Op/s IN" name="OpsIn" style="height: 30px; flex-direction: row; min-width: 100px; flex-grow: 1;">
+            <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
+        </Button>
+        <Button text="kBps IN" name="KpbsIn" style="height: 30px; flex-direction: row; min-width: 100px; flex-grow: 1;">
+            <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
+        </Button>
+    </VisualElement>
+    <ListView name="DataContainer" item-height="20" style="flex-grow: 1; flex-shrink: 1;">
+    </ListView>
+</UXML>
