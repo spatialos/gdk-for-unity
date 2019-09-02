@@ -4,7 +4,7 @@
 
 ## Install the dependencies
 
-The dependencies for developing for Android can be installed directly through the Unity Hub:
+The dependencies for developing for Android can be installed directly through the Unity Hub.
 
 ![]({{assetRoot}}assets/modules/mobile/add-android-dependencies.png)
 
@@ -14,10 +14,10 @@ The dependencies for developing for Android can be installed directly through th
 2. Select Installs.
 3. Find the Editor you want to add Android build support to.
 4. Click the three dots to the right of the version label, then select Add Modules.
-5. In the Add Modules dialog, locate the **Android build suport** and **Android SDK & NDK tools** modules and tick its checkbox.
+5. In the Add Modules dialog, locate the **Android build support** and **Android SDK & NDK tools** modules and tick its checkbox.
 6. When you have selected all the modules to add, select Done.
 
-> Note: If you didn’t install the Editor via the Hub, you will not see the option to **Add Modules**. To enable this option, install the Editor via the Hub.
+> **Note:** If you didn’t install the Editor via the Hub, you will not see the option to **Add Modules**. To enable this option, install the Editor via the Hub.
 
 ### I don't have an existing installation
 
