@@ -97,14 +97,11 @@ Parameters:
 The following code snippet shows an example of how to query for a specific entity based on its ID.
 
 ```csharp
-worldCommandSender.SendEntityQueryCommand(
-            new WorldCommands.EntityQuery.Request(
-                new EntityQuery
-                {
-                    Constraint = new EntityIdConstraint(entityId.Id),
-                    ResultType = new SnapshotResultType()
-                }),
-            Callback);
+worldCommandSender.SendEntityQueryCommand(new WorldCommands.EntityQuery.Request(new EntityQuery
+{
+    Constraint = new EntityIdConstraint(entityId.Id),
+    ResultType = new SnapshotResultType()
+}), Callback);
 ```
 
 Where `Callback` have the following signature:
