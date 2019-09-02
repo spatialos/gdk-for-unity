@@ -93,3 +93,21 @@ Parameters:
 
   * [`WorldCommands.EntityQuery.Request request`]({{urlRoot}}/api/core/commands/world-commands/entity-query/request): The command request payload.
   * `Action<WorldCommands.EntityQuery.ReceivedResponse> callback`: Optional. A callback that will be called when the command response is received.
+
+For example, if you wished to query for a specific entity based on its entity ID and return all the components on that entity:
+
+```csharp
+worldCommandSender.SendEntityQueryCommand(
+    new WorldCommands.EntityQuery.Request(
+        new EntityQuery
+        {
+            Constraint = new EntityIdConstraint(entityId.Id),
+            ResultType = new SnapshotResultType()
+        }), Callback);
+```
+
+Where `Callback` has the following signature:
+
+```csharp
+void Callback(WorldCommands.EntityQuery.ReceivedResponse response)
+```
