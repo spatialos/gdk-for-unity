@@ -107,7 +107,7 @@ worldCommandSender.SendEntityQueryCommand(
             Callback);
 ```
 
-Where `Callback` have the following signature:
+Where `Callback` has the following signature:
 
 ```csharp
 void Callback(WorldCommands.EntityQuery.ReceivedResponse response)
