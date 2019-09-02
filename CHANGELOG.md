@@ -22,7 +22,7 @@
 
 ### Internal
 
-- Work-around for Mac Launcher using wrong executable name. Generating hardcoded "launcher_client_config.json" for Mac builds. [#1142](https://github.com/spatialos/gdk-for-unity/pull/1142)
+- Work-around for Mac Launcher using wrong executable name. Generating hardcoded `launcher_client_config.json` for Mac builds. [#1142](https://github.com/spatialos/gdk-for-unity/pull/1142)
 
 ## `0.2.7` - 2019-08-19
 
