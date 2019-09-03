@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="view"></a><b>View</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,7 +72,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="updatecomponent-t-entityid-in-t"></a><b>UpdateComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L32">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -101,7 +101,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getentityids"></a><b>GetEntityIds</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L38">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="hasentity-entityid"></a><b>HasEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -148,7 +148,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getcomponent-t-entityid"></a><b>GetComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L49">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L49">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -176,7 +176,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="hascomponent-t-entityid"></a><b>HasComponent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -204,7 +204,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="hascomponent-entityid-uint"></a><b>HasComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L71">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L71">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -233,7 +233,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getauthority-t-entityid"></a><b>GetAuthority&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L82">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L82">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -261,7 +261,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getauthority-entityid-uint"></a><b>GetAuthority</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L92">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L92">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -290,7 +290,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isauthoritative-t-entityid"></a><b>IsAuthoritative&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L102">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L102">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -318,7 +318,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isauthoritative-entityid-uint"></a><b>IsAuthoritative</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L112">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L112">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -347,7 +347,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getworkerflag-string"></a><b>GetWorkerFlag</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L122">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/View/View.cs/#L122">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

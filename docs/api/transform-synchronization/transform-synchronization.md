@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L14">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L14">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -43,7 +43,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="receivestrategies"></a><b>ReceiveStrategies</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -58,7 +58,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendstrategies"></a><b>SendStrategies</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L23">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L23">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -73,7 +73,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setkinematicwhennotauthoritative"></a><b>SetKinematicWhenNotAuthoritative</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -101,7 +101,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ticknumber"></a><b>TickNumber</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L31">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.transformsynchronization/MonoBehaviours/TransformSynchronization.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

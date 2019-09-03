@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -35,7 +35,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -50,7 +50,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="loggername"></a><b>LoggerName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L9">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,7 +65,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,7 +96,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="extractentityid-dictionary-string-object"></a><b>ExtractEntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="extractloggername-dictionary-string-object"></a><b>ExtractLoggerName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Logging/LoggingUtils.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
