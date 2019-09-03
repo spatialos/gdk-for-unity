@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a>.<a href="{{urlRoot}}/api/build-system/configuration-index">Configuration</a><br/>
 GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildEnvironment.cs/#L6">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildEnvironment.cs/#L6">Source</a>
 </sup>
 
 </p>

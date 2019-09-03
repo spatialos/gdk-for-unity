@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L12">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L12">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -51,7 +51,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,7 +66,7 @@ The type of the worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workerid"></a><b>WorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -90,7 +90,7 @@ The worker ID.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="attributes"></a><b>Attributes</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -105,7 +105,7 @@ The worker attribute list
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="logdispatcher"></a><b>LogDispatcher</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ The logger for this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isconnected"></a><b>IsConnected</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L40">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -135,7 +135,7 @@ Denotes whether this worker is connected or not.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="connectionhandler"></a><b>ConnectionHandler</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -164,7 +164,7 @@ Denotes whether this worker is connected or not.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createworkerasync-iconnectionhandlerbuilder-string-ilogdispatcher-cancellationtoken"></a><b>CreateWorkerAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L75">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L75">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -207,7 +207,7 @@ Creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worker-iconnectionhandler-string-ilogdispatcher"></a><b>Worker</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L50">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -249,7 +249,7 @@ Creates a <a href="{{urlRoot}}/api/core/worker">Worker</a> object asynchronously
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tick"></a><b>Tick</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L86">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L86">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -268,7 +268,7 @@ Ticks the worker. Fetches all messages received since the last Tick call and app
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ensuremessagesflushed"></a><b>EnsureMessagesFlushed</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L92">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L92">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -287,7 +287,7 @@ Ticks the worker. Fetches all messages received since the last Tick call and app
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendlogmessage-loglevel-string-string-entityid"></a><b>SendLogMessage</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L109">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L109">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -318,7 +318,7 @@ Sends a log message to SpatialOS from this worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getworkerflag-string"></a><b>GetWorkerFlag</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L119">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L119">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -346,7 +346,7 @@ Gets the value for a given worker flag.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L124">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Worker/Worker.cs/#L124">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

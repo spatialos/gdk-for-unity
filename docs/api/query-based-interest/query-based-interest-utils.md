@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/query-based-interest-index">QueryBasedInterest</a><br/>
 GDK package: QueryBasedInterest<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/QueryBasedInterestUtils.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/QueryBasedInterestUtils.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="toedgelength-this-vector3"></a><b>ToEdgeLength</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/15bb5eac/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/QueryBasedInterestUtils.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/QueryBasedInterestUtils.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
