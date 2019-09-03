@@ -15,6 +15,7 @@
 ### Changed
 
 - Upgraded the project to be compatible with `2019.2.0f1`.
+- Upgraded to Worker SDK 14.0.2.
 
 ### Fixed
 
