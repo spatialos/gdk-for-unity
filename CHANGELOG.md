@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.8` - 2019-09-02
+
 ### Added
 
 - Workers will now log their `PlayerConnection` ports to SpatialOS after connecting. This port can be used for connecting the Unity profiler to workers running in the cloud. [#1128](https://github.com/spatialos/gdk-for-unity/pull/1128)
