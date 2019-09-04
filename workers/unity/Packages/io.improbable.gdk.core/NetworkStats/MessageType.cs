@@ -26,6 +26,13 @@ namespace Improbable.Gdk.Core.NetworkStats
         WorldCommandResponse = 4
     }
 
+    /// <summary>
+    ///     Describes a type of a message.
+    /// </summary>
+    /// <remarks>
+    ///     Implemented as a C-style union. Can be thought of as a sum type where the discriminants are:
+    ///     Update, CommandRequest, CommandResponse, WorldCommandRequest, WorldCommandResponse
+    /// </remarks>
     [StructLayout(LayoutKind.Explicit)]
     public struct MessageTypeUnion : IEquatable<MessageTypeUnion>
     {

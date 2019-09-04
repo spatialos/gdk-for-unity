@@ -5,6 +5,15 @@ using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
+    /*
+     *     This system runs before the receive system such that the order is:
+     *
+     *     NetworkStatisticsSystem -> SpatialOSReceiveSystem -> ... -> SpatialOSSendSystem
+     *
+     *     When both SpatialOSReceiveSystem and SpatialOSSendSystem runs they provide
+     *     network data to this system. This will store them until the next time it runs when it
+     *     will push this data in the underlying data storage and reset the temporary storage.
+     */
     [DisableAutoCreation]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [UpdateBefore(typeof(SpatialOSReceiveSystem))]

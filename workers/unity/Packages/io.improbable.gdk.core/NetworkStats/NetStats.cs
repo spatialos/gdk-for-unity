@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
+    /// <summary>
+    ///     Storage object for network data for a fixed number of frames.
+    /// </summary>
+    /// <remarks>
+    ///     The underlying data is stored in a ring buffer.
+    /// </remarks>
     public class NetStats
     {
         private readonly int sequenceLength;
@@ -11,6 +17,12 @@ namespace Improbable.Gdk.Core.NetworkStats
 
         private int nextFrameIndex;
 
+        /// <summary>
+        ///     Creates an instance of network stats storage with a specific size.
+        /// </summary>
+        /// <param name="sequenceLength">
+        ///     The maximum number of frames to store data for at any given time.
+        /// </param>
         public NetStats(int sequenceLength)
         {
             this.sequenceLength = sequenceLength;
@@ -19,6 +31,11 @@ namespace Improbable.Gdk.Core.NetworkStats
             frameTimes = new float[sequenceLength];
         }
 
+        /// <summary>
+        ///     Sets the network statistics for a given direction for the current frame.
+        /// </summary>
+        /// <param name="frameData">The network statistics.</param>
+        /// <param name="direction">The direction of those statistics.</param>
         public void SetFrameStats(NetFrameStats frameData, Direction direction)
         {
             // First we need to zero out the data before processing the _sparse_ data in the NetFrameStats.
@@ -39,11 +56,18 @@ namespace Improbable.Gdk.Core.NetworkStats
             }
         }
 
+        /// <summary>
+        ///     Sets the frame time for the current frame.
+        /// </summary>
+        /// <param name="dt">The frame time.</param>
         public void SetFrameTime(float dt)
         {
             frameTimes[nextFrameIndex] = dt;
         }
 
+        /// <summary>
+        ///    Finalize data capture for this frame.
+        /// </summary>
         public void FinishFrame()
         {
             if (--nextFrameIndex < 0)
@@ -52,6 +76,18 @@ namespace Improbable.Gdk.Core.NetworkStats
             }
         }
 
+        /// <summary>
+        ///     Retrieves summary statistics for a given message type for the last <see cref="numFrames"/> frames.
+        /// </summary>
+        /// <param name="messageType">The type of message to get summary statistics for.</param>
+        /// <param name="numFrames">The number of frames to query against.</param>
+        /// <param name="direction">The direction of the message type to get summary statistics for.</param>
+        /// <returns>
+        ///     A tuple where:
+        ///         - the first element is a summed <see cref="DataPoint"/> for the given message type over the last <see cref="numFrames"/> frames.
+        ///         - the second element is the summed time that the last <see cref="numFrames"/> took.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <see cref="numFrames"/> is larger than the number of frames this stores.</exception>
         public (DataPoint, float) GetSummary(MessageTypeUnion messageType, int numFrames, Direction direction)
         {
             if (numFrames > sequenceLength)
@@ -63,6 +99,7 @@ namespace Improbable.Gdk.Core.NetworkStats
 
             for (var i = 1; i <= numFrames; i++)
             {
+                // Iterate through the ring buffer (can potentially wrap around).
                 var index = (nextFrameIndex + i) % sequenceLength;
                 totalTime += frameTimes[index];
             }
@@ -90,6 +127,7 @@ namespace Improbable.Gdk.Core.NetworkStats
 
             for (var i = 1; i <= numFrames; i++)
             {
+                // Iterate through the ring buffer (can potentially wrap around).
                 var index = (nextFrameIndex + i) % sequenceLength;
                 summary += frameData[index];
             }

@@ -4,6 +4,9 @@ using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core.NetworkStats
 {
+    /// <summary>
+    ///     Represents a single frame's data for either incoming or outgoing network messages.
+    /// </summary>
     public class NetFrameStats
     {
         public readonly Dictionary<MessageTypeUnion, DataPoint> Messages = new Dictionary<MessageTypeUnion, DataPoint>();
