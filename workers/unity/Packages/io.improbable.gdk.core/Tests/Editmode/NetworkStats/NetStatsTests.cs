@@ -156,7 +156,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.NetworkStats
             //           buffer - [5, 4, 3, 2, 1]
             //                 nextInsertIndex ^
 
-
             var (singleFrameData, _) = netStats.GetSummary(messageType, 1, direction);
             Assert.AreEqual(1, singleFrameData.Count);
             Assert.AreEqual(5, singleFrameData.Size);

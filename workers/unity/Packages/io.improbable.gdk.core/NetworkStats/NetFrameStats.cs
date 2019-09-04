@@ -78,6 +78,7 @@ namespace Improbable.Gdk.Core.NetworkStats
             Messages[messageType] = metrics;
         }
 
+        // Note we cannot measure the on-wire size of a world command, so we just count them.
         [Conditional("UNITY_EDITOR")]
         public void AddWorldCommandRequest(WorldCommand command)
         {
@@ -87,6 +88,7 @@ namespace Improbable.Gdk.Core.NetworkStats
             Messages[messageType] = metrics;
         }
 
+        // Note we cannot measure the on-wire size of a world command, so we just count them.
         [Conditional("UNITY_EDITOR")]
         public void AddWorldCommandResponse(WorldCommand command)
         {
