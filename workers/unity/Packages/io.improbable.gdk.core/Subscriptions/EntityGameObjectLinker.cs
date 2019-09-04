@@ -91,8 +91,11 @@ namespace Improbable.Gdk.Subscriptions
                 }
 
                 var type = component.GetType();
-                if (RequiredSubscriptionsDatabase.HasRequiredSubscriptions(type) &&
-                    RequiredSubscriptionsDatabase.WorkerTypeMatchesRequirements(workerSystem.WorkerType, type))
+
+                var isSpatialMonobehaviour = RequiredSubscriptionsDatabase.HasWorkerTypeRequirement(type) || RequiredSubscriptionsDatabase.HasRequiredSubscriptions(type);
+
+                // Note that `WorkerTypeMatchesRequirements` returns true if there is no worker type requirement.
+                if (isSpatialMonobehaviour && RequiredSubscriptionsDatabase.WorkerTypeMatchesRequirements(workerSystem.WorkerType, type))
                 {
                     // todo this should possibly happen when the command buffer is flushed too
                     injectors.Add(new RequiredSubscriptionsInjector(component, entityId, subscriptionSystem,
@@ -139,7 +142,7 @@ namespace Improbable.Gdk.Subscriptions
             if (linkComponent != null)
             {
                 linkComponent.IsValid = false;
-                linkComponent.EntityId = new EntityId(0);
+                linkComponent.EntityId = new EntityId(id: 0);
                 linkComponent.World = null;
                 linkComponent.Worker = null;
                 linkComponent.Linker = null;
