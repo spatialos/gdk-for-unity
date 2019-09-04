@@ -1,0 +1,24 @@
+.header {
+    flex-direction: row;
+    position: relative;
+}
+
+.component {
+    height: 30px;
+    min-width: 160px;
+    flex-grow: 1;
+}
+
+.ops-in {
+    height: 30px;
+    flex-direction: row;
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+.size-in {
+    height: 30px;
+    flex-direction: row;
+    min-width: 100px;
+    flex-grow: 1;
+}

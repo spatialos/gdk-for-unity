@@ -1,6 +1,8 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
     <VisualElement class="item">
         <Style path="Packages/io.improbable.gdk.debug/Styles/Item.uss" />
-        <Label text="Label" name="name" />
+        <Label text="Label" name="name" style="min-width: 160px; flex-grow: 1;" />
+        <Label text="Label" name="opsIn" style="min-width: 100px; flex-grow: 1; -unity-text-align: upper-right;" />
+        <Label text="Label" name="sizeIn" style="min-width: 100px; flex-grow: 1; -unity-text-align: upper-right;" />
     </VisualElement>
 </UXML>
