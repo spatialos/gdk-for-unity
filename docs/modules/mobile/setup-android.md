@@ -1,29 +1,29 @@
 <%(TOC)%>
 
-# Setting up Android support for the GDK
+# Set up Android support
 
-## Install the dependencies
+## 1. Install the build dependencies
 
 The dependencies for developing for Android can be installed directly through the Unity Hub.
 
 ![]({{assetRoot}}assets/modules/mobile/add-android-dependencies.png)
 
-### I have an existing installation
+### I have an existing Unity installation
 
 1. Open the Unity Hub.
 2. Select Installs.
 3. Find the Editor you want to add Android build support to.
 4. Click the three dots to the right of the version label, then select Add Modules.
-5. In the Add Modules dialog, locate the **Android build support** and **Android SDK & NDK tools** modules and tick its checkbox.
+5. In the Add Modules dialog, locate the **Android Build Support**, **Android SDK & NDK tools**, and **Open JDK** modules and tick its checkbox.
 6. When you have selected all the modules to add, select Done.
 
 > **Note:** If you didn’t install the Editor via the Hub, you will not see the option to **Add Modules**. To enable this option, install the Editor via the Hub.
 
-### I don't have an existing installation
+### I don't have an existing Unity installation
 
-Please follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and additionally select **Android build support** and **Android SDK & NDK tools** when installing Unity.
+Please follow the steps in [Setup & installation]({{urlRoot}}/machine-setup) and additionally select the **Android Build Support**, **Android SDK & NDK tools**, and **Open JDK** modules when installing Unity.
 
-## Prepare your physical device
+## 2. Prepare your physical device
 
 If you want to launch your game on a physical device, you need to:
 
