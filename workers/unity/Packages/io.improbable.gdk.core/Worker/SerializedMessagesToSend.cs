@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
 
@@ -44,6 +45,8 @@ namespace Improbable.Gdk.Core
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
         private CommandMetaData metaData;
+
+        private NetFrameStats netFrameStats = new NetFrameStats();
 
         public SerializedMessagesToSend()
         {
@@ -120,9 +123,10 @@ namespace Improbable.Gdk.Core
             metricsToSend.Clear();
             logMessages.Clear();
             authorityLossAcks.Clear();
+            netFrameStats.Clear();
         }
 
-        public CommandMetaData SendAndClear(Connection connection)
+        public CommandMetaData SendAndClear(Connection connection, NetFrameStats frameStats)
         {
             for (int i = 0; i < updates.Count; ++i)
             {
@@ -195,6 +199,7 @@ namespace Improbable.Gdk.Core
                 connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId, entityComponent.ComponentId);
             }
 
+            frameStats.Merge(netFrameStats);
             Clear();
 
             return metaData;
@@ -203,41 +208,49 @@ namespace Improbable.Gdk.Core
         public void AddComponentUpdate(ComponentUpdate update, long entityId)
         {
             updates.Add(new UpdateToSend(update, entityId));
+            netFrameStats.AddUpdate(update);
         }
 
         public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, long requestId)
         {
             requests.Add(new RequestToSend(request, commandId, entityId, timeout, requestId));
+            netFrameStats.AddCommandRequest(request);
         }
 
         public void AddResponse(CommandResponse response, uint requestId)
         {
             responses.Add(new ResponseToSend(response, requestId));
+            netFrameStats.AddCommandResponse(response, message: null);
         }
 
-        public void AddFailure(string reason, uint requestId)
+        public void AddFailure(uint componentId, uint commandIndex, string reason, uint requestId)
         {
             failures.Add(new FailureToSend(reason, requestId));
+            netFrameStats.AddCommandResponse(reason, componentId, commandIndex);
         }
 
         public void AddCreateEntityRequest(Entity entity, long? entityId, uint? timeout, long requestId)
         {
             createEntityRequests.Add(new CreateEntityRequestToSend(entity, entityId, timeout, requestId));
+            netFrameStats.AddWorldCommandRequest(WorldCommand.CreateEntity);
         }
 
         public void AddDeleteEntityRequest(long entityId, uint? timeout, long requestId)
         {
             deleteEntityRequests.Add(new DeleteEntityRequestToSend(entityId, timeout, requestId));
+            netFrameStats.AddWorldCommandRequest(WorldCommand.DeleteEntity);
         }
 
         public void AddReserveEntityIdsRequest(uint numberOfEntityIds, uint? timeout, long requestId)
         {
             reserveEntityIdsRequests.Add(new ReserveEntityIdsRequestToSend(numberOfEntityIds, timeout, requestId));
+            netFrameStats.AddWorldCommandRequest(WorldCommand.ReserveEntityIds);
         }
 
         public void AddEntityQueryRequest(EntityQuery query, uint? timeout, long requestId)
         {
             entityQueryRequests.Add(new EntityQueryRequestToSend(query, timeout, requestId));
+            netFrameStats.AddWorldCommandRequest(WorldCommand.EntityQuery);
         }
 
         internal void DestroyUnsentMessages()

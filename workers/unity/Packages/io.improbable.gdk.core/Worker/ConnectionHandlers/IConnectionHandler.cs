@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Improbable.Gdk.Core.NetworkStats;
 
 namespace Improbable.Gdk.Core
 {
@@ -41,7 +42,7 @@ namespace Improbable.Gdk.Core
         ///     The messages may not be sent immediately. This is up to the implementer.
         /// </remarks>
         /// <param name="messages">The set of messages to send.</param>
-        void PushMessagesToSend(MessagesToSend messages);
+        void PushMessagesToSend(MessagesToSend messages, NetFrameStats frameStats);
 
         /// <summary>
         ///     Gets a value indicating whether the underlying connection is connected.

@@ -111,7 +111,7 @@ namespace <#= qualifiedNamespace #>
                     {
                         // Send a command failure if the string is non-null.
 
-                        serializedMessages.AddFailure(response.FailureMessage, (uint) response.RequestId);
+                        serializedMessages.AddFailure(ComponentId, <#= command.CommandIndex #>, response.FailureMessage, (uint) response.RequestId);
                         continue;
                     }
 

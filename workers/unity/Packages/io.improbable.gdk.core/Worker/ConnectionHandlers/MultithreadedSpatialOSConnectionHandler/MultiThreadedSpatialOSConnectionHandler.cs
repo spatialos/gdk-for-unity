@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -56,17 +57,17 @@ namespace Improbable.Gdk.Core
             return serializationHandler.GetMessagesToSendContainer();
         }
 
-        public void PushMessagesToSend(MessagesToSend messages)
+        public void PushMessagesToSend(MessagesToSend messages, NetFrameStats frameStats)
         {
-            SendSerializedMessages();
+            SendSerializedMessages(frameStats);
             serializationHandler.EnqueueMessagesToSend(messages);
         }
 
-        private void SendSerializedMessages()
+        private void SendSerializedMessages(NetFrameStats frameStats)
         {
             while (serializationHandler.TryDequeueSerializedMessages(out var messages))
             {
-                var metaData = messages.SendAndClear(connection);
+                var metaData = messages.SendAndClear(connection, frameStats);
                 serializationHandler.ReturnSerializedMessageContainer(messages);
                 commandMetaDataManager.AddMetaData(metaData);
             }

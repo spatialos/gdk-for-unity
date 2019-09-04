@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -111,7 +112,7 @@ namespace Improbable.Gdk.Core
             return new MessagesToSend();
         }
 
-        public void PushMessagesToSend(MessagesToSend messages)
+        public void PushMessagesToSend(MessagesToSend messages, NetFrameStats netFrameStats)
         {
             throw new System.NotImplementedException();
         }

@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -15,6 +16,7 @@ namespace Improbable.Gdk.Core
         private WorkerSystem worker;
         private EcsViewSystem ecsViewSystem;
         private EntitySystem entitySystem;
+        private NetworkStatisticsSystem networkStatisticsSystem;
 
         protected override void OnCreate()
         {
@@ -23,6 +25,7 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();
             entitySystem = World.GetOrCreateSystem<EntitySystem>();
+            networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
         }
 
         protected override void OnUpdate()
@@ -41,6 +44,10 @@ namespace Improbable.Gdk.Core
 
                 Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
+                Profiler.EndSample();
+
+                Profiler.BeginSample("ApplyDiff Networking Statistics");
+                networkStatisticsSystem.ApplyDiff(diff);
                 Profiler.EndSample();
             }
             catch (Exception e)
