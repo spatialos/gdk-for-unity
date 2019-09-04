@@ -1,11 +1,16 @@
 .item {
     height: 30px;
     border-color: rgb(0, 0, 0);
-    border-left-width: 0px;
-    border-right-width: 0px;
-    border-top-width: 0px;
     border-bottom-width: 1px;
     flex-direction: row;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.row {
+    min-width: 100px;
+    flex-grow: 1;
+    -unity-text-align: upper-right;
+    border-color: rgb(0, 0, 0);
+    border-left-width: 1px;
 }

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Debug
 
         private static bool visible;
 
-        [MenuItem("SpatialOS/Network Analyzer", false, 52)]
+        [MenuItem("SpatialOS/Network Analyzer &n", false, 52)]
         public static void ShowWindow()
         {
             var inspectorWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.InspectorWindow");
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Debug
         {
             var componentInfo = GetComponentInfoForIndex(index);
             var componentName = componentInfo.Name;
-            var (data, time) =
+            var (dataIn, time) =
                 netStatSystem.GetSummary(MessageTypeUnion.Update(componentInfo.ComponentId), 60, Direction.Incoming);
 
             if (time == 0)
@@ -94,8 +94,14 @@ namespace Improbable.Gdk.Debug
             }
 
             element.Q<Label>("name").text = componentName;
-            element.Q<Label>("opsIn").text = (data.Count / time).ToString("F1");
-            element.Q<Label>("sizeIn").text = (data.Size / 1024f / time).ToString("F3");
+            element.Q<Label>("opsIn").text = (dataIn.Count / time).ToString("F1");
+            element.Q<Label>("sizeIn").text = (dataIn.Size / 1024f / time).ToString("F3");
+
+            var (dataOut, _) =
+                netStatSystem.GetSummary(MessageTypeUnion.Update(componentInfo.ComponentId), 60, Direction.Outgoing);
+
+            element.Q<Label>("opsOut").text = (dataOut.Count / time).ToString("F1");
+            element.Q<Label>("sizeOut").text = (dataOut.Size / 1024f / time).ToString("F3");
         }
 
         private void OnInspectorUpdate()

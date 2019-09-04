@@ -22,3 +22,21 @@
     min-width: 100px;
     flex-grow: 1;
 }
+
+.ops-out {
+    height: 30px;
+    flex-direction: row;
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+.size-out {
+    height: 30px;
+    flex-direction: row;
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+.unity-listview-item:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
