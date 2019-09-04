@@ -14,7 +14,7 @@ The build dependencies for developing for iOS can be installed directly through 
 
 1. Open the Unity Hub.
 2. Select Installs.
-3. Find the Editor you want to add Android build support to.
+3. Find the Editor you want to add iOS build support to.
 4. Click the three dots to the right of the version label, then select Add Modules.
 5. In the Add Modules dialog, locate the **iOS Build Support** module and tick its checkbox.
 6. When you have selected all the modules to add, select Done.
