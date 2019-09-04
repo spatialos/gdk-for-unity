@@ -33,7 +33,7 @@ If you want to launch your game on a physical device, you need to:
 
 ## (Optional) Set up an emulator
 
-1. Install [Android Studio](https://developer.android.com/studio/). At the Choose Components stage of the installation, be sure to select **Android Virtual Device**.
+1. Install [Android Studio](https://developer.android.com/studio/). At the **Choose Components** stage of the installation, be sure to select **Android Virtual Device**.
 1. Create an Android emulator by going to **Tools** > **AVD Manager** > **Create Virtual Device**. Ensure you choose the same CPU architecture for your virtual machine as your development machine to get the best performance.
 
 ## (Optional) Set up Unity Remote
