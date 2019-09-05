@@ -1,10 +1,10 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
     <VisualElement class="item">
         <Style path="Packages/io.improbable.gdk.debug/Styles/Item.uss" />
-        <Label name="name" class="row" style="min-width: 160px; -unity-text-align: upper-left;" />
-        <Label name="opsIn" class="row" />
-        <Label name="sizeIn" class="row" />
-        <Label name="opsOut" class="row" />
-        <Label name="sizeOut" class="row" />
+        <Label name="name" class="column" style="min-width: 160px; -unity-text-align: upper-left; border-left-width: 0px;" />
+        <Label name="opsIn" class="column" />
+        <Label name="sizeIn" class="column" />
+        <Label name="opsOut" class="column" />
+        <Label name="sizeOut" class="column" />
     </VisualElement>
 </UXML>

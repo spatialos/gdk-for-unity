@@ -1,13 +1,18 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <VisualElement name="HeaderBar" class="header">
+    <uie:ToolbarMenu text="World" name="worldSelector" style="min-height: 20px;">
         <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
-        <uie:ToolbarButton text="Component" name="ComponentButton" class="component" />
-        <uie:ToolbarButton text="Op/s in" name="OpsIn" class="ops-in" />
-        <uie:ToolbarButton text="KB/s in" name="KpbsIn" class="size-in" />
-        <uie:ToolbarButton text="Op/s out" name="OpsOut" class="ops-out" />
-        <uie:ToolbarButton text="KB/s out" name="KpbsOut" class="size-out" />
-    </VisualElement>
-    <ListView name="DataContainer" focusable="false" style="flex-grow: 1; flex-shrink: 1;">
-        <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
-    </ListView>
+    </uie:ToolbarMenu>
+        <VisualElement name="Updates" class="updates-tab" style="flex-grow: 1;">
+            <Style path="Packages/io.improbable.gdk.debug/Styles/NetStatsWindow.uss" />
+            <VisualElement name="HeaderBar" class="header">
+                <uie:ToolbarButton text="Component" name="ComponentButton" class="component" />
+                <uie:ToolbarButton text="Op/s in" name="OpsIn" class="ops-in" />
+                <uie:ToolbarButton text="KB/s in" name="SizeIn" class="size-in" />
+                <uie:ToolbarButton text="Op/s out" name="OpsOut" class="ops-out" />
+                <uie:ToolbarButton text="KB/s out" name="SizeOut" class="size-out" />
+            </VisualElement>
+            <ScrollView name="updatesContainer" focusable="false" style="flex-grow: 1;" />
+        </VisualElement>
+        <VisualElement name="commands" class="commands-tab" style="flex-grow: 1; display: none;" />
+        <VisualElement name="worldCommands" class="world-commands-tab" style="flex-grow: 1; display: none;" />
 </UXML>
