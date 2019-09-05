@@ -10,8 +10,9 @@
                 <uie:ToolbarButton text="KB/s in" name="SizeIn" class="size-in" />
                 <uie:ToolbarButton text="Op/s out" name="OpsOut" class="ops-out" />
                 <uie:ToolbarButton text="KB/s out" name="SizeOut" class="size-out" />
+                <VisualElement style="min-width: 15px;" />
             </VisualElement>
-            <ScrollView name="updatesContainer" focusable="false" style="flex-grow: 1;" />
+            <ScrollView name="updatesContainer" focusable="false" show-vertical-scroller="true" style="flex-grow: 1; flex-direction: column" />
         </VisualElement>
         <VisualElement name="commands" class="commands-tab" style="flex-grow: 1; display: none;" />
         <VisualElement name="worldCommands" class="world-commands-tab" style="flex-grow: 1; display: none;" />

@@ -3,7 +3,6 @@
     border-color: rgb(22, 22, 22);
     border-bottom-width: 1px;
     flex-direction: row;
-    padding: 5px 0px 5px 0px;
 }
 
 .column {
@@ -12,4 +11,6 @@
     -unity-text-align: upper-right;
     border-color: rgb(22, 22, 22);
     border-left-width: 1px;
+    padding: 5px 0px 5px 0px;
+    margin: 0px;
 }
