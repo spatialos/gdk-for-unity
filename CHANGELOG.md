@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed a bug where `MonoBehaviour`s with `WorkerType` attributes would not be enabled even if the owning worker's type was a match for the `WorkerType` attribute. [#1147](https://github.com/spatialos/gdk-for-unity/pull/1147)
+
+### Internal
+
+- Added test coverage for `WorkerType` attribute and its interplay with `[Require]` fields in the `test-project`. [#1147](https://github.com/spatialos/gdk-for-unity/pull/1147)
+
 ## `0.2.8` - 2019-09-02
 
 ### Added
