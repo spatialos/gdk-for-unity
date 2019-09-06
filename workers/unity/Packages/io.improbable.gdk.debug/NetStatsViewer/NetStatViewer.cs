@@ -11,8 +11,8 @@ namespace Improbable.Gdk.Debug
 {
     internal class NetStatViewer : EditorWindow
     {
-        private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/Templates/NetStatsWindow.uxml";
-        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/Templates/UpdateRow.uxml";
+        private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
+        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
         private World selectedWorld;
         private NetworkStatisticsSystem netStatSystem;
