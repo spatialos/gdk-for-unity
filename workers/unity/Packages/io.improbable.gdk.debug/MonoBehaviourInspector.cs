@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Debug
             // Get type info
             script = (MonoBehaviour) target;
             scriptType = script.GetType();
-            isSpatialBehaviour = HasWorkerTypeAttribute(scriptType) ||
+            isSpatialBehaviour = RequiredSubscriptionsDatabase.HasWorkerTypeRequirement(scriptType) ||
                 RequiredSubscriptionsDatabase.HasRequiredSubscriptions(scriptType);
             if (!isSpatialBehaviour)
             {
@@ -173,11 +173,6 @@ namespace Improbable.Gdk.Debug
         private static string[] GetRequiredWorkerTypes(Type targetType)
         {
             return targetType.GetCustomAttribute<WorkerTypeAttribute>()?.WorkerTypes;
-        }
-
-        private static bool HasWorkerTypeAttribute(Type targetType)
-        {
-            return GetRequiredWorkerTypes(targetType) != null;
         }
     }
 }

@@ -36,6 +36,11 @@ namespace Improbable.Gdk.Subscriptions
             return info != null;
         }
 
+        public static bool HasWorkerTypeRequirement(Type type)
+        {
+            return type.GetCustomAttribute<WorkerTypeAttribute>() != null;
+        }
+
         public static bool WorkerTypeMatchesRequirements(string workerType, Type type)
         {
             var requiredTypes = type.GetCustomAttribute<WorkerTypeAttribute>();

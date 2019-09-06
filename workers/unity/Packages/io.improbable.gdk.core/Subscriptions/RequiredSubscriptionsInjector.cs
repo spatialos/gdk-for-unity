@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -20,15 +21,17 @@ namespace Improbable.Gdk.Subscriptions
         public RequiredSubscriptionsInjector(object target, EntityId entityId, SubscriptionSystem subscriptionSystem,
             Action onEnable = null, Action onDisable = null)
         {
-            info = RequiredSubscriptionsDatabase.GetOrCreateRequiredSubscriptionsInfo(target.GetType());
-            if (info.RequiredTypes.Length == 0)
-            {
-                return;
-            }
-
             this.target = target;
             this.onEnable = onEnable;
             this.onDisable = onDisable;
+
+            info = RequiredSubscriptionsDatabase.GetOrCreateRequiredSubscriptionsInfo(target.GetType());
+
+            if (info == null || info.RequiredTypes.Length == 0)
+            {
+                onEnable?.Invoke();
+                return;
+            }
 
             subscriptions = new SubscriptionAggregate(subscriptionSystem, entityId, info.RequiredTypes);
             subscriptions.SetAvailabilityHandler(Handler.Pool.Rent(this));
@@ -37,6 +40,12 @@ namespace Improbable.Gdk.Subscriptions
         // todo the disposal pattern for this is currently awful and needs to be improved
         public void CancelSubscriptions()
         {
+            if (subscriptions == null)
+            {
+                onDisable?.Invoke();
+                return;
+            }
+
             Handler.Pool.Return((Handler) subscriptions.GetAvailabilityHandler());
             subscriptions.Cancel();
 
