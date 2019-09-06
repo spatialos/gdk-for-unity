@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration.FileHandling;
 
-namespace Improbable.Gdk.CodeGeneration
+namespace Improbable.Gdk.CodeGeneration.FileHandling
 {
     /// <summary>
     ///     A FileSystem implementation that ignores the existence of ".meta" files when listing directory contents.

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Improbable.Gdk.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
 using NUnit.Framework;
 

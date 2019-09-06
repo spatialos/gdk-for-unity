@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Improbable.Gdk.CodeGeneration
+namespace Improbable.Gdk.CodeGeneration.Model
 {
     public static class SchemaFunctionMappings
     {

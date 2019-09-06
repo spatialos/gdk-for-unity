@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration;
-using Improbable.Gdk.CodeGeneration.Utils;
-using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
 
-namespace Improbable.Gdk.CodeGeneration
+namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class DetailsStore
     {

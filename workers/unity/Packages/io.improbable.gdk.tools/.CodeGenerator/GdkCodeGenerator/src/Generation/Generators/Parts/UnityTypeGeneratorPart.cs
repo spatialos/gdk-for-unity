@@ -1,4 +1,4 @@
-using Improbable.Gdk.CodeGeneration;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 
 namespace Improbable.Gdk.CodeGenerator
 {

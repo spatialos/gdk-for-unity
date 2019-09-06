@@ -1,7 +1,7 @@
 using System;
 using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGeneration
+namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public interface IFieldType
     {

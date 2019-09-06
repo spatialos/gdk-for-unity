@@ -1,5 +1,6 @@
 using System.IO;
 using System.Reflection;
+using Improbable.Gdk.CodeGeneration.Model;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1

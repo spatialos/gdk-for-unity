@@ -1,9 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Model;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 
 namespace Improbable.Gdk.CodeGenerator
 {
