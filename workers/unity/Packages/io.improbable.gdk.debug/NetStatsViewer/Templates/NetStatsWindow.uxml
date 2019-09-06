@@ -1,0 +1,19 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <uie:ToolbarMenu name="worldSelector" class="world-selector">
+        <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
+    </uie:ToolbarMenu>
+    <VisualElement name="updates" class="tab">
+        <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
+        <VisualElement name="headerBar" class="header">
+            <uie:ToolbarButton text="Component" name="ComponentButton" class="column component" />
+            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="column" />
+            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="column" />
+            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="column" />
+            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="column" />
+            <VisualElement style="min-width: 15px;" />
+        </VisualElement>
+        <ScrollView name="updatesContainer" class="updates-view" focusable="false" show-vertical-scroller="true" />
+    </VisualElement>
+    <VisualElement name="commands" class="tab" style="display: none;" />
+    <VisualElement name="worldCommands" class="tab" style="display: none;" />
+</UXML>
