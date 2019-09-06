@@ -38,8 +38,8 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         protected GameObject CreateAndLinkGameObjectWithComponent<T>(long entityId) where T : MonoBehaviour
         {
             var gameObject = new GameObject("TestGameObject");
-            gameObject.AddComponent<T>();
-            gameObject.GetComponent<T>().enabled = false;
+            var component = gameObject.AddComponent<T>();
+            component.enabled = false;
 
             Linker.LinkGameObjectToSpatialOSEntity(new EntityId(entityId), gameObject);
             RequireLifecycleSystem.Update();
