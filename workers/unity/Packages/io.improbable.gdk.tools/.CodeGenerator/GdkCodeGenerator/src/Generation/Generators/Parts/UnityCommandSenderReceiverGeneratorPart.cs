@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.CodeGeneration;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -11,7 +12,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private string qualifiedNamespace;
         private UnityComponentDetails details;
-        
+
         public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;

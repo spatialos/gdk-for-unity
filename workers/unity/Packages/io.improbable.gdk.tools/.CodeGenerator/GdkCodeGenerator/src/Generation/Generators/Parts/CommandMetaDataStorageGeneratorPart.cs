@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Improbable.Gdk.CodeGeneration;
 
 namespace Improbable.Gdk.CodeGenerator
 {

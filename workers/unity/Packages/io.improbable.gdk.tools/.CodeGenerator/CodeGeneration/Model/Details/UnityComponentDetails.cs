@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGeneration
 {
     public class UnityComponentDetails
     {

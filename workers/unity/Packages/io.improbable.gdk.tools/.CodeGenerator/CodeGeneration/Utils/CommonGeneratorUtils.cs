@@ -1,6 +1,6 @@
 using System;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGeneration
 {
     public static class CommonGeneratorUtils
     {

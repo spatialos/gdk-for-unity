@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
-using Improbable.Gdk.CodeGenerator;
 using NUnit.Framework;
 
-namespace GdkCodeGenerator.Tests.Model
+namespace Improbable.Gdk.CodeGeneration.Tests.Model
 {
     [TestFixture]
     public class DetailsStoreTests

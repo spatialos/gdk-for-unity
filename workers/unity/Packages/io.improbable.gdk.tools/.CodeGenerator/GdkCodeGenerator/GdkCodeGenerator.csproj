@@ -64,7 +64,7 @@
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">
-    <TransformAllTask InputFiles="@(T4Files)" ProjectDirectory="$(MSBuildProjectDirectory)" Imports="Improbable.Gdk.CodeGeneration.Jobs" ClassNameSpace="Improbable.Gdk.CodeGenerator">
+    <TransformAllTask InputFiles="@(T4Files)" ProjectDirectory="$(MSBuildProjectDirectory)" Imports="Improbable.Gdk.CodeGeneration.Jobs;Improbable.Gdk.CodeGeneration.Utils" ClassNameSpace="Improbable.Gdk.CodeGenerator">
       <Output TaskParameter="OutputFiles" PropertyName="GeneratedFiles" />
     </TransformAllTask>
     <ItemGroup>

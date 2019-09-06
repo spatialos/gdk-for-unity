@@ -1,6 +1,6 @@
 using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGeneration
 {
     public static class CommonDetailsUtils
     {

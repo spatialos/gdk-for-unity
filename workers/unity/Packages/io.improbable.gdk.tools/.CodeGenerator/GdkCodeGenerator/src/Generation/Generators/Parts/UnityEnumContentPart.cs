@@ -1,3 +1,5 @@
+using Improbable.Gdk.CodeGeneration;
+
 namespace Improbable.Gdk.CodeGenerator
 {
     public partial class UnityEnumContent

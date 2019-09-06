@@ -7,7 +7,7 @@ using Improbable.Gdk.CodeGeneration;
 using Improbable.Gdk.CodeGeneration.Utils;
 using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGeneration
 {
     public class DetailsStore
     {

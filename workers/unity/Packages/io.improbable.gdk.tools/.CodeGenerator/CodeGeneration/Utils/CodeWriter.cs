@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Improbable.Gdk.CodeGenerator.Utils
+namespace Improbable.Gdk.CodeGeneration.Utils
 {
     public class CodeWriter
     {

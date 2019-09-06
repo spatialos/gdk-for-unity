@@ -1,9 +1,7 @@
 using System;
-using Improbable.Gdk.CodeGeneration;
-using Improbable.Gdk.CodeGenerator.Utils;
-using ValueType = Improbable.Gdk.CodeGeneration.ValueType;
+using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGeneration
 {
     public interface IFieldType
     {
