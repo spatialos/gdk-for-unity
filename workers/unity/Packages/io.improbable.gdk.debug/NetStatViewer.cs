@@ -69,7 +69,8 @@ namespace Improbable.Gdk.Debug
         private void SetupWorldSelection()
         {
             // Find spatial worlds
-            var spatialWorlds = World.AllWorlds.Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
+            var spatialWorlds = World.AllWorlds
+            	.Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
                 .ToList();
 
             // Fill menu items
