@@ -1,6 +1,6 @@
 .item {
     height: 30px;
-    border-color: rgb(22, 22, 22);
+    border-color: rgb(44, 44, 44);
     border-bottom-width: 1px;
     flex-direction: row;
 }
@@ -8,9 +8,15 @@
 .column {
     min-width: 100px;
     flex-grow: 1;
-    -unity-text-align: upper-right;
+    -unity-text-align: lower-right;
     border-color: rgb(22, 22, 22);
     border-left-width: 1px;
-    padding: 5px 0px 5px 0px;
+    padding: 5px 5px 5px 5px;
     margin: 0px;
+}
+
+.component-name {
+    min-width: 160px;
+    -unity-text-align: lower-left;
+    border-left-width: 0px;
 }

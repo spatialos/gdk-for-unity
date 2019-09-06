@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
@@ -10,23 +9,22 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug
 {
-    public class NetStatViewer : EditorWindow
+    internal class NetStatViewer : EditorWindow
     {
         private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/Templates/NetStatsWindow.uxml";
-        private const string ItemUxmlPath = "Packages/io.improbable.gdk.debug/Templates/Item.uxml";
+        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/Templates/UpdateRow.uxml";
 
         private World selectedWorld;
         private NetworkStatisticsSystem netStatSystem;
         private List<(string Name, uint ComponentId)> spatialComponents;
         private Dictionary<int, VisualElement> listElements;
 
-        [MenuItem("SpatialOS/Network Analyzer &n", false, 52)]
+        [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
         {
             var inspectorWindowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.InspectorWindow");
             var window = GetWindow<NetStatViewer>(inspectorWindowType);
             window.titleContent.text = "Network Analyzer";
-            window.titleContent.tooltip = "Tooltip";
             window.Show();
         }
 
@@ -42,6 +40,32 @@ namespace Improbable.Gdk.Debug
             SetupWorldSelection();
         }
 
+        // Update UI at 10 FPS
+        private void OnInspectorUpdate()
+        {
+            SetupWorldSelection();
+            RefreshUpdates();
+        }
+
+        private void SetupUI()
+        {
+            // Load main window
+            var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
+            windowTemplate.CloneTree(rootVisualElement);
+
+            // Load update row
+            var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
+
+            // Clone row for each component, fill list
+            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
+            for (var i = 0; i < spatialComponents.Count; i++)
+            {
+                var element = itemTemplate.CloneTree();
+                UpdateElement(i, element);
+                scrollView.Add(element);
+            }
+        }
+
         private void SetupWorldSelection()
         {
             // Find spatial worlds
@@ -53,10 +77,8 @@ namespace Improbable.Gdk.Debug
             for (var i = 0; i < spatialWorlds.Count; i++)
             {
                 var spatialWorld = spatialWorlds[i];
-                worldMenu.InsertAction(i, spatialWorld.Name, action =>
-                    {
-                        SelectWorld((World) action.userData);
-                    },
+                worldMenu.InsertAction(i, spatialWorld.Name,
+                    action => SelectWorld((World) action.userData),
                     action => selectedWorld == (World) action.userData
                         ? DropdownMenuAction.Status.Checked
                         : DropdownMenuAction.Status.Normal,
@@ -70,6 +92,7 @@ namespace Improbable.Gdk.Debug
                 worldMenu.RemoveItemAt(spatialWorlds.Count);
             }
 
+            // Update selected item if needed
             if (selectedWorld == null || !selectedWorld.IsCreated)
             {
                 SelectWorld(spatialWorlds.FirstOrDefault());
@@ -79,26 +102,12 @@ namespace Improbable.Gdk.Debug
         private void SelectWorld(World world)
         {
             selectedWorld = world;
-            rootVisualElement.Q<ToolbarMenu>("worldSelector").text = selectedWorld?.Name ?? "No SpatialOS worlds active";
+            rootVisualElement.Q<ToolbarMenu>("worldSelector").text =
+                selectedWorld?.Name ?? "No SpatialOS worlds active";
             netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
         }
 
-        private void SetupUI()
-        {
-            var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
-            windowTemplate.CloneTree(rootVisualElement);
-
-            var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ItemUxmlPath);
-
-            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
-            for (var i = 0; i < spatialComponents.Count; i++)
-            {
-                var element = itemTemplate.CloneTree();
-                UpdateElement(i, element);
-                scrollView.Add(element);
-            }
-        }
-
+        // TODO: Temporary placeholder to allow sorting
         private (string Name, uint ComponentId) GetComponentInfoForIndex(int index)
         {
             return spatialComponents[index];
@@ -107,8 +116,8 @@ namespace Improbable.Gdk.Debug
         private void UpdateElement(int index, VisualElement element)
         {
             // Set component name
-            var componentInfo = GetComponentInfoForIndex(index);
-            element.Q<Label>("name").text = componentInfo.Name;
+            var (componentName, componentId) = GetComponentInfoForIndex(index);
+            element.Q<Label>("name").text = componentName;
 
             if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
             {
@@ -117,7 +126,7 @@ namespace Improbable.Gdk.Debug
 
             // Incoming stats
             var (dataIn, time) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentInfo.ComponentId), 60, Direction.Incoming);
+                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Incoming);
 
             if (time == 0)
             {
@@ -129,7 +138,7 @@ namespace Improbable.Gdk.Debug
 
             // Outgoing stats
             var (dataOut, _) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentInfo.ComponentId), 60, Direction.Outgoing);
+                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Outgoing);
 
             element.Q<Label>("opsOut").text = (dataOut.Count / time).ToString("F1");
             element.Q<Label>("sizeOut").text = (dataOut.Size / 1024f / time).ToString("F3");
@@ -139,25 +148,17 @@ namespace Improbable.Gdk.Debug
         {
             var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
             var count = scrollView.childCount;
+            var viewportBound = scrollView.contentViewport.localBound;
 
-            for (int i = 0; i < count; i++)
+            // Update all visible items in the list
+            for (var i = 0; i < count; i++)
             {
                 var element = scrollView[i];
-                if (element.visible)
+                if (viewportBound.Overlaps(element.localBound))
                 {
                     UpdateElement(i, element);
                 }
-                else
-                {
-                    UnityEngine.Debug.Log("YEET");
-                }
             }
-        }
-
-        private void OnInspectorUpdate()
-        {
-            SetupWorldSelection();
-            RefreshUpdates();
         }
     }
 }
