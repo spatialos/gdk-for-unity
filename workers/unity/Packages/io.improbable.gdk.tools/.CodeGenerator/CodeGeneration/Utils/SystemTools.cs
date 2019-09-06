@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Improbable
+namespace Improbable.Gdk.CodeGeneration.Utils
 {
     public static class SystemTools
     {
