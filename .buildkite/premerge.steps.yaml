@@ -31,15 +31,46 @@ common: &common
       - exit_status: 128
         limit: 3
 
+linux: &linux
+  agents:
+    - "capable_of_building=gdk-for-unity"
+    - "environment=production"
+    - "permission_set=builder"
+    - "platform=linux"  # if you need a different platform, configure this: macos|linux|windows.
+    - "queue=v3-1562766449-11b126f880607f28-------z"
+  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
+  retry:
+    automatic:
+        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+      - exit_status: -1
+        limit: 3
+
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
+dag: true
+
 steps:
   - label: "test"
+    id: "test"
     command: bash -c ci/test.sh
     <<: *common
     artifact_paths:
       - logs/**/*
+
+  - label: "annotate test results :pencil2:"
+    depends_on: 
+      - step: "test"
+        allow_failure: true
+    plugins: 
+      - jamiebrynes7/test-summary#06aedb5c4da188cb4246a8cf4cb82783ec847c2f:
+          inputs:
+            - label: ":octagonal_sign: Test failures "
+              artifact_path: "logs\\nunit\\*.xml"
+              type: nunit
+          formatter:
+            type: details
+    <<: *linux
 
   - label: "build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
