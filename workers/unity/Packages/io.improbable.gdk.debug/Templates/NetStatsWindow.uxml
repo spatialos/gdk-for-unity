@@ -2,7 +2,7 @@
     <uie:ToolbarMenu name="worldSelector" class="world-selector">
         <Style path="Packages/io.improbable.gdk.debug/Templates/NetStatsWindow.uss" />
     </uie:ToolbarMenu>
-    <VisualElement name="Updates" class="tab">
+    <VisualElement name="updates" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/Templates/NetStatsWindow.uss" />
         <VisualElement name="HeaderBar" class="header">
             <uie:ToolbarButton text="Component" name="ComponentButton" class="column component" />
