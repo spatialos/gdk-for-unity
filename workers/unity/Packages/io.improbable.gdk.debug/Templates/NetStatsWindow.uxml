@@ -4,7 +4,7 @@
     </uie:ToolbarMenu>
     <VisualElement name="updates" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/Templates/NetStatsWindow.uss" />
-        <VisualElement name="HeaderBar" class="header">
+        <VisualElement name="headerBar" class="header">
             <uie:ToolbarButton text="Component" name="ComponentButton" class="column component" />
             <uie:ToolbarButton text="Op/s in" name="OpsIn" class="column" />
             <uie:ToolbarButton text="KB/s in" name="SizeIn" class="column" />
