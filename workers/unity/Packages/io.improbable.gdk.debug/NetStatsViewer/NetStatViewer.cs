@@ -7,17 +7,17 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Improbable.Gdk.Debug
+namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatViewer : EditorWindow
     {
         private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
-        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
+
+        private NetStatsUpdatesTab updatesTab;
 
         private World selectedWorld;
         private NetworkStatisticsSystem netStatSystem;
         private List<(string Name, uint ComponentId)> spatialComponents;
-        private Dictionary<int, VisualElement> listElements;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
@@ -44,7 +44,11 @@ namespace Improbable.Gdk.Debug
         private void OnInspectorUpdate()
         {
             SetupWorldSelection();
-            RefreshUpdates();
+
+            if (updatesTab.visible)
+            {
+                updatesTab.Update();
+            }
         }
 
         private void SetupUI()
@@ -53,17 +57,8 @@ namespace Improbable.Gdk.Debug
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
 
-            // Load update row
-            var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
-
-            // Clone row for each component, fill list
-            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
-            for (var i = 0; i < spatialComponents.Count; i++)
-            {
-                var element = itemTemplate.CloneTree();
-                UpdateElement(i, element);
-                scrollView.Add(element);
-            }
+            updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
+            updatesTab.InitializeTab(spatialComponents);
         }
 
         private void SetupWorldSelection()
@@ -106,60 +101,8 @@ namespace Improbable.Gdk.Debug
             rootVisualElement.Q<ToolbarMenu>("worldSelector").text =
                 selectedWorld?.Name ?? "No SpatialOS worlds active";
             netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
-        }
 
-        // TODO: Temporary placeholder to allow sorting
-        private (string Name, uint ComponentId) GetComponentInfoForIndex(int index)
-        {
-            return spatialComponents[index];
-        }
-
-        private void UpdateElement(int index, VisualElement element)
-        {
-            // Set component name
-            var (componentName, componentId) = GetComponentInfoForIndex(index);
-            element.Q<Label>("name").text = componentName;
-
-            if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
-            {
-                return;
-            }
-
-            // Incoming stats
-            var (dataIn, time) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Incoming);
-
-            if (time == 0)
-            {
-                time = 1;
-            }
-
-            element.Q<Label>("opsIn").text = (dataIn.Count / time).ToString("F1");
-            element.Q<Label>("sizeIn").text = (dataIn.Size / 1024f / time).ToString("F3");
-
-            // Outgoing stats
-            var (dataOut, _) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Outgoing);
-
-            element.Q<Label>("opsOut").text = (dataOut.Count / time).ToString("F1");
-            element.Q<Label>("sizeOut").text = (dataOut.Size / 1024f / time).ToString("F3");
-        }
-
-        private void RefreshUpdates()
-        {
-            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
-            var count = scrollView.childCount;
-            var viewportBound = scrollView.contentViewport.localBound;
-
-            // Update all visible items in the list
-            for (var i = 0; i < count; i++)
-            {
-                var element = scrollView[i];
-                if (viewportBound.Overlaps(element.localBound))
-                {
-                    UpdateElement(i, element);
-                }
-            }
+            updatesTab.SetSystem(netStatSystem);
         }
     }
 }
