@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- Added network statistics collection for both sending and receiving messages. [#1135](https://github.com/spatialos/gdk-for-unity/pull/1135)
+    - This adds a single ECS system `NetworkStatisticsSystem`. This system will only run when running your workers inside the Unity Editor.
+    - Additionally, there are a set of data types supporting this system which can be found under the `Improbable.Gdk.Core.NetworkStats` namespace.
+
 ### Fixed
 
 - Fixed a bug where `MonoBehaviour`s with `WorkerType` attributes would not be enabled even if the owning worker's type was a match for the `WorkerType` attribute. [#1147](https://github.com/spatialos/gdk-for-unity/pull/1147)
@@ -22,9 +28,6 @@
 - Added a new Unity Editor window for forwarding a port from a worker that is running in the cloud. [#1133](https://github.com/spatialos/gdk-for-unity/pull/1133)
     - You can find this window in the Unity Editor menu at: **SpatialOS** > **Port Forwarding**.
     - This can be used to connect the Unity profile to workers running in the cloud.
-- Added network statistics collection for both sending and receiving messages. [#1135](https://github.com/spatialos/gdk-for-unity/pull/1135)
-    - This adds a single ECS system `NetworkStatisticsSystem`. This system will only run when running your workers inside the Unity Editor.
-    - Additionally, there are a set of data types supporting this system which can be found under the `Improbable.Gdk.Core.NetworkStats` namespace.
 
 ### Changed
 
