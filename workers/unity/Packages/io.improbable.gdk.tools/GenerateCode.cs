@@ -310,12 +310,30 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        /*  
+            This method edits the csproj XML to link in the constituent parts of the each codegen module.
+            It expects any codegen module to be structured as follows:
+
+            <package>
+                .codegen/
+                    Source/
+                        SourceFile1.cs
+                        SourceFile2.cs
+                    Templates/
+                        MyTemplate.tt
+                    Partials/
+                        Improbable.Vector3f
+            
+            Each of the Source, Templates, and Partials folder are optional.
+        */ 
         private static void UpdateModules()
         {
             var csprojXml = XDocument.Load(CodegenExe);
             var projectNode = csprojXml.Element("Project");
             var codegenDirs = FindDirInPackages(CodegenDir).ToList();
 
+            // Traverse the XML and find all existing ItemGroup nodes with GdkPackageSource items.
+            // We will reuse these nodes or remove them if we no longer have a matching package.
             var gdkItemGroups = projectNode
                 .Elements("ItemGroup")
                 .Where(ele => ele.Element("GdkPackageSource") != null)
@@ -331,6 +349,7 @@ namespace Improbable.Gdk.Tools
 
                 itemGroup.RemoveAll();
 
+                // Add an identifier so we can match this item group against a codegen module on subsequent runs.
                 var idEle = new XElement("GdkPackageSource");
                 idEle.SetAttributeValue("Include", dir);
                 itemGroup.Add(idEle);
@@ -338,6 +357,7 @@ namespace Improbable.Gdk.Tools
                 var sourceDir = Path.Combine(dir, "Source");
                 if (Directory.Exists(sourceDir))
                 {
+                    // Ensure that we compile any source code provided by the codegen module.
                     var ele = new XElement("Compile");
                     ele.SetAttributeValue("Include", Path.Combine(sourceDir, "**"));
                     itemGroup.Add(ele);
@@ -346,6 +366,7 @@ namespace Improbable.Gdk.Tools
                 var templateDir = Path.Combine(dir, "Templates");
                 if (Directory.Exists(templateDir))
                 {
+                    // Ensure that we generate and compile in any T4 templates provided by the codegen module.
                     var ele = new XElement("T4Files");
                     ele.SetAttributeValue("Include", Path.Combine(templateDir, "**"));
                     itemGroup.Add(ele);
@@ -354,14 +375,17 @@ namespace Improbable.Gdk.Tools
                 var partialDir = Path.Combine(dir, "Partials");
                 if (Directory.Exists(templateDir))
                 {
+                    // Don't compile the partial.
                     var noneEle = new XElement("None");
                     noneEle.SetAttributeValue("Remove", Path.Combine(partialDir, "**"));
                     itemGroup.Add(noneEle);
 
+                    // Add the partial as an embedded resource.
                     var resEle = new XElement("EmbeddedResource");
                     resEle.SetAttributeValue("Include", Path.Combine(partialDir, "**"));
                     itemGroup.Add(resEle);
 
+                    // Ensure that we can see the Partials in the project view.
                     var folderEle = new XElement("Folder");
                     folderEle.SetAttributeValue("Include", Path.Combine(partialDir, "**"));
                     itemGroup.Add(folderEle);
