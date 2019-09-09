@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Improbable.Gdk.CodeGeneration
+namespace Improbable.Gdk.CodeGeneration.Model
 {
     public enum PrimitiveType
     {
