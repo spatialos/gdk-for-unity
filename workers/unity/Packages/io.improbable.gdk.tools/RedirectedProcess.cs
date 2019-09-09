@@ -131,41 +131,7 @@ namespace Improbable.Gdk.Tools
         /// <summary>
         ///     Runs the redirected process and waits for it to return.
         /// </summary>
-        public int Run()
-        {
-            var (process, outputLog) = SetupProcess();
-
-            using (process)
-            {
-                Start(process);
-                process.WaitForExit();
-
-                var trimmedOutput = outputLog?.ToString().TrimStart();
-
-                if (string.IsNullOrEmpty(trimmedOutput))
-                {
-                    return process.ExitCode;
-                }
-
-                if (process.ExitCode == 0)
-                {
-                    Debug.Log(trimmedOutput);
-                }
-                else
-                {
-                    Debug.LogError(trimmedOutput);
-                }
-
-                return process.ExitCode;
-            }
-        }
-
-        /// <summary>
-        ///     Runs the redirected process and returns a task which can be waited on.
-        /// </summary>
-        /// <param name="token">A cancellation token which can be used for cancelling the underlying process. Default is null.</param>
-        /// <returns>A task which would return the exit code and output.</returns>
-        public async Task<RedirectedProcessResult> RunAsync(CancellationToken? token = null)
+        public RedirectedProcessResult Run()
         {
             var processStandardOutput = new List<string>();
             var processStandardError = new List<string>();
@@ -177,6 +143,67 @@ namespace Improbable.Gdk.Tools
                     processStandardOutput.Add(output);
                 }
             });
+
+            AddErrorProcessing(error =>
+            {
+                lock (processStandardError)
+                {
+                    processStandardError.Add(error);
+                }
+            });
+
+            var (process, outputLog) = SetupProcess();
+
+            using (process)
+            {
+                Start(process);
+                process.WaitForExit();
+
+                var trimmedOutput = outputLog?.ToString().TrimStart();
+
+                var result = new RedirectedProcessResult
+                {
+                    ExitCode = process.ExitCode,
+                    Stdout = processStandardOutput,
+                    Stderr = processStandardError
+                };
+
+                if (string.IsNullOrEmpty(trimmedOutput))
+                {
+                    return result;
+                }
+
+                if (process.ExitCode == 0)
+                {
+                    Debug.Log(trimmedOutput);
+                }
+                else
+                {
+                    Debug.LogError(trimmedOutput);
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        ///     Runs the redirected process and returns a task which can be waited on.
+        /// </summary>
+        /// <param name="token">A cancellation token which can be used for cancelling the underlying process. Default is <see cref="CancellationToken.None"/>.</param>
+        /// <returns>A task which would return the exit code and output.</returns>
+        public Task<RedirectedProcessResult> RunAsync(CancellationToken token = default)
+        {
+            var processStandardOutput = new List<string>();
+            var processStandardError = new List<string>();
+
+            AddOutputProcessing(output =>
+            {
+                lock (processStandardOutput)
+                {
+                    processStandardOutput.Add(output);
+                }
+            });
+
             AddErrorProcessing(error =>
             {
                 lock (processStandardOutput)
@@ -185,38 +212,21 @@ namespace Improbable.Gdk.Tools
                 }
             });
 
-            if (token == null)
-            {
-                var exitCode = await Task.Run(Run).ConfigureAwait(false);
-
-                return new RedirectedProcessResult
-                {
-                    ExitCode = exitCode,
-                    Stdout = processStandardOutput,
-                    Stderr = processStandardError
-                };
-            }
-
-            var result = await RunWithCancel(token.Value).ConfigureAwait(false);
-
-            return new RedirectedProcessResult
-            {
-                ExitCode = result,
-                Stdout = processStandardOutput,
-                Stderr = processStandardError
-            };
-        }
-
-        private Task<int> RunWithCancel(CancellationToken token)
-        {
             var (process, outputLog) = SetupProcess();
 
-            var taskCompletionSource = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var taskCompletionSource = new TaskCompletionSource<RedirectedProcessResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             // Register a handler to process the output when it exits.
             process.Exited += (sender, args) =>
             {
-                taskCompletionSource.SetResult(process.ExitCode);
+                var result = new RedirectedProcessResult
+                {
+                    ExitCode = process.ExitCode,
+                    Stdout = processStandardOutput,
+                    Stderr = processStandardError
+                };
+
+                taskCompletionSource.SetResult(result);
 
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
