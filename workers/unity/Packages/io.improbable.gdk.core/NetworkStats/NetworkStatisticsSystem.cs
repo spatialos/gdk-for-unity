@@ -34,6 +34,11 @@ namespace Improbable.Gdk.Core.NetworkStats
         }
 #endif
 
+        public (DataPoint, float) GetSummary(MessageTypeUnion messageType, int numFrames, Direction direction)
+        {
+            return netStats.GetSummary(messageType, numFrames, direction);
+        }
+
         protected override void OnUpdate()
         {
             netStats.SetFrameStats(lastIncomingData, Direction.Incoming);

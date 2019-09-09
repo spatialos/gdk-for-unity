@@ -1,0 +1,28 @@
+.world-selector {
+    min-height: 20px;
+}
+
+.header {
+    flex-direction: row;
+    position: relative;
+}
+
+.tab {
+    flex-grow: 1;
+}
+
+.updates-view {
+    flex-grow: 1;
+    flex-direction: column
+}
+
+.column {
+    height: 30px;
+    flex-direction: row;
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+.component {
+    min-width: 160px;
+}
