@@ -1,0 +1,13 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var enumDetails = GetEnumDetails();
+#>
+
+[global::System.Serializable]
+public enum <#=  enumDetails.TypeName #> : uint
+{
+<# foreach (var valueDefinition in enumDetails.Values) { #>
+    <#= valueDefinition.Item2 #> = <#= valueDefinition.Item1 #>,
+<# } #>
+}

@@ -1,0 +1,204 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var componentDetails = GetComponentDetails();
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var commandDetailsList = GetCommandDetailsList();
+#>
+<#= generatedHeader #>
+
+using System;
+using System.Collections.Generic;
+using Improbable.Gdk.Core;
+using Unity.Entities;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# foreach (var command in commandDetailsList) {
+        var receivedRequestType = command.CommandName + ".ReceivedRequest";
+        var receivedResponseType = command.CommandName + ".ReceivedResponse";
+#>
+        public class Diff<#= command.CommandName #>CommandStorage : IComponentCommandDiffStorage
+            , IDiffCommandRequestStorage<<#= receivedRequestType #>>
+            , IDiffCommandResponseStorage<<#= receivedResponseType #>>
+        {
+            private MessageList<<#= receivedRequestType #>> requestStorage =
+                new MessageList<<#= receivedRequestType #>>();
+
+            private MessageList<<#= receivedResponseType #>> responseStorage =
+                new MessageList<<#= receivedResponseType #>>();
+
+            private readonly RequestComparer requestComparer = new RequestComparer();
+            private readonly ResponseComparer responseComparer = new ResponseComparer();
+
+            private bool requestsSorted;
+            private bool responsesSorted;
+
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public uint GetCommandId()
+            {
+                return <#= command.CommandIndex #>;
+            }
+
+            public Type GetRequestType()
+            {
+                return typeof(<#= receivedRequestType #>);
+            }
+
+            public Type GetResponseType()
+            {
+                return typeof(<#= receivedResponseType #>);
+            }
+
+            public void Clear()
+            {
+                requestStorage.Clear();
+                responseStorage.Clear();
+                requestsSorted = false;
+                responsesSorted = false;
+            }
+
+            public void RemoveRequests(long entityId)
+            {
+                requestStorage.RemoveAll(request => request.EntityId.Id == entityId);
+            }
+
+            public void AddRequest(<#= receivedRequestType #> request)
+            {
+                requestStorage.Add(request);
+            }
+
+            public void AddResponse(<#= receivedResponseType #> response)
+            {
+                responseStorage.Add(response);
+            }
+
+            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests()
+            {
+                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage);
+            }
+
+            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests(EntityId targetEntityId)
+            {
+                if (!requestsSorted)
+                {
+                    requestStorage.Sort(requestComparer);
+                    requestsSorted = true;
+                }
+
+                var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
+
+                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage, firstIndex, count);
+            }
+
+            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponses()
+            {
+                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage);
+            }
+
+            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponse(long requestId)
+            {
+                if (!responsesSorted)
+                {
+                    responseStorage.Sort(responseComparer);
+                    responsesSorted = true;
+                }
+
+                var responseIndex = responseStorage.GetResponseIndex(requestId);
+                if (responseIndex < 0)
+                {
+                    return ReceivedMessagesSpan<<#= receivedResponseType #>>.Empty();
+                }
+
+                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, responseIndex, 1);
+            }
+
+            private class RequestComparer : IComparer<<#= receivedRequestType #>>
+            {
+                public int Compare(<#= receivedRequestType #> x, <#= receivedRequestType #> y)
+                {
+                    return x.EntityId.Id.CompareTo(y.EntityId.Id);
+                }
+            }
+
+            private class ResponseComparer : IComparer<<#= receivedResponseType #>>
+            {
+                public int Compare(<#= receivedResponseType #> x, <#= receivedResponseType #> y)
+                {
+                    return x.RequestId.CompareTo(y.RequestId);
+                }
+            }
+        }
+
+<# } #>
+
+<# foreach (var command in commandDetailsList) {
+        var requestType = command.CommandName + ".Request";
+        var responseType = command.CommandName + ".Response";
+#>
+        public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
+            , ICommandRequestSendStorage<<#= requestType #>>
+            , ICommandResponseSendStorage<<#= responseType #>>
+        {
+            private MessageList<CommandRequestWithMetaData<<#= requestType #>>> requestStorage =
+                new MessageList<CommandRequestWithMetaData<<#= requestType #>>>();
+
+            private MessageList<<#= responseType #>> responseStorage =
+                new MessageList<<#= responseType #>>();
+
+            public uint GetComponentId()
+            {
+                return ComponentId;
+            }
+
+            public uint GetCommandId()
+            {
+                return <#= command.CommandIndex #>;
+            }
+
+            public Type GetRequestType()
+            {
+                return typeof(<#= requestType #>);
+            }
+
+            public Type GetResponseType()
+            {
+                return typeof(<#= responseType #>);
+            }
+
+            public void Clear()
+            {
+                requestStorage.Clear();
+                responseStorage.Clear();
+            }
+
+            public void AddRequest(<#= requestType #> request, Entity entity, long requestId)
+            {
+                requestStorage.Add(new CommandRequestWithMetaData<<#= requestType #>>(request, entity, requestId));
+            }
+
+            public void AddResponse(<#= responseType #> response)
+            {
+                responseStorage.Add(response);
+            }
+
+            internal MessageList<CommandRequestWithMetaData<<#= requestType #>>> GetRequests()
+            {
+                return requestStorage;
+            }
+
+            internal MessageList<<#= responseType #>> GetResponses()
+            {
+                return responseStorage;
+            }
+        }
+
+<# } #>
+    }
+}

@@ -1,0 +1,72 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    var generatedHeader = CommonGeneratorUtils.GetGeneratedHeader();
+    var componentDetails = GetComponentDetails();
+    var eventDetailsList = GetEventDetailsList();
+    var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+#>
+<#= generatedHeader #>
+
+using System.Collections.Generic;
+using Improbable.Gdk.Core;
+using Improbable.Worker;
+using Unity.Entities;
+
+namespace <#= qualifiedNamespace #>
+{
+    public partial class <#= componentDetails.ComponentName #>
+    {
+<# foreach (var eventDetails in eventDetailsList) { #>
+        public static class <#= eventDetails.EventName #>
+        {
+            public readonly struct Event : IEvent
+            {
+                public readonly <#= eventDetails.FqnPayloadType #> Payload;
+
+                public Event(<#= eventDetails.FqnPayloadType #> payload)
+                {
+                    Payload = payload;
+                }
+            }
+        }
+
+<# } #>
+
+#if USE_LEGACY_REACTIVE_COMPONENTS
+        public static class ReceivedEvents
+        {
+<# foreach (var eventDetails in eventDetailsList) { #>
+            public struct <#= eventDetails.EventName #> : IComponentData
+            {
+                internal uint handle;
+
+                public List<<#= eventDetails.FqnPayloadType #>> Events
+                {
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
+                }
+            }
+
+<# } #>
+        }
+
+        public static class EventSender
+        {
+<# foreach (var eventDetails in eventDetailsList) { #>
+            public struct <#= eventDetails.EventName #> : IComponentData
+            {
+                internal uint handle;
+
+                public List<<#= eventDetails.FqnPayloadType #>> Events
+                {
+                    get => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Get(handle);
+                    internal set => <#= componentNamespace #>.ReferenceTypeProviders.<#= eventDetails.EventName #>Provider.Set(handle, value);
+                }
+            }
+
+<# } #>
+        }
+#endif
+    }
+}
