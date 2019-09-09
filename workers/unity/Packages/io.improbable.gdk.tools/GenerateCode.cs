@@ -388,15 +388,15 @@ namespace Improbable.Gdk.Tools
                 // Wait for the request to complete
             }
 
-            var packagePathsWithSchema = request.Result
+            var packagePaths = request.Result
                 .Select(package => Path.Combine(package.resolvedPath, directory))
                 .Where(Directory.Exists);
 
-            var cachedPackagePathsWithSchema = Directory.GetDirectories("Library/PackageCache")
+            var cachedPackagePaths = Directory.GetDirectories("Library/PackageCache")
                 .Select(path => Path.GetFullPath(Path.Combine(path, directory)))
                 .Where(Directory.Exists);
 
-            return packagePathsWithSchema.Union(cachedPackagePathsWithSchema).Distinct();
+            return packagePaths.Union(cachedPackagePaths).Distinct();
         }
     }
 }
