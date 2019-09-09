@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         public static bool TryGetPartial(string typeName, out string content)
         {
-            var resourceName = "GdkCodeGenerator.Partials." + typeName;
+            var resourceName = "CodeGen." + typeName;
             content = null;
 
             var assembly = Assembly.GetExecutingAssembly();

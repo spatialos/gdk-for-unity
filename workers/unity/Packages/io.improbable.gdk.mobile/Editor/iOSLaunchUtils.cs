@@ -21,13 +21,13 @@ namespace Improbable.Gdk.Mobile
         private static readonly Regex nameRegex = new Regex("^(.+) \\[");
         private static readonly Regex simulatorUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\] \\(Simulator\\)$");
         private static readonly Regex deviceUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\]$");
-        
+
         public static Dictionary<string, string> RetrieveAvailableiOSSimulators()
         {
             var availableSimulators = new Dictionary<string, string>();
 
             // Check if we have a physical device connected
-            var exitCode = RedirectedProcess.Command("instruments")
+            var result = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
                 {
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Mobile
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
-            if (exitCode != 0)
+            if (result.ExitCode != 0)
             {
                 Debug.LogError("Failed to find iOS Simulators. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
             }
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Mobile
         public static Dictionary<string, string> RetrieveAvailableiOSDevices()
         {
             var availableDevices = new Dictionary<string, string>();
-            var exitCode = RedirectedProcess.Command("instruments")
+            var result = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
                 {
@@ -68,14 +68,14 @@ namespace Improbable.Gdk.Mobile
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
-            if (exitCode != 0)
+            if (result.ExitCode != 0)
             {
                 Debug.LogError("Failed to find connected iOS devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
             }
-            
+
             return availableDevices;
         }
-        
+
         public static void Build(string developmentTeamId)
         {
             try
@@ -105,10 +105,10 @@ namespace Improbable.Gdk.Mobile
                 EditorUtility.ClearProgressBar();
             }
         }
-        
+
         public static void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useSimulator)
         {
-            try 
+            try
             {
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Preparing launch arguments", 0.0f);
 
@@ -127,7 +127,7 @@ namespace Improbable.Gdk.Mobile
                     Debug.LogError($"Was unable to read and modify {xcTestRunPath}.");
                     return;
                 }
-                
+
                 if (useSimulator)
                 {
                     EditorUtility.DisplayProgressBar("Launching Mobile Client", "Start iOS Simulator", 0.5f);
@@ -135,7 +135,8 @@ namespace Improbable.Gdk.Mobile
                     // Start simulator
                     if (RedirectedProcess.Command("xcrun")
                         .WithArgs("instruments", "-w", deviceId, "-t", "Blank")
-                        .Run() != 0)
+                        .Run()
+                        .ExitCode != 0)
                     {
                         Debug.LogError("Was unable to start iOS Simulator.");
                         return;
@@ -160,11 +161,11 @@ namespace Improbable.Gdk.Mobile
                 {
                     Directory.Delete(directory, true);
                 }
-                
+
                 EditorUtility.ClearProgressBar();
             }
         }
-        
+
         private static bool TryBuildXCodeProject(string developmentTeamId)
         {
             return RedirectedProcess.Command("xcodebuild")
@@ -174,7 +175,8 @@ namespace Improbable.Gdk.Mobile
                     "-scheme", "Unity-iPhone",
                     $"DEVELOPMENT_TEAM={developmentTeamId}",
                     "-allowProvisioningUpdates")
-                .Run() == 0;
+                .Run()
+                .ExitCode == 0;
         }
 
         private static bool TryLaunchApplication(string deviceId, string filePath)
@@ -204,17 +206,17 @@ namespace Improbable.Gdk.Mobile
                 xctestrunPath = string.Empty;
                 return false;
             }
-            
+
             var files = Directory.GetFiles(DerivedDataPath, "*.xctestrun", SearchOption.AllDirectories);
             xctestrunPath = useSimulator
-                ? files.FirstOrDefault(file => file.Contains("iphonesimulator")) 
+                ? files.FirstOrDefault(file => file.Contains("iphonesimulator"))
                 : files.FirstOrDefault(file => file.Contains("iphoneos"));
 
             return !string.IsNullOrEmpty(xctestrunPath);
         }
 
         private static bool TryModifyEnvironmentVariables(string filePath, string arguments)
-        { 
+        {
             /*
              * How to add SpatialOS arguments to the game as iOS environment variables
              * The xctestrun file contains the launch arguments for your game
@@ -233,7 +235,7 @@ namespace Improbable.Gdk.Mobile
              *     <string>+environment local +receptionistHost 192.168.0.10 </string>
              * </dict>
              */
-            
+
             try
             {
                 var doc = new XmlDocument();

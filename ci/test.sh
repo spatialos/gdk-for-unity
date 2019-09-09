@@ -14,7 +14,6 @@ PROJECT_DIR="$(pwd)"
 mkdir -p "${PROJECT_DIR}/logs/"
 
 CODE_GEN_LIB_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-gen-lib-test-results.xml"
-CODE_GENERATOR_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/code-generator-test-results.xml"
 EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/editmode-test-results.xml"
 PLAYMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/playmode-test-results.xml"
 TEST_PROJECT_EDITMODE_TEST_RESULTS_FILE="${PROJECT_DIR}/logs/test-project-editmode-test-results.xml"
@@ -25,10 +24,6 @@ echo "--- Testing Code Generator :gear:"
 dotnet test \
     --logger:"nunit;LogFilePath=${CODE_GEN_LIB_TEST_RESULTS_FILE}" \
     workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
-
-dotnet test \
-    --logger:"nunit;LogFilePath=${CODE_GENERATOR_TEST_RESULTS_FILE}" \
-    workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj
 
 echo "--- Testing Unity: Editmode :writing_hand:"
 

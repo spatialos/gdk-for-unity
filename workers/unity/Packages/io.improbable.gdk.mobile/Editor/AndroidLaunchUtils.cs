@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Mobile
                 // Ensure an android device/emulator is present
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs("get-state").Run() != 0)
+                    .WithArgs("get-state").Run().ExitCode != 0)
                 {
                     Debug.LogError("No Android device/emulator detected.");
                     return;
@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Mobile
                 // Install apk on connected phone / emulator
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs("install", "-r", $"\"{apkPath}\"").Run() != 0)
+                    .WithArgs("install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
                 {
                     Debug.LogError(
                         "Failed to install the apk on the device/emulator. If the application is already installed on your device/emulator, " +

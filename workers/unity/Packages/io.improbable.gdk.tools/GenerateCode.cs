@@ -4,17 +4,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Tools
 {
     internal static class GenerateCode
     {
-        private const string CsProjectFile = ".CodeGenerator/GdkCodeGenerator/GdkCodeGenerator.csproj";
+        private const string CodeGenLibFile = ".CodeGenerator/CodeGeneration/CodeGeneration.csproj";
         private const string ImprobableJsonDir = "build/ImprobableJson";
         private const string SchemaPackageDir = ".schema";
+        private const string CodegenDir = ".codegen";
+
+        private static readonly string CodegenTemplatePath = Path.Combine(Common.GetThisPackagePath(), ".CodeGenTemplate");
+        private static readonly string CodegenExeDirectory = Path.Combine(Application.dataPath, "..", "build", "codegen");
+        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "CodeGen.csproj");
 
         private static readonly string SchemaCompilerPath = Path.Combine(
             Common.GetPackagePath("io.improbable.worker.sdk"),
@@ -62,11 +71,42 @@ namespace Improbable.Gdk.Tools
             return !File.Exists(StartupCodegenMarkerFile);
         }
 
-        [MenuItem("SpatialOS/Generate code", isValidateFunction: false, priority: MenuPriorities.GenerateCodePriority)]
+        [MenuItem("SpatialOS/Generate code", isValidateFunction: false, MenuPriorities.GenerateCodePriority)]
         private static void GenerateMenu()
         {
             Debug.Log("Generating code...");
             EditorApplication.delayCall += Generate;
+        }
+
+        [MenuItem("SpatialOS/Generate code (force)", isValidateFunction: false,
+            MenuPriorities.GenerateCodeForcePriority)]
+        private static void ForceGenerateMenu()
+        {
+            Debug.Log("Generating code (forced rebuild)...");
+            EditorApplication.delayCall += ForceGenerate;
+        }
+
+        private static void ForceGenerate()
+        {
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+            if (Directory.Exists(toolsConfig.CodegenOutputDir))
+            {
+                Directory.Delete(toolsConfig.CodegenOutputDir, recursive: true);
+            }
+
+            SetupProject();
+            Generate();
+        }
+
+        private static void SetupProject()
+        {
+            Profiler.BeginSample("Install dotnet template");
+            InstallDotnetTemplate();
+            Profiler.EndSample();
+
+            Profiler.BeginSample("Create dotnet template");
+            CreateTemplate();
+            Profiler.EndSample();
         }
 
         private static void Generate()
@@ -78,34 +118,20 @@ namespace Improbable.Gdk.Tools
                     return;
                 }
 
-                EditorApplication.LockReloadAssemblies();
-
-                var projectPath = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(),
-                    CsProjectFile));
-
-
-                // Fix up symlinking for Mac
-                if (Application.platform == RuntimePlatform.OSXEditor)
+                if (!File.Exists(CodegenExe))
                 {
-                    var packageAttributes = File.GetAttributes(Common.GetThisPackagePath());
-                    if (packageAttributes.HasFlag(FileAttributes.ReparsePoint))
-                    {
-                        var process = RedirectedProcess.Command("pwd")
-                            .WithArgs("-P")
-                            .InDirectory(Common.GetThisPackagePath())
-                            .RedirectOutputOptions(OutputRedirectBehaviour.None);
-
-                        var result = process.RunAsync().Result;
-                        var realPath = string.Join("\n", result.Stdout).Trim();
-
-                        projectPath = Path.GetFullPath(Path.Combine(realPath, CsProjectFile));
-                    }
+                    SetupProject();
                 }
 
-                var schemaCompilerPath = SchemaCompilerPath;
+                EditorApplication.LockReloadAssemblies();
 
-                var workerJsonPath =
-                    Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+                Profiler.BeginSample("Add modules");
+                UpdateModules();
+                Profiler.EndSample();
+
+                Profiler.BeginSample("Code generation");
+
+                var schemaCompilerPath = SchemaCompilerPath;
 
                 switch (Application.platform)
                 {
@@ -124,21 +150,23 @@ namespace Improbable.Gdk.Tools
                             $"The {Application.platform} platform does not support code generation.");
                 }
 
+                var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+
                 using (new ShowProgressBarScope("Generating code..."))
                 {
                     var errorMessage = new StringBuilder();
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
-                        .WithArgs(ConstructArgs(projectPath, schemaCompilerPath, workerJsonPath))
+                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
                         .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
                         .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
-                    if (exitCode != 0)
+                    if (exitCode.ExitCode != 0)
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError($"Error(s) compiling schema files!{errorMessage.ToString()}");
+                            Debug.LogError($"Error(s) compiling schema files!{errorMessage}");
                             EditorApplication.delayCall += () =>
                             {
                                 EditorUtility.DisplayDialog("Generate Code",
@@ -161,6 +189,7 @@ namespace Improbable.Gdk.Tools
             }
             finally
             {
+                Profiler.EndSample();
                 EditorApplication.UnlockReloadAssemblies();
             }
         }
@@ -212,7 +241,7 @@ namespace Improbable.Gdk.Tools
                 .Select(directory => $"--schema-path=\"{directory}\""));
 
             // Add package schema directories
-            baseArgs.AddRange(GetSchemaDirectories()
+            baseArgs.AddRange(FindDirInPackages(SchemaPackageDir)
                 .Select(directory => $"--schema-path=\"{directory}\""));
 
             // Schema Descriptor
@@ -224,26 +253,157 @@ namespace Improbable.Gdk.Tools
             return baseArgs.ToArray();
         }
 
-        [MenuItem("SpatialOS/Generate code (force)", isValidateFunction: false,
-            priority: MenuPriorities.GenerateCodeForcePriority)]
-        private static void ForceGenerateMenu()
+        private static void InstallDotnetTemplate()
         {
-            Debug.Log("Generating code (forced rebuild)...");
-            EditorApplication.delayCall += ForceGenerate;
+            var result = RedirectedProcess.Command(Common.DotNetBinary)
+                .WithArgs("new", "-i", "./")
+                .InDirectory(CodegenTemplatePath)
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                .Run();
+
+            if (result.ExitCode != 0)
+            {
+                throw new Exception("Failed to run.");
+            }
         }
 
-        private static void ForceGenerate()
+        private static void CreateTemplate()
         {
-            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-            if (Directory.Exists(toolsConfig.CodegenOutputDir))
+            if (Directory.Exists(CodegenExeDirectory))
             {
-                Directory.Delete(toolsConfig.CodegenOutputDir, recursive: true);
+                Directory.Delete(CodegenExeDirectory, recursive: true);
             }
 
-            Generate();
+            Directory.CreateDirectory(CodegenExeDirectory);
+
+            var codegenLib = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), CodeGenLibFile));
+
+            // Fix up symlinking for Mac
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                var packageAttributes = File.GetAttributes(Common.GetThisPackagePath());
+                if (packageAttributes.HasFlag(FileAttributes.ReparsePoint))
+                {
+                    var process = RedirectedProcess.Command("pwd")
+                        .WithArgs("-P")
+                        .InDirectory(Common.GetThisPackagePath())
+                        .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                        .RunAsync(CancellationToken.None)
+                        .Result;
+
+                    var realPath = string.Join("\n", process.Stdout).Trim();
+
+                    codegenLib = Path.GetFullPath(Path.Combine(realPath, CodeGenLibFile));
+                }
+            }
+
+            var result = RedirectedProcess.Command(Common.DotNetBinary)
+                .WithArgs("new", "gdk-for-unity-codegen",
+                    "--code-gen-lib-path", $"\"{codegenLib}\"")
+                .InDirectory(CodegenExeDirectory)
+                .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                .Run();
+
+            if (result.ExitCode != 0)
+            {
+                throw new Exception("Failed to run.");
+            }
         }
 
-        private static IEnumerable<string> GetSchemaDirectories()
+        /*  
+            This method edits the csproj XML to link in the constituent parts of the each codegen module.
+            It expects any codegen module to be structured as follows:
+
+            <package>
+                .codegen/
+                    Source/
+                        SourceFile1.cs
+                        SourceFile2.cs
+                    Templates/
+                        MyTemplate.tt
+                    Partials/
+                        Improbable.Vector3f
+            
+            Each of the Source, Templates, and Partials folder are optional.
+        */ 
+        private static void UpdateModules()
+        {
+            var csprojXml = XDocument.Load(CodegenExe);
+            var projectNode = csprojXml.Element("Project");
+            var codegenDirs = FindDirInPackages(CodegenDir).ToList();
+
+            // Traverse the XML and find all existing ItemGroup nodes with GdkPackageSource items.
+            // We will reuse these nodes or remove them if we no longer have a matching package.
+            var gdkItemGroups = projectNode
+                .Elements("ItemGroup")
+                .Where(ele => ele.Element("GdkPackageSource") != null)
+                .ToDictionary(ele => ele.Element("GdkPackageSource").Attribute("Include").Value, ele => ele);
+
+            foreach (var dir in codegenDirs)
+            {
+                if (!gdkItemGroups.TryGetValue(dir, out var itemGroup))
+                {
+                    itemGroup = new XElement("ItemGroup");
+                    projectNode.Add(itemGroup);
+                }
+
+                itemGroup.RemoveAll();
+
+                // Add an identifier so we can match this item group against a codegen module on subsequent runs.
+                var idEle = new XElement("GdkPackageSource");
+                idEle.SetAttributeValue("Include", dir);
+                itemGroup.Add(idEle);
+
+                var sourceDir = Path.Combine(dir, "Source");
+                if (Directory.Exists(sourceDir))
+                {
+                    // Ensure that we compile any source code provided by the codegen module.
+                    var ele = new XElement("Compile");
+                    ele.SetAttributeValue("Include", Path.Combine(sourceDir, "**"));
+                    itemGroup.Add(ele);
+                }
+
+                var templateDir = Path.Combine(dir, "Templates");
+                if (Directory.Exists(templateDir))
+                {
+                    // Ensure that we generate and compile in any T4 templates provided by the codegen module.
+                    var ele = new XElement("T4Files");
+                    ele.SetAttributeValue("Include", Path.Combine(templateDir, "**"));
+                    itemGroup.Add(ele);
+                }
+
+                var partialDir = Path.Combine(dir, "Partials");
+                if (Directory.Exists(templateDir))
+                {
+                    // Don't compile the partial.
+                    var noneEle = new XElement("None");
+                    noneEle.SetAttributeValue("Remove", Path.Combine(partialDir, "**"));
+                    itemGroup.Add(noneEle);
+
+                    // Add the partial as an embedded resource.
+                    var resEle = new XElement("EmbeddedResource");
+                    resEle.SetAttributeValue("Include", Path.Combine(partialDir, "**"));
+                    itemGroup.Add(resEle);
+
+                    // Ensure that we can see the Partials in the project view.
+                    var folderEle = new XElement("Folder");
+                    folderEle.SetAttributeValue("Include", Path.Combine(partialDir, "**"));
+                    itemGroup.Add(folderEle);
+                }
+
+                gdkItemGroups.Remove(dir);
+            }
+
+            // If we have any items left in gdkItemGroups, we should remove them from the csproj.
+            foreach (var pair in gdkItemGroups)
+            {
+                pair.Value.Remove();
+            }
+
+            csprojXml.Save(CodegenExe);
+        }
+
+        private static IEnumerable<string> FindDirInPackages(string directory)
         {
             // Get all packages we depend on
             var request = Client.List(offlineMode: true);
@@ -252,15 +412,15 @@ namespace Improbable.Gdk.Tools
                 // Wait for the request to complete
             }
 
-            var packagePathsWithSchema = request.Result
-                .Select(package => Path.Combine(package.resolvedPath, SchemaPackageDir))
+            var packagePaths = request.Result
+                .Select(package => Path.Combine(package.resolvedPath, directory))
                 .Where(Directory.Exists);
 
-            var cachedPackagePathsWithSchema = Directory.GetDirectories("Library/PackageCache")
-                .Select(path => Path.GetFullPath(Path.Combine(path, SchemaPackageDir)))
+            var cachedPackagePaths = Directory.GetDirectories("Library/PackageCache")
+                .Select(path => Path.GetFullPath(Path.Combine(path, directory)))
                 .Where(Directory.Exists);
 
-            return packagePathsWithSchema.Union(cachedPackagePathsWithSchema).Distinct();
+            return packagePaths.Union(cachedPackagePaths).Distinct();
         }
     }
 }
