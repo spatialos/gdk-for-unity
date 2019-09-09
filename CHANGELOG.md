@@ -9,6 +9,9 @@
 ### Internal
 
 - Added test coverage for `WorkerType` attribute and its interplay with `[Require]` fields in the `test-project`. [#1147](https://github.com/spatialos/gdk-for-unity/pull/1147)
+- Refactored internals of code generation for modular codegen. [#1151](https://github.com/spatialos/gdk-for-unity/pull/1151).
+    - Use `dotnet new` to generate a skeleton project then link in the various modules from each package.
+    - This project is created in the `build/codegen` directory and is then executed to actually generate the code.
 
 ## `0.2.8` - 2019-09-02
 
