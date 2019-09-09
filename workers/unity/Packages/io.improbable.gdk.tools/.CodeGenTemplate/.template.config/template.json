@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Improbable Worlds Ltd.",
+    "classifications": [ "SpatialOS", "GDK for Unity" ],
+    "identity": "Improbable.Gdk.CodeGenerator",
+    "name": "SpatialOS GDK for Unity CodeGenerator template",
+    "shortName": "gdk-for-unity-codegen",
+    "tags": {
+      "language": "C#",
+      "type": "item"
+    },
+    "symbols": {
+        "code-gen-lib-path": {
+            "type": "parameter",
+            "replaces": "{code-gen-lib-path}",
+            "datatype": "text",
+            "isRequired": true,
+            "description": "The path to the CodeGeneration base library."
+        }
+    }
+}
