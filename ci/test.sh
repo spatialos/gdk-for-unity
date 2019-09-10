@@ -18,7 +18,7 @@ echo "--- Testing Code Generator :gear:"
 
 dotnet test \
     --logger:"nunit;LogFilePath=${TEST_RESULTS_DIR}/code-gen-lib-test-results.xml" \
-    workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/CodeGeneration/CodeGeneration.csproj
+    workers/unity/Packages/io.improbable.gdk.tools/.CodeGenTemplate/CodeGenerationLib/CodeGenerationLib.csproj
 
 echo "--- Testing Unity: Editmode :writing_hand:"
 
