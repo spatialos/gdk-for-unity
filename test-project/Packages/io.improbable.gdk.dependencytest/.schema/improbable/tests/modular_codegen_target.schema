@@ -1,0 +1,6 @@
+package improbable.tests;
+
+
+type ModularTarget {
+    uint32 thing = 1;
+}
