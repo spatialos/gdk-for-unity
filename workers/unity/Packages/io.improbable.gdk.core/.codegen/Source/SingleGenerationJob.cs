@@ -18,8 +18,8 @@ namespace Improbable.Gdk.CodeGenerator
 
         private const string FileExtension = ".cs";
 
-        public SingleGenerationJob(string outputDir, DetailsStore store, IFileSystem fileSystem) : base(
-            outputDir, fileSystem)
+        public SingleGenerationJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
+            outputDir, fileSystem, store)
         {
             InputFiles = store.SchemaFiles.ToList();
             OutputFiles = new List<string>();

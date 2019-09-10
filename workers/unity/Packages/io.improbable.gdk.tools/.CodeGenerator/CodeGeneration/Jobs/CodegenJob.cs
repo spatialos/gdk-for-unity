@@ -1,26 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 
 namespace Improbable.Gdk.CodeGeneration.Jobs
 {
+    public class IgnoreCodegenJobAttribute : Attribute
+    {
+    }
+
     public abstract class CodegenJob
     {
-        public List<string> InputFiles { get; protected set; }
-        public List<string> OutputFiles { get; protected set; }
-        public string OutputDirectory { get; private set; }
+        public List<string> InputFiles = new List<string>();
+        public List<string> OutputFiles = new List<string>();
+        public readonly string OutputDirectory;
 
-        protected Dictionary<string, string> Content { get; set; }
+        protected readonly Dictionary<string, string> Content = new Dictionary<string, string>();
 
         private IFileSystem fileSystem;
 
-        public CodegenJob(string outputDirectory, IFileSystem fileSystem)
+        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
         {
-            OutputDirectory = outputDirectory;
+            OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
-
-            Content = new Dictionary<string, string>();
         }
 
         public void Clean()

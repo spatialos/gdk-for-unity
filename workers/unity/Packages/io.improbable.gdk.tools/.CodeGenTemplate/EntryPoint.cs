@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model;
@@ -60,12 +61,17 @@ namespace Improbable.Gdk.CodeGenerator
             var bundlePath = GenerateBundle();
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides);
-            var workerGenerationJob = new WorkerGenerationJob(options.NativeOutputDirectory, options, fileSystem);
-            var singleJob = new SingleGenerationJob(options.NativeOutputDirectory, store, fileSystem);
 
-            var runner = new JobRunner(fileSystem);
+            var jobs = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(CodegenJob).IsAssignableFrom(type))
+                .Where(type => !type.IsAbstract)
+                .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
+                .Select(type => (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
+                .ToArray();
 
-            runner.Run(singleJob, workerGenerationJob);
+            new JobRunner(fileSystem).Run(jobs);
             return 0;
         }
 
