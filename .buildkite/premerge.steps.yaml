@@ -63,7 +63,7 @@ steps:
       - step: "test"
         allow_failure: true
     plugins: 
-      - jamiebrynes7/test-summary#06aedb5c4da188cb4246a8cf4cb82783ec847c2f:
+      - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
           inputs:
             - label: ":octagonal_sign: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
