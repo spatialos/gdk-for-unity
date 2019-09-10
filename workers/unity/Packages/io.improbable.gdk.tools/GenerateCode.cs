@@ -57,6 +57,7 @@ namespace Improbable.Gdk.Tools
                 return;
             }
 
+            SetupProject();
             Generate();
         }
 
@@ -310,7 +311,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        /*  
+        /*
             This method edits the csproj XML to link in the constituent parts of the each codegen module.
             It expects any codegen module to be structured as follows:
 
@@ -323,9 +324,9 @@ namespace Improbable.Gdk.Tools
                         MyTemplate.tt
                     Partials/
                         Improbable.Vector3f
-            
+
             Each of the Source, Templates, and Partials folder are optional.
-        */ 
+        */
         private static void UpdateModules()
         {
             var csprojXml = XDocument.Load(CodegenExe);
@@ -337,7 +338,7 @@ namespace Improbable.Gdk.Tools
             var gdkItemGroups = projectNode
                 .Elements("ItemGroup")
                 .Where(ele => ele.Element("GdkPackageSource") != null)
-                .ToDictionary(ele => ele.Element("GdkPackageSource").Attribute("Include").Value, ele => ele);
+                .ToDictionary(ele => ele.Element("GdkPackageSource").Attribute("Remove").Value, ele => ele);
 
             foreach (var dir in codegenDirs)
             {
@@ -351,7 +352,7 @@ namespace Improbable.Gdk.Tools
 
                 // Add an identifier so we can match this item group against a codegen module on subsequent runs.
                 var idEle = new XElement("GdkPackageSource");
-                idEle.SetAttributeValue("Include", dir);
+                idEle.SetAttributeValue("Remove", dir);
                 itemGroup.Add(idEle);
 
                 var sourceDir = Path.Combine(dir, "Source");
@@ -373,7 +374,7 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var partialDir = Path.Combine(dir, "Partials");
-                if (Directory.Exists(templateDir))
+                if (Directory.Exists(partialDir))
                 {
                     // Don't compile the partial.
                     var noneEle = new XElement("None");
@@ -387,7 +388,7 @@ namespace Improbable.Gdk.Tools
 
                     // Ensure that we can see the Partials in the project view.
                     var folderEle = new XElement("Folder");
-                    folderEle.SetAttributeValue("Include", Path.Combine(partialDir, "**"));
+                    folderEle.SetAttributeValue("Include", partialDir);
                     itemGroup.Add(folderEle);
                 }
 
