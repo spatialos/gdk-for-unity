@@ -1,0 +1,7 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+
+namespace Improbable.Gdk.ModularCodegenTests
+{
+    public class TemplateTest {}
+}

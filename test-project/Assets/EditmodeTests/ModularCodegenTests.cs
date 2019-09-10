@@ -25,6 +25,14 @@ namespace Improbable.Gdk.EditmodeTests
             Assert.IsTrue(generatedCodeAssembly.GetTypes().Any(type => type.FullName == "Improbable.Gdk.ModularCodegenTests.Test"));
         }
 
+        // This checks that the templates are correctly compiled in
+        [Test]
+        public void Improbable_Gdk_ModularCodegenTests_TemplateTest_exists()
+        {
+            Assert.IsTrue(generatedCodeAssembly.GetTypes().Any(type => type.FullName == "Improbable.Gdk.ModularCodegenTests.TemplateTest"));
+        }
+
+
         [Test]
         public void Improbable_Tests_ModularTarget_has_partial_injected()
         {
