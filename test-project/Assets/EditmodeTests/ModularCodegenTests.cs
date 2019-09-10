@@ -13,33 +13,30 @@ namespace Improbable.Gdk.EditmodeTests
         [OneTimeSetUp]
         public void Setup()
         {
-            // Assembly.FullName == "<name> <version> <culture> <publickeytoken>", so we just .Contains() it.
-            generatedCodeAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                .First(assembly => assembly.FullName.Contains("Improbable.Gdk.Generated"));
+            generatedCodeAssembly = typeof(Position).Assembly;
         }
 
         // This checks that the codegen module was correctly picked up.
         [Test]
         public void Improbable_Gdk_ModularCodegenTests_Test_exists()
         {
-            Assert.IsTrue(generatedCodeAssembly.GetTypes().Any(type => type.FullName == "Improbable.Gdk.ModularCodegenTests.Test"));
+            Assert.IsNotNull(generatedCodeAssembly.GetType("Improbable.Gdk.ModularCodegenTests.Test"));
         }
 
         // This checks that the templates are correctly compiled in
         [Test]
         public void Improbable_Gdk_ModularCodegenTests_TemplateTest_exists()
         {
-            Assert.IsTrue(generatedCodeAssembly.GetTypes().Any(type => type.FullName == "Improbable.Gdk.ModularCodegenTests.TemplateTest"));
+            Assert.IsNotNull(generatedCodeAssembly.GetType("Improbable.Gdk.ModularCodegenTests.TemplateTest"));
         }
 
 
         [Test]
         public void Improbable_Tests_ModularTarget_has_partial_injected()
         {
-            var modularTargetType = generatedCodeAssembly.GetTypes()
-                .First(type => type.FullName == "Improbable.Tests.ModularTarget");
+            var modularTargetType = generatedCodeAssembly.GetType("Improbable.Tests.ModularTarget");
 
-            modularTargetType.GetNestedTypes().Any(type => type.Name == "InteriorClass");
+            Assert.IsNotNull(modularTargetType.GetNestedType("InteriorClass"));
         }
     }
 }
