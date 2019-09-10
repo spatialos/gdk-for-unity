@@ -11,13 +11,22 @@ namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatViewer : EditorWindow
     {
-        private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
+        private enum Tab
+        {
+            Updates,
+            Commands,
+            WorldCommands
+        }
+
+        private const string WindowUxmlPath =
+            "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
 
         private NetStatsUpdatesTab updatesTab;
+        private NetStatsCommandsTab commandsTab;
 
         private World selectedWorld;
-        private NetworkStatisticsSystem netStatSystem;
         private List<(string Name, uint ComponentId)> spatialComponents;
+        private Dictionary<Tab, VisualElement> tabs;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
@@ -57,8 +66,31 @@ namespace Improbable.Gdk.Debug.NetStats
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
 
+            // Initialize tabs
             updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
             updatesTab.InitializeTab(spatialComponents);
+
+            commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
+
+            // Setup tab buttons
+            tabs = new Dictionary<Tab, VisualElement>
+            {
+                { Tab.Updates, updatesTab },
+                { Tab.Commands, commandsTab }
+            };
+
+            rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(Tab.Updates);
+            rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(Tab.Commands);
+        }
+
+        private void SelectTab(Tab tabType)
+        {
+            foreach (var tab in tabs)
+            {
+                tab.Value.visible = false;
+            }
+
+            tabs[tabType].visible = true;
         }
 
         private void SetupWorldSelection()
@@ -100,7 +132,7 @@ namespace Improbable.Gdk.Debug.NetStats
             selectedWorld = world;
             rootVisualElement.Q<ToolbarMenu>("worldSelector").text =
                 selectedWorld?.Name ?? "No SpatialOS worlds active";
-            netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
+            var netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
 
             updatesTab.SetSystem(netStatSystem);
         }

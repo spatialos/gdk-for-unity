@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.NetStats
 {
-    internal class NetStatsUpdatesTab : VisualElement
+    internal class NetStatsCommandsTab : VisualElement
     {
         private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Debug.NetStats
         private List<(string Name, uint ComponentId)> spatialComponents;
         private Dictionary<int, VisualElement> listElements;
 
-        public new class UxmlFactory : UxmlFactory<NetStatsUpdatesTab>
+        public new class UxmlFactory : UxmlFactory<NetStatsCommandsTab>
         {
         }
 

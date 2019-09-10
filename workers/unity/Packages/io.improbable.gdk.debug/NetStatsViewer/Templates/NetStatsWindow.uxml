@@ -20,6 +20,6 @@
         </VisualElement>
         <ScrollView name="updatesContainer" class="updates-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsUpdatesTab>
-    <VisualElement name="commandsTab" class="tab" style="display: none;" />
+    <ns:NetStatsCommandsTab name="commandsTab" class="tab" />
     <VisualElement name="worldCommandsTab" class="tab" style="display: none;" />
 </UXML>
