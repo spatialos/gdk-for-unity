@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 using Newtonsoft.Json.Linq;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -18,13 +19,10 @@ namespace Improbable.Gdk.CodeGenerator
         private readonly string relativeOutputPath = Path.Combine("improbable", "buildsystem");
         private readonly string relativeEditorPath = Path.Combine("improbable", "buildsystem", "Editor");
 
-        public WorkerGenerationJob(string outputDir, CodeGeneratorOptions options, IFileSystem fileSystem) : base(
-            outputDir, fileSystem)
-        {
-            InputFiles = new List<string>();
-            OutputFiles = new List<string>();
 
-            workerTypesToGenerate = ExtractWorkerTypes(options.WorkerJsonDirectory);
+        public WorkerGenerationJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore) : base(baseOutputDir, fileSystem, detailsStore)
+        {
+            workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
 
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerFileName));
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerListFileName));
