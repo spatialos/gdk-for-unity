@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string CodegenTemplatePath = Path.Combine(Common.GetThisPackagePath(), ".CodeGenTemplate");
         private static readonly string CodegenExeDirectory = Path.Combine(Application.dataPath, "..", "build", "codegen");
-        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "CodeGen.csproj");
+        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "Codegen", "CodeGen.csproj");
 
         private static readonly string SchemaCompilerPath = Path.Combine(
             Common.GetPackagePath("io.improbable.worker.sdk"),
@@ -299,8 +299,7 @@ namespace Improbable.Gdk.Tools
             }
 
             var result = RedirectedProcess.Command(Common.DotNetBinary)
-                .WithArgs("new", "gdk-for-unity-codegen",
-                    "--code-gen-lib-path", $"\"{codegenLib}\"")
+                .WithArgs("new", "gdk-for-unity-codegen")
                 .InDirectory(CodegenExeDirectory)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();

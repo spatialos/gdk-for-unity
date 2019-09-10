@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGen", "CodeGen\CodeGen.csproj", "{B626BFEC-0017-415D-A943-2F1E8408C858}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerationLib", "CodeGenerationLib\CodeGenerationLib.csproj", "{76ACF346-A633-40AC-A339-0A73425C5C31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B626BFEC-0017-415D-A943-2F1E8408C858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B626BFEC-0017-415D-A943-2F1E8408C858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B626BFEC-0017-415D-A943-2F1E8408C858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B626BFEC-0017-415D-A943-2F1E8408C858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76ACF346-A633-40AC-A339-0A73425C5C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76ACF346-A633-40AC-A339-0A73425C5C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76ACF346-A633-40AC-A339-0A73425C5C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76ACF346-A633-40AC-A339-0A73425C5C31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

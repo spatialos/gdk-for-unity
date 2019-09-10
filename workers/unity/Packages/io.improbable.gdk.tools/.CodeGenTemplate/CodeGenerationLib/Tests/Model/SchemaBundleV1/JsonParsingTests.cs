@@ -16,7 +16,7 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1
 
 
         private const string BundleResourceName =
-            "CodeGeneration.Tests.Model.SchemaBundleV1.Resources.exhaustive_bundle.json";
+            "CodeGenerationLib.Tests.Model.SchemaBundleV1.Resources.exhaustive_bundle.json";
 
         [Test]
         public void ParsingSchemaBundle_does_not_throw()

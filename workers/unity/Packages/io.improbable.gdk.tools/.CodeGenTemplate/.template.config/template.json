@@ -8,14 +8,5 @@
     "tags": {
       "language": "C#",
       "type": "item"
-    },
-    "symbols": {
-        "code-gen-lib-path": {
-            "type": "parameter",
-            "replaces": "{code-gen-lib-path}",
-            "datatype": "text",
-            "isRequired": true,
-            "description": "The path to the CodeGeneration base library."
-        }
     }
 }
