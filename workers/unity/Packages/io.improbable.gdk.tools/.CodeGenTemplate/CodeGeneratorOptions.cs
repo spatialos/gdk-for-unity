@@ -9,6 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     /// </summary>
     public class CodeGeneratorOptions
     {
+        public static CodeGeneratorOptions Instance { get; private set; }
         public string WorkerJsonDirectory { get; private set; }
         public string JsonDirectory { get; private set; }
         public string DescriptorDirectory { get; private set; }
@@ -66,6 +67,7 @@ namespace Improbable.Gdk.CodeGenerator
                 options.HelpText = sw.ToString();
             }
 
+            Instance = options;
 
             return options;
         }

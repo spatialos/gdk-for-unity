@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using CodeGeneration.Tests.FileHandling;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Model.Details;
 using NUnit.Framework;
 
 namespace CodeGeneration.Tests.Jobs
@@ -88,19 +90,18 @@ namespace CodeGeneration.Tests.Jobs
             }
         }
 
+        [IgnoreCodegenJob]
         public class CodegenStub : CodegenJob
         {
             public static CodegenStub GetCleanInstance()
             {
-                return new CodegenStub("", new MockFileSystem());
+                return new CodegenStub("", new MockFileSystem(), null);
             }
 
             internal MockFileSystem myFileSystem;
 
-            public CodegenStub(string outputDirectory, IFileSystem fileSystem) : base(outputDirectory, fileSystem)
+            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore) : base(outputDirectory, fileSystem, detailsStore)
             {
-                InputFiles = new List<string>();
-                OutputFiles = new List<string>();
                 myFileSystem = (MockFileSystem) fileSystem;
             }
 
