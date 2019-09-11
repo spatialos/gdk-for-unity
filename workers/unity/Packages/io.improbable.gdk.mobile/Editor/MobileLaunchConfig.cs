@@ -1,8 +1,10 @@
+using System;
 using UnityEditor;
 
 namespace Improbable.Gdk.Mobile
 {
-    public class MobileLaunchConfig
+    [Serializable]
+    public struct MobileLaunchConfig
     {
         private const string DevelopmentTeamIdEditorPrefKey = "DevelopmentTeam";
         private const string RuntimeIpEditorPrefKey = "RuntimeIp";
