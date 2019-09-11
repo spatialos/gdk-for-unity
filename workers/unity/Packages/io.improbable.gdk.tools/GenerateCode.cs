@@ -277,27 +277,6 @@ namespace Improbable.Gdk.Tools
 
             Directory.CreateDirectory(CodegenExeDirectory);
 
-            var codegenLib = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), CodeGenLibFile));
-
-            // Fix up symlinking for Mac
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                var packageAttributes = File.GetAttributes(Common.GetThisPackagePath());
-                if (packageAttributes.HasFlag(FileAttributes.ReparsePoint))
-                {
-                    var process = RedirectedProcess.Command("pwd")
-                        .WithArgs("-P")
-                        .InDirectory(Common.GetThisPackagePath())
-                        .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .RunAsync(CancellationToken.None)
-                        .Result;
-
-                    var realPath = string.Join("\n", process.Stdout).Trim();
-
-                    codegenLib = Path.GetFullPath(Path.Combine(realPath, CodeGenLibFile));
-                }
-            }
-
             var result = RedirectedProcess.Command(Common.DotNetBinary)
                 .WithArgs("new", "gdk-for-unity-codegen")
                 .InDirectory(CodegenExeDirectory)
