@@ -29,9 +29,9 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [TearDown]
-        public void TearDown()
+        public override void TearDown()
         {
-            base.Setup();
+            base.TearDown();
             Object.DestroyImmediate(createdGameObject);
         }
 
