@@ -11,6 +11,7 @@
 ### Fixed
 
 - Fixed a bug where `MonoBehaviour`s with `WorkerType` attributes would not be enabled even if the owning worker's type was a match for the `WorkerType` attribute. [#1147](https://github.com/spatialos/gdk-for-unity/pull/1147)
+- Fixed a bug where the mobile configuration would get reset whenever assembly got reloaded or you entered Playmode.
 
 ### Internal
 
