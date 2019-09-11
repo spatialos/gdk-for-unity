@@ -18,7 +18,7 @@
     <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="{code-gen-lib-path}" />
+    <ProjectReference Include="..\CodeGenerationLib\CodeGenerationLib.csproj" />
   </ItemGroup>
   <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
   <Target Name="Code Template Generation" BeforeTargets="BeforeBuild">

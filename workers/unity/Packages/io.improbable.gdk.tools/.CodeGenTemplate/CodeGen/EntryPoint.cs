@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -64,7 +65,18 @@ namespace Improbable.Gdk.CodeGenerator
 
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(assembly =>
+                {
+                    try
+                    {
+                        return assembly.GetTypes();
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        Console.Error.WriteLine($"Failed to load assembly {assembly.FullName} with error {e}");
+                        return Enumerable.Empty<Type>();
+                    }
+                })
                 .Where(type => typeof(CodegenJob).IsAssignableFrom(type))
                 .Where(type => !type.IsAbstract)
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())

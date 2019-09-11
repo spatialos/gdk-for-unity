@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string CodegenTemplatePath = Path.Combine(Common.GetThisPackagePath(), ".CodeGenTemplate");
         private static readonly string CodegenExeDirectory = Path.Combine(Application.dataPath, "..", "build", "codegen");
-        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "CodeGen.csproj");
+        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "Codegen", "CodeGen.csproj");
 
         private static readonly string SchemaCompilerPath = Path.Combine(
             Common.GetPackagePath("io.improbable.worker.sdk"),
@@ -277,30 +277,8 @@ namespace Improbable.Gdk.Tools
 
             Directory.CreateDirectory(CodegenExeDirectory);
 
-            var codegenLib = Path.GetFullPath(Path.Combine(Common.GetThisPackagePath(), CodeGenLibFile));
-
-            // Fix up symlinking for Mac
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                var packageAttributes = File.GetAttributes(Common.GetThisPackagePath());
-                if (packageAttributes.HasFlag(FileAttributes.ReparsePoint))
-                {
-                    var process = RedirectedProcess.Command("pwd")
-                        .WithArgs("-P")
-                        .InDirectory(Common.GetThisPackagePath())
-                        .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .RunAsync(CancellationToken.None)
-                        .Result;
-
-                    var realPath = string.Join("\n", process.Stdout).Trim();
-
-                    codegenLib = Path.GetFullPath(Path.Combine(realPath, CodeGenLibFile));
-                }
-            }
-
             var result = RedirectedProcess.Command(Common.DotNetBinary)
-                .WithArgs("new", "gdk-for-unity-codegen",
-                    "--code-gen-lib-path", $"\"{codegenLib}\"")
+                .WithArgs("new", "gdk-for-unity-codegen")
                 .InDirectory(CodegenExeDirectory)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
