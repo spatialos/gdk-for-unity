@@ -386,38 +386,14 @@ var fieldDetails = fieldDetailsList[i]; #>
         {
             public uint ComponentId => <#= componentDetails.ComponentName  #>.ComponentId;
 
-            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            internal static Dynamic.VTable<Update, Snapshot> VTable = new Dynamic.VTable<Update, Snapshot>
             {
-                DeserializeComponent = DeserializeData,
-                DeserializeUpdate = DeserializeUpdate,
                 DeserializeSnapshot = DeserializeSnapshot,
                 SerializeSnapshot = SerializeSnapshot,
                 DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
                 SerializeSnapshotRaw = Serialization.SerializeSnapshot,
                 ConvertSnapshotToUpdate = SnapshotToUpdate
             };
-
-            private static Component DeserializeData(ComponentData data, World world)
-            {
-                var schemaDataOpt = data.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
-                }
-
-                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
-            }
-
-            private static Update DeserializeUpdate(ComponentUpdate update, World world)
-            {
-                var schemaDataOpt = update.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
-                }
-
-                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
-            }
 
             private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
@@ -452,7 +428,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
+                handler.Accept<Update, Snapshot>(ComponentId, VTable);
             }
         }
     }
