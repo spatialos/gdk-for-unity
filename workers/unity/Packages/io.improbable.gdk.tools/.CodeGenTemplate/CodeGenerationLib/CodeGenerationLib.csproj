@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
-        <RootNamespace>CodeGeneration</RootNamespace>
+        <RootNamespace>CodeGenerationLib</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
