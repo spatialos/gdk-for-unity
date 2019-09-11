@@ -25,17 +25,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     {
         public static void WriteCheckIsCleared(CodeWriter codeWriter, uint fieldNumber)
         {
-            codeWriter.WriteLine("bool isCleared = false;");
-            codeWriter.WriteLine("foreach (var fieldIndex in clearedFields)");
-            using (codeWriter.Scope())
-            {
-                codeWriter.WriteLine($"isCleared = fieldIndex == {fieldNumber};");
-                codeWriter.WriteLine("if (isCleared)");
-                using (codeWriter.Scope())
-                {
-                    codeWriter.WriteLine("break;");
-                }
-            }
+            codeWriter.WriteLine($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
         }
     }
 
@@ -43,7 +33,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     {
         public string Type => containedType.FqnType;
 
-        private ContainedType containedType;
+        private readonly ContainedType containedType;
 
         public SingularFieldType(TypeReference innerType, DetailsStore store)
         {
@@ -64,11 +54,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
-                codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-                codeWriter.WriteLine($"{fieldInstance} = value;");
+                codeWriter.WriteLine($"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -78,11 +66,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
-                codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(value);");
+                codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -92,8 +78,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-            codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(value);");
+            codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
         }
@@ -124,7 +109,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             }
         }
 
-        private ContainedType containedType;
+        private readonly ContainedType containedType;
 
         public OptionFieldType(TypeReference innerType, DetailsStore store)
         {
@@ -134,8 +119,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({fieldInstance}.HasValue)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({fieldInstance}.HasValue)"))
             {
                 codeWriter.WriteLine(containedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
             }
@@ -146,8 +130,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
                 codeWriter.WriteLine($"{fieldInstance} = new {Type}({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
             }
@@ -161,14 +144,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
 
-            codeWriter.WriteLine("if (isCleared)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope("if (isCleared)"))
             {
                 codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
             }
 
-            codeWriter.WriteLine($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
                 codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
                 codeWriter.WriteLine($"{fieldInstance} = new {Type}(value);");
@@ -184,17 +165,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
 
-            codeWriter.WriteLine("if (isCleared)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope("if (isCleared)"))
             {
                 codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
             }
 
-            codeWriter.WriteLine($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
-                codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}(value));");
+                codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -205,11 +183,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var codeWriter = new CodeWriter();
 
-            codeWriter.WriteLine($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
-                codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}(value));");
+                codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -220,8 +196,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var codeWriter = new CodeWriter();
 
-            codeWriter.WriteLine($"if (!{fieldInstance}.HasValue)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if (!{fieldInstance}.HasValue)"))
             {
                 codeWriter.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
             }
@@ -234,7 +209,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     {
         public string Type => $"global::System.Collections.Generic.List<{containedType.FqnType}>";
 
-        private ContainedType containedType;
+        private readonly ContainedType containedType;
 
         public ListFieldType(TypeReference innerType, DetailsStore store)
         {
@@ -244,8 +219,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"foreach (var value in {fieldInstance})");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"foreach (var value in {fieldInstance})"))
             {
                 codeWriter.WriteLine(containedType.GetSerializationStatement("value", schemaObject, fieldNumber));
             }
@@ -256,13 +230,18 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
-            codeWriter.WriteLine($"var list = {fieldInstance};");
-            codeWriter.WriteLine($"var listLength = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-            codeWriter.WriteLine("for (var i = 0; i < listLength; i++)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"list.Add({containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")});");
+                codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
+                codeWriter.WriteLine($"var list = {fieldInstance};");
+                codeWriter.WriteLine(
+                    $"var listLength = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
+
+                using (codeWriter.Scope("for (var i = 0; i < listLength; i++)"))
+                {
+                    codeWriter.WriteLine(
+                        $"list.Add({containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")});");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -272,21 +251,23 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            codeWriter.WriteLine("if (listSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{fieldInstance}.Clear();");
-            }
+                codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
 
-            codeWriter.WriteLine("for (var i = 0; i < listSize; i++)");
-            using (codeWriter.Scope())
-            {
-                codeWriter.WriteLine($"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
-                codeWriter.WriteLine($"{fieldInstance}.Add(value);");
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+                using (codeWriter.Scope("if (listSize > 0 || isCleared)"))
+                {
+                    codeWriter.WriteLine($"{fieldInstance}.Clear();");
+                }
+
+                using (codeWriter.Scope("for (var i = 0; i < listSize; i++)"))
+                {
+                    codeWriter.WriteLine(
+                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
+                    codeWriter.WriteLine($"{fieldInstance}.Add(value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -296,21 +277,24 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            codeWriter.WriteLine("if (listSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-            }
+                codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
 
-            codeWriter.WriteLine("for (var i = 0; i < listSize; i++)");
-            using (codeWriter.Scope())
-            {
-                codeWriter.WriteLine($"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
-                codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(value);");
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+                using (codeWriter.Scope("if (listSize > 0 || isCleared)"))
+                {
+                    codeWriter.WriteLine(
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+                }
+
+                using (codeWriter.Scope("for (var i = 0; i < listSize; i++)"))
+                {
+                    codeWriter.WriteLine(
+                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
+                    codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -320,15 +304,19 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
-
-            codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-
-            codeWriter.WriteLine("for (var i = 0; i < listSize; i++)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
-                codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(value);");
+                codeWriter.WriteLine($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
+
+                codeWriter.WriteLine(
+                    $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+
+                using (codeWriter.Scope("for (var i = 0; i < listSize; i++)"))
+                {
+                    codeWriter.WriteLine(
+                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};");
+                    codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -339,8 +327,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var codeWriter = new CodeWriter();
 
-            codeWriter.WriteLine($"if ({fieldInstance}.Count == 0)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({fieldInstance}.Count == 0)"))
             {
                 codeWriter.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
             }
@@ -351,10 +338,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
     public class MapFieldType : IFieldType
     {
-        public string Type => $"global::System.Collections.Generic.Dictionary<{keyType.FqnType},{valueType.FqnType}>";
+        public string Type => $"global::System.Collections.Generic.Dictionary<{keyType.FqnType}, {valueType.FqnType}>";
 
-        private ContainedType keyType;
-        private ContainedType valueType;
+        private readonly ContainedType keyType;
+        private readonly ContainedType valueType;
 
         public MapFieldType(TypeReference keyType, TypeReference valueType, DetailsStore store)
         {
@@ -365,8 +352,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"foreach (var keyValuePair in {fieldInstance})");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"foreach (var keyValuePair in {fieldInstance})"))
             {
                 codeWriter.WriteLine($"var mapObj = {schemaObject}.AddObject({fieldNumber});");
                 codeWriter.WriteLine(keyType.GetSerializationStatement("keyValuePair.Key", "mapObj", 1));
@@ -379,17 +365,18 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-
-            codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
-            codeWriter.WriteLine($"var map = {fieldInstance};");
-            codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-            codeWriter.WriteLine("for (var i = 0; i < mapSize; i++)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
-                codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
-                codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
-                codeWriter.WriteLine("map.Add(key, value);");
+                codeWriter.WriteLine($"var map = new {Type}();");
+                codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
+                codeWriter.WriteLine($"{fieldInstance} = map;");
+                using (codeWriter.Scope("for (var i = 0; i < mapSize; i++)"))
+                {
+                    codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
+                    codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
+                    codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
+                    codeWriter.WriteLine("map.Add(key, value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -398,23 +385,24 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            codeWriter.WriteLine("if (mapSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{fieldInstance}.Clear();");
-            }
+                codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
 
-            codeWriter.WriteLine("for (var i = 0; i < mapSize; i++)");
-            using (codeWriter.Scope())
-            {
-                codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
-                codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
-                codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
-                codeWriter.WriteLine($"{fieldInstance}.Add(key, value);");
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+                using (codeWriter.Scope("if (mapSize > 0 || isCleared)"))
+                {
+                    codeWriter.WriteLine($"{fieldInstance}.Clear();");
+                }
+
+                using (codeWriter.Scope("for (var i = 0; i < mapSize; i++)"))
+                {
+                    codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
+                    codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
+                    codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
+                    codeWriter.WriteLine($"{fieldInstance}.Add(key, value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -424,23 +412,25 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            codeWriter.WriteLine("if (mapSize > 0 || isCleared)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-            }
+                codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
 
-            codeWriter.WriteLine("for (var i = 0; i < mapSize; i++)");
-            using (codeWriter.Scope())
-            {
-                codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
-                codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
-                codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
-                codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(key, value);");
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
+
+                using (codeWriter.Scope("if (mapSize > 0 || isCleared)"))
+                {
+                    codeWriter.WriteLine(
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+                }
+
+                using (codeWriter.Scope("for (var i = 0; i < mapSize; i++)"))
+                {
+                    codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
+                    codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
+                    codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
+                    codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(key, value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -450,17 +440,19 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-            codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
-
-            codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-
-            codeWriter.WriteLine("for (var i = 0; i < mapSize; i++)");
             using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
-                codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
-                codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
-                codeWriter.WriteLine($"{updateFieldInstance}.Value.Add(key, value);");
+                codeWriter.WriteLine($"var map = new {Type}();");
+                codeWriter.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
+                codeWriter.WriteLine($"{updateFieldInstance} = map;");
+
+                using (codeWriter.Scope("for (var i = 0; i < mapSize; i++)"))
+                {
+                    codeWriter.WriteLine($"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);");
+                    codeWriter.WriteLine($"var key = {keyType.GetDeserializationExpression("mapObj", 1)};");
+                    codeWriter.WriteLine($"var value = {valueType.GetDeserializationExpression("mapObj", 2)};");
+                    codeWriter.WriteLine($"map.Add(key, value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -471,8 +463,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var codeWriter = new CodeWriter();
 
-            codeWriter.WriteLine($"if ({fieldInstance}.Count == 0)");
-            using (codeWriter.Scope())
+            using (codeWriter.Scope($"if ({fieldInstance}.Count == 0)"))
             {
                 codeWriter.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
             }
@@ -483,8 +474,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
     public class ContainedType
     {
-        public string FqnType;
-        private ValueType category;
+        public readonly string FqnType;
+        private readonly ValueType category;
         private PrimitiveType? primitiveType;
 
         public ContainedType(TypeReference innerType)
@@ -522,7 +513,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Type:
                     return $"{FqnType}.Serialization.Serialize({instance}, {schemaObject}.AddObject({fieldNumber}));";
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown type category encountered.");
+                    throw new ArgumentOutOfRangeException(nameof(category), "Unknown type category encountered.");
             }
         }
 
@@ -538,7 +529,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Type:
                     return $"{FqnType}.Serialization.Deserialize({schemaObject}.GetObject({fieldNumber}))";
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown type category encountered.");
+                    throw new ArgumentOutOfRangeException(nameof(category), "Unknown type category encountered.");
             }
         }
 
@@ -554,7 +545,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Type:
                     return $"{schemaObject}.GetObjectCount({fieldNumber})";
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown type category encountered.");
+                    throw new ArgumentOutOfRangeException(nameof(category), "Unknown type category encountered.");
             }
         }
 
@@ -570,7 +561,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Type:
                     return $"{FqnType}.Serialization.Deserialize({schemaObject}.IndexObject({fieldNumber}, (uint) {index}))";
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown type category encountered.");
+                    throw new ArgumentOutOfRangeException(nameof(category), "Unknown type category encountered.");
             }
         }
     }
