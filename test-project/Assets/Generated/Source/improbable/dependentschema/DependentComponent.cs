@@ -149,7 +149,7 @@ namespace Improbable.DependentSchema
 
             internal uint eHandle;
 
-            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType> E
+            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E
             {
                 get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Get(eHandle);
                 set
@@ -209,9 +209,9 @@ namespace Improbable.DependentSchema
             public global::Improbable.TestSchema.SomeEnum B;
             public global::Improbable.TestSchema.SomeEnum? C;
             public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D;
-            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType> E;
+            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E;
 
-            public Snapshot(global::Improbable.TestSchema.ExhaustiveRepeatedData a, global::Improbable.TestSchema.SomeEnum b, global::Improbable.TestSchema.SomeEnum? c, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> d, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType> e)
+            public Snapshot(global::Improbable.TestSchema.ExhaustiveRepeatedData a, global::Improbable.TestSchema.SomeEnum b, global::Improbable.TestSchema.SomeEnum? c, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> d, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> e)
             {
                 A = a;
                 B = b;
@@ -225,26 +225,71 @@ namespace Improbable.DependentSchema
         {
             public static void SerializeComponent(global::Improbable.DependentSchema.DependentComponent.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
+                global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(component.A, obj.AddObject(1));
+                obj.AddEnum(2, (uint) component.B);
+                if (component.C.HasValue)
+                {
+                    obj.AddEnum(3, (uint) component.C.Value);
+                }
+                
+                foreach (var value in component.D)
+                {
+                    global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
+                }
+                
+                foreach (var keyValuePair in component.E)
+                {
+                    var mapObj = obj.AddObject(5);
+                    mapObj.AddEnum(1, (uint) keyValuePair.Key);
+                    global::Improbable.TestSchema.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
+                }
+                
+            }
+
+            public static void SerializeUpdate(global::Improbable.DependentSchema.DependentComponent.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
+            {
+                var obj = updateObj.GetFields();
+                if (component.IsDataDirty(0))
                 {
                     global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(component.A, obj.AddObject(1));
+                    
                 }
+
+                if (component.IsDataDirty(1))
                 {
                     obj.AddEnum(2, (uint) component.B);
+                    
                 }
+
+                if (component.IsDataDirty(2))
                 {
                     if (component.C.HasValue)
                     {
                         obj.AddEnum(3, (uint) component.C.Value);
                     }
                     
+                    if (!component.C.HasValue)
+                    {
+                        updateObj.AddClearedField(3);
+                    }
+                    
                 }
+
+                if (component.IsDataDirty(3))
                 {
                     foreach (var value in component.D)
                     {
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
                     }
                     
+                    if (component.D.Count == 0)
+                    {
+                        updateObj.AddClearedField(4);
+                    }
+                    
                 }
+
+                if (component.IsDataDirty(4))
                 {
                     foreach (var keyValuePair in component.E)
                     {
@@ -253,78 +298,13 @@ namespace Improbable.DependentSchema
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
                     }
                     
-                }
-            }
-
-            public static void SerializeUpdate(global::Improbable.DependentSchema.DependentComponent.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
-            {
-                var obj = updateObj.GetFields();
-                {
-                    if (component.IsDataDirty(0))
-                    {
-                        global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(component.A, obj.AddObject(1));
-                    }
-
-                    
-                }
-                {
-                    if (component.IsDataDirty(1))
-                    {
-                        obj.AddEnum(2, (uint) component.B);
-                    }
-
-                    
-                }
-                {
-                    if (component.IsDataDirty(2))
-                    {
-                        if (component.C.HasValue)
-                        {
-                            obj.AddEnum(3, (uint) component.C.Value);
-                        }
-                        
-                    }
-
-                    if (!component.C.HasValue)
-                        {
-                            updateObj.AddClearedField(3);
-                        }
-                        
-                }
-                {
-                    if (component.IsDataDirty(3))
-                    {
-                        foreach (var value in component.D)
-                        {
-                            global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
-                        }
-                        
-                    }
-
-                    if (component.D.Count == 0)
-                        {
-                            updateObj.AddClearedField(4);
-                        }
-                        
-                }
-                {
-                    if (component.IsDataDirty(4))
-                    {
-                        foreach (var keyValuePair in component.E)
-                        {
-                            var mapObj = obj.AddObject(5);
-                            mapObj.AddEnum(1, (uint) keyValuePair.Key);
-                            global::Improbable.TestSchema.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
-                        }
-                        
-                    }
-
                     if (component.E.Count == 0)
-                        {
-                            updateObj.AddClearedField(5);
-                        }
-                        
+                    {
+                        updateObj.AddClearedField(5);
+                    }
+                    
                 }
+
             }
 
             public static void SerializeUpdate(global::Improbable.DependentSchema.DependentComponent.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
@@ -400,35 +380,30 @@ namespace Improbable.DependentSchema
 
             public static void SerializeSnapshot(global::Improbable.DependentSchema.DependentComponent.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
-                {
-                    global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(snapshot.A, obj.AddObject(1));
-                }
-                {
-                    obj.AddEnum(2, (uint) snapshot.B);
-                }
-                {
-                    if (snapshot.C.HasValue)
+                global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(snapshot.A, obj.AddObject(1));
+
+                obj.AddEnum(2, (uint) snapshot.B);
+
+                if (snapshot.C.HasValue)
                 {
                     obj.AddEnum(3, (uint) snapshot.C.Value);
                 }
                 
-                }
-                {
-                    foreach (var value in snapshot.D)
+
+                foreach (var value in snapshot.D)
                 {
                     global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
                 }
                 
-                }
-                {
-                    foreach (var keyValuePair in snapshot.E)
+
+                foreach (var keyValuePair in snapshot.E)
                 {
                     var mapObj = obj.AddObject(5);
                     mapObj.AddEnum(1, (uint) keyValuePair.Key);
                     global::Improbable.TestSchema.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
                 }
                 
-                }
+
             }
 
             public static global::Improbable.DependentSchema.DependentComponent.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -436,20 +411,14 @@ namespace Improbable.DependentSchema
                 var component = new global::Improbable.DependentSchema.DependentComponent.Component();
 
                 component.aHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Allocate(world);
-                {
-                    component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
-                }
-                {
-                    component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                }
+                component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
+                component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
                 component.cHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+                if (obj.GetEnumCount(3) == 1)
                 {
-                    if (obj.GetEnumCount(3) == 1)
-                    {
-                        component.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
-                    }
-                    
+                    component.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                 }
+                
                 component.dHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Allocate(world);
                 {
                     component.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
@@ -459,13 +428,13 @@ namespace Improbable.DependentSchema
                     {
                         list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
                     }
-                    
                 }
+                
                 component.eHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Allocate(world);
                 {
-                    component.E = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>();
-                    var map = component.E;
+                    var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
                     var mapSize = obj.GetObjectCount(5);
+                    component.E = map;
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -473,8 +442,8 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         map.Add(key, value);
                     }
-                    
                 }
+                
                 return component;
             }
 
@@ -483,56 +452,31 @@ namespace Improbable.DependentSchema
                 var update = new global::Improbable.DependentSchema.DependentComponent.Update();
                 var obj = updateObj.GetFields();
 
-                var clearedFields = updateObj.GetClearedFields();
-
+                if (obj.GetObjectCount(1) == 1)
                 {
-                    if (obj.GetObjectCount(1) == 1)
-                    {
-                        var value = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
-                        update.A = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.ExhaustiveRepeatedData>(value);
-                    }
-                    
+                    update.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
                 }
+                
+                if (obj.GetEnumCount(2) == 1)
                 {
-                    if (obj.GetEnumCount(2) == 1)
-                    {
-                        var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                        update.B = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum>(value);
-                    }
-                    
+                    update.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
                 }
+                
                 {
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 3;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(3);
                     if (isCleared)
                     {
                         update.C = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum?>(new global::Improbable.TestSchema.SomeEnum?());
                     }
                     else if (obj.GetEnumCount(3) == 1)
                     {
-                        var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3);
-                        update.C = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum?>(new global::Improbable.TestSchema.SomeEnum?(value));
+                        update.C = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum?>((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                     }
-                    
                 }
+                
                 {
                     var listSize = obj.GetObjectCount(4);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 4;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(4);
                     if (listSize > 0 || isCleared)
                     {
                         update.D = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>(new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>());
@@ -542,22 +486,14 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i));
                         update.D.Value.Add(value);
                     }
-                    
                 }
+                
                 {
                     var mapSize = obj.GetObjectCount(5);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 5;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(5);
                     if (mapSize > 0 || isCleared)
                     {
-                        update.E = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>>(new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>());
+                        update.E = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>(new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>());
                     }
                     for (var i = 0; i < mapSize; i++)
                     {
@@ -566,8 +502,8 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         update.E.Value.Add(key, value);
                     }
-                    
                 }
+                
                 return update;
             }
 
@@ -576,24 +512,15 @@ namespace Improbable.DependentSchema
                 var update = new global::Improbable.DependentSchema.DependentComponent.Update();
                 var obj = data.GetFields();
 
+                update.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
+                
+                update.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
+                
+                if (obj.GetEnumCount(3) == 1)
                 {
-                    var value = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
-                    update.A = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.ExhaustiveRepeatedData>(value);
-                    
+                    update.C = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum?>((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                 }
-                {
-                    var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                    update.B = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum>(value);
-                    
-                }
-                {
-                    if (obj.GetEnumCount(3) == 1)
-                    {
-                        var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3);
-                        update.C = new global::Improbable.Gdk.Core.Option<global::Improbable.TestSchema.SomeEnum?>(new global::Improbable.TestSchema.SomeEnum?(value));
-                    }
-                    
-                }
+                
                 {
                     var listSize = obj.GetObjectCount(4);
                     update.D = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>(new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>());
@@ -602,20 +529,21 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i));
                         update.D.Value.Add(value);
                     }
-                    
                 }
+                
                 {
+                    var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
                     var mapSize = obj.GetObjectCount(5);
-                    update.E = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>>(new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>());
+                    update.E = map;
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
                         var key = (global::Improbable.TestSchema.SomeEnum) mapObj.GetEnum(1);
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
-                        update.E.Value.Add(key, value);
+                        map.Add(key, value);
                     }
-                    
                 }
+                
                 return update;
             }
 
@@ -623,22 +551,13 @@ namespace Improbable.DependentSchema
             {
                 var component = new global::Improbable.DependentSchema.DependentComponent.Snapshot();
 
+                component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
+                component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
+                if (obj.GetEnumCount(3) == 1)
                 {
-                    component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
+                    component.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                 }
-
-                {
-                    component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                }
-
-                {
-                    if (obj.GetEnumCount(3) == 1)
-                    {
-                        component.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
-                    }
-                    
-                }
-
+                
                 {
                     component.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
                     var list = component.D;
@@ -647,13 +566,12 @@ namespace Improbable.DependentSchema
                     {
                         list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
                     }
-                    
                 }
-
+                
                 {
-                    component.E = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>();
-                    var map = component.E;
+                    var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
                     var mapSize = obj.GetObjectCount(5);
+                    component.E = map;
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -661,9 +579,8 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         map.Add(key, value);
                     }
-                    
                 }
-
+                
                 return component;
             }
 
@@ -671,34 +588,18 @@ namespace Improbable.DependentSchema
             {
                 var obj = updateObj.GetFields();
 
-                var clearedFields = updateObj.GetClearedFields();
-
+                if (obj.GetObjectCount(1) == 1)
                 {
-                    if (obj.GetObjectCount(1) == 1)
-                    {
-                        var value = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
-                        component.A = value;
-                    }
-                    
+                    component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
                 }
+                
+                if (obj.GetEnumCount(2) == 1)
                 {
-                    if (obj.GetEnumCount(2) == 1)
-                    {
-                        var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                        component.B = value;
-                    }
-                    
+                    component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
                 }
+                
                 {
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 3;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(3);
                     if (isCleared)
                     {
                         component.C = new global::Improbable.TestSchema.SomeEnum?();
@@ -708,19 +609,11 @@ namespace Improbable.DependentSchema
                         var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3);
                         component.C = new global::Improbable.TestSchema.SomeEnum?(value);
                     }
-                    
                 }
+                
                 {
                     var listSize = obj.GetObjectCount(4);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 4;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(4);
                     if (listSize > 0 || isCleared)
                     {
                         component.D.Clear();
@@ -730,19 +623,11 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i));
                         component.D.Add(value);
                     }
-                    
                 }
+                
                 {
                     var mapSize = obj.GetObjectCount(5);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 5;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(5);
                     if (mapSize > 0 || isCleared)
                     {
                         component.E.Clear();
@@ -754,42 +639,26 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         component.E.Add(key, value);
                     }
-                    
                 }
+                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.DependentSchema.DependentComponent.Snapshot snapshot)
             {
                 var obj = updateObj.GetFields();
 
-                var clearedFields = updateObj.GetClearedFields();
-
+                if (obj.GetObjectCount(1) == 1)
                 {
-                    if (obj.GetObjectCount(1) == 1)
-                    {
-                        var value = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
-                        snapshot.A = value;
-                    }
-                    
+                    snapshot.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
                 }
+                
+                if (obj.GetEnumCount(2) == 1)
                 {
-                    if (obj.GetEnumCount(2) == 1)
-                    {
-                        var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
-                        snapshot.B = value;
-                    }
-                    
+                    snapshot.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
                 }
+                
                 {
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 3;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(3);
                     if (isCleared)
                     {
                         snapshot.C = new global::Improbable.TestSchema.SomeEnum?();
@@ -799,19 +668,11 @@ namespace Improbable.DependentSchema
                         var value = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3);
                         snapshot.C = new global::Improbable.TestSchema.SomeEnum?(value);
                     }
-                    
                 }
+                
                 {
                     var listSize = obj.GetObjectCount(4);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 4;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(4);
                     if (listSize > 0 || isCleared)
                     {
                         snapshot.D.Clear();
@@ -821,19 +682,11 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i));
                         snapshot.D.Add(value);
                     }
-                    
                 }
+                
                 {
                     var mapSize = obj.GetObjectCount(5);
-                    bool isCleared = false;
-                    foreach (var fieldIndex in clearedFields)
-                    {
-                        isCleared = fieldIndex == 5;
-                        if (isCleared)
-                        {
-                            break;
-                        }
-                    }
+                    var isCleared = updateObj.IsFieldCleared(5);
                     if (mapSize > 0 || isCleared)
                     {
                         snapshot.E.Clear();
@@ -845,8 +698,8 @@ namespace Improbable.DependentSchema
                         var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
                         snapshot.E.Add(key, value);
                     }
-                    
                 }
+                
             }
         }
 
@@ -860,7 +713,7 @@ namespace Improbable.DependentSchema
             public Option<global::Improbable.TestSchema.SomeEnum> B;
             public Option<global::Improbable.TestSchema.SomeEnum?> C;
             public Option<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>> D;
-            public Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>> E;
+            public Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>> E;
         }
 
 #if USE_LEGACY_REACTIVE_COMPONENTS
@@ -878,38 +731,14 @@ namespace Improbable.DependentSchema
         {
             public uint ComponentId => DependentComponent.ComponentId;
 
-            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            internal static Dynamic.VTable<Update, Snapshot> VTable = new Dynamic.VTable<Update, Snapshot>
             {
-                DeserializeComponent = DeserializeData,
-                DeserializeUpdate = DeserializeUpdate,
                 DeserializeSnapshot = DeserializeSnapshot,
                 SerializeSnapshot = SerializeSnapshot,
                 DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
                 SerializeSnapshotRaw = Serialization.SerializeSnapshot,
                 ConvertSnapshotToUpdate = SnapshotToUpdate
             };
-
-            private static Component DeserializeData(ComponentData data, World world)
-            {
-                var schemaDataOpt = data.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
-                }
-
-                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
-            }
-
-            private static Update DeserializeUpdate(ComponentUpdate update, World world)
-            {
-                var schemaDataOpt = update.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
-                }
-
-                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
-            }
 
             private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
@@ -935,18 +764,21 @@ namespace Improbable.DependentSchema
 
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
-                var update = new Update();
-                update.A = new Option<global::Improbable.TestSchema.ExhaustiveRepeatedData>(snapshot.A);
-                update.B = new Option<global::Improbable.TestSchema.SomeEnum>(snapshot.B);
-                update.C = new Option<global::Improbable.TestSchema.SomeEnum?>(snapshot.C);
-                update.D = new Option<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>(snapshot.D);
-                update.E = new Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>>(snapshot.E);
+                var update = new Update
+                {
+                    A = snapshot.A,
+                    B = snapshot.B,
+                    C = snapshot.C,
+                    D = snapshot.D,
+                    E = snapshot.E,
+                };
+
                 return update;
             }
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
+                handler.Accept<Update, Snapshot>(ComponentId, VTable);
             }
         }
     }

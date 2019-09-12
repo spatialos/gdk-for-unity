@@ -12,26 +12,26 @@ namespace Improbable.TestSchema
     [global::System.Serializable]
     public struct ExhaustiveMapKeyData
     {
-        public global::System.Collections.Generic.Dictionary<bool,string> Field1;
-        public global::System.Collections.Generic.Dictionary<float,string> Field2;
-        public global::System.Collections.Generic.Dictionary<byte[],string> Field3;
-        public global::System.Collections.Generic.Dictionary<int,string> Field4;
-        public global::System.Collections.Generic.Dictionary<long,string> Field5;
-        public global::System.Collections.Generic.Dictionary<double,string> Field6;
-        public global::System.Collections.Generic.Dictionary<string,string> Field7;
-        public global::System.Collections.Generic.Dictionary<uint,string> Field8;
-        public global::System.Collections.Generic.Dictionary<ulong,string> Field9;
-        public global::System.Collections.Generic.Dictionary<int,string> Field10;
-        public global::System.Collections.Generic.Dictionary<long,string> Field11;
-        public global::System.Collections.Generic.Dictionary<uint,string> Field12;
-        public global::System.Collections.Generic.Dictionary<ulong,string> Field13;
-        public global::System.Collections.Generic.Dictionary<int,string> Field14;
-        public global::System.Collections.Generic.Dictionary<long,string> Field15;
-        public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> Field16;
-        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string> Field17;
-        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string> Field18;
+        public global::System.Collections.Generic.Dictionary<bool, string> Field1;
+        public global::System.Collections.Generic.Dictionary<float, string> Field2;
+        public global::System.Collections.Generic.Dictionary<byte[], string> Field3;
+        public global::System.Collections.Generic.Dictionary<int, string> Field4;
+        public global::System.Collections.Generic.Dictionary<long, string> Field5;
+        public global::System.Collections.Generic.Dictionary<double, string> Field6;
+        public global::System.Collections.Generic.Dictionary<string, string> Field7;
+        public global::System.Collections.Generic.Dictionary<uint, string> Field8;
+        public global::System.Collections.Generic.Dictionary<ulong, string> Field9;
+        public global::System.Collections.Generic.Dictionary<int, string> Field10;
+        public global::System.Collections.Generic.Dictionary<long, string> Field11;
+        public global::System.Collections.Generic.Dictionary<uint, string> Field12;
+        public global::System.Collections.Generic.Dictionary<ulong, string> Field13;
+        public global::System.Collections.Generic.Dictionary<int, string> Field14;
+        public global::System.Collections.Generic.Dictionary<long, string> Field15;
+        public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string> Field16;
+        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string> Field17;
+        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string> Field18;
     
-        public ExhaustiveMapKeyData(global::System.Collections.Generic.Dictionary<bool,string> field1, global::System.Collections.Generic.Dictionary<float,string> field2, global::System.Collections.Generic.Dictionary<byte[],string> field3, global::System.Collections.Generic.Dictionary<int,string> field4, global::System.Collections.Generic.Dictionary<long,string> field5, global::System.Collections.Generic.Dictionary<double,string> field6, global::System.Collections.Generic.Dictionary<string,string> field7, global::System.Collections.Generic.Dictionary<uint,string> field8, global::System.Collections.Generic.Dictionary<ulong,string> field9, global::System.Collections.Generic.Dictionary<int,string> field10, global::System.Collections.Generic.Dictionary<long,string> field11, global::System.Collections.Generic.Dictionary<uint,string> field12, global::System.Collections.Generic.Dictionary<ulong,string> field13, global::System.Collections.Generic.Dictionary<int,string> field14, global::System.Collections.Generic.Dictionary<long,string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string> field18)
+        public ExhaustiveMapKeyData(global::System.Collections.Generic.Dictionary<bool, string> field1, global::System.Collections.Generic.Dictionary<float, string> field2, global::System.Collections.Generic.Dictionary<byte[], string> field3, global::System.Collections.Generic.Dictionary<int, string> field4, global::System.Collections.Generic.Dictionary<long, string> field5, global::System.Collections.Generic.Dictionary<double, string> field6, global::System.Collections.Generic.Dictionary<string, string> field7, global::System.Collections.Generic.Dictionary<uint, string> field8, global::System.Collections.Generic.Dictionary<ulong, string> field9, global::System.Collections.Generic.Dictionary<int, string> field10, global::System.Collections.Generic.Dictionary<long, string> field11, global::System.Collections.Generic.Dictionary<uint, string> field12, global::System.Collections.Generic.Dictionary<ulong, string> field13, global::System.Collections.Generic.Dictionary<int, string> field14, global::System.Collections.Generic.Dictionary<long, string> field15, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string> field16, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string> field17, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string> field18)
         {
             Field1 = field1;
             Field2 = field2;
@@ -224,236 +224,272 @@ namespace Improbable.TestSchema
             {
                 var instance = new ExhaustiveMapKeyData();
                 {
-                    instance.Field1 = new global::System.Collections.Generic.Dictionary<bool,string>();
-                    var map = instance.Field1;
-                    var mapSize = obj.GetObjectCount(1);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(1, (uint) i);
-                        var key = mapObj.GetBool(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<bool, string>();
+                        var mapSize = obj.GetObjectCount(1);
+                        instance.Field1 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(1, (uint) i);
+                            var key = mapObj.GetBool(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field2 = new global::System.Collections.Generic.Dictionary<float,string>();
-                    var map = instance.Field2;
-                    var mapSize = obj.GetObjectCount(2);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(2, (uint) i);
-                        var key = mapObj.GetFloat(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<float, string>();
+                        var mapSize = obj.GetObjectCount(2);
+                        instance.Field2 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(2, (uint) i);
+                            var key = mapObj.GetFloat(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field3 = new global::System.Collections.Generic.Dictionary<byte[],string>();
-                    var map = instance.Field3;
-                    var mapSize = obj.GetObjectCount(3);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(3, (uint) i);
-                        var key = mapObj.GetBytes(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<byte[], string>();
+                        var mapSize = obj.GetObjectCount(3);
+                        instance.Field3 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(3, (uint) i);
+                            var key = mapObj.GetBytes(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field4 = new global::System.Collections.Generic.Dictionary<int,string>();
-                    var map = instance.Field4;
-                    var mapSize = obj.GetObjectCount(4);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(4, (uint) i);
-                        var key = mapObj.GetInt32(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<int, string>();
+                        var mapSize = obj.GetObjectCount(4);
+                        instance.Field4 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(4, (uint) i);
+                            var key = mapObj.GetInt32(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field5 = new global::System.Collections.Generic.Dictionary<long,string>();
-                    var map = instance.Field5;
-                    var mapSize = obj.GetObjectCount(5);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(5, (uint) i);
-                        var key = mapObj.GetInt64(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<long, string>();
+                        var mapSize = obj.GetObjectCount(5);
+                        instance.Field5 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(5, (uint) i);
+                            var key = mapObj.GetInt64(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field6 = new global::System.Collections.Generic.Dictionary<double,string>();
-                    var map = instance.Field6;
-                    var mapSize = obj.GetObjectCount(6);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(6, (uint) i);
-                        var key = mapObj.GetDouble(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<double, string>();
+                        var mapSize = obj.GetObjectCount(6);
+                        instance.Field6 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(6, (uint) i);
+                            var key = mapObj.GetDouble(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field7 = new global::System.Collections.Generic.Dictionary<string,string>();
-                    var map = instance.Field7;
-                    var mapSize = obj.GetObjectCount(7);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(7, (uint) i);
-                        var key = mapObj.GetString(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<string, string>();
+                        var mapSize = obj.GetObjectCount(7);
+                        instance.Field7 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(7, (uint) i);
+                            var key = mapObj.GetString(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field8 = new global::System.Collections.Generic.Dictionary<uint,string>();
-                    var map = instance.Field8;
-                    var mapSize = obj.GetObjectCount(8);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(8, (uint) i);
-                        var key = mapObj.GetUint32(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<uint, string>();
+                        var mapSize = obj.GetObjectCount(8);
+                        instance.Field8 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(8, (uint) i);
+                            var key = mapObj.GetUint32(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field9 = new global::System.Collections.Generic.Dictionary<ulong,string>();
-                    var map = instance.Field9;
-                    var mapSize = obj.GetObjectCount(9);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(9, (uint) i);
-                        var key = mapObj.GetUint64(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<ulong, string>();
+                        var mapSize = obj.GetObjectCount(9);
+                        instance.Field9 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(9, (uint) i);
+                            var key = mapObj.GetUint64(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field10 = new global::System.Collections.Generic.Dictionary<int,string>();
-                    var map = instance.Field10;
-                    var mapSize = obj.GetObjectCount(10);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(10, (uint) i);
-                        var key = mapObj.GetSint32(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<int, string>();
+                        var mapSize = obj.GetObjectCount(10);
+                        instance.Field10 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(10, (uint) i);
+                            var key = mapObj.GetSint32(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field11 = new global::System.Collections.Generic.Dictionary<long,string>();
-                    var map = instance.Field11;
-                    var mapSize = obj.GetObjectCount(11);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(11, (uint) i);
-                        var key = mapObj.GetSint64(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<long, string>();
+                        var mapSize = obj.GetObjectCount(11);
+                        instance.Field11 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(11, (uint) i);
+                            var key = mapObj.GetSint64(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field12 = new global::System.Collections.Generic.Dictionary<uint,string>();
-                    var map = instance.Field12;
-                    var mapSize = obj.GetObjectCount(12);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(12, (uint) i);
-                        var key = mapObj.GetFixed32(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<uint, string>();
+                        var mapSize = obj.GetObjectCount(12);
+                        instance.Field12 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(12, (uint) i);
+                            var key = mapObj.GetFixed32(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field13 = new global::System.Collections.Generic.Dictionary<ulong,string>();
-                    var map = instance.Field13;
-                    var mapSize = obj.GetObjectCount(13);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(13, (uint) i);
-                        var key = mapObj.GetFixed64(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<ulong, string>();
+                        var mapSize = obj.GetObjectCount(13);
+                        instance.Field13 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(13, (uint) i);
+                            var key = mapObj.GetFixed64(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field14 = new global::System.Collections.Generic.Dictionary<int,string>();
-                    var map = instance.Field14;
-                    var mapSize = obj.GetObjectCount(14);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(14, (uint) i);
-                        var key = mapObj.GetSfixed32(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<int, string>();
+                        var mapSize = obj.GetObjectCount(14);
+                        instance.Field14 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(14, (uint) i);
+                            var key = mapObj.GetSfixed32(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field15 = new global::System.Collections.Generic.Dictionary<long,string>();
-                    var map = instance.Field15;
-                    var mapSize = obj.GetObjectCount(15);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(15, (uint) i);
-                        var key = mapObj.GetSfixed64(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<long, string>();
+                        var mapSize = obj.GetObjectCount(15);
+                        instance.Field15 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(15, (uint) i);
+                            var key = mapObj.GetSfixed64(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field16 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>();
-                    var map = instance.Field16;
-                    var mapSize = obj.GetObjectCount(16);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(16, (uint) i);
-                        var key = mapObj.GetEntityIdStruct(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>();
+                        var mapSize = obj.GetObjectCount(16);
+                        instance.Field16 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(16, (uint) i);
+                            var key = mapObj.GetEntityIdStruct(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field17 = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string>();
-                    var map = instance.Field17;
-                    var mapSize = obj.GetObjectCount(17);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(17, (uint) i);
-                        var key = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(1));
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>();
+                        var mapSize = obj.GetObjectCount(17);
+                        instance.Field17 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(17, (uint) i);
+                            var key = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(1));
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field18 = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string>();
-                    var map = instance.Field18;
-                    var mapSize = obj.GetObjectCount(18);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(18, (uint) i);
-                        var key = (global::Improbable.TestSchema.SomeEnum) mapObj.GetEnum(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>();
+                        var mapSize = obj.GetObjectCount(18);
+                        instance.Field18 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(18, (uint) i);
+                            var key = (global::Improbable.TestSchema.SomeEnum) mapObj.GetEnum(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }

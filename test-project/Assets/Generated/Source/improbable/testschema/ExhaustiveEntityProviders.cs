@@ -216,7 +216,7 @@ namespace Improbable.TestSchema
 
             public static class Field4Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -225,13 +225,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -241,7 +241,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -283,7 +283,7 @@ namespace Improbable.TestSchema
 
             public static class Field5Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -292,13 +292,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -308,7 +308,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {

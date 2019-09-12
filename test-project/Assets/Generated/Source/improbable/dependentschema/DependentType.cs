@@ -16,9 +16,9 @@ namespace Improbable.DependentSchema
         public global::Improbable.TestSchema.SomeEnum B;
         public global::Improbable.TestSchema.SomeEnum? C;
         public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D;
-        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType> E;
+        public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E;
     
-        public DependentType(global::Improbable.TestSchema.ExhaustiveRepeatedData a, global::Improbable.TestSchema.SomeEnum b, global::Improbable.TestSchema.SomeEnum? c, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> d, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType> e)
+        public DependentType(global::Improbable.TestSchema.ExhaustiveRepeatedData a, global::Improbable.TestSchema.SomeEnum b, global::Improbable.TestSchema.SomeEnum? c, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> d, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> e)
         {
             A = a;
             B = b;
@@ -78,25 +78,29 @@ namespace Improbable.DependentSchema
                     
                 }
                 {
-                    instance.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
-                    var list = instance.D;
-                    var listLength = obj.GetObjectCount(4);
-                    for (var i = 0; i < listLength; i++)
                     {
-                        list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
+                        instance.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
+                        var list = instance.D;
+                        var listLength = obj.GetObjectCount(4);
+                        for (var i = 0; i < listLength; i++)
+                        {
+                            list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
+                        }
                     }
                     
                 }
                 {
-                    instance.E = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>();
-                    var map = instance.E;
-                    var mapSize = obj.GetObjectCount(5);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(5, (uint) i);
-                        var key = (global::Improbable.TestSchema.SomeEnum) mapObj.GetEnum(1);
-                        var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
+                        var mapSize = obj.GetObjectCount(5);
+                        instance.E = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(5, (uint) i);
+                            var key = (global::Improbable.TestSchema.SomeEnum) mapObj.GetEnum(1);
+                            var value = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(mapObj.GetObject(2));
+                            map.Add(key, value);
+                        }
                     }
                     
                 }

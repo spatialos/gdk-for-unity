@@ -352,14 +352,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<bool,string>>, ulong> field1UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<bool,string>> OnField1Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<bool, string>>, ulong> field1UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<bool, string>> OnField1Update
         {
             add
             {
                 if (field1UpdateCallbackToCallbackKey == null)
                 {
-                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<bool,string>>, ulong>();
+                    field1UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<bool, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -383,14 +383,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<float,string>>, ulong> field2UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<float,string>> OnField2Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<float, string>>, ulong> field2UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<float, string>> OnField2Update
         {
             add
             {
                 if (field2UpdateCallbackToCallbackKey == null)
                 {
-                    field2UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<float,string>>, ulong>();
+                    field2UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<float, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -414,14 +414,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[],string>>, ulong> field3UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<byte[],string>> OnField3Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[], string>>, ulong> field3UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<byte[], string>> OnField3Update
         {
             add
             {
                 if (field3UpdateCallbackToCallbackKey == null)
                 {
-                    field3UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[],string>>, ulong>();
+                    field3UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[], string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -445,14 +445,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong> field4UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<int,string>> OnField4Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field4UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField4Update
         {
             add
             {
                 if (field4UpdateCallbackToCallbackKey == null)
                 {
-                    field4UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong>();
+                    field4UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -476,14 +476,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong> field5UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<long,string>> OnField5Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field5UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField5Update
         {
             add
             {
                 if (field5UpdateCallbackToCallbackKey == null)
                 {
-                    field5UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong>();
+                    field5UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -507,14 +507,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<double,string>>, ulong> field6UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<double,string>> OnField6Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<double, string>>, ulong> field6UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<double, string>> OnField6Update
         {
             add
             {
                 if (field6UpdateCallbackToCallbackKey == null)
                 {
-                    field6UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<double,string>>, ulong>();
+                    field6UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<double, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -538,14 +538,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string,string>>, ulong> field7UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<string,string>> OnField7Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, string>>, ulong> field7UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<string, string>> OnField7Update
         {
             add
             {
                 if (field7UpdateCallbackToCallbackKey == null)
                 {
-                    field7UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<string,string>>, ulong>();
+                    field7UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<string, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -569,14 +569,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint,string>>, ulong> field8UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<uint,string>> OnField8Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field8UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<uint, string>> OnField8Update
         {
             add
             {
                 if (field8UpdateCallbackToCallbackKey == null)
                 {
-                    field8UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<uint,string>>, ulong>();
+                    field8UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -600,14 +600,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong,string>>, ulong> field9UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<ulong,string>> OnField9Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field9UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<ulong, string>> OnField9Update
         {
             add
             {
                 if (field9UpdateCallbackToCallbackKey == null)
                 {
-                    field9UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong,string>>, ulong>();
+                    field9UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -631,14 +631,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong> field10UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<int,string>> OnField10Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field10UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField10Update
         {
             add
             {
                 if (field10UpdateCallbackToCallbackKey == null)
                 {
-                    field10UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong>();
+                    field10UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -662,14 +662,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong> field11UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<long,string>> OnField11Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field11UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField11Update
         {
             add
             {
                 if (field11UpdateCallbackToCallbackKey == null)
                 {
-                    field11UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong>();
+                    field11UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -693,14 +693,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint,string>>, ulong> field12UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<uint,string>> OnField12Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field12UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<uint, string>> OnField12Update
         {
             add
             {
                 if (field12UpdateCallbackToCallbackKey == null)
                 {
-                    field12UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<uint,string>>, ulong>();
+                    field12UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -724,14 +724,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong,string>>, ulong> field13UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<ulong,string>> OnField13Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field13UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<ulong, string>> OnField13Update
         {
             add
             {
                 if (field13UpdateCallbackToCallbackKey == null)
                 {
-                    field13UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong,string>>, ulong>();
+                    field13UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -755,14 +755,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong> field14UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<int,string>> OnField14Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field14UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField14Update
         {
             add
             {
                 if (field14UpdateCallbackToCallbackKey == null)
                 {
-                    field14UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int,string>>, ulong>();
+                    field14UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -786,14 +786,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong> field15UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<long,string>> OnField15Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field15UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField15Update
         {
             add
             {
                 if (field15UpdateCallbackToCallbackKey == null)
                 {
-                    field15UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long,string>>, ulong>();
+                    field15UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -817,14 +817,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>, ulong> field16UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>> OnField16Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>>, ulong> field16UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>> OnField16Update
         {
             add
             {
                 if (field16UpdateCallbackToCallbackKey == null)
                 {
-                    field16UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId,string>>, ulong>();
+                    field16UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -848,14 +848,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string>>, ulong> field17UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string>> OnField17Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>>, ulong> field17UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>> OnField17Update
         {
             add
             {
                 if (field17UpdateCallbackToCallbackKey == null)
                 {
-                    field17UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType,string>>, ulong>();
+                    field17UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
@@ -879,14 +879,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string>>, ulong> field18UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string>> OnField18Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>>, ulong> field18UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>> OnField18Update
         {
             add
             {
                 if (field18UpdateCallbackToCallbackKey == null)
                 {
-                    field18UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,string>>, ulong>();
+                    field18UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveMapKey.Update>(EntityId, update =>
