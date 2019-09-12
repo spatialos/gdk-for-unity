@@ -37,8 +37,6 @@ namespace Improbable.Gdk.Mobile
 
         private void OnEnable()
         {
-            launchConfig = new MobileLaunchConfig();
-
 #if UNITY_EDITOR_OSX
             deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
             simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
