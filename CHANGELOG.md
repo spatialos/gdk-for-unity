@@ -7,6 +7,7 @@
 - Added network statistics collection for both sending and receiving messages. [#1135](https://github.com/spatialos/gdk-for-unity/pull/1135)
     - This adds a single ECS system `NetworkStatisticsSystem`. This system will only run when running your workers inside the Unity Editor.
     - Additionally, there are a set of data types supporting this system which can be found under the `Improbable.Gdk.Core.NetworkStats` namespace.
+- Added first version of the Network Analyzer, a new inspector to view live bandwidth usage per component. `SpatialOS->Window->Network Analyzer` [#1148](https://github.com/spatialos/gdk-for-unity/pull/1148)
 
 ### Fixed
 
