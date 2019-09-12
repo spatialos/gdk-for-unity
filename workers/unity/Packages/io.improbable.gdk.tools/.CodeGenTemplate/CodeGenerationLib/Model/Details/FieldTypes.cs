@@ -141,18 +141,22 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber, int indents)
         {
             var codeWriter = new CodeWriter();
-
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            using (codeWriter.Scope("if (isCleared)"))
+            using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
-            }
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
 
-            using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
-            {
-                codeWriter.WriteLine($"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
-                codeWriter.WriteLine($"{fieldInstance} = new {Type}(value);");
+                using (codeWriter.Scope("if (isCleared)"))
+                {
+                    codeWriter.WriteLine($"{fieldInstance} = new {Type}();");
+                }
+
+                using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)")
+                )
+                {
+                    codeWriter.WriteLine(
+                        $"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                    codeWriter.WriteLine($"{fieldInstance} = new {Type}(value);");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -163,16 +167,22 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var codeWriter = new CodeWriter();
 
-            CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
-
-            using (codeWriter.Scope("if (isCleared)"))
+            using (codeWriter.Scope())
             {
-                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-            }
+                CommonCodeWriterBlocks.WriteCheckIsCleared(codeWriter, fieldNumber);
 
-            using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
-            {
-                codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                using (codeWriter.Scope("if (isCleared)"))
+                {
+                    codeWriter.WriteLine(
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+                }
+
+                using (codeWriter.Scope($"else if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)")
+                )
+                {
+                    codeWriter.WriteLine(
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                }
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
@@ -185,7 +195,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             using (codeWriter.Scope($"if ({containedType.GetCountExpression(schemaObject, fieldNumber)} == 1)"))
             {
-                codeWriter.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                codeWriter.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
             }
 
             return CommonGeneratorUtils.IndentEveryNewline(codeWriter.Build(), indents);
