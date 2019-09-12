@@ -235,7 +235,7 @@ Create a `Common` folder within the `Assets/Resources/Prefabs` directory of your
 
 Right-click in your scene and select **3D Object** > **Plane** to create a plane with scale (10, 1, 10) whose position is (0, 0, 0). Drag it into the `Assets/Resources/Prefabs/Common` folder. This will be our level, so rename it to “Level”.
 
-[image of plane prefab in unity inspector]
+<img src="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png" style="margin: 0 auto; width: 50%; display: block;" />
 
 Once the Level prefab is created, you can delete the plane from the current scene.
 
