@@ -38,6 +38,7 @@
     - Debug
         - [Overview]({{urlRoot}}/modules/debug/overview)
         - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
+        - [Network Analyzer]({{urlRoot}}/modules/debug/network-analyzer)
     - Deployment Launcher
         - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
         - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)
