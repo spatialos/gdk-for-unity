@@ -1,8 +1,8 @@
 <%( TOC )%>
 
-# Network Analyzer window
+# Network Analyzer
 
-The Network Analyzer window is an Unity Editor window which displays live bandwidth usage for a worker broken down by component type. This window can assist you in finding networking bottlenecks in your game.
+The Network Analyzer window is a Unity Editor window which displays live bandwidth usage for a worker broken down by component type. This window can assist you in finding networking bottlenecks in your game.
 
 ## Usage
 
@@ -18,10 +18,12 @@ The window lists all SpatialOS components in your project and displays bandwidth
 
 ### Metrics
 
-* `Op/s in` - This metric describes the number of component update ops that this worker is receiving per second.
-* `KB/s in` - This metric describes the bandwidth used by component updates that this worker is receiving per second.
-* `Op/s out` - This metric describes the number of component update ops that this worker is sending per second.
-* `KB/s out` - This metric describes the bandwidth used by component updates that this worker is sending per second.
+| Metric     | Description                                                                                             |
+|------------|---------------------------------------------------------------------------------------------------------|
+| `Op/s in`  | This metric describes the number of component update ops that this worker is receiving per second.      |
+| `KB/s in`  | This metric describes the bandwidth used by component updates that this worker is receiving per second. |
+| `Op/s out` | This metric describes the number of component update ops that this worker is sending per second.        |
+| `KB/s out` | This metric describes the bandwidth used by component updates that this worker is sending per second.   |
 
 > **Note:** Component updates are used for both component field changes as well as component events.
 
