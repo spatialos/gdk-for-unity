@@ -10,7 +10,7 @@ You need to make sure that each worker initialises its level when it starts, bef
 
 A worker connector is a MonoBehaviour that allows you to connect workers to your deployment. The GDK provides an abstract WorkerConnector MonoBehaviour class, which has methods for connecting and managing the lifecycle of your worker-instance.
 
-The Blank Project provides both `UnityClientConnector` and `UnityGameLogicConnector` classes that inherit from the abstract WorkerConnector class. Each class sets up a SpatialOS connection of their respective worker type.
+The Blank Project provides both `UnityClientConnector` and `UnityGameLogicConnector` classes that inherit from the abstract WorkerConnector class. Each class sets up a SpatialOS connection using their respective worker type.
 
 A worker _prefab_ is a prefab which contains a worker connector script. In the Blank Project, the `ClientWorker` prefab contains the `UnityClientConnector` script, and the `GameLogicWorker` prefab contains the `UnityGameLogicConnector` script.
 
