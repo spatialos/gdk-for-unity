@@ -235,7 +235,7 @@ Create a `Common` folder within the `Assets/Resources/Prefabs` directory of your
 
 Right-click in your scene and select **3D Object** > **Plane** to create a plane with scale (10, 1, 10) whose position is (0, 0, 0). Drag it into the `Assets/Resources/Prefabs/Common` folder. This will be our level, so rename it to “Level”.
 
-<img src="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png" style="margin: 0 auto; width: 50%; display: block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png" style="margin: 0 auto; width: 100%; display: block;" />
 
 Once the Level prefab is created, you can delete the plane from the current scene.
 
@@ -249,7 +249,7 @@ Let’s test this out!
 
 If you don’t have a local deployment running, hit `Ctrl+L`/`Cmd+L` inside the Unity Editor to start one up. When it’s ready, hit play in the Unity Editor. You should observe that there’s not one - but **two** levels side-by-side!
 
-[image of two levels side by side]
+<img src="{{assetRoot}}assets/blank/tutorial/2/levels-together.png" style="margin: 0 auto; width: 50%; display: block;" />
 
 Since both worker connectors were updated to instantiate a level - both of these worker types are in the development scenes - you can expect two levels to be created when you hit the play button.
 
@@ -271,6 +271,11 @@ Now, update the position of the `GameLogicWorker` in your `DevelopmentScene` to 
 
 With your local deployment still running, hit play again. You should now observe a gap between the client-worker’s level instance and the server-worker’s level instance.
 
-[image showing gap between the two levels]
+<div style="text-align:center">
+<img src="{{assetRoot}}assets/blank/tutorial/2/levels-together.png" style="margin: 0 auto; width: 45%; display: inline-block;" />
+<img src="{{assetRoot}}assets/blank/tutorial/2/levels-apart.png" style="margin: 0 auto; width: 45%; display: inline-block;" />
+<br>
+Before and after updating the worker offset.
+</div>
 
 #### Next: [GameObject creation]({{urlRoot}}/projects/blank/tutorial/2/gameobject-creation)

@@ -163,8 +163,10 @@ In the Unity Editor, add the `ObjectColor` behaviour to the Player prefab for th
 
 To test this change, hit the play button in the Editor.
 
-You should observe that, as expected, the player object on the client-level has the color you chose, but the player object on the other level does not. This validates that the default GameObject creator makes use of a worker’s worker type to instantiate the correct representation of a Player.
+You should observe that, as expected, the player object on the client-level has the color you chose, but the player object on the other level does not.
 
-[image of the player object on both levels - one with colour, one without colour]
+<img src="{{assetRoot}}assets/blank/tutorial/2/player-with-color-annotated.png" style="margin: 0 auto; width: 75%; display: block;" />
+
+This validates that the default GameObject creator makes use of a worker’s worker type to instantiate the correct representation of a Player.
 
 #### Next: [Summary]({{urlRoot}}/projects/blank/tutorial/2/summary)
