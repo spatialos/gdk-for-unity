@@ -26,6 +26,8 @@ The `WorkerConnector` class contains a `HandleWorkerConnectionFailure` method, w
 
 <%(/Expandable)%>
 
+For more information, see the documentation on [worker connectors]({{urlRoot}}/workflows/monobehaviour/worker-connectors).
+
 ## Update the worker connectors
 
 Since you would want the level to be initialised _before_ the game loop begins, you need to update the `HandleWorkerConnectionEstablished` method.
@@ -235,7 +237,8 @@ Create a `Common` folder within the `Assets/Resources/Prefabs` directory of your
 
 Right-click in your scene and select **3D Object** > **Plane** to create a plane with scale (10, 1, 10) whose position is (0, 0, 0). Drag it into the `Assets/Resources/Prefabs/Common` folder. This will be our level, so rename it to “Level”.
 
-<img src="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png" style="margin: 0 auto; width: 100%; display: block;" />
+<%(#Lightbox image="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png")%>
+<%(/Lightbox)%>
 
 Once the Level prefab is created, you can delete the plane from the current scene.
 
@@ -247,17 +250,17 @@ For both `ClientWorker` and `GameLogicWorker` prefabs, click the Level field on 
 
 Let’s test this out!
 
-If you don’t have a local deployment running, hit `Ctrl+L`/`Cmd+L` inside the Unity Editor to start one up. When it’s ready, hit play in the Unity Editor. You should observe that there’s not one - but **two** levels side-by-side!
+If you don’t have a local deployment running, hit `Ctrl+L`/`Cmd+L` inside the Unity Editor to start one up. When it’s ready, hit play in the Unity Editor. You should observe that there’s not one — but **two** levels side-by-side!
 
 <img src="{{assetRoot}}assets/blank/tutorial/2/levels-together.png" style="margin: 0 auto; width: 50%; display: block;" />
 
-Since both worker connectors were updated to instantiate a level - both of these worker types are in the development scenes - you can expect two levels to be created when you hit the play button.
+Both worker connectors were updated to instantiate a level and both of these worker types are in the development scene. Therefore you can expect two levels to be created when you hit the play button.
 
 However, in the SpatialOS Inspector you’ll see that the `UnityClient` and `UnityGameLogic` worker share the same position. Why do two workers with the same SpatialOS position instantiate their levels at different positions in the Unity Editor?
 
 ## Worker offsets
 
-When there are two different workers operating in the same Unity world space, there’s a higher chance you’ll see side-effects with unwanted interaction. Since the DevelopmentScene connects two workers to your deployment, you’ll need to figure out how to make the workers run independently.
+When there are two different workers operating in the same Unity world space, there’s a higher chance you’ll see side-effects with unwanted interaction. Since the `DevelopmentScene` connects two workers to your deployment, you’ll need to figure out how to make the workers run independently.
 
 With workers overlapping in the same scene, you no longer have the guarantee that the only objects on each worker’s level are the ones you would expect in a single-worker-to-scene mapping. This introduces the risk of objects from different workers interacting with each other.
 
