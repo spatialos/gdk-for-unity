@@ -2,15 +2,15 @@
 
 # 2.2 - Instantiate a level
 
-Before you can start spawning gameobjects for Player entities, you should ensure there is a simple level for them to spawn on. This level will become the “ground” of our game world.
+Before you can start spawning GameObjects for Player entities, you should ensure there is a simple level for them to spawn on. This level will become the “ground” of our game world.
 
 You need to make sure that each worker initialises its level when it starts, before any other GameObject spawning can begin. To do this, you need to update the worker connectors.
 
 ## Worker connectors
 
-A worker connector is a MonoBehaviour that allows you to connect workers to your deployment. The GDK provides an abstract WorkerConnector MonoBehaviour class, which has methods for connecting and managing the lifecycle of your worker-instance.
+A worker connector is a MonoBehaviour that allows you to connect workers to your deployment. The GDK provides an abstract `WorkerConnector` MonoBehaviour class, which has methods for connecting and managing the lifecycle of your worker-instance.
 
-The Blank Project provides both `UnityClientConnector` and `UnityGameLogicConnector` classes that inherit from the abstract WorkerConnector class. Each class sets up a SpatialOS connection using their respective worker type.
+The Blank Project provides both `UnityClientConnector` and `UnityGameLogicConnector` classes that inherit from the abstract `WorkerConnector` class. Each class sets up a SpatialOS connection using their respective worker type.
 
 A worker _prefab_ is a prefab which contains a worker connector script. In the Blank Project, the `ClientWorker` prefab contains the `UnityClientConnector` script, and the `GameLogicWorker` prefab contains the `UnityGameLogicConnector` script.
 
@@ -32,7 +32,7 @@ For more information, see the documentation on [worker connectors]({{urlRoot}}/w
 
 Since you would want the level to be initialised _before_ the game loop begins, you need to update the `HandleWorkerConnectionEstablished` method.
 
-First, open UnityClientConnector.cs and create a private serialized field for the Level prefab. You’ll be able to set this through the Unity Editor later.
+First, open `UnityClientConnector.cs` and create a private serialized field for the Level prefab. You’ll be able to set this through the Unity Editor later.
 
 ```csharp
 [SerializeField] private GameObject level;
@@ -235,7 +235,7 @@ Create a `Common` folder within the `Assets/Resources/Prefabs` directory of your
 
 </pre>
 
-Right-click in your scene and select **3D Object** > **Plane** to create a plane with scale (10, 1, 10) whose position is (0, 0, 0). Drag it into the `Assets/Resources/Prefabs/Common` folder. This will be our level, so rename it to “Level”.
+Right-click in your scene and select **3D Object** > **Plane** to create a plane. Set the plane's scale to (10, 1, 10) and position to (0, 0, 0). Drag it into the `Assets/Resources/Prefabs/Common` folder. This will be our level, so rename it to “Level”.
 
 <%(#Lightbox image="{{assetRoot}}assets/blank/tutorial/2/level-prefab-inspector.png")%>
 <%(/Lightbox)%>

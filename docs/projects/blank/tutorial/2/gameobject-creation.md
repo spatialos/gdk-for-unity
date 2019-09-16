@@ -4,7 +4,7 @@
 
 The GameObject Creation module contains a default implementation of spawning GameObjects for your SpatialOS entities and offers the ability to customise that process.
 
-We’ll cover how this works and how you can set it up to create GameObjects linked to player entities in your world.
+We’ll cover how this works and how you can set it up to create GameObjects linked to the player entities in your world.
 
 ## How GameObject creation works
 
@@ -12,7 +12,7 @@ The GameObject Creation module contains the `IEntityGameObjectCreator` interface
 
 The default GameObject creator is the `GameObjectCreatorFromMetadata` class, which has a reference to the type of worker that initialized it. It uses an entity’s `Metadata` component in conjunction with the worker type to determine what prefab to create GameObjects from.
 
-The default GameObject creator requires that any prefab it could use must be located inside `Resources/Prefabs/Common` or a specific `Resources/Prefabs/worker_type` folder. It first checks inside the worker-specific folder before using the `Common` directory as backup. If neither directory contains a prefab whose name matches an entity’s `Metadata` component, no GameObject is created.
+The default GameObject creator requires that any prefab it could use be located inside `Resources/Prefabs/Common` or a specific `Resources/Prefabs/worker_type` folder. It first checks inside the worker-specific folder before using the `Common` directory as backup. If neither directory contains a prefab whose name matches an entity’s `Metadata` component, no GameObject is created.
 
 ## Plan your entity representations
 
@@ -20,7 +20,7 @@ You’ll be adding more player functionality in later chapters of this tutorial 
 
 Future chapters in this tutorial series will add more client-side behaviour to players, so you’ll want a Player’s client-side and server-side representations to be different. This means you should create worker-specific prefabs for `UnityClient` and `UnityGameLogic` worker types.
 
-The `Player` object on a `UnityClient` could either be owned by the client-worker or be just another player that has entered the client-worker’s view. This means that while we should still be able to see all the Player objects, some behaviour is only enabled on an authoritative client-worker.
+The `Player` GameObject on a `UnityClient` worker-instance could either be owned by the client-worker or be just another player that has entered the client-worker’s view. This means that while we should still be able to see all the Player GameObjects, some behaviour is only enabled on an authoritative client-worker.
 
 The client-side `Player` object owned by a given client-worker will need to:
 
