@@ -32,6 +32,10 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/editor-index">Editor</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
+<tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/network-stats-index">NetworkStats</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
 </table>
 
 

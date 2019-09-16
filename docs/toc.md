@@ -23,6 +23,11 @@
                 - [3. What the project does]({{urlRoot}}/projects/blank/tutorial/1/what-it-does)
                 - [4. GDK Player lifecycle]({{urlRoot}}/projects/blank/tutorial/1/player-lifecycle)
                 - [5. Summary]({{urlRoot}}/projects/blank/tutorial/1/summary)
+            - 2. Creating GameObjects
+                - [1. Overview]({{urlRoot}}/projects/blank/tutorial/2/overview)
+                - [2. Instantiate a level]({{urlRoot}}/projects/blank/tutorial/2/level)
+                - [3. GameObject creation]({{urlRoot}}/projects/blank/tutorial/2/gameobject-creation)
+                - [4. Summary]({{urlRoot}}/projects/blank/tutorial/2/summary)
     - Make your own
         - [1. Project setup]({{urlRoot}}/projects/myo/setup)
         - [2. Build your workers]({{urlRoot}}/projects/myo/build)
@@ -38,6 +43,7 @@
     - Debug
         - [Overview]({{urlRoot}}/modules/debug/overview)
         - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
+        - [Network Analyzer]({{urlRoot}}/modules/debug/network-analyzer)
     - Deployment Launcher
         - [Overview]({{urlRoot}}/modules/deployment-launcher/overview)
         - [Upload assemblies]({{urlRoot}}/modules/deployment-launcher/upload-assemblies)

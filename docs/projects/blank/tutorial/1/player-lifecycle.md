@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="2")%>
 
 # 1.4 - Player lifecycle
 
