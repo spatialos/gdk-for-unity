@@ -2,7 +2,7 @@
 
 # Network Analyzer
 
-The Network Analyzer window is a Unity Editor window which displays live bandwidth usage for a worker broken down by component type. This window can assist you in finding networking bottlenecks in your game.
+The Network Analyzer is a Unity Editor window which displays live bandwidth usage for a worker broken down by component type. This window can assist you with finding networking bottlenecks in your game.
 
 ## Usage
 
