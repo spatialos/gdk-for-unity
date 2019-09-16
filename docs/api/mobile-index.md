@@ -1,6 +1,7 @@
 
 # Improbable.Gdk.Mobile Namespace
 <nav id="pageToc" class="page-toc"><ul><li><a href="#classes">Classes</a>
+<li><a href="#structs">Structs</a>
 <li><a href="#enums">Enums</a>
 </ul></nav>
 <sup>
@@ -43,10 +44,6 @@ GDK package: Mobile<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/mobile-launcher-window">MobileLauncherWindow</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
@@ -56,6 +53,18 @@ GDK package: Mobile<br />
 </tr>
 </table>
 
+
+
+</p>
+
+#### Structs
+
+<table>
+<tr>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+</table>
 
 
 

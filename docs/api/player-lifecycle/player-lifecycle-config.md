@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/player-lifecycle-index">PlayerLifecycle</a><br/>
 GDK package: PlayerLifecycle<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L26">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L26">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -35,7 +35,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="playerheartbeatintervalseconds"></a><b>PlayerHeartbeatIntervalSeconds</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L35">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L35">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -59,7 +59,7 @@ The time in seconds between player heartbeat requests.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxnumfailedplayerheartbeats"></a><b>MaxNumFailedPlayerHeartbeats</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L44">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -83,7 +83,7 @@ The maximum number of failed heartbeats before a player is disconnected.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxplayercreationretries"></a><b>MaxPlayerCreationRetries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L53">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L53">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -107,7 +107,7 @@ The maximum number of retries for player creation requests.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxplayercreatorqueryretries"></a><b>MaxPlayerCreatorQueryRetries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L63">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -131,7 +131,7 @@ The maximum number of retries for finding player creator entities, before any pl
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="autorequestplayercreation"></a><b>AutoRequestPlayerCreation</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L73">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L73">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -155,7 +155,7 @@ This indicates whether a player should be created automatically upon a worker co
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createplayerentitytemplate"></a><b>CreatePlayerEntityTemplate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L82">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Config/PlayerLifecycleConfig.cs/#L82">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
