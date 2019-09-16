@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.9` - 2019-09-16
+
 ### Added
 
 - Added network statistics collection for both sending and receiving messages. [#1135](https://github.com/spatialos/gdk-for-unity/pull/1135)

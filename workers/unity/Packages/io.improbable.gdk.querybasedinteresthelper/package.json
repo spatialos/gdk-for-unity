@@ -1,11 +1,11 @@
 {
   "name": "io.improbable.gdk.querybasedinteresthelper",
   "displayName": "SpatialOS GDK Query-based Interest Helper",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Query-based Interest Helper Module.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.8"
+    "io.improbable.gdk.core": "0.2.9"
   }
 }
