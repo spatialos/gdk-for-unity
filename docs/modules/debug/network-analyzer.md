@@ -4,6 +4,14 @@
 
 The Network Analyzer is a Unity Editor window which displays live bandwidth usage for a worker broken down by component type. This window can assist you with finding networking bottlenecks in your game.
 
+<%(Callout type="info" message="
+Note that the bandwidth reported in the Network Analyzer is calculated from the serialized data before it is put on the wire. This does not include any overhead from the network protocol.
+
+This can be used to indicate how changes will affect bandwidth, but should not be relied upon for precise measurement or cost.
+
+Please use the [cloud metrics](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics) if you wish to have more precise measurements.
+")%>
+
 ## Usage
 
 To open the window, ensure the `Debug` package is added to your project and select **SpatialOS** > **Window** > **Network Analyzer** from the Unity Editor menu.
