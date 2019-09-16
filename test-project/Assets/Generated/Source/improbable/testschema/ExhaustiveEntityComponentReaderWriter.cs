@@ -445,14 +445,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>>, ulong> field4UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>> OnField4Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>, ulong> field4UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>> OnField4Update
         {
             add
             {
                 if (field4UpdateCallbackToCallbackKey == null)
                 {
-                    field4UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>>, ulong>();
+                    field4UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveEntity.Update>(EntityId, update =>
@@ -476,14 +476,14 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field5UpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>> OnField5Update
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field5UpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>> OnField5Update
         {
             add
             {
                 if (field5UpdateCallbackToCallbackKey == null)
                 {
-                    field5UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>>, ulong>();
+                    field5UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<ExhaustiveEntity.Update>(EntityId, update =>

@@ -15,10 +15,10 @@ namespace Improbable.TestSchema
         public global::Improbable.Gdk.Core.EntitySnapshot Field1;
         public global::Improbable.Gdk.Core.EntitySnapshot? Field2;
         public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> Field3;
-        public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string> Field4;
-        public global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot> Field5;
+        public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> Field4;
+        public global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> Field5;
     
-        public ExhaustiveEntityData(global::Improbable.Gdk.Core.EntitySnapshot field1, global::Improbable.Gdk.Core.EntitySnapshot? field2, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> field3, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string> field4, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot> field5)
+        public ExhaustiveEntityData(global::Improbable.Gdk.Core.EntitySnapshot field1, global::Improbable.Gdk.Core.EntitySnapshot? field2, global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> field3, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> field4, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> field5)
         {
             Field1 = field1;
             Field2 = field2;
@@ -81,38 +81,44 @@ namespace Improbable.TestSchema
                     
                 }
                 {
-                    instance.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
-                    var list = instance.Field3;
-                    var listLength = obj.GetEntityCount(3);
-                    for (var i = 0; i < listLength; i++)
                     {
-                        list.Add(obj.IndexEntity(3, (uint) i));
+                        instance.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
+                        var list = instance.Field3;
+                        var listLength = obj.GetEntityCount(3);
+                        for (var i = 0; i < listLength; i++)
+                        {
+                            list.Add(obj.IndexEntity(3, (uint) i));
+                        }
                     }
                     
                 }
                 {
-                    instance.Field4 = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot,string>();
-                    var map = instance.Field4;
-                    var mapSize = obj.GetObjectCount(4);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(4, (uint) i);
-                        var key = mapObj.GetEntity(1);
-                        var value = mapObj.GetString(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
+                        var mapSize = obj.GetObjectCount(4);
+                        instance.Field4 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(4, (uint) i);
+                            var key = mapObj.GetEntity(1);
+                            var value = mapObj.GetString(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }
                 {
-                    instance.Field5 = new global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntitySnapshot>();
-                    var map = instance.Field5;
-                    var mapSize = obj.GetObjectCount(5);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(5, (uint) i);
-                        var key = mapObj.GetString(1);
-                        var value = mapObj.GetEntity(2);
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();
+                        var mapSize = obj.GetObjectCount(5);
+                        instance.Field5 = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(5, (uint) i);
+                            var key = mapObj.GetString(1);
+                            var value = mapObj.GetEntity(2);
+                            map.Add(key, value);
+                        }
                     }
                     
                 }

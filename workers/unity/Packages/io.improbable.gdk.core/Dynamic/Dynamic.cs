@@ -1,15 +1,8 @@
 using System;
 using Improbable.Worker.CInterop;
-using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public delegate TComponentData ComponentDeserializer<out TComponentData>(ComponentData data, World world)
-        where TComponentData : struct, ISpatialComponentData;
-
-    public delegate TComponentUpdate UpdateDeserializer<out TComponentUpdate>(ComponentUpdate update, World world)
-        where TComponentUpdate : struct, ISpatialComponentUpdate;
-
     public delegate TComponentSnapshot SnapshotDeserializer<out TComponentSnapshot>(ComponentData update)
         where TComponentSnapshot : struct, ISpatialComponentSnapshot;
 
@@ -28,13 +21,10 @@ namespace Improbable.Gdk.Core
 
     public static class Dynamic
     {
-        public struct VTable<TData, TUpdate, TSnapshot>
-            where TData: struct, ISpatialComponentData
+        public struct VTable<TUpdate, TSnapshot>
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            public ComponentDeserializer<TData> DeserializeComponent;
-            public UpdateDeserializer<TUpdate> DeserializeUpdate;
             public SnapshotDeserializer<TSnapshot> DeserializeSnapshot;
             public SnapshotSerializer<TSnapshot> SerializeSnapshot;
             public SnapshotDeserializerRaw<TSnapshot> DeserializeSnapshotRaw;
@@ -44,8 +34,7 @@ namespace Improbable.Gdk.Core
 
         public interface IHandler
         {
-            void Accept<TData, TUpdate, TSnapshot>(uint componentId, VTable<TData, TUpdate, TSnapshot> vtable)
-                where TData : struct, ISpatialComponentData
+            void Accept<TUpdate, TSnapshot>(uint componentId, VTable<TUpdate, TSnapshot> vtable)
                 where TUpdate : struct, ISpatialComponentUpdate
                 where TSnapshot : struct, ISpatialComponentSnapshot;
         }

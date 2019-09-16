@@ -13,9 +13,9 @@ namespace Improbable.TestSchema
     public struct TypeA
     {
         public global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeA> AList;
-        public global::System.Collections.Generic.Dictionary<int,global::Improbable.TestSchema.TypeA> AMapValue;
+        public global::System.Collections.Generic.Dictionary<int, global::Improbable.TestSchema.TypeA> AMapValue;
     
-        public TypeA(global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeA> aList, global::System.Collections.Generic.Dictionary<int,global::Improbable.TestSchema.TypeA> aMapValue)
+        public TypeA(global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeA> aList, global::System.Collections.Generic.Dictionary<int, global::Improbable.TestSchema.TypeA> aMapValue)
         {
             AList = aList;
             AMapValue = aMapValue;
@@ -46,25 +46,29 @@ namespace Improbable.TestSchema
             {
                 var instance = new TypeA();
                 {
-                    instance.AList = new global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeA>();
-                    var list = instance.AList;
-                    var listLength = obj.GetObjectCount(2);
-                    for (var i = 0; i < listLength; i++)
                     {
-                        list.Add(global::Improbable.TestSchema.TypeA.Serialization.Deserialize(obj.IndexObject(2, (uint) i)));
+                        instance.AList = new global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeA>();
+                        var list = instance.AList;
+                        var listLength = obj.GetObjectCount(2);
+                        for (var i = 0; i < listLength; i++)
+                        {
+                            list.Add(global::Improbable.TestSchema.TypeA.Serialization.Deserialize(obj.IndexObject(2, (uint) i)));
+                        }
                     }
                     
                 }
                 {
-                    instance.AMapValue = new global::System.Collections.Generic.Dictionary<int,global::Improbable.TestSchema.TypeA>();
-                    var map = instance.AMapValue;
-                    var mapSize = obj.GetObjectCount(4);
-                    for (var i = 0; i < mapSize; i++)
                     {
-                        var mapObj = obj.IndexObject(4, (uint) i);
-                        var key = mapObj.GetInt32(1);
-                        var value = global::Improbable.TestSchema.TypeA.Serialization.Deserialize(mapObj.GetObject(2));
-                        map.Add(key, value);
+                        var map = new global::System.Collections.Generic.Dictionary<int, global::Improbable.TestSchema.TypeA>();
+                        var mapSize = obj.GetObjectCount(4);
+                        instance.AMapValue = map;
+                        for (var i = 0; i < mapSize; i++)
+                        {
+                            var mapObj = obj.IndexObject(4, (uint) i);
+                            var key = mapObj.GetInt32(1);
+                            var value = global::Improbable.TestSchema.TypeA.Serialization.Deserialize(mapObj.GetObject(2));
+                            map.Add(key, value);
+                        }
                     }
                     
                 }

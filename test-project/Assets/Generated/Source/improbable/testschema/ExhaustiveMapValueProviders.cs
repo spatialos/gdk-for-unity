@@ -15,7 +15,7 @@ namespace Improbable.TestSchema
         {
             public static class Field1Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,bool>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,bool>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, bool>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, bool>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -24,13 +24,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,bool>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, bool>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,bool> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, bool> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -40,7 +40,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,bool> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, bool> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -82,7 +82,7 @@ namespace Improbable.TestSchema
 
             public static class Field2Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,float>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,float>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, float>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, float>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -91,13 +91,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,float>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, float>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,float> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, float> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -107,7 +107,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,float> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, float> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -149,7 +149,7 @@ namespace Improbable.TestSchema
 
             public static class Field3Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,byte[]>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,byte[]>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, byte[]>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, byte[]>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -158,13 +158,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,byte[]>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, byte[]>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,byte[]> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, byte[]> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -174,7 +174,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,byte[]> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, byte[]> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -216,7 +216,7 @@ namespace Improbable.TestSchema
 
             public static class Field4Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -225,13 +225,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,int>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, int>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,int> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, int> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -241,7 +241,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,int> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, int> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -283,7 +283,7 @@ namespace Improbable.TestSchema
 
             public static class Field5Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -292,13 +292,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,long>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, long>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,long> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, long> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -308,7 +308,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,long> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, long> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -350,7 +350,7 @@ namespace Improbable.TestSchema
 
             public static class Field6Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,double>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,double>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, double>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, double>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -359,13 +359,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,double>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, double>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,double> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, double> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -375,7 +375,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,double> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, double> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -417,7 +417,7 @@ namespace Improbable.TestSchema
 
             public static class Field7Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,string>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -426,13 +426,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,string>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, string>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,string> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, string> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -442,7 +442,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,string> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, string> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -484,7 +484,7 @@ namespace Improbable.TestSchema
 
             public static class Field8Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,uint>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,uint>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, uint>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, uint>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -493,13 +493,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,uint>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, uint>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,uint> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, uint> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -509,7 +509,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,uint> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, uint> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -551,7 +551,7 @@ namespace Improbable.TestSchema
 
             public static class Field9Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,ulong>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,ulong>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, ulong>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, ulong>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -560,13 +560,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,ulong>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, ulong>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,ulong> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, ulong> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -576,7 +576,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,ulong> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, ulong> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -618,7 +618,7 @@ namespace Improbable.TestSchema
 
             public static class Field10Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -627,13 +627,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,int>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, int>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,int> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, int> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -643,7 +643,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,int> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, int> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -685,7 +685,7 @@ namespace Improbable.TestSchema
 
             public static class Field11Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -694,13 +694,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,long>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, long>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,long> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, long> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -710,7 +710,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,long> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, long> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -752,7 +752,7 @@ namespace Improbable.TestSchema
 
             public static class Field12Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,uint>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,uint>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, uint>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, uint>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -761,13 +761,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,uint>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, uint>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,uint> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, uint> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -777,7 +777,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,uint> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, uint> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -819,7 +819,7 @@ namespace Improbable.TestSchema
 
             public static class Field13Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,ulong>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,ulong>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, ulong>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, ulong>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -828,13 +828,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,ulong>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, ulong>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,ulong> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, ulong> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -844,7 +844,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,ulong> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, ulong> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -886,7 +886,7 @@ namespace Improbable.TestSchema
 
             public static class Field14Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,int>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, int>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -895,13 +895,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,int>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, int>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,int> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, int> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -911,7 +911,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,int> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, int> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -953,7 +953,7 @@ namespace Improbable.TestSchema
 
             public static class Field15Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,long>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, long>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -962,13 +962,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,long>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, long>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,long> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, long> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -978,7 +978,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,long> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, long> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1020,7 +1020,7 @@ namespace Improbable.TestSchema
 
             public static class Field16Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntityId>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntityId>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1029,13 +1029,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntityId>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntityId> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1045,7 +1045,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,global::Improbable.Gdk.Core.EntityId> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntityId> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1087,7 +1087,7 @@ namespace Improbable.TestSchema
 
             public static class Field17Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeType>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeType>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeType>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeType>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1096,13 +1096,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeType>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeType>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeType> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeType> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1112,7 +1112,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeType> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeType> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
@@ -1154,7 +1154,7 @@ namespace Improbable.TestSchema
 
             public static class Field18Provider 
             {
-                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum>>();
+                private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeEnum>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeEnum>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
             
                 private static uint nextHandle = 0;
@@ -1163,13 +1163,13 @@ namespace Improbable.TestSchema
                 {
                     var handle = GetNextHandle();
             
-                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum>));
+                    Storage.Add(handle, default(global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeEnum>));
                     WorldMapping.Add(handle, world);
             
                     return handle;
                 }
             
-                public static global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum> Get(uint handle)
+                public static global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeEnum> Get(uint handle)
                 {
                     if (!Storage.TryGetValue(handle, out var value))
                     {
@@ -1179,7 +1179,7 @@ namespace Improbable.TestSchema
                     return value;
                 }
             
-                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string,global::Improbable.TestSchema.SomeEnum> value)
+                public static void Set(uint handle, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.SomeEnum> value)
                 {
                     if (!Storage.ContainsKey(handle))
                     {
