@@ -8,6 +8,8 @@ The Network Analyzer is a Unity Editor window which displays live bandwidth usag
 Note that the bandwidth reported in the Network Analyzer is calculated from the serialized data before it is put on the wire. This does not include any overhead from the network protocol.
 
 This can be used to indicate how changes will affect bandwidth, but should not be relied upon for precise measurement or cost.
+
+Please use the [cloud metrics](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/operate/metrics) if you wish to have more precise measurements.
 ")%>
 
 ## Usage
