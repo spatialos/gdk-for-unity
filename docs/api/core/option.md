@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L13">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L13">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -65,7 +65,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="empty"></a><b>Empty</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -92,7 +92,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="hasvalue"></a><b>HasValue</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ True if the <a href="{{urlRoot}}/api/core/option">Option</a> contains a value, f
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="value"></a><b>Value</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -158,7 +158,7 @@ Returns the value contained inside the <a href="{{urlRoot}}/api/core/option">Opt
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="option-t"></a><b>Option</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L49">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L49">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -198,7 +198,7 @@ Constructor for an option.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="trygetvalue-out-t"></a><b>TryGetValue</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L65">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L65">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -226,7 +226,7 @@ Attempts to get the value contained within the <a href="{{urlRoot}}/api/core/opt
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getvalueordefault-t"></a><b>GetValueOrDefault</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L80">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L80">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -254,7 +254,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-option-t"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L90">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L90">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -294,7 +294,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-object"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L85">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L85">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -322,7 +322,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="gethashcode"></a><b>GetHashCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L115">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L115">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -341,7 +341,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tostring"></a><b>ToString</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L120">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L120">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -372,7 +372,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-option-t-option-t"></a><b>operator==</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L105">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L105">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -401,7 +401,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-option-t-option-t"></a><b>operator!=</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L110">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L110">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -430,7 +430,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-option-t-t"></a><b>operator Option&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L125">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L125">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -458,7 +458,7 @@ Gets the value within the <a href="{{urlRoot}}/api/core/option">Option</a> or th
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-t-option-t"></a><b>operator T</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/c62f1703b591ee684fba123ba0dc6c231eca5126/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L130">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/Option.cs/#L130">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
