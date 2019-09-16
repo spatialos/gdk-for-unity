@@ -8,7 +8,7 @@ We’ll cover how this works and how you can set it up to create GameObjects lin
 
 ## How GameObject creation works
 
-The GameObject Creation module lets you make classes that implement the `IEntityGameObjectCreator` interface, which contains a method called when a SpatialOS entity _enters_ a worker’s view, and another method called when a SpatialOS entity _leaves_ a worker’s view. Any class that implements this interface is known as a _GameObject creator_.
+The GameObject Creation module contains the `IEntityGameObjectCreator` interface. Any class that implements this interface is known as a _GameObject creator_. This interface contains a method called when a SpatialOS entity _enters_ a [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view) and another method called when a SpatialOS entity _leaves_ a [worker’s view]({{urlRoot}}/reference/glossary#worker-s-view).
 
 The default GameObject creator is the `GameObjectCreatorFromMetadata` class, which has a reference to the type of worker that initialized it. It uses an entity’s `Metadata` component in conjunction with the worker type to determine what prefab to create GameObjects from.
 
