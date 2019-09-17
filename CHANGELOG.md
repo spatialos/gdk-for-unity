@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed a bug where the `TransformSynchronization` MonoBehaviour would not reset when disabled. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
+- Fixed a bug where the `UnlinkGameObjectFromEntity` method in the `EntityGameObjectLinker` would not cleanup the `gameObjectToComponentsAdded` dictionary. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
+
 ## `0.2.9` - 2019-09-16
 
 ### Added
