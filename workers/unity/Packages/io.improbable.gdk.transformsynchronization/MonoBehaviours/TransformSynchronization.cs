@@ -77,6 +77,9 @@ namespace Improbable.Gdk.TransformSynchronization
         private void OnDisable()
         {
             StopAllCoroutines();
+
+            entityManager = null;
+            initialised = false;
         }
 
         private void ApplyStrategies()
