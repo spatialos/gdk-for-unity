@@ -9,7 +9,8 @@
         "Improbable.Gdk.PlayerLifecycle",
         "Improbable.Gdk.GameObjectCreation",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "Improbable.Gdk.TransformSynchronization"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
