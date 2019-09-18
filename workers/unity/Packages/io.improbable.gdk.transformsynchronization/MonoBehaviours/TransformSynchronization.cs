@@ -25,7 +25,7 @@ namespace Improbable.Gdk.TransformSynchronization
         public bool SetKinematicWhenNotAuthoritative = true;
 
         private EntityManager entityManager;
-
+        private string workerType;
         private bool initialised;
 
         public uint TickNumber
@@ -58,6 +58,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
 
             entityManager = world.EntityManager;
+            workerType = world.GetExistingSystem<WorkerSystem>().WorkerType;
 
             StartCoroutine(DelayedApply());
         }
@@ -80,6 +81,7 @@ namespace Improbable.Gdk.TransformSynchronization
             RemoveStrategies();
 
             entityManager = null;
+            workerType = null;
             initialised = false;
         }
 
@@ -123,7 +125,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in ReceiveStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != workerType)
                 {
                     continue;
                 }
@@ -138,7 +140,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in ReceiveStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != workerType)
                 {
                     continue;
                 }
@@ -158,7 +160,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in SendStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != workerType)
                 {
                     continue;
                 }
@@ -178,7 +180,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
             foreach (var strategy in SendStrategies)
             {
-                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                if (strategy.WorkerType != workerType)
                 {
                     continue;
                 }
