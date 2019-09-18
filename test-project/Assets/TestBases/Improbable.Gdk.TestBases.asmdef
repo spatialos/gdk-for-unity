@@ -1,5 +1,5 @@
 {
-    "name": "TestBases",
+    "name": "Improbable.Gdk.TestBases",
     "references": [
         "GUID:edb3612c44ad0d24988d387581fd5fbe",
         "GUID:3fbdd1e12f6940d4abd52808e5a786f6",

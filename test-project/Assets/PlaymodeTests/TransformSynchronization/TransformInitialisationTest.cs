@@ -12,9 +12,6 @@ using Object = UnityEngine.Object;
 
 namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
 {
-    /// <summary>
-    ///     This doesn't test anything at the moment kek.
-    /// </summary>
     [TestFixture]
     public class TransformInitialisationTests : SubscriptionsTestBase
     {
@@ -44,29 +41,21 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
         [UnityTest]
         public IEnumerator Transform_initialises_on_enable_and_resets_on_disable()
         {
-            LogAssert.ignoreFailingMessages = true;
-            Debug.LogError("YEET 1");
             // Load up prefab with TransformSynchronization behaviour
             var testTransformPrefab = Resources.Load<GameObject>("TransformTestObject");
             createdGameObject = CreateAndLinkGameObject(EntityId, testTransformPrefab, Vector3.zero, Quaternion.identity);
 
-            Debug.LogError("YEET 1.5");
             var transformSyncBehaviour = createdGameObject.GetComponent<Improbable.Gdk.TransformSynchronization.TransformSynchronization>();
 
-            Debug.LogError("YEET 2");
             // Wait two frames for the strategies to be applied
             yield return null;
-//            yield return new WaitForEndOfFrame();
-            Debug.LogError("YEET 3");
             yield return null;
 
-            Debug.LogError("YEET 4");
             // Check that the behaviour is still enabled, `entityManager` is set, and `initialised` is true
             Assert.IsTrue(transformSyncBehaviour.enabled);
             Assert.IsNotNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
             Assert.IsTrue(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
 
-            Debug.LogError("YEET 5");
             // Remove TransformInternal component from entity and run an update of the receive system
             ConnectionHandler.RemoveComponent(EntityId, TransformInternal.ComponentId);
             ReceiveSystem.Update();
@@ -74,15 +63,10 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             // Run an update of the [Require] lifecycle system
             RequireLifecycleSystem.Update();
 
-            Debug.LogError("YEET 6");
             // Check that behaviour is disabled, `entityManager` is null, and `initialised` is false
             Assert.IsFalse(transformSyncBehaviour.enabled);
             Assert.IsNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
             Assert.IsFalse(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
-
-            Debug.LogError("YEET 7");
-
-            LogAssert.ignoreFailingMessages = false;
         }
 
         private T GetPrivateField<T>(Improbable.Gdk.TransformSynchronization.TransformSynchronization transformSyncBehaviour, string fieldName)

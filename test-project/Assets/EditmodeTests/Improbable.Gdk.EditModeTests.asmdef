@@ -10,7 +10,7 @@
         "Improbable.Gdk.TransformSynchronization",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "TestBases"
+        "Improbable.Gdk.TestBases"
     ],
     "includePlatforms": [
         "Editor"
