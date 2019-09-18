@@ -77,6 +77,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private void OnDisable()
         {
             StopAllCoroutines();
+            RemoveStrategies();
 
             entityManager = null;
             initialised = false;
@@ -94,6 +95,24 @@ namespace Improbable.Gdk.TransformSynchronization
 
             ApplyReceiveStrategies(commandBuffer);
             ApplySendStrategies(commandBuffer);
+
+            commandBuffer.Playback(entityManager);
+            commandBuffer.Dispose();
+        }
+
+        private void RemoveStrategies()
+        {
+            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
+
+            if (SetKinematicWhenNotAuthoritative)
+            {
+                commandBuffer.RemoveComponent<ManageKinematicOnAuthorityChangeTag>(entity);
+                commandBuffer.RemoveComponent<KinematicStateWhenAuth>(entity);
+            }
+
+            RemoveReceiveStragies(commandBuffer);
+            RemoveSendStrategies(commandBuffer);
+
             commandBuffer.Playback(entityManager);
             commandBuffer.Dispose();
         }
@@ -110,6 +129,21 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 strategy.Apply(entity, world, commandBuffer);
+            }
+        }
+
+        private void RemoveReceiveStragies(EntityCommandBuffer commandBuffer)
+        {
+            RemoveCommonReceiveComponents(commandBuffer);
+
+            foreach (var strategy in ReceiveStrategies)
+            {
+                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                {
+                    continue;
+                }
+
+                strategy.Remove(entity, world, commandBuffer);
             }
         }
 
@@ -130,6 +164,26 @@ namespace Improbable.Gdk.TransformSynchronization
                 }
 
                 strategy.Apply(entity, world, commandBuffer);
+            }
+        }
+
+        private void RemoveSendStrategies(EntityCommandBuffer commandBuffer)
+        {
+            if (SendStrategies == null || SendStrategies.Count == 0)
+            {
+                return;
+            }
+
+            RemoveCommonSendComponents(commandBuffer);
+
+            foreach (var strategy in SendStrategies)
+            {
+                if (strategy.WorkerType != world.GetExistingSystem<WorkerSystem>().WorkerType)
+                {
+                    continue;
+                }
+
+                strategy.Remove(entity, world, commandBuffer);
             }
         }
 
@@ -155,6 +209,14 @@ namespace Improbable.Gdk.TransformSynchronization
             commandBuffer.AddComponent(entity, defaultToSet);
             commandBuffer.AddComponent(entity, previousTransform);
             commandBuffer.AddBuffer<BufferedTransform>(entity);
+        }
+
+        private void RemoveCommonReceiveComponents(EntityCommandBuffer commandBuffer)
+        {
+            commandBuffer.RemoveComponent<SetTransformToGameObjectTag>(entity);
+            commandBuffer.RemoveComponent<TransformToSet>(entity);
+            commandBuffer.RemoveComponent<DeferredUpdateTransform>(entity);
+            commandBuffer.RemoveComponent<BufferedTransform>(entity);
         }
 
         private void AddCommonSendComponents(EntityCommandBuffer commandBuffer)
@@ -194,6 +256,15 @@ namespace Improbable.Gdk.TransformSynchronization
             commandBuffer.AddComponent(entity, ticksSinceLastUpdate);
             commandBuffer.AddComponent(entity, lastPosition);
             commandBuffer.AddComponent(entity, lastTransform);
+        }
+
+        private void RemoveCommonSendComponents(EntityCommandBuffer commandBuffer)
+        {
+            commandBuffer.RemoveComponent<GetTransformFromGameObjectTag>(entity);
+            commandBuffer.RemoveComponent<TransformToSend>(entity);
+            commandBuffer.RemoveComponent<TicksSinceLastTransformUpdate>(entity);
+            commandBuffer.RemoveComponent<LastTransformSentData>(entity);
+            commandBuffer.RemoveComponent<LastPositionSentData>(entity);
         }
     }
 }

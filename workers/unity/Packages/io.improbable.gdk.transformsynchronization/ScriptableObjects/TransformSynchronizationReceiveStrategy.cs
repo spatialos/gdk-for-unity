@@ -8,5 +8,7 @@ namespace Improbable.Gdk.TransformSynchronization
         public string WorkerType;
 
         internal abstract void Apply(Entity entity, World world, EntityCommandBuffer commandBuffer);
+
+        internal abstract void Remove(Entity entity, World world, EntityCommandBuffer commandBuffer);
     }
 }
