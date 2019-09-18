@@ -282,8 +282,7 @@ namespace Improbable.Gdk.Core
                 Entity = new Entity();
             }
 
-            public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
-                where TData : struct, ISpatialComponentData
+            public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
                 where TUpdate : struct, ISpatialComponentUpdate
                 where TSnapshot : struct, ISpatialComponentSnapshot
             {

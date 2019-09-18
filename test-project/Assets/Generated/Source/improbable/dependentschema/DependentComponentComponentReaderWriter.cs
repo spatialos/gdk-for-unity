@@ -476,14 +476,14 @@ namespace Improbable.DependentSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>>, ulong> eUpdateCallbackToCallbackKey;
-        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>> OnEUpdate
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>, ulong> eUpdateCallbackToCallbackKey;
+        public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>> OnEUpdate
         {
             add
             {
                 if (eUpdateCallbackToCallbackKey == null)
                 {
-                    eUpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum,global::Improbable.TestSchema.SomeType>>, ulong>();
+                    eUpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>, ulong>();
                 }
 
                 var key = CallbackSystem.RegisterComponentUpdateCallback<DependentComponent.Update>(EntityId, update =>

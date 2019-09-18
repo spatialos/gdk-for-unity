@@ -169,21 +169,17 @@ namespace Improbable.Tests
         {
             public static void SerializeComponent(global::Improbable.Tests.DependencyTest.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
-                {
-                    obj.AddUint32(1, component.Root);
-                }
+                obj.AddUint32(1, component.Root);
             }
 
             public static void SerializeUpdate(global::Improbable.Tests.DependencyTest.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
+                if (component.IsDataDirty(0))
                 {
-                    if (component.IsDataDirty(0))
-                    {
-                        obj.AddUint32(1, component.Root);
-                    }
-
+                    obj.AddUint32(1, component.Root);
                 }
+
             }
 
             public static void SerializeUpdate(global::Improbable.Tests.DependencyTest.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
@@ -200,18 +196,15 @@ namespace Improbable.Tests
 
             public static void SerializeSnapshot(global::Improbable.Tests.DependencyTest.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
-                {
-                    obj.AddUint32(1, snapshot.Root);
-                }
+                obj.AddUint32(1, snapshot.Root);
+
             }
 
             public static global::Improbable.Tests.DependencyTest.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
             {
                 var component = new global::Improbable.Tests.DependencyTest.Component();
 
-                {
-                    component.Root = obj.GetUint32(1);
-                }
+                component.Root = obj.GetUint32(1);
                 return component;
             }
 
@@ -220,14 +213,11 @@ namespace Improbable.Tests
                 var update = new global::Improbable.Tests.DependencyTest.Update();
                 var obj = updateObj.GetFields();
 
+                if (obj.GetUint32Count(1) == 1)
                 {
-                    if (obj.GetUint32Count(1) == 1)
-                    {
-                        var value = obj.GetUint32(1);
-                        update.Root = new global::Improbable.Gdk.Core.Option<uint>(value);
-                    }
-                    
+                    update.Root = obj.GetUint32(1);
                 }
+                
                 return update;
             }
 
@@ -236,11 +226,8 @@ namespace Improbable.Tests
                 var update = new global::Improbable.Tests.DependencyTest.Update();
                 var obj = data.GetFields();
 
-                {
-                    var value = obj.GetUint32(1);
-                    update.Root = new global::Improbable.Gdk.Core.Option<uint>(value);
-                    
-                }
+                update.Root = obj.GetUint32(1);
+                
                 return update;
             }
 
@@ -248,10 +235,7 @@ namespace Improbable.Tests
             {
                 var component = new global::Improbable.Tests.DependencyTest.Snapshot();
 
-                {
-                    component.Root = obj.GetUint32(1);
-                }
-
+                component.Root = obj.GetUint32(1);
                 return component;
             }
 
@@ -259,28 +243,22 @@ namespace Improbable.Tests
             {
                 var obj = updateObj.GetFields();
 
+                if (obj.GetUint32Count(1) == 1)
                 {
-                    if (obj.GetUint32Count(1) == 1)
-                    {
-                        var value = obj.GetUint32(1);
-                        component.Root = value;
-                    }
-                    
+                    component.Root = obj.GetUint32(1);
                 }
+                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Tests.DependencyTest.Snapshot snapshot)
             {
                 var obj = updateObj.GetFields();
 
+                if (obj.GetUint32Count(1) == 1)
                 {
-                    if (obj.GetUint32Count(1) == 1)
-                    {
-                        var value = obj.GetUint32(1);
-                        snapshot.Root = value;
-                    }
-                    
+                    snapshot.Root = obj.GetUint32(1);
                 }
+                
             }
         }
 
@@ -308,38 +286,14 @@ namespace Improbable.Tests
         {
             public uint ComponentId => DependencyTest.ComponentId;
 
-            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            internal static Dynamic.VTable<Update, Snapshot> VTable = new Dynamic.VTable<Update, Snapshot>
             {
-                DeserializeComponent = DeserializeData,
-                DeserializeUpdate = DeserializeUpdate,
                 DeserializeSnapshot = DeserializeSnapshot,
                 SerializeSnapshot = SerializeSnapshot,
                 DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
                 SerializeSnapshotRaw = Serialization.SerializeSnapshot,
                 ConvertSnapshotToUpdate = SnapshotToUpdate
             };
-
-            private static Component DeserializeData(ComponentData data, World world)
-            {
-                var schemaDataOpt = data.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
-                }
-
-                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
-            }
-
-            private static Update DeserializeUpdate(ComponentUpdate update, World world)
-            {
-                var schemaDataOpt = update.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
-                }
-
-                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
-            }
 
             private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
@@ -365,14 +319,17 @@ namespace Improbable.Tests
 
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
-                var update = new Update();
-                update.Root = new Option<uint>(snapshot.Root);
+                var update = new Update
+                {
+                    Root = snapshot.Root,
+                };
+
                 return update;
             }
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
+                handler.Accept<Update, Snapshot>(ComponentId, VTable);
             }
         }
     }

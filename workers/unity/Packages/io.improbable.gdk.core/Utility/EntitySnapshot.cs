@@ -104,8 +104,7 @@ namespace Improbable.Gdk.Core
             this.entitySnapshot = entitySnapshot;
         }
 
-        public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
-            where TData : struct, ISpatialComponentData
+        public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
@@ -126,8 +125,7 @@ namespace Improbable.Gdk.Core
             this.entityObject = entityObject;
         }
 
-        public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
-            where TData : struct, ISpatialComponentData
+        public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
@@ -147,8 +145,7 @@ namespace Improbable.Gdk.Core
             this.componentSnapshots = componentSnapshots;
         }
 
-        public void Accept<TData, TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TData, TUpdate, TSnapshot> vtable)
-            where TData : struct, ISpatialComponentData
+        public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
         {

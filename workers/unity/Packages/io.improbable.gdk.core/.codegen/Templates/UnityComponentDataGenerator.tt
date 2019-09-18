@@ -219,9 +219,7 @@ var fieldDetails = fieldDetailsList[i]; #>
             {
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
-                {
-                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
             }
 
@@ -230,16 +228,14 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var obj = updateObj.GetFields();
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
+                if (component.IsDataDirty(<#= i #>))
                 {
-                    if (component.IsDataDirty(<#= i #>))
-                    {
-                        <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 6) #>
-                    }
-
+                    <#= fieldDetails.GetSerializationString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
 <# if (ShouldGenerateClearedFieldsSet()) { #>
-                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 6) #>
+                    <#= fieldDetails.GetTrySetClearedFieldString("component." + fieldDetails.PascalCaseName, "updateObj", 5) #>
 <# } #>
                 }
+
 <# } #>
             }
 
@@ -265,9 +261,8 @@ var fieldDetails = fieldDetailsList[i]; #>
             {
 <# for (var i = 0; i < fieldDetailsList.Count; i++) {
 var fieldDetails = fieldDetailsList[i]; #>
-                {
-                    <#= fieldDetails.GetSerializationString("snapshot." + fieldDetails.PascalCaseName, "obj", 4) #>
-                }
+                <#= fieldDetails.GetSerializationString("snapshot." + fieldDetails.PascalCaseName, "obj", 4) #>
+
 <# } #>
             }
 
@@ -279,9 +274,7 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# if (!fieldDetails.IsBlittable) { #>
                 component.<#= fieldDetails.CamelCaseName#>Handle = global::<#= qualifiedNamespace #>.<#= componentDetails.ComponentName #>.ReferenceTypeProviders.<#= fieldDetails.PascalCaseName #>Provider.Allocate(world);
 <# } #>
-                {
-                    <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
                 return component;
             }
@@ -291,14 +284,8 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var update = new <#= componentNamespace #>.Update();
                 var obj = updateObj.GetFields();
 
-<# if (ShouldGenerateClearedFieldsSet()) { #>
-                var clearedFields = updateObj.GetClearedFields();
-
-<# } #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetDeserializeUpdateIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeUpdateIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
                 return update;
             }
@@ -309,9 +296,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var obj = data.GetFields();
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetDeserializeDataIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeDataIntoUpdateString("update." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
                 return update;
             }
@@ -321,10 +306,7 @@ var fieldDetails = fieldDetailsList[i]; #>
                 var component = new <#= componentNamespace #>.Snapshot();
 
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
-
+                <#= fieldDetails.GetDeserializeString("component." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
                 return component;
             }
@@ -333,14 +315,8 @@ var fieldDetails = fieldDetailsList[i]; #>
             {
                 var obj = updateObj.GetFields();
 
-<# if (ShouldGenerateClearedFieldsSet()) { #>
-                var clearedFields = updateObj.GetClearedFields();
-
-<# } #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeUpdateString("component." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
             }
 
@@ -348,14 +324,8 @@ var fieldDetails = fieldDetailsList[i]; #>
             {
                 var obj = updateObj.GetFields();
 
-<# if (ShouldGenerateClearedFieldsSet()) { #>
-                var clearedFields = updateObj.GetClearedFields();
-
-<# } #>
 <# foreach (var fieldDetails in fieldDetailsList) { #>
-                {
-                    <#= fieldDetails.GetDeserializeUpdateString("snapshot." + fieldDetails.PascalCaseName, "obj", 5) #>
-                }
+                <#= fieldDetails.GetDeserializeUpdateString("snapshot." + fieldDetails.PascalCaseName, "obj", 4) #>
 <# } #>
             }
         }
@@ -386,38 +356,14 @@ var fieldDetails = fieldDetailsList[i]; #>
         {
             public uint ComponentId => <#= componentDetails.ComponentName  #>.ComponentId;
 
-            internal static Dynamic.VTable<Component, Update, Snapshot> VTable = new Dynamic.VTable<Component, Update, Snapshot>
+            internal static Dynamic.VTable<Update, Snapshot> VTable = new Dynamic.VTable<Update, Snapshot>
             {
-                DeserializeComponent = DeserializeData,
-                DeserializeUpdate = DeserializeUpdate,
                 DeserializeSnapshot = DeserializeSnapshot,
                 SerializeSnapshot = SerializeSnapshot,
                 DeserializeSnapshotRaw = Serialization.DeserializeSnapshot,
                 SerializeSnapshotRaw = Serialization.SerializeSnapshot,
                 ConvertSnapshotToUpdate = SnapshotToUpdate
             };
-
-            private static Component DeserializeData(ComponentData data, World world)
-            {
-                var schemaDataOpt = data.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentData)}");
-                }
-
-                return Serialization.Deserialize(schemaDataOpt.Value.GetFields(), world);
-            }
-
-            private static Update DeserializeUpdate(ComponentUpdate update, World world)
-            {
-                var schemaDataOpt = update.SchemaData;
-                if (!schemaDataOpt.HasValue)
-                {
-                    throw new ArgumentException($"Can not deserialize an empty {nameof(ComponentUpdate)}");
-                }
-
-                return Serialization.DeserializeUpdate(schemaDataOpt.Value);
-            }
 
             private static Snapshot DeserializeSnapshot(ComponentData snapshot)
             {
@@ -443,16 +389,19 @@ var fieldDetails = fieldDetailsList[i]; #>
 
             private static Update SnapshotToUpdate(in Snapshot snapshot)
             {
-                var update = new Update();
+                var update = new Update
+                {
 <# foreach (var field in fieldDetailsList) { #>
-                update.<#= field.PascalCaseName #> = new Option<<#= field.Type #>>(snapshot.<#= field.PascalCaseName #>);
+                    <#= field.PascalCaseName #> = snapshot.<#= field.PascalCaseName #>,
 <# } #>
+                };
+
                 return update;
             }
 
             public void InvokeHandler(Dynamic.IHandler handler)
             {
-                handler.Accept<Component, Update, Snapshot>(ComponentId, VTable);
+                handler.Accept<Update, Snapshot>(ComponentId, VTable);
             }
         }
     }

@@ -17,9 +17,9 @@ namespace Improbable.Gdk.CodeGeneration.Utils
             builder = new StringBuilder();
         }
 
-        public CodeScope Scope()
+        public CodeScope Scope(string prefix = null)
         {
-            return new CodeScope(this);
+            return new CodeScope(this, prefix);
         }
 
         public void WriteLine(string line)
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.CodeGeneration.Utils
         {
             private CodeWriter writer;
 
-            public CodeScope(CodeWriter writer)
+            public CodeScope(CodeWriter writer, string prefix = null)
             {
                 if (writer == null)
                 {
@@ -67,6 +67,10 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 
                 this.writer = writer;
 
+                if (!string.IsNullOrEmpty(prefix))
+                {
+                    writer.WriteLine(prefix);
+                }
                 writer.WriteLine("{");
                 writer.scopeCounter++;
                 writer.UpdateCurrentIndent();
