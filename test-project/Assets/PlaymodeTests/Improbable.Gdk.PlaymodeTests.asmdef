@@ -10,7 +10,8 @@
         "Improbable.Gdk.GameObjectCreation",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Improbable.Gdk.TransformSynchronization"
+        "Improbable.Gdk.TransformSynchronization",
+        "TestBases"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

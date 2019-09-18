@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.TestBases;
 using Improbable.Gdk.TransformSynchronization;
 using NUnit.Framework;
 using Unity.Entities;
@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
-namespace Improbable.Gdk.PlaymodeTests.Subscriptions
+namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
 {
     /// <summary>
     ///     This doesn't test anything at the moment kek.
@@ -41,11 +41,11 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
         }
 
         [UnityTest]
-        public IEnumerator some_random_test_ignore_the_name_for_now()
+        public IEnumerator Transform_initialises_on_enable_and_resets_on_disable()
         {
             // Load up prefab with TransformSynchronization behaviour
             createdGameObject = CreateAndLinkGameObjectWithTransformSync(EntityId);
-            var transformSyncBehaviour = createdGameObject.GetComponent<TransformSynchronization.TransformSynchronization>();
+            var transformSyncBehaviour = createdGameObject.GetComponent<Improbable.Gdk.TransformSynchronization.TransformSynchronization>();
 
             // Wait two frames for the strategies to be applied
             yield return new WaitForEndOfFrame();
@@ -80,9 +80,9 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
             return gameObject;
         }
 
-        private T GetPrivateField<T>(TransformSynchronization.TransformSynchronization transformSyncBehaviour, string fieldName)
+        private T GetPrivateField<T>(Improbable.Gdk.TransformSynchronization.TransformSynchronization transformSyncBehaviour, string fieldName)
         {
-            var typeOfTransformSyncBehaviour = typeof(TransformSynchronization.TransformSynchronization);
+            var typeOfTransformSyncBehaviour = typeof(Improbable.Gdk.TransformSynchronization.TransformSynchronization);
             var fieldInfo = typeOfTransformSyncBehaviour.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
             var fieldValue = fieldInfo?.GetValue(transformSyncBehaviour);
 

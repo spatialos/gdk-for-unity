@@ -3,7 +3,7 @@ using Improbable.Gdk.Subscriptions;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Improbable.Gdk.EditmodeTests.Subscriptions
+namespace Improbable.Gdk.TestBases
 {
     public class SubscriptionsTestBase
     {
