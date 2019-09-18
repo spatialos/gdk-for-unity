@@ -46,5 +46,15 @@ namespace Improbable.Gdk.TestBases
 
             return gameObject;
         }
+
+        protected GameObject CreateAndLinkGameObject(long entityId, GameObject prefab, Vector3 position = default, Quaternion rotation = default)
+        {
+            var gameObject = Object.Instantiate(prefab, position, rotation);
+
+            Linker.LinkGameObjectToSpatialOSEntity(new EntityId(entityId), gameObject);
+            RequireLifecycleSystem.Update();
+
+            return gameObject;
+        }
     }
 }

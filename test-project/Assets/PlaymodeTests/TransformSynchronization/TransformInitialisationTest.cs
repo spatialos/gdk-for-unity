@@ -17,7 +17,7 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
     [TestFixture]
     public class TransformInitialisationTests : SubscriptionsTestBase
     {
-        private const long EntityId = 100;
+        private const long EntityId = 101;
 
         private GameObject createdGameObject;
 
@@ -44,7 +44,8 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
         public IEnumerator Transform_initialises_on_enable_and_resets_on_disable()
         {
             // Load up prefab with TransformSynchronization behaviour
-            createdGameObject = CreateAndLinkGameObjectWithTransformSync(EntityId);
+            var testTransformPrefab = Resources.Load<GameObject>("TransformTestObject");
+            createdGameObject = CreateAndLinkGameObject(EntityId, testTransformPrefab, Vector3.zero, Quaternion.identity);
             var transformSyncBehaviour = createdGameObject.GetComponent<Improbable.Gdk.TransformSynchronization.TransformSynchronization>();
 
             // Wait two frames for the strategies to be applied
@@ -63,21 +64,10 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             // Run an update of the [Require] lifecycle system
             RequireLifecycleSystem.Update();
 
-            // Wait a frame and then check that behaviour is disabled, `entityManager` is null, and `initialised` is false
+            // Check that behaviour is disabled, `entityManager` is null, and `initialised` is false
             Assert.IsFalse(transformSyncBehaviour.enabled);
             Assert.IsNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
             Assert.IsFalse(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
-        }
-
-        private GameObject CreateAndLinkGameObjectWithTransformSync(long entityId)
-        {
-            var prefab = Resources.Load<GameObject>("TransformTestObject");
-            var gameObject = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
-            Linker.LinkGameObjectToSpatialOSEntity(new EntityId(entityId), gameObject);
-            RequireLifecycleSystem.Update();
-
-            return gameObject;
         }
 
         private T GetPrivateField<T>(Improbable.Gdk.TransformSynchronization.TransformSynchronization transformSyncBehaviour, string fieldName)
