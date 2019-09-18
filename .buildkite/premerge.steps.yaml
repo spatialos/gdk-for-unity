@@ -73,56 +73,56 @@ steps:
             type: details
     <<: *linux
 
-  # - label: "build :android:"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #     - workers/unity/build/worker/**/*
-  #   env:
-  #     WORKER_TYPE: "MobileClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     BUILD_TARGET_FILTER: "android"
-  #     SCRIPTING_BACKEND: "mono"
+  - label: "build :android:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "android"
+      SCRIPTING_BACKEND: "mono"
 
-  # - label: "build :ios:"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #     - workers/unity/build/worker/**/*
-  #   env:
-  #     WORKER_TYPE: "MobileClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     BUILD_TARGET_FILTER: "ios"
-  #     SCRIPTING_BACKEND: "il2cpp"
+  - label: "build :ios:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "ios"
+      SCRIPTING_BACKEND: "il2cpp"
 
-  # - label: "build UnityClient mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
+  - label: "build UnityClient mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
 
-  # - label: "build UnityClient il2cpp"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     SCRIPTING_BACKEND: "il2cpp"
+  - label: "build UnityClient il2cpp"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "local"
+      SCRIPTING_BACKEND: "il2cpp"
 
-  # - label: "build UnityGameLogic mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityGameLogic"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
+  - label: "build UnityGameLogic mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityGameLogic"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
