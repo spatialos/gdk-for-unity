@@ -45,16 +45,16 @@ mkdir -p "${TEST_RESULTS_DIR}"
 #         -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml"
 # popd
 
-# echo "--- Testing Unity: Test Project Editmode :microscope:"
+echo "--- Testing Unity: Test Project Editmode :microscope:"
 
-# pushd "test-project"
-#     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-#         -batchmode \
-#         -projectPath "${PROJECT_DIR}/test-project" \
-#         -runEditorTests \
-#         -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
-#         -editorTestsResultFile "${TEST_RESULTS_DIR}/test-project-editmode-test-results.xml"
-# popd
+pushd "test-project"
+    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath "${PROJECT_DIR}/test-project" \
+        -runEditorTests \
+        -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
+        -editorTestsResultFile "${TEST_RESULTS_DIR}/test-project-editmode-test-results.xml"
+popd
 
 echo "--- Testing Unity: Test Project Playmode :joystick:"
 
