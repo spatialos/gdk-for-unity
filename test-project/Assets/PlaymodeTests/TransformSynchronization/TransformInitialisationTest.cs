@@ -44,6 +44,7 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
         [UnityTest]
         public IEnumerator Transform_initialises_on_enable_and_resets_on_disable()
         {
+            LogAssert.ignoreFailingMessages = true;
             Debug.LogError("YEET 1");
             // Load up prefab with TransformSynchronization behaviour
             var testTransformPrefab = Resources.Load<GameObject>("TransformTestObject");
@@ -54,9 +55,10 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
 
             Debug.LogError("YEET 2");
             // Wait two frames for the strategies to be applied
-            yield return new WaitForEndOfFrame();
+            yield return null;
+//            yield return new WaitForEndOfFrame();
             Debug.LogError("YEET 3");
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             Debug.LogError("YEET 4");
             // Check that the behaviour is still enabled, `entityManager` is set, and `initialised` is true
@@ -79,6 +81,8 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             Assert.IsFalse(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
 
             Debug.LogError("YEET 7");
+
+            LogAssert.ignoreFailingMessages = false;
         }
 
         private T GetPrivateField<T>(Improbable.Gdk.TransformSynchronization.TransformSynchronization transformSyncBehaviour, string fieldName)
