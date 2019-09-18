@@ -41,7 +41,7 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
         [UnityTest]
         public IEnumerator Transform_initialises_on_enable_and_resets_on_disable()
         {
-            // Load up prefab with TransformSynchronization behaviour
+            // Load up prefab that already has TransformSynchronization behaviour
             var testTransformPrefab = Resources.Load<GameObject>("TransformTestObject");
             createdGameObject = CreateAndLinkGameObject(EntityId, testTransformPrefab, Vector3.zero, Quaternion.identity);
 
@@ -51,19 +51,15 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             yield return null;
             yield return null;
 
-            // Check that the behaviour is still enabled, `entityManager` is set, and `initialised` is true
             Assert.IsTrue(transformSyncBehaviour.enabled);
             Assert.IsNotNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
             Assert.IsTrue(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
 
-            // Remove TransformInternal component from entity and run an update of the receive system
             ConnectionHandler.RemoveComponent(EntityId, TransformInternal.ComponentId);
             ReceiveSystem.Update();
 
-            // Run an update of the [Require] lifecycle system
             RequireLifecycleSystem.Update();
 
-            // Check that behaviour is disabled, `entityManager` is null, and `initialised` is false
             Assert.IsFalse(transformSyncBehaviour.enabled);
             Assert.IsNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
             Assert.IsFalse(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
