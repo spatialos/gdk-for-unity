@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Reflection;
 using Improbable.Gdk.Core;
@@ -74,9 +75,13 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
         {
             var typeOfTransformSyncBehaviour = typeof(Improbable.Gdk.TransformSynchronization.TransformSynchronization);
             var fieldInfo = typeOfTransformSyncBehaviour.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
-            var fieldValue = fieldInfo?.GetValue(transformSyncBehaviour);
 
-            return (T) fieldValue;
+            if (fieldInfo == null)
+            {
+                throw new NullReferenceException($"Error getting private field {fieldName}.");
+            }
+
+            return (T) fieldInfo.GetValue(transformSyncBehaviour);
         }
     }
 }
