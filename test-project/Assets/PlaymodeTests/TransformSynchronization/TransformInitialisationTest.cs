@@ -47,7 +47,8 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
 
             var transformSyncBehaviour = createdGameObject.GetComponent<Improbable.Gdk.TransformSynchronization.TransformSynchronization>();
 
-            // Wait two frames for the strategies to be applied
+            // TransformSync script applies strategies in a coroutine that yields at least one and up to two times.
+            // We yield twice in the test to be extra sure that the strategies are applied and that `initialised` is set.
             yield return null;
             yield return null;
 

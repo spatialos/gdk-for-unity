@@ -87,36 +87,36 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void ApplyStrategies()
         {
-            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-
-            if (SetKinematicWhenNotAuthoritative)
+            using (var commandBuffer = new EntityCommandBuffer(Allocator.Temp))
             {
-                commandBuffer.AddComponent(entity, new ManageKinematicOnAuthorityChangeTag());
-                commandBuffer.AddComponent(entity, new KinematicStateWhenAuth());
+                if (SetKinematicWhenNotAuthoritative)
+                {
+                    commandBuffer.AddComponent(entity, new ManageKinematicOnAuthorityChangeTag());
+                    commandBuffer.AddComponent(entity, new KinematicStateWhenAuth());
+                }
+
+                ApplyReceiveStrategies(commandBuffer);
+                ApplySendStrategies(commandBuffer);
+
+                commandBuffer.Playback(entityManager);
             }
-
-            ApplyReceiveStrategies(commandBuffer);
-            ApplySendStrategies(commandBuffer);
-
-            commandBuffer.Playback(entityManager);
-            commandBuffer.Dispose();
         }
 
         private void RemoveStrategies()
         {
-            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-
-            if (SetKinematicWhenNotAuthoritative)
+            using (var commandBuffer = new EntityCommandBuffer(Allocator.Temp))
             {
-                commandBuffer.RemoveComponent<ManageKinematicOnAuthorityChangeTag>(entity);
-                commandBuffer.RemoveComponent<KinematicStateWhenAuth>(entity);
+                if (SetKinematicWhenNotAuthoritative)
+                {
+                    commandBuffer.RemoveComponent<ManageKinematicOnAuthorityChangeTag>(entity);
+                    commandBuffer.RemoveComponent<KinematicStateWhenAuth>(entity);
+                }
+
+                RemoveReceiveStrategies(commandBuffer);
+                RemoveSendStrategies(commandBuffer);
+
+                commandBuffer.Playback(entityManager);
             }
-
-            RemoveReceiveStrategies(commandBuffer);
-            RemoveSendStrategies(commandBuffer);
-
-            commandBuffer.Playback(entityManager);
-            commandBuffer.Dispose();
         }
 
         private void ApplyReceiveStrategies(EntityCommandBuffer commandBuffer)
