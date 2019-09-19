@@ -112,7 +112,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 commandBuffer.RemoveComponent<KinematicStateWhenAuth>(entity);
             }
 
-            RemoveReceiveStragies(commandBuffer);
+            RemoveReceiveStrategies(commandBuffer);
             RemoveSendStrategies(commandBuffer);
 
             commandBuffer.Playback(entityManager);
@@ -134,7 +134,7 @@ namespace Improbable.Gdk.TransformSynchronization
             }
         }
 
-        private void RemoveReceiveStragies(EntityCommandBuffer commandBuffer)
+        private void RemoveReceiveStrategies(EntityCommandBuffer commandBuffer)
         {
             RemoveCommonReceiveComponents(commandBuffer);
 
