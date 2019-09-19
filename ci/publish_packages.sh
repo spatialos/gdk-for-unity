@@ -27,7 +27,7 @@ pushd "${PKG_ROOT}" > /dev/null
             # Created package is the last line of output.
             PACKAGE_NAME=$(npm pack | tail -n 1)
             cloudsmith push npm spatialos/gdk-for-unity "${PACKAGE_NAME}" --republish "${EXTRA_CLOUDSMITH_ARGS}"
-            rm "${PACKGE_NAME}"
+            rm "${PACKAGE_NAME}"
         popd > /dev/null
     done
 popd > /dev/null
