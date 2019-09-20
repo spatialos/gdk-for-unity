@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Improbable.Gdk.Tools;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -76,7 +77,20 @@ namespace Improbable.Gdk.Mobile
             return availableDevices;
         }
 
-        public static void Build(string developmentTeamId)
+        public static void Build()
+        {
+            if (!Directory.Exists(XCodeProjectPath))
+            {
+                throw new BuildFailedException("Was not able to find an XCode project. Did you build your iOS worker?");
+            }
+
+            if (!TryBuildXCodeProject(string.Empty))
+            {
+                throw new BuildFailedException($"Failed to build your XCode project. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+            }
+        }
+
+        public static void MenuBuild(string developmentTeamId)
         {
             try
             {
@@ -90,8 +104,7 @@ namespace Improbable.Gdk.Mobile
 
                 if (string.IsNullOrEmpty(developmentTeamId))
                 {
-                    Debug.LogError("Development Team Id was not specified. Unable to build the XCode project.");
-                    return;
+                    Debug.LogWarning("Development Team Id was not specified. The build will fail, if the XCode project needs to build for device.");
                 }
 
                 if (!TryBuildXCodeProject(developmentTeamId))
@@ -168,12 +181,18 @@ namespace Improbable.Gdk.Mobile
 
         private static bool TryBuildXCodeProject(string developmentTeamId)
         {
+            var teamIdArgs = string.Empty;
+            if (!string.IsNullOrEmpty(developmentTeamId))
+            {
+                teamIdArgs = $"DEVELOPMENT_TEAM={developmentTeamId}";
+            }
+
             return RedirectedProcess.Command("xcodebuild")
                 .WithArgs("build-for-testing",
                     "-project", Path.Combine(XCodeProjectPath, XCodeProjectFile),
                     "-derivedDataPath", DerivedDataPath,
                     "-scheme", "Unity-iPhone",
-                    $"DEVELOPMENT_TEAM={developmentTeamId}",
+                    teamIdArgs,
                     "-allowProvisioningUpdates")
                 .Run()
                 .ExitCode == 0;
