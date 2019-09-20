@@ -2,6 +2,11 @@
 set -euo pipefail
 [[ -n "${DEBUG:-}" ]] && set -x
 
+if [[ "${BUILDKITE_AGENT_META_DATA_PLATFORM}" == "macos" ]] ; then
+  spatial auth login --log_level debug
+  exit 0
+fi
+
 if [[ "${BUILDKITE_AGENT_META_DATA_CAPABLE_OF_BUILDING}" == "gdk-for-unity" ]] && [[ "${BUILDKITE_AGENT_META_DATA_OS}" == "windows" ]]; then
   spatial auth login --log_level debug
 fi
