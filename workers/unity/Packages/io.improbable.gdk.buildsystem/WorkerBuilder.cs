@@ -29,6 +29,7 @@ namespace Improbable.Gdk.BuildSystem
         // ReSharper disable once UnusedMember.Global
         public static void Build()
         {
+            iOSSdkVersion currentSdkVersion = PlayerSettings.iOS.sdkVersion;
             try
             {
                 var args = CommandLineArgs.FromCommandLine();
@@ -93,11 +94,33 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, buildTargetFilter, scriptingBackend);
+                var targetSdkArg = args.GetCommandLineValue("targetSdk", string.Empty);
+                if (!string.IsNullOrEmpty(targetSdkArg))
+                {
+                    iOSSdkVersion version;
+                    switch (targetSdkArg.ToLower())
+                    {
+                        case "device":
+                            version = iOSSdkVersion.DeviceSDK;
+                            break;
+                        case "simulator":
+                            version = iOSSdkVersion.SimulatorSDK;
+                            break;
+                        default:
+                            throw new BuildFailedException("Unknown target SDK value: " + targetSdkArg);
+                    }
+
+                    Debug.Log($"Setting target sdk to {version}");
+                    PlayerSettings.iOS.sdkVersion = version;
+                }
+
+                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, buildTargetFilter,
+                    scriptingBackend);
 
                 if (!buildsSucceeded)
                 {
-                    throw new BuildFailedException("Not all builds were completed successfully. See the log for more information.");
+                    throw new BuildFailedException(
+                        "Not all builds were completed successfully. See the log for more information.");
                 }
             }
             catch (Exception e)
@@ -109,6 +132,10 @@ namespace Improbable.Gdk.BuildSystem
                 }
 
                 throw new BuildFailedException(e);
+            }
+            finally
+            {
+                PlayerSettings.iOS.sdkVersion = currentSdkVersion;
             }
         }
 
