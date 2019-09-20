@@ -134,9 +134,9 @@ namespace Improbable.Gdk.Subscriptions
                 {
                     entityManager.RemoveComponent(entity, componentType);
                 }
-
-                gameObjectToComponentsAdded.Remove(gameObject);
             }
+
+            gameObjectToComponentsAdded.Remove(gameObject);
 
             var linkComponent = gameObject.GetComponent<LinkedEntityComponent>();
             if (linkComponent != null)

@@ -10,5 +10,10 @@ namespace Improbable.Gdk.TransformSynchronization
         {
             commandBuffer.AddComponent(entity, new DirectReceiveTag());
         }
+
+        internal override void Remove(Entity entity, World world, EntityCommandBuffer commandBuffer)
+        {
+            commandBuffer.RemoveComponent<DirectReceiveTag>(entity);
+        }
     }
 }

@@ -24,5 +24,10 @@ namespace Improbable.Gdk.TransformSynchronization
                 MaxLoadMatchedBufferSize = MaxBufferSize
             });
         }
+
+        internal override void Remove(Entity entity, World world, EntityCommandBuffer commandBuffer)
+        {
+            commandBuffer.RemoveComponent<InterpolationConfig>(entity);
+        }
     }
 }

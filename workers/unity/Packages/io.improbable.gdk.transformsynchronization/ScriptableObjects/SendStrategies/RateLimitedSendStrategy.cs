@@ -18,5 +18,10 @@ namespace Improbable.Gdk.TransformSynchronization
                 MaxPositionUpdateRateHz = MaxPositionUpdateRateHz,
             });
         }
+
+        internal override void Remove(Entity entity, World world, EntityCommandBuffer commandBuffer)
+        {
+            commandBuffer.RemoveComponent<RateLimitedSendConfig>(entity);
+        }
     }
 }

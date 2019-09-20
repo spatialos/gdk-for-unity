@@ -1,5 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Gdk.TestBases;
 using Improbable.TestSchema;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
