@@ -1,5 +1,22 @@
 # Upgrade Guide
 
+## From `0.2.9` to `0.2.10`
+
+### General
+
+* Replace all usages of `Dynamic.GetComponentId<T>` with `ComponentDatabase.GetComponentId<T>`.
+* Replace all usages of `Dynamic.GetSnapshotComponentId<T>` with `ComponentDatabase.GetSnapshotComponentId<T>`.
+    ```csharp
+        // Previously
+        var componentId = Dynamic.GetComponentId<Position.Component>();
+        var componentId = Dynamic.GetSnapshotComponentId<Position.Snapshot>();
+
+        // Now
+        var componentId = ComponentDatabase.GetComponentId<Position.Component>();
+        var componentId = ComponentDatabase.GetSnapshotComponentId<Position.Snapshot>();
+    ```
+
+
 ## From `0.2.6` to `0.2.7`
 
 ### Worker SDK `14.0.1` upgrade
