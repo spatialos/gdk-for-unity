@@ -90,8 +90,6 @@ namespace Improbable.Gdk.Core
             typeToCommandStorage.Add(typeof(WorldCommands.DeleteEntity.Request), worldCommandStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.ReserveEntityIds.Request), worldCommandStorage);
             typeToCommandStorage.Add(typeof(WorldCommands.EntityQuery.Request), worldCommandStorage);
-
-            Debug.Log("Y");
         }
 
         public void Clear()
