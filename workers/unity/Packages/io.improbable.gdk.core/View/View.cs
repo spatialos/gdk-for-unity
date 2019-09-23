@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Improbable.Gdk.Core
 
         public View()
         {
-            var types = ReflectionUtility.GetNonAbstractTypes(typeof(IViewStorage));
+            var types = ComponentDatabase.Metaclasses.Select(type => type.Value.ViewStorage);
             foreach (var type in types)
             {
                 var instance = (IViewStorage) Activator.CreateInstance(type);
@@ -50,7 +51,7 @@ namespace Improbable.Gdk.Core
         {
             if (!HasComponent<T>(entityId))
             {
-                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id} and component with ID: {Dynamic.GetSnapshotComponentId<T>()}");
+                throw new ArgumentException($"The view does not have entity with Entity ID: {entityId.Id} and component with ID: {ComponentDatabase.GetSnapshotComponentId<T>()}");
             }
 
             var storage = (IViewComponentStorage<T>) typeToViewStorage[typeof(T)];

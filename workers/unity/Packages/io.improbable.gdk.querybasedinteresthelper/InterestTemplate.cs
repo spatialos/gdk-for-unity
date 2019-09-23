@@ -104,7 +104,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             params InterestQuery[] interestQueries)
             where T : ISpatialComponentData
         {
-            return AddQueries(Dynamic.GetComponentId<T>(), interestQuery, interestQueries);
+            return AddQueries(ComponentDatabase.GetComponentId<T>(), interestQuery, interestQueries);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public InterestTemplate AddQueries<T>(IEnumerable<InterestQuery> interestQueries)
             where T : ISpatialComponentData
         {
-            return AddQueries(Dynamic.GetComponentId<T>(), interestQueries);
+            return AddQueries(ComponentDatabase.GetComponentId<T>(), interestQueries);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             params InterestQuery[] interestQueries)
             where T : ISpatialComponentData
         {
-            return ReplaceQueries(Dynamic.GetComponentId<T>(), interestQuery, interestQueries);
+            return ReplaceQueries(ComponentDatabase.GetComponentId<T>(), interestQuery, interestQueries);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public InterestTemplate ReplaceQueries<T>(IEnumerable<InterestQuery> interestQueries)
             where T : ISpatialComponentData
         {
-            return ReplaceQueries(Dynamic.GetComponentId<T>(), interestQueries);
+            return ReplaceQueries(ComponentDatabase.GetComponentId<T>(), interestQueries);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public InterestTemplate ClearQueries<T>()
             where T : ISpatialComponentData
         {
-            return ClearQueries(Dynamic.GetComponentId<T>());
+            return ClearQueries(ComponentDatabase.GetComponentId<T>());
         }
 
         /// <summary>
