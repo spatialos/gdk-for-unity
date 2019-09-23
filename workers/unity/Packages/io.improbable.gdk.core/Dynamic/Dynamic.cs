@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -21,6 +23,15 @@ namespace Improbable.Gdk.Core
 
     public static class Dynamic
     {
+        private static readonly Dictionary<uint, IDynamicInvokable> DynamicInvokers;
+
+        static Dynamic()
+        {
+            DynamicInvokers = ComponentDatabase.Metaclasses.ToDictionary(
+                pair => pair.Key,
+                pair => (IDynamicInvokable) Activator.CreateInstance(pair.Value.DynamicInvokable));
+        }
+
         public struct VTable<TUpdate, TSnapshot>
             where TUpdate : struct, ISpatialComponentUpdate
             where TSnapshot : struct, ISpatialComponentSnapshot
@@ -41,7 +52,7 @@ namespace Improbable.Gdk.Core
 
         public static void ForEachComponent(IHandler handler)
         {
-            foreach (var component in ComponentDatabase.IdsToDynamicInvokers.Values)
+            foreach (var component in DynamicInvokers.Values)
             {
                 component.InvokeHandler(handler);
             }
@@ -49,32 +60,12 @@ namespace Improbable.Gdk.Core
 
         public static void ForComponent(uint componentId, IHandler handler)
         {
-            if (!ComponentDatabase.IdsToDynamicInvokers.TryGetValue(componentId, out var component))
+            if (!DynamicInvokers.TryGetValue(componentId, out var component))
             {
                 throw new ArgumentException($"Unknown component ID {componentId}.");
             }
 
             component.InvokeHandler(handler);
-        }
-
-        public static uint GetComponentId<T>() where T : ISpatialComponentData
-        {
-            if (!ComponentDatabase.ComponentsToIds.TryGetValue(typeof(T), out var id))
-            {
-                throw new ArgumentException($"Can not find ID for unregistered SpatialOS component {nameof(T)}.");
-            }
-
-            return id;
-        }
-
-        public static uint GetSnapshotComponentId<T>() where T : ISpatialComponentSnapshot
-        {
-            if (!ComponentDatabase.SnapshotsToIds.TryGetValue(typeof(T), out var id))
-            {
-                throw new ArgumentException($"Can not find ID for unregistered SpatialOS component snapshot {nameof(T)}.");
-            }
-
-            return id;
         }
     }
 }
