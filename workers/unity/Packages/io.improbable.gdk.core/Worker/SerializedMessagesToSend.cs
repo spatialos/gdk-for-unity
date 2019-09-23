@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
@@ -52,12 +53,17 @@ namespace Improbable.Gdk.Core
         {
             if (componentTypes == null)
             {
-                componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSerializer));
+                componentTypes = ComponentDatabase.Metaclasses
+                    .Select(pair => pair.Value.Serializer)
+                    .ToList();
             }
 
             if (commandTypes == null)
             {
-                commandTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ICommandSerializer));
+                commandTypes = ComponentDatabase.Metaclasses
+                    .SelectMany(pair => pair.Value.Commands)
+                    .Select(metaclass => metaclass.Serializer)
+                    .ToList();
             }
 
             foreach (var type in componentTypes)
@@ -71,6 +77,8 @@ namespace Improbable.Gdk.Core
                 var instance = (ICommandSerializer) Activator.CreateInstance(type);
                 commandSerializers.Add(instance);
             }
+
+            commandSerializers.Add(new WorldCommandSerializer());
 
             // Move the position serializer to the end of the queue so that the updates get sent last
             // This is to prevent an authority change before other updates have been applied from the same frame

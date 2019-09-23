@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
@@ -48,12 +49,17 @@ namespace Improbable.Gdk.Core
         {
             if (componentStorageTypes == null)
             {
-                componentStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+                componentStorageTypes = ComponentDatabase.Metaclasses
+                    .Select(pair => pair.Value.DiffStorage)
+                    .ToList();
             }
 
             if (commandStorageTypes == null)
             {
-                commandStorageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandDiffStorage));
+                commandStorageTypes = ComponentDatabase.Metaclasses
+                    .SelectMany(pair => pair.Value.Commands)
+                    .Select(metaclass => metaclass.DiffStorage)
+                    .ToList();
             }
 
             foreach (var type in componentStorageTypes)

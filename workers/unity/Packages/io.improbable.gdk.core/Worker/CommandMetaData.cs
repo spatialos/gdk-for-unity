@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -36,7 +37,10 @@ namespace Improbable.Gdk.Core
         {
             if (storageTypes == null)
             {
-                storageTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ICommandMetaDataStorage));
+                storageTypes = ComponentDatabase.Metaclasses
+                    .SelectMany(type => type.Value.Commands)
+                    .Select(commandMetaclass => commandMetaclass.MetaDataStorage)
+                    .ToList();
             }
 
             foreach (var type in storageTypes)
@@ -52,6 +56,11 @@ namespace Improbable.Gdk.Core
 
                 commandIdToStorage.Add(instance.GetCommandId(), instance);
             }
+
+            componentIdToCommandIdToStorage.Add(0, new Dictionary<uint, ICommandMetaDataStorage>
+            {
+                { 0, new WorldCommandMetaDataStorage() }
+            });
         }
 
         public void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 using UnityEngine.Profiling;
 
@@ -56,7 +57,7 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingSystem<WorkerSystem>();
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IEcsViewManager)))
+            foreach (var type in ComponentDatabase.Metaclasses.Select(type => type.Value.EcsViewManager))
             {
                 var instance = (IEcsViewManager) Activator.CreateInstance(type);
                 instance.Init(World);
