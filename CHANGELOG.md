@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- The `GetComponentId<T>()` and `GetSnapshotComponentId<T>()` methods have been moved from `Dynamic` to `ComponentDatabase`.
+- The `GetComponentId<T>()` and `GetSnapshotComponentId<T>()` methods have been moved from `Dynamic` to `ComponentDatabase`. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
 
 ### Fixed
 
@@ -13,7 +13,7 @@
 
 ### Internal
 
-- Added the `IComponentMetaclass` and `ICommandMetaclass` interfaces. Where we previously would use reflection to find instances of various component/command related types, we now lookup through generated metaclasses.
+- Added the `IComponentMetaclass` and `ICommandMetaclass` interfaces. Where we previously would use reflection to find instances of various component/command related types, we now lookup through generated metaclasses. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
 
 ## `0.2.9` - 2019-09-16
 
