@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -11,23 +14,31 @@ namespace Improbable.Gdk.Debug.NetStats
 
         private NetworkStatisticsSystem netStatSystem;
 
-        private List<(string Name, uint ComponentId)> spatialComponents;
+        private List<(string, MessageTypeUnion)> elementInfo;
         private Dictionary<int, VisualElement> listElements;
 
         public new class UxmlFactory : UxmlFactory<NetStatsCommandsTab>
         {
         }
 
-        internal void InitializeTab(List<(string Name, uint ComponentId)> spatialComponents)
+        internal void InitializeTab()
         {
-            this.spatialComponents = spatialComponents;
+            elementInfo = ComponentDatabase.Metaclasses
+                .SelectMany(pair => pair.Value.Commands
+                    .SelectMany(metaclass => new List<(string, MessageTypeUnion)>()
+                    {
+                        ($"{metaclass.Name}.Request", MessageTypeUnion.CommandRequest(pair.Key, metaclass.CommandIndex)),
+                        ($"{metaclass.Name}.Response", MessageTypeUnion.CommandResponse(pair.Key, metaclass.CommandIndex))
+                    })
+                )
+                .ToList();
 
             // Load update row
             var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
 
             // Clone row for each component, fill list
-            var scrollView = this.Q<ScrollView>("updatesContainer");
-            for (var i = 0; i < spatialComponents.Count; i++)
+            var scrollView = this.Q<ScrollView>("container");
+            for (var i = 0; i < elementInfo.Count; i++)
             {
                 var element = itemTemplate.CloneTree();
                 UpdateElement(i, element);
@@ -42,7 +53,7 @@ namespace Improbable.Gdk.Debug.NetStats
 
         internal void Update()
         {
-            var scrollView = this.Q<ScrollView>("updatesContainer");
+            var scrollView = this.Q<ScrollView>("container");
             var count = scrollView.childCount;
             var viewportBound = scrollView.contentViewport.localBound;
 
@@ -58,16 +69,16 @@ namespace Improbable.Gdk.Debug.NetStats
         }
 
         // TODO: Temporary placeholder to allow sorting
-        private (string Name, uint ComponentId) GetComponentInfoForIndex(int index)
+        private (string name, MessageTypeUnion messageType) GetCommandInfoForIndex(int index)
         {
-            return spatialComponents[index];
+            return elementInfo[index];
         }
 
         private void UpdateElement(int index, VisualElement element)
         {
             // Set component name
-            var (componentName, componentId) = GetComponentInfoForIndex(index);
-            element.Q<Label>("name").text = componentName;
+            var infoForIndex = GetCommandInfoForIndex(index);
+            element.Q<Label>("name").text = infoForIndex.name;
 
             if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
             {
@@ -76,7 +87,7 @@ namespace Improbable.Gdk.Debug.NetStats
 
             // Incoming stats
             var (dataIn, time) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Incoming);
+                netStatSystem.GetSummary(infoForIndex.messageType, 60, Direction.Incoming);
 
             if (time == 0)
             {
@@ -88,7 +99,7 @@ namespace Improbable.Gdk.Debug.NetStats
 
             // Outgoing stats
             var (dataOut, _) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Outgoing);
+                netStatSystem.GetSummary(infoForIndex.messageType, 60, Direction.Outgoing);
 
             element.Q<Label>("opsOut").text = (dataOut.Count / time).ToString("F1");
             element.Q<Label>("sizeOut").text = (dataOut.Size / 1024f / time).ToString("F3");

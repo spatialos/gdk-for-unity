@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.NetworkStats;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -11,23 +13,23 @@ namespace Improbable.Gdk.Debug.NetStats
 
         private NetworkStatisticsSystem netStatSystem;
 
-        private List<(string Name, uint ComponentId)> spatialComponents;
+        private List<IComponentMetaclass> spatialComponents;
         private Dictionary<int, VisualElement> listElements;
 
         public new class UxmlFactory : UxmlFactory<NetStatsUpdatesTab>
         {
         }
 
-        internal void InitializeTab(List<(string Name, uint ComponentId)> spatialComponents)
+        internal void InitializeTab()
         {
-            this.spatialComponents = spatialComponents;
+            spatialComponents = ComponentDatabase.Metaclasses.Select(pair => pair.Value).ToList();
 
             // Load update row
             var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
 
             // Clone row for each component, fill list
             var scrollView = this.Q<ScrollView>("updatesContainer");
-            for (var i = 0; i < spatialComponents.Count; i++)
+            for (var i = 0; i < ComponentDatabase.Metaclasses.Count; i++)
             {
                 var element = itemTemplate.CloneTree();
                 UpdateElement(i, element);
@@ -58,7 +60,7 @@ namespace Improbable.Gdk.Debug.NetStats
         }
 
         // TODO: Temporary placeholder to allow sorting
-        private (string Name, uint ComponentId) GetComponentInfoForIndex(int index)
+        private IComponentMetaclass GetComponentInfoForIndex(int index)
         {
             return spatialComponents[index];
         }
@@ -66,8 +68,9 @@ namespace Improbable.Gdk.Debug.NetStats
         private void UpdateElement(int index, VisualElement element)
         {
             // Set component name
-            var (componentName, componentId) = GetComponentInfoForIndex(index);
-            element.Q<Label>("name").text = componentName;
+            var componentMetaclass = GetComponentInfoForIndex(index);
+            var componentId = componentMetaclass.ComponentId;
+            element.Q<Label>("name").text = componentMetaclass.Name;
 
             if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
             {

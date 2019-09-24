@@ -25,8 +25,8 @@ namespace Improbable.Gdk.Debug.NetStats
         private NetStatsCommandsTab commandsTab;
 
         private World selectedWorld;
-        private List<(string Name, uint ComponentId)> spatialComponents;
         private Dictionary<Tab, VisualElement> tabs;
+        private Tab selectedTab = Tab.Updates;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
@@ -39,14 +39,11 @@ namespace Improbable.Gdk.Debug.NetStats
 
         private void OnEnable()
         {
-            // Generate list of types
-            spatialComponents = ComponentDatabase.Metaclasses
-                .Select(pair => (pair.Value.Name, pair.Key))
-                .ToList();
-
             // Load UI
             SetupUI();
             SetupWorldSelection();
+
+            SelectTab(selectedTab);
         }
 
         // Update UI at 10 FPS
@@ -58,6 +55,11 @@ namespace Improbable.Gdk.Debug.NetStats
             {
                 updatesTab.Update();
             }
+            
+            if (commandsTab.visible)
+            {
+                commandsTab.Update();
+            }
         }
 
         private void SetupUI()
@@ -68,9 +70,10 @@ namespace Improbable.Gdk.Debug.NetStats
 
             // Initialize tabs
             updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
-            updatesTab.InitializeTab(spatialComponents);
+            updatesTab.InitializeTab();
 
             commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
+            commandsTab.InitializeTab();
 
             // Setup tab buttons
             tabs = new Dictionary<Tab, VisualElement>
@@ -85,12 +88,15 @@ namespace Improbable.Gdk.Debug.NetStats
 
         private void SelectTab(Tab tabType)
         {
-            foreach (var tab in tabs)
+            foreach (var pair in tabs)
             {
-                tab.Value.visible = false;
+                pair.Value.AddToClassList("tab-hidden");
+                pair.Value.visible = false;
             }
 
+            tabs[tabType].RemoveFromClassList("tab-hidden");
             tabs[tabType].visible = true;
+            selectedTab = tabType;
         }
 
         private void SetupWorldSelection()
@@ -135,6 +141,7 @@ namespace Improbable.Gdk.Debug.NetStats
             var netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
 
             updatesTab.SetSystem(netStatSystem);
+            commandsTab.SetSystem(netStatSystem);
         }
     }
 }

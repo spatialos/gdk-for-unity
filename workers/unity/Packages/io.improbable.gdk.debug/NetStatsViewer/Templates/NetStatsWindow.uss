@@ -7,6 +7,10 @@
     position: relative;
 }
 
+.tab-hidden {
+    display: none;
+}
+
 .tab {
     flex-grow: 1;
 }
