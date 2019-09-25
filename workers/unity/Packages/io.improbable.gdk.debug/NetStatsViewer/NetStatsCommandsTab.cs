@@ -45,30 +45,13 @@ namespace Improbable.Gdk.Debug.NetStats
             }
         }
 
-        public override void Update()
-        {
-            var scrollView = this.Q<ScrollView>("container");
-            var count = scrollView.childCount;
-            var viewportBound = scrollView.contentViewport.localBound;
-
-            // Update all visible items in the list
-            for (var i = 0; i < count; i++)
-            {
-                var element = scrollView[i];
-                if (viewportBound.Overlaps(element.localBound))
-                {
-                    UpdateElement(i, element);
-                }
-            }
-        }
-
         // TODO: Temporary placeholder to allow sorting
         private (string name, MessageTypeUnion messageType) GetCommandInfoForIndex(int index)
         {
             return elementInfo[index];
         }
 
-        private void UpdateElement(int index, VisualElement element)
+        protected override void UpdateElement(int index, VisualElement element)
         {
             // Set component name
             var infoForIndex = GetCommandInfoForIndex(index);

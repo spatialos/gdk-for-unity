@@ -18,7 +18,7 @@
             <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
             <VisualElement style="min-width: 15px;" />
         </VisualElement>
-        <ScrollView name="updatesContainer" class="updates-view" focusable="false" show-vertical-scroller="true" />
+        <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsUpdatesTab>
     <ns:NetStatsCommandsTab name="commandsTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />

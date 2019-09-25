@@ -26,29 +26,12 @@ namespace Improbable.Gdk.Debug.NetStats
             var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
 
             // Clone row for each component, fill list
-            var scrollView = this.Q<ScrollView>("updatesContainer");
+            var scrollView = this.Q<ScrollView>("container");
             for (var i = 0; i < ComponentDatabase.Metaclasses.Count; i++)
             {
                 var element = itemTemplate.CloneTree();
                 UpdateElement(i, element);
                 scrollView.Add(element);
-            }
-        }
-
-        public override void Update()
-        {
-            var scrollView = this.Q<ScrollView>("updatesContainer");
-            var count = scrollView.childCount;
-            var viewportBound = scrollView.contentViewport.localBound;
-
-            // Update all visible items in the list
-            for (var i = 0; i < count; i++)
-            {
-                var element = scrollView[i];
-                if (viewportBound.Overlaps(element.localBound))
-                {
-                    UpdateElement(i, element);
-                }
             }
         }
 
@@ -58,7 +41,7 @@ namespace Improbable.Gdk.Debug.NetStats
             return spatialComponents[index];
         }
 
-        private void UpdateElement(int index, VisualElement element)
+        protected override void UpdateElement(int index, VisualElement element)
         {
             // Set component name
             var componentMetaclass = GetComponentInfoForIndex(index);
