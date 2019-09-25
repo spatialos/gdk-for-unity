@@ -32,5 +32,16 @@
         </VisualElement>
         <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsCommandsTab>
-    <VisualElement name="worldCommandsTab" class="tab" style="display: none;" />
+    <ns:NetStatsWorldCommandsTab name="worldCommandsTab" class="tab">
+        <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
+        <VisualElement name="headerBar" class="header">
+            <uie:ToolbarButton text="Command" name="ComponentButton" class="header-column header-column-name" />
+            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
+            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
+            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
+            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
+            <VisualElement style="min-width: 15px;" />
+        </VisualElement>
+        <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
+    </ns:NetStatsWorldCommandsTab>
 </UXML>

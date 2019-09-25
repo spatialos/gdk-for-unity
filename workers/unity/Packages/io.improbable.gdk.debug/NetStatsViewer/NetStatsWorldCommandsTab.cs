@@ -1,39 +1,36 @@
 using System.Collections.Generic;
-using System.Linq;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.NetworkStats;
 using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.NetStats
 {
-    internal class NetStatsCommandsTab : VisualElement
+    internal class NetStatsWorldCommandsTab : VisualElement
     {
-        private const string UpdateRowUxmlPath =
-            "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
+        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
         private NetworkStatisticsSystem netStatSystem;
 
         private List<(string, MessageTypeUnion)> elementInfo;
         private Dictionary<int, VisualElement> listElements;
 
-        public new class UxmlFactory : UxmlFactory<NetStatsCommandsTab>
+        public new class UxmlFactory : UxmlFactory<NetStatsWorldCommandsTab>
         {
         }
 
         internal void InitializeTab()
         {
-            elementInfo = ComponentDatabase.Metaclasses
-                .SelectMany(pair => pair.Value.Commands
-                    .SelectMany(metaclass => new List<(string, MessageTypeUnion)>()
-                    {
-                        ($"{metaclass.Name}.Request",
-                            MessageTypeUnion.CommandRequest(pair.Key, metaclass.CommandIndex)),
-                        ($"{metaclass.Name}.Response",
-                            MessageTypeUnion.CommandResponse(pair.Key, metaclass.CommandIndex))
-                    })
-                )
-                .ToList();
+            elementInfo = new List<(string, MessageTypeUnion)>()
+            {
+                ($"CreateEntity.Request", MessageTypeUnion.WorldCommandRequest(WorldCommand.CreateEntity)),
+                ($"CreateEntity.Response", MessageTypeUnion.WorldCommandResponse(WorldCommand.CreateEntity)),
+                ($"DeleteEntity.Request", MessageTypeUnion.WorldCommandRequest(WorldCommand.DeleteEntity)),
+                ($"DeleteEntity.Response", MessageTypeUnion.WorldCommandResponse(WorldCommand.DeleteEntity)),
+                ($"EntityQuery.Request", MessageTypeUnion.WorldCommandRequest(WorldCommand.EntityQuery)),
+                ($"EntityQuery.Response", MessageTypeUnion.WorldCommandResponse(WorldCommand.EntityQuery)),
+                ($"ReserveEntityIds.Request", MessageTypeUnion.WorldCommandRequest(WorldCommand.ReserveEntityIds)),
+                ($"ReserveEntityIds.Response", MessageTypeUnion.WorldCommandResponse(WorldCommand.ReserveEntityIds)),
+            };
 
             // Load update row
             var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);

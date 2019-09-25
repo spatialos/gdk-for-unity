@@ -23,6 +23,7 @@ namespace Improbable.Gdk.Debug.NetStats
 
         private NetStatsUpdatesTab updatesTab;
         private NetStatsCommandsTab commandsTab;
+        private NetStatsWorldCommandsTab worldCommandsTab;
 
         private World selectedWorld;
         private Dictionary<Tab, VisualElement> tabs;
@@ -55,10 +56,15 @@ namespace Improbable.Gdk.Debug.NetStats
             {
                 updatesTab.Update();
             }
-            
+
             if (commandsTab.visible)
             {
                 commandsTab.Update();
+            }
+
+            if (worldCommandsTab.visible)
+            {
+                worldCommandsTab.Update();
             }
         }
 
@@ -75,15 +81,20 @@ namespace Improbable.Gdk.Debug.NetStats
             commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
             commandsTab.InitializeTab();
 
+            worldCommandsTab = rootVisualElement.Q<NetStatsWorldCommandsTab>();
+            worldCommandsTab.InitializeTab();
+
             // Setup tab buttons
             tabs = new Dictionary<Tab, VisualElement>
             {
                 { Tab.Updates, updatesTab },
-                { Tab.Commands, commandsTab }
+                { Tab.Commands, commandsTab },
+                { Tab.WorldCommands, worldCommandsTab }
             };
 
             rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(Tab.Updates);
             rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(Tab.Commands);
+            rootVisualElement.Q<ToolbarButton>("worldCommandSelector").clickable.clicked += () => SelectTab(Tab.WorldCommands);
         }
 
         private void SelectTab(Tab tabType)
@@ -142,6 +153,7 @@ namespace Improbable.Gdk.Debug.NetStats
 
             updatesTab.SetSystem(netStatSystem);
             commandsTab.SetSystem(netStatSystem);
+            worldCommandsTab.SetSystem(netStatSystem);
         }
     }
 }
