@@ -11,11 +11,11 @@
     <ns:NetStatsUpdatesTab name="updatesTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
         <VisualElement name="headerBar" class="header">
-            <uie:ToolbarButton text="Component" name="ComponentButton" class="column component" />
-            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="column" />
-            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="column" />
-            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="column" />
-            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="column" />
+            <uie:ToolbarButton text="Component" name="ComponentButton" class="header-column header-column-name" />
+            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
+            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
+            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
+            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
             <VisualElement style="min-width: 15px;" />
         </VisualElement>
         <ScrollView name="updatesContainer" class="updates-view" focusable="false" show-vertical-scroller="true" />
@@ -23,11 +23,11 @@
     <ns:NetStatsCommandsTab name="commandsTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
         <VisualElement name="headerBar" class="header">
-            <uie:ToolbarButton text="Command" name="ComponentButton" class="column component" />
-            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="column" />
-            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="column" />
-            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="column" />
-            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="column" />
+            <uie:ToolbarButton text="Command" name="ComponentButton" class="header-column header-column-name" />
+            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
+            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
+            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
+            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
             <VisualElement style="min-width: 15px;" />
         </VisualElement>
         <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />

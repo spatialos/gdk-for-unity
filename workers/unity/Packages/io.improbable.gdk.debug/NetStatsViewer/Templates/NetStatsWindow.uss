@@ -1,5 +1,6 @@
 .world-selector {
-    min-height: 20px;
+    height: 20px;
+    white-space: nowrap;
 }
 
 .header {
@@ -17,17 +18,17 @@
 
 .updates-view {
     flex-grow: 1;
-    flex-direction: column
+    flex-direction: column;
 }
 
-.column {
+.header-column {
     height: 30px;
     flex-direction: row;
     min-width: 100px;
     flex-grow: 1;
 }
 
-.component {
+.header-column-name {
     min-width: 160px;
 }
 
