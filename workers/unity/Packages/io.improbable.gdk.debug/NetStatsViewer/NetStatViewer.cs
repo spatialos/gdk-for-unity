@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEditor;
@@ -21,12 +20,8 @@ namespace Improbable.Gdk.Debug.NetStats
         private const string WindowUxmlPath =
             "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
 
-        private NetStatsUpdatesTab updatesTab;
-        private NetStatsCommandsTab commandsTab;
-        private NetStatsWorldCommandsTab worldCommandsTab;
-
         private World selectedWorld;
-        private Dictionary<Tab, VisualElement> tabs;
+        private Dictionary<Tab, NetStatsTab> tabs;
         private Tab selectedTab = Tab.Updates;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
@@ -52,19 +47,13 @@ namespace Improbable.Gdk.Debug.NetStats
         {
             SetupWorldSelection();
 
-            if (updatesTab.visible)
+            foreach (var pair in tabs)
             {
-                updatesTab.Update();
-            }
-
-            if (commandsTab.visible)
-            {
-                commandsTab.Update();
-            }
-
-            if (worldCommandsTab.visible)
-            {
-                worldCommandsTab.Update();
+                var tab = pair.Value;
+                if (tab.visible)
+                {
+                    tab.Update();
+                }
             }
         }
 
@@ -75,17 +64,17 @@ namespace Improbable.Gdk.Debug.NetStats
             windowTemplate.CloneTree(rootVisualElement);
 
             // Initialize tabs
-            updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
+            var updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
             updatesTab.InitializeTab();
 
-            commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
+            var commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
             commandsTab.InitializeTab();
 
-            worldCommandsTab = rootVisualElement.Q<NetStatsWorldCommandsTab>();
+            var worldCommandsTab = rootVisualElement.Q<NetStatsWorldCommandsTab>();
             worldCommandsTab.InitializeTab();
 
             // Setup tab buttons
-            tabs = new Dictionary<Tab, VisualElement>
+            tabs = new Dictionary<Tab, NetStatsTab>
             {
                 { Tab.Updates, updatesTab },
                 { Tab.Commands, commandsTab },
@@ -151,9 +140,10 @@ namespace Improbable.Gdk.Debug.NetStats
                 selectedWorld?.Name ?? "No SpatialOS worlds active";
             var netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
 
-            updatesTab.SetSystem(netStatSystem);
-            commandsTab.SetSystem(netStatSystem);
-            worldCommandsTab.SetSystem(netStatSystem);
+            foreach (var pair in tabs)
+            {
+                pair.Value.SetSystem(netStatSystem);
+            }
         }
     }
 }

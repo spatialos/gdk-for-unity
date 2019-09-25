@@ -7,11 +7,9 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.NetStats
 {
-    internal class NetStatsUpdatesTab : VisualElement
+    internal class NetStatsUpdatesTab : NetStatsTab
     {
         private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
-
-        private NetworkStatisticsSystem netStatSystem;
 
         private List<IComponentMetaclass> spatialComponents;
         private Dictionary<int, VisualElement> listElements;
@@ -20,7 +18,7 @@ namespace Improbable.Gdk.Debug.NetStats
         {
         }
 
-        internal void InitializeTab()
+        public override void InitializeTab()
         {
             spatialComponents = ComponentDatabase.Metaclasses.Select(pair => pair.Value).ToList();
 
@@ -37,12 +35,7 @@ namespace Improbable.Gdk.Debug.NetStats
             }
         }
 
-        internal void SetSystem(NetworkStatisticsSystem system)
-        {
-            netStatSystem = system;
-        }
-
-        internal void Update()
+        public override void Update()
         {
             var scrollView = this.Q<ScrollView>("updatesContainer");
             var count = scrollView.childCount;
@@ -70,7 +63,9 @@ namespace Improbable.Gdk.Debug.NetStats
             // Set component name
             var componentMetaclass = GetComponentInfoForIndex(index);
             var componentId = componentMetaclass.ComponentId;
-            element.Q<Label>("name").text = componentMetaclass.Name;
+            var nameElement = element.Q<Label>("name");
+            nameElement.text = componentMetaclass.Name;
+            nameElement.tooltip = componentMetaclass.Name;
 
             if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
             {
