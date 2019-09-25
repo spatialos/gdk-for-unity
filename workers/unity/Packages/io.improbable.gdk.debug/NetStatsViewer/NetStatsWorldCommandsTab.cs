@@ -7,10 +7,10 @@ namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatsWorldCommandsTab : NetStatsTab
     {
-        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
+        private const string UpdateRowUxmlPath =
+            "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
         private List<(string, MessageTypeUnion)> elementInfo;
-        private Dictionary<int, VisualElement> listElements;
 
         public new class UxmlFactory : UxmlFactory<NetStatsWorldCommandsTab>
         {

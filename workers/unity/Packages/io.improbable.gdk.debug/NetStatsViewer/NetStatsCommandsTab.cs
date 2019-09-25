@@ -13,7 +13,6 @@ namespace Improbable.Gdk.Debug.NetStats
             "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
         private List<(string, MessageTypeUnion)> elementInfo;
-        private Dictionary<int, VisualElement> listElements;
 
         public new class UxmlFactory : UxmlFactory<NetStatsCommandsTab>
         {

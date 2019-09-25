@@ -83,7 +83,8 @@ namespace Improbable.Gdk.Debug.NetStats
 
             rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(Tab.Updates);
             rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(Tab.Commands);
-            rootVisualElement.Q<ToolbarButton>("worldCommandSelector").clickable.clicked += () => SelectTab(Tab.WorldCommands);
+            rootVisualElement.Q<ToolbarButton>("worldCommandSelector").clickable.clicked +=
+                () => SelectTab(Tab.WorldCommands);
         }
 
         private void SelectTab(Tab tabType)

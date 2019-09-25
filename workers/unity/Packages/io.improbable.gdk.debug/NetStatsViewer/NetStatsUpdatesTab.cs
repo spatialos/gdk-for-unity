@@ -9,10 +9,10 @@ namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatsUpdatesTab : NetStatsTab
     {
-        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
+        private const string UpdateRowUxmlPath =
+            "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
 
         private List<IComponentMetaclass> spatialComponents;
-        private Dictionary<int, VisualElement> listElements;
 
         public new class UxmlFactory : UxmlFactory<NetStatsUpdatesTab>
         {
