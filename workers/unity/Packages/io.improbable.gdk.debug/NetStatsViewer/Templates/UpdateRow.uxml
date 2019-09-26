@@ -1,10 +1,10 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <VisualElement class="item">
+    <VisualElement class="item-row">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uss" />
-        <Label name="name" class="column component-name" />
-        <Label name="opsIn" class="column" />
-        <Label name="sizeIn" class="column" />
-        <Label name="opsOut" class="column" />
-        <Label name="sizeOut" class="column" />
+        <Label name="name" class="item-column component-name" />
+        <Label name="opsIn" class="item-column" />
+        <Label name="sizeIn" class="item-column" />
+        <Label name="opsOut" class="item-column" />
+        <Label name="sizeOut" class="item-column" />
     </VisualElement>
 </UXML>

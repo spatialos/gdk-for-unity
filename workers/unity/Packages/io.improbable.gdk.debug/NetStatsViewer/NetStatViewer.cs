@@ -1,23 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Improbable.Gdk.Debug
+namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatViewer : EditorWindow
     {
-        private const string WindowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
-        private const string UpdateRowUxmlPath = "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/UpdateRow.uxml";
+        private enum TabType
+        {
+            Updates,
+            Commands,
+            WorldCommands
+        }
+
+        private const string WindowUxmlPath =
+            "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
 
         private World selectedWorld;
-        private NetworkStatisticsSystem netStatSystem;
-        private List<(string Name, uint ComponentId)> spatialComponents;
-        private Dictionary<int, VisualElement> listElements;
+        private Dictionary<TabType, NetStatsTab> tabs;
+        private TabType selectedTabType = TabType.Updates;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
@@ -30,21 +35,26 @@ namespace Improbable.Gdk.Debug
 
         private void OnEnable()
         {
-            // Generate list of types
-            spatialComponents = ComponentDatabase.Metaclasses
-                .Select(pair => (pair.Value.Name, pair.Key))
-                .ToList();
-
             // Load UI
             SetupUI();
             SetupWorldSelection();
+
+            SelectTab(selectedTabType);
         }
 
         // Update UI at 10 FPS
         private void OnInspectorUpdate()
         {
             SetupWorldSelection();
-            RefreshUpdates();
+
+            foreach (var pair in tabs)
+            {
+                var tab = pair.Value;
+                if (tab.visible)
+                {
+                    tab.Update();
+                }
+            }
         }
 
         private void SetupUI()
@@ -53,17 +63,41 @@ namespace Improbable.Gdk.Debug
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
 
-            // Load update row
-            var itemTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UpdateRowUxmlPath);
+            // Initialize tabs
+            var updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
+            updatesTab.InitializeTab();
 
-            // Clone row for each component, fill list
-            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
-            for (var i = 0; i < spatialComponents.Count; i++)
+            var commandsTab = rootVisualElement.Q<NetStatsCommandsTab>();
+            commandsTab.InitializeTab();
+
+            var worldCommandsTab = rootVisualElement.Q<NetStatsWorldCommandsTab>();
+            worldCommandsTab.InitializeTab();
+
+            // Setup tab buttons
+            tabs = new Dictionary<TabType, NetStatsTab>
             {
-                var element = itemTemplate.CloneTree();
-                UpdateElement(i, element);
-                scrollView.Add(element);
+                { TabType.Updates, updatesTab },
+                { TabType.Commands, commandsTab },
+                { TabType.WorldCommands, worldCommandsTab }
+            };
+
+            rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(TabType.Updates);
+            rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(TabType.Commands);
+            rootVisualElement.Q<ToolbarButton>("worldCommandSelector").clickable.clicked +=
+                () => SelectTab(TabType.WorldCommands);
+        }
+
+        private void SelectTab(TabType tabTypeType)
+        {
+            foreach (var pair in tabs)
+            {
+                pair.Value.AddToClassList("tab-hidden");
+                pair.Value.visible = false;
             }
+
+            tabs[tabTypeType].RemoveFromClassList("tab-hidden");
+            tabs[tabTypeType].visible = true;
+            selectedTabType = tabTypeType;
         }
 
         private void SetupWorldSelection()
@@ -105,60 +139,11 @@ namespace Improbable.Gdk.Debug
             selectedWorld = world;
             rootVisualElement.Q<ToolbarMenu>("worldSelector").text =
                 selectedWorld?.Name ?? "No SpatialOS worlds active";
-            netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
-        }
+            var netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
 
-        // TODO: Temporary placeholder to allow sorting
-        private (string Name, uint ComponentId) GetComponentInfoForIndex(int index)
-        {
-            return spatialComponents[index];
-        }
-
-        private void UpdateElement(int index, VisualElement element)
-        {
-            // Set component name
-            var (componentName, componentId) = GetComponentInfoForIndex(index);
-            element.Q<Label>("name").text = componentName;
-
-            if (netStatSystem?.World == null || !netStatSystem.World.IsCreated)
+            foreach (var pair in tabs)
             {
-                return;
-            }
-
-            // Incoming stats
-            var (dataIn, time) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Incoming);
-
-            if (time == 0)
-            {
-                time = 1;
-            }
-
-            element.Q<Label>("opsIn").text = (dataIn.Count / time).ToString("F1");
-            element.Q<Label>("sizeIn").text = (dataIn.Size / 1024f / time).ToString("F3");
-
-            // Outgoing stats
-            var (dataOut, _) =
-                netStatSystem.GetSummary(MessageTypeUnion.Update(componentId), 60, Direction.Outgoing);
-
-            element.Q<Label>("opsOut").text = (dataOut.Count / time).ToString("F1");
-            element.Q<Label>("sizeOut").text = (dataOut.Size / 1024f / time).ToString("F3");
-        }
-
-        private void RefreshUpdates()
-        {
-            var scrollView = rootVisualElement.Q<ScrollView>("updatesContainer");
-            var count = scrollView.childCount;
-            var viewportBound = scrollView.contentViewport.localBound;
-
-            // Update all visible items in the list
-            for (var i = 0; i < count; i++)
-            {
-                var element = scrollView[i];
-                if (viewportBound.Overlaps(element.localBound))
-                {
-                    UpdateElement(i, element);
-                }
+                pair.Value.SetSystem(netStatSystem);
             }
         }
     }

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added commands and world commands tabs to the Network Analyzer window. [#1174](https://github.com/spatialos/gdk-for-unity/pull/1174)
+
 ### Breaking Changes
 
 - The `GetComponentId<T>()` and `GetSnapshotComponentId<T>()` methods have been moved from `Dynamic` to `ComponentDatabase`. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
