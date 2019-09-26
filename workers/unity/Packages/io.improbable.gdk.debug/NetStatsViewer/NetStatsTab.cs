@@ -36,13 +36,13 @@ namespace Improbable.Gdk.Debug.NetStats
         {
             var scrollView = this.Q<ScrollView>("container");
             var count = scrollView.childCount;
-            var viewportBound = scrollView.contentViewport.localBound;
+            var viewportBound = scrollView.contentViewport.worldBound;
 
             // Update all visible items in the list
             for (var i = 0; i < count; i++)
             {
                 var element = scrollView[i];
-                if (viewportBound.Overlaps(element.localBound))
+                if (viewportBound.Overlaps(element.worldBound))
                 {
                     UpdateElement(i, element);
                 }
