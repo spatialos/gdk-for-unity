@@ -94,7 +94,7 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                var targetSdkArg = args.GetCommandLineValue("targetSdk", string.Empty);
+                var targetSdkArg = args.GetCommandLineValue("targetiOSSdk", string.Empty);
                 if (!string.IsNullOrEmpty(targetSdkArg))
                 {
                     iOSSdkVersion version;

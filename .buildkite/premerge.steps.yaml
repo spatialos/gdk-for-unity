@@ -164,6 +164,7 @@ steps:
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "ios"
       SCRIPTING_BACKEND: "il2cpp"
+      TARGET_IOS_SDK: "simulator"
 
   - label: ":darwin: ~ build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
