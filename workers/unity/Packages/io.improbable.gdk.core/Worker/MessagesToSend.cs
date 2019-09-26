@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -39,12 +41,17 @@ namespace Improbable.Gdk.Core
         {
             if (componentTypes == null)
             {
-                componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffStorage));
+                componentTypes = ComponentDatabase.Metaclasses
+                    .Select(pair => pair.Value.DiffStorage)
+                    .ToList();
             }
 
             if (commandTypes == null)
             {
-                commandTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentCommandSendStorage));
+                commandTypes = ComponentDatabase.Metaclasses
+                    .SelectMany(pair => pair.Value.Commands)
+                    .Select(metaclass => metaclass.SendStorage)
+                    .ToList();
             }
 
             foreach (var type in componentTypes)

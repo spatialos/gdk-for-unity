@@ -1,43 +1,46 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Improbable.Gdk.Core.Commands;
 
 namespace Improbable.Gdk.Core
 {
-    internal static class ComponentDatabase
+    public static class ComponentDatabase
     {
-        public static Dictionary<uint, IDynamicInvokable> IdsToDynamicInvokers { get; }
+        internal static Dictionary<uint, IComponentMetaclass> Metaclasses { get; }
 
-        public static Dictionary<Type, uint> ComponentsToIds { get; }
+        private static Dictionary<Type, uint> ComponentsToIds { get; }
 
-        public static Dictionary<Type, uint> SnapshotsToIds { get; }
+        private static Dictionary<Type, uint> SnapshotsToIds { get; }
 
         static ComponentDatabase()
         {
-            IdsToDynamicInvokers = new Dictionary<uint, IDynamicInvokable>();
-            ComponentsToIds = new Dictionary<Type, uint>();
-            SnapshotsToIds = new Dictionary<Type, uint>();
+            Metaclasses = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass))
+                .Select(type => (IComponentMetaclass) Activator.CreateInstance(type))
+                .ToDictionary(metaclass => metaclass.ComponentId, metaclass => metaclass);
 
-            var dynamicTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IDynamicInvokable));
-            var componentTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ISpatialComponentData));
-            var snapshotTypes = ReflectionUtility.GetNonAbstractTypes(typeof(ISpatialComponentSnapshot));
+            ComponentsToIds = Metaclasses.ToDictionary(pair => pair.Value.Data, pair => pair.Key);
+            SnapshotsToIds = Metaclasses.ToDictionary(pair => pair.Value.Snapshot, pair => pair.Key);
+        }
 
-            foreach (var type in dynamicTypes)
+        public static uint GetComponentId<T>() where T : ISpatialComponentData
+        {
+            if (!ComponentsToIds.TryGetValue(typeof(T), out var id))
             {
-                var instance = (IDynamicInvokable) Activator.CreateInstance(type);
-                IdsToDynamicInvokers.Add(instance.ComponentId, instance);
+                throw new ArgumentException($"Can not find ID for unregistered SpatialOS component {nameof(T)}.");
             }
 
-            foreach (var type in componentTypes)
+            return id;
+        }
+
+        public static uint GetSnapshotComponentId<T>() where T : ISpatialComponentSnapshot
+        {
+            if (!SnapshotsToIds.TryGetValue(typeof(T), out var id))
             {
-                var instance = (ISpatialComponentData) Activator.CreateInstance(type);
-                ComponentsToIds.Add(type, instance.ComponentId);
+                throw new ArgumentException($"Can not find ID for unregistered SpatialOS component snapshot {nameof(T)}.");
             }
 
-            foreach (var type in snapshotTypes)
-            {
-                var instance = (ISpatialComponentSnapshot) Activator.CreateInstance(type);
-                SnapshotsToIds.Add(type, instance.ComponentId);
-            }
+            return id;
         }
     }
 }

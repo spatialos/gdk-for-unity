@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 
@@ -15,16 +16,20 @@ namespace Improbable.Gdk.Core
 
         static ComponentOpDeserializer()
         {
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentDiffDeserializer)))
+            foreach (var pair in ComponentDatabase.Metaclasses)
             {
-                var instance = (IComponentDiffDeserializer) Activator.CreateInstance(type);
-                ComponentIdToComponentDeserializer.Add(instance.GetComponentId(), instance);
-            }
+                var componentId = pair.Key;
+                var metaclass = pair.Value;
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ICommandDiffDeserializer)))
-            {
-                var instance = (ICommandDiffDeserializer) Activator.CreateInstance(type);
-                CommandIdsToCommandDeserializer.Add((instance.GetComponentId(), instance.GetCommandId()), instance);
+                var componentInstance =
+                    (IComponentDiffDeserializer) Activator.CreateInstance(metaclass.DiffDeserializer);
+                ComponentIdToComponentDeserializer.Add(componentId, componentInstance);
+
+                foreach (var command in metaclass.Commands)
+                {
+                    var commandInstance = (ICommandDiffDeserializer) Activator.CreateInstance(command.DiffDeserializer);
+                    CommandIdsToCommandDeserializer.Add((componentId, command.CommandIndex), commandInstance);
+                }
             }
         }
 

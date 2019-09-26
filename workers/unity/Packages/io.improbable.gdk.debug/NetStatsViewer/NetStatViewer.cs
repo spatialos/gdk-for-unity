@@ -31,8 +31,8 @@ namespace Improbable.Gdk.Debug
         private void OnEnable()
         {
             // Generate list of types
-            spatialComponents = ComponentDatabase.ComponentsToIds
-                .Select(pair => (pair.Key.DeclaringType.Name, pair.Value))
+            spatialComponents = ComponentDatabase.Metaclasses
+                .Select(pair => (pair.Value.Name, pair.Key))
                 .ToList();
 
             // Load UI
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Debug
         {
             // Find spatial worlds
             var spatialWorlds = World.AllWorlds
-            	.Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
+                .Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
                 .ToList();
 
             // Fill menu items

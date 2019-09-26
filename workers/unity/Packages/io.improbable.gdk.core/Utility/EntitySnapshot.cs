@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Core
         /// <typeparam name="T">The component type.</typeparam>
         public T? GetComponentSnapshot<T>() where T : struct, ISpatialComponentSnapshot
         {
-            var id = Dynamic.GetSnapshotComponentId<T>();
+            var id = ComponentDatabase.GetSnapshotComponentId<T>();
             if (components.TryGetValue(id, out var data))
             {
                 return (T) data;

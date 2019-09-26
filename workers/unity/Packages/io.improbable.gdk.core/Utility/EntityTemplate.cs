@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core
         /// <returns>The component snapshot, if the component snapshot exists, null otherwise.</returns>
         public TSnapshot? GetComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            if (entityData.TryGetValue(Dynamic.GetSnapshotComponentId<TSnapshot>(), out var snapshot))
+            if (entityData.TryGetValue(ComponentDatabase.GetSnapshotComponentId<TSnapshot>(), out var snapshot))
             {
                 return (TSnapshot) snapshot;
             }
@@ -94,7 +94,7 @@ namespace Improbable.Gdk.Core
         /// <returns>True, if the component snapshot exists, false otherwise.</returns>
         public bool HasComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            return HasComponent(Dynamic.GetSnapshotComponentId<TSnapshot>());
+            return HasComponent(ComponentDatabase.GetSnapshotComponentId<TSnapshot>());
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Improbable.Gdk.Core
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
         public void RemoveComponent<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            var id = Dynamic.GetSnapshotComponentId<TSnapshot>();
+            var id = ComponentDatabase.GetSnapshotComponentId<TSnapshot>();
             entityData.Remove(id);
             acl.RemoveComponentWriteAccess(id);
         }
@@ -138,7 +138,7 @@ namespace Improbable.Gdk.Core
         /// <returns>The write access worker attribute, if it exists, null otherwise.</returns>
         public string GetComponentWriteAccess<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            return GetComponentWriteAccess(Dynamic.GetSnapshotComponentId<TSnapshot>());
+            return GetComponentWriteAccess(ComponentDatabase.GetSnapshotComponentId<TSnapshot>());
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Improbable.Gdk.Core
         public void SetComponentWriteAccess<TSnapshot>(string writeAccess)
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
-            SetComponentWriteAccess(Dynamic.GetSnapshotComponentId<TSnapshot>(), writeAccess);
+            SetComponentWriteAccess(ComponentDatabase.GetSnapshotComponentId<TSnapshot>(), writeAccess);
         }
 
         /// <summary>

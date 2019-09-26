@@ -2,10 +2,18 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The `GetComponentId<T>()` and `GetSnapshotComponentId<T>()` methods have been moved from `Dynamic` to `ComponentDatabase`. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
+
 ### Fixed
 
 - Fixed a bug where the `TransformSynchronization` MonoBehaviour would not reset when disabled. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
 - Fixed a bug where the `UnlinkGameObjectFromEntity` method in the `EntityGameObjectLinker` would not cleanup the `gameObjectToComponentsAdded` dictionary. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
+
+### Internal
+
+- Added the `IComponentMetaclass` and `ICommandMetaclass` interfaces. Where we previously would use reflection to find instances of various component/command related types, we now lookup through generated metaclasses. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
 
 ## `0.2.9` - 2019-09-16
 
