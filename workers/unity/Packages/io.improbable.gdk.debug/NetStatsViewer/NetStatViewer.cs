@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Debug.NetStats
 {
     internal class NetStatViewer : EditorWindow
     {
-        private enum Tab
+        private enum TabType
         {
             Updates,
             Commands,
@@ -21,8 +21,8 @@ namespace Improbable.Gdk.Debug.NetStats
             "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
 
         private World selectedWorld;
-        private Dictionary<Tab, NetStatsTab> tabs;
-        private Tab selectedTab = Tab.Updates;
+        private Dictionary<TabType, NetStatsTab> tabs;
+        private TabType selectedTabType = TabType.Updates;
 
         [MenuItem("SpatialOS/Window/Network Analyzer", false)]
         public static void ShowWindow()
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Debug.NetStats
             SetupUI();
             SetupWorldSelection();
 
-            SelectTab(selectedTab);
+            SelectTab(selectedTabType);
         }
 
         // Update UI at 10 FPS
@@ -74,20 +74,20 @@ namespace Improbable.Gdk.Debug.NetStats
             worldCommandsTab.InitializeTab();
 
             // Setup tab buttons
-            tabs = new Dictionary<Tab, NetStatsTab>
+            tabs = new Dictionary<TabType, NetStatsTab>
             {
-                { Tab.Updates, updatesTab },
-                { Tab.Commands, commandsTab },
-                { Tab.WorldCommands, worldCommandsTab }
+                { TabType.Updates, updatesTab },
+                { TabType.Commands, commandsTab },
+                { TabType.WorldCommands, worldCommandsTab }
             };
 
-            rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(Tab.Updates);
-            rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(Tab.Commands);
+            rootVisualElement.Q<ToolbarButton>("updateSelector").clickable.clicked += () => SelectTab(TabType.Updates);
+            rootVisualElement.Q<ToolbarButton>("commandSelector").clickable.clicked += () => SelectTab(TabType.Commands);
             rootVisualElement.Q<ToolbarButton>("worldCommandSelector").clickable.clicked +=
-                () => SelectTab(Tab.WorldCommands);
+                () => SelectTab(TabType.WorldCommands);
         }
 
-        private void SelectTab(Tab tabType)
+        private void SelectTab(TabType tabTypeType)
         {
             foreach (var pair in tabs)
             {
@@ -95,9 +95,9 @@ namespace Improbable.Gdk.Debug.NetStats
                 pair.Value.visible = false;
             }
 
-            tabs[tabType].RemoveFromClassList("tab-hidden");
-            tabs[tabType].visible = true;
-            selectedTab = tabType;
+            tabs[tabTypeType].RemoveFromClassList("tab-hidden");
+            tabs[tabTypeType].visible = true;
+            selectedTabType = tabTypeType;
         }
 
         private void SetupWorldSelection()
