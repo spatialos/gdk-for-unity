@@ -77,6 +77,7 @@ namespace Improbable.Gdk.Debug.NetStats
             var (dataIn, time) =
                 netStatSystem.GetSummary(messageType, 60, Direction.Incoming);
 
+            // Avoid division by 0 if there are no samples.
             if (time == 0)
             {
                 time = 1;
