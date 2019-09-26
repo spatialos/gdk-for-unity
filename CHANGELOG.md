@@ -4,7 +4,7 @@
 
 ### Added
 
-- Add Commands and World Commands tabs for Network Analyzer. [#1174](https://github.com/spatialos/gdk-for-unity/pull/1174)
+- Added commands and world commands tabs to the Network Analyzer window. [#1174](https://github.com/spatialos/gdk-for-unity/pull/1174)
 
 ### Breaking Changes
 
