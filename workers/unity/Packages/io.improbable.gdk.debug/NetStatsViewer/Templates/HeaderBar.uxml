@@ -1,0 +1,10 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <VisualElement name="headerBar" class="header">
+        <uie:ToolbarButton text="Name" name="name" class="header-column header-column-name" />
+        <uie:ToolbarButton text="Op/s in" name="opsIn" class="header-column" />
+        <uie:ToolbarButton text="KB/s in" name="sizeIn" class="header-column" />
+        <uie:ToolbarButton text="Op/s out" name="opsOut" class="header-column" />
+        <uie:ToolbarButton text="KB/s out" name="sizeOut" class="header-column" />
+        <VisualElement style="min-width: 15px;" />
+    </VisualElement>
+</UXML>

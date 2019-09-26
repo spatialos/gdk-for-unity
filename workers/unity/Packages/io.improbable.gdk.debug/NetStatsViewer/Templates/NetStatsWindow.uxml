@@ -1,4 +1,5 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:ns="Improbable.Gdk.Debug.NetStats">
+    <Template name="HeaderBar" path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/HeaderBar.uxml" />
     <uie:ToolbarMenu name="worldSelector" class="world-selector">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
     </uie:ToolbarMenu>
@@ -10,38 +11,23 @@
     </uie:Toolbar>
     <ns:NetStatsUpdatesTab name="updatesTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
-        <VisualElement name="headerBar" class="header">
-            <uie:ToolbarButton text="Component" name="ComponentButton" class="header-column header-column-name" />
-            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
-            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
-            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
-            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
-            <VisualElement style="min-width: 15px;" />
-        </VisualElement>
-        <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
+        <Instance template="HeaderBar">
+            <AttributeOverrides element-name="name" text="Component" />
+        </Instance>
+        <ScrollView name="container" class="list-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsUpdatesTab>
     <ns:NetStatsCommandsTab name="commandsTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
-        <VisualElement name="headerBar" class="header">
-            <uie:ToolbarButton text="Command" name="ComponentButton" class="header-column header-column-name" />
-            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
-            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
-            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
-            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
-            <VisualElement style="min-width: 15px;" />
-        </VisualElement>
-        <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
+        <Instance template="HeaderBar">
+            <AttributeOverrides element-name="name" text="Command" />
+        </Instance>
+        <ScrollView name="container" class="list-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsCommandsTab>
     <ns:NetStatsWorldCommandsTab name="worldCommandsTab" class="tab">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
-        <VisualElement name="headerBar" class="header">
-            <uie:ToolbarButton text="Command" name="ComponentButton" class="header-column header-column-name" />
-            <uie:ToolbarButton text="Op/s in" name="OpsIn" class="header-column" />
-            <uie:ToolbarButton text="KB/s in" name="SizeIn" class="header-column" />
-            <uie:ToolbarButton text="Op/s out" name="OpsOut" class="header-column" />
-            <uie:ToolbarButton text="KB/s out" name="SizeOut" class="header-column" />
-            <VisualElement style="min-width: 15px;" />
-        </VisualElement>
-        <ScrollView name="container" class="updates-view" focusable="false" show-vertical-scroller="true" />
+        <Instance template="HeaderBar">
+            <AttributeOverrides element-name="name" text="Command" />
+        </Instance>
+        <ScrollView name="container" class="list-view" focusable="false" show-vertical-scroller="true" />
     </ns:NetStatsWorldCommandsTab>
 </UXML>

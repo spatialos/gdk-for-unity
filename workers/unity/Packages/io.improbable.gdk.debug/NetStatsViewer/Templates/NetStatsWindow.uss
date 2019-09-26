@@ -16,7 +16,7 @@
     flex-grow: 1;
 }
 
-.updates-view {
+.list-view {
     flex-grow: 1;
     flex-direction: column;
 }
