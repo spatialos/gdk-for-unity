@@ -38,8 +38,8 @@ namespace Improbable.Gdk.Mobile
         private void OnEnable()
         {
 #if UNITY_EDITOR_OSX
-            deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
-            simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
+            deviceNames = iOSUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
+            simulatorNames = iOSUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
 #endif
         }
 
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Mobile
 
             if (GUILayout.Button("Launch Android app"))
             {
-                AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, launchConfig.RuntimeIp);
+                AndroidUtils.Launch(launchConfig.ShouldConnectLocally, launchConfig.RuntimeIp);
             }
 
 #if UNITY_EDITOR_OSX
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Mobile
 
                 if (GUILayout.Button("Build XCode project"))
                 {
-                    iOSLaunchUtils.MenuBuild(launchConfig.DevelopmentTeamId);
+                    iOSUtils.MenuBuild(launchConfig.DevelopmentTeamId);
                 }
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Mobile
 
                     if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                     {
-                        simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
+                        simulatorNames = iOSUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
                         simulatorNameIndex = 0;
                     }
                 }
@@ -100,10 +100,10 @@ namespace Improbable.Gdk.Mobile
                 {
                     if (GUILayout.Button("Launch iOS app in Simulator"))
                     {
-                        var availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
+                        var availableSimulators = iOSUtils.RetrieveAvailableiOSSimulators();
                         if (availableSimulators.TryGetValue(simulatorNames[simulatorNameIndex], out var simulatorUID))
                         {
-                            iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
+                            iOSUtils.Launch(launchConfig.ShouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
                         }
                         else
                         {
@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Mobile
 
                     if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                     {
-                        deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
+                        deviceNames = iOSUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
                         deviceNameIndex = 0;
                     }
                 }
@@ -139,10 +139,10 @@ namespace Improbable.Gdk.Mobile
                 {
                     if (GUILayout.Button("Launch iOS app on device"))
                     {
-                        var availableDevices = iOSLaunchUtils.RetrieveAvailableiOSDevices();
+                        var availableDevices = iOSUtils.RetrieveAvailableiOSDevices();
                         if (availableDevices.TryGetValue(deviceNames[deviceNameIndex], out var deviceUID))
                         {
-                            iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
+                            iOSUtils.Launch(launchConfig.ShouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
                         }
                         else
                         {

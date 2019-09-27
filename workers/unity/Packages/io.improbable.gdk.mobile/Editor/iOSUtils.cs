@@ -13,7 +13,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Mobile
 {
-    public static class iOSLaunchUtils
+    public static class iOSUtils
     {
         private static readonly string XCodeProjectPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "MobileClient@iOS", "MobileClient@iOS"));
         private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "ios-build"));

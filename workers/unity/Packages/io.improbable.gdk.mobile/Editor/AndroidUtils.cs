@@ -7,7 +7,7 @@ using Debug = UnityEngine.Debug;
 namespace Improbable.Gdk.Mobile
 {
     // TODO UTY-2095: Improve Android workflow and refactor the code
-    public static class AndroidLaunchUtils
+    public static class AndroidUtils
     {
         public static void Launch(bool shouldConnectLocally, string runtimeIp)
         {
