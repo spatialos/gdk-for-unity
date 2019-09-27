@@ -134,7 +134,6 @@ Copy the code below into the file:
 
 ```csharp
 using BlankProject;
-using Improbable;
 using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
@@ -143,7 +142,7 @@ namespace Scripts.Color
     [WorkerType(UnityClientConnector.WorkerType)]
     public class ObjectColor : MonoBehaviour
     {
-        public Color color;
+        public UnityEngine.Color color;
         private Renderer renderer;
 
         private void OnEnable()
@@ -151,7 +150,7 @@ namespace Scripts.Color
             renderer = GetComponent<Renderer>();
         }
 
-        private void OnUpdate()
+        private void Update()
         {
             renderer.material.color = color;
         }
