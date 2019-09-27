@@ -1,5 +1,6 @@
 .world-selector {
-    height: 20px;
+    height: 15px;
+    flex-shrink: 0;
     white-space: nowrap;
 }
 
@@ -34,4 +35,5 @@
 
 .tab-selector-container {
     flex-direction: row;
+    flex-shrink: 0;
 }
