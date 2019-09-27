@@ -37,11 +37,11 @@ The window lists all SpatialOS components in your project and displays bandwidth
 
 ### Data Tabs
 
-The Network Analyzer as multiple tabs for displaying networking metrics related to SpatialOS.
+The Network Analyzer has multiple tabs for displaying networking metrics related to SpatialOS.
 
 | Tab            | Metrics                                                                                      |
 |----------------|----------------------------------------------------------------------------------------------|
-| Updates        | Displays SpatialOS component metrics.                                                        |
+| Updates        | Displays SpatialOS component update and event metrics.                                       |
 | Commands       | Displays SpatialOS command request and response metrics.                                     |
 | World commands | Displays SpatialOS world command metrics, such as the EntityQuery and EntityCreate commands. |
 
