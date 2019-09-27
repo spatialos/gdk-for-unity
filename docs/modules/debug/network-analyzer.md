@@ -37,7 +37,7 @@ The window lists all SpatialOS components in your project and displays bandwidth
 
 ### Data Tabs
 
-The Network Analzer as multiple tabs for displaying networking metrics related to SpatialOS.
+The Network Analyzer as multiple tabs for displaying networking metrics related to SpatialOS.
 
 | Tab            | Metrics                                                                                      |
 |----------------|----------------------------------------------------------------------------------------------|
