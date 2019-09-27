@@ -26,14 +26,24 @@ The window lists all SpatialOS components in your project and displays bandwidth
 
 ### Metrics
 
-| Metric     | Description                                                                                             |
-|------------|---------------------------------------------------------------------------------------------------------|
-| `Op/s in`  | This metric describes the number of component update ops that this worker is receiving per second.      |
-| `KB/s in`  | This metric describes the bandwidth used by component updates that this worker is receiving per second. |
-| `Op/s out` | This metric describes the number of component update ops that this worker is sending per second.        |
-| `KB/s out` | This metric describes the bandwidth used by component updates that this worker is sending per second.   |
+| Metric     | Description                                                                                            |
+|------------|--------------------------------------------------------------------------------------------------------|
+| `Op/s in`  | This metric describes the number of update/command ops that this worker is receiving per second.       |
+| `KB/s in`  | This metric describes the bandwidth used by updates/commands that this worker is receiving per second. |
+| `Op/s out` | This metric describes the number of update/command ops that this worker is sending per second.         |
+| `KB/s out` | This metric describes the bandwidth used by updates/commands that this worker is sending per second.   |
 
 > **Note:** Component updates are used for both component field changes as well as component events.
+
+### Data Tabs
+
+The Network Analzer as multiple tabs for displaying networking metrics related to SpatialOS.
+
+| Tab            | Metrics                                                                                      |
+|----------------|----------------------------------------------------------------------------------------------|
+| Updates        | Displays SpatialOS component metrics.                                                        |
+| Commands       | Displays SpatialOS command request and response metrics.                                     |
+| World commands | Displays SpatialOS world command metrics, such as the EntityQuery and EntityCreate commands. |
 
 ### Worker selection
 
