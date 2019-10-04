@@ -15,6 +15,7 @@
 - Fixed a bug where the `TransformSynchronization` MonoBehaviour would not reset when disabled. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
 - Fixed a bug where the `UnlinkGameObjectFromEntity` method in the `EntityGameObjectLinker` would not cleanup the `gameObjectToComponentsAdded` dictionary. [#1169](https://github.com/spatialos/gdk-for-unity/pull/1169)
 - Fixed a bug where the Network Analyzer would not properly render all components/commands in the scroll view. [#1175](https://github.com/spatialos/gdk-for-unity/pull/1175)
+- Fixed a bug where the code generator would not re-generate files when changes were made to existing schema files. [#1181](https://github.com/spatialos/gdk-for-unity/pull/1181)
 
 ### Internal
 
