@@ -17,12 +17,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
             { PrimitiveType.Bytes, PrimitiveType.String, PrimitiveType.Entity };
 
+        public Dictionary<string, HashSet<string>> FileTree { get; }
+
         private Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
 
         private readonly SchemaBundle bundle;
 
-        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides)
+        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides,
+            Dictionary<string, HashSet<string>> fileTree)
         {
+            FileTree = fileTree;
             this.bundle = bundle;
 
             var overrideMap = serializationOverrides.Select(@override =>

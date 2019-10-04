@@ -61,7 +61,8 @@ namespace Improbable.Gdk.CodeGenerator
 
             var bundlePath = GenerateBundle();
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
-            var store = new DetailsStore(schemaBundle, options.SerializationOverrides);
+            var fileTree = GenerateFileTree();
+            var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -80,7 +81,8 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => typeof(CodegenJob).IsAssignableFrom(type))
                 .Where(type => !type.IsAbstract)
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
-                .Select(type => (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
+                .Select(type =>
+                    (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
                 .ToArray();
 
             new JobRunner(fileSystem).Run(jobs);
@@ -109,6 +111,17 @@ namespace Improbable.Gdk.CodeGenerator
             return bundlePath;
         }
 
+        private Dictionary<string, HashSet<string>> GenerateFileTree()
+        {
+            return options.SchemaInputDirs
+                .AsParallel()
+                .Select(schemaDir => (schemaDir,
+                    files: Directory.GetFiles(schemaDir, "*.schema", SearchOption.AllDirectories)
+                        .Select(path => path.Substring(schemaDir.Length + 1).Replace('\\', '/'))
+                        .ToHashSet()))
+                .ToDictionary(tuple => tuple.schemaDir, tuple => tuple.files);
+        }
+
         private void ShowHelpMessage()
         {
             Console.WriteLine("Usage: ");
@@ -131,7 +144,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             if (string.IsNullOrEmpty(options.SchemaCompilerPath))
             {
-                Console.WriteLine("Schema compiler location not specitied");
+                Console.WriteLine("Schema compiler location not specified");
                 return false;
             }
 

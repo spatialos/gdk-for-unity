@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
                 "global::Improbable.TestSchema.SomeType;global::UserCode.SerializationExtensions.Type"
             };
 
-            store = new DetailsStore(SchemaBundle.LoadBundle(json), overrides);
+            store = new DetailsStore(SchemaBundle.LoadBundle(json), overrides, null);
         }
 
         [Test]
