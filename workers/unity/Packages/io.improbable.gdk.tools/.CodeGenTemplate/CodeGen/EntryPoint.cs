@@ -115,11 +115,11 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return options.SchemaInputDirs
                 .AsParallel()
-                .Select(schemaDir => (schemaDir,
-                    files: Directory.GetFiles(schemaDir, "*.schema", SearchOption.AllDirectories)
+                .ToDictionary(
+                    schemaDir => schemaDir,
+                    schemaDir => Directory.GetFiles(schemaDir, "*.schema", SearchOption.AllDirectories)
                         .Select(path => path.Substring(schemaDir.Length + 1).Replace('\\', '/'))
-                        .ToHashSet()))
-                .ToDictionary(tuple => tuple.schemaDir, tuple => tuple.files);
+                        .ToHashSet());
         }
 
         private void ShowHelpMessage()

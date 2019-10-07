@@ -81,7 +81,9 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 })
                 .Select(path => new FileInfo(path))
                 .ToList();
-            var existingFiles = OutputFiles.Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry)))
+
+            var existingFiles = OutputFiles
+                .Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry)))
                 .ToList();
 
             if (schemaFiles.Count == 0 || existingFiles.Count == 0)
