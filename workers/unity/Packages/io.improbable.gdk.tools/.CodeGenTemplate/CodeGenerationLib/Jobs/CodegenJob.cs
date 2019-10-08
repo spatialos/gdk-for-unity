@@ -76,10 +76,15 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var schemaFiles = InputFiles
                 .Select(file =>
                 {
+                    if (detailsStore?.FileTree == null)
+                    {
+                        return file;
+                    }
+
                     var root = detailsStore.FileTree.First(entry => entry.Value.Contains(file)).Key;
                     return Path.Combine(root, file);
                 })
-                .Select(path => new FileInfo(path))
+                .Select(path => fileSystem.GetFileInfo(path))
                 .ToList();
 
             var existingFiles = OutputFiles

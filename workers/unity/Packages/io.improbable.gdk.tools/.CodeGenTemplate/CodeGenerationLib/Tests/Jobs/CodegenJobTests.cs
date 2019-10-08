@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using CodeGeneration.Tests.FileHandling;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
