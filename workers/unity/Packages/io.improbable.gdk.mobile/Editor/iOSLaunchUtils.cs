@@ -18,62 +18,59 @@ namespace Improbable.Gdk.Mobile
         private static readonly string DerivedDataPath = Path.GetFullPath(Path.Combine(Common.BuildScratchDirectory, "ios-build"));
         private static readonly string XCodeProjectFile = "Unity-iPhone.xcodeproj";
 
-        private static readonly Regex nameRegex = new Regex("^(.+) \\[");
-        private static readonly Regex simulatorUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\] \\(Simulator\\)$");
-        private static readonly Regex deviceUIDRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\]$");
+        private static readonly Regex NameRegex = new Regex("^(.+) \\[");
+        private static readonly Regex SimulatorUidRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\] \\(Simulator\\)$");
+        private static readonly Regex DeviceUidRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\]$");
 
-        public static Dictionary<string, string> RetrieveAvailableiOSSimulators()
+        public static (Dictionary<string, string>, Dictionary<string, string>) RetrieveAvailableEmulatorsAndDevices()
         {
+            var available = false;
             var availableSimulators = new Dictionary<string, string>();
+            var availableDevices = new Dictionary<string, string>();
 
-            // Check if we have a physical device connected
             var result = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
                 {
-                    // get all simulators
+                    // Simulators
                     if (message.Contains("iPhone") || message.Contains("iPad"))
                     {
-                        if (simulatorUIDRegex.IsMatch(message))
+                        if (SimulatorUidRegex.IsMatch(message))
                         {
-                            var simulatorUID = simulatorUIDRegex.Match(message).Groups[1].Value;
-                            availableSimulators[nameRegex.Match(message).Groups[1].Value] = simulatorUID;
+                            available = true;
+
+                            var simulatorUid = SimulatorUidRegex.Match(message).Groups[1].Value;
+                            availableSimulators[NameRegex.Match(message).Groups[1].Value] = simulatorUid;
+                            return;
                         }
                     }
-                })
-                .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                .Run();
 
-            if (result.ExitCode != 0)
-            {
-                Debug.LogError("Failed to find iOS Simulators. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
-            }
-
-            return availableSimulators;
-        }
-
-        public static Dictionary<string, string> RetrieveAvailableiOSDevices()
-        {
-            var availableDevices = new Dictionary<string, string>();
-            var result = RedirectedProcess.Command("instruments")
-                .WithArgs("-s", "devices")
-                .AddOutputProcessing(message =>
-                {
-                    if (deviceUIDRegex.IsMatch(message))
+                    // Devices
+                    if (DeviceUidRegex.IsMatch(message))
                     {
-                        var deviceUID = deviceUIDRegex.Match(message).Groups[1].Value;
-                        availableDevices[nameRegex.Match(message).Groups[1].Value] = deviceUID;
+                        available = true;
+
+                        var deviceUid = DeviceUidRegex.Match(message).Groups[1].Value;
+                        availableDevices[NameRegex.Match(message).Groups[1].Value] = deviceUid;
                     }
                 })
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
-            if (result.ExitCode != 0)
+            if (result.ExitCode == 0)
             {
-                Debug.LogError("Failed to find connected iOS devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+                if (!available)
+                {
+                    Debug.Log("No iOS Simulators or devices found.");
+                }
+
+                return (availableSimulators, availableDevices);
             }
 
-            return availableDevices;
+            Debug.LogError("Failed to find iOS Simulators or devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+            availableSimulators.Clear();
+            availableDevices.Clear();
+            return (availableSimulators, availableDevices);
         }
 
         public static void Build(string developmentTeamId)

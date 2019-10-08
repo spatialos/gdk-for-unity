@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Mobile
 {
     public class MobileLaunchUtils
     {
-        private const string argStructure = "+{0} {1} ";
+        private const string ArgStructure = "+{0} {1} ";
 
         public static string PrepareArguments(bool shouldConnectLocally, string runtimeIp)
         {
@@ -19,12 +20,12 @@ namespace Improbable.Gdk.Mobile
                     Debug.LogWarning("No local runtime IP was specified. Ensure you set one in SpatialOS > GDK tools configuration.");
                 }
 
-                arguments.AppendFormat(argStructure, RuntimeConfigNames.Environment, RuntimeConfigDefaults.LocalEnvironment);
-                arguments.AppendFormat(argStructure, RuntimeConfigNames.ReceptionistHost, runtimeIp);
+                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.Environment, RuntimeConfigDefaults.LocalEnvironment);
+                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.ReceptionistHost, runtimeIp);
             }
             else
             {
-                arguments.AppendFormat(argStructure, RuntimeConfigNames.Environment, RuntimeConfigDefaults.CloudEnvironment);
+                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.Environment, RuntimeConfigDefaults.CloudEnvironment);
 
                 // Return error if no DevAuthToken is set AND fails to generate new DevAuthToken.
                 if (!PlayerPrefs.HasKey(RuntimeConfigNames.DevAuthTokenKey) && !DevAuthTokenUtils.TryGenerate())
@@ -32,7 +33,7 @@ namespace Improbable.Gdk.Mobile
                     throw new PlayerPrefsException("Failed to retrieve a Dev Auth Token to launch a mobile client.");
                 }
 
-                arguments.AppendFormat(argStructure, RuntimeConfigNames.DevAuthTokenKey, DevAuthTokenUtils.DevAuthToken);
+                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.DevAuthTokenKey, DevAuthTokenUtils.DevAuthToken);
             }
 
             return arguments.ToString();

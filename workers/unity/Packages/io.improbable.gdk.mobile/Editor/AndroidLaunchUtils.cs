@@ -10,24 +10,12 @@ namespace Improbable.Gdk.Mobile
 {
     public static class AndroidLaunchUtils
     {
-        public readonly struct AvailableEmulatorsAndDevices
-        {
-            public readonly Dictionary<string, string> Emulators;
-            public readonly Dictionary<string, string> Devices;
-
-            public AvailableEmulatorsAndDevices(Dictionary<string, string> emulators, Dictionary<string, string> devices)
-            {
-                Emulators = emulators;
-                Devices = devices;
-            }
-        }
-
-        private static readonly Regex deviceMatchRegex = new Regex("(?:(?<id>[\\w_\\d-]+)\\s*device).*"
+        private static readonly Regex DeviceMatchRegex = new Regex("(?:(?<id>[\\w_\\d-]+)\\s*device).*"
             + "(?:product:(?<product>[\\w_\\d]+))\\s*"
             + "(?:model:(?<model>[\\w_\\d]+))\\s*"
             + "(?:device:(?<device>[\\w_\\d]+)).*");
 
-        public static AvailableEmulatorsAndDevices RetrieveAvailableEmulatorsAndDevices()
+        public static (Dictionary<string, string>, Dictionary<string, string>) RetrieveAvailableEmulatorsAndDevices()
         {
             var available = false;
             var availableEmulators = new Dictionary<string, string>();
@@ -37,21 +25,21 @@ namespace Improbable.Gdk.Mobile
             {
                 Debug.LogError(
                     $"Could not find Android SDK. Please set the SDK location in your editor preferences.");
-                return new AvailableEmulatorsAndDevices();
+                return (availableEmulators, availableDevices);
             }
 
-            RedirectedProcess.Command(adbPath)
+            var result = RedirectedProcess.Command(adbPath)
                 .WithArgs("devices", "-l")
                 .AddOutputProcessing(message =>
                 {
-                    if (!deviceMatchRegex.IsMatch(message))
+                    if (!DeviceMatchRegex.IsMatch(message))
                     {
                         return;
                     }
 
                     available = true;
 
-                    var match = deviceMatchRegex.Match(message);
+                    var match = DeviceMatchRegex.Match(message);
                     var deviceId = match.Groups["id"].Value;
 
                     if (deviceId.Contains("emulator"))
@@ -66,12 +54,20 @@ namespace Improbable.Gdk.Mobile
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .Run();
 
-            if (!available)
+            if (result.ExitCode == 0)
             {
-                Debug.LogWarning("Failed to find Android emulators or devices.");
+                if (!available)
+                {
+                    Debug.Log("No Android emulators or devices found.");
+                }
+
+                return (availableEmulators, availableDevices);
             }
 
-            return new AvailableEmulatorsAndDevices(availableEmulators, availableDevices);
+            Debug.LogError("Failed to find Android emulators or devices.");
+            availableEmulators.Clear();
+            availableDevices.Clear();
+            return (availableEmulators, availableDevices);
         }
 
         public static void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useEmulator)
