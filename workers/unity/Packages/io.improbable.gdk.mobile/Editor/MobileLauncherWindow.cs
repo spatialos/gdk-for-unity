@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core.Editor;
@@ -29,6 +30,9 @@ namespace Improbable.Gdk.Mobile
         private int androidEmulatorNameIndex;
         private int androidDeviceNameIndex;
 
+        private Dictionary<string, string> iOSSimulators;
+        private Dictionary<string, string> iOSDevices;
+
         private string[] iOSSimulatorNames;
         private string[] iOSDeviceNames;
 
@@ -55,20 +59,6 @@ namespace Improbable.Gdk.Mobile
 #endif
         }
 
-        private void RefreshAndroidEmulatorsAndDevices()
-        {
-            var availableEmulatorsAndDevices = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
-
-            androidEmulators = availableEmulatorsAndDevices.Emulators;
-            androidDevices = availableEmulatorsAndDevices.Devices;
-
-            androidEmulatorNames = androidEmulators.Keys.ToArray();
-            androidDeviceNames = androidDevices.Keys.ToArray();
-
-            androidEmulatorNameIndex = 0;
-            androidDeviceNameIndex = 0;
-        }
-
         public void OnGUI()
         {
             GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
@@ -85,84 +75,77 @@ namespace Improbable.Gdk.Mobile
 #endif
         }
 
+        private void RefreshAndroidEmulatorsAndDevices()
+        {
+            var availableEmulatorsAndDevices = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+
+            androidEmulators = availableEmulatorsAndDevices.Emulators;
+            androidDevices = availableEmulatorsAndDevices.Devices;
+
+            androidEmulatorNames = androidEmulators.Keys.ToArray();
+            androidDeviceNames = androidDevices.Keys.ToArray();
+
+            androidEmulatorNameIndex = 0;
+            androidDeviceNameIndex = 0;
+        }
+
         private void DisplayAndroidMenu()
         {
             CommonUIElements.DrawHorizontalLine(10, LightGrey);
+
             GUILayout.Label(AndroidSectionLabel, EditorStyles.boldLabel);
 
             using (new EditorGUI.IndentLevelScope())
             {
-                using (new GUILayout.HorizontalScope())
-                {
-                    using (new EditorGUI.DisabledScope(androidEmulators.Count == 0))
-                    {
-                        androidEmulatorNameIndex =
-                            EditorGUILayout.Popup("Emulator Model", androidEmulatorNameIndex, androidEmulatorNames);
-                    }
-
-                    var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
-                    {
-                        tooltip = "Refresh your emulator list."
-                    };
-
-                    if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
-                    {
-                        RefreshAndroidEmulatorsAndDevices();
-                    }
-                }
-
-                using (new EditorGUI.DisabledScope(androidEmulatorNames.Length == 0))
-                {
-                    if (GUILayout.Button("Launch Android app in emulator"))
-                    {
-                        if (androidEmulators.TryGetValue(androidEmulatorNames[androidEmulatorNameIndex], out var emulatorId))
-                        {
-                            AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, emulatorId, launchConfig.RuntimeIp, true);
-                        }
-                        else
-                        {
-                            RefreshAndroidEmulatorsAndDevices();
-                            androidEmulatorNameIndex = 0;
-                            Debug.LogError("Failed to launch app on selected emulator.");
-                        }
-                    }
-                }
+                DisplayAndroidDeviceList(ref androidEmulatorNameIndex, ref androidEmulatorNames, true);
+                DisplayAndroidLaunchButton(ref androidEmulatorNameIndex, ref androidEmulatorNames, ref androidEmulators, true);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                using (new GUILayout.HorizontalScope())
+                DisplayAndroidDeviceList(ref androidDeviceNameIndex, ref androidDeviceNames, false);
+                DisplayAndroidLaunchButton(ref androidDeviceNameIndex, ref androidDeviceNames, ref androidDevices, false);
+            }
+        }
+
+        private void DisplayAndroidDeviceList(ref int index, ref string[] names, bool isEmulator)
+        {
+            var deviceOrEmulator = isEmulator ? "Emulator" : "Device";
+
+            using (new GUILayout.HorizontalScope())
+            {
+                using (new EditorGUI.DisabledScope(names.Length == 0))
                 {
-                    using (new EditorGUI.DisabledScope(androidDeviceNames.Length == 0))
-                    {
-                        androidDeviceNameIndex =
-                            EditorGUILayout.Popup("Device Model", androidDeviceNameIndex, androidDeviceNames);
-                    }
-
-                    var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
-                    {
-                        tooltip = "Refresh your device list."
-                    };
-
-                    if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
-                    {
-                        RefreshAndroidEmulatorsAndDevices();
-                    }
+                    index = EditorGUILayout.Popup($"{deviceOrEmulator} Model", index, names);
                 }
 
-                using (new EditorGUI.DisabledScope(androidDeviceNames.Length == 0))
+                var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
                 {
-                    if (GUILayout.Button("Launch Android app on device"))
+                    tooltip = $"Refresh your {deviceOrEmulator.ToLower()} list."
+                };
+
+                if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                {
+                    RefreshAndroidEmulatorsAndDevices();
+                }
+            }
+        }
+
+        private void DisplayAndroidLaunchButton(ref int index, ref string[] names, ref Dictionary<string, string> devices, bool isEmulator)
+        {
+            var deviceOrEmulator = isEmulator ? "Emulator" : "Device";
+
+            using (new EditorGUI.DisabledScope(names.Length == 0))
+            {
+                if (GUILayout.Button($"Launch Android app on {deviceOrEmulator}"))
+                {
+                    if (devices.TryGetValue(names[index], out var deviceId))
                     {
-                        if (androidDevices.TryGetValue(androidDeviceNames[androidDeviceNameIndex], out var deviceId))
-                        {
-                            AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceId, launchConfig.RuntimeIp, false);
-                        }
-                        else
-                        {
-                            RefreshAndroidEmulatorsAndDevices();
-                            androidDeviceNameIndex = 0;
-                            Debug.LogError("Failed to launch app on selected device. Is the device still connected?");
-                        }
+                        AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceId, launchConfig.RuntimeIp, isEmulator);
+                    }
+                    else
+                    {
+                        RefreshAndroidEmulatorsAndDevices();
+                        Debug.LogError($"Failed to launch app on selected {deviceOrEmulator}. Is the {deviceOrEmulator} still connected?");
                     }
                 }
             }
