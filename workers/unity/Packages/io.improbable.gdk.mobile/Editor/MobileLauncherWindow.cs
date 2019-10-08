@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core.Editor;
 using UnityEditor;
@@ -19,11 +20,20 @@ namespace Improbable.Gdk.Mobile
 
         private MobileLaunchConfig launchConfig;
 
-        private string[] simulatorNames;
-        private string[] deviceNames;
+        private Dictionary<string, string> androidEmulators;
+        private Dictionary<string, string> androidDevices;
 
-        private int simulatorNameIndex;
-        private int deviceNameIndex;
+        private string[] androidEmulatorNames;
+        private string[] androidDeviceNames;
+
+        private int androidEmulatorNameIndex;
+        private int androidDeviceNameIndex;
+
+        private string[] iOSSimulatorNames;
+        private string[] iOSDeviceNames;
+
+        private int iOSSimulatorNameIndex;
+        private int iOSDeviceNameIndex;
 
         [MenuItem("SpatialOS/Mobile Launcher", false, 52)]
         public static void ShowWindow()
@@ -37,10 +47,26 @@ namespace Improbable.Gdk.Mobile
 
         private void OnEnable()
         {
+            RefreshAndroidEmulatorsAndDevices();
+
 #if UNITY_EDITOR_OSX
-            deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
-            simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
+            iOSDeviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
+            iOSSimulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
 #endif
+        }
+
+        private void RefreshAndroidEmulatorsAndDevices()
+        {
+            var availableEmulatorsAndDevices = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+
+            androidEmulators = availableEmulatorsAndDevices.Emulators;
+            androidDevices = availableEmulatorsAndDevices.Devices;
+
+            androidEmulatorNames = androidEmulators.Keys.ToArray();
+            androidDeviceNames = androidDevices.Keys.ToArray();
+
+            androidEmulatorNameIndex = 0;
+            androidDeviceNameIndex = 0;
         }
 
         public void OnGUI()
@@ -52,15 +78,99 @@ namespace Improbable.Gdk.Mobile
                 launchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.ShouldConnectLocally);
             }
 
+            DisplayAndroidMenu();
+
+#if UNITY_EDITOR_OSX
+            DisplayiOSMenu();
+#endif
+        }
+
+        private void DisplayAndroidMenu()
+        {
             CommonUIElements.DrawHorizontalLine(10, LightGrey);
             GUILayout.Label(AndroidSectionLabel, EditorStyles.boldLabel);
 
-            if (GUILayout.Button("Launch Android app"))
+            using (new EditorGUI.IndentLevelScope())
             {
-                AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, launchConfig.RuntimeIp);
+                using (new GUILayout.HorizontalScope())
+                {
+                    using (new EditorGUI.DisabledScope(androidEmulators.Count == 0))
+                    {
+                        androidEmulatorNameIndex =
+                            EditorGUILayout.Popup("Emulator Model", androidEmulatorNameIndex, androidEmulatorNames);
+                    }
+
+                    var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
+                    {
+                        tooltip = "Refresh your emulator list."
+                    };
+
+                    if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                    {
+                        RefreshAndroidEmulatorsAndDevices();
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(androidEmulatorNames.Length == 0))
+                {
+                    if (GUILayout.Button("Launch Android app in emulator"))
+                    {
+                        if (androidEmulators.TryGetValue(androidEmulatorNames[androidEmulatorNameIndex], out var emulatorId))
+                        {
+                            AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, emulatorId, launchConfig.RuntimeIp, true);
+                        }
+                        else
+                        {
+                            RefreshAndroidEmulatorsAndDevices();
+                            androidEmulatorNameIndex = 0;
+                            Debug.LogError("Failed to launch app on selected emulator.");
+                        }
+                    }
+                }
+
+                CommonUIElements.DrawHorizontalLine(8, DarkGrey);
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    using (new EditorGUI.DisabledScope(androidDeviceNames.Length == 0))
+                    {
+                        androidDeviceNameIndex =
+                            EditorGUILayout.Popup("Device Model", androidDeviceNameIndex, androidDeviceNames);
+                    }
+
+                    var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
+                    {
+                        tooltip = "Refresh your device list."
+                    };
+
+                    if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                    {
+                        RefreshAndroidEmulatorsAndDevices();
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(androidDeviceNames.Length == 0))
+                {
+                    if (GUILayout.Button("Launch Android app on device"))
+                    {
+                        if (androidDevices.TryGetValue(androidDeviceNames[androidDeviceNameIndex], out var deviceId))
+                        {
+                            AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceId, launchConfig.RuntimeIp, false);
+                        }
+                        else
+                        {
+                            RefreshAndroidEmulatorsAndDevices();
+                            androidDeviceNameIndex = 0;
+                            Debug.LogError("Failed to launch app on selected device. Is the device still connected?");
+                        }
+                    }
+                }
             }
+        }
 
 #if UNITY_EDITOR_OSX
+        private void DisplayiOSMenu()
+        {
             CommonUIElements.DrawHorizontalLine(10, LightGrey);
 
             GUILayout.Label(iOSSectionLabel, EditorStyles.boldLabel);
@@ -78,10 +188,10 @@ namespace Improbable.Gdk.Mobile
 
                 using (new GUILayout.HorizontalScope())
                 {
-                    using (new EditorGUI.DisabledScope(simulatorNames.Length == 0))
+                    using (new EditorGUI.DisabledScope(iOSSimulatorNames.Length == 0))
                     {
-                        simulatorNameIndex =
-                            EditorGUILayout.Popup("Simulator Model", simulatorNameIndex, simulatorNames);
+                        iOSSimulatorNameIndex =
+                            EditorGUILayout.Popup("Simulator Model", iOSSimulatorNameIndex, iOSSimulatorNames);
                     }
 
                     var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
@@ -91,24 +201,24 @@ namespace Improbable.Gdk.Mobile
 
                     if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                     {
-                        simulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
-                        simulatorNameIndex = 0;
+                        iOSSimulatorNames = iOSLaunchUtils.RetrieveAvailableiOSSimulators().Keys.ToArray();
+                        iOSSimulatorNameIndex = 0;
                     }
                 }
 
-                using (new EditorGUI.DisabledScope(simulatorNames.Length == 0))
+                using (new EditorGUI.DisabledScope(iOSSimulatorNames.Length == 0))
                 {
                     if (GUILayout.Button("Launch iOS app in Simulator"))
                     {
                         var availableSimulators = iOSLaunchUtils.RetrieveAvailableiOSSimulators();
-                        if (availableSimulators.TryGetValue(simulatorNames[simulatorNameIndex], out var simulatorUID))
+                        if (availableSimulators.TryGetValue(iOSSimulatorNames[iOSSimulatorNameIndex], out var simulatorUID))
                         {
                             iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, simulatorUID, launchConfig.RuntimeIp, true);
                         }
                         else
                         {
-                            simulatorNames = availableSimulators.Keys.ToArray();
-                            simulatorNameIndex = 0;
+                            iOSSimulatorNames = availableSimulators.Keys.ToArray();
+                            iOSSimulatorNameIndex = 0;
                             Debug.LogError("Failed to launch app on selected simulator.");
                         }
                     }
@@ -118,9 +228,9 @@ namespace Improbable.Gdk.Mobile
 
                 using (new GUILayout.HorizontalScope())
                 {
-                    using (new EditorGUI.DisabledScope(deviceNames.Length == 0))
+                    using (new EditorGUI.DisabledScope(iOSDeviceNames.Length == 0))
                     {
-                        deviceNameIndex = EditorGUILayout.Popup("Device Model", deviceNameIndex, deviceNames);
+                        iOSDeviceNameIndex = EditorGUILayout.Popup("Device Model", iOSDeviceNameIndex, iOSDeviceNames);
                     }
 
                     var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
@@ -130,30 +240,30 @@ namespace Improbable.Gdk.Mobile
 
                     if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                     {
-                        deviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
-                        deviceNameIndex = 0;
+                        iOSDeviceNames = iOSLaunchUtils.RetrieveAvailableiOSDevices().Keys.ToArray();
+                        iOSDeviceNameIndex = 0;
                     }
                 }
 
-                using (new EditorGUI.DisabledScope(deviceNames.Length == 0))
+                using (new EditorGUI.DisabledScope(iOSDeviceNames.Length == 0))
                 {
                     if (GUILayout.Button("Launch iOS app on device"))
                     {
                         var availableDevices = iOSLaunchUtils.RetrieveAvailableiOSDevices();
-                        if (availableDevices.TryGetValue(deviceNames[deviceNameIndex], out var deviceUID))
+                        if (availableDevices.TryGetValue(iOSDeviceNames[iOSDeviceNameIndex], out var deviceUID))
                         {
                             iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceUID, launchConfig.RuntimeIp, false);
                         }
                         else
                         {
-                            deviceNames = availableDevices.Keys.ToArray();
-                            deviceNameIndex = 0;
+                            iOSDeviceNames = availableDevices.Keys.ToArray();
+                            iOSDeviceNameIndex = 0;
                             Debug.LogError("Failed to launch app on selected device. Is the device still connected?");
                         }
                     }
                 }
             }
-#endif
         }
+#endif
     }
 }
