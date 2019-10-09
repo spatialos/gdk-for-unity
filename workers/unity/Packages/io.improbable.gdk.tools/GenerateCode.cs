@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Tools
 
         private static readonly string CodegenTemplatePath = Path.Combine(Common.GetThisPackagePath(), ".CodeGenTemplate");
         private static readonly string CodegenExeDirectory = Path.Combine(Application.dataPath, "..", "build", "codegen");
-        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "Codegen", "CodeGen.csproj");
+        private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "CodeGen", "CodeGen.csproj");
 
         private static readonly string SchemaCompilerPath = Path.Combine(
             Common.GetPackagePath("io.improbable.worker.sdk"),
