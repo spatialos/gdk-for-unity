@@ -61,7 +61,8 @@ namespace Improbable.Gdk.CodeGenerator
 
             var bundlePath = GenerateBundle();
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
-            var store = new DetailsStore(schemaBundle, options.SerializationOverrides);
+            var fileTree = new FileTree(options.SchemaInputDirs);
+            var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -80,7 +81,8 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => typeof(CodegenJob).IsAssignableFrom(type))
                 .Where(type => !type.IsAbstract)
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
-                .Select(type => (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
+                .Select(type =>
+                    (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
                 .ToArray();
 
             new JobRunner(fileSystem).Run(jobs);
@@ -131,7 +133,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             if (string.IsNullOrEmpty(options.SchemaCompilerPath))
             {
-                Console.WriteLine("Schema compiler location not specitied");
+                Console.WriteLine("Schema compiler location not specified");
                 return false;
             }
 

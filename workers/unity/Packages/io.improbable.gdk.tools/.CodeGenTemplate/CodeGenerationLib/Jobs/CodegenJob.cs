@@ -20,11 +20,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected readonly Dictionary<string, string> Content = new Dictionary<string, string>();
 
         private IFileSystem fileSystem;
+        private readonly DetailsStore detailsStore;
 
         public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
         {
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
+            this.detailsStore = detailsStore;
         }
 
         public void Clean()
@@ -71,8 +73,14 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 return true;
             }
 
-            var schemaFiles = InputFiles.Select(entry => fileSystem.GetFileInfo(entry)).ToList();
-            var existingFiles = OutputFiles.Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry))).ToList();
+            var schemaFiles = InputFiles
+                .Select(file => detailsStore.FileTree.GetFullPathForRelativeSchema(file))
+                .Select(path => fileSystem.GetFileInfo(path))
+                .ToList();
+
+            var existingFiles = OutputFiles
+                .Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry)))
+                .ToList();
 
             if (schemaFiles.Count == 0 || existingFiles.Count == 0)
             {

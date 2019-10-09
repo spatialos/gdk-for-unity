@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -16,7 +14,6 @@ namespace Improbable.Gdk.Tools
 {
     internal static class GenerateCode
     {
-        private const string CodeGenLibFile = ".CodeGenerator/CodeGeneration/CodeGeneration.csproj";
         private const string ImprobableJsonDir = "build/ImprobableJson";
         private const string SchemaPackageDir = ".schema";
         private const string CodegenDir = ".codegen";
@@ -239,7 +236,7 @@ namespace Improbable.Gdk.Tools
             // Add user defined schema directories
             baseArgs.AddRange(toolsConfig.SchemaSourceDirs
                 .Where(Directory.Exists)
-                .Select(directory => $"--schema-path=\"{directory}\""));
+                .Select(directory => $"--schema-path=\"{Path.GetFullPath(directory)}\""));
 
             // Add package schema directories
             baseArgs.AddRange(FindDirInPackages(SchemaPackageDir)
