@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Improbable.Gdk.CodeGeneration.FileHandling;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -17,14 +18,13 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
             { PrimitiveType.Bytes, PrimitiveType.String, PrimitiveType.Entity };
 
-        public Dictionary<string, HashSet<string>> FileTree { get; }
+        public IFileTree FileTree { get; }
 
         private Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
 
         private readonly SchemaBundle bundle;
 
-        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides,
-            Dictionary<string, HashSet<string>> fileTree)
+        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides, IFileTree fileTree)
         {
             FileTree = fileTree;
             this.bundle = bundle;

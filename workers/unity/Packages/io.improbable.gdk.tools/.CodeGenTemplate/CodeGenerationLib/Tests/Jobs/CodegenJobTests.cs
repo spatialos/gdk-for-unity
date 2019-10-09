@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeGeneration.Tests.FileHandling;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
+using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
 using NUnit.Framework;
 
 namespace CodeGeneration.Tests.Jobs
@@ -93,7 +96,8 @@ namespace CodeGeneration.Tests.Jobs
         {
             public static CodegenStub GetCleanInstance()
             {
-                return new CodegenStub("", new MockFileSystem(), null);
+                var json = JsonParsingTests.GetBundleContents();
+                return new CodegenStub("", new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree()));
             }
 
             internal MockFileSystem myFileSystem;

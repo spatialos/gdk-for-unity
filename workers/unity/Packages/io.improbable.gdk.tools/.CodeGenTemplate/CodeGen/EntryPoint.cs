@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var bundlePath = GenerateBundle();
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
-            var fileTree = GenerateFileTree();
+            var fileTree = new FileTree(options.SchemaInputDirs);
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
             var jobs = AppDomain.CurrentDomain
@@ -109,17 +109,6 @@ namespace Improbable.Gdk.CodeGenerator
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
             return bundlePath;
-        }
-
-        private Dictionary<string, HashSet<string>> GenerateFileTree()
-        {
-            return options.SchemaInputDirs
-                .AsParallel()
-                .ToDictionary(
-                    schemaDir => schemaDir,
-                    schemaDir => Directory.GetFiles(schemaDir, "*.schema", SearchOption.AllDirectories)
-                        .Select(path => path.Substring(schemaDir.Length + 1).Replace('\\', '/'))
-                        .ToHashSet());
         }
 
         private void ShowHelpMessage()
