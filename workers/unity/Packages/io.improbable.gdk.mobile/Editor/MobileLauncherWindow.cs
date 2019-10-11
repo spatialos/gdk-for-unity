@@ -104,24 +104,12 @@ namespace Improbable.Gdk.Mobile
 
             using (new EditorGUI.IndentLevelScope())
             {
-                DisplayAndroidDeviceList(true);
-                DisplayAndroidLaunchButton(true);
+                DisplayDevicesAndLaunchButton(true, true);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayAndroidDeviceList(false);
-                DisplayAndroidLaunchButton(false);
+                DisplayDevicesAndLaunchButton(true, false);
             }
-        }
-
-        private void DisplayAndroidDeviceList(bool isEmulator)
-        {
-            DisplayDeviceList(isAndroid: true, isEmulator: isEmulator);
-        }
-
-        private void DisplayAndroidLaunchButton(bool isEmulator)
-        {
-            DisplayLaunchButton(isAndroid: true, isEmulator: isEmulator);
         }
 
 #if UNITY_EDITOR_OSX
@@ -142,29 +130,18 @@ namespace Improbable.Gdk.Mobile
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayiOSDeviceList(true);
-                DisplayiOSLaunchButton(true);
+                DisplayDevicesAndLaunchButton(false, true);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayiOSDeviceList(false);
-                DisplayiOSLaunchButton(false);
+                DisplayDevicesAndLaunchButton(false, false);
             }
-        }
-
-        private void DisplayiOSDeviceList(bool isEmulator)
-        {
-            DisplayDeviceList(isAndroid: false, isEmulator: isEmulator);
-        }
-
-        private void DisplayiOSLaunchButton(bool isEmulator)
-        {
-            DisplayLaunchButton(isAndroid: false, isEmulator: isEmulator);
         }
 #endif
 
-        private void DisplayDeviceList(bool isAndroid, bool isEmulator)
+        private void DisplayDevicesAndLaunchButton(bool isAndroid, bool isEmulator)
         {
+            var androidOriOs = isAndroid ? "Android" : "iOS";
             var deviceOrEmulator = isEmulator
                 ? isAndroid
                     ? "Emulator"
@@ -187,6 +164,15 @@ namespace Improbable.Gdk.Mobile
                     ? iOSSimulatorNames
                     : iOSDeviceNames;
 
+            var devices = isAndroid
+                ? isEmulator
+                    ? androidEmulators
+                    : androidDevices
+                : isEmulator
+                    ? iOSSimulators
+                    : iOSDevices;
+
+            // List of devices/emulators with refresh button linked to correct platform
             using (new GUILayout.HorizontalScope())
             {
                 using (new EditorGUI.DisabledScope(names.Length == 0))
@@ -211,41 +197,8 @@ namespace Improbable.Gdk.Mobile
                     }
                 }
             }
-        }
 
-        private void DisplayLaunchButton(bool isAndroid, bool isEmulator)
-        {
-            var androidOriOs = isAndroid ? "Android" : "iOS";
-            var deviceOrEmulator = isEmulator
-                ? isAndroid
-                    ? "Emulator"
-                    : "Simulator"
-                : "Device";
-
-            var index = isAndroid
-                ? isEmulator
-                    ? androidEmulatorNameIndex
-                    : androidDeviceNameIndex
-                : isEmulator
-                    ? iOSSimulatorNameIndex
-                    : iOSDeviceNameIndex;
-
-            var names = isAndroid
-                ? isEmulator
-                    ? androidEmulatorNames
-                    : androidDeviceNames
-                : isEmulator
-                    ? iOSSimulatorNames
-                    : iOSDeviceNames;
-
-            var devices = isAndroid
-                ? isEmulator
-                    ? androidEmulators
-                    : androidDevices
-                : isEmulator
-                    ? iOSSimulators
-                    : iOSDevices;
-
+            // Launch button linked to the correct platform and chosen device
             using (new EditorGUI.DisabledScope(names.Length == 0))
             {
                 if (!GUILayout.Button($"Launch {androidOriOs} app on {deviceOrEmulator}"))
