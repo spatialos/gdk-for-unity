@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.2.10` - 2019-10-14
+
 ### Breaking Changes
 
 - The `GetComponentId<T>()` and `GetSnapshotComponentId<T>()` methods have been moved from `Dynamic` to `ComponentDatabase`. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
