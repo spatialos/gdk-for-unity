@@ -62,7 +62,12 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
                 }
 
-                fileSystem.WriteToFile(fileInfo.CompletePath, entry.Value);
+                // Fix up line endings
+                var contents = entry.Value
+                    .Replace("\r\n", "\n")
+                    .Replace("\n", Environment.NewLine);
+
+                fileSystem.WriteToFile(fileInfo.CompletePath, contents);
             }
         }
 
