@@ -62,7 +62,7 @@
         - [Prepare your project]({{urlRoot}}/modules/mobile/prepare-project)
         - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
         - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
-        - [Reconnection logic for mobile]({{urlRoot}}/modules/mobile/reconnection-logic)
+        - [Reconnection logic]({{urlRoot}}/modules/mobile/reconnection-logic)
     - Player Lifecycle
         - [Overview]({{urlRoot}}/modules/player-lifecycle/overview)
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
