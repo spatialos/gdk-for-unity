@@ -8,9 +8,9 @@ Mobile applications present new challenges in terms of handling client connectio
 
 ### Unstable connection 
 
-When creating a mobile application, you need to ensure that clients are able to play the game even with an unstable connection.
+When creating a mobile application, you need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to run the game even with an unstable connection.
 
-If a client's connection is too unstable, they might not be able to connect to your game or might disconnect at any time. You should provide a connection flow that allows them to disconnect properly, and handle reconnection as soon as they obtain better reception.
+If a client-worker's connection is too unstable, they might not be able to connect to your game or might disconnect at any time. You should provide a connection flow that allows them to disconnect properly, and handle reconnection as soon as they obtain better reception.
 
 ### Pausing of applications
 
@@ -22,18 +22,18 @@ If the application has been closed, the user has to restart the application. The
 
 #### 2. The client stops sending data. 
 
-This scenario is a bit more tricky. The application is still alive, however the next time the user opens the application, SpatialOS will have already closed the connection due to not receiving any data from the client. This can happen due to the OS deciding not to send any data while the application is in the background. You need to add additional reconnection logic to your game to be able to handle this scenario. 
+This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection, if it doesn't receive any messages from a client-worker in a while. You need to add additional reconnection logic to your game to be able to handle this scenario. 
 
 In the end this is a very game-specific question that depends entirely on what you want to offer to your users. The FPS Starter Project implements the simplest solution: a disconnect takes you back to the start screen, from where you can reconnect to the game.
 
 ## How to detect a disconnect
 
-[Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating) is a technique used to verify that your client is still connected. If there are too many failed heartbeats, there are two ways your client may be seen as disconnected:
+[Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating) is a technique used to verify that your client is still connected. If there are too many failed heartbeats, there are two ways a client-worker may be seen as disconnected:
 
 ### 1. SpatialOS believes you disconnected
 
-To ensure that your client is still connected, the client has to send a message to SpatialOS. This indicates that the client is still alive. If SpatialOS doesn't receive a message in a while, it will close the connection to your client. 
-Whenever the connection gets closed on a worker, you receive a `DisconnectOp`. This object contains the reason behind the disconnection and triggers a disconnect event in the GDK.
+To ensure that a worker is still connected, the worker has to send messages to SpatialOS every now and thne. This indicates that the worker is still alive. If SpatialOS doesn't receive any message for a while, it will close the connection to that worker. 
+Whenever the connection gets closed on a worker, that worker receives a `DisconnectOp` object. It contains the reason behind the disconnection and triggers a disconnect event in the GDK.
 
 You can listen for this event using the `Worker` object inside the `WorkerConnector` class in order to perform any kind of disconnection logic necessary.
 
@@ -61,9 +61,9 @@ namespace YourGame
 
 ### 2. The player lifecycle module believes you disconnected 
 
-Our player lifecycle module allows you to easily create players and also implements heartbeating to delete unresponsive players. In moible application, this can result in players being destroyed that are still connected to SpatialOS. If this happens, you won’t receive a `DisconnectOp`.
+Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and also implements heartbeating to delete the player entity of any unresponsive client-workers. In mobile applications, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
 
-When this happens, your client might end up with no entities to be authoritative over and therefore unable to check out any entities. The client-worker's world will appear to be empty.
+When the player entity gets deleted, the client-worker might end up with no entities to be authoritative over and therefore unable to check out any entities. The client-worker's world will appear to be empty.
 
 This needs to be handled by either: 
 
