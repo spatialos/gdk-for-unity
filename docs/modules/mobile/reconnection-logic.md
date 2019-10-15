@@ -36,7 +36,7 @@ To ensure that a worker is still connected, the worker has to send messages to S
 
 Whenever the connection gets closed on a worker, that worker receives a `DisconnectOp` object. It contains the reason behind the disconnection and triggers a disconnect event in the GDK.
 
-You can listen for this event using the `Worker` object inside the `WorkerConnector` class in order to perform any kind of disconnection logic necessary.
+You can listen for this event using the `Worker` object inside the `WorkerConnector` class in order to perform your disconnection logic.
 
 ```csharp
 namespace YourGame
