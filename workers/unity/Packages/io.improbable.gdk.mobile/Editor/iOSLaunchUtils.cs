@@ -28,6 +28,8 @@ namespace Improbable.Gdk.Mobile
             var availableSimulators = new Dictionary<string, string>();
             var availableDevices = new Dictionary<string, string>();
 
+            // List connected devices
+            // instruments -s devices
             var result = RedirectedProcess.Command("instruments")
                 .WithArgs("-s", "devices")
                 .AddOutputProcessing(message =>
@@ -129,7 +131,8 @@ namespace Improbable.Gdk.Mobile
                 {
                     EditorUtility.DisplayProgressBar("Launching Mobile Client", "Start iOS Simulator", 0.5f);
 
-                    // Start simulator
+                    // Need to start Simulator before launching application on it
+                    // instruments -w <device id> -t <profiling template>
                     if (RedirectedProcess.Command("xcrun")
                         .WithArgs("instruments", "-w", deviceId, "-t", "Blank")
                         .Run()

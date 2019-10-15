@@ -28,6 +28,8 @@ namespace Improbable.Gdk.Mobile
                 return (availableEmulators, availableDevices);
             }
 
+            // List connected devices
+            // adb devices -l
             var result = RedirectedProcess.Command(adbPath)
                 .WithArgs("devices", "-l")
                 .AddOutputProcessing(message =>
@@ -95,6 +97,7 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Check if chosen emulator/device is connected
+                // adb -s <device id> get-state
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
                     .WithArgs($"-s {deviceId}", "get-state").Run().ExitCode != 0)
@@ -104,6 +107,7 @@ namespace Improbable.Gdk.Mobile
                 }
 
                 // Install apk on chosen emulator/device
+                // adb -s <device id> install -r <apk>
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
                     .WithArgs($"-s {deviceId}", "install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
@@ -116,10 +120,16 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
+                // Get GDK-related mobile launch arguments
                 var arguments = MobileLaunchUtils.PrepareArguments(shouldConnectLocally, runtimeIp);
 
-                // Get chosen android package id and launch
+                // Get bundle identifier
                 var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
+
+                // Launch the bundle on chosen device
+                // Use -S force stops target app before launching again
+                // adb -s <device id>
+                //    shell am start -S -n <unity package path> -e arguments <mobile launch arguments>
                 RedirectedProcess.Command(adbPath)
                     .WithArgs($"-s {deviceId}", "shell", "am", "start", "-S",
                         "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",

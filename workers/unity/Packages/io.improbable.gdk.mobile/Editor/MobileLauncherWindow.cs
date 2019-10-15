@@ -104,11 +104,11 @@ namespace Improbable.Gdk.Mobile
 
             using (new EditorGUI.IndentLevelScope())
             {
-                DisplayDevicesAndLaunchButton(true, true);
+                DisplayDevicesAndLaunchButton(isAndroid: true, isEmulator: true);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(true, false);
+                DisplayDevicesAndLaunchButton(isAndroid: true, isEmulator: false);
             }
         }
 
@@ -130,11 +130,11 @@ namespace Improbable.Gdk.Mobile
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(false, true);
+                DisplayDevicesAndLaunchButton(isAndroid: false, isEmulator: true);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(false, false);
+                DisplayDevicesAndLaunchButton(isAndroid: false, isEmulator: false);
             }
         }
 #endif
@@ -198,7 +198,7 @@ namespace Improbable.Gdk.Mobile
                 }
             }
 
-            // Launch button linked to the correct platform and chosen device
+            // Draw a launch button that will launch the app on the correct platform and chosen device
             using (new EditorGUI.DisabledScope(names.Length == 0))
             {
                 if (!GUILayout.Button($"Launch {androidOriOs} app on {deviceOrEmulator}"))
