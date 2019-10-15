@@ -22,7 +22,7 @@ If the application has been closed, the user has to restart the application. The
 
 #### 2. The client stops sending data. 
 
-This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection, if it doesn't receive any messages from a client-worker in a while. You need to add additional reconnection logic to your game to be able to handle this scenario. 
+This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need to add additional reconnection logic to your game to handle this scenario. 
 
 In the end this is a very game-specific question that depends entirely on what you want to offer to your users. The FPS Starter Project implements the simplest solution: a disconnect takes you back to the start screen, from where you can reconnect to the game.
 
