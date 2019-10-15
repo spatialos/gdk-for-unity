@@ -62,7 +62,7 @@ namespace YourGame
 
 ### 2. The player lifecycle module believes you disconnected 
 
-Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and also implements heartbeating to delete the player entity of any unresponsive client-workers. In mobile applications, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
+Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In mobile applications, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
 
 When the player entity gets deleted, the client-worker might end up with no entities to be authoritative over and therefore unable to check out any entities. The client-worker's world will appear to be empty.
 
