@@ -8,9 +8,9 @@ Mobile applications present new challenges in terms of handling client connectio
 
 ### Unstable connection 
 
-When creating a mobile application, you need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to run the game even with an unstable connection.
+When creating a mobile application, you need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to run the game even with an unstable connection. To achieve this, you can implement connection handling to ensure that those client-workers are able to reconnect.
 
-If a client-worker's connection is too unstable, they might not be able to connect to your game or might disconnect at any time. You should provide a connection flow that allows them to disconnect properly, and handle reconnection as soon as they obtain better reception.
+If a client-worker's connection is too unstable, they might not be able to connect to your game or might disconnect at any time. You should provide a connection flow that allows them to gracefully disconnect and handle reconnection when they have a more stable connection.
 
 ### Pausing of applications
 
@@ -64,9 +64,7 @@ namespace YourGame
 
 Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In mobile applications, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
 
-When the player entity gets deleted, the client-worker might end up with no entities to be authoritative over and therefore unable to check out any entities. The client-worker's world will appear to be empty.
-
-This needs to be handled by either: 
+When the player entity gets deleted, the client-worker might end up with no entities to be authoritative over and therefore unable to check out any entities. This leaves the client-worker in a bad state. There are two ways to recover from this: 
 
 1. Requesting a new player entity.
 1. Reconnecting the client-worker.
