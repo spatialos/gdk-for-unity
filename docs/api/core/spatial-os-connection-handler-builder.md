@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,7 +45,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -75,7 +75,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setconnectionflow-iconnectionflow"></a><b>SetConnectionFlow</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L38">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -103,7 +103,7 @@ Sets the connection flow implementation to use when creating the underlying Spat
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setthreadingmode-threadingmode"></a><b>SetThreadingMode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L49">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L49">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -131,7 +131,7 @@ Sets the threading mode for the resultant <a href="{{urlRoot}}/api/core/i-connec
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setconnectionparameters-connectionparameters"></a><b>SetConnectionParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -159,7 +159,7 @@ Sets the connection parameters to use for the underlying SpatialOS connection.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createasync-cancellationtoken"></a><b>CreateAsync</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L67">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Worker/ConnectionHandlers/SpatialOSConnectionHandlerBuilder.cs/#L67">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/player-lifecycle-index">PlayerLifecycle</a><br/>
 GDK package: PlayerLifecycle<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L18">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L18">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,11 +48,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="requestplayercreation-byte-action-playercreator-createplayer-receivedresponse"></a><b>RequestPlayerCreation</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L116">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L116">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void RequestPlayerCreation(byte [] serializedArguments = null, Action&lt;PlayerCreator.CreatePlayer.ReceivedResponse&gt; callback = null)</code></p>
+<code>void RequestPlayerCreation(byte[] serializedArguments = null, Action&lt;PlayerCreator.CreatePlayer.ReceivedResponse&gt; callback = null)</code></p>
 Queues a request for player creation, if none are currently in progress. If player creation entities have already been found, the request is sent in the next tick. 
 
 
@@ -61,7 +61,7 @@ Queues a request for player creation, if none are currently in progress. If play
 <b>Parameters</b>
 
 <ul>
-<li><code>byte [] serializedArguments</code> : A serialized byte array of arbitrary player creation arguments.</li>
+<li><code>byte[] serializedArguments</code> : A serialized byte array of arbitrary player creation arguments.</li>
 <li><code>Action&lt;PlayerCreator.CreatePlayer.ReceivedResponse&gt; callback</code> : An action to be invoked when the worker receives a response to the player creation request. </li>
 </ul>
 
@@ -89,7 +89,7 @@ Queues a request for player creation, if none are currently in progress. If play
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -108,7 +108,7 @@ Queues a request for player creation, if none are currently in progress. If play
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L220">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.playerlifecycle/Systems/PlayerCreation/SendCreatePlayerRequestSystem.cs/#L220">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
