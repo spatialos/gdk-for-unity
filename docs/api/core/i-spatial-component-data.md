@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/ISpatialComponentData.cs/#L6">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Components/ISpatialComponentData.cs/#L6">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -44,7 +44,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="componentid"></a><b>ComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Components/ISpatialComponentData.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Components/ISpatialComponentData.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

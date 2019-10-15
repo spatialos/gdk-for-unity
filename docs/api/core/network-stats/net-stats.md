@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/network-stats-index">NetworkStats</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L12">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L12">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -50,7 +50,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="datapoint"></a><b>DataPoint</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L91">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L91">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -80,7 +80,7 @@ Retrieves summary statistics for a given message type for the last numFrames fra
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="netstats-int"></a><b>NetStats</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ Creates an instance of network stats storage with a specific size.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setframestats-netframestats-direction"></a><b>SetFrameStats</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -149,7 +149,7 @@ Sets the network statistics for a given direction for the current frame.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="setframetime-float"></a><b>SetFrameTime</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L63">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -177,7 +177,7 @@ Sets the frame time for the current frame.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="finishframe"></a><b>FinishFrame</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L71">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/NetStats.cs/#L71">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
