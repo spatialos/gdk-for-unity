@@ -22,6 +22,7 @@
 ### Internal
 
 - Added the `IComponentMetaclass` and `ICommandMetaclass` interfaces. Where we previously would use reflection to find instances of various component/command related types, we now lookup through generated metaclasses. [#1173](https://github.com/spatialos/gdk-for-unity/pull/1173)
+- Code Generator now enforces platform line endings. [#1189](https://github.com/spatialos/gdk-for-unity/pull/1189)
 
 ## `0.2.9` - 2019-09-16
 
