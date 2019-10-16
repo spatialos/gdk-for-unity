@@ -2194,10 +2194,6 @@ namespace Improbable.DependentSchema
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<bool?> Field1;
             public Option<float?> Field2;
             public Option<global::Improbable.Gdk.Core.Option<byte[]>> Field3;
@@ -2217,17 +2213,6 @@ namespace Improbable.DependentSchema
             public Option<global::Improbable.TestSchema.SomeType?> Field17;
             public Option<global::Improbable.TestSchema.SomeEnum?> Field18;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class DependentDataComponentDynamic : IDynamicInvokable
         {
