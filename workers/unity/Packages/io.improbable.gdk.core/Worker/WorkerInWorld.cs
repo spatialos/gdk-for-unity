@@ -4,9 +4,6 @@ using System.Threading.Tasks;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
-#if USE_LEGACY_REACTIVE_COMPONENTS
-using Improbable.Gdk.ReactiveComponents;
-#endif
 
 namespace Improbable.Gdk.Core
 {
@@ -86,11 +83,6 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateSystem<WorkerFlagCallbackSystem>();
             World.GetOrCreateSystem<RequireLifecycleSystem>();
             World.GetOrCreateSystem<SubscriptionSystem>();
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            // Reactive components
-            ReactiveComponentsHelper.AddCommonSystems(World);
-#endif
         }
 
         public override void Dispose()
