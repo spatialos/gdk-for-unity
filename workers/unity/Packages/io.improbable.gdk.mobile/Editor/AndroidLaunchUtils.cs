@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -10,16 +11,30 @@ namespace Improbable.Gdk.Mobile
 {
     public static class AndroidLaunchUtils
     {
-        private static readonly Regex DeviceMatchRegex = new Regex("(?:(?<id>[\\w_\\d-]+)\\s*device).*"
-            + "(?:product:(?<product>[\\w_\\d]+))\\s*"
-            + "(?:model:(?<model>[\\w_\\d]+))\\s*"
-            + "(?:device:(?<device>[\\w_\\d]+)).*");
+        /*
+            The regex below operates on output similar to the following:
+                List of devices attached
+                adb server version (40) doesn't match this client (39); killing...
+                * daemon started successfully *
+                    emulator-5556         device product:sdk_gphone_x86 model:Android_SDK_built_for_x86 device:generic_x86
+                    p4u1b414jiwa5h3re     device product:starltexx model:SM_G960F device:starlte
 
-        public static (Dictionary<string, string>, Dictionary<string, string>) RetrieveAvailableEmulatorsAndDevices()
+            There are four capture groups: id, product, model, device. The "id" group is the emulator name or device
+            serial number. For example, "emulator-5556" or "p4u1b414jiwa5h3re".
+
+            The other capture groups are used to extract their respective fields in the device metadata. For example,
+            the "product" capture would be "starltexx", "model" would be "SM_G960F" and "device" would be "starlte".
+        */
+        private static readonly Regex DeviceMatchRegex = new Regex(pattern:
+            "(?:(?<id>[\\w_\\d-]+)\\s*device).*" +
+            "(?:product:(?<product>[\\w_\\d]+))\\s*" +
+            "(?:model:(?<model>[\\w_\\d]+))\\s*" +
+            "(?:device:(?<device>[\\w_\\d]+)).*");
+
+        public static (List<DeviceLaunchConfig> emulators, List<DeviceLaunchConfig> devices) RetrieveAvailableEmulatorsAndDevices()
         {
-            var available = false;
-            var availableEmulators = new Dictionary<string, string>();
-            var availableDevices = new Dictionary<string, string>();
+            var availableEmulators = new List<DeviceLaunchConfig>();
+            var availableDevices = new List<DeviceLaunchConfig>();
 
             if (!TryGetAdbPath(out var adbPath))
             {
@@ -39,18 +54,24 @@ namespace Improbable.Gdk.Mobile
                         return;
                     }
 
-                    available = true;
-
                     var match = DeviceMatchRegex.Match(message);
                     var deviceId = match.Groups["id"].Value;
 
                     if (deviceId.Contains("emulator"))
                     {
-                        availableEmulators[$"{match.Groups["product"].Value} ({deviceId})"] = deviceId;
+                        availableEmulators.Add(new DeviceLaunchConfig(
+                            deviceName: $"{match.Groups["product"].Value} ({deviceId})",
+                            deviceId: deviceId,
+                            deviceType: DeviceType.AndroidEmulator,
+                            launchAction: Launch));
                     }
                     else
                     {
-                        availableDevices[$"{match.Groups["model"].Value} ({deviceId})"] = deviceId;
+                        availableDevices.Add(new DeviceLaunchConfig(
+                            deviceName: $"{match.Groups["model"].Value} ({deviceId})",
+                            deviceId: deviceId,
+                            deviceType: DeviceType.AndroidDevice,
+                            launchAction: Launch));
                     }
                 })
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
@@ -58,27 +79,27 @@ namespace Improbable.Gdk.Mobile
 
             if (result.ExitCode == 0)
             {
-                if (!available)
-                {
-                    Debug.Log("No Android emulators or devices found.");
-                }
-
                 return (availableEmulators, availableDevices);
             }
 
             Debug.LogError("Failed to find Android emulators or devices.");
             availableEmulators.Clear();
             availableDevices.Clear();
+
             return (availableEmulators, availableDevices);
         }
 
-        public static void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useEmulator)
+        public static void Launch(DeviceLaunchConfig deviceLaunchConfig, MobileLaunchConfig mobileLaunchConfig)
         {
+            // Throw if device type is neither AndroidDevice nor AndroidEmulator
+            if (deviceLaunchConfig.deviceType != DeviceType.AndroidDevice ||
+                deviceLaunchConfig.deviceType != DeviceType.AndroidEmulator)
+            {
+                throw new ArgumentException($"Device must of be of type {DeviceType.AndroidDevice} or {DeviceType.AndroidEmulator}.");
+            }
+
             try
             {
-                // Useful for personalised output
-                var deviceOrEmulator = useEmulator ? "emulator" : "device";
-
                 // Find adb
                 if (!TryGetAdbPath(out var adbPath))
                 {
@@ -100,9 +121,9 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id> get-state
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs($"-s {deviceId}", "get-state").Run().ExitCode != 0)
+                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "get-state").Run().ExitCode != 0)
                 {
-                    Debug.LogError($"Chosen {deviceOrEmulator} ({deviceId}) not found.");
+                    Debug.LogError($"Chosen {deviceLaunchConfig.prettyDeviceType} ({deviceLaunchConfig.deviceId}) not found.");
                     return;
                 }
 
@@ -110,10 +131,11 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id> install -r <apk>
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs($"-s {deviceId}", "install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
+                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
                 {
                     Debug.LogError(
-                        $"Failed to install the apk on the {deviceOrEmulator}. If the application is already installed on your {deviceOrEmulator}, " +
+                        $"Failed to install the apk on the {deviceLaunchConfig.prettyDeviceType}. " +
+                        $"If the application is already installed on your {deviceLaunchConfig.prettyDeviceType}, " +
                         "try uninstalling it before launching the mobile client.");
                     return;
                 }
@@ -121,7 +143,7 @@ namespace Improbable.Gdk.Mobile
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
                 // Get GDK-related mobile launch arguments
-                var arguments = MobileLaunchUtils.PrepareArguments(shouldConnectLocally, runtimeIp);
+                var arguments = MobileLaunchUtils.PrepareArguments(mobileLaunchConfig);
 
                 // Get bundle identifier
                 var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
@@ -131,7 +153,7 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id>
                 //    shell am start -S -n <unity package path> -e arguments <mobile launch arguments>
                 RedirectedProcess.Command(adbPath)
-                    .WithArgs($"-s {deviceId}", "shell", "am", "start", "-S",
+                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "shell", "am", "start", "-S",
                         "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",
                         "-e", "\"arguments\"", $"\\\"{arguments}\\\"")
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))

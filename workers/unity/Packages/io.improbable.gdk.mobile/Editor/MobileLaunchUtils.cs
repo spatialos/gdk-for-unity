@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
@@ -10,18 +9,18 @@ namespace Improbable.Gdk.Mobile
     {
         private const string ArgStructure = "+{0} {1} ";
 
-        public static string PrepareArguments(bool shouldConnectLocally, string runtimeIp)
+        public static string PrepareArguments(MobileLaunchConfig mobileLaunchConfig)
         {
             var arguments = new StringBuilder();
-            if (shouldConnectLocally)
+            if (mobileLaunchConfig.ShouldConnectLocally)
             {
-                if (string.IsNullOrEmpty(runtimeIp))
+                if (string.IsNullOrEmpty(mobileLaunchConfig.RuntimeIp))
                 {
                     Debug.LogWarning("No local runtime IP was specified. Ensure you set one in SpatialOS > GDK tools configuration.");
                 }
 
                 arguments.AppendFormat(ArgStructure, RuntimeConfigNames.Environment, RuntimeConfigDefaults.LocalEnvironment);
-                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.ReceptionistHost, runtimeIp);
+                arguments.AppendFormat(ArgStructure, RuntimeConfigNames.ReceptionistHost, mobileLaunchConfig.RuntimeIp);
             }
             else
             {

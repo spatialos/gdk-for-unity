@@ -19,25 +19,15 @@ namespace Improbable.Gdk.Mobile
         private static readonly Color DarkGrey = new Color(0.4f, 0.4f, 0.4f, 1);
         private static readonly Color LightGrey = new Color(0.7f, 0.7f, 0.7f, 1);
 
-        private MobileLaunchConfig launchConfig;
+        private MobileLaunchConfig mobileLaunchConfig;
 
-        private Dictionary<string, string> androidEmulators;
-        private Dictionary<string, string> androidDevices;
+        private (int currentIndex, List<DeviceLaunchConfig> devices) androidEmulators;
+        private (int currentIndex, List<DeviceLaunchConfig> devices) androidDevices;
 
-        private string[] androidEmulatorNames;
-        private string[] androidDeviceNames;
+        private (int currentIndex, List<DeviceLaunchConfig> devices) iOSSimulators;
+        private (int currentIndex, List<DeviceLaunchConfig> devices) iOSDevices;
 
-        private int androidEmulatorNameIndex;
-        private int androidDeviceNameIndex;
-
-        private Dictionary<string, string> iOSSimulators;
-        private Dictionary<string, string> iOSDevices;
-
-        private string[] iOSSimulatorNames;
-        private string[] iOSDeviceNames;
-
-        private int iOSSimulatorNameIndex;
-        private int iOSDeviceNameIndex;
+        private readonly string[] emptyDeviceNameList = { "No devices found" };
 
         [MenuItem("SpatialOS/Mobile Launcher", false, 52)]
         public static void ShowWindow()
@@ -63,8 +53,8 @@ namespace Improbable.Gdk.Mobile
             GUILayout.Label(MobileSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
             {
-                launchConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, launchConfig.RuntimeIp);
-                launchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, launchConfig.ShouldConnectLocally);
+                mobileLaunchConfig.RuntimeIp = EditorGUILayout.TextField(RuntimeIpLabel, mobileLaunchConfig.RuntimeIp);
+                mobileLaunchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, mobileLaunchConfig.ShouldConnectLocally);
             }
 
             DisplayAndroidMenu();
@@ -74,26 +64,38 @@ namespace Improbable.Gdk.Mobile
 #endif
         }
 
+        private void RefreshEmulatorsAndDevices(DeviceType deviceType)
+        {
+            switch (deviceType)
+            {
+                case DeviceType.AndroidDevice:
+                case DeviceType.AndroidEmulator:
+                    RefreshAndroidEmulatorsAndDevices();
+                    break;
+                case DeviceType.iOSDevice:
+                case DeviceType.iOSSimulator:
+                    RefreshiOSEmulatorsAndDevices();
+                    break;
+                default:
+                    Debug.LogError($"Invalid Device Type: {deviceType}");
+                    break;
+            }
+        }
+
         private void RefreshAndroidEmulatorsAndDevices()
         {
-            (androidEmulators, androidDevices) = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+            var (emulators, devices) = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
 
-            androidEmulatorNames = androidEmulators.Keys.ToArray();
-            androidDeviceNames = androidDevices.Keys.ToArray();
-
-            androidEmulatorNameIndex = 0;
-            androidDeviceNameIndex = 0;
+            androidEmulators = (0, emulators);
+            androidDevices = (0, devices);
         }
 
         private void RefreshiOSEmulatorsAndDevices()
         {
-            (iOSSimulators, iOSDevices) = iOSLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+            var (emulators, devices) = iOSLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
 
-            iOSSimulatorNames = iOSSimulators.Keys.ToArray();
-            iOSDeviceNames = iOSDevices.Keys.ToArray();
-
-            iOSSimulatorNameIndex = 0;
-            iOSDeviceNameIndex = 0;
+            iOSSimulators = (0, emulators);
+            iOSDevices = (0, devices);
         }
 
         private void DisplayAndroidMenu()
@@ -104,11 +106,11 @@ namespace Improbable.Gdk.Mobile
 
             using (new EditorGUI.IndentLevelScope())
             {
-                DisplayDevicesAndLaunchButton(isAndroid: true, isEmulator: true);
+                DisplayDevicesAndLaunchButton(DeviceType.AndroidEmulator);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(isAndroid: true, isEmulator: false);
+                DisplayDevicesAndLaunchButton(DeviceType.AndroidDevice);
             }
         }
 
@@ -121,115 +123,110 @@ namespace Improbable.Gdk.Mobile
 
             using (new EditorGUI.IndentLevelScope())
             {
-                launchConfig.DevelopmentTeamId = EditorGUILayout.TextField(DevelopmentTeamIdLabel, launchConfig.DevelopmentTeamId);
+                mobileLaunchConfig.DevelopmentTeamId = EditorGUILayout.TextField(DevelopmentTeamIdLabel, mobileLaunchConfig.DevelopmentTeamId);
 
                 if (GUILayout.Button("Build XCode project"))
                 {
-                    iOSLaunchUtils.Build(launchConfig.DevelopmentTeamId);
+                    iOSLaunchUtils.Build(mobileLaunchConfig.DevelopmentTeamId);
                 }
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(isAndroid: false, isEmulator: true);
+                DisplayDevicesAndLaunchButton(DeviceType.iOSSimulator);
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
 
-                DisplayDevicesAndLaunchButton(isAndroid: false, isEmulator: false);
+                DisplayDevicesAndLaunchButton(DeviceType.iOSDevice);
             }
         }
 #endif
 
-        private void DisplayDevicesAndLaunchButton(bool isAndroid, bool isEmulator)
+        private void DisplayDevicesAndLaunchButton(DeviceType deviceType)
         {
-            var androidOriOs = isAndroid ? "Android" : "iOS";
-            var deviceOrEmulator = isEmulator
-                ? isAndroid
-                    ? "Emulator"
-                    : "Simulator"
-                : "Device";
+            int index;
+            List<DeviceLaunchConfig> devices;
 
-            ref var index = ref isAndroid
-                ? ref isEmulator
-                    ? ref androidEmulatorNameIndex
-                    : ref androidDeviceNameIndex
-                : ref isEmulator
-                    ? ref iOSSimulatorNameIndex
-                    : ref iOSDeviceNameIndex;
+            switch (deviceType)
+            {
+                case DeviceType.AndroidDevice:
+                    (index, devices) = androidDevices;
+                    break;
+                case DeviceType.AndroidEmulator:
+                    (index, devices) = androidEmulators;
+                    break;
+                case DeviceType.iOSDevice:
+                    (index, devices) = iOSDevices;
+                    break;
+                case DeviceType.iOSSimulator:
+                    (index, devices) = iOSSimulators;
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid Device Type: {deviceType}");
+            }
 
-            var names = isAndroid
-                ? isEmulator
-                    ? androidEmulatorNames
-                    : androidDeviceNames
-                : isEmulator
-                    ? iOSSimulatorNames
-                    : iOSDeviceNames;
-
-            var devices = isAndroid
-                ? isEmulator
-                    ? androidEmulators
-                    : androidDevices
-                : isEmulator
-                    ? iOSSimulators
-                    : iOSDevices;
+            var prettyDeviceType = DeviceLaunchConfig.GetPrettyDeviceType(deviceType);
+            var names = devices.Select(config => config.deviceName).ToArray();
+            var noDevicesFound = devices.Count == 0;
 
             // List of devices/emulators with refresh button linked to correct platform
             using (new GUILayout.HorizontalScope())
             {
-                using (new EditorGUI.DisabledScope(names.Length == 0))
+                using (new EditorGUI.DisabledScope(noDevicesFound))
                 {
-                    index = EditorGUILayout.Popup($"{deviceOrEmulator} Model", index, names);
+                    SetDeviceIndex(deviceType,
+                        noDevicesFound
+                            ? EditorGUILayout.Popup(prettyDeviceType, 0, emptyDeviceNameList)
+                            : EditorGUILayout.Popup(prettyDeviceType, index, names));
                 }
 
                 var buttonIcon = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
                 {
-                    tooltip = $"Refresh your {(!isAndroid && isEmulator ? "Simulator" : deviceOrEmulator.ToLower())} list."
+                    tooltip = $"Refresh your {prettyDeviceType} list."
                 };
 
                 if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                 {
-                    if (isAndroid)
-                    {
-                        RefreshAndroidEmulatorsAndDevices();
-                    }
-                    else
-                    {
-                        RefreshiOSEmulatorsAndDevices();
-                    }
+                    RefreshEmulatorsAndDevices(deviceType);
                 }
             }
 
             // Draw a launch button that will launch the app on the correct platform and chosen device
-            using (new EditorGUI.DisabledScope(names.Length == 0))
+            using (new EditorGUI.DisabledScope(noDevicesFound))
             {
-                if (!GUILayout.Button($"Launch {androidOriOs} app on {deviceOrEmulator}"))
+                if (!GUILayout.Button($"Launch app on {prettyDeviceType}"))
                 {
                     return;
                 }
 
-                if (devices.TryGetValue(names[index], out var deviceId))
+                if (!devices[index].deviceName.Equals(names[index]))
                 {
-                    if (isAndroid)
-                    {
-                        AndroidLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceId, launchConfig.RuntimeIp, isEmulator);
-                    }
-                    else
-                    {
-                        iOSLaunchUtils.Launch(launchConfig.ShouldConnectLocally, deviceId, launchConfig.RuntimeIp, isEmulator);
-                    }
-                }
-                else
-                {
-                    if (isAndroid)
-                    {
-                        RefreshAndroidEmulatorsAndDevices();
-                    }
-                    else
-                    {
-                        RefreshiOSEmulatorsAndDevices();
-                    }
+                    RefreshEmulatorsAndDevices(deviceType);
 
-                    Debug.LogError($"Failed to launch {androidOriOs} app on selected {deviceOrEmulator}. Is the {deviceOrEmulator} still connected?");
+                    Debug.LogError($"Failed to launch app on selected {prettyDeviceType}. Is the {prettyDeviceType} still connected?");
                 }
+
+                devices[index].Launch(mobileLaunchConfig);
+            }
+        }
+
+        private void SetDeviceIndex(DeviceType deviceType, int index)
+        {
+            switch (deviceType)
+            {
+                case DeviceType.AndroidDevice:
+                    androidDevices.currentIndex = index;
+                    break;
+                case DeviceType.AndroidEmulator:
+                    androidEmulators.currentIndex = index;
+                    break;
+                case DeviceType.iOSDevice:
+                    iOSDevices.currentIndex = index;
+                    break;
+                case DeviceType.iOSSimulator:
+                    iOSSimulators.currentIndex = index;
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid Device Type: {deviceType}");
             }
         }
     }

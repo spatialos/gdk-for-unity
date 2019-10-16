@@ -22,11 +22,10 @@ namespace Improbable.Gdk.Mobile
         private static readonly Regex SimulatorUidRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\] \\(Simulator\\)$");
         private static readonly Regex DeviceUidRegex = new Regex("\\[([a-zA-Z0-9\\-]+)\\]$");
 
-        public static (Dictionary<string, string>, Dictionary<string, string>) RetrieveAvailableEmulatorsAndDevices()
+        public static (List<DeviceLaunchConfig> emulators, List<DeviceLaunchConfig> devices) RetrieveAvailableEmulatorsAndDevices()
         {
-            var available = false;
-            var availableSimulators = new Dictionary<string, string>();
-            var availableDevices = new Dictionary<string, string>();
+            var availableSimulators = new List<DeviceLaunchConfig>();
+            var availableDevices = new List<DeviceLaunchConfig>();
 
             // List connected devices
             // instruments -s devices
@@ -39,10 +38,14 @@ namespace Improbable.Gdk.Mobile
                     {
                         if (SimulatorUidRegex.IsMatch(message))
                         {
-                            available = true;
-
+                            var simulatorName = NameRegex.Match(message).Groups[1].Value;
                             var simulatorUid = SimulatorUidRegex.Match(message).Groups[1].Value;
-                            availableSimulators[NameRegex.Match(message).Groups[1].Value] = simulatorUid;
+
+                            availableSimulators.Add(new DeviceLaunchConfig(
+                                deviceName: simulatorName,
+                                deviceId: simulatorUid,
+                                deviceType: DeviceType.iOSSimulator,
+                                launchAction: Launch));
                             return;
                         }
                     }
@@ -50,10 +53,13 @@ namespace Improbable.Gdk.Mobile
                     // Devices
                     if (DeviceUidRegex.IsMatch(message))
                     {
-                        available = true;
-
+                        var deviceName = NameRegex.Match(message).Groups[1].Value;
                         var deviceUid = DeviceUidRegex.Match(message).Groups[1].Value;
-                        availableDevices[NameRegex.Match(message).Groups[1].Value] = deviceUid;
+                        availableDevices.Add(new DeviceLaunchConfig(
+                            deviceName: deviceName,
+                            deviceId: deviceUid,
+                            deviceType: DeviceType.iOSDevice,
+                            launchAction: Launch));
                     }
                 })
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
@@ -61,17 +67,13 @@ namespace Improbable.Gdk.Mobile
 
             if (result.ExitCode == 0)
             {
-                if (!available)
-                {
-                    Debug.Log("No iOS Simulators or devices found.");
-                }
-
                 return (availableSimulators, availableDevices);
             }
 
             Debug.LogError("Failed to find iOS Simulators or devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
             availableSimulators.Clear();
             availableDevices.Clear();
+
             return (availableSimulators, availableDevices);
         }
 
@@ -105,13 +107,22 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
-        public static void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useSimulator)
+        public static void Launch(DeviceLaunchConfig deviceLaunchConfig, MobileLaunchConfig mobileLaunchConfig)
         {
+            // Throw if device type is neither iOSDevice nor iOSSimulator
+            if (deviceLaunchConfig.deviceType != DeviceType.iOSDevice ||
+                deviceLaunchConfig.deviceType != DeviceType.iOSSimulator)
+            {
+                throw new ArgumentException($"Device must of be of type {DeviceType.iOSDevice} or {DeviceType.iOSSimulator}.");
+            }
+
             try
             {
+                var useEmulator = deviceLaunchConfig.deviceType == DeviceType.iOSSimulator;
+
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Preparing launch arguments", 0.0f);
 
-                if (!TryGetXCTestRunPath(useSimulator, out var xcTestRunPath))
+                if (!TryGetXCTestRunPath(useEmulator, out var xcTestRunPath))
                 {
                     Debug.LogError(
                         "Unable to find a xctestrun file for the correct architecture. Did you build your client using the correct Target SDK? " +
@@ -119,7 +130,7 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                var arguments = MobileLaunchUtils.PrepareArguments(shouldConnectLocally, runtimeIp);
+                var arguments = MobileLaunchUtils.PrepareArguments(mobileLaunchConfig);
 
                 if (!TryModifyEnvironmentVariables(xcTestRunPath, arguments))
                 {
@@ -127,14 +138,14 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (useSimulator)
+                if (useEmulator)
                 {
                     EditorUtility.DisplayProgressBar("Launching Mobile Client", "Start iOS Simulator", 0.5f);
 
                     // Need to start Simulator before launching application on it
                     // instruments -w <device id> -t <profiling template>
                     if (RedirectedProcess.Command("xcrun")
-                        .WithArgs("instruments", "-w", deviceId, "-t", "Blank")
+                        .WithArgs("instruments", "-w", deviceLaunchConfig.deviceId, "-t", "Blank")
                         .Run()
                         .ExitCode != 0)
                     {
@@ -145,7 +156,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing your app", 0.7f);
 
-                if (!TryLaunchApplication(deviceId, xcTestRunPath))
+                if (!TryLaunchApplication(deviceLaunchConfig.deviceId, xcTestRunPath))
                 {
                     Debug.LogError("Failed to start app on iOS device.");
                 }
