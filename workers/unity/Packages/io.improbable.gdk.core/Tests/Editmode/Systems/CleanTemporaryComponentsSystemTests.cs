@@ -26,20 +26,20 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         [TestCase(typeof(NewlyAddedSpatialOSEntity))]
         [TestCase(typeof(OnConnected))]
         [TestCase(typeof(OnDisconnected))]
-        public void CleanReactiveComponentsSystem_should_remove_components_when_ticked(Type reactiveComponentType)
+        public void CleanTemporaryComponentsSystem_should_remove_components_when_ticked(Type temporaryComponentType)
         {
             var entityManager = world.EntityManager;
 
-            var entityWithReactiveComponent = entityManager.CreateEntity(reactiveComponentType);
+            var entityWithTemporaryComponent = entityManager.CreateEntity(temporaryComponentType);
 
-            var cleanReactiveComponentsSystem = world.GetOrCreateSystem<CleanTemporaryComponentsSystem>();
+            var cleanTemporaryComponentsSystem = world.GetOrCreateSystem<CleanTemporaryComponentsSystem>();
 
             // Test that the system does not perform removal immediately, but only on Update
-            Assert.IsTrue(entityManager.HasComponent(entityWithReactiveComponent, reactiveComponentType));
+            Assert.IsTrue(entityManager.HasComponent(entityWithTemporaryComponent, temporaryComponentType));
 
-            cleanReactiveComponentsSystem.Update();
+            cleanTemporaryComponentsSystem.Update();
 
-            Assert.IsFalse(entityManager.HasComponent(entityWithReactiveComponent, reactiveComponentType));
+            Assert.IsFalse(entityManager.HasComponent(entityWithTemporaryComponent, temporaryComponentType));
         }
     }
 }

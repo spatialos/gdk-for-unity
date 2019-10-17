@@ -64,8 +64,6 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}ReactiveCommandComponents", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
@@ -82,15 +80,11 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}UpdateSender", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ReactiveHandlers", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ReactiveComponents", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
@@ -113,16 +107,12 @@ namespace Improbable.Gdk.CodeGenerator
             var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
-            var commandComponentsGenerator = new UnityCommandComponentsGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
-            var componentReactiveHandlersGenerator = new UnityReactiveComponentHandlersGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
             var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
-            var reactiveComponentGenerator = new ReactiveComponentGenerator();
-            var reactiveCommandComponentGenerator = new ReactiveCommandComponentGenerator();
             var componentDiffStorageGenerator = new ComponentDiffStorageGenerator();
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
@@ -165,22 +155,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                     var commandComponentsFileName =
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension);
-                    var commandComponentsCode =
-                        commandComponentsGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandComponentsFileName), commandComponentsCode);
 
                     var commandSenderReceiverFileName =
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
                         commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
-
-                    var reactiveCommandComponentsFileName =
-                        Path.ChangeExtension($"{componentName}ReactiveCommandComponents", FileExtension);
-                    var reactiveCommandComponentsCode =
-                        reactiveCommandComponentGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, reactiveCommandComponentsFileName),
-                        reactiveCommandComponentsCode);
 
                     var commandDiffDeserializerFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
@@ -215,10 +195,6 @@ namespace Improbable.Gdk.CodeGenerator
                 var updateSenderCode = componentSenderGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
-                var reactiveComponentHandlersFileName = Path.ChangeExtension($"{componentName}ReactiveHandlers", FileExtension);
-                var reactiveComponentHandlersCode = componentReactiveHandlersGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, reactiveComponentHandlersFileName), reactiveComponentHandlersCode);
-
                 var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
                 var ecsViewManagerCode = ecsViewManagerGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
@@ -231,15 +207,14 @@ namespace Improbable.Gdk.CodeGenerator
                 var componentDiffDeserializerCode = componentDiffDeserializerGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
 
-                var reactiveComponentsFileName = Path.ChangeExtension($"{componentName}ReactiveComponents", FileExtension);
-                var reactiveComponentsCode = reactiveComponentGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, reactiveComponentsFileName), reactiveComponentsCode);
-
-                var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
-                var referenceProviderTranslationCode =
-                    referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
-                    referenceProviderTranslationCode);
+                if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))
+                {
+                    var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
+                    var referenceProviderTranslationCode =
+                        referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
+                    Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
+                        referenceProviderTranslationCode);
+                }
 
                 var componentReaderWriterFileName =
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);

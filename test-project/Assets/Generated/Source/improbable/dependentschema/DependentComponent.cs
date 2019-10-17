@@ -705,27 +705,12 @@ namespace Improbable.DependentSchema
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<global::Improbable.TestSchema.ExhaustiveRepeatedData> A;
             public Option<global::Improbable.TestSchema.SomeEnum> B;
             public Option<global::Improbable.TestSchema.SomeEnum?> C;
             public Option<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>> D;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>> E;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class DependentComponentDynamic : IDynamicInvokable
         {

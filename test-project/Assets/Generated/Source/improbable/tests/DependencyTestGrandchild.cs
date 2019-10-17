@@ -264,23 +264,8 @@ namespace Improbable.Tests
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<uint> Grandchild;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.Tests.DependencyTestGrandchild.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class DependencyTestGrandchildDynamic : IDynamicInvokable
         {

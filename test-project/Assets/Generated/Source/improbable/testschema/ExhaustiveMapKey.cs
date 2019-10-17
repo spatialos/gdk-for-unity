@@ -2950,10 +2950,6 @@ namespace Improbable.TestSchema
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<global::System.Collections.Generic.Dictionary<bool, string>> Field1;
             public Option<global::System.Collections.Generic.Dictionary<float, string>> Field2;
             public Option<global::System.Collections.Generic.Dictionary<byte[], string>> Field3;
@@ -2973,17 +2969,6 @@ namespace Improbable.TestSchema
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>> Field17;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>> Field18;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.TestSchema.ExhaustiveMapKey.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class ExhaustiveMapKeyDynamic : IDynamicInvokable
         {

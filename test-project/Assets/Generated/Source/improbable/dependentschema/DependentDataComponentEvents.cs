@@ -24,37 +24,5 @@ namespace Improbable.DependentSchema
             }
         }
 
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public static class ReceivedEvents
-        {
-            public struct FooEvent : IComponentData
-            {
-                internal uint handle;
-
-                public List<global::Improbable.TestSchema.SomeType> Events
-                {
-                    get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.FooEventProvider.Get(handle);
-                    internal set => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.FooEventProvider.Set(handle, value);
-                }
-            }
-
-        }
-
-        public static class EventSender
-        {
-            public struct FooEvent : IComponentData
-            {
-                internal uint handle;
-
-                public List<global::Improbable.TestSchema.SomeType> Events
-                {
-                    get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.FooEventProvider.Get(handle);
-                    internal set => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.FooEventProvider.Set(handle, value);
-                }
-            }
-
-        }
-#endif
     }
 }
