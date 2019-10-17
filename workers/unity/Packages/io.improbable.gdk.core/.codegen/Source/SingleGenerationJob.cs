@@ -6,7 +6,7 @@ using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGenerator
+namespace Improbable.Gdk.CodeGenerator.Core
 {
     public class SingleGenerationJob : CodegenJob
     {
@@ -62,8 +62,6 @@ namespace Improbable.Gdk.CodeGenerator
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
@@ -88,8 +86,6 @@ namespace Improbable.Gdk.CodeGenerator
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ViewStorage", FileExtension)));
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
@@ -111,8 +107,6 @@ namespace Improbable.Gdk.CodeGenerator
             var componentSenderGenerator = new UnityComponentSenderGenerator();
             var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
             var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
-            var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
-            var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
             var componentDiffStorageGenerator = new ComponentDiffStorageGenerator();
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
@@ -152,15 +146,6 @@ namespace Improbable.Gdk.CodeGenerator
                     var commandPayloadCode =
                         commandPayloadGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
-
-                    var commandComponentsFileName =
-                        Path.ChangeExtension($"{componentName}CommandComponents", FileExtension);
-
-                    var commandSenderReceiverFileName =
-                        Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
-                    var commandSenderReceiverCode =
-                        commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
 
                     var commandDiffDeserializerFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
@@ -215,12 +200,6 @@ namespace Improbable.Gdk.CodeGenerator
                     Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
                         referenceProviderTranslationCode);
                 }
-
-                var componentReaderWriterFileName =
-                    Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
-                var componentReaderWriterCode =
-                    componentReaderWriterGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
 
                 var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
                 var viewStorageCode = viewStorageGenerator.Generate(componentTarget.Content, package);
