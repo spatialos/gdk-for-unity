@@ -77,7 +77,7 @@ namespace Improbable.Gdk.Mobile
                     RefreshiOSEmulatorsAndDevices();
                     break;
                 default:
-                    Debug.LogError($"Invalid Device Type: {deviceType}");
+                    Debug.LogError($"Unknown Device Type: {deviceType}");
                     break;
             }
         }
@@ -161,11 +161,11 @@ namespace Improbable.Gdk.Mobile
                     (index, devices) = iOSSimulators;
                     break;
                 default:
-                    throw new ArgumentException($"Invalid Device Type: {deviceType}");
+                    throw new ArgumentException($"Unknown Device Type: {deviceType}");
             }
 
-            var prettyDeviceType = DeviceLaunchConfig.GetPrettyDeviceType(deviceType);
-            var names = devices.Select(config => config.deviceName).ToArray();
+            var prettyDeviceType = deviceType.ToPrettyDeviceType();
+            var names = devices.Select(config => config.DeviceName).ToArray();
             var noDevicesFound = devices.Count == 0;
 
             // List of devices/emulators with refresh button linked to correct platform
@@ -198,13 +198,6 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (!devices[index].deviceName.Equals(names[index]))
-                {
-                    RefreshEmulatorsAndDevices(deviceType);
-
-                    Debug.LogError($"Failed to launch app on selected {prettyDeviceType}. Is the {prettyDeviceType} still connected?");
-                }
-
                 devices[index].Launch(mobileLaunchConfig);
             }
         }
@@ -226,7 +219,7 @@ namespace Improbable.Gdk.Mobile
                     iOSSimulators.currentIndex = index;
                     break;
                 default:
-                    throw new ArgumentException($"Invalid Device Type: {deviceType}");
+                    throw new ArgumentException($"Unknown Device Type: {deviceType}");
             }
         }
     }

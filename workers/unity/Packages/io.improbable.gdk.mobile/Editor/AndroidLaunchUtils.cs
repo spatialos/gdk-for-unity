@@ -82,7 +82,8 @@ namespace Improbable.Gdk.Mobile
                 return (availableEmulators, availableDevices);
             }
 
-            Debug.LogError("Failed to find Android emulators or devices.");
+            Debug.LogError($"Failed to find Android emulators or devices:\n {string.Join("\n", result.Stderr)}");
+
             availableEmulators.Clear();
             availableDevices.Clear();
 
@@ -92,8 +93,7 @@ namespace Improbable.Gdk.Mobile
         public static void Launch(DeviceLaunchConfig deviceLaunchConfig, MobileLaunchConfig mobileLaunchConfig)
         {
             // Throw if device type is neither AndroidDevice nor AndroidEmulator
-            if (deviceLaunchConfig.deviceType != DeviceType.AndroidDevice ||
-                deviceLaunchConfig.deviceType != DeviceType.AndroidEmulator)
+            if (!deviceLaunchConfig.DeviceType.IsAndroid())
             {
                 throw new ArgumentException($"Device must of be of type {DeviceType.AndroidDevice} or {DeviceType.AndroidEmulator}.");
             }
@@ -121,9 +121,9 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id> get-state
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "get-state").Run().ExitCode != 0)
+                    .WithArgs($"-s {deviceLaunchConfig.DeviceId}", "get-state").Run().ExitCode != 0)
                 {
-                    Debug.LogError($"Chosen {deviceLaunchConfig.prettyDeviceType} ({deviceLaunchConfig.deviceId}) not found.");
+                    Debug.LogError($"Chosen {deviceLaunchConfig.PrettyDeviceType} ({deviceLaunchConfig.DeviceId}) not found.");
                     return;
                 }
 
@@ -131,11 +131,11 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id> install -r <apk>
                 if (RedirectedProcess.Command(adbPath)
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
+                    .WithArgs($"-s {deviceLaunchConfig.DeviceId}", "install", "-r", $"\"{apkPath}\"").Run().ExitCode != 0)
                 {
                     Debug.LogError(
-                        $"Failed to install the apk on the {deviceLaunchConfig.prettyDeviceType}. " +
-                        $"If the application is already installed on your {deviceLaunchConfig.prettyDeviceType}, " +
+                        $"Failed to install the apk on the {deviceLaunchConfig.PrettyDeviceType}. " +
+                        $"If the application is already installed on your {deviceLaunchConfig.PrettyDeviceType}, " +
                         "try uninstalling it before launching the mobile client.");
                     return;
                 }
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.Mobile
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Launching Client", 0.9f);
 
                 // Get GDK-related mobile launch arguments
-                var arguments = MobileLaunchUtils.PrepareArguments(mobileLaunchConfig);
+                var arguments = mobileLaunchConfig.ToLaunchArgs();
 
                 // Get bundle identifier
                 var bundleId = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
@@ -153,7 +153,7 @@ namespace Improbable.Gdk.Mobile
                 // adb -s <device id>
                 //    shell am start -S -n <unity package path> -e arguments <mobile launch arguments>
                 RedirectedProcess.Command(adbPath)
-                    .WithArgs($"-s {deviceLaunchConfig.deviceId}", "shell", "am", "start", "-S",
+                    .WithArgs($"-s {deviceLaunchConfig.DeviceId}", "shell", "am", "start", "-S",
                         "-n", $"{bundleId}/com.unity3d.player.UnityPlayerActivity",
                         "-e", "\"arguments\"", $"\\\"{arguments}\\\"")
                     .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))

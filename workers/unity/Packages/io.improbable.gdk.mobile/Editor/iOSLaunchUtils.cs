@@ -70,7 +70,10 @@ namespace Improbable.Gdk.Mobile
                 return (availableSimulators, availableDevices);
             }
 
-            Debug.LogError("Failed to find iOS Simulators or devices. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+            Debug.LogError("Failed to find iOS Simulators or devices. " +
+                "Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
+                $"installed and check the logs:\n {string.Join("\n", result.Stderr)}");
+
             availableSimulators.Clear();
             availableDevices.Clear();
 
@@ -110,15 +113,14 @@ namespace Improbable.Gdk.Mobile
         public static void Launch(DeviceLaunchConfig deviceLaunchConfig, MobileLaunchConfig mobileLaunchConfig)
         {
             // Throw if device type is neither iOSDevice nor iOSSimulator
-            if (deviceLaunchConfig.deviceType != DeviceType.iOSDevice ||
-                deviceLaunchConfig.deviceType != DeviceType.iOSSimulator)
+            if (deviceLaunchConfig.DeviceType.IsAndroid())
             {
                 throw new ArgumentException($"Device must of be of type {DeviceType.iOSDevice} or {DeviceType.iOSSimulator}.");
             }
 
             try
             {
-                var useEmulator = deviceLaunchConfig.deviceType == DeviceType.iOSSimulator;
+                var useEmulator = deviceLaunchConfig.DeviceType == DeviceType.iOSSimulator;
 
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Preparing launch arguments", 0.0f);
 
@@ -130,7 +132,7 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                var arguments = MobileLaunchUtils.PrepareArguments(mobileLaunchConfig);
+                var arguments = mobileLaunchConfig.ToLaunchArgs();
 
                 if (!TryModifyEnvironmentVariables(xcTestRunPath, arguments))
                 {
@@ -145,7 +147,7 @@ namespace Improbable.Gdk.Mobile
                     // Need to start Simulator before launching application on it
                     // instruments -w <device id> -t <profiling template>
                     if (RedirectedProcess.Command("xcrun")
-                        .WithArgs("instruments", "-w", deviceLaunchConfig.deviceId, "-t", "Blank")
+                        .WithArgs("instruments", "-w", deviceLaunchConfig.DeviceId, "-t", "Blank")
                         .Run()
                         .ExitCode != 0)
                     {
@@ -156,7 +158,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Launching Mobile Client", "Installing your app", 0.7f);
 
-                if (!TryLaunchApplication(deviceLaunchConfig.deviceId, xcTestRunPath))
+                if (!TryLaunchApplication(deviceLaunchConfig.DeviceId, xcTestRunPath))
                 {
                     Debug.LogError("Failed to start app on iOS device.");
                 }

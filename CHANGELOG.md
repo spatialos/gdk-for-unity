@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added the ability to select which Android device or emulator to launch an application on. [#1194](https://github.com/spatialos/gdk-for-unity/pull/1194)
+
 ## `0.2.10` - 2019-10-14
 
 ### Breaking Changes
