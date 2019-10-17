@@ -6,6 +6,7 @@
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Transform Synchronization Module.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.10"
+    "io.improbable.gdk.core": "0.2.10",
+    "io.improbable.gdk.gameobjectcreation": "0.2.10"
   }
 }
