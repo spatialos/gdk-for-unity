@@ -806,27 +806,12 @@ namespace Improbable.TestSchema
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<global::Improbable.Gdk.Core.EntitySnapshot> Field1;
             public Option<global::Improbable.Gdk.Core.EntitySnapshot?> Field2;
             public Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>> Field3;
             public Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>> Field4;
             public Option<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>> Field5;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class ExhaustiveEntityDynamic : IDynamicInvokable
         {

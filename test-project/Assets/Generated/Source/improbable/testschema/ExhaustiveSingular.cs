@@ -1098,10 +1098,6 @@ namespace Improbable.TestSchema
 
         public struct Update : ISpatialComponentUpdate
         {
-#if USE_LEGACY_REACTIVE_COMPONENTS
-            internal static Stack<List<Update>> Pool = new Stack<List<Update>>();
-#endif
-
             public Option<bool> Field1;
             public Option<float> Field2;
             public Option<byte[]> Field3;
@@ -1121,17 +1117,6 @@ namespace Improbable.TestSchema
             public Option<global::Improbable.TestSchema.SomeType> Field17;
             public Option<global::Improbable.TestSchema.SomeEnum> Field18;
         }
-
-#if USE_LEGACY_REACTIVE_COMPONENTS
-        public struct ReceivedUpdates : IComponentData
-        {
-            internal uint handle;
-            public global::System.Collections.Generic.List<Update> Updates
-            {
-                get => global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.UpdatesProvider.Get(handle);
-            }
-        }
-#endif
 
         internal class ExhaustiveSingularDynamic : IDynamicInvokable
         {

@@ -1,5 +1,14 @@
 # Upgrade Guide
 
+## From `0.2.10` to `0.3.0`
+
+### Reactive Components
+
+Reactive components are no longer available. For documentation on the equivalent APIs please refer to:
+
+* [`ComponentUpdateSystem`](https://docs.improbable.io/unity/alpha/api/core/component-update-system)
+* [`CommandSystem`](https://docs.improbable.io/unity/alpha/api/core/command-system)
+
 ## From `0.2.9` to `0.2.10`
 
 ### General
