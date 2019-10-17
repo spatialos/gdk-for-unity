@@ -113,7 +113,7 @@ namespace Improbable.Gdk.Mobile
         public static void Launch(DeviceLaunchConfig deviceLaunchConfig, MobileLaunchConfig mobileLaunchConfig)
         {
             // Throw if device type is neither iOSDevice nor iOSSimulator
-            if (deviceLaunchConfig.DeviceType.IsAndroid())
+            if (deviceLaunchConfig.IsAndroid)
             {
                 throw new ArgumentException($"Device must of be of type {DeviceType.iOSDevice} or {DeviceType.iOSSimulator}.");
             }

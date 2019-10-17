@@ -20,10 +20,5 @@ namespace Improbable.Gdk.Mobile
                     throw new ArgumentException($"Unknown Device Type: {deviceType}");
             }
         }
-
-        public static bool IsAndroid(this DeviceType deviceType)
-        {
-            return deviceType == DeviceType.AndroidDevice || deviceType == DeviceType.AndroidEmulator;
-        }
     }
 }
