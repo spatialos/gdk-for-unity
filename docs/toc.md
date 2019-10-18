@@ -101,9 +101,6 @@
             - [Events]({{urlRoot}}/workflows/ecs/interaction/events)
             - [Component commands]({{urlRoot}}/workflows/ecs/interaction/component-commands)
             - [World commands]({{urlRoot}}/workflows/ecs/interaction/world-commands)
-            - Reactive components
-                - [Overview]({{urlRoot}}/workflows/ecs/interaction/reactive-components/overview)
-                - [Entity contracts]({{urlRoot}}/workflows/ecs/interaction/reactive-components/entity-contracts)
         - Concepts
             - [System update order]({{urlRoot}}/workflows/ecs/concepts/system-update-order)
             - [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
