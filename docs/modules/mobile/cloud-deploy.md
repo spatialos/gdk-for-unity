@@ -37,8 +37,10 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
 1. [Start your Android Emulator in Android Studio](https://developer.android.com/studio/run/managing-avds) or connect your Android device to your development machine.
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for cloud**. Select your mobile worker, and wait for the build to complete.
 1. Select **SpatialOS** > **Mobile Launcher** to open the Mobile Launcher window.
-1. Select **Launch Android app** to start your Android client.
-1. Play the game on your device or emulator.
+1. Select your device or simulator from the relevant dropdown.
+   * If your device or simulator does not show up, you can select the button to the right of the dropdown to refresh the list.
+1. Select **Launch app on Android Emulator** or **Launch app on Android Device**.
+1. Play the game on your emulator or device.
 
 > As soon as you have built your Android app once, you are able to launch your app for either local or cloud deployments.
 
@@ -54,7 +56,9 @@ See [this page]({{urlRoot}}/modules/mobile/run-client) for more information on t
 1. Select **Build XCode project** and wait for the build to complete.
 1. Select your device or simulator from the relevant dropdown.
    * If your device or simulator does not show up, you can select the button to the right of the dropdown to refresh the list.
-1. Select the **Launch iOS app on Simulator** or **Launch iOS app on Device**
+1. Select **Launch iOS app on Simulator** or **Launch iOS app on Device**.
    * Ensure the app isn't already running on the device, as this will cause the app to crash.
    * You may need to mark your Developer account as trusted on the target device.
-1. Play the game on your device or Simulator.
+1. Play the game on Simulator or your device.
+
+> As soon as you have built your iOS app once, you are able to launch your app for either local or cloud deployments.
