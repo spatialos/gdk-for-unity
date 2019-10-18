@@ -7,6 +7,10 @@
 - Reactive components have been removed completely. [#1195](https://github.com/spatialos/gdk-for-unity/pull/1195)
   - If you are using reactive components, please see our documentation on the [ECS workflow](https://docs.improbable.io/unity/alpha/workflows/overview#ecs-centric-workflow).
 
+### Added
+
+- Added the ability to select which Android device or emulator to launch an application on. [#1194](https://github.com/spatialos/gdk-for-unity/pull/1194)
+
 ## `0.2.10` - 2019-10-14
 
 ### Breaking Changes
