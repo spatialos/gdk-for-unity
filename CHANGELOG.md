@@ -11,6 +11,10 @@
 
 - Added the ability to select which Android device or emulator to launch an application on. [#1194](https://github.com/spatialos/gdk-for-unity/pull/1194)
 
+### Changed
+
+- Generated Worker ID's for local development are now smaller and easier to read for debugging. [#1197](https://github.com/spatialos/gdk-for-unity/pull/1197)
+
 ## `0.2.10` - 2019-10-14
 
 ### Breaking Changes
