@@ -42,8 +42,10 @@ See [Ways to run your client]({{urlRoot}}/modules/mobile/run-client) for more in
 1. In your Unity Editor, navigate to **SpatialOS** > **Build for local**. Select your mobile worker, and wait for the build to complete.
 1. Navigate to your server-worker Scene and start it via the Editor.
 1. Select **SpatialOS** > **Mobile Launcher** to open the Mobile Launcher window.
-1. Select **Launch Android app** to start your Android client.
-1. Play the game on your device or emulator.
+1. Select your device or emulator from the relevant dropdown.
+   * If your device or emulator does not show up, you can select the button to the right of the dropdown to refresh the list.
+1. Select **Launch app on Android Emulator** or **Launch app on Android Device**.
+1. Play the game on your emulator or device.
 
 > As soon as you have built your Android app once, you are able to launch your app for either local or cloud deployments.
 
@@ -57,9 +59,11 @@ See [Ways to run your client]({{urlRoot}}/modules/mobile/run-client) for more in
 1. Select **SpatialOS** > **Mobile Launcher** to open the Mobile Launcher window.
 1. Fill in your **Development Team ID**. (There are instructions on where to find it on this [Stackoverflow topic](https://stackoverflow.com/a/47732584).)
 1. Select **Build XCode project** and wait for the build to complete.
-1. Select your device or simulator from the relevant dropdown.
-   * If your device or simulator does not show up, you can select the button to the right of the dropdown to refresh the list.
-1. Select the **Launch iOS app on Simulator** or **Launch iOS app on Device**
+1. Select your Simulator or device from the relevant dropdown.
+   * If your Simulator or device does not show up, you can select the button to the right of the dropdown to refresh the list.
+1. Select **Launch iOS app on Simulator** or **Launch iOS app on Device**.
    * Ensure the app isn't already running on the device, as this will cause the app to crash.
    * You may need to mark your Developer account as trusted on the target device.
-1. Play the game on your device or Simulator.
+1. Play the game on Simulator or your device.
+
+> As soon as you have built your iOS app once, you are able to launch your app for either local or cloud deployments.
