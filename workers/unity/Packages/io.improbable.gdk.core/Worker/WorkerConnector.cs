@@ -203,7 +203,7 @@ namespace Improbable.Gdk.Core
 
         protected static string CreateNewWorkerId(string workerType)
         {
-            return $"{workerType}-{Guid.NewGuid()}";
+            return $"{workerType}-{Guid.NewGuid().GetHashCode():x}";
         }
 
         protected ConnectionParameters CreateConnectionParameters(string workerType, IConnectionParameterInitializer initializer = null)
