@@ -208,19 +208,6 @@ This is a [SpatialOS component](#spatialos-component) defining the position of a
 
 This is used by SpatialOS for a few specific purposes, like [load balancing](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#load-balancing) and [queries](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/glossary#queries).
 
-## Reactive component
-
-<%(Callout type="warn" message="Please note that reactive components will be removed in a future release. We recommend that you do not use them.")%>
-
-Reactive components are a special type of [Unity ECS component](#unity-ecs-component) that are used to react to changes and [messages](#message) received from the [SpatialOS Runtime](#spatialos-runtime).
-
-
-Reactive components contain all updates and messages received during the last frame. In every update loop, the contents of a reactive component are processed by whichever [Unity ECS System](#unity-ecs-system) is set up to react to those state changes or messages.
-
-> **Related:**
->
-> * [Reactive components]({{urlRoot}}/workflows/ecs/interaction/reactive-components/overview)
-
 ## Receptionist connection flow
 
 The Receptionist service allows for a direct connection to the SpatialOS Runtime and is the standard flow used to:
