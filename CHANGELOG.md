@@ -6,6 +6,7 @@
 
 - Reactive components have been removed completely. [#1195](https://github.com/spatialos/gdk-for-unity/pull/1195)
   - If you are using reactive components, please see our documentation on the [ECS workflow](https://docs.improbable.io/unity/alpha/workflows/overview#ecs-centric-workflow).
+- Codegen for the GameObjectCreation package has been moved into the package. If the package is not used, readers and writers will no longer be generated. [#1196](https://github.com/spatialos/gdk-for-unity/pull/1196)
 
 ### Added
 
