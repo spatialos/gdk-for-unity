@@ -8,13 +8,13 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 {
-    public class GameObjectGenerationJob : CodegenJob
+    public class GameObjectCodegenJob : CodegenJob
     {
         private readonly List<GenerationTarget<UnityComponentDetails>> componentsToGenerate;
 
         private const string FileExtension = ".cs";
 
-        public GameObjectGenerationJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
+        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
             outputDir, fileSystem, store)
         {
             InputFiles = store.SchemaFiles.ToList();

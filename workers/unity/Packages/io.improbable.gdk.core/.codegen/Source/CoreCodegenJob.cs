@@ -8,7 +8,7 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator.Core
 {
-    public class SingleGenerationJob : CodegenJob
+    public class CoreCodegenJob : CodegenJob
     {
         private readonly List<GenerationTarget<UnityComponentDetails>> componentsToGenerate;
 
@@ -18,7 +18,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
         private const string FileExtension = ".cs";
 
-        public SingleGenerationJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
+        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
             outputDir, fileSystem, store)
         {
             InputFiles = store.SchemaFiles.ToList();
