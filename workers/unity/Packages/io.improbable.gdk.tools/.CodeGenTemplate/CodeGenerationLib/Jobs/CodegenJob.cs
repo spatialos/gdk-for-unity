@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.Jobs
 {
@@ -114,5 +115,19 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         protected abstract void RunImpl();
         private bool isDirtyOverride;
+
+        protected struct GenerationTarget<T>
+        {
+            public readonly T Content;
+            public readonly string Package;
+            public readonly string OutputPath;
+
+            public GenerationTarget(T content, string package)
+            {
+                Content = content;
+                Package = Formatting.CapitaliseQualifiedNameParts(package);
+                OutputPath = Formatting.GetNamespacePath(package);
+            }
+        }
     }
 }
