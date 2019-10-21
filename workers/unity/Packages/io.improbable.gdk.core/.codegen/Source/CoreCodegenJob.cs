@@ -4,7 +4,6 @@ using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
-using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGenerator.Core
 {
@@ -208,20 +207,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);
                 var metaclassCode = metaclassGenerator.Generate(componentTarget.Content, package);
                 Content.Add(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
-            }
-        }
-
-        private struct GenerationTarget<T>
-        {
-            public readonly T Content;
-            public readonly string Package;
-            public readonly string OutputPath;
-
-            public GenerationTarget(T content, string package)
-            {
-                Content = content;
-                Package = Formatting.CapitaliseQualifiedNameParts(package);
-                OutputPath = Formatting.GetNamespacePath(package);
             }
         }
     }
