@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
-            for (int i = 0; i < changes.Count; ++i)
+            for (var i = 0; i < changes.Count; ++i)
             {
                 if (changes[i].Authority == Authority.Authoritative)
                 {
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeLossImminentCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
-            for (int i = 0; i < changes.Count; ++i)
+            for (var i = 0; i < changes.Count; ++i)
             {
                 if (changes[i].Authority == Authority.AuthorityLossImminent)
                 {

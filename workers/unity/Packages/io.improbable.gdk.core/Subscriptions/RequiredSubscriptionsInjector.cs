@@ -12,8 +12,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly RequiredSubscriptionsInfo info;
         private readonly object target;
 
-        private Action onEnable;
-        private Action onDisable;
+        private readonly Action onEnable;
+        private readonly Action onDisable;
 
         // todo should either special case monobehaviours or not use callbacks
         // for non monobehaviours we could use functors

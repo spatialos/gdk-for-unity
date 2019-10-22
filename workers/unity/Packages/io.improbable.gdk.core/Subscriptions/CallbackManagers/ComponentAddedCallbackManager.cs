@@ -1,6 +1,5 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
@@ -23,9 +22,9 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var entities = componentUpdateSystem.GetComponentsAdded(componentId);
-            for (int i = 0; i < entities.Count; ++i)
+            foreach (var entityId in entities)
             {
-                callbacks.InvokeAll(entities[i]);
+                callbacks.InvokeAll(entityId);
             }
         }
 

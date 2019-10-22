@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var workerFlagChanges = workerSystem.Diff.GetWorkerFlagChanges();
-            for (int i = 0; i < workerFlagChanges.Count; ++i)
+            for (var i = 0; i < workerFlagChanges.Count; ++i)
             {
                 var pair = workerFlagChanges[i];
                 callbacks.InvokeAll(pair);

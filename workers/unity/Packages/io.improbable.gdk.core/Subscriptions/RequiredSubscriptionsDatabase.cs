@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal static class RequiredSubscriptionsDatabase
     {
-        private static Dictionary<Type, RequiredSubscriptionsInfo> typeToRequiredSubscriptionsInfo;
+        private static readonly Dictionary<Type, RequiredSubscriptionsInfo> typeToRequiredSubscriptionsInfo;
 
         static RequiredSubscriptionsDatabase()
         {

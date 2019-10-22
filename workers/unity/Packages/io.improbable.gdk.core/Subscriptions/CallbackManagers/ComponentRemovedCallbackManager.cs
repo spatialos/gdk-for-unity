@@ -23,9 +23,9 @@ namespace Improbable.Gdk.Subscriptions
         {
             // todo like entity stuff this should also be temporarily removed components
             var entities = componentUpdateSystem.GetComponentsRemoved(componentId);
-            for (int i = 0; i < entities.Count; ++i)
+            foreach (var entityId in entities)
             {
-                callbacks.InvokeAllReverse(entities[i]);
+                callbacks.InvokeAllReverse(entityId);
             }
         }
 

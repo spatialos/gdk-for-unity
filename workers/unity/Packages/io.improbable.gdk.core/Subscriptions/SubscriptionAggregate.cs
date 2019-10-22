@@ -123,7 +123,7 @@ namespace Improbable.Gdk.Subscriptions
 
                 public static Handler Rent(SubscriptionAggregate aggregate)
                 {
-                    Handler handler = HandlerPool.Count == 0
+                    var handler = HandlerPool.Count == 0
                         ? new Handler()
                         : HandlerPool.Pop();
 

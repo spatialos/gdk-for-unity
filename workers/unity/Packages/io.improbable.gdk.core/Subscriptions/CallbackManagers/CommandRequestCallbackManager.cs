@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var requests = commandSystem.GetRequests<T>();
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 callbacks.InvokeAll(request.GetEntityId().Id, request);

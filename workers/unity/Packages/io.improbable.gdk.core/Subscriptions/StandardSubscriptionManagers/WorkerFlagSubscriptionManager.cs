@@ -8,9 +8,9 @@ namespace Improbable.Gdk.Core
     [AutoRegisterSubscriptionManager]
     public class WorkerFlagSubscriptionManager : SubscriptionManager<WorkerFlagReader>
     {
-        private World world;
+        private readonly World world;
 
-        private HashSet<Subscription<WorkerFlagReader>> readerSubscriptions = new HashSet<Subscription<WorkerFlagReader>>();
+        private readonly HashSet<Subscription<WorkerFlagReader>> readerSubscriptions = new HashSet<Subscription<WorkerFlagReader>>();
 
         public WorkerFlagSubscriptionManager(World world)
         {

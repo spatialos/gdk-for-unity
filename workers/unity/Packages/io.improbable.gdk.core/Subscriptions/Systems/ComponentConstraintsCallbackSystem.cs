@@ -22,8 +22,8 @@ namespace Improbable.Gdk.Subscriptions
         private EntityAddedCallbackManager entityAdded;
         private EntityRemovedCallbackManager entityRemoved;
 
-        private readonly Dictionary<ulong, (ulong, ICallbackManager)> keyToInternalKeyAndManager =
-            new Dictionary<ulong, (ulong, ICallbackManager)>();
+        private readonly Dictionary<ulong, (ulong key, ICallbackManager manager)> keyToInternalKeyAndManager =
+            new Dictionary<ulong, (ulong key, ICallbackManager manager)>();
 
         private ulong callbacksRegistered = 1;
 
@@ -98,7 +98,7 @@ namespace Improbable.Gdk.Subscriptions
                 return false;
             }
 
-            return keyAndManager.Item2.UnregisterCallback(callbackKey);
+            return keyAndManager.manager.UnregisterCallback(callbackKey);
         }
 
         internal void Invoke()
