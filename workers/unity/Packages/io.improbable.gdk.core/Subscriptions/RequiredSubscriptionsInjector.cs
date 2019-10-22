@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -33,7 +32,7 @@ namespace Improbable.Gdk.Subscriptions
                 return;
             }
 
-            subscriptions = new SubscriptionAggregate(subscriptionSystem, entityId, info.RequiredTypes);
+            subscriptions = subscriptionSystem.Subscribe(entityId, info.RequiredTypes);
             subscriptions.SetAvailabilityHandler(Handler.Pool.Rent(this));
         }
 
@@ -105,13 +104,13 @@ namespace Improbable.Gdk.Subscriptions
                 injector.HandleSubscriptionsNoLongerSatisfied();
             }
 
-            public class Pool
+            public static class Pool
             {
                 private static readonly Stack<Handler> HandlerPool = new Stack<Handler>();
 
                 public static Handler Rent(RequiredSubscriptionsInjector injector)
                 {
-                    Handler handler = HandlerPool.Count == 0
+                    var handler = HandlerPool.Count == 0
                         ? new Handler()
                         : HandlerPool.Pop();
 

@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         public void AggregateSubscription_should_be_available_if_all_constraints_satisfied()
         {
             var handler = new AvailabilityHandler();
-            var aggSub = new SubscriptionAggregate(SubscriptionSystem, entityId, typeof(EntityId), typeof(World));
+            var aggSub = SubscriptionSystem.Subscribe(entityId, typeof(EntityId), typeof(World));
             aggSub.SetAvailabilityHandler(handler);
 
             Assert.IsTrue(handler.IsAvailable);
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         public void AggregateSubscription_should_not_be_available_if_not_all_constraints_satisfied()
         {
             var handler = new AvailabilityHandler();
-            var aggSub = new SubscriptionAggregate(SubscriptionSystem, entityId, typeof(Entity), typeof(World));
+            var aggSub = SubscriptionSystem.Subscribe(entityId, typeof(Entity), typeof(World));
             aggSub.SetAvailabilityHandler(handler);
 
             Assert.IsFalse(handler.IsAvailable);
