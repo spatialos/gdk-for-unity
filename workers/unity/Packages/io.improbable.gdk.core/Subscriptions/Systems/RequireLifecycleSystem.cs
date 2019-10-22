@@ -44,17 +44,20 @@ namespace Improbable.Gdk.Subscriptions
 
             componentCallbackSystem.InvokeNoLossImminent();
 
-            foreach (var behaviour in behavioursToEnable)
+            if (behavioursToEnable.Count > 0)
             {
-                if (behaviour == null)
+                foreach (var behaviour in behavioursToEnable)
                 {
-                    continue;
+                    if (behaviour == null)
+                    {
+                        continue;
+                    }
+
+                    behaviour.enabled = true;
                 }
 
-                behaviour.enabled = true;
+                behavioursToEnable.Clear();
             }
-
-            behavioursToEnable.Clear();
 
             componentCallbackSystem.InvokeLossImminent();
 

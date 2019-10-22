@@ -24,12 +24,15 @@ namespace Improbable.Gdk.Subscriptions
 
         public List<TManager> GetManagers()
         {
-            foreach (var indexToAdd in indexesToAdd)
+            if (indexesToAdd.Count > 0)
             {
-                callbackManagers.Add(indexToCallbackManager[indexToAdd]);
-            }
+                foreach (var indexToAdd in indexesToAdd)
+                {
+                    callbackManagers.Add(indexToCallbackManager[indexToAdd]);
+                }
 
-            indexesToAdd.Clear();
+                indexesToAdd.Clear();
+            }
 
             return callbackManagers;
         }
