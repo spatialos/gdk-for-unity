@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
@@ -22,7 +23,7 @@ namespace Improbable.Gdk.Subscriptions
             indexesToAdd.Add(index);
         }
 
-        public List<TManager> GetManagers()
+        private void UpdateManagers()
         {
             if (indexesToAdd.Count > 0)
             {
@@ -33,15 +34,14 @@ namespace Improbable.Gdk.Subscriptions
 
                 indexesToAdd.Clear();
             }
-
-            return callbackManagers;
         }
 
-        public void InvokeCallbacks()
+        public void InvokeEach(Action<TManager> callback)
         {
-            foreach (var manager in GetManagers())
+            UpdateManagers();
+            foreach (var manager in callbackManagers)
             {
-                manager.InvokeCallbacks();
+                callback(manager);
             }
         }
     }

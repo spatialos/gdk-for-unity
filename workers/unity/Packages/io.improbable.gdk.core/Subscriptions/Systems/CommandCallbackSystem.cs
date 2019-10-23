@@ -62,7 +62,7 @@ namespace Improbable.Gdk.Subscriptions
         internal void InvokeCallbacks()
         {
             // todo could split these out to ensure requests are done before responses
-            callbackManagers.InvokeCallbacks();
+            callbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
         }
 
         protected override void OnCreate()

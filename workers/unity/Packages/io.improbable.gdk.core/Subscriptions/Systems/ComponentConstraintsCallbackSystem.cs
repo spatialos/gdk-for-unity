@@ -103,11 +103,11 @@ namespace Improbable.Gdk.Subscriptions
 
         internal void Invoke()
         {
-            componentRemoved.InvokeCallbacks();
+            componentRemoved.InvokeEach(manager => manager.InvokeCallbacks());
             entityRemoved?.InvokeCallbacks();
             entityAdded?.InvokeCallbacks();
-            componentAdded.InvokeCallbacks();
-            authority.InvokeCallbacks();
+            componentAdded.InvokeEach(manager => manager.InvokeCallbacks());
+            authority.InvokeEach(manager => manager.InvokeCallbacks());
         }
 
         protected override void OnCreate()

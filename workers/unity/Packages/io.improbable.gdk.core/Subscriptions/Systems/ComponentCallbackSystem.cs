@@ -15,8 +15,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly GuardedCallbackManagerSet<Type, ICallbackManager> componentCallbackManagers =
             new GuardedCallbackManagerSet<Type, ICallbackManager>();
 
-        private readonly GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
-            new GuardedAuthorityCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
+        private readonly GuardedCallbackManagerSet<uint, ComponentAuthorityCallbackManager> authorityCallbackManagers =
+            new GuardedCallbackManagerSet<uint, ComponentAuthorityCallbackManager>();
 
         private readonly Dictionary<ulong, (ulong, ICallbackManager)> keyToInternalKeyAndManager =
             new Dictionary<ulong, (ulong, ICallbackManager)>();
@@ -77,13 +77,13 @@ namespace Improbable.Gdk.Subscriptions
         internal void InvokeNoLossImminent()
         {
             // todo might want to split updates and events out to ensure updates are called first
-            componentCallbackManagers.InvokeCallbacks();
-            authorityCallbackManagers.InvokeCallbacks();
+            componentCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
+            authorityCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
         }
 
         internal void InvokeLossImminent()
         {
-            authorityCallbackManagers.InvokeLossImminentCallbacks();
+            authorityCallbackManagers.InvokeEach(manager => manager.InvokeLossImminentCallbacks());
         }
 
         protected override void OnCreate()
