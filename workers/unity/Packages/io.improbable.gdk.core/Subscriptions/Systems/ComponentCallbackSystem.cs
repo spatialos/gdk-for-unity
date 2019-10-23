@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Subscriptions
         private ulong callbacksRegistered = 1;
 
         public ulong RegisterComponentUpdateCallback<T>(EntityId entityId, Action<T> callback)
-            where T : ISpatialComponentUpdate
+            where T : struct, ISpatialComponentUpdate
         {
             if (!componentCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.Subscriptions
         }
 
         public ulong RegisterComponentEventCallback<T>(EntityId entityId, Action<T> callback)
-            where T : IEvent
+            where T : struct, IEvent
         {
             if (!componentCallbackManagers.TryGetManager(typeof(T), out var manager))
             {

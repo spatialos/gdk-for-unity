@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class Callbacks<T>
+    internal class Callbacks<T> where T : struct
     {
         private readonly List<WrappedCallback> callbacks = new List<WrappedCallback>();
         private readonly HashSet<ulong> currentKeys = new HashSet<ulong>();
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacks.Remove(new WrappedCallback(key, default));
         }
 
-        public void InvokeAll(T op)
+        public void InvokeAll(in T op)
         {
             isInInvoke = true;
 
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 try
                 {
-                    callbacks[i].Invoke(op);
+                    callbacks[i].Invoke(in op);
                 }
                 catch (Exception e)
                 {
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Subscriptions
             FlushDeferredOperations();
         }
 
-        public void InvokeAllReverse(T op)
+        public void InvokeAllReverse(in T op)
         {
             isInInvoke = true;
 
@@ -135,7 +135,7 @@ namespace Improbable.Gdk.Subscriptions
                 action = callback;
             }
 
-            public void Invoke(T arg)
+            public void Invoke(in T arg)
             {
                 action(arg);
             }

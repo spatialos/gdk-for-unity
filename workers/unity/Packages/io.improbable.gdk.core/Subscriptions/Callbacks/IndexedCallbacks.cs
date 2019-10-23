@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public class IndexedCallbacks<T>
+    public class IndexedCallbacks<T> where T : struct
     {
         private readonly Dictionary<long, Callbacks<T>> indexedCallbacks = new Dictionary<long, Callbacks<T>>();
         private readonly Dictionary<ulong, long> callbackKeyToIndex = new Dictionary<ulong, long>();
@@ -32,19 +32,19 @@ namespace Improbable.Gdk.Subscriptions
             return true;
         }
 
-        public void InvokeAll(long index, T argument)
+        public void InvokeAll(long index, in T argument)
         {
             if (indexedCallbacks.TryGetValue(index, out var callbacks))
             {
-                callbacks.InvokeAll(argument);
+                callbacks.InvokeAll(in argument);
             }
         }
 
-        public void InvokeAllReverse(long index, T argument)
+        public void InvokeAllReverse(long index, in T argument)
         {
             if (indexedCallbacks.TryGetValue(index, out var callbacks))
             {
-                callbacks.InvokeAllReverse(argument);
+                callbacks.InvokeAllReverse(in argument);
             }
         }
     }

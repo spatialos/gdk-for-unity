@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Improbable.Gdk.Subscriptions
 {
     // Efficient ability to remove all callbacks for an index, but slow to remove a single callback
-    public class SingleUseIndexCallbacks<T>
+    public class SingleUseIndexCallbacks<T> where T : struct
     {
         private readonly Dictionary<long, Callbacks<T>> indexedCallbacks = new Dictionary<long, Callbacks<T>>();
 
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (indexedCallbacks.TryGetValue(index, out var callbacks))
             {
-                callbacks.InvokeAll(argument);
+                callbacks.InvokeAll(in argument);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (indexedCallbacks.TryGetValue(index, out var callbacks))
             {
-                callbacks.InvokeAllReverse(argument);
+                callbacks.InvokeAllReverse(in argument);
             }
         }
     }

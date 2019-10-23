@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentUpdateCallbackManager<T> : ICallbackManager where T : ISpatialComponentUpdate
+    internal class ComponentUpdateCallbackManager<T> : ICallbackManager where T : struct, ISpatialComponentUpdate
     {
         private readonly IndexedCallbacks<T> callbacks = new IndexedCallbacks<T>();
         private readonly ComponentUpdateSystem componentUpdateSystem;
@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
-                callbacks.InvokeAll(update.EntityId.Id, update.Update);
+                callbacks.InvokeAll(update.EntityId.Id, in update.Update);
             }
         }
 
