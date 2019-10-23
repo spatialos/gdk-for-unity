@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    // Slight adjustment to the component callbacks class
-    // todo check if this can have in params for ops (i.e. can it be used with a non readonly struct)
     public class IndexedCallbacks<T>
     {
         private readonly Dictionary<long, Callbacks<T>> indexedCallbacks = new Dictionary<long, Callbacks<T>>();

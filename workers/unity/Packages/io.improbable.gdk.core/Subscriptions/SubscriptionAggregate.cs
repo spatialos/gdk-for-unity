@@ -21,8 +21,7 @@ namespace Improbable.Gdk.Subscriptions
             this.subscriptions = subscriptions;
             for (var i = 0; i < types.Count; i++)
             {
-                var type = types[i];
-                typesToSubscriptionIndexes.Add(type, i);
+                typesToSubscriptionIndexes.Add(types[i], i);
                 subscriptions[i].SetAvailabilityHandler(Handler.Pool.Rent(this));
             }
         }

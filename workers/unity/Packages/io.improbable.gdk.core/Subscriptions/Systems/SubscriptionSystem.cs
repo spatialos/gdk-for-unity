@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (typeToSubscriptionManager.ContainsKey(type))
             {
-                throw new InvalidOperationException("Already a manager registered");
+                throw new InvalidOperationException($"Duplicate manager for {type.Name}.");
             }
 
             typeToSubscriptionManager.Add(type, manager);

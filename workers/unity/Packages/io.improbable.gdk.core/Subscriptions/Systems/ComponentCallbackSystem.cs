@@ -76,7 +76,6 @@ namespace Improbable.Gdk.Subscriptions
 
         internal void InvokeNoLossImminent()
         {
-            // todo might want to split updates and events out to ensure updates are called first
             componentCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
             authorityCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
         }
