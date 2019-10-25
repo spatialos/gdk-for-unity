@@ -16,6 +16,13 @@
 
 - Generated Worker ID's for local development are now smaller and easier to read for debugging. [#1197](https://github.com/spatialos/gdk-for-unity/pull/1197)
 
+### Internal
+
+- Cleaned up Subscriptions and Callbacks. [#1200](https://github.com/spatialos/gdk-for-unity/pull/1200)
+  - Replaced usage of `GuardedAuthorityCallbackManagerSet` with more generic `GuardedCallbackManagerSet`.
+  - Removed unused `EntitySubscriptions` class.
+  - Formatting pass on all Subscriptions and Callbacks files.
+
 ## `0.2.10` - 2019-10-14
 
 ### Breaking Changes
