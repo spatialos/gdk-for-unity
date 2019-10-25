@@ -197,7 +197,7 @@ namespace Improbable.Gdk.Subscriptions
             if (!workerSystem.TryGetEntity(entityId, out var entity))
             {
                 throw new ArgumentException(
-                    $"Can not add GameObjet components to entity {entityId}. Entity not in view");
+                    $"Can not add GameObject components to entity {entityId}. Entity not in view");
             }
 
             var componentTypes = new List<ComponentType>(componentTypesToAdd.Length);

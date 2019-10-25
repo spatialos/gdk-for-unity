@@ -23,9 +23,11 @@ namespace Improbable.Gdk.Subscriptions
     // might need to make HasValue a property though and give it an ID
     public class Subscription<T> : ISubscription
     {
-        // Want a custom event thing that gives an add and invoke option
-        public bool HasValue { get; private set; }
+        public bool HasValue => value.HasValue;
         public EntityId EntityId { get; }
+        public T Value => value.Value;
+
+        private Option<T> value;
 
         private readonly SubscriptionManagerBase manager;
 
@@ -54,21 +56,6 @@ namespace Improbable.Gdk.Subscriptions
 
         public event Action<T> OnUnavailable;
 
-        private T value;
-
-        public T Value
-        {
-            get
-            {
-                if (HasValue)
-                {
-                    return value;
-                }
-
-                throw new InvalidOperationException("Subscribed object not available");
-            }
-        }
-
         public Subscription(SubscriptionManagerBase manager, EntityId entityId)
         {
             this.manager = manager;
@@ -85,7 +72,6 @@ namespace Improbable.Gdk.Subscriptions
         public void SetAvailable(T subscribedObject)
         {
             value = subscribedObject;
-            HasValue = true;
 
             availabilityHandler?.OnAvailable();
 
@@ -100,8 +86,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void SetUnavailable()
         {
-            HasValue = false;
-            value = default(T);
+            value = Option<T>.Empty;
 
             availabilityHandler?.OnUnavailable();
 

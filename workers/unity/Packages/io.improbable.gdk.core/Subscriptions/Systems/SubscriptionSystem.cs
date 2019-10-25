@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 
@@ -12,14 +11,22 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<Type, SubscriptionManagerBase> typeToSubscriptionManager =
             new Dictionary<Type, SubscriptionManagerBase>();
 
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+            Enabled = false;
+
+            AutoRegisterManagers();
+        }
+
         public void RegisterSubscriptionManager(Type type, SubscriptionManagerBase manager)
         {
             if (typeToSubscriptionManager.ContainsKey(type))
             {
-                throw new InvalidOperationException("Already a manager registered");
+                throw new InvalidOperationException($"Duplicate manager for {type.Name}.");
             }
 
-            typeToSubscriptionManager[type] = manager;
+            typeToSubscriptionManager.Add(type, manager);
         }
 
         public Subscription<T> Subscribe<T>(EntityId entity)
@@ -42,12 +49,15 @@ namespace Improbable.Gdk.Subscriptions
             return manager.SubscribeTypeErased(entity);
         }
 
-        protected override void OnCreate()
+        public SubscriptionAggregate Subscribe(EntityId entity, params Type[] types)
         {
-            base.OnCreate();
-            Enabled = false;
+            var subscriptions = new ISubscription[types.Length];
+            for (var i = 0; i < types.Length; i++)
+            {
+                subscriptions[i] = Subscribe(entity, types[i]);
+            }
 
-            AutoRegisterManagers();
+            return new SubscriptionAggregate(types, subscriptions);
         }
 
         protected override void OnUpdate()

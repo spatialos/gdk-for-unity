@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             RequiredTypes = new Type[RequiredFields.Count];
-            for (int i = 0; i < RequiredFields.Count; ++i)
+            for (var i = 0; i < RequiredFields.Count; ++i)
             {
                 RequiredTypes[i] = RequiredFields[i].FieldType;
             }

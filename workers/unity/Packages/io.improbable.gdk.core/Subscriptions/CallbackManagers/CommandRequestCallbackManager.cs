@@ -1,28 +1,29 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentEventCallbackManager<T> : ICallbackManager where T : IEvent
+    public class CommandRequestCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandRequest
     {
         private readonly IndexedCallbacks<T> callbacks = new IndexedCallbacks<T>();
-        private readonly ComponentUpdateSystem componentUpdateSystem;
+        private readonly CommandSystem commandSystem;
 
         private ulong nextCallbackId = 1;
 
-        public ComponentEventCallbackManager(World world)
+        public CommandRequestCallbackManager(World world)
         {
-            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
+            commandSystem = world.GetExistingSystem<CommandSystem>();
         }
 
         public void InvokeCallbacks()
         {
-            var updates = componentUpdateSystem.GetEventsReceived<T>();
-            for (int i = 0; i < updates.Count; ++i)
+            var requests = commandSystem.GetRequests<T>();
+            for (var i = 0; i < requests.Count; ++i)
             {
-                ref readonly var update = ref updates[i];
-                callbacks.InvokeAll(update.EntityId.Id, update.Event);
+                ref readonly var request = ref requests[i];
+                callbacks.InvokeAll(request.GetEntityId().Id, request);
             }
         }
 

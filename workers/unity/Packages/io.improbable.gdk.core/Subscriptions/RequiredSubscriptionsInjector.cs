@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -13,8 +12,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly RequiredSubscriptionsInfo info;
         private readonly object target;
 
-        private Action onEnable;
-        private Action onDisable;
+        private readonly Action onEnable;
+        private readonly Action onDisable;
 
         // todo should either special case monobehaviours or not use callbacks
         // for non monobehaviours we could use functors
@@ -33,7 +32,7 @@ namespace Improbable.Gdk.Subscriptions
                 return;
             }
 
-            subscriptions = new SubscriptionAggregate(subscriptionSystem, entityId, info.RequiredTypes);
+            subscriptions = subscriptionSystem.Subscribe(entityId, info.RequiredTypes);
             subscriptions.SetAvailabilityHandler(Handler.Pool.Rent(this));
         }
 
@@ -69,7 +68,6 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var field in info.RequiredFields)
             {
-                // todo should really do this as they become available rather than all at once
                 field.SetValue(target, subscriptions.GetErasedValue(field.FieldType));
             }
 
@@ -105,13 +103,13 @@ namespace Improbable.Gdk.Subscriptions
                 injector.HandleSubscriptionsNoLongerSatisfied();
             }
 
-            public class Pool
+            public static class Pool
             {
                 private static readonly Stack<Handler> HandlerPool = new Stack<Handler>();
 
                 public static Handler Rent(RequiredSubscriptionsInjector injector)
                 {
-                    Handler handler = HandlerPool.Count == 0
+                    var handler = HandlerPool.Count == 0
                         ? new Handler()
                         : HandlerPool.Pop();
 

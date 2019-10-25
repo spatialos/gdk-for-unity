@@ -1,11 +1,10 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentAddedCallbackManager : ICallbackManager
+    internal class ComponentRemovedCallbackManager : ICallbackManager
     {
         private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
         private readonly uint componentId;
@@ -14,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private ulong nextCallbackId = 1;
 
-        public ComponentAddedCallbackManager(uint componentId, World world)
+        public ComponentRemovedCallbackManager(uint componentId, World world)
         {
             this.componentId = componentId;
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
@@ -22,10 +21,11 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeCallbacks()
         {
-            var entities = componentUpdateSystem.GetComponentsAdded(componentId);
-            for (int i = 0; i < entities.Count; ++i)
+            // todo like entity stuff this should also be temporarily removed components
+            var entities = componentUpdateSystem.GetComponentsRemoved(componentId);
+            foreach (var entityId in entities)
             {
-                callbacks.InvokeAll(entities[i]);
+                callbacks.InvokeAllReverse(entityId);
             }
         }
 

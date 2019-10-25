@@ -8,9 +8,7 @@ namespace Improbable.Gdk.Core
     [AutoRegisterSubscriptionManager]
     public class WorkerFlagSubscriptionManager : SubscriptionManager<WorkerFlagReader>
     {
-        private World world;
-
-        private HashSet<Subscription<WorkerFlagReader>> readerSubscriptions = new HashSet<Subscription<WorkerFlagReader>>();
+        private readonly World world;
 
         public WorkerFlagSubscriptionManager(World world)
         {
@@ -23,7 +21,6 @@ namespace Improbable.Gdk.Core
 
             readerSubscription.Value.IsValid = false;
             readerSubscription.Value.RemoveAllCallbacks();
-            readerSubscriptions.Remove(readerSubscription);
         }
 
         public override void ResetValue(ISubscription subscription)
@@ -36,8 +33,6 @@ namespace Improbable.Gdk.Core
         public override Subscription<WorkerFlagReader> Subscribe(EntityId entityId)
         {
             var subscription = new Subscription<WorkerFlagReader>(this, new EntityId(0));
-            readerSubscriptions.Add(subscription);
-
             subscription.SetAvailable(new WorkerFlagReader(world));
 
             return subscription;

@@ -5,15 +5,15 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class AuthorityConstraintCallbackManager : IAuthorityCallbackManager
+    internal class ComponentAuthorityCallbackManager : IAuthorityCallbackManager
     {
-        private readonly Callbacks<AuthorityChangeReceived> callbacks = new Callbacks<AuthorityChangeReceived>();
+        private readonly IndexedCallbacks<Authority> callbacks = new IndexedCallbacks<Authority>();
         private readonly uint componentId;
         private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private ulong nextCallbackId = 1;
 
-        public AuthorityConstraintCallbackManager(uint componentId, World world)
+        public ComponentAuthorityCallbackManager(uint componentId, World world)
         {
             this.componentId = componentId;
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
@@ -22,15 +22,16 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
-            for (int i = 0; i < changes.Count; ++i)
+            for (var i = 0; i < changes.Count; ++i)
             {
-                if (changes[i].Authority == Authority.Authoritative)
+                switch (changes[i].Authority)
                 {
-                    callbacks.InvokeAll(changes[i]);
-                }
-                else if (changes[i].Authority == Authority.NotAuthoritative)
-                {
-                    callbacks.InvokeAllReverse(changes[i]);
+                    case Authority.Authoritative:
+                        callbacks.InvokeAll(changes[i].EntityId.Id, changes[i].Authority);
+                        break;
+                    case Authority.NotAuthoritative:
+                        callbacks.InvokeAllReverse(changes[i].EntityId.Id, changes[i].Authority);
+                        break;
                 }
             }
         }
@@ -38,18 +39,18 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeLossImminentCallbacks()
         {
             var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
-            for (int i = 0; i < changes.Count; ++i)
+            for (var i = 0; i < changes.Count; ++i)
             {
                 if (changes[i].Authority == Authority.AuthorityLossImminent)
                 {
-                    callbacks.InvokeAllReverse(changes[i]);
+                    callbacks.InvokeAllReverse(changes[i].EntityId.Id, changes[i].Authority);
                 }
             }
         }
 
-        public ulong RegisterCallback(Action<AuthorityChangeReceived> callback)
+        public ulong RegisterCallback(EntityId entityId, Action<Authority> callback)
         {
-            callbacks.Add(nextCallbackId, callback);
+            callbacks.Add(entityId.Id, nextCallbackId, callback);
             return nextCallbackId++;
         }
 

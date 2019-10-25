@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentRemovedCallbackManager : ICallbackManager
+    internal class ComponentAddedCallbackManager : ICallbackManager
     {
         private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
         private readonly uint componentId;
@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private ulong nextCallbackId = 1;
 
-        public ComponentRemovedCallbackManager(uint componentId, World world)
+        public ComponentAddedCallbackManager(uint componentId, World world)
         {
             this.componentId = componentId;
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
@@ -21,11 +21,10 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeCallbacks()
         {
-            // todo like entity stuff this should also be temporarily removed components
-            var entities = componentUpdateSystem.GetComponentsRemoved(componentId);
-            for (int i = 0; i < entities.Count; ++i)
+            var entities = componentUpdateSystem.GetComponentsAdded(componentId);
+            foreach (var entityId in entities)
             {
-                callbacks.InvokeAllReverse(entities[i]);
+                callbacks.InvokeAll(entityId);
             }
         }
 

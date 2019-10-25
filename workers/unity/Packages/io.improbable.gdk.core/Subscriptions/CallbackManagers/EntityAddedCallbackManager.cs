@@ -19,9 +19,9 @@ namespace Improbable.Gdk.Subscriptions
         public void InvokeCallbacks()
         {
             var entities = entitySystem.GetEntitiesAdded();
-            for (int i = 0; i < entities.Count; ++i)
+            foreach (var entityId in entities)
             {
-                callbacks.InvokeAll(entities[i]);
+                callbacks.InvokeAll(entityId);
             }
         }
 

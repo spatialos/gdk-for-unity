@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Improbable.Gdk.Core;
+using UnityEngine.Assertions;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -10,28 +10,26 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<Type, int> typesToSubscriptionIndexes = new Dictionary<Type, int>();
 
         private ISubscriptionAvailabilityHandler availabilityHandler;
-
         private int subscriptionsSatisfied;
 
-        public SubscriptionAggregate(SubscriptionSystem subscriptionSystem, EntityId entityId,
-            params Type[] typesToSubscribeTo)
+        private bool IsSatisfied => subscriptionsSatisfied == subscriptions.Length;
+
+        public SubscriptionAggregate(IReadOnlyList<Type> types, ISubscription[] subscriptions)
         {
-            subscriptions = new ISubscription[typesToSubscribeTo.Length];
+            Assert.AreEqual(types.Count, subscriptions.Length);
 
-            for (int i = 0; i < typesToSubscribeTo.Length; ++i)
+            this.subscriptions = subscriptions;
+            for (var i = 0; i < types.Count; i++)
             {
-                var subscription = subscriptionSystem.Subscribe(entityId, typesToSubscribeTo[i]);
-                typesToSubscriptionIndexes.Add(typesToSubscribeTo[i], i);
-                subscriptions[i] = subscription;
-
-                subscription.SetAvailabilityHandler(Handler.Pool.Rent(this));
+                typesToSubscriptionIndexes.Add(types[i], i);
+                subscriptions[i].SetAvailabilityHandler(Handler.Pool.Rent(this));
             }
         }
 
         public void SetAvailabilityHandler(ISubscriptionAvailabilityHandler handler)
         {
             availabilityHandler = handler;
-            if (subscriptionsSatisfied == subscriptions.Length)
+            if (IsSatisfied)
             {
                 availabilityHandler?.OnAvailable();
             }
@@ -44,34 +42,36 @@ namespace Improbable.Gdk.Subscriptions
 
         public T GetValue<T>()
         {
-            if (subscriptionsSatisfied != subscriptions.Length)
+            if (!IsSatisfied)
             {
                 throw new InvalidOperationException("Subscriptions not all satisfied");
             }
 
-            if (!typesToSubscriptionIndexes.TryGetValue(typeof(T), out var subscriptionIndex))
-            {
-                throw new InvalidOperationException("No subscription with that type");
-            }
+            var subscriptionIndex = GetTypeIndex(typeof(T));
+            var subscription = (Subscription<T>) subscriptions[subscriptionIndex];
 
-            var sub = (Subscription<T>) subscriptions[subscriptionIndex];
-
-            return sub.Value;
+            return subscription.Value;
         }
 
         public object GetErasedValue(Type type)
         {
-            if (subscriptionsSatisfied != subscriptions.Length)
+            if (!IsSatisfied)
             {
                 throw new InvalidOperationException("Subscriptions not all satisfied");
             }
 
+            var subscriptionIndex = GetTypeIndex(type);
+            return subscriptions[subscriptionIndex].GetErasedValue();
+        }
+
+        private int GetTypeIndex(Type type)
+        {
             if (!typesToSubscriptionIndexes.TryGetValue(type, out var subscriptionIndex))
             {
                 throw new InvalidOperationException("No subscription with that type");
             }
 
-            return subscriptions[subscriptionIndex].GetErasedValue();
+            return subscriptionIndex;
         }
 
         public void Cancel()
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private void HandleSubscriptionUnavailable()
         {
-            if (subscriptionsSatisfied == subscriptions.Length)
+            if (IsSatisfied)
             {
                 foreach (var sub in subscriptions)
                 {
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Subscriptions
         private void HandleSubscriptionAvailable()
         {
             ++subscriptionsSatisfied;
-            if (subscriptionsSatisfied == subscriptions.Length)
+            if (IsSatisfied)
             {
                 availabilityHandler?.OnAvailable();
             }
@@ -121,13 +121,13 @@ namespace Improbable.Gdk.Subscriptions
                 aggregate?.HandleSubscriptionUnavailable();
             }
 
-            public class Pool
+            public static class Pool
             {
                 private static readonly Stack<Handler> HandlerPool = new Stack<Handler>();
 
                 public static Handler Rent(SubscriptionAggregate aggregate)
                 {
-                    Handler handler = HandlerPool.Count == 0
+                    var handler = HandlerPool.Count == 0
                         ? new Handler()
                         : HandlerPool.Pop();
 
