@@ -19,22 +19,6 @@ namespace Improbable.Gdk.Subscriptions
             AutoRegisterManagers();
         }
 
-        protected override void OnUpdate()
-        {
-        }
-
-        private void AutoRegisterManagers()
-        {
-            var types = ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
-                typeof(AutoRegisterSubscriptionManagerAttribute));
-
-            foreach (var type in types)
-            {
-                var instance = (SubscriptionManagerBase) Activator.CreateInstance(type, World);
-                RegisterSubscriptionManager(instance.SubscriptionType, instance);
-            }
-        }
-
         public void RegisterSubscriptionManager(Type type, SubscriptionManagerBase manager)
         {
             if (typeToSubscriptionManager.ContainsKey(type))
@@ -74,6 +58,22 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             return new SubscriptionAggregate(types, subscriptions);
+        }
+
+        protected override void OnUpdate()
+        {
+        }
+
+        private void AutoRegisterManagers()
+        {
+            var types = ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
+                typeof(AutoRegisterSubscriptionManagerAttribute));
+
+            foreach (var type in types)
+            {
+                var instance = (SubscriptionManagerBase) Activator.CreateInstance(type, World);
+                RegisterSubscriptionManager(instance.SubscriptionType, instance);
+            }
         }
     }
 }

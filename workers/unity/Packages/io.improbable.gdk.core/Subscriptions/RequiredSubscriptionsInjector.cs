@@ -68,7 +68,6 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var field in info.RequiredFields)
             {
-                // todo should really do this as they become available rather than all at once
                 field.SetValue(target, subscriptions.GetErasedValue(field.FieldType));
             }
 

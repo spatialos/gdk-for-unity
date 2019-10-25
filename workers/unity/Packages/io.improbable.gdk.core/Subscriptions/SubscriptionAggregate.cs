@@ -42,6 +42,11 @@ namespace Improbable.Gdk.Subscriptions
 
         public T GetValue<T>()
         {
+            if (!IsSatisfied)
+            {
+                throw new InvalidOperationException("Subscriptions not all satisfied");
+            }
+
             var subscriptionIndex = GetTypeIndex(typeof(T));
             var subscription = (Subscription<T>) subscriptions[subscriptionIndex];
 
@@ -50,17 +55,17 @@ namespace Improbable.Gdk.Subscriptions
 
         public object GetErasedValue(Type type)
         {
+            if (!IsSatisfied)
+            {
+                throw new InvalidOperationException("Subscriptions not all satisfied");
+            }
+
             var subscriptionIndex = GetTypeIndex(type);
             return subscriptions[subscriptionIndex].GetErasedValue();
         }
 
         private int GetTypeIndex(Type type)
         {
-            if (!IsSatisfied)
-            {
-                throw new InvalidOperationException("Subscriptions not all satisfied");
-            }
-
             if (!typesToSubscriptionIndexes.TryGetValue(type, out var subscriptionIndex))
             {
                 throw new InvalidOperationException("No subscription with that type");

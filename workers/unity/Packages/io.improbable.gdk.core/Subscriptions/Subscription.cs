@@ -23,7 +23,6 @@ namespace Improbable.Gdk.Subscriptions
     // might need to make HasValue a property though and give it an ID
     public class Subscription<T> : ISubscription
     {
-        // Want a custom event thing that gives an add and invoke option
         public bool HasValue => value.HasValue;
         public EntityId EntityId { get; }
         public T Value => value.Value;
