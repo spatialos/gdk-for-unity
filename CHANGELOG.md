@@ -22,6 +22,7 @@
   - Replaced usage of `GuardedAuthorityCallbackManagerSet` with more generic `GuardedCallbackManagerSet`.
   - Removed unused `EntitySubscriptions` class.
   - Formatting pass on all Subscriptions and Callbacks files.
+- Moved the CompressedQuaternion and FixedPointVector partials to the transform synchronization package. [#1201](https://github.com/spatialos/gdk-for-unity/pull/1201)
 
 ## `0.2.10` - 2019-10-14
 
