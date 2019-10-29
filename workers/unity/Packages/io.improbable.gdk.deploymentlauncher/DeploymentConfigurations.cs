@@ -409,9 +409,9 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private bool ValidateTag(string tag, out string message)
         {
-            if (!Regex.IsMatch(tag, "^[A-Za-z0-9][A-Za-z0-9_]{2,32}$"))
+            if (!Regex.IsMatch(tag, "^[A-Za-z0-9][A-Za-z0-9_]{1,31}$"))
             {
-                message = $"Tag \"{tag}\" invalid. Must conform to the regex: ^[A-Za-z0-9][A-Za-z0-9_]{{2,32}}$";
+                message = $"Tag \"{tag}\" invalid. Must conform to the regex: ^[A-Za-z0-9][A-Za-z0-9_]{{1,31}}$";
                 return false;
             }
 
