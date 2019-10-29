@@ -18,7 +18,7 @@
 
 ### Fixed
 
-- Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202]
+- Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202](https://github.com/spatialos/gdk-for-unity/pull/1202)
 
 ### Internal
 
