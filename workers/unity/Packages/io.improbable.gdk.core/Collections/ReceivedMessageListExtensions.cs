@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core
             var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
             if (range.Count > 1)
             {
-                range = list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
+                return list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
             }
 
             return range;
@@ -88,7 +88,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            return (-1, 0);
+            return default;
         }
 
         // binary search for the last update for given entity ID with bounds
@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            return (-1, 0);
+            return default;
         }
     }
 }

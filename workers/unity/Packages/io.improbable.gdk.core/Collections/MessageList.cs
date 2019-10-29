@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 namespace Improbable.Gdk.Core
 {
@@ -36,7 +37,11 @@ namespace Improbable.Gdk.Core
 
         public MessagesSpan<T> Slice(int index, int count)
         {
-            return new MessagesSpan<T>(this, index, count);
+            Assert.IsTrue(index >= 0);
+            Assert.IsTrue(index + count <= Count);
+            return count == 0
+                ? MessagesSpan<T>.Empty()
+                : new MessagesSpan<T>(this, index, count);
         }
 
         public void Add(in T item)
