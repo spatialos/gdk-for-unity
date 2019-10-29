@@ -24,10 +24,10 @@ namespace <#= qualifiedNamespace #>
             , IDiffCommandRequestStorage<<#= receivedRequestType #>>
             , IDiffCommandResponseStorage<<#= receivedResponseType #>>
         {
-            private MessageList<<#= receivedRequestType #>> requestStorage =
+            private readonly MessageList<<#= receivedRequestType #>> requestStorage =
                 new MessageList<<#= receivedRequestType #>>();
 
-            private MessageList<<#= receivedResponseType #>> responseStorage =
+            private readonly MessageList<<#= receivedResponseType #>> responseStorage =
                 new MessageList<<#= receivedResponseType #>>();
 
             private readonly RequestComparer requestComparer = new RequestComparer();
@@ -79,12 +79,12 @@ namespace <#= qualifiedNamespace #>
                 responseStorage.Add(response);
             }
 
-            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests()
+            public MessagesSpan<<#= receivedRequestType #>> GetRequests()
             {
-                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage);
+                return requestStorage.Slice();
             }
 
-            public ReceivedMessagesSpan<<#= receivedRequestType #>> GetRequests(EntityId targetEntityId)
+            public MessagesSpan<<#= receivedRequestType #>> GetRequests(EntityId targetEntityId)
             {
                 if (!requestsSorted)
                 {
@@ -93,16 +93,15 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
-
-                return new ReceivedMessagesSpan<<#= receivedRequestType #>>(requestStorage, firstIndex, count);
+                return requestStorage.Slice(firstIndex, count);
             }
 
-            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponses()
+            public MessagesSpan<<#= receivedResponseType #>> GetResponses()
             {
-                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage);
+                return responseStorage.Slice();
             }
 
-            public ReceivedMessagesSpan<<#= receivedResponseType #>> GetResponse(long requestId)
+            public MessagesSpan<<#= receivedResponseType #>> GetResponse(long requestId)
             {
                 if (!responsesSorted)
                 {
@@ -111,12 +110,9 @@ namespace <#= qualifiedNamespace #>
                 }
 
                 var responseIndex = responseStorage.GetResponseIndex(requestId);
-                if (responseIndex < 0)
-                {
-                    return ReceivedMessagesSpan<<#= receivedResponseType #>>.Empty();
-                }
-
-                return new ReceivedMessagesSpan<<#= receivedResponseType #>>(responseStorage, responseIndex, 1);
+                return !responseIndex.HasValue
+                    ? MessagesSpan<<#= receivedResponseType #>>.Empty()
+                    : responseStorage.Slice(responseIndex.Value, 1);
             }
 
             private class RequestComparer : IComparer<<#= receivedRequestType #>>
@@ -146,10 +142,10 @@ namespace <#= qualifiedNamespace #>
             , ICommandRequestSendStorage<<#= requestType #>>
             , ICommandResponseSendStorage<<#= responseType #>>
         {
-            private MessageList<CommandRequestWithMetaData<<#= requestType #>>> requestStorage =
+            private readonly MessageList<CommandRequestWithMetaData<<#= requestType #>>> requestStorage =
                 new MessageList<CommandRequestWithMetaData<<#= requestType #>>>();
 
-            private MessageList<<#= responseType #>> responseStorage =
+            private readonly MessageList<<#= responseType #>> responseStorage =
                 new MessageList<<#= responseType #>>();
 
             public uint GetComponentId()

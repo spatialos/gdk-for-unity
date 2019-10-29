@@ -60,31 +60,31 @@ namespace Improbable.Gdk.Core
             entityQueryResponses.Add(response);
         }
 
-        ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
+        MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponses()
         {
-            return new ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>(createEntityResponses);
+            return createEntityResponses.Slice();
         }
 
-        ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
+        MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponses()
         {
-            return new ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>(deleteEntityResponses);
+            return deleteEntityResponses.Slice();
         }
 
-        ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
+        MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponses()
         {
-            return new ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>(reserveEntityIdsResponses);
+            return reserveEntityIdsResponses.Slice();
         }
 
-        ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
+        MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponses()
         {
-            return new ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>(entityQueryResponses);
+            return entityQueryResponses.Slice();
         }
 
-        ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
+        MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(long requestId)
         {
             if (!createEntitySorted)
@@ -94,16 +94,12 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = createEntityResponses.GetResponseIndex(requestId);
-            if (responseIndex < 0)
-            {
-                return ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty();
-            }
-
-            return new ReceivedMessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>(createEntityResponses,
-                responseIndex, 1);
+            return !responseIndex.HasValue
+                ? MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty()
+                : createEntityResponses.Slice(responseIndex.Value, 1);
         }
 
-        ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
+        MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(long requestId)
         {
             if (!deleteEntitySorted)
@@ -113,16 +109,12 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = deleteEntityResponses.GetResponseIndex(requestId);
-            if (responseIndex < 0)
-            {
-                return ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty();
-            }
-
-            return new ReceivedMessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>(deleteEntityResponses,
-                responseIndex, 1);
+            return !responseIndex.HasValue
+                ? MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty()
+                : deleteEntityResponses.Slice(responseIndex.Value, 1);
         }
 
-        ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
+        MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(long requestId)
         {
             if (!reserveEntityIdsSorted)
@@ -132,16 +124,12 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = reserveEntityIdsResponses.GetResponseIndex(requestId);
-            if (responseIndex < 0)
-            {
-                return ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty();
-            }
-
-            return new ReceivedMessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>(reserveEntityIdsResponses,
-                responseIndex, 1);
+            return !responseIndex.HasValue
+                ? MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty()
+                : reserveEntityIdsResponses.Slice(responseIndex.Value, 1);
         }
 
-        ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
+        MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(long requestId)
         {
             if (!entityQueriesSorted)
@@ -151,13 +139,9 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = entityQueryResponses.GetResponseIndex(requestId);
-            if (responseIndex < 0)
-            {
-                return ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty();
-            }
-
-            return new ReceivedMessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>(entityQueryResponses,
-                responseIndex, 1);
+            return !responseIndex.HasValue
+                ? MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty()
+                : entityQueryResponses.Slice(responseIndex.Value, 1);
         }
 
         private class Comparer : IComparer<WorldCommands.CreateEntity.ReceivedResponse>,
