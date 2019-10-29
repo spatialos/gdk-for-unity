@@ -1,7 +1,7 @@
 {
     "name": "unity_gdk",
     "project_version": "0.0.1",
-    "sdk_version": "14.0.2",
+    "sdk_version": "14.1.0",
     "dependencies": [
         {"name": "standard_library", "version": "14.0.2"}
     ]
