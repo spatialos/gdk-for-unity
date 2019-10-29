@@ -1,6 +1,7 @@
 using System.Linq;
 using Improbable.Gdk.DeploymentLauncher.EditmodeTests.Utils;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
 {
@@ -10,7 +11,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [Test]
         public void Valid_config_gives_no_errors()
         {
-            Assert.IsNull(DeploymentConfigTestUtils.GetValidDeploymentConfig().GetErrors());
+            Assert.IsFalse(DeploymentConfigTestUtils.GetValidDeploymentConfig().GetErrors().Any());
         }
 
         [TestCase("gdk_test_assembly")]
@@ -19,7 +20,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             var config = DeploymentConfigTestUtils.GetValidDeploymentConfig();
             config.AssemblyName = assemblyName;
 
-            Assert.IsNull(config.GetErrors());
+            Assert.IsFalse(config.GetErrors().Any());
         }
 
         [TestCase(null, DeploymentConfigErrorTypes.NullOrEmpty)]
@@ -31,6 +32,11 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             var config = DeploymentConfigTestUtils.GetValidDeploymentConfig();
             config.AssemblyName = assemblyName;
             var errors = config.GetErrors().DeplErrors.Values.ToArray();
+
+            foreach (var error in errors)
+            {
+                Debug.Log(error);
+            }
 
             Assert.AreEqual(errors.Length, 1);
             Assert.IsTrue(errors[0].Contains("Assembly Name"));

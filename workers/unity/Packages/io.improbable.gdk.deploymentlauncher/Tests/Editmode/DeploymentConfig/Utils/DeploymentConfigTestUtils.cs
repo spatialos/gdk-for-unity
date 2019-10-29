@@ -37,7 +37,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests.Utils
                 WorkerTypeId = 0,
 
                 // base dpl config details
-                Name = ValidDeploymentName,
+                Name = $"{ValidDeploymentName}_simplayers",
                 Region = ValidRegionCode,
                 Tags = ValidTags,
                 LaunchJson = ValidLaunchJson,
