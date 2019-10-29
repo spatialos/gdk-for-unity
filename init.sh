@@ -8,7 +8,7 @@ SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
 TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
 
-SDK_VERSION="$(cat "${SDK_PATH}"/package.json | jq -r '.version')"
+SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
 SPOT_VERSION="$(cat "${SDK_PATH}"/.spot.version)"
 
 update_package() {
