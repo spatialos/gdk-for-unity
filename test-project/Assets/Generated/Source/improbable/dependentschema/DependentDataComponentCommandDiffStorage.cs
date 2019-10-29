@@ -101,9 +101,9 @@ namespace Improbable.DependentSchema
                 }
 
                 var responseIndex = responseStorage.GetResponseIndex(requestId);
-                return !responseIndex.HasValue
-                    ? MessagesSpan<BarCommand.ReceivedResponse>.Empty()
-                    : responseStorage.Slice(responseIndex.Value, 1);
+                return responseIndex.HasValue
+                    ? responseStorage.Slice(responseIndex.Value, 1)
+                    : MessagesSpan<BarCommand.ReceivedResponse>.Empty();
             }
 
             private class RequestComparer : IComparer<BarCommand.ReceivedRequest>
