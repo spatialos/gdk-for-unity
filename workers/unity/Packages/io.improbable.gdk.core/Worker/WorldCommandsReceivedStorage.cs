@@ -94,9 +94,9 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = createEntityResponses.GetResponseIndex(requestId);
-            return !responseIndex.HasValue
-                ? MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty()
-                : createEntityResponses.Slice(responseIndex.Value, 1);
+            return responseIndex.HasValue
+                ? createEntityResponses.Slice(responseIndex.Value, 1)
+                : MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty();
         }
 
         MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
@@ -109,9 +109,9 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = deleteEntityResponses.GetResponseIndex(requestId);
-            return !responseIndex.HasValue
-                ? MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty()
-                : deleteEntityResponses.Slice(responseIndex.Value, 1);
+            return responseIndex.HasValue
+                ? deleteEntityResponses.Slice(responseIndex.Value, 1)
+                : MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty();
         }
 
         MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
@@ -124,9 +124,9 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = reserveEntityIdsResponses.GetResponseIndex(requestId);
-            return !responseIndex.HasValue
-                ? MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty()
-                : reserveEntityIdsResponses.Slice(responseIndex.Value, 1);
+            return responseIndex.HasValue
+                ? reserveEntityIdsResponses.Slice(responseIndex.Value, 1)
+                : MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty();
         }
 
         MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
@@ -139,9 +139,9 @@ namespace Improbable.Gdk.Core
             }
 
             var responseIndex = entityQueryResponses.GetResponseIndex(requestId);
-            return !responseIndex.HasValue
-                ? MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty()
-                : entityQueryResponses.Slice(responseIndex.Value, 1);
+            return responseIndex.HasValue
+                ? entityQueryResponses.Slice(responseIndex.Value, 1)
+                : MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty();
         }
 
         private class Comparer : IComparer<WorldCommands.CreateEntity.ReceivedResponse>,
