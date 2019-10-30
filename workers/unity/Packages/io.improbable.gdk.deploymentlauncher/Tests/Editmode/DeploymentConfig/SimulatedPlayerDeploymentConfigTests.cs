@@ -8,13 +8,13 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
     public class SimulatedPlayerDeploymentConfigTests
     {
         [Test]
-        public void Valid_config_gives_no_errors()
+        public void SimulatedPlayerDeploymentConfig_does_not_throw_error_when_valid()
         {
             Assert.IsEmpty(DeploymentConfigTestUtils.GetValidSimPlayerConfig().GetErrors());
         }
 
         [TestCase("test_worker_flag")]
-        public void Valid_flag_prefix_test(string flagPrefix)
+        public void SimulatedPlayerDeploymentConfig_does_not_throw_error_for_valid_flag_prefix(string flagPrefix)
         {
             var config = DeploymentConfigTestUtils.GetValidSimPlayerConfig();
             config.FlagPrefix = flagPrefix;
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("not.good.", DeploymentConfigErrorTypes.FullStops)]
         [TestCase("ha ha ha", DeploymentConfigErrorTypes.Spaces)]
-        public void Invalid_flag_prefix_test(string flagPrefix, string errorType)
+        public void SimulatedPlayerDeploymentConfig_throws_error_for_invalid_flag_prefix(string flagPrefix, string errorType)
         {
             var config = DeploymentConfigTestUtils.GetValidSimPlayerConfig();
             config.FlagPrefix = flagPrefix;
@@ -38,7 +38,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         }
 
         [TestCase("TestSimPlayerCoordinator")]
-        public void Valid_worker_type_test(string workerType)
+        public void SimulatedPlayerDeploymentConfig_does_not_throw_error_for_valid_worker_type(string workerType)
         {
             var config = DeploymentConfigTestUtils.GetValidSimPlayerConfig();
             config.WorkerType = workerType;
@@ -48,7 +48,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
 
         [TestCase(null)]
         [TestCase("")]
-        public void Invalid_worker_type_test(string workerType)
+        public void SimulatedPlayerDeploymentConfig_throws_error_for_invalid_worker_type(string workerType)
         {
             var config = DeploymentConfigTestUtils.GetValidSimPlayerConfig();
             config.WorkerType = workerType;

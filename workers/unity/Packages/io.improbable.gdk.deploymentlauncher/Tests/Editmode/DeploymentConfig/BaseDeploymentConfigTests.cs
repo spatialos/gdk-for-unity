@@ -8,14 +8,14 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
     public class BaseDeploymentConfigTests
     {
         [Test]
-        public void Valid_config_gives_no_errors()
+        public void BaseDeploymentConfig_does_not_throw_error_when_valid()
         {
             Assert.IsEmpty(DeploymentConfigTestUtils.GetValidBaseConfig().GetErrors());
         }
 
         [TestCase("demo_dpl_final")]
         [TestCase("demo_dpl_final2")]
-        public void Valid_deployment_name_test(string deploymentName)
+        public void BaseDeploymentConfig_does_not_throw_error_for_valid_deployment_name(string deploymentName)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.Name = deploymentName;
@@ -26,7 +26,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase(null, DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("#badname!", DeploymentConfigErrorTypes.Invalid)]
-        public void Invalid_deployment_name_test(string invalidName, string errorType)
+        public void BaseDeploymentConfig_throws_error_for_invalid_deployment_name(string invalidName, string errorType)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.Name = invalidName;
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
 
         [TestCase("default_launch.json")]
         [TestCase("cloud_launch.json")]
-        public void Valid_launch_json_path_test(string launchJson)
+        public void BaseDeploymentConfig_does_not_throw_error_for_valid_launch_json_path(string launchJson)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.LaunchJson = launchJson;
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase(null, DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("this/launch/config/does/not/exist.json", DeploymentConfigErrorTypes.NotFound)]
-        public void Invalid_launch_json_test(string launchJson, string errorType)
+        public void BaseDeploymentConfig_throws_error_for_invalid_launch_json_path(string launchJson, string errorType)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.LaunchJson = launchJson;
@@ -64,7 +64,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase(null)]
         [TestCase("")]
         [TestCase("snapshots/default.snapshot")]
-        public void Valid_snapshot_path_test(string snapshotPath)
+        public void BaseDeploymentConfig_does_not_throw_error_for_valid_snapshot_path(string snapshotPath)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.SnapshotPath = snapshotPath;
@@ -73,7 +73,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         }
 
         [TestCase("this/snapshot/path/does/not/exist.snapshot")]
-        public void Invalid_snapshot_path_test(string snapshotPath)
+        public void BaseDeploymentConfig_throws_error_for_invalid_snapshot_path(string snapshotPath)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.SnapshotPath = snapshotPath;
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
 
         [TestCase("dev_login")]
         [TestCase("quinquagintaquadringentillionths")]
-        public void Valid_tag_test(string validTag)
+        public void BaseDeploymentConfig_does_not_throw_error_for_valid_tag(string validTag)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.Tags.Add(validTag);
@@ -99,7 +99,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase("gg")]
         [TestCase("quinquagintaquadringentillionthss")]
         [TestCase("supercalifragilisticexpialidocious")]
-        public void Invalid_tag_test(string invalidTag)
+        public void BaseDeploymentConfig_throws_error_for_invalid_tag(string invalidTag)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.Tags.Add(invalidTag);
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         }
 
         [Test]
-        public void N_invalid_tags_gives_n_errors()
+        public void BaseDeploymentConfig_throws_N_errors_for_N_invalid_tags()
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
 

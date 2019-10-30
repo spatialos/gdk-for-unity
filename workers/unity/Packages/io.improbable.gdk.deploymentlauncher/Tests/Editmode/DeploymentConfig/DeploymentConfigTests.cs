@@ -9,13 +9,13 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
     public class DeploymentConfigTests
     {
         [Test]
-        public void Valid_config_gives_no_errors()
+        public void DeploymentConfig_does_not_throw_error_when_valid()
         {
             Assert.IsFalse(DeploymentConfigTestUtils.GetValidDeploymentConfig().GetErrors().Any());
         }
 
         [TestCase("gdk_test_assembly")]
-        public void Valid_assembly_name_test(string assemblyName)
+        public void DeploymentConfig_does_not_throw_error_for_valid_assembly_name(string assemblyName)
         {
             var config = DeploymentConfigTestUtils.GetValidDeploymentConfig();
             config.AssemblyName = assemblyName;
@@ -27,20 +27,15 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
         [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("gdk", DeploymentConfigErrorTypes.Invalid)]
         [TestCase("siebenhundertsiebenundsiebzigtausendsiebenhundertsiebenundsiebzig", DeploymentConfigErrorTypes.Invalid)]
-        public void Invalid_assembly_name_test(string assemblyName, string errorType)
+        public void DeploymentConfig_throws_error_for_invalid_assembly_name(string assemblyName, string errorType)
         {
             var config = DeploymentConfigTestUtils.GetValidDeploymentConfig();
             config.AssemblyName = assemblyName;
-            var errors = config.GetErrors().DeplErrors.Values.ToArray();
-
-            foreach (var error in errors)
-            {
-                Debug.Log(error);
-            }
+            var errors = config.GetErrors().DeplErrors.Values.SelectMany(err => err).ToArray();
 
             Assert.AreEqual(errors.Length, 1);
             Assert.IsTrue(errors[0].Contains("Assembly Name"));
-            Assert.IsTrue(errors[0].Contains(DeploymentConfigErrorTypes.NullOrEmpty));
+            Assert.IsTrue(errors[0].Contains(errorType));
         }
     }
 }
