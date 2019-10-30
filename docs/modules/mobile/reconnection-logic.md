@@ -14,7 +14,7 @@ If a client-worker's connection is too unstable, they might not be able to conne
 
 ### Pausing of applications
 
-When pausing an application or putting it into the background, there are two possible scenarios that can cause a disconnect:
+When pausing an application or putting it into the background, there are at least two possible scenarios that can cause a disconnect:
 
 #### 1. The device OS closes the application.
 
