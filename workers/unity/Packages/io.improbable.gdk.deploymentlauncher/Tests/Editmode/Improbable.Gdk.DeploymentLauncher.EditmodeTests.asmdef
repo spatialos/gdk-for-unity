@@ -1,0 +1,21 @@
+{
+    "name": "Improbable.Gdk.DeploymentLauncher.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.DeploymentLauncher",
+        "Unity.Entities",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": []
+}

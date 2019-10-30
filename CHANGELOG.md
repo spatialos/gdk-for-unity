@@ -16,6 +16,10 @@
 
 - Generated Worker ID's for local development are now smaller and easier to read for debugging. [#1197](https://github.com/spatialos/gdk-for-unity/pull/1197)
 
+### Fixed
+
+- Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202](https://github.com/spatialos/gdk-for-unity/pull/1202)
+
 ### Internal
 
 - Cleaned up Subscriptions and Callbacks. [#1200](https://github.com/spatialos/gdk-for-unity/pull/1200)
