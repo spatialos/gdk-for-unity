@@ -15,10 +15,10 @@ namespace Improbable.DependentSchema
             , IDiffCommandRequestStorage<BarCommand.ReceivedRequest>
             , IDiffCommandResponseStorage<BarCommand.ReceivedResponse>
         {
-            private MessageList<BarCommand.ReceivedRequest> requestStorage =
+            private readonly MessageList<BarCommand.ReceivedRequest> requestStorage =
                 new MessageList<BarCommand.ReceivedRequest>();
 
-            private MessageList<BarCommand.ReceivedResponse> responseStorage =
+            private readonly MessageList<BarCommand.ReceivedResponse> responseStorage =
                 new MessageList<BarCommand.ReceivedResponse>();
 
             private readonly RequestComparer requestComparer = new RequestComparer();
@@ -70,12 +70,12 @@ namespace Improbable.DependentSchema
                 responseStorage.Add(response);
             }
 
-            public ReceivedMessagesSpan<BarCommand.ReceivedRequest> GetRequests()
+            public MessagesSpan<BarCommand.ReceivedRequest> GetRequests()
             {
-                return new ReceivedMessagesSpan<BarCommand.ReceivedRequest>(requestStorage);
+                return requestStorage.Slice();
             }
 
-            public ReceivedMessagesSpan<BarCommand.ReceivedRequest> GetRequests(EntityId targetEntityId)
+            public MessagesSpan<BarCommand.ReceivedRequest> GetRequests(EntityId targetEntityId)
             {
                 if (!requestsSorted)
                 {
@@ -84,16 +84,15 @@ namespace Improbable.DependentSchema
                 }
 
                 var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
-
-                return new ReceivedMessagesSpan<BarCommand.ReceivedRequest>(requestStorage, firstIndex, count);
+                return requestStorage.Slice(firstIndex, count);
             }
 
-            public ReceivedMessagesSpan<BarCommand.ReceivedResponse> GetResponses()
+            public MessagesSpan<BarCommand.ReceivedResponse> GetResponses()
             {
-                return new ReceivedMessagesSpan<BarCommand.ReceivedResponse>(responseStorage);
+                return responseStorage.Slice();
             }
 
-            public ReceivedMessagesSpan<BarCommand.ReceivedResponse> GetResponse(long requestId)
+            public MessagesSpan<BarCommand.ReceivedResponse> GetResponse(long requestId)
             {
                 if (!responsesSorted)
                 {
@@ -102,12 +101,9 @@ namespace Improbable.DependentSchema
                 }
 
                 var responseIndex = responseStorage.GetResponseIndex(requestId);
-                if (responseIndex < 0)
-                {
-                    return ReceivedMessagesSpan<BarCommand.ReceivedResponse>.Empty();
-                }
-
-                return new ReceivedMessagesSpan<BarCommand.ReceivedResponse>(responseStorage, responseIndex, 1);
+                return responseIndex.HasValue
+                    ? responseStorage.Slice(responseIndex.Value, 1)
+                    : MessagesSpan<BarCommand.ReceivedResponse>.Empty();
             }
 
             private class RequestComparer : IComparer<BarCommand.ReceivedRequest>
@@ -132,10 +128,10 @@ namespace Improbable.DependentSchema
             , ICommandRequestSendStorage<BarCommand.Request>
             , ICommandResponseSendStorage<BarCommand.Response>
         {
-            private MessageList<CommandRequestWithMetaData<BarCommand.Request>> requestStorage =
+            private readonly MessageList<CommandRequestWithMetaData<BarCommand.Request>> requestStorage =
                 new MessageList<CommandRequestWithMetaData<BarCommand.Request>>();
 
-            private MessageList<BarCommand.Response> responseStorage =
+            private readonly MessageList<BarCommand.Response> responseStorage =
                 new MessageList<BarCommand.Response>();
 
             public uint GetComponentId()

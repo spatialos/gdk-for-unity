@@ -130,27 +130,26 @@ namespace Improbable.TestSchema
                 return componentsRemoved;
             }
 
-            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates()
+            public MessagesSpan<ComponentUpdateReceived<Update>> GetUpdates()
             {
-                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage);
+                return updateStorage.Slice();
             }
 
-            public ReceivedMessagesSpan<ComponentUpdateReceived<Update>> GetUpdates(EntityId entityId)
+            public MessagesSpan<ComponentUpdateReceived<Update>> GetUpdates(EntityId entityId)
             {
                 var range = updateStorage.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<ComponentUpdateReceived<Update>>(updateStorage, range.FirstIndex,
-                    range.Count);
+                return updateStorage.Slice(range.FirstIndex, range.Count);
             }
 
-            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
+            public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
             {
-                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges);
+                return authorityChanges.Slice();
             }
 
-            public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
+            public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
             {
                 var range = authorityChanges.GetEntityRange(entityId);
-                return new ReceivedMessagesSpan<AuthorityChangeReceived>(authorityChanges, range.FirstIndex, range.Count);
+                return authorityChanges.Slice(range.FirstIndex, range.Count);
             }
         }
     }

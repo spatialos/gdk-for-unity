@@ -7,21 +7,20 @@ namespace Improbable.Gdk.Core
     {
         // binary search for the command for given request ID
         // invariant: lower <= target <= upper
-        public static int GetResponseIndex<T>(this MessageList<T> list, long requestId)
+        public static int? GetResponseIndex<T>(this MessageList<T> list, long requestId)
             where T : struct, IReceivedCommandResponse
         {
-            long targetId = requestId;
-
-            int lower = 0;
-            int upper = list.Count - 1;
+            var targetId = requestId;
+            var lower = 0;
+            var upper = list.Count - 1;
 
             while (upper >= lower)
             {
                 var current = (lower + upper) / 2;
 
-                long id = list[current].GetRequestId();
+                var id = list[current].GetRequestId();
 
-                if (id > targetId)
+                if (id > requestId)
                 {
                     upper = current - 1;
                 }
@@ -35,7 +34,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            return -1;
+            return default;
         }
 
         public static (int FirstIndex, int Count) GetEntityRange<T>(this MessageList<T> list, EntityId entityId)
@@ -44,7 +43,7 @@ namespace Improbable.Gdk.Core
             var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
             if (range.Count > 1)
             {
-                range = list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
+                return list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
             }
 
             return range;
@@ -56,19 +55,18 @@ namespace Improbable.Gdk.Core
             EntityId entityId, int index, int length)
             where T : struct, IReceivedEntityMessage
         {
-            long targetId = entityId.Id;
-
-            int lower = index - 1;
-            int upper = index + length - 1;
+            var targetId = entityId.Id;
+            var lower = index - 1;
+            var upper = index + length - 1;
 
             // > last index with entity ID = targetId
-            int lastIndexUpperBound = upper + 1;
+            var lastIndexUpperBound = upper + 1;
 
             while (upper > lower)
             {
                 var current = (lower + upper + 1) / 2;
 
-                long id = list[current].GetEntityId().Id;
+                var id = list[current].GetEntityId().Id;
 
                 if (id == targetId)
                 {
@@ -90,7 +88,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            return (-1, 0);
+            return default;
         }
 
         // binary search for the last update for given entity ID with bounds
@@ -99,18 +97,18 @@ namespace Improbable.Gdk.Core
             EntityId entityId, int index, int length)
             where T : struct, IReceivedEntityMessage
         {
-            long targetId = entityId.Id;
-            int lower = index;
-            int upper = lower + length;
+            var targetId = entityId.Id;
+            var lower = index;
+            var upper = lower + length;
 
             // < first index with entity ID = targetId
-            int firstIndexLowerBound = lower - 1;
+            var firstIndexLowerBound = lower - 1;
 
             while (upper > lower)
             {
                 var current = (lower + upper) / 2;
 
-                long id = list[current].GetEntityId().Id;
+                var id = list[current].GetEntityId().Id;
 
                 if (id == targetId)
                 {
@@ -132,7 +130,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            return (-1, 0);
+            return default;
         }
     }
 }

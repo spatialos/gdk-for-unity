@@ -21,39 +21,39 @@ namespace Improbable.Gdk.Core
             worker.MessagesToSend.AddEvent(eventToSend, entityId.Id);
         }
 
-        public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>() where T : IEvent
+        public MessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>() where T : IEvent
         {
             var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents();
         }
 
-        public ReceivedMessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>(EntityId entityId) where T : IEvent
+        public MessagesSpan<ComponentEventReceived<T>> GetEventsReceived<T>(EntityId entityId) where T : IEvent
         {
             var manager = (IDiffEventStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetEvents(entityId);
         }
 
-        public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>()
+        public MessagesSpan<ComponentUpdateReceived<T>> GetComponentUpdatesReceived<T>()
             where T : ISpatialComponentUpdate
         {
             var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates();
         }
 
-        public ReceivedMessagesSpan<ComponentUpdateReceived<T>> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
+        public MessagesSpan<ComponentUpdateReceived<T>> GetEntityComponentUpdatesReceived<T>(EntityId entityId)
             where T : ISpatialComponentUpdate
         {
             var manager = (IDiffUpdateStorage<T>) worker.Diff.GetComponentDiffStorage(typeof(T));
             return manager.GetUpdates(entityId);
         }
 
-        public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(uint componentId)
+        public MessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(uint componentId)
         {
             var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
             return manager.GetAuthorityChanges();
         }
 
-        public ReceivedMessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId,
+        public MessagesSpan<AuthorityChangeReceived> GetAuthorityChangesReceived(EntityId entityId,
             uint componentId)
         {
             var manager = (IDiffAuthorityStorage) worker.Diff.GetComponentDiffStorage(componentId);
