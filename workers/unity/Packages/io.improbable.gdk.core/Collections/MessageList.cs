@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 namespace Improbable.Gdk.Core
 {
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
     ///     Does not detect the array being edited during iteration
     ///     The internal array is not resized or zeroed on clear
     /// </remarks>
-    internal class MessageList<T> : IEnumerable<T> where T : struct
+    internal class MessageList<T> where T : struct
     {
         private static readonly T[] EmptyArray = new T[0];
 
@@ -22,7 +22,6 @@ namespace Improbable.Gdk.Core
 
         public int Count { get; private set; }
 
-        // Todo should probably have a starting size and a max size
         public MessageList()
         {
             Count = 0;
@@ -31,11 +30,25 @@ namespace Improbable.Gdk.Core
 
         public ref readonly T this[int index] => ref items[index];
 
+        public MessagesSpan<T> Slice()
+        {
+            return new MessagesSpan<T>(this, 0, Count);
+        }
+
+        public MessagesSpan<T> Slice(int index, int count)
+        {
+            Assert.IsTrue(index >= 0);
+            Assert.IsTrue(index + count <= Count);
+            return count == 0
+                ? MessagesSpan<T>.Empty()
+                : new MessagesSpan<T>(this, index, count);
+        }
+
         public void Add(in T item)
         {
             if (items.Length <= Count)
             {
-                int targetLength = items.Length == 0 ? 4 : items.Length * 2;
+                var targetLength = items.Length == 0 ? 4 : items.Length * 2;
                 var temp = new T[targetLength];
                 Array.Copy(items, temp, Count);
                 items = temp;
@@ -49,7 +62,7 @@ namespace Improbable.Gdk.Core
         {
             if (items.Length <= Count)
             {
-                int targetLength = items.Length == 0 ? 4 : items.Length * 2;
+                var targetLength = items.Length == 0 ? 4 : items.Length * 2;
                 var temp = new T[targetLength];
                 Array.Copy(items, 0, temp, 0, index);
                 temp[index] = item;
@@ -81,8 +94,7 @@ namespace Improbable.Gdk.Core
         // Similar to the List<> RemoveAll. No return value and the array is not resized down.
         public void RemoveAll(Predicate<T> match)
         {
-            int freeIndex = 0;
-
+            var freeIndex = 0;
             while (freeIndex < Count && !match(items[freeIndex]))
             {
                 ++freeIndex;
@@ -93,7 +105,7 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            int currentIndex = freeIndex + 1;
+            var currentIndex = freeIndex + 1;
             while (currentIndex < Count)
             {
                 while (currentIndex < Count && match(items[currentIndex]))
@@ -121,13 +133,6 @@ namespace Improbable.Gdk.Core
             other.Count = Count;
         }
 
-        public T[] ToArray()
-        {
-            var t = new T[Count];
-            Array.Copy(items, t, Count);
-            return t;
-        }
-
         public void Clear()
         {
             Count = 0;
@@ -136,71 +141,6 @@ namespace Improbable.Gdk.Core
         public void Sort(IComparer<T> comparer)
         {
             Array.Sort(items, 0, Count, comparer);
-        }
-
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public struct Enumerator : IEnumerator<T>
-        {
-            private readonly MessageList<T> list;
-
-            private int currentIndex;
-
-            public Enumerator(MessageList<T> list)
-            {
-                this.list = list;
-                currentIndex = -1;
-            }
-
-            public bool MoveNext()
-            {
-                ++currentIndex;
-
-                if (currentIndex >= list.Count)
-                {
-                    currentIndex = -1;
-                    return false;
-                }
-
-                return true;
-            }
-
-            public void Reset()
-            {
-                currentIndex = -1;
-            }
-
-            public T Current
-            {
-                get
-                {
-                    if (currentIndex == -1)
-                    {
-                        return default(T);
-                    }
-
-                    return list[currentIndex];
-                }
-            }
-
-            object IEnumerator.Current => Current;
-
-            public void Dispose()
-            {
-            }
         }
     }
 }
