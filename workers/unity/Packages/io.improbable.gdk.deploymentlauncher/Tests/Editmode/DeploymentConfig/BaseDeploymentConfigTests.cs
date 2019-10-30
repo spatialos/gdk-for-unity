@@ -32,7 +32,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.Name = invalidName;
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Deployment Name"));
             Assert.IsTrue(errors[0].Contains(errorType));
         }
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.LaunchJson = launchJson;
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Launch Config"));
             Assert.IsTrue(errors[0].Contains(errorType));
         }
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.SnapshotPath = snapshotPath;
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Snapshot"));
             Assert.IsTrue(errors[0].Contains(DeploymentConfigErrorTypes.NotFound));
         }
@@ -105,7 +105,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.Tags.Add(invalidTag);
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Tag"));
             Assert.IsTrue(errors[0].Contains(DeploymentConfigErrorTypes.Invalid));
         }
@@ -116,15 +116,18 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
 
             //5 invalid tags
-            config.Tags.Add("_invalidtag");
-            config.Tags.Add("f");
-            config.Tags.Add("gg");
-            config.Tags.Add("quinquagintaquadringentillionthss");
-            config.Tags.Add("supercalifragilisticexpialidocious");
+            config.Tags.AddRange(new[]
+            {
+                "_invalidtag",
+                "f",
+                "gg",
+                "quinquagintaquadringentillionthss",
+                "supercalifragilisticexpialidocious"
+            });
 
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 5);
+            Assert.AreEqual(errors.Length, 5, "Failed: did not throw exactly five errors.");
 
             foreach (var error in errors)
             {

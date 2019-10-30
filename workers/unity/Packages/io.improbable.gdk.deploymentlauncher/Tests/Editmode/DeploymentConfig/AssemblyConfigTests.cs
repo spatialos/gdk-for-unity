@@ -21,15 +21,6 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             Assert.IsNull(GetValidConfig().GetError());
         }
 
-        [TestCase("gdk_test_assembly")]
-        public void AssemblyConfig_does_not_throw_error_for_valid_assembly_name(string assemblyName)
-        {
-            var config = GetValidConfig();
-            config.AssemblyName = assemblyName;
-
-            Assert.IsNull(config.GetError());
-        }
-
         [TestCase(null, DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
         [TestCase("gdk", DeploymentConfigErrorTypes.Invalid)]

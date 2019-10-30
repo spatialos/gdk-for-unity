@@ -33,7 +33,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.AssemblyName = assemblyName;
             var errors = config.GetErrors().DeplErrors.Values.SelectMany(err => err).ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Assembly Name"));
             Assert.IsTrue(errors[0].Contains(errorType));
         }

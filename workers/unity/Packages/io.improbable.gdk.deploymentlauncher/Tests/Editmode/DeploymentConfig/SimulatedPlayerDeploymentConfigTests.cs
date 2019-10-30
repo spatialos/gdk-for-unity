@@ -32,7 +32,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.FlagPrefix = flagPrefix;
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Flag Prefix"));
             Assert.IsTrue(errors[0].Contains(errorType));
         }
@@ -54,7 +54,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             config.WorkerType = workerType;
             var errors = config.GetErrors().ToArray();
 
-            Assert.AreEqual(errors.Length, 1);
+            Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Worker Type"));
             Assert.IsTrue(errors[0].Contains(DeploymentConfigErrorTypes.NullOrEmpty));
         }
