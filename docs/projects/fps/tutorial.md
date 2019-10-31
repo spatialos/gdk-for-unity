@@ -488,12 +488,16 @@ namespace Fps
         [Require] private HealthComponentCommandSender healthCommandRequestSender;
 
         private Coroutine respawnCoroutine;
+        private Collider collider;
 
         private void OnEnable()
         {
+            collider = gameObject.GetComponentInChildren<Collider>();
+
             // If the pickup is inactive on initial checkout - turn off collisions and start the respawning process.
             if (!healthPickupWriter.Data.IsActive)
             {
+                collider.enabled = false;
                 respawnCoroutine = StartCoroutine(RespawnHealthPackRoutine());
             }
         }
@@ -524,10 +528,11 @@ namespace Fps
 
         private void SetIsActive(bool isActive)
         {
+            collider.enabled = isActive;
             healthPickupWriter?.SendUpdate(new HealthPickup.Update
-                {
-                    IsActive = new Option<bool>(isActive)
-                });
+            {
+                IsActive = new Option<bool>(isActive)
+            });
         }
 
         private void HandleCollisionWithPlayer(GameObject player)
