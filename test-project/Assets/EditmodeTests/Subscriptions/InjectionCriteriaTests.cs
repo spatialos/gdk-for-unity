@@ -114,7 +114,29 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
             Assert.IsNotNull(compositeBehaviour.Writer);
         }
 
+        [Test]
+        public void Injection_happens_if_inherited_constraints_are_satisfied()
+        {
+            ReceiveSystem.Update();
+
+            createdGameObject = CreateAndLinkGameObjectWithComponent<InheritanceBehaviour>(EntityId);
+            var inheritanceBehaviour = createdGameObject.GetComponent<InheritanceBehaviour>();
+
+            Assert.IsTrue(inheritanceBehaviour.enabled);
+            Assert.IsNotNull(inheritanceBehaviour.OwnReader);
+        }
+
 #pragma warning disable 649
+        private class InheritanceBehaviour : BaseBehaviour
+        {
+            public PositionReader OwnReader => Reader;
+        }
+
+        private class BaseBehaviour : MonoBehaviour
+        {
+            [Require] protected PositionReader Reader;
+        }
+
         private class PositionReaderBehaviour : MonoBehaviour
         {
             [Require] public PositionReader Reader;
