@@ -117,7 +117,6 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         [Test]
         public void Injection_happens_if_inherited_constraints_are_satisfied()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
             ReceiveSystem.Update();
 
             createdGameObject = CreateAndLinkGameObjectWithComponent<InheritanceBehaviour>(EntityId);
