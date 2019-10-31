@@ -546,7 +546,7 @@ Worker flags can be modified at runtime through:
 >
 > * [Worker flag documentation](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/worker-configuration/worker-flags#worker-flags)
 > * [`spatial` CLI documentation](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/spatialos-cli-introduction)
-> * [Platform SDK API reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/platform-sdk/reference/home)
+> * [Platform SDK API reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/platform-sdk/introduction)
 
 ## Worker SDK
 
