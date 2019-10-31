@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Subscriptions
             return callbacksRegistered++;
         }
 
-        public ulong RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
+        public void RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
             where T : struct, IReceivedCommandResponse
         {
             if (!callbackManagers.TryGetManager(typeof(T), out var manager))
@@ -44,9 +44,7 @@ namespace Improbable.Gdk.Subscriptions
                 callbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
-            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
-            return callbacksRegistered++;
+            ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
         }
 
         public bool UnregisterCommandRequestCallback(ulong callbackKey)
