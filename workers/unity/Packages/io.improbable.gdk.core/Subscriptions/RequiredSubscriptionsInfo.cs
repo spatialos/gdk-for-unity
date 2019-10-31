@@ -11,8 +11,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public RequiredSubscriptionsInfo(Type type)
         {
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField |
-                BindingFlags.NonPublic);
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             RequiredFields = new List<FieldInfo>();
 
