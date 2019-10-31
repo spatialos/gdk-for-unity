@@ -36,7 +36,7 @@ update_package worker_sdk c-dynamic-x86_64-gcc510-linux "${SDK_PATH}/Plugins/Imp
 update_package worker_sdk c-bundle-x86_64-clang-macos "${SDK_PATH}/Plugins/Improbable/Core/OSX"
 update_package worker_sdk c-dynamic-x86_64-vc140_mt-win32 "${SDK_PATH}/Plugins/Improbable/Core/Windows/x86_64" "improbable_worker.lib"
 
-update_package worker_sdk csharp_cinterop "${SDK_PATH}/Plugins/Improbable/Sdk/Common" "Improbable.Worker.CInterop.pdb"
+update_package worker_sdk csharp_cinterop "${SDK_PATH}/Plugins/Improbable/Sdk/Common"
 
 update_package schema standard_library "${SDK_PATH}/.schema"
 update_package schema test_schema_library "${TEST_SDK_PATH}/.schema"
@@ -48,11 +48,11 @@ update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
 update_spot spot-macos "${SDK_PATH}/.spot/spot"
 
 #Update Mobile SDK
-update_package worker_sdk c-static-fullylinked-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm" "improbable_worker_static.lib;libimprobable_worker_static.a.pic"
-update_package worker_sdk c-static-fullylinked-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64" "improbable_worker_static.lib;libimprobable_worker_static.a.pic"
+update_package worker_sdk c-static-fullylinked-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm" "libimprobable_worker_static.a.pic"
+update_package worker_sdk c-static-fullylinked-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64" "libimprobable_worker_static.a.pic"
 
 update_package worker_sdk c-dynamic-arm64v8a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/arm64"
 update_package worker_sdk c-dynamic-armv7a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/armv7"
 update_package worker_sdk c-dynamic-x86-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/x86"
 
-update_package worker_sdk csharp_cinterop_static "${SDK_MOBILE_PATH}/Plugins/Improbable/Sdk/iOS" "Improbable.Worker.CInteropStatic.pdb"
+update_package worker_sdk csharp_cinterop_static "${SDK_MOBILE_PATH}/Plugins/Improbable/Sdk/iOS"
