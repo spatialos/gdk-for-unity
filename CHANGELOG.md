@@ -19,6 +19,7 @@
 ### Fixed
 
 - Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202](https://github.com/spatialos/gdk-for-unity/pull/1202)
+- Fixed small memory leak with command response callbacks using Monobehaviours. [#1205](https://github.com/spatialos/gdk-for-unity/pull/1205)
 
 ### Internal
 
