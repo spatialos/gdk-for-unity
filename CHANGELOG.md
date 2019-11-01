@@ -23,7 +23,7 @@
 
 - Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202](https://github.com/spatialos/gdk-for-unity/pull/1202)
 - Fixed a small memory leak with command response callbacks using MonoBehaviours. [#1205](https://github.com/spatialos/gdk-for-unity/pull/1205)
-- Fixed events triggering the `OnUpdate` callback on readers and writers. [#1211](https://github.com/spatialos/gdk-for-unity/pull/1211)
+- Fixed an issue where events would trigger the `OnUpdate` callback on readers and writers. [#1211](https://github.com/spatialos/gdk-for-unity/pull/1211)
 
 ### Internal
 
