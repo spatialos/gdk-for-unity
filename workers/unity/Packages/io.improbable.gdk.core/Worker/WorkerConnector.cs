@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
@@ -211,7 +212,16 @@ namespace Improbable.Gdk.Core
             var @params = new ConnectionParameters
             {
                 WorkerType = workerType,
-                DefaultComponentVtable = new ComponentVtable()
+                DefaultComponentVtable = new ComponentVtable(),
+                Network =
+                {
+                    ConnectionType = NetworkConnectionType.ModularUdp,
+                    ModularUdp =
+                    {
+                        DownstreamCompression = new CompressionParameters(),
+                        UpstreamCompression = new CompressionParameters(),
+                    }
+                }
             };
 
             initializer?.Initialize(@params);
