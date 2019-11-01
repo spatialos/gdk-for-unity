@@ -7,7 +7,7 @@
   "description": "SpatialOS GDK Mobile Support Module.",
   "dependencies": {
     "io.improbable.gdk.core": "0.2.10",
-    "io.improbable.worker.sdk.mobile": "14.0.2",
+    "io.improbable.worker.sdk.mobile": "0.2.10",
     "com.unity.modules.androidjni": "1.0.0"
   }
 }
