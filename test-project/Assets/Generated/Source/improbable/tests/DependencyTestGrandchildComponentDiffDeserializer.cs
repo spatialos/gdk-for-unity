@@ -18,8 +18,11 @@ namespace Improbable.Tests
 
             public void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId)
             {
-                var update = global::Improbable.Tests.DependencyTestGrandchild.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
-                diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
+                if (op.Update.SchemaData.Value.GetFields().GetUniqueFieldIdCount() > 0)
+                {
+                    var update = global::Improbable.Tests.DependencyTestGrandchild.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
+                    diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
+                }
             }
 
             public void AddComponentToDiff(AddComponentOp op, ViewDiff diff)

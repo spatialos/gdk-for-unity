@@ -7,6 +7,7 @@
 - Reactive components have been removed completely. [#1195](https://github.com/spatialos/gdk-for-unity/pull/1195)
   - If you are using reactive components, please see our documentation on the [ECS workflow](https://docs.improbable.io/unity/alpha/workflows/overview#ecs-centric-workflow).
 - Codegen for the GameObjectCreation package has been moved into the package. If the package is not used, readers and writers will no longer be generated. [#1196](https://github.com/spatialos/gdk-for-unity/pull/1196)
+- Empty component updates will no longer trigger callbacks when received. [#1211](https://github.com/spatialos/gdk-for-unity/pull/1211)
 
 ### Added
 
@@ -22,6 +23,7 @@
 
 - Fixed a bug where the Deployment Launcher window would accept tags with 33 characters. [#1202](https://github.com/spatialos/gdk-for-unity/pull/1202)
 - Fixed a small memory leak with command response callbacks using MonoBehaviours. [#1205](https://github.com/spatialos/gdk-for-unity/pull/1205)
+- Fixed an issue where events would trigger the `OnUpdate` callback on readers and writers. [#1211](https://github.com/spatialos/gdk-for-unity/pull/1211)
 
 ### Internal
 
