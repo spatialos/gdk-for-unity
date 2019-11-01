@@ -62,7 +62,6 @@
         - [Prepare your project]({{urlRoot}}/modules/mobile/prepare-project)
         - [Connect to a local deployment]({{urlRoot}}/modules/mobile/local-deploy)
         - [Connect to a cloud deployment]({{urlRoot}}/modules/mobile/cloud-deploy)
-        - [Reconnection logic]({{urlRoot}}/modules/mobile/reconnection-logic)
     - Player Lifecycle
         - [Overview]({{urlRoot}}/modules/player-lifecycle/overview)
         - [Basic player creation]({{urlRoot}}/modules/player-lifecycle/basic-player-creation)
@@ -110,6 +109,7 @@
             - [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
             - [ECS entity contracts]({{urlRoot}}/workflows/ecs/concepts/entity-contracts)
     - [Remote profiling]({{urlRoot}}/workflows/remote-profiling)
+    - [Handling disconnections]({{urlRoot}}/workflows/reconnection-logic)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)

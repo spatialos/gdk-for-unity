@@ -2,13 +2,13 @@
 
 # Handling disconnections
 
-Mobile applications present new challenges in terms of handling client connections. A client may disconnect due to an unstable connection or when the application is put into a background state by the OS. In this page, we will dive a bit deeper into the causes of a disconnect and discuss how you can handle it in your game.
+Online games rely on all the clients and the server being able to connect and stay connected during the game. However, a client may disconnect due to an unstable connection or when the application is put into a background state by the OS. In this page, we will dive a bit deeper into the causes of a disconnect and discuss how you can handle it in your game.
 
 ## Why do disconnects happen
 
 ### Unstable connection 
 
-When creating a mobile application, you need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to try to connect even when the connect might be more unstable. If the connection becomes too weak or unstable, there is a high risk of them disconnecting soon. It is important to include logic in your game that detects and handles disconnects and provides ways of reconnecting your clients.
+You need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to try to connect even when the connect might be more unstable. If the connection becomes too weak or unstable, there is a high risk of them disconnecting soon. It is important to include logic in your game that detects and handles disconnects and provides ways of reconnecting your clients.
 
 ### Pausing of applications
 
@@ -39,7 +39,7 @@ The GDK provides you with a callback that is triggered when the worker receives 
 ```csharp
 namespace YourGame
 {
-    public class MobileClientWorkerConnector : WorkerConnector
+    public class ClientWorkerConnector : WorkerConnector
     {
         ...
 
