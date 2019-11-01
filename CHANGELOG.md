@@ -18,6 +18,7 @@
 - Generated Worker ID's for local development are now smaller and easier to read for debugging. [#1197](https://github.com/spatialos/gdk-for-unity/pull/1197)
 - Upgraded to Worker SDK 14.2.1. [#1208](https://github.com/spatialos/gdk-for-unity/pull/1208)
   - Versioning scheme for the SDK and Mobile SDK packages have now changed to align with the GDK for Unity version.
+- Changed the default network type to ModularUDP with packet compression. [#1212](https://github.com/spatialos/gdk-for-unity/pull/1212)
 
 ### Fixed
 
