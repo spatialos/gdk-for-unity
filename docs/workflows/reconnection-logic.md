@@ -71,6 +71,7 @@ When the player entity gets deleted, the client-worker might end up with no enti
 ```csharp
 namespace YourGame
 {
+    // This MonoBehaviour needs to be placed on your player prefab.
     public class YourMonoBehaviour : MonoBehaviour
     {
         // Make sure to store a reference to the client worker connector
