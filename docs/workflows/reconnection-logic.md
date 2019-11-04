@@ -58,8 +58,6 @@ namespace YourGame
 }
 ```
 
-
-
 ### 2. Heartbeating fails in the player lifecycle module 
 
 Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In some cases, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
