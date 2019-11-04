@@ -20,7 +20,7 @@ If the application has been closed, the user has to restart the application. The
 
 #### 2. The client stops sending data. 
 
-This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need add a way to reconnect clients to your game to handle this scenario. 
+This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need to add a way for clients to reconnect to your game to handle this scenario. 
 
 ## Types of disconnections in the GDK
 
