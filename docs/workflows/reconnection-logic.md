@@ -66,7 +66,7 @@ Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) all
 
 #### How to handle a disconnect
 
-When the player entity gets deleted, the client-worker might end up with no entities that it is authoritative over and therefore unable to check out any entities. This leaves the client-worker in a bad state. The safest option to handle this is to disconnect the client-worker from SpatialOS and go back to your start screen to attempt a reconnect.
+When the player entity gets deleted, the client-worker might end up with no entities that it is authoritative over and therefore unable to check out any entities. This leaves the client-worker in a bad state. The safest option to handle this is to disconnect the client-worker from SpatialOS, go back to your start screen, and attempt to reconnect.
 
 ```csharp
 namespace YourGame
