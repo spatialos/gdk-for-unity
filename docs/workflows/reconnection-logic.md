@@ -2,7 +2,7 @@
 
 # Handling disconnections
 
-Online games rely on all the clients and the server being able to connect and stay connected during the game. However, a client may disconnect due to an unstable connection or when the application is put into a background state by the OS. In this page, we will dive a bit deeper into the causes of a disconnect and discuss how you can handle it in your game.
+Online games rely on all the clients and servers being able to connect and stay connected during the game. However, a client may disconnect due to an unstable connection or when the application is put into a background state by the OS. In this page, we will dive a bit deeper into why a client may disconnect and discuss how you can handle it in your game.
 
 ## Why do disconnects happen
 
