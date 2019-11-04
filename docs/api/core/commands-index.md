@@ -29,6 +29,10 @@ GDK package: Core<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-command-metaclass">ICommandMetaclass</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

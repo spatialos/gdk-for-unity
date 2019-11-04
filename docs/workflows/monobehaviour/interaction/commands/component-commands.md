@@ -35,12 +35,15 @@ We use the following [schema]({{urlRoot}}/reference/glossary#schema) for all exa
 ```schemalang
 package playground;
 
+import "improbable/gdk/core/common.schema";
+
 component CubeSpawner
 {
     id = 12002;
-    command improbable.common.Empty spawn_cube(improbable.common.Empty);
+    command improbable.gdk.core.Empty spawn_cube(improbable.gdk.core.Empty);
 }
 ```
+
 The GDK generates the following classes in the `Playground` namespace:
 
   * `CubeSpawner.SpawnCube.Request`

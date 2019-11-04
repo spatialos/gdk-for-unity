@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L22">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L24">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -55,7 +55,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="foreachcomponent-ihandler"></a><b>ForEachComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L53">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -83,7 +83,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="forcomponent-uint-ihandler"></a><b>ForComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L50">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L61">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -99,44 +99,6 @@ code {
 <li><code>uint componentId</code> : </li>
 <li><code><a href="{{urlRoot}}/api/core/dynamic/i-handler">IHandler</a> handler</code> : </li>
 </ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="getcomponentid-t"></a><b>GetComponentId&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L60">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>uint GetComponentId&lt;T&gt;()</code></p>
-
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="getsnapshotcomponentid-t"></a><b>GetSnapshotComponentId&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L70">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>uint GetSnapshotComponentId&lt;T&gt;()</code></p>
-
 
 
 

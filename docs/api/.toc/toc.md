@@ -10,6 +10,7 @@
         - [Collections]({{urlRoot}}/api/core/collections-index)
             - <a href="{{urlRoot}}/api/core/collections/result">Result</a>
         - [Commands]({{urlRoot}}/api/core/commands-index)
+            - <a href="{{urlRoot}}/api/core/commands/i-command-metaclass">ICommandMetaclass</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-response">ICommandResponse</a>
             - <a href="{{urlRoot}}/api/core/commands/i-raw-received-command-response">IRawReceivedCommandResponse</a>
@@ -40,6 +41,7 @@
         - <a href="{{urlRoot}}/api/core/command-meta-data-aggregate">CommandMetaDataAggregate</a>
         - <a href="{{urlRoot}}/api/core/command-request-id-generator">CommandRequestIdGenerator</a>
         - <a href="{{urlRoot}}/api/core/command-system">CommandSystem</a>
+        - <a href="{{urlRoot}}/api/core/component-database">ComponentDatabase</a>
         - <a href="{{urlRoot}}/api/core/component-event-received">ComponentEventReceived</a>
         - <a href="{{urlRoot}}/api/core/component-event-to-send">ComponentEventToSend</a>
         - <a href="{{urlRoot}}/api/core/component-send-system">ComponentSendSystem</a>
@@ -73,6 +75,7 @@
         - <a href="{{urlRoot}}/api/core/i-component-command-send-storage">IComponentCommandSendStorage</a>
         - <a href="{{urlRoot}}/api/core/i-component-diff-deserializer">IComponentDiffDeserializer</a>
         - <a href="{{urlRoot}}/api/core/i-component-diff-storage">IComponentDiffStorage</a>
+        - <a href="{{urlRoot}}/api/core/i-component-metaclass">IComponentMetaclass</a>
         - <a href="{{urlRoot}}/api/core/i-component-serializer">IComponentSerializer</a>
         - <a href="{{urlRoot}}/api/core/i-connection-flow">IConnectionFlow</a>
         - <a href="{{urlRoot}}/api/core/i-connection-flow-initializer">IConnectionFlowInitializer</a>

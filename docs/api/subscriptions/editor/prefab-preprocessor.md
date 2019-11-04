@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a>.<a href="{{urlRoot}}/api/subscriptions/editor-index">Editor</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Editor/Prefabs/PrefabPreprocessor.cs/#L20">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Editor/Prefabs/PrefabPreprocessor.cs/#L20">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -54,7 +54,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="callbackorder"></a><b>callbackOrder</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/88a422dc255ef1d47ee9385f226ca439f31c000b/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Editor/Prefabs/PrefabPreprocessor.cs/#L23">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Editor/Prefabs/PrefabPreprocessor.cs/#L23">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

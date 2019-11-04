@@ -82,6 +82,10 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/component-database">ComponentDatabase</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/component-send-system">ComponentSendSystem</a></td>
 <td style="padding: 14px; border: none;">Executes the default replication logic for each SpatialOS component. </td>
 </tr>
@@ -437,6 +441,10 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/i-component-diff-storage">IComponentDiffStorage</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/i-component-metaclass">IComponentMetaclass</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
