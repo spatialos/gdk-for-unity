@@ -32,7 +32,7 @@ To ensure that a worker is still connected, the worker has to send messages to S
 
 Whenever the connection gets closed on a worker, that worker receives a `DisconnectOp` object. It contains the reason behind the disconnection and triggers a disconnect event in the GDK.
 
-#### How to handle a disconnect
+#### How to handle a SpatialOS disconnection
 
 The GDK provides you with a callback that is triggered when the worker receives a `DisconnectOp` object. You can register to this callback to perform your disconnection logic.
 
@@ -64,7 +64,7 @@ namespace YourGame
 
 Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In some cases, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
 
-#### How to handle a disconnect
+#### How to handle a player lifecycle disconnection
 
 When the player entity gets deleted, the client-worker might end up with no entities that it is authoritative over and therefore unable to check out any entities. This leaves the client-worker in a bad state. The safest option to handle this is to disconnect the client-worker from SpatialOS, go back to your start screen, and attempt to reconnect.
 
