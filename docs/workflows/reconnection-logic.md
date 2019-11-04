@@ -8,7 +8,7 @@ Online games rely on all the clients and the server being able to connect and st
 
 ### Unstable connection 
 
-You need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) are able to try to connect even when the connect might be more unstable. If the connection becomes too weak or unstable, there is a risk of them disconnecting. It is important to include logic in your game that detects and handles disconnects and provides ways of reconnecting your clients.
+You need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) won't end up in a bad state if their connections get too unstable. Note that there is a risk of the client disconnecting if the connection becomes too weak or unstable, so it is important to include logic in your game that detects and handles disconnects and provides ways of reconnecting your clients.
 
 ### Paused application
 
