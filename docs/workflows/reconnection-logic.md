@@ -4,7 +4,7 @@
 
 Online games rely on all the clients and servers being able to connect and stay connected during the game. However, a client may disconnect due to an unstable connection or when the application is put into a background state by the OS. In this page, we will dive a bit deeper into why a client may disconnect and discuss how you can handle it in your game.
 
-## Why do disconnects happen
+## Why disconnections happen
 
 ### Unstable connection 
 
@@ -12,13 +12,13 @@ You need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-w
 
 ### Paused application
 
-When pausing an application or putting it into the background, there are at least two possible scenarios that can cause a disconnect:
+When pausing an application or putting it into the background, there are at least two possible scenarios that can cause a disconnection:
 
-#### 1. The device OS closes the application.
+#### 1. The device OS closes the application
 
 If the application has been closed, the user has to restart the application. The user will be brought back to the start screen the next time the application is opened and from there on, the application can connect and load any data necessary.
 
-#### 2. The client stops sending data. 
+#### 2. The client stops sending data
 
 This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need to add a way for clients to reconnect to your game to handle this scenario. 
 
