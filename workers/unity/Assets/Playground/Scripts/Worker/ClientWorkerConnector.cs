@@ -1,6 +1,5 @@
 using System;
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground
@@ -20,7 +19,6 @@ namespace Playground
 
             var connParams = CreateConnectionParameters(WorkerUtils.UnityClient);
             connParams.Network.UseExternalIp = UseExternalIp;
-            connParams.Network.ConnectionType = NetworkConnectionType.RakNet;
 
             var builder = new SpatialOSConnectionHandlerBuilder()
                 .SetConnectionParameters(connParams);

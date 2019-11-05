@@ -1,7 +1,6 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Mobile;
-using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground
