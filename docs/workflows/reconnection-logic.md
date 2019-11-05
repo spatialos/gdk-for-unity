@@ -1,4 +1,4 @@
-<%(TOC)%>
+<%(TOC max="3")%>
 
 # Handling disconnections
 
@@ -26,7 +26,7 @@ This scenario is a bit more tricky. The application is still alive, however the 
 
 [Heartbeating]({{urlRoot}}/modules/player-lifecycle/heartbeating) is a technique used to verify that your client is still connected. If there are too many failed heartbeats, there are two ways a client-worker may be seen as disconnected:
 
-### 1. Heartbeating fails in the SpatialOS Runtime
+### Heartbeating fails in the SpatialOS Runtime
 
 To ensure that a worker is still connected, the worker has to send messages to SpatialOS at a set interval. This indicates that the worker is still alive. If SpatialOS doesn't receive any messages for a while, it will close the connection to that worker. 
 
@@ -58,9 +58,9 @@ namespace YourGame
 }
 ```
 
-### 2. Heartbeating fails in the player lifecycle module 
+### Heartbeating fails in the Player Lifecycle Feature Module
 
-Our [Player Lifecycle module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In some cases, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
+Our [Player Lifecycle Feature Module]({{urlRoot}}/modules/player-lifecycle/overview) allows you to easily create players and uses the heartbeating technique to detect and delete the player entity of any unresponsive client-workers. In some cases, this can result in entities being destroyed even though the worker is still connected to SpatialOS. If this happens, that client-worker won't receive a `DisconnectOp`.
 
 #### How to handle a player lifecycle disconnection
 
@@ -79,7 +79,7 @@ namespace YourGame
         {
             if (workerConnector.Worker.IsConnected)
             {
-                // the player lifecycle module deleted your player entity even though you are still connected.
+                // the Player Lifecycle Feature Module deleted your player entity even though you are still connected.
                 // Destroying the worker connector will trigger a disconnect:
                 Destroy(workerConnector);
                 // Go back to your start screen to allow the client to reconnect
