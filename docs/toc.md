@@ -106,6 +106,7 @@
             - [Temporary components]({{urlRoot}}/workflows/ecs/concepts/temporary-components)
             - [ECS entity contracts]({{urlRoot}}/workflows/ecs/concepts/entity-contracts)
     - [Remote profiling]({{urlRoot}}/workflows/remote-profiling)
+    - [Handling disconnections]({{urlRoot}}/workflows/reconnection-logic)
 - <h3>Reference</h3>
     - [Overview]({{urlRoot}}/reference/overview)
     - [SpatialOS concepts](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/concepts/spatialos)
