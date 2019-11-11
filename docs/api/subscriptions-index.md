@@ -65,10 +65,6 @@ GDK package: Subscriptions<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/entity-subscriptions">EntitySubscriptions</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/indexed-callbacks">IndexedCallbacks</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

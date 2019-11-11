@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/DirectReceiveTag.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/DirectReceiveTag.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;

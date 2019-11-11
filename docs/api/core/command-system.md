@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,7 +48,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendcommand-t-t-entity"></a><b>SendCommand&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,7 +77,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendcommand-t-t"></a><b>SendCommand&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L19">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -105,7 +105,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendresponse-t-t"></a><b>SendResponse&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -133,11 +133,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getrequests-t"></a><b>GetRequests&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>&lt;T&gt; GetRequests&lt;T&gt;()</code></p>
+<code><a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a>&lt;T&gt; GetRequests&lt;T&gt;()</code></p>
 
 
 
@@ -152,11 +152,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getrequests-t-entityid"></a><b>GetRequests&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>&lt;T&gt; GetRequests&lt;T&gt;(<a href="{{urlRoot}}/api/core/entity-id">EntityId</a> targetEntityId)</code></p>
+<code><a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a>&lt;T&gt; GetRequests&lt;T&gt;(<a href="{{urlRoot}}/api/core/entity-id">EntityId</a> targetEntityId)</code></p>
 
 
 
@@ -180,11 +180,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getresponses-t"></a><b>GetResponses&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>&lt;T&gt; GetResponses&lt;T&gt;()</code></p>
+<code><a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a>&lt;T&gt; GetResponses&lt;T&gt;()</code></p>
 
 
 
@@ -199,11 +199,11 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getresponse-t-long"></a><b>GetResponse&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L48">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>&lt;T&gt; GetResponse&lt;T&gt;(long requestId)</code></p>
+<code><a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a>&lt;T&gt; GetResponse&lt;T&gt;(long requestId)</code></p>
 
 
 
@@ -239,7 +239,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L54">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -258,7 +258,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L62">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Systems/CommandSystem.cs/#L62">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

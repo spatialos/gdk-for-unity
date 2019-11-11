@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands/create-entity">CreateEntity</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L57">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L50">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -49,7 +49,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendingentity"></a><b>SendingEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L59">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -64,7 +64,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="statuscode"></a><b>StatusCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L65">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L58">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ The status code of the command response. If equal to StatusCode.Success then the
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="message"></a><b>Message</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L70">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,7 +94,7 @@ The failure message of the command. Will only be non-null if the command failed.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L75">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L68">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -109,7 +109,7 @@ The Entity ID of the created entity. Will only be non-null if the command succee
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="requestpayload"></a><b>RequestPayload</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L80">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L73">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ The request payload that was originally sent with this command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="context"></a><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L85">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L78">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -139,7 +139,7 @@ The context object that was provided when sending the command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="requestid"></a><b>RequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L90">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -170,7 +170,7 @@ The unique request ID of this command. Will match the request ID in the correspo
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getrequestid"></a><b>GetRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L106">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L99">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

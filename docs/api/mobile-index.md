@@ -61,6 +61,10 @@ GDK package: Mobile<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
@@ -74,6 +78,10 @@ GDK package: Mobile<br />
 #### Enums
 
 <table>
+<tr>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/device-type">DeviceType</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
 <tr>
 <td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/mobile-device-type">MobileDeviceType</a></td>
 <td style="padding: 14px; border: none;"></td>
