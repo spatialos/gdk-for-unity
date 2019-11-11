@@ -41,7 +41,7 @@ To satisfy our design constraints, we need our health packs to contain some stat
 
 We write the definitions for these properties in [schemalang]({{urlRoot}}/reference/glossary#schema), a SpatialOS specific language. Let's do that now!
 
-**Step 1.** Inside the `gdk-for-unity-fps-starter-project/schema/` directory, create a `pickups` directory.
+**Step 1.** Using your file manager, navigate to the `gdk-for-unity-fps-starter-project/schema/` directory, then create a `pickups` directory.
 
 **Step 2.** Inside the `gdk-for-unity-fps-starter-project/schema/pickups/` directory, use a text editor of your choice to create a new file called `health_pickup.schema`.
 
