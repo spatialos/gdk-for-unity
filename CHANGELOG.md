@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.0` - 2019-11-11
+
 ### Breaking Changes
 
 - Reactive components have been removed completely. [#1195](https://github.com/spatialos/gdk-for-unity/pull/1195)

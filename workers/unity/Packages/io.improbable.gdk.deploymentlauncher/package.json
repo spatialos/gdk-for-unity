@@ -1,12 +1,12 @@
 {
   "name": "io.improbable.gdk.deploymentlauncher",
   "displayName": "SpatialOS GDK Deployment Launcher",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Deployment Launcher.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.2.10",
-    "io.improbable.gdk.tools": "0.2.10"
+    "io.improbable.gdk.core": "0.3.0",
+    "io.improbable.gdk.tools": "0.3.0"
   }
 }
