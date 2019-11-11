@@ -175,7 +175,7 @@ GDK package: Core<br />
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/remove-at-end-of-tick-attribute">RemoveAtEndOfTickAttribute</a></td>
-<td style="padding: 14px; border: none;">Any component with this attribute will be removed from all entities by the CleanReactiveComponentSystem Can be added to components extending IComponentData or ISharedComponentData </td>
+<td style="padding: 14px; border: none;">Any component with this attribute will be removed from all entities by the CleanTemporaryComponentSystem Can be added to components extending IComponentData or ISharedComponentData </td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/runtime-config-defaults">RuntimeConfigDefaults</a></td>
@@ -359,6 +359,10 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/newly-added-spatial-os-entity">NewlyAddedSpatialOSEntity</a></td>
 <td style="padding: 14px; border: none;">Tag component for marking SpatialOS entities that were just checked-out and still require setup. This component is automatically added to an entity upon its creation and automatically removed at the end of the same frame. </td>
 </tr>
@@ -373,10 +377,6 @@ GDK package: Core<br />
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/option">Option</a></td>
 <td style="padding: 14px; border: none;">An implementation of <a href="{{urlRoot}}/api/core/option">Option</a> which is compatible with Unity's ECS. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a></td>
-<td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/spatial-entity-id">SpatialEntityId</a></td>

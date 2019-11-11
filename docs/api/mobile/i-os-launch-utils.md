@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L15">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L15">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -13,12 +13,39 @@ code {
 }
 </style>
 </sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#static-methods">Static Methods</a>
+<nav id="pageToc" class="page-toc"><ul><li><a href="#static-fields">Static Fields</a>
+<li><a href="#static-methods">Static Methods</a>
 </ul></nav>
 
 
 
 
+
+
+
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Static Fields
+
+
+</p>
+
+
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><a id="emulators"></a><b>emulators</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L25">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> List&lt;<a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a>&gt; emulators</code></p>
+
+
+</td>
+    </tr>
+</table>
 
 
 
@@ -38,46 +65,8 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><a id="retrieveavailableiossimulators"></a><b>RetrieveAvailableiOSSimulators</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L25">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>Dictionary&lt;string, string&gt; RetrieveAvailableiOSSimulators()</code></p>
-
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="retrieveavailableiosdevices"></a><b>RetrieveAvailableiOSDevices</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L55">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>Dictionary&lt;string, string&gt; RetrieveAvailableiOSDevices()</code></p>
-
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
         <td style="border-right:none"><a id="build-string"></a><b>Build</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L79">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -104,12 +93,12 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><a id="launch-bool-string-string-bool"></a><b>Launch</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L109">Source</a></td>
+        <td style="border-right:none"><a id="launch-devicelaunchconfig-mobilelaunchconfig"></a><b>Launch</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L113">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void Launch(bool shouldConnectLocally, string deviceId, string runtimeIp, bool useSimulator)</code></p>
+<code>void Launch(<a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a> deviceLaunchConfig, <a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a> mobileLaunchConfig)</code></p>
 
 
 
@@ -118,10 +107,8 @@ code {
 <b>Parameters</b>
 
 <ul>
-<li><code>bool shouldConnectLocally</code> : </li>
-<li><code>string deviceId</code> : </li>
-<li><code>string runtimeIp</code> : </li>
-<li><code>bool useSimulator</code> : </li>
+<li><code><a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a> deviceLaunchConfig</code> : </li>
+<li><code><a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a> mobileLaunchConfig</code> : </li>
 </ul>
 
 

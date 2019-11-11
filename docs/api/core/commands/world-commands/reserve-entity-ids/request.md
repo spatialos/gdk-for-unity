@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids">ReserveEntityIds</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L20">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L13">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -49,7 +49,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="numberofentityids"></a><b>NumberOfEntityIds</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -64,7 +64,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="timeoutmillis"></a><b>TimeoutMillis</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L23">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="context"></a><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -109,7 +109,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="request-uint-uint-object"></a><b>Request</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L37">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/ReserveEntityIds.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

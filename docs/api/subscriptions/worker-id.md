@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L35">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L35">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="id"></a><b>Id</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L37">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L37">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,7 +77,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workerid-string"></a><b>WorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -117,7 +117,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-workerid"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L44">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -145,7 +145,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-string"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L54">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -185,7 +185,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tostring"></a><b>ToString</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L64">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L64">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -216,7 +216,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-string-workerid"></a><b>operator string</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L69">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerIdSubscriptionManager.cs/#L69">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

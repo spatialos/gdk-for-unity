@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worldcommandsendersubscriptionmanager-world"></a><b>WorldCommandSenderSubscriptionManager</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -88,7 +88,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribe-entityid"></a><b>Subscribe</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L57">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L57">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -116,7 +116,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="cancel-isubscription"></a><b>Cancel</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L81">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L81">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -144,7 +144,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="resetvalue-isubscription"></a><b>ResetValue</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/decea028/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L97">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L97">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

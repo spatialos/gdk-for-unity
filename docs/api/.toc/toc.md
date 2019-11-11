@@ -109,6 +109,7 @@
         - <a href="{{urlRoot}}/api/core/logging-utils">LoggingUtils</a>
         - <a href="{{urlRoot}}/api/core/log-message-received">LogMessageReceived</a>
         - <a href="{{urlRoot}}/api/core/log-message-to-send">LogMessageToSend</a>
+        - <a href="{{urlRoot}}/api/core/messages-span">MessagesSpan</a>
         - <a href="{{urlRoot}}/api/core/messages-to-send">MessagesToSend</a>
         - <a href="{{urlRoot}}/api/core/mock-connection-handler">MockConnectionHandler</a>
         - <a href="{{urlRoot}}/api/core/mock-connection-handler-builder">MockConnectionHandlerBuilder</a>
@@ -117,7 +118,6 @@
         - <a href="{{urlRoot}}/api/core/on-connected">OnConnected</a>
         - <a href="{{urlRoot}}/api/core/on-disconnected">OnDisconnected</a>
         - <a href="{{urlRoot}}/api/core/option">Option</a>
-        - <a href="{{urlRoot}}/api/core/received-messages-span">ReceivedMessagesSpan</a>
         - <a href="{{urlRoot}}/api/core/receptionist-flow">ReceptionistFlow</a>
         - <a href="{{urlRoot}}/api/core/remove-at-end-of-tick-attribute">RemoveAtEndOfTickAttribute</a>
         - <a href="{{urlRoot}}/api/core/runtime-config-defaults">RuntimeConfigDefaults</a>
@@ -165,6 +165,8 @@
         - <a href="{{urlRoot}}/api/mobile/android-launch-utils">AndroidLaunchUtils</a>
         - <a href="{{urlRoot}}/api/mobile/build-post-process-x-code">BuildPostProcessXCode</a>
         - <a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a>
+        - <a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a>
+        - <a href="{{urlRoot}}/api/mobile/device-type">DeviceType</a>
         - <a href="{{urlRoot}}/api/mobile/i-os-launch-utils">iOSLaunchUtils</a>
         - <a href="{{urlRoot}}/api/mobile/launch-arguments">LaunchArguments</a>
         - <a href="{{urlRoot}}/api/mobile/mobile-connection-flow-initializer">MobileConnectionFlowInitializer</a>
@@ -200,7 +202,6 @@
         - <a href="{{urlRoot}}/api/subscriptions/entity-game-object-linker">EntityGameObjectLinker</a>
         - <a href="{{urlRoot}}/api/subscriptions/entity-id-subscription-manager">EntityIdSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/entity-subscription-manager">EntitySubscriptionManager</a>
-        - <a href="{{urlRoot}}/api/subscriptions/entity-subscriptions">EntitySubscriptions</a>
         - <a href="{{urlRoot}}/api/subscriptions/indexed-callbacks">IndexedCallbacks</a>
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription">ISubscription</a>
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription-availability-handler">ISubscriptionAvailabilityHandler</a>
