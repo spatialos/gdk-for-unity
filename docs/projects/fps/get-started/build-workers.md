@@ -48,7 +48,7 @@ If you got build errors in Unity Editor Console window, check the Common build e
 
 ###### Missing build support components
 
-* You need **Linux** build support. This is because server-workers in a cloud deployment always run in a Linux environment. In the `Assets/Fps/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
+* You need **Linux** build support. This is because server-workers in a cloud deployment always run in a Linux environment. In the `Assets/Config/BuildConfiguration`, do not change the `UnityGameLogic Cloud Environment` from Linux.
 * You may need **Mac** build support if you are developing on a Windows PC and want to share your game with Mac users.<br/>
 * You may need **Windows** build support if you are developing on a Mac and want to share your game with Windows PC users. <br/>
 * Unity gives you build support for your development machine (Windows or Mac) by default.

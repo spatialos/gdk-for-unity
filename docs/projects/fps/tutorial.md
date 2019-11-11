@@ -41,13 +41,11 @@ To satisfy our design constraints, we need our health packs to contain some stat
 
 We write the definitions for these properties in [schemalang]({{urlRoot}}/reference/glossary#schema), a SpatialOS specific language. Let's do that now!
 
-**Step 1.** Using your file manager, navigate to `gdk-for-unity-fps-starter-project/`, then create a `schema` directory.
+**Step 1.** Using your file manager, navigate to the `gdk-for-unity-fps-starter-project/schema/` directory, then create a `pickups` directory.
 
-**Step 2.** Inside the `gdk-for-unity-fps-starter-project/schema/` directory, create a `pickups` directory.
+**Step 2.** Inside the `gdk-for-unity-fps-starter-project/schema/pickups/` directory, use a text editor of your choice to create a new file called `health_pickup.schema`.
 
-**Step 3.** Inside the `gdk-for-unity-fps-starter-project/schema/pickups/` directory, use a text editor of your choice to create a new file called `health_pickup.schema`.
-
-**Step 4.** Copy and paste the following definition into the file and save the file:
+**Step 3.** Copy and paste the following definition into the file and save the file:
 
 ```schemalang
 package pickups;
@@ -76,11 +74,7 @@ Each field in a component must have a unique id (within the component) which it 
 This allows us to maintain backwards compatibility when schema changes. See [schemalang reference](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/schema/reference#components) for more info.
 <%(/Expandable)%>
 
-**Step 5.** Add this folder to the GDK tools configuration.
-
-From your Unity Editor menu, select **SpatialOS** > **Gdk tools configuration**. In the **Schema sources** section inside the **Gdk tools configuration** window, add the path `../../schema` to the list of schema sources.
-
-**Step 6.** Run the code generator.
+**Step 4.** Run the code generator.
 
 From your Unity Editor menu, select **SpatialOS** > **Generate code** to invoke the code generator.
 
@@ -474,7 +468,6 @@ This script will contain the logic to listen for collisions, grant health to pla
 ```csharp
 using System.Collections;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Health;
 using Improbable.Gdk.Subscriptions;
 using Pickups;
 using UnityEngine;
@@ -531,7 +524,7 @@ namespace Fps
             collider.enabled = isActive;
             healthPickupWriter?.SendUpdate(new HealthPickup.Update
             {
-                IsActive = new Option<bool>(isActive)
+                IsActive = isActive
             });
         }
 
@@ -667,9 +660,9 @@ When a local deployment is running you can open the SpatialOS local inspector in
 
 By selecting the visual marker for an entity you can view its component values in the right-side panel, by expanding the `Components` section.
 
-Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace **improbable** > **gdk** > **health** > **HealthComponent** > **health**.
+Component values can be found by expanding the namespace for that component. For `Player` health you can find this under the namespace **fps** > **HealthComponent** > **health**.
 
-![A picture showing how the above looks]({{assetRoot}}assets/health-pickups-tutorial/inspect-health.jpg)
+![A picture showing how the above looks]({{assetRoot}}assets/health-pickups-tutorial/inspect-health.png)
 
 **Step 8.** Walk the damaged player over the health pack and check if it is consumed and applied.
 Once again, you can use the SpatialOS inspector to guide you if you aren't quite sure where on the map the player and the health pack are in relation to each other.
@@ -678,7 +671,7 @@ Once again, you can use the SpatialOS inspector to guide you if you aren't quite
 
 When the injured player collides with the health pack it should become invisible on the client. You can also check in the SpatialOS inspector to see whether the `HealthPickup` component for the health pack entity now shows its `IsActive` property value as `false`.
 
-Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace **improbable** > **gdk** > **health** > **HealthComponent** > **health**.
+Finally, using the SpatialOS inspector, check how much health the player has after walking through the health pack. The `Player` health component can be found under the namespace **fps** > **HealthComponent** > **health**.
 
 You should also see the health pack reappear after a short time.
 
