@@ -23,6 +23,11 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerId;
         public readonly Vector3 Origin;
 
+        /// <summary>
+        ///     Denotes whether the underlying worker is connected or not.
+        /// </summary>
+        public bool IsConnected => Worker.IsConnected;
+
         internal readonly View View;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
