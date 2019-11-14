@@ -6,7 +6,7 @@ Online games rely on all the clients and servers being able to connect and stay 
 
 ## Why disconnections happen
 
-### Unstable connection 
+### Unstable connection
 
 You need to ensure that [client-workers]({{urlRoot}}/reference/glossary#client-worker) won't end up in a bad state if their connections get too unstable. Note that there is a risk of the client disconnecting if the connection becomes too weak or unstable, so it is important to include logic in your game that detects and handles disconnects and provides ways of reconnecting your clients.
 
@@ -20,7 +20,7 @@ If the application has been closed, the user has to restart the application. The
 
 #### 2. The client stops sending data
 
-This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need to add a way for clients to reconnect to your game to handle this scenario. 
+This scenario is a bit more tricky. The application is still alive, however the OS may decide to not run the game or send any data while the application is in the background. [SpatialOS]({{urlRoot}}/reference/glossary#spatialos-runtime) will close the connection if it doesn't receive any messages from a client-worker for a period of time. You need to add a way for clients to reconnect to your game to handle this scenario.
 
 ## Types of disconnections in the GDK
 
@@ -28,7 +28,7 @@ This scenario is a bit more tricky. The application is still alive, however the 
 
 ### Heartbeating fails in the SpatialOS Runtime
 
-To ensure that a worker is still connected, the worker has to send messages to SpatialOS at a set interval. This indicates that the worker is still alive. If SpatialOS doesn't receive any messages for a while, it will close the connection to that worker. 
+To ensure that a worker is still connected, the worker has to send messages to SpatialOS at a set interval. This indicates that the worker is still alive. If SpatialOS doesn't receive any messages for a while, it will close the connection to that worker.
 
 Whenever the connection gets closed on a worker, that worker receives a `DisconnectOp` object. It contains the reason behind the disconnection and triggers a disconnect event in the GDK.
 
@@ -72,18 +72,19 @@ namespace YourGame
     // This MonoBehaviour needs to be placed on your player prefab.
     public class YourMonoBehaviour : MonoBehaviour
     {
-        // Make sure to store a reference to the client worker connector
-        private WorkerConnector workerConnector;
+        // Make sure to store a reference to the WorkerSystem, which can
+        // be accessed through the LinkedEntityComponent.
+        private WorkerSystem workerSystem;
 
         public void OnDestroy()
         {
-            if (workerConnector.Worker.IsConnected)
+            if (workerSystem.IsConnected)
             {
                 // the Player Lifecycle Feature Module deleted your player entity even though you are still connected.
                 // Destroying the worker connector will trigger a disconnect:
                 Destroy(workerConnector);
                 // Go back to your start screen to allow the client to reconnect
-            } 
+            }
         }
     }
 }
