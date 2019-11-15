@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Improbable.Gdk.Core.Editor;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
@@ -38,6 +40,9 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private List<DeploymentInfo> listedDeployments = new List<DeploymentInfo>();
         private int selectedListedDeploymentIndex;
+
+        private CancellationTokenSource saveTaskCancelSource;
+        private Task saveTask;
 
         [MenuItem("SpatialOS/Deployment Launcher", false, 51)]
         private static void LaunchDeploymentMenu()
@@ -76,6 +81,11 @@ namespace Improbable.Gdk.DeploymentLauncher
         private void OnExit()
         {
             manager.Cancel();
+
+            saveTaskCancelSource?.Cancel();
+
+            saveTask?.Dispose();
+            saveTaskCancelSource?.Dispose();
         }
 
         private void Update()
@@ -308,7 +318,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 if (check.changed)
                 {
                     EditorUtility.SetDirty(launcherConfig);
-                    AssetDatabase.SaveAssets();
+                    DeferSave();
                 }
 
                 if (manager.IsActive)
@@ -880,6 +890,29 @@ namespace Improbable.Gdk.DeploymentLauncher
             sb.Append("Assembly reloading locked.");
 
             return sb.ToString();
+        }
+
+        private async Task SaveFiles(TimeSpan interval, CancellationToken cancellationToken)
+        {
+            await Task.Delay(interval, cancellationToken);
+            if (EditorUtility.GetDirtyCount(launcherConfig) > 0)
+            {
+                Debug.Log("Saving files");
+                EditorUtility.SetDirty(launcherConfig);
+                AssetDatabase.SaveAssets();
+            }
+        }
+
+        private void DeferSave()
+        {
+            // cancel / dispose existing task if it exists
+            if (saveTaskCancelSource != null && !saveTaskCancelSource.IsCancellationRequested)
+            {
+                saveTaskCancelSource.Cancel();
+            }
+
+            saveTaskCancelSource = new CancellationTokenSource();
+            saveTask = SaveFiles(new TimeSpan(0, 0, 1), saveTaskCancelSource.Token);
         }
 
         private bool IsSelectedValid<T>(List<T> list, int index)
