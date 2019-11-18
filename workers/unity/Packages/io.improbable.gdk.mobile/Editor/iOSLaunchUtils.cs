@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Improbable.Gdk.Tools;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -80,33 +81,37 @@ namespace Improbable.Gdk.Mobile
             return (availableSimulators, availableDevices);
         }
 
-        public static void Build(string developmentTeamId)
+        public static void MenuBuild(string developmentTeamId)
         {
             try
             {
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Building your XCode project", 0f);
-
-                if (!Directory.Exists(XCodeProjectPath))
-                {
-                    Debug.LogError("Was not able to find an XCode project. Did you build your iOS worker?");
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(developmentTeamId))
-                {
-                    Debug.LogError("Development Team Id was not specified. Unable to build the XCode project.");
-                    return;
-                }
-
-                if (!TryBuildXCodeProject(developmentTeamId))
-                {
-                    Debug.LogError(
-                        $"Failed to build your XCode project. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
-                }
+                Build(developmentTeamId);
             }
             finally
             {
                 EditorUtility.ClearProgressBar();
+            }
+        }
+
+        public static void Build(string developmentTeamId = "")
+        {
+            if (!Directory.Exists(XCodeProjectPath))
+            {
+                throw new BuildFailedException($"Was not able to find an XCode project in {XCodeProjectPath}. Did you build your iOS worker?");
+            }
+
+            if (string.IsNullOrEmpty(developmentTeamId) && IsXCodeProjectForDevice())
+            {
+                throw new BuildFailedException("Development Team Id was not specified. Can't build this XCode project for device. " +
+                    "Either enter a Development Team Id or select the Simulator SDK as the target sdk.");
+            }
+
+            if (!TryBuildXCodeProject(developmentTeamId))
+            {
+                throw new BuildFailedException(
+                    $"Failed to build your XCode project. Make sure you have the Command line tools for XCode " +
+                    $"(https://developer.apple.com/download/more/) installed and check the Unity Editor logs.");
             }
         }
 
@@ -179,14 +184,30 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
+        private static bool IsXCodeProjectForDevice()
+        {
+            /*
+             * Unity adds multiple libraries to the XCode project. One of them is libiPhone-lib.
+             * This library will be a dylib, if the Unity project was built for simulator, and otherwise it will be a
+             * static library.
+             */
+            return File.Exists(Path.Combine(XCodeProjectPath, "Library", "libiPhone-lib.a"));
+        }
+
         private static bool TryBuildXCodeProject(string developmentTeamId)
         {
+            var teamIdArgs = string.Empty;
+            if (!string.IsNullOrEmpty(developmentTeamId))
+            {
+                teamIdArgs = $"DEVELOPMENT_TEAM={developmentTeamId}";
+            }
+
             return RedirectedProcess.Command("xcodebuild")
                 .WithArgs("build-for-testing",
                     "-project", Path.Combine(XCodeProjectPath, XCodeProjectFile),
                     "-derivedDataPath", DerivedDataPath,
                     "-scheme", "Unity-iPhone",
-                    $"DEVELOPMENT_TEAM={developmentTeamId}",
+                    teamIdArgs,
                     "-allowProvisioningUpdates")
                 .Run()
                 .ExitCode == 0;
