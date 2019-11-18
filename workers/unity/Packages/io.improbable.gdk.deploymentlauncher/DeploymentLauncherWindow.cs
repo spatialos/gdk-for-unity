@@ -86,7 +86,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void Update()
         {
-            SaveChanges();
+            TrySaveChanges();
 
             manager.Update();
 
@@ -894,7 +894,7 @@ namespace Improbable.Gdk.DeploymentLauncher
             lastEditTime = DateTime.Now;
         }
 
-        private void SaveChanges()
+        private void TrySaveChanges()
         {
             var timeSinceLastEdit = DateTime.Now - lastEditTime;
             if (EditorUtility.GetDirtyCount(launcherConfig) <= 0 || timeSinceLastEdit <= FileSavingInterval)
