@@ -9,7 +9,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.Mobile
 {
-    public static class AndroidLaunchUtils
+    public static class AndroidUtils
     {
         /*
             The regex below operates on output similar to the following:
