@@ -902,7 +902,6 @@ namespace Improbable.Gdk.DeploymentLauncher
                 return;
             }
 
-            Debug.Log("Saving Deployment Launcher configuration.");
             AssetDatabase.SaveAssets();
         }
 
