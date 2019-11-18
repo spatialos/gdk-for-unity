@@ -51,7 +51,7 @@ macos: &macos
     - "environment=production"
     - "permission_set=builder"
     - "platform=macos"
-    - "queue=macos_gdk-for-unity_1c3b18fc465d4f2b"
+    - "queue=macos_gdk-for-unity_d1dc2e1aa02ad07e"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
