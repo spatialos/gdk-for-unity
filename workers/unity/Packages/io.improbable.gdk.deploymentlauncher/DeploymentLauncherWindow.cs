@@ -4,8 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Improbable.Gdk.Core.Editor;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
@@ -24,9 +22,6 @@ namespace Improbable.Gdk.DeploymentLauncher
         private const string BuiltInRefreshIcon = "Refresh";
         private const string BuiltInWebIcon = "BuildSettings.Web.Small";
 
-        // Minimum time required from last config change before saving to file
-        private static readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
-
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
         private readonly Color horizontalLineColor = new Color(0.3f, 0.3f, 0.3f, 1);
         private Material spinnerMaterial;
@@ -44,9 +39,9 @@ namespace Improbable.Gdk.DeploymentLauncher
         private List<DeploymentInfo> listedDeployments = new List<DeploymentInfo>();
         private int selectedListedDeploymentIndex;
 
+        // Minimum time required from last config change before saving to file
+        private static readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
         private DateTime lastEditTime;
-        private CancellationTokenSource saveTaskCancelSource;
-        private Task saveTask;
 
         [MenuItem("SpatialOS/Deployment Launcher", false, 51)]
         private static void LaunchDeploymentMenu()
@@ -69,8 +64,6 @@ namespace Improbable.Gdk.DeploymentLauncher
                 MarkConfigAsDirty();
             }
 
-            StartFileSavingTask();
-
             spinnerMaterial = new Material(Shader.Find("UI/Default"));
 
             Application.quitting += OnExit;
@@ -85,46 +78,16 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void OnExit()
         {
-            StopFileSavingTask();
+            Debug.Log("Saving Deployment Launcher configuration before closing.");
+            AssetDatabase.SaveAssets();
 
             manager.Cancel();
         }
 
-        private void StartFileSavingTask()
-        {
-            saveTaskCancelSource = new CancellationTokenSource();
-            saveTask = FileSaver(saveTaskCancelSource.Token);
-        }
-
-        private async Task FileSaver(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Yield();
-
-                var timeSinceLastEdit = DateTime.Now - lastEditTime;
-                if (EditorUtility.GetDirtyCount(launcherConfig) <= 0 || timeSinceLastEdit <= FileSavingInterval)
-                {
-                    continue;
-                }
-
-                Debug.Log("Saving files");
-                AssetDatabase.SaveAssets();
-            }
-        }
-
-        private void StopFileSavingTask()
-        {
-            AssetDatabase.SaveAssets();
-
-            saveTaskCancelSource?.Cancel();
-
-            saveTask?.Dispose();
-            saveTaskCancelSource?.Dispose();
-        }
-
         private void Update()
         {
+            SaveChanges();
+
             manager.Update();
 
             foreach (var wrappedTask in manager.CompletedTasks.OfType<UploadTask>())
@@ -929,6 +892,18 @@ namespace Improbable.Gdk.DeploymentLauncher
         {
             EditorUtility.SetDirty(launcherConfig);
             lastEditTime = DateTime.Now;
+        }
+
+        private void SaveChanges()
+        {
+            var timeSinceLastEdit = DateTime.Now - lastEditTime;
+            if (EditorUtility.GetDirtyCount(launcherConfig) <= 0 || timeSinceLastEdit <= FileSavingInterval)
+            {
+                return;
+            }
+
+            Debug.Log("Saving Deployment Launcher configuration.");
+            AssetDatabase.SaveAssets();
         }
 
         private bool IsSelectedValid<T>(List<T> list, int index)
