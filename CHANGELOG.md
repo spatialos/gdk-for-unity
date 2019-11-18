@@ -13,7 +13,7 @@
 
 ### Internal
 
-- Updated port to connect to locator on from 444 -> 443
+- Updated port to connect to locator on from 444 -> 443. [#1220](https://github.com/spatialos/gdk-for-unity/pull/1220)
 
 ## `0.3.0` - 2019-11-11
 
