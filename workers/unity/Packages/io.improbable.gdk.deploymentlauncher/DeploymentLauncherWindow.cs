@@ -24,6 +24,9 @@ namespace Improbable.Gdk.DeploymentLauncher
         private const string BuiltInRefreshIcon = "Refresh";
         private const string BuiltInWebIcon = "BuildSettings.Web.Small";
 
+        // Minimum time required from last config change before saving to file
+        private static readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
+
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
         private readonly Color horizontalLineColor = new Color(0.3f, 0.3f, 0.3f, 1);
         private Material spinnerMaterial;
@@ -41,6 +44,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         private List<DeploymentInfo> listedDeployments = new List<DeploymentInfo>();
         private int selectedListedDeploymentIndex;
 
+        private DateTime lastEditTime;
         private CancellationTokenSource saveTaskCancelSource;
         private Task saveTask;
 
@@ -62,9 +66,10 @@ namespace Improbable.Gdk.DeploymentLauncher
             if (launcherConfig != null && projectName != null)
             {
                 launcherConfig.SetProjectName(projectName);
-                EditorUtility.SetDirty(launcherConfig);
-                AssetDatabase.SaveAssets();
+                MarkConfigAsDirty();
             }
+
+            StartFileSavingTask();
 
             spinnerMaterial = new Material(Shader.Find("UI/Default"));
 
@@ -80,7 +85,37 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void OnExit()
         {
+            StopFileSavingTask();
+
             manager.Cancel();
+        }
+
+        private void StartFileSavingTask()
+        {
+            saveTaskCancelSource = new CancellationTokenSource();
+            saveTask = FileSaver(saveTaskCancelSource.Token);
+        }
+
+        private async Task FileSaver(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Yield();
+
+                var timeSinceLastEdit = DateTime.Now - lastEditTime;
+                if (EditorUtility.GetDirtyCount(launcherConfig) <= 0 || timeSinceLastEdit <= FileSavingInterval)
+                {
+                    continue;
+                }
+
+                Debug.Log("Saving files");
+                AssetDatabase.SaveAssets();
+            }
+        }
+
+        private void StopFileSavingTask()
+        {
+            AssetDatabase.SaveAssets();
 
             saveTaskCancelSource?.Cancel();
 
@@ -233,8 +268,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                         {
                             projectName = GetProjectName();
                             launcherConfig.SetProjectName(projectName);
-                            EditorUtility.SetDirty(launcherConfig);
-                            AssetDatabase.SaveAssets();
+                            MarkConfigAsDirty();
                         }
                     }
 
@@ -317,8 +351,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                 if (check.changed)
                 {
-                    EditorUtility.SetDirty(launcherConfig);
-                    DeferSave();
+                    MarkConfigAsDirty();
                 }
 
                 if (manager.IsActive)
@@ -892,27 +925,10 @@ namespace Improbable.Gdk.DeploymentLauncher
             return sb.ToString();
         }
 
-        private async Task SaveFiles(TimeSpan interval, CancellationToken cancellationToken)
+        private void MarkConfigAsDirty()
         {
-            await Task.Delay(interval, cancellationToken);
-            if (EditorUtility.GetDirtyCount(launcherConfig) > 0)
-            {
-                Debug.Log("Saving files");
-                EditorUtility.SetDirty(launcherConfig);
-                AssetDatabase.SaveAssets();
-            }
-        }
-
-        private void DeferSave()
-        {
-            // cancel / dispose existing task if it exists
-            if (saveTaskCancelSource != null && !saveTaskCancelSource.IsCancellationRequested)
-            {
-                saveTaskCancelSource.Cancel();
-            }
-
-            saveTaskCancelSource = new CancellationTokenSource();
-            saveTask = SaveFiles(new TimeSpan(0, 0, 1), saveTaskCancelSource.Token);
+            EditorUtility.SetDirty(launcherConfig);
+            lastEditTime = DateTime.Now;
         }
 
         private bool IsSelectedValid<T>(List<T> list, int index)
