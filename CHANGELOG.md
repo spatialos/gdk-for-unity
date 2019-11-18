@@ -8,8 +8,8 @@
 
 ### Fixed
 
-- The Deployment Launcher window no longer saves changes after every input. [#1219](https://github.com/spatialos/gdk-for-unity/pull/1219)
-    - It will now wait for at least 1 second to elapse after the last change before writing the config back to disk.
+- Fixed an issue where the Deployment Launcher window would feel unresponsive due to saving changes after every input. [#1219](https://github.com/spatialos/gdk-for-unity/pull/1219)
+    - It will now wait for at least 1 second to elapse after the last change before writing the configuration back to disk.
 
 ## `0.3.0` - 2019-11-11
 
