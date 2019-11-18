@@ -78,7 +78,6 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void OnExit()
         {
-            Debug.Log("Saving Deployment Launcher configuration before closing.");
             AssetDatabase.SaveAssets();
 
             manager.Cancel();
