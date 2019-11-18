@@ -29,6 +29,7 @@ namespace Improbable.Gdk.BuildSystem
         // ReSharper disable once UnusedMember.Global
         public static void Build()
         {
+            var currentSdkVersion = PlayerSettings.iOS.sdkVersion;
             try
             {
                 var args = CommandLineArgs.FromCommandLine();
@@ -93,11 +94,33 @@ namespace Improbable.Gdk.BuildSystem
                         throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
                 }
 
-                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, buildTargetFilter, scriptingBackend);
+                var targetSdkArg = args.GetCommandLineValue("targetiOSSdk", string.Empty);
+                if (!string.IsNullOrEmpty(targetSdkArg))
+                {
+                    iOSSdkVersion version;
+                    switch (targetSdkArg.ToLower())
+                    {
+                        case "device":
+                            version = iOSSdkVersion.DeviceSDK;
+                            break;
+                        case "simulator":
+                            version = iOSSdkVersion.SimulatorSDK;
+                            break;
+                        default:
+                            throw new BuildFailedException("Unknown target SDK value: " + targetSdkArg);
+                    }
+
+                    Debug.Log($"Setting target sdk to {version}");
+                    PlayerSettings.iOS.sdkVersion = version;
+                }
+
+                var buildsSucceeded = BuildWorkers(wantedWorkerTypes, buildEnvironment, buildTargetFilter,
+                    scriptingBackend);
 
                 if (!buildsSucceeded)
                 {
-                    throw new BuildFailedException("Not all builds were completed successfully. See the log for more information.");
+                    throw new BuildFailedException(
+                        "Not all builds were completed successfully. See the log for more information.");
                 }
             }
             catch (Exception e)
@@ -109,6 +132,10 @@ namespace Improbable.Gdk.BuildSystem
                 }
 
                 throw new BuildFailedException(e);
+            }
+            finally
+            {
+                PlayerSettings.iOS.sdkVersion = currentSdkVersion;
             }
         }
 
@@ -167,7 +194,8 @@ namespace Improbable.Gdk.BuildSystem
                 var workerResults = new Dictionary<string, bool>();
                 foreach (var wantedWorkerType in workerTypes)
                 {
-                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, buildTargetFilter, scriptingBackend);
+                    var result = BuildWorkerForEnvironment(wantedWorkerType, buildEnvironment, buildTargetFilter,
+                        scriptingBackend);
                     workerResults[wantedWorkerType] = result;
                 }
 
@@ -205,7 +233,8 @@ namespace Improbable.Gdk.BuildSystem
             ScriptingImplementation? scriptingBackend = null)
         {
             var spatialOSBuildConfiguration = BuildConfig.GetInstance();
-            var environmentConfig = spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, buildEnvironment);
+            var environmentConfig =
+                spatialOSBuildConfiguration.GetEnvironmentConfigForWorker(workerType, buildEnvironment);
 
             var targetConfigs = buildTargetFilter == null
                 ? environmentConfig?.BuildTargets.Where(t => t.Enabled)
@@ -236,7 +265,8 @@ namespace Improbable.Gdk.BuildSystem
                         PlayerSettings.SetScriptingBackend(buildTargetGroup, scriptingBackend.Value);
                     }
 
-                    hasBuildSucceeded &= BuildWorkerForTarget(workerType, buildEnvironment, config.Target, config.Options);
+                    hasBuildSucceeded &=
+                        BuildWorkerForTarget(workerType, buildEnvironment, config.Target, config.Options);
                 }
                 catch (Exception e)
                 {
@@ -292,7 +322,8 @@ namespace Improbable.Gdk.BuildSystem
                         $"Build failed for {workerType}. Cannot build for required {buildTarget} because build support is not installed in the Unity Editor.");
                 }
 
-                Debug.LogWarning($"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
+                Debug.LogWarning(
+                    $"Skipping {buildTarget} because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
                 return false;
             }
 
