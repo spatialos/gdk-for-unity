@@ -39,6 +39,10 @@ namespace Improbable.Gdk.DeploymentLauncher
         private List<DeploymentInfo> listedDeployments = new List<DeploymentInfo>();
         private int selectedListedDeploymentIndex;
 
+        // Minimum time required from last config change before saving to file
+        private static readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
+        private DateTime lastEditTime;
+
         [MenuItem("SpatialOS/Deployment Launcher", false, 51)]
         private static void LaunchDeploymentMenu()
         {
@@ -57,8 +61,7 @@ namespace Improbable.Gdk.DeploymentLauncher
             if (launcherConfig != null && projectName != null)
             {
                 launcherConfig.SetProjectName(projectName);
-                EditorUtility.SetDirty(launcherConfig);
-                AssetDatabase.SaveAssets();
+                MarkConfigAsDirty();
             }
 
             spinnerMaterial = new Material(Shader.Find("UI/Default"));
@@ -75,11 +78,15 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void OnExit()
         {
+            AssetDatabase.SaveAssets();
+
             manager.Cancel();
         }
 
         private void Update()
         {
+            TrySaveChanges();
+
             manager.Update();
 
             foreach (var wrappedTask in manager.CompletedTasks.OfType<UploadTask>())
@@ -223,8 +230,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                         {
                             projectName = GetProjectName();
                             launcherConfig.SetProjectName(projectName);
-                            EditorUtility.SetDirty(launcherConfig);
-                            AssetDatabase.SaveAssets();
+                            MarkConfigAsDirty();
                         }
                     }
 
@@ -307,8 +313,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                 if (check.changed)
                 {
-                    EditorUtility.SetDirty(launcherConfig);
-                    AssetDatabase.SaveAssets();
+                    MarkConfigAsDirty();
                 }
 
                 if (manager.IsActive)
@@ -880,6 +885,23 @@ namespace Improbable.Gdk.DeploymentLauncher
             sb.Append("Assembly reloading locked.");
 
             return sb.ToString();
+        }
+
+        private void MarkConfigAsDirty()
+        {
+            EditorUtility.SetDirty(launcherConfig);
+            lastEditTime = DateTime.Now;
+        }
+
+        private void TrySaveChanges()
+        {
+            var timeSinceLastEdit = DateTime.Now - lastEditTime;
+            if (EditorUtility.GetDirtyCount(launcherConfig) <= 0 || timeSinceLastEdit <= FileSavingInterval)
+            {
+                return;
+            }
+
+            AssetDatabase.SaveAssets();
         }
 
         private bool IsSelectedValid<T>(List<T> list, int index)
