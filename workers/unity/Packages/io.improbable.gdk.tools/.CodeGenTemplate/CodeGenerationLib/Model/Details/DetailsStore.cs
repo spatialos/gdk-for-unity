@@ -95,9 +95,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(kv =>
                 {
                     kv.Value.PopulateFields(this);
-                    kv.Value.ResolveClashes();
                     return kv;
-                }));
+                })
+                .Where(kv => kv.Value.IsValid()));
 
             RemoveRecursiveOptions();
         }

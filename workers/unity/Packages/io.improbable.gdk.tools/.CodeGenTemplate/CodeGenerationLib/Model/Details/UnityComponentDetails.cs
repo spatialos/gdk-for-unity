@@ -53,29 +53,32 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             }
         }
 
-        public void ResolveClashes()
+        public bool IsValid()
         {
+            var isValid = true;
             var componentName = ComponentName;
 
             var clashingCommands = CommandDetails
                 .Where(commandDetail => commandDetail.CommandName.Equals(componentName));
             foreach (var clashingCommand in clashingCommands)
             {
-                Console.WriteLine(
-                    $"Resolving issue in component \"{componentName}\". " +
+                isValid = false;
+                Console.Error.WriteLine(
+                    $"Error in component \"{componentName}\". " +
                     $"Command \"{clashingCommand.RawCommandName}\" clashes with component name.");
-                clashingCommand.ResolveClash();
             }
 
             var clashingEvents = EventDetails
                 .Where(eventDetail => eventDetail.EventName.Equals(componentName));
             foreach (var clashingEvent in clashingEvents)
             {
-                Console.WriteLine(
-                    $"Resolving issue in component \"{componentName}\". " +
+                isValid = false;
+                Console.Error.WriteLine(
+                    $"Error in component \"{componentName}\". " +
                     $"Event \"{clashingEvent.RawEventName}\" clashes with component name.");
-                clashingEvent.ResolveClash();
             }
+
+            return isValid;
         }
     }
 }

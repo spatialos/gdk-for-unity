@@ -4,9 +4,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityCommandDetails
     {
-        public string RawCommandName { get; private set; }
-        public string CommandName { get; private set; }
-        public string CamelCaseCommandName { get; private set; }
+        public string RawCommandName { get; }
+        public string CommandName { get; }
+        public string CamelCaseCommandName { get; }
 
         public string FqnRequestType { get; }
         public string FqnResponseType { get; }
@@ -15,7 +15,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public UnityCommandDetails(ComponentDefinition.CommandDefinition commandDefinitionRaw)
         {
-            SetNames(commandDefinitionRaw.Name);
+            RawCommandName = commandDefinitionRaw.Name;
+            CommandName = Formatting.SnakeCaseToPascalCase(RawCommandName);
+            CamelCaseCommandName = Formatting.PascalCaseToCamelCase(CommandName);
 
             FqnRequestType =
                 CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.RequestType);
@@ -23,18 +25,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.ResponseType);
 
             CommandIndex = commandDefinitionRaw.CommandIndex;
-        }
-
-        public void ResolveClash()
-        {
-            SetNames(RawCommandName + "_command");
-        }
-
-        private void SetNames(string rawCommandName)
-        {
-            RawCommandName = rawCommandName;
-            CommandName = Formatting.SnakeCaseToPascalCase(RawCommandName);
-            CamelCaseCommandName = Formatting.PascalCaseToCamelCase(CommandName);
         }
     }
 }
