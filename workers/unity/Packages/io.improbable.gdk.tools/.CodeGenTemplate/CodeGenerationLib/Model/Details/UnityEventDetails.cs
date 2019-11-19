@@ -7,6 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string EventName { get; }
         public string CamelCaseEventName { get; }
         public string FqnPayloadType { get; }
+        public string RawEventName { get; }
         public uint EventIndex { get; }
 
         public UnityEventDetails(ComponentDefinition.EventDefinition eventDefinitionRaw)
@@ -14,6 +15,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             EventName = Formatting.SnakeCaseToPascalCase(eventDefinitionRaw.Name);
             CamelCaseEventName = Formatting.PascalCaseToCamelCase(EventName);
             FqnPayloadType = CommonDetailsUtils.GetCapitalisedFqnTypename(eventDefinitionRaw.Type);
+
+            RawEventName = eventDefinitionRaw.Name;
             EventIndex = eventDefinitionRaw.EventIndex;
         }
     }

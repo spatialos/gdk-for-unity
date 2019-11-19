@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
@@ -81,16 +82,22 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
 
-            foreach (var kv in Types)
-            {
-                kv.Value.PopulateFields(this);
-                kv.Value.PopulateChildren(this);
-            }
+            Types = new Dictionary<string, UnityTypeDetails>(types
+                .Select(kv =>
+                {
+                    kv.Value.PopulateFields(this);
+                    kv.Value.PopulateChildren(this);
+                    return kv;
+                })
+                .Where(IsValidType));
 
-            foreach (var kv in Components)
-            {
-                kv.Value.PopulateFields(this);
-            }
+            Components = new Dictionary<string, UnityComponentDetails>(components
+                .Select(kv =>
+                {
+                    kv.Value.PopulateFields(this);
+                    return kv;
+                })
+                .Where(IsValidComponent));
 
             RemoveRecursiveOptions();
         }
@@ -240,6 +247,65 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     .ToList()
                     .AsReadOnly();
             }
+        }
+
+        private bool IsValidType(KeyValuePair<string, UnityTypeDetails> typeInfo)
+        {
+            var isValid = true;
+            var typeName = typeInfo.Value.CapitalisedName;
+
+            foreach (var fieldDetail in typeInfo.Value.FieldDetails)
+            {
+                var clashingChildEnums = typeInfo.Value.ChildEnums
+                    .Where(childEnum => fieldDetail.PascalCaseName.Equals(childEnum.TypeName));
+                foreach (var childEnum in clashingChildEnums)
+                {
+                    isValid = false;
+                    Console.Error.WriteLine(
+                        $"Error in type \"{typeName}\". " +
+                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
+                }
+
+                var clashingChildTypes = typeInfo.Value.ChildTypes
+                    .Where(childType => fieldDetail.PascalCaseName.Equals(childType.CapitalisedName));
+                foreach (var childType in clashingChildTypes)
+                {
+                    isValid = false;
+                    Console.Error.WriteLine(
+                        $"Error in type \"{typeName}\". " +
+                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
+                }
+            }
+
+            return isValid;
+        }
+
+        private bool IsValidComponent(KeyValuePair<string, UnityComponentDetails> componentInfo)
+        {
+            var isValid = true;
+            var componentName = componentInfo.Value.ComponentName;
+
+            var clashingCommands = componentInfo.Value.CommandDetails
+                .Where(commandDetail => commandDetail.CommandName.Equals(componentName));
+            foreach (var clashingCommand in clashingCommands)
+            {
+                isValid = false;
+                Console.Error.WriteLine(
+                    $"Error in component \"{componentName}\". " +
+                    $"Command \"{clashingCommand.RawCommandName}\" clashes with component name.");
+            }
+
+            var clashingEvents = componentInfo.Value.EventDetails
+                .Where(eventDetail => eventDetail.EventName.Equals(componentName));
+            foreach (var clashingEvent in clashingEvents)
+            {
+                isValid = false;
+                Console.Error.WriteLine(
+                    $"Error in component \"{componentName}\". " +
+                    $"Event \"{clashingEvent.RawEventName}\" clashes with component name.");
+            }
+
+            return isValid;
         }
     }
 }

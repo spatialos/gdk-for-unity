@@ -9,6 +9,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public string FqnRequestType { get; }
         public string FqnResponseType { get; }
+        public string RawCommandName { get; }
 
         public uint CommandIndex { get; }
 
@@ -21,6 +22,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             FqnResponseType =
                 CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.ResponseType);
 
+            RawCommandName = commandDefinitionRaw.Name;
             CommandIndex = commandDefinitionRaw.CommandIndex;
         }
     }
