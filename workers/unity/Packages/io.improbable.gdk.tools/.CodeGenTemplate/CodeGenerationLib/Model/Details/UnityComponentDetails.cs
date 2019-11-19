@@ -61,20 +61,20 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Where(commandDetail => commandDetail.CommandName.Equals(componentName));
             foreach (var clashingCommand in clashingCommands)
             {
-                clashingCommand.ResolveClash();
                 Console.WriteLine(
                     $"Resolving issue in component \"{componentName}\". " +
                     $"Command \"{clashingCommand.RawCommandName}\" clashes with component name.");
+                clashingCommand.ResolveClash();
             }
 
             var clashingEvents = EventDetails
                 .Where(eventDetail => eventDetail.EventName.Equals(componentName));
             foreach (var clashingEvent in clashingEvents)
             {
-                clashingEvent.ResolveClash();
                 Console.WriteLine(
                     $"Resolving issue in component \"{componentName}\". " +
                     $"Event \"{clashingEvent.RawEventName}\" clashes with component name.");
+                clashingEvent.ResolveClash();
             }
         }
     }
