@@ -1,8 +1,6 @@
 // Wait, that's illegal!
 
-package playground;
-
-import "improbable/gdk/core/common.schema";
+package improbable.gdk.test;
 
 type InvalidTypeWithNesting {
     enum NestedEnum {
@@ -27,6 +25,6 @@ component InvalidComponentCommand
 
 component InvalidComponentEvent
 {
-    id=12499;
+    id=12599;
     event EmptyType invalid_component_event;
 }
