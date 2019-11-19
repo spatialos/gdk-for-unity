@@ -89,15 +89,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     kv.Value.PopulateChildren(this);
                     return kv;
                 })
-                .Where(IsValidType));
+                .Where(kv => kv.Value.IsValid()));
 
             Components = new Dictionary<string, UnityComponentDetails>(components
                 .Select(kv =>
                 {
                     kv.Value.PopulateFields(this);
+                    kv.Value.ResolveClashes();
                     return kv;
-                })
-                .Where(IsValidComponent));
+                }));
 
             RemoveRecursiveOptions();
         }
@@ -247,65 +247,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     .ToList()
                     .AsReadOnly();
             }
-        }
-
-        private bool IsValidType(KeyValuePair<string, UnityTypeDetails> typeInfo)
-        {
-            var isValid = true;
-            var typeName = typeInfo.Value.CapitalisedName;
-
-            foreach (var fieldDetail in typeInfo.Value.FieldDetails)
-            {
-                var clashingChildEnums = typeInfo.Value.ChildEnums
-                    .Where(childEnum => fieldDetail.PascalCaseName.Equals(childEnum.TypeName));
-                foreach (var childEnum in clashingChildEnums)
-                {
-                    isValid = false;
-                    Console.Error.WriteLine(
-                        $"Error in type \"{typeName}\". " +
-                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
-                }
-
-                var clashingChildTypes = typeInfo.Value.ChildTypes
-                    .Where(childType => fieldDetail.PascalCaseName.Equals(childType.CapitalisedName));
-                foreach (var childType in clashingChildTypes)
-                {
-                    isValid = false;
-                    Console.Error.WriteLine(
-                        $"Error in type \"{typeName}\". " +
-                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
-                }
-            }
-
-            return isValid;
-        }
-
-        private bool IsValidComponent(KeyValuePair<string, UnityComponentDetails> componentInfo)
-        {
-            var isValid = true;
-            var componentName = componentInfo.Value.ComponentName;
-
-            var clashingCommands = componentInfo.Value.CommandDetails
-                .Where(commandDetail => commandDetail.CommandName.Equals(componentName));
-            foreach (var clashingCommand in clashingCommands)
-            {
-                isValid = false;
-                Console.Error.WriteLine(
-                    $"Error in component \"{componentName}\". " +
-                    $"Command \"{clashingCommand.RawCommandName}\" clashes with component name.");
-            }
-
-            var clashingEvents = componentInfo.Value.EventDetails
-                .Where(eventDetail => eventDetail.EventName.Equals(componentName));
-            foreach (var clashingEvent in clashingEvents)
-            {
-                isValid = false;
-                Console.Error.WriteLine(
-                    $"Error in component \"{componentName}\". " +
-                    $"Event \"{clashingEvent.RawEventName}\" clashes with component name.");
-            }
-
-            return isValid;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Utils;
@@ -60,6 +61,37 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(field => new UnityFieldDetails(field, store))
                 .ToList()
                 .AsReadOnly();
+        }
+
+        public bool IsValid()
+        {
+            var isValid = true;
+            var typeName = CapitalisedName;
+
+            foreach (var fieldDetail in FieldDetails)
+            {
+                var clashingChildEnums = ChildEnums
+                    .Where(childEnum => fieldDetail.PascalCaseName.Equals(childEnum.TypeName));
+                foreach (var childEnum in clashingChildEnums)
+                {
+                    isValid = false;
+                    Console.Error.WriteLine(
+                        $"Error in type \"{typeName}\". " +
+                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
+                }
+
+                var clashingChildTypes = ChildTypes
+                    .Where(childType => fieldDetail.PascalCaseName.Equals(childType.CapitalisedName));
+                foreach (var childType in clashingChildTypes)
+                {
+                    isValid = false;
+                    Console.Error.WriteLine(
+                        $"Error in type \"{typeName}\". " +
+                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
+                }
+            }
+
+            return isValid;
         }
     }
 
