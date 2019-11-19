@@ -1,0 +1,29 @@
+package playground;
+
+import "improbable/gdk/core/common.schema";
+
+component EventFailure
+{
+	id = 12099;
+
+    //INVALID
+	event improbable.gdk.core.Empty event_failure;
+}
+
+type CommandFailureResponse {}
+type CommandFailureRequest {}
+component CommandFailure
+{
+	id = 12199;
+
+    //INVALID
+    command CommandFailureResponse command_failure(CommandFailureRequest);
+}
+
+component FieldFailure
+{
+	id = 12299;
+
+    //this is valid
+	double field_failure = 1;
+}
