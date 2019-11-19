@@ -7,10 +7,7 @@ type InvalidTypeWithNesting {
         SUCCESS = 0;
         FAILURE = 1;
     }
-    type NestedType {
-        SUCCESS = 0;
-        FAILURE = 1;
-    }
+    type NestedType {}
     NestedEnum nested_enum = 1;
     NestedType nested_type = 2;
 }
