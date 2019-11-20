@@ -13,8 +13,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public bool IsBlittable { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
-        public IReadOnlyList<UnityCommandDetails> CommandDetails { get; }
-        public IReadOnlyList<UnityEventDetails> EventDetails { get; }
+        public IReadOnlyList<UnityCommandDetails> CommandDetails { get; private set; }
+        public IReadOnlyList<UnityEventDetails> EventDetails { get; private set; }
 
         private ComponentDefinition raw;
 
@@ -27,11 +27,33 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             CommandDetails = componentDefinitionRaw.Commands
                 .Select(command => new UnityCommandDetails(command))
+                .Where(commandDetail =>
+                {
+                    // Return true to keep commands that do not have a name clash with the component
+                    if (!commandDetail.CommandName.Equals(ComponentName))
+                    {
+                        return true;
+                    }
+
+                    Console.Error.WriteLine($"Error in component \"{ComponentName}\". Command \"{commandDetail.RawCommandName}\" clashes with component name.");
+                    return false;
+                })
                 .ToList()
                 .AsReadOnly();
 
             EventDetails = componentDefinitionRaw.Events
                 .Select(ev => new UnityEventDetails(ev))
+                .Where(eventDetail =>
+                {
+                    // Return true to keep events that do not have a name clash with the component
+                    if (!eventDetail.EventName.Equals(ComponentName))
+                    {
+                        return true;
+                    }
+
+                    Console.Error.WriteLine($"Error in component \"{ComponentName}\". Event \"{eventDetail.RawEventName}\" clashes with component name.");
+                    return false;
+                })
                 .ToList()
                 .AsReadOnly();
 
@@ -51,34 +73,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     .ToList()
                     .AsReadOnly();
             }
-        }
-
-        public bool IsValid()
-        {
-            var isValid = true;
-            var componentName = ComponentName;
-
-            var clashingCommands = CommandDetails
-                .Where(commandDetail => commandDetail.CommandName.Equals(componentName));
-            foreach (var clashingCommand in clashingCommands)
-            {
-                isValid = false;
-                Console.Error.WriteLine(
-                    $"Error in component \"{componentName}\". " +
-                    $"Command \"{clashingCommand.RawCommandName}\" clashes with component name.");
-            }
-
-            var clashingEvents = EventDetails
-                .Where(eventDetail => eventDetail.EventName.Equals(componentName));
-            foreach (var clashingEvent in clashingEvents)
-            {
-                isValid = false;
-                Console.Error.WriteLine(
-                    $"Error in component \"{componentName}\". " +
-                    $"Event \"{clashingEvent.RawEventName}\" clashes with component name.");
-            }
-
-            return isValid;
         }
     }
 }

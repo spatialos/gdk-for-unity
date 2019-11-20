@@ -82,22 +82,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
 
-            Types = new Dictionary<string, UnityTypeDetails>(types
-                .Select(kv =>
-                {
-                    kv.Value.PopulateFields(this);
-                    kv.Value.PopulateChildren(this);
-                    return kv;
-                })
-                .Where(kv => kv.Value.IsValid()));
+            foreach (var type in Types)
+            {
+                type.Value.Populate(this);
+            }
 
-            Components = new Dictionary<string, UnityComponentDetails>(components
-                .Select(kv =>
-                {
-                    kv.Value.PopulateFields(this);
-                    return kv;
-                })
-                .Where(kv => kv.Value.IsValid()));
+            foreach (var component in Components)
+            {
+                component.Value.PopulateFields(this);
+            }
 
             RemoveRecursiveOptions();
         }

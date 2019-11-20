@@ -38,7 +38,13 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return FullyQualifiedTypeName.Split("::")[1];
         }
 
-        public void PopulateChildren(DetailsStore store)
+        public void Populate(DetailsStore store)
+        {
+            PopulateChildren(store);
+            PopulateFields(store);
+        }
+
+        private void PopulateChildren(DetailsStore store)
         {
             var children = store.GetNestedTypes(raw.QualifiedName);
 
@@ -55,43 +61,43 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .AsReadOnly();
         }
 
-        public void PopulateFields(DetailsStore store)
+        private void PopulateFields(DetailsStore store)
         {
             FieldDetails = raw.Fields
                 .Select(field => new UnityFieldDetails(field, store))
+                .Where(fieldDetail =>
+                {
+                    var clashingChildEnums = ChildEnums
+                        .Where(childEnum =>
+                        {
+                            // When field does not clash with child enum, return false
+                            if (!fieldDetail.PascalCaseName.Equals(childEnum.TypeName))
+                            {
+                                return false;
+                            }
+
+                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
+                            return true;
+                        });
+
+                    var clashingChildTypes = ChildTypes
+                        .Where(childType =>
+                        {
+                            // When field does not clash with child type, return false
+                            if (!fieldDetail.PascalCaseName.Equals(childType.CapitalisedName))
+                            {
+                                return false;
+                            }
+
+                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
+                            return true;
+                        });
+
+                    // Only return true if the field has no name clashes with child enums and types
+                    return !clashingChildEnums.Any() && !clashingChildTypes.Any();
+                })
                 .ToList()
                 .AsReadOnly();
-        }
-
-        public bool IsValid()
-        {
-            var isValid = true;
-            var typeName = CapitalisedName;
-
-            foreach (var fieldDetail in FieldDetails)
-            {
-                var clashingChildEnums = ChildEnums
-                    .Where(childEnum => fieldDetail.PascalCaseName.Equals(childEnum.TypeName));
-                foreach (var childEnum in clashingChildEnums)
-                {
-                    isValid = false;
-                    Console.Error.WriteLine(
-                        $"Error in type \"{typeName}\". " +
-                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
-                }
-
-                var clashingChildTypes = ChildTypes
-                    .Where(childType => fieldDetail.PascalCaseName.Equals(childType.CapitalisedName));
-                foreach (var childType in clashingChildTypes)
-                {
-                    isValid = false;
-                    Console.Error.WriteLine(
-                        $"Error in type \"{typeName}\". " +
-                        $"Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
-                }
-            }
-
-            return isValid;
         }
     }
 
