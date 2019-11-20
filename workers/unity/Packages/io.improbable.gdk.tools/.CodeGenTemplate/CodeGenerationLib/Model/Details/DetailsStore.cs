@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
@@ -82,14 +81,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
 
-            foreach (var type in Types)
+            foreach (var kv in Types)
             {
-                type.Value.Populate(this);
+                kv.Value.Populate(this);
             }
 
-            foreach (var component in Components)
+            foreach (var kv in Components)
             {
-                component.Value.PopulateFields(this);
+                kv.Value.PopulateFields(this);
             }
 
             RemoveRecursiveOptions();
