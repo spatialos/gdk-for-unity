@@ -1,0 +1,27 @@
+// Wait, that's illegal!
+
+package improbable.gdk.test;
+
+type InvalidTypeWithNesting {
+    enum NestedEnum {
+        SUCCESS = 0;
+        FAILURE = 1;
+    }
+    type NestedType {}
+    NestedEnum nested_enum = 1;
+    NestedType nested_type = 2;
+}
+
+type EmptyType {}
+
+component InvalidComponentCommand
+{
+    id=12499;
+    command EmptyType invalid_component_command(EmptyType);
+}
+
+component InvalidComponentEvent
+{
+    id=12599;
+    event EmptyType invalid_component_event;
+}

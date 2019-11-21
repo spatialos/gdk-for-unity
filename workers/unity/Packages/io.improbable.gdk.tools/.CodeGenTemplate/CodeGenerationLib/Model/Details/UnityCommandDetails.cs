@@ -4,6 +4,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityCommandDetails
     {
+        public string RawCommandName { get; }
         public string CommandName { get; }
         public string CamelCaseCommandName { get; }
 
@@ -14,8 +15,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public UnityCommandDetails(ComponentDefinition.CommandDefinition commandDefinitionRaw)
         {
-            CommandName = Formatting.SnakeCaseToPascalCase(commandDefinitionRaw.Name);
+            RawCommandName = commandDefinitionRaw.Name;
+            CommandName = Formatting.SnakeCaseToPascalCase(RawCommandName);
             CamelCaseCommandName = Formatting.PascalCaseToCamelCase(CommandName);
+
             FqnRequestType =
                 CommonDetailsUtils.GetCapitalisedFqnTypename(commandDefinitionRaw.RequestType);
             FqnResponseType =

@@ -157,6 +157,7 @@ namespace Improbable.Gdk.Tools
                         .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
                         .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
+                        .AddErrorProcessing(Debug.LogError)
                         .AddOutputProcessing(ProcessStdOut)
                         .Run();
 

@@ -83,8 +83,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             foreach (var kv in Types)
             {
-                kv.Value.PopulateFields(this);
-                kv.Value.PopulateChildren(this);
+                kv.Value.Populate(this);
             }
 
             foreach (var kv in Components)
