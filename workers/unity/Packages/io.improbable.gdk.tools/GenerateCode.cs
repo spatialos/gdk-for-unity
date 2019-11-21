@@ -149,12 +149,13 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+                var loggerOutputPath = Path.Combine(CodegenExeDirectory, "codegen-output.log");
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
                     var errorMessage = new StringBuilder();
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
-                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath))
+                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
                         .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
                         .AddErrorProcessing(Debug.LogError)
@@ -217,7 +218,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath)
+        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string loggerOutputPath)
         {
             var baseArgs = new List<string>
             {
@@ -227,7 +228,8 @@ namespace Improbable.Gdk.Tools
                 "--",
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
-                $"--worker-json-dir=\"{workerJsonPath}\""
+                $"--worker-json-dir=\"{workerJsonPath}\"",
+                $"--logger-output-dir=\"{loggerOutputPath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();

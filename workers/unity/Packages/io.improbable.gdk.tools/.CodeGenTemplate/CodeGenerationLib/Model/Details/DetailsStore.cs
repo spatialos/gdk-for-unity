@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -24,11 +25,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private readonly SchemaBundle bundle;
 
+        private Logger logger;
+
         public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides, IFileTree fileTree)
         {
+            logger = LogManager.GetCurrentClassLogger();
+
             FileTree = fileTree;
             this.bundle = bundle;
 
+            logger.Info("Loading serialization overrides");
             var overrideMap = serializationOverrides.Select(@override =>
             {
                 var parts = @override.Split(";");
@@ -41,6 +47,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
 
+            logger.Info("Determining types and components");
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
 
@@ -50,6 +57,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             foreach (var file in bundle.SchemaFiles)
             {
+                logger.Info($"Initialising details for {file.CanonicalPath}");
+
                 foreach (var enumm in file.Enums)
                 {
                     enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
@@ -77,20 +86,24 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
             Components = new ReadOnlyDictionary<string, UnityComponentDetails>(components);
 
+            logger.Info("Retrieving canonical paths of schema files");
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
 
+            logger.Info("Populating all type details");
             foreach (var kv in Types)
             {
                 kv.Value.Populate(this);
             }
 
+            logger.Info("Populating all component field details");
             foreach (var kv in Components)
             {
                 kv.Value.PopulateFields(this);
             }
 
+            logger.Info("Removing all recursive options");
             RemoveRecursiveOptions();
         }
 
@@ -233,6 +246,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             foreach (var pair in toRemove)
             {
                 var type = Types[pair.Key];
+                logger.Trace($"Removing type {type.FullyQualifiedTypeName}");
 
                 type.FieldDetails = type.FieldDetails
                     .Except(pair.Value)

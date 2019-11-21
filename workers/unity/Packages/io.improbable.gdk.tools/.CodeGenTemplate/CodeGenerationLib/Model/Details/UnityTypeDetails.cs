@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Utils;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -22,6 +23,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public bool HasSerializationOverride => SerializationOverride != null;
 
         private TypeDefinition raw;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public UnityTypeDetails(string package, TypeDefinition typeDefinitionRaw)
         {
@@ -48,12 +51,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var children = store.GetNestedTypes(raw.QualifiedName);
 
+            logger.Trace($"Populating child type details for type {raw.QualifiedName}");
             ChildTypes = store.Types
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
                 .ToList()
                 .AsReadOnly();
 
+            logger.Trace($"Populating child enum details for type {raw.QualifiedName}");
             ChildEnums = store.Enums
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
@@ -63,6 +68,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private void PopulateFields(DetailsStore store)
         {
+            logger.Trace($"Populating field details for type {raw.QualifiedName}");
             FieldDetails = raw.Fields
                 .Select(field => new UnityFieldDetails(field, store))
                 .Where(fieldDetail =>
@@ -76,6 +82,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                                 return false;
                             }
 
+                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
                             Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
                             return true;
                         });
@@ -89,6 +96,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                                 return false;
                             }
 
+                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
                             Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
                             return true;
                         });

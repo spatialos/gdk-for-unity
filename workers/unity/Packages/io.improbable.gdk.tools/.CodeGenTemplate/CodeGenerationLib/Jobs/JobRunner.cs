@@ -2,21 +2,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Jobs
 {
     public class JobRunner
     {
         private IFileSystem fileSystem;
+        private Logger logger;
 
         public JobRunner(IFileSystem fileSystem)
         {
+            logger = LogManager.GetCurrentClassLogger();
+
             this.fileSystem = fileSystem;
         }
 
         public void Run(params CodegenJob[] jobs)
         {
+            logger.Info("Finding dirty jobs");
             PrepareOutputFolders(jobs);
+
+            logger.Info("Running jobs");
             RunJobs(jobs);
         }
 

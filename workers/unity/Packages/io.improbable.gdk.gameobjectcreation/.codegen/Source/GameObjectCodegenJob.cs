@@ -4,6 +4,7 @@ using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using NLog;
 
 namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 {
@@ -13,9 +14,10 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
         private const string FileExtension = ".cs";
 
-        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
-            outputDir, fileSystem, store)
+        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
         {
+            logger.Info("TEST");
+
             InputFiles = store.SchemaFiles.ToList();
             OutputFiles = new List<string>();
 

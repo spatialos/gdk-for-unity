@@ -5,6 +5,7 @@ using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Utils;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Jobs
 {
@@ -18,20 +19,24 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         public List<string> OutputFiles = new List<string>();
         public readonly string OutputDirectory;
 
+        protected Logger logger;
+
         protected readonly Dictionary<string, string> Content = new Dictionary<string, string>();
 
         private IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
 
-        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
+        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, Logger logger)
         {
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
             this.detailsStore = detailsStore;
+            this.logger = logger;
         }
 
         public void Clean()
         {
+            logger.Info("Cleaning output directories");
             foreach (var entry in OutputFiles)
             {
                 var path = Path.Combine(OutputDirectory, entry);
@@ -52,8 +57,10 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         public void Run()
         {
+            logger.Info("Starting code generation job");
             RunImpl();
 
+            logger.Info("Writing generated code to file");
             foreach (var entry in Content)
             {
                 var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry.Key));
@@ -70,6 +77,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
             }
+
+            logger.Info("Finished code generation job");
         }
 
         public bool IsDirty()

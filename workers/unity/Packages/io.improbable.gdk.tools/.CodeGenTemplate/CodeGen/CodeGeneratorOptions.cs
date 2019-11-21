@@ -15,6 +15,9 @@ namespace Improbable.Gdk.CodeGenerator
         public string DescriptorDirectory { get; private set; }
         public string NativeOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
+        public bool EnableVerboseLogging { get; private set; }
+        public bool EnableLoggingToConsole { get; private set; }
+        public string AbsoluteLogPath { get; private set; }
         public string HelpText { get; private set; }
         public List<string> SchemaInputDirs { get; } = new List<string>();
         public string SchemaCompilerPath { get; private set; }
@@ -54,6 +57,18 @@ namespace Improbable.Gdk.CodeGenerator
                     u => options.SerializationOverrides.Add(u)
                 },
                 {
+                    "enable-verbose-logging=", "OPTIONAL: enable verbose logging",
+                    v => options.EnableVerboseLogging = string.IsNullOrEmpty(v) || v.Equals("true")
+                },
+                {
+                    "log-to-console=", "OPTIONAL: enable logger output to console",
+                    c => options.EnableLoggingToConsole = string.IsNullOrEmpty(c) || c.Equals("true")
+                },
+                {
+                    "logger-output-dir=", "REQUIRED: absolute path to logger output file",
+                    p => options.AbsoluteLogPath = p
+                },
+                {
                     "h|help", "show help",
                     h => options.ShouldShowHelp = h != null
                 }
@@ -70,6 +85,29 @@ namespace Improbable.Gdk.CodeGenerator
             Instance = options;
 
             return options;
+        }
+
+        public IEnumerable<string> GetValidationErrors()
+        {
+            if (string.IsNullOrEmpty(NativeOutputDirectory))
+            {
+                yield return "Native output directory not specified";
+            }
+
+            if (SchemaInputDirs == null || SchemaInputDirs.Count == 0)
+            {
+                yield return "Schema input directories not specified";
+            }
+
+            if (string.IsNullOrEmpty(SchemaCompilerPath))
+            {
+                yield return "Schema compiler location not specified";
+            }
+
+            if (!File.Exists(SchemaCompilerPath))
+            {
+                yield return $"Schema compiler does not exist at '{SchemaCompilerPath}'";
+            }
         }
     }
 }
