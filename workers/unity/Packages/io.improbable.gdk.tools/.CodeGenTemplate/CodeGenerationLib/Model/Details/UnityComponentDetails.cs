@@ -13,8 +13,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public bool IsBlittable { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
-        public IReadOnlyList<UnityCommandDetails> CommandDetails { get; private set; }
-        public IReadOnlyList<UnityEventDetails> EventDetails { get; private set; }
+        public IReadOnlyList<UnityCommandDetails> CommandDetails { get; }
+        public IReadOnlyList<UnityEventDetails> EventDetails { get; }
 
         private ComponentDefinition raw;
 
