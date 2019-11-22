@@ -60,7 +60,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             logger.Info("Starting code generation job");
             RunImpl();
 
-            logger.Info("Writing generated code to file");
+            logger.Info("Writing generated code to disk");
             foreach (var entry in Content)
             {
                 var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry.Key));
@@ -70,11 +70,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
                 }
 
+                logger.Trace("Fixing line endings");
                 // Fix up line endings
                 var contents = entry.Value
                     .Replace("\r\n", "\n")
                     .Replace("\n", Environment.NewLine);
 
+                logger.Trace($"Writing {fileInfo.CompletePath}");
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
             }
 

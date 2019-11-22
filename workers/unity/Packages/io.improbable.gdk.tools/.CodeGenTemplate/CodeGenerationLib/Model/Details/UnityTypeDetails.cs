@@ -11,6 +11,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string Package { get; }
         public string CapitalisedName { get; }
         public string CamelCaseName { get; }
+        public string QualifiedName { get; }
         public string FullyQualifiedTypeName { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; internal set; }
@@ -31,7 +32,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Package = package;
             CapitalisedName = typeDefinitionRaw.Name;
             CamelCaseName = Formatting.PascalCaseToCamelCase(CapitalisedName);
-            FullyQualifiedTypeName = $"global::{Formatting.CapitaliseQualifiedNameParts(typeDefinitionRaw.QualifiedName)}";
+            QualifiedName = typeDefinitionRaw.QualifiedName;
+            FullyQualifiedTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(typeDefinitionRaw.QualifiedName);
 
             raw = typeDefinitionRaw;
         }

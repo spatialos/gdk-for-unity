@@ -12,6 +12,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public uint ComponentId { get; }
 
         public bool IsBlittable { get; }
+        public string QualifiedName { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
         public IReadOnlyList<UnityCommandDetails> CommandDetails { get; }
@@ -26,6 +27,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Package = package;
             ComponentName = componentDefinitionRaw.Name;
             ComponentId = componentDefinitionRaw.ComponentId;
+            QualifiedName = componentDefinitionRaw.QualifiedName;
             IsBlittable = store.BlittableSet.Contains(componentDefinitionRaw.QualifiedName);
 
             logger.Trace($"Populating command details for component {componentDefinitionRaw.QualifiedName}");

@@ -246,7 +246,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             foreach (var pair in toRemove)
             {
                 var type = Types[pair.Key];
-                logger.Trace($"Removing type {type.FullyQualifiedTypeName}");
+                logger.Trace($"Removing type {type.QualifiedName}");
 
                 type.FieldDetails = type.FieldDetails
                     .Except(pair.Value)
