@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator
             logger.Info($"Extracting worker types from {CodeGeneratorOptions.Instance.WorkerJsonDirectory}");
             workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
 
-            logger.Info("Setting job outputs");
+            logger.Info("Defining job output files");
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerFileName));
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerListFileName));
             OutputFiles.Add(Path.Combine(relativeOutputPath, buildSystemFileName));

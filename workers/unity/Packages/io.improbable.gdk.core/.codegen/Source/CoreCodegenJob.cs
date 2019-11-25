@@ -47,28 +47,28 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Setting type outputs");
+            logger.Info("Defining job output files for types");
             foreach (var typeTarget in typesToGenerate)
             {
-                logger.Trace($"Setting output for type {typeTarget.Content.QualifiedName}");
+                logger.Trace($"Defining output file for type {typeTarget.Content.QualifiedName}");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
                 OutputFiles.Add(Path.Combine(typeTarget.OutputPath, fileName));
             }
 
-            logger.Info("Setting component outputs");
+            logger.Info("Defining job output files for components");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                logger.Trace($"Setting outputs for component {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Defining job output files for component {componentTarget.Content.QualifiedName}");
 
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Setting command outputs");
+                    logger.Trace("Defining job output files for commands");
 
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
@@ -84,7 +84,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 if (componentTarget.Content.EventDetails.Count > 0)
                 {
-                    logger.Trace("Setting event outputs");
+                    logger.Trace("Defining job output file for events");
 
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}Events", FileExtension)));
@@ -105,10 +105,10 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
 
-            logger.Info("Setting enum outputs");
+            logger.Info("Defining job output files for enums");
             foreach (var enumTarget in enumsToGenerate)
             {
-                logger.Trace($"Setting output for enum {enumTarget.Content.QualifiedName}");
+                logger.Trace($"Defining job output file for enum {enumTarget.Content.QualifiedName}");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
                 OutputFiles.Add(Path.Combine(enumTarget.OutputPath, fileName));

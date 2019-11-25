@@ -26,21 +26,22 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Setting outputs");
+            logger.Info("Defining job output files for components");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                logger.Trace($"Setting outputs for component {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Defining job output files for component {componentTarget.Content.QualifiedName}");
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Setting command output");
+                    logger.Trace("Defining job output file for command sender and receiver");
                     OutputFiles.Add(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
                 }
 
+                logger.Trace("Defining job output file for component reader and writer");
                 OutputFiles.Add(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
@@ -65,7 +66,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Info("Generating code for commands");
+                    logger.Info("Generating command senders and command receivers");
 
                     logger.Trace($"Generating {componentName}CommandSenderReceiver");
                     var commandSenderReceiverFileName =
@@ -74,6 +75,8 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                         commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
                     Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
+
+                logger.Info("Generating component readers and writers");
 
                 logger.Trace($"Generating {componentName}ComponentReaderWriter");
                 var componentReaderWriterFileName =
