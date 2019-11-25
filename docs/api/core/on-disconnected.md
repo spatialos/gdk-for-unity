@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L31">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L31">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -57,7 +57,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="reasonfordisconnect"></a><b>ReasonForDisconnect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -88,7 +88,7 @@ The reported reason for disconnecting
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-ondisconnected"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L38">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L38">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -128,7 +128,7 @@ The reported reason for disconnecting
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-object"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -156,7 +156,7 @@ The reported reason for disconnecting
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="gethashcode"></a><b>GetHashCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Components/WorkerEntityComponents.cs/#L48">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

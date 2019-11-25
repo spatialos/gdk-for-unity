@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L13">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L13">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -38,7 +38,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="devicename"></a><b>DeviceName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -53,7 +53,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="deviceid"></a><b>DeviceId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -68,7 +68,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="prettydevicetype"></a><b>PrettyDeviceType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -83,7 +83,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="devicetype"></a><b>DeviceType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L18">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L18">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isandroid"></a><b>IsAndroid</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -128,7 +128,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="devicelaunchconfig-string-string-devicetype-action-devicelaunchconfig-mobilelaunchconfig"></a><b>DeviceLaunchConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -171,7 +171,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="launch-mobilelaunchconfig"></a><b>Launch</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L34">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.mobile/Editor/DeviceLaunchConfig.cs/#L34">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

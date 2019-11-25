@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L8">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L8">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="commandrequestcallbackmanager-world"></a><b>CommandRequestCallbackManager</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -87,7 +87,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="invokecallbacks"></a><b>InvokeCallbacks</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -106,7 +106,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="registercallback-entityid-action-t"></a><b>RegisterCallback</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L30">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -135,7 +135,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="unregistercallback-ulong"></a><b>UnregisterCallback</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L36">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/CallbackManagers/CommandRequestCallbackManager.cs/#L36">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

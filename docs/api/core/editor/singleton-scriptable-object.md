@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/editor-index">Editor</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L19">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L19">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -64,7 +64,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getinstance"></a><b>GetInstance</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L79">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L79">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -105,7 +105,7 @@ Finds the instance of TSelf
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onenable"></a><b>OnEnable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ Finds the instance of TSelf
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ondisable"></a><b>OnDisable</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L54">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -143,7 +143,7 @@ Finds the instance of TSelf
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isanasset"></a><b>IsAnAsset</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L46">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Editor/SingletonScriptableObject.cs/#L46">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
