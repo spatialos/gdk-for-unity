@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/test-utils-index">TestUtils</a>.<a href="{{urlRoot}}/api/test-utils/editor-index">Editor</a><br/>
 GDK package: TestUtils<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L149">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L149">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="killtree-this-process"></a><b>KillTree</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L154">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L154">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="killtree-this-process-timespan"></a><b>KillTree</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L159">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialDeploymentManager.cs/#L159">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

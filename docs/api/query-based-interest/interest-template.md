@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/query-based-interest-index">QueryBasedInterest</a><br/>
 GDK package: QueryBasedInterest<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -46,7 +46,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="create"></a><b>Create</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L26">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,7 +65,7 @@ Creates a new <a href="{{urlRoot}}/api/query-based-interest/interest-template">I
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="create-interesttemplate"></a><b>Create</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -102,7 +102,7 @@ Creates a new <a href="{{urlRoot}}/api/query-based-interest/interest-template">I
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="create-dictionary-uint-componentinterest"></a><b>Create</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -152,7 +152,7 @@ Creates a new <a href="{{urlRoot}}/api/query-based-interest/interest-template">I
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addqueries-t-interestquery-params-interestquery"></a><b>AddQueries&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L103">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L103">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -199,7 +199,7 @@ Add InterestQueries to the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addqueries-uint-interestquery-params-interestquery"></a><b>AddQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L128">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L128">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -238,7 +238,7 @@ Add InterestQueries to the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addqueries-t-ienumerable-interestquery"></a><b>AddQueries&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L150">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L150">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -284,7 +284,7 @@ Add InterestQueries to the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addqueries-uint-ienumerable-interestquery"></a><b>AddQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L172">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L172">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -322,7 +322,7 @@ Add InterestQueries to the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="replacequeries-t-interestquery-params-interestquery"></a><b>ReplaceQueries&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L216">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L216">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -369,7 +369,7 @@ Replaces a component's InterestQueries in the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="replacequeries-uint-interestquery-params-interestquery"></a><b>ReplaceQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L241">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L241">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -408,7 +408,7 @@ Replaces a component's InterestQueries in the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="replacequeries-t-ienumerable-interestquery"></a><b>ReplaceQueries&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L263">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L263">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -454,7 +454,7 @@ Replaces a component's InterestQueries in the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="replacequeries-uint-ienumerable-interestquery"></a><b>ReplaceQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L285">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L285">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -492,7 +492,7 @@ Replaces a component's InterestQueries in the Interest component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="clearqueries-t"></a><b>ClearQueries&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L322">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L322">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -520,7 +520,7 @@ Clears all InterestQueries for a given authoritative component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="clearqueries-uint"></a><b>ClearQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L337">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L337">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -548,7 +548,7 @@ Clears all InterestQueries for a given authoritative component.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="clearallqueries"></a><b>ClearAllQueries</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L349">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L349">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -567,7 +567,7 @@ Clears all InterestQueries.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tosnapshot"></a><b>ToSnapshot</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L361">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L361">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -586,7 +586,7 @@ Builds the Interest snapshot.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ascomponentinterest"></a><b>AsComponentInterest</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/180a1fc2/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L372">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestTemplate.cs/#L372">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
