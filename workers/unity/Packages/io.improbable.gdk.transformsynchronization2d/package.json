@@ -1,13 +1,13 @@
 {
   "name": "io.improbable.gdk.transformsynchronization2d",
   "displayName": "SpatialOS GDK Transform Synchronization 2D",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Transform Synchronization Module 2D.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.0",
-    "io.improbable.gdk.transformsynchronization": "0.3.0",
+    "io.improbable.gdk.core": "0.3.1",
+    "io.improbable.gdk.transformsynchronization": "0.3.1",
     "com.unity.modules.physics2d": "1.0.0"
   }
 }

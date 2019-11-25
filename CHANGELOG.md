@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.1` - 2019-11-25
+
 ### Added
 
 - A `WorkerSystem` now exposes the underlying Worker's `IsConnected` property. [#1217](https://github.com/spatialos/gdk-for-unity/pull/1217)
