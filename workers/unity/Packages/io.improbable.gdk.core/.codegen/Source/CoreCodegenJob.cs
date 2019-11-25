@@ -30,19 +30,19 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 .SelectMany(kv => store.GetNestedTypes(kv.Key))
                 .ToHashSet();
 
-            logger.Info("Gathering types to generate");
+            logger.Info("Gathering types details");
             typesToGenerate = store.Types
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
                 .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Gathering enums to generate");
+            logger.Info("Gathering enum details");
             enumsToGenerate = store.Enums
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
                 .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Gathering components to generate");
+            logger.Info("Gathering component details");
             componentsToGenerate = store.Components
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
@@ -62,8 +62,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                var qualifiedComponentName = componentTarget.Content.QualifiedName;
-                logger.Trace($"Setting outputs for component {qualifiedComponentName}");
+                logger.Trace($"Setting outputs for component {componentTarget.Content.QualifiedName}");
 
                 OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
 
@@ -114,6 +113,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
                 OutputFiles.Add(Path.Combine(enumTarget.OutputPath, fileName));
             }
+
+            logger.Info("Finished initialising CoreCodegenJob");
         }
 
         protected override void RunImpl()

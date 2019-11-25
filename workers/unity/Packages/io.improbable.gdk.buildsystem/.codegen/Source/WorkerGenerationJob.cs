@@ -23,58 +23,77 @@ namespace Improbable.Gdk.CodeGenerator
 
         public WorkerGenerationJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore) : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
         {
-            logger.Info("TEST");
+            logger.Info("Initialising WorkerGenerationJob");
 
+            logger.Info($"Extracting worker types from {CodeGeneratorOptions.Instance.WorkerJsonDirectory}");
             workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
 
+            logger.Info("Setting job outputs");
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerFileName));
             OutputFiles.Add(Path.Combine(relativeEditorPath, workerListFileName));
             OutputFiles.Add(Path.Combine(relativeOutputPath, buildSystemFileName));
+
+            logger.Info("Finished initialising WorkerGenerationJob");
         }
 
         protected override void RunImpl()
         {
+            logger.Info($"Generating {workerFileName}");
             var unityWorkerMenuGenerator = new UnityWorkerMenuGenerator();
             var workerCode = unityWorkerMenuGenerator.Generate(workerTypesToGenerate);
             Content.Add(Path.Combine(relativeEditorPath, workerFileName), workerCode);
+            logger.Info($"Finished generating {workerFileName}");
 
+            logger.Info($"Generating {buildSystemFileName}");
             var buildSystemAssemblyGenerator = new BuildSystemAssemblyGenerator();
             var assemblyCode = buildSystemAssemblyGenerator.Generate();
             Content.Add(Path.Combine(relativeOutputPath, buildSystemFileName), assemblyCode);
+            logger.Info($"Finished generating {buildSystemFileName}");
 
+            logger.Info($"Generating {workerListFileName}");
             Content.Add(Path.Combine(relativeEditorPath, workerListFileName), string.Join(Environment.NewLine, workerTypesToGenerate));
+            logger.Info($"Finished generating {workerListFileName}");
         }
 
         private List<string> ExtractWorkerTypes(string path)
         {
             var workerTypes = new List<string>();
+
+            logger.Trace("Finding all worker json files");
             var fileNames = Directory.EnumerateFiles(path, "*.json");
+
             foreach (var fileName in fileNames)
             {
-                string text = File.ReadAllText(fileName);
+                logger.Trace($"Extracting worker type from {fileName}");
+                var text = File.ReadAllText(fileName);
                 if (!text.Contains(workerTypeFlag))
                 {
-                    Console.WriteLine($"{fileName} does not contain the following flag: {workerTypeFlag}");
+                    logger.Warn($"{fileName} does not contain the following flag: {workerTypeFlag}");
                     continue;
                 }
 
+                logger.Trace("Parsing to JObject");
                 var jsonRep = JObject.Parse(text);
                 var arguments = jsonRep.SelectToken("external.default.windows.arguments");
                 if (arguments == null)
                 {
-                    Console.WriteLine($"Could not navigate to external > default > windows > arguments in {fileName}");
+                    logger.Warn($"Could not navigate to external > default > windows > arguments in {fileName}");
                     continue;
                 }
 
+                logger.Trace("Finding worker type in list of arguments");
                 for (var i = 0; i < arguments.Count(); i++)
                 {
                     if (workerTypeFlag.Equals(arguments[i].ToString()))
                     {
-                        workerTypes.Add(arguments[i + 1].ToString());
+                        var workerType = arguments[i + 1].ToString();
+                        logger.Trace($"Adding {workerType} to list of worker type");
+                        workerTypes.Add(workerType);
                     }
                 }
             }
 
+            logger.Trace($"Found {workerTypes.Count} worker types");
             return workerTypes;
         }
     }
