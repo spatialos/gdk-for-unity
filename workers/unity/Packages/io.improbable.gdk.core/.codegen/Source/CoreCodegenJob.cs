@@ -18,7 +18,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
         private const string FileExtension = ".cs";
 
-        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
+        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
+            : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
         {
             logger.Info("Initialising CoreCodegenJob");
 

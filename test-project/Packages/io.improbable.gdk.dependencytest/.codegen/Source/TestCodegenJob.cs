@@ -21,7 +21,8 @@ namespace Improbable.Gdk.ModularCodegenTests
 }
 ";
 
-        public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore) : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
+        public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore)
+            : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
         {
             logger.Info("TEST");
 

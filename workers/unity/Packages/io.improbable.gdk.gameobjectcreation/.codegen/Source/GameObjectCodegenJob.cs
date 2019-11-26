@@ -14,7 +14,8 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
         private const string FileExtension = ".cs";
 
-        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
+        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
+            : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
         {
             logger.Info("Initialising GameObjectCodegenJob");
 

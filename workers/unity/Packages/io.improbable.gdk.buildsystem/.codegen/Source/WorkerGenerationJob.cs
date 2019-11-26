@@ -21,7 +21,8 @@ namespace Improbable.Gdk.CodeGenerator
         private readonly string relativeEditorPath = Path.Combine("improbable", "buildsystem", "Editor");
 
 
-        public WorkerGenerationJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore) : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
+        public WorkerGenerationJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore)
+            : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
         {
             logger.Info("Initialising WorkerGenerationJob");
 

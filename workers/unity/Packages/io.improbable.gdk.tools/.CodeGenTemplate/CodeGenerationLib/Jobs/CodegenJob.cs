@@ -19,7 +19,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         public List<string> OutputFiles = new List<string>();
         public readonly string OutputDirectory;
 
-        protected Logger logger;
+        protected Logger logger { get; }
 
         protected readonly Dictionary<string, string> Content = new Dictionary<string, string>();
 
