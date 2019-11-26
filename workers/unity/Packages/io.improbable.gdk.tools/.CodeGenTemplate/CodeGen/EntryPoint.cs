@@ -72,8 +72,7 @@ namespace Improbable.Gdk.CodeGenerator
                 }
             };
 
-            var minimumLogLevel = LogLevel.Trace;
-//            var minimumLogLevel = codeGeneratorOptions.EnableVerboseLogging ? LogLevel.Trace : LogLevel.Info;
+            var minimumLogLevel = codeGeneratorOptions.EnableVerboseLogging ? LogLevel.Trace : LogLevel.Info;
 
             if (codeGeneratorOptions.EnableLoggingToConsole)
             {

@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Profiling;
+using CodegenLogLevel = Improbable.Gdk.Tools.CodegenLogUtils.CodegenLogLevel;
 
 namespace Improbable.Gdk.Tools
 {
@@ -29,19 +28,7 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
-        /// <summary>
-        ///     This regex matches a C# compile error or warning log.
-        ///     It captures the following components:
-        ///     File that caused the issue
-        ///     Line and column in the file
-        ///     Log type, warning or error
-        ///     CS error code
-        ///     Message
-        /// </summary>
-        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\io.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
-        private static readonly Regex dotnetRegex = new Regex(
-            @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static List<CodegenLogUtils.CodegenLog> latestCodegenLogs;
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
@@ -149,35 +136,63 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-                var loggerOutputPath = Path.Combine(CodegenExeDirectory, "codegen-output.log");
+                var loggerOutputPath = Path.GetFullPath(Path.Combine(CodegenExeDirectory, "codegen-output.log"));
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var errorMessage = new StringBuilder();
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
-                        .AddErrorProcessing(Debug.LogError)
-                        .AddOutputProcessing(ProcessStdOut)
                         .Run();
+
+                    latestCodegenLogs = CodegenLogUtils.ProcessCodegenLogs(loggerOutputPath);
 
                     if (exitCode.ExitCode != 0)
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError($"Error(s) compiling schema files!{errorMessage}");
+                            Debug.LogError($"Code generation failed! Please check the code generation logs for more information: {loggerOutputPath}");
                             EditorApplication.delayCall += () =>
                             {
-                                EditorUtility.DisplayDialog("Generate Code",
-                                    "Failed to generate code from schema.\nPlease view the console for errors.",
-                                    "Close");
+                                var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
+                                var numIssues = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR || line.level == CodegenLogLevel.FATAL);
+
+                                var option = EditorUtility.DisplayDialogComplex("Generate Code",
+                                    $"Code generation failed with {numWarnings} warnings and {numIssues} issues!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                    "Close",
+                                    "Cancel",
+                                    "Open logfile");
+
+                                switch (option)
+                                {
+                                    // Close
+                                    case 0:
+                                    // Cancel
+                                    case 1:
+                                        break;
+
+                                    // Open logfile
+                                    case 2:
+                                        Application.OpenURL(loggerOutputPath);
+                                        break;
+                                    default:
+                                        Debug.LogError("Unrecognised option.");
+                                        break;
+                                }
                             };
                         }
                     }
                     else
                     {
                         File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
+
+                        EditorApplication.delayCall += () =>
+                        {
+                            var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
+                            var numErrors = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR);
+
+                            Debug.LogWarning($"Code generation completed successfully with {numWarnings} warnings and {numErrors} errors. Please check the logs for more information: {loggerOutputPath}");
+                        };
                     }
                 }
 
@@ -194,30 +209,6 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static void ProcessStdOut(string output)
-        {
-            var match = dotnetRegex.Match(output);
-            if (match.Success)
-            {
-                switch (match.Groups["type"].Value)
-                {
-                    case "warning":
-                        Debug.LogWarning(output);
-                        break;
-                    case "error":
-                        Debug.LogError(output);
-                        break;
-                    default:
-                        Debug.Log(output);
-                        break;
-                }
-            }
-            else
-            {
-                Debug.Log(output);
-            }
-        }
-
         private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string loggerOutputPath)
         {
             var baseArgs = new List<string>
@@ -229,7 +220,8 @@ namespace Improbable.Gdk.Tools
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{workerJsonPath}\"",
-                $"--logger-output-dir=\"{loggerOutputPath}\""
+                $"--logger-output-dir=\"{loggerOutputPath}\"",
+                "--enable-verbose-logging=true"
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
