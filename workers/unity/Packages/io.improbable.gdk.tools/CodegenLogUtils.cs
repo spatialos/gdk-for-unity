@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Improbable.Gdk.Tools
@@ -27,43 +28,35 @@ namespace Improbable.Gdk.Tools
             public readonly string exception;
             public bool isException => !string.IsNullOrEmpty(exception);
 
-            public CodegenLog(RawCodegenLog rawLog)
+            [Serializable]
+            private struct RawCodegenLog
             {
-                time = rawLog.time;
-                level = (CodegenLogLevel) Enum.Parse(typeof(CodegenLogLevel), rawLog.level);
-                logger = rawLog.logger;
-                message = rawLog.message;
-                exception = rawLog.exception;
-            }
-        }
-
-        [Serializable]
-        internal struct RawCodegenLog
-        {
 #pragma warning disable 649
-            public string time;
-            public string level;
-            public string logger;
-            public string message;
-            public string exception;
+                public string time;
+                public string level;
+                public string logger;
+                public string message;
+                public string exception;
 #pragma warning restore
+            }
+
+            public CodegenLog(string rawLog)
+            {
+                var rawCodegenLog = JsonUtility.FromJson<RawCodegenLog>(rawLog);
+
+                time = rawCodegenLog.time;
+                level = (CodegenLogLevel) Enum.Parse(typeof(CodegenLogLevel), rawCodegenLog.level);
+                logger = rawCodegenLog.logger;
+                message = rawCodegenLog.message;
+                exception = rawCodegenLog.exception;
+            }
         }
 
         public static List<CodegenLog> ProcessCodegenLogs(string logPath)
         {
-            string line;
-            var file = new StreamReader(logPath);
-
-            var codegenOutput = new List<CodegenLog>();
-
-            while ((line = file.ReadLine()) != null)
-            {
-                var rawCodegenLog = JsonUtility.FromJson<RawCodegenLog>(line);
-                codegenOutput.Add(new CodegenLog(rawCodegenLog));
-            }
-
-            file.Close();
-            return codegenOutput;
+            return File.ReadLines(logPath)
+                .Select(line => new CodegenLog(line))
+                .ToList();
         }
     }
 }

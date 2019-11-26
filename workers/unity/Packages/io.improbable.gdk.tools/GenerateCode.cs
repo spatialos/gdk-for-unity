@@ -147,6 +147,9 @@ namespace Improbable.Gdk.Tools
 
                     latestCodegenLogs = CodegenLogUtils.ProcessCodegenLogs(loggerOutputPath);
 
+                    var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
+                    var numErrors = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR);
+
                     if (exitCode.ExitCode != 0)
                     {
                         if (!Application.isBatchMode)
@@ -154,26 +157,23 @@ namespace Improbable.Gdk.Tools
                             Debug.LogError($"Code generation failed! Please check the code generation logs for more information: {loggerOutputPath}");
                             EditorApplication.delayCall += () =>
                             {
-                                var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
-                                var numIssues = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR || line.level == CodegenLogLevel.FATAL);
-
                                 var option = EditorUtility.DisplayDialogComplex("Generate Code",
-                                    $"Code generation failed with {numWarnings} warnings and {numIssues} issues!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                    $"Code generation failed with {numWarnings} warnings and {numErrors} errors!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                    "Open logfile",
                                     "Close",
-                                    "Cancel",
-                                    "Open logfile");
+                                    "");
 
                                 switch (option)
                                 {
-                                    // Close
+                                    // Open logfile
                                     case 0:
-                                    // Cancel
-                                    case 1:
+                                        Application.OpenURL(loggerOutputPath);
                                         break;
 
-                                    // Open logfile
+                                    // Close
+                                    case 1:
+                                    // Alt
                                     case 2:
-                                        Application.OpenURL(loggerOutputPath);
                                         break;
                                     default:
                                         Debug.LogError("Unrecognised option.");
@@ -184,15 +184,16 @@ namespace Improbable.Gdk.Tools
                     }
                     else
                     {
-                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
-
-                        EditorApplication.delayCall += () =>
+                        if (numWarnings + numErrors > 0)
                         {
-                            var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
-                            var numErrors = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR);
-
                             Debug.LogWarning($"Code generation completed successfully with {numWarnings} warnings and {numErrors} errors. Please check the logs for more information: {loggerOutputPath}");
-                        };
+                        }
+                        else
+                        {
+                            Debug.Log("Code generation complete!");
+                        }
+
+                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
                     }
                 }
 
