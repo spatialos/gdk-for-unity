@@ -221,8 +221,7 @@ namespace Improbable.Gdk.Tools
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{workerJsonPath}\"",
-                $"--logger-output-dir=\"{loggerOutputPath}\"",
-                "--enable-verbose-logging=true"
+                $"--logger-output-dir=\"{loggerOutputPath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
