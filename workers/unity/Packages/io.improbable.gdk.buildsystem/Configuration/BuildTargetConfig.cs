@@ -7,7 +7,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     /// Build options for a particular build target.
     /// </summary>
     [Serializable]
-    internal struct BuildTargetConfig
+    public struct BuildTargetConfig
     {
         /// <summary>
         /// The options to apply when the target is built.
