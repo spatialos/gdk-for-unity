@@ -52,8 +52,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 var remainingFilesInFolder = fileSystem.GetFilesInDirectory(fileInfo.DirectoryPath);
                 if (remainingFilesInFolder.Count == 0)
                 {
+                    logger.Info($"Deleting output directory {fileInfo.DirectoryPath}");
                     fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
-                    logger.Info($"Removed output directory {fileInfo.DirectoryPath}");
                 }
             }
 
@@ -74,8 +74,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
                 if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
                 {
+                    logger.Trace($"Creating output directory {fileInfo.DirectoryPath}");
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
-                    logger.Trace($"Created output directory {fileInfo.DirectoryPath}");
                 }
 
                 logger.Trace("Fixing line endings");

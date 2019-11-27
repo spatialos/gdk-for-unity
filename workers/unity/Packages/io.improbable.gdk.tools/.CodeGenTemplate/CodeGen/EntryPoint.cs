@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model;
@@ -72,9 +73,9 @@ namespace Improbable.Gdk.CodeGenerator
                 }
             };
 
-            var minimumLogLevel = codeGeneratorOptions.DisableVerboseLogging ? LogLevel.Info : LogLevel.Trace;
+            var minimumLogLevel = codeGeneratorOptions.Quiet ? LogLevel.Info : LogLevel.Trace;
 
-            if (codeGeneratorOptions.EnableLoggingToConsole)
+            if (codeGeneratorOptions.EnableLoggingToStdout)
             {
                 var consoleTarget = new ConsoleTarget("consoleTarget")
                 {
@@ -181,9 +182,11 @@ namespace Improbable.Gdk.CodeGenerator
             }.Union(inputPaths).ToList();
 
             logger.Info("Generating schema bundle and descriptor");
-            logger.Trace($"Calling {options.SchemaCompilerPath} with arguments {arguments}");
+            logger.Trace($"Calling '{options.SchemaCompilerPath} {string.Join(" ", arguments)}'");
+
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
+            logger.Info($"Generated bundle at {bundlePath}");
             return bundlePath;
         }
 

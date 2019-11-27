@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Profiling;
-using CodegenLogLevel = Improbable.Gdk.Tools.CodegenLogUtils.CodegenLogLevel;
 
 namespace Improbable.Gdk.Tools
 {
@@ -28,7 +28,21 @@ namespace Improbable.Gdk.Tools
         private static readonly string StartupCodegenMarkerFile =
             Path.GetFullPath(Path.Combine("Temp", "ImprobableCodegen.marker"));
 
-        private static List<CodegenLogUtils.CodegenLog> latestCodegenLogs;
+        /// <summary>
+        ///     This regex matches a C# compile error or warning log.
+        ///     It captures the following components:
+        ///     File that caused the issue
+        ///     Line and column in the file
+        ///     Log type, warning or error
+        ///     CS error code
+        ///     Message
+        /// </summary>
+        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\io.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
+        private static readonly Regex dotnetRegex = new Regex(
+            @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static List<CodegenLog> latestCodegenLogs;
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
@@ -143,12 +157,13 @@ namespace Improbable.Gdk.Tools
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
+                        .AddOutputProcessing(ProcessStdOut)
                         .Run();
 
-                    latestCodegenLogs = CodegenLogUtils.ProcessCodegenLogs(loggerOutputPath);
+                    latestCodegenLogs = CodegenLog.ProcessCodegenLogs(loggerOutputPath);
 
-                    var numWarnings = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.WARN);
-                    var numErrors = latestCodegenLogs.Count(line => line.level == CodegenLogLevel.ERROR);
+                    var numWarnings = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Warn);
+                    var numErrors = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Error);
 
                     if (exitCode.ExitCode != 0)
                     {
@@ -176,8 +191,7 @@ namespace Improbable.Gdk.Tools
                                     case 2:
                                         break;
                                     default:
-                                        Debug.LogError("Unrecognised option.");
-                                        break;
+                                        throw new ArgumentOutOfRangeException("Unrecognised option");
                                 }
                             };
                         }
@@ -207,6 +221,30 @@ namespace Improbable.Gdk.Tools
             {
                 Profiler.EndSample();
                 EditorApplication.UnlockReloadAssemblies();
+            }
+        }
+
+        private static void ProcessStdOut(string output)
+        {
+            var match = dotnetRegex.Match(output);
+            if (match.Success)
+            {
+                switch (match.Groups["type"].Value)
+                {
+                    case "warning":
+                        Debug.LogWarning(output);
+                        break;
+                    case "error":
+                        Debug.LogError(output);
+                        break;
+                    default:
+                        Debug.Log(output);
+                        break;
+                }
+            }
+            else
+            {
+                Debug.Log(output);
             }
         }
 

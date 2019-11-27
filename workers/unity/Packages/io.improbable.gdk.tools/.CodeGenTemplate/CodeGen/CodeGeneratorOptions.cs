@@ -15,8 +15,8 @@ namespace Improbable.Gdk.CodeGenerator
         public string DescriptorDirectory { get; private set; }
         public string NativeOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
-        public bool DisableVerboseLogging { get; private set; }
-        public bool EnableLoggingToConsole { get; private set; }
+        public bool Quiet { get; private set; }
+        public bool EnableLoggingToStdout { get; private set; }
         public string AbsoluteLogPath { get; private set; }
         public string HelpText { get; private set; }
         public List<string> SchemaInputDirs { get; } = new List<string>();
@@ -57,21 +57,21 @@ namespace Improbable.Gdk.CodeGenerator
                     u => options.SerializationOverrides.Add(u)
                 },
                 {
-                    "disable-verbose-logging=", "OPTIONAL: disable verbose logging",
-                    v => options.DisableVerboseLogging = string.IsNullOrEmpty(v) || v.Equals("true")
-                },
-                {
-                    "log-to-console=", "OPTIONAL: enable logger output to console",
-                    c => options.EnableLoggingToConsole = string.IsNullOrEmpty(c) || c.Equals("true")
-                },
-                {
                     "logger-output-dir=", "REQUIRED: absolute path to logger output file",
                     p => options.AbsoluteLogPath = p
                 },
                 {
                     "h|help", "show help",
                     h => options.ShouldShowHelp = h != null
-                }
+                },
+                {
+                    "q|quiet", "non-verbose logging",
+                    q => options.Quiet = q != null
+                },
+                {
+                    "o|stdout", "enable logging to stdout",
+                    l => options.EnableLoggingToStdout = l != null
+                },
             };
 
             optionSet.Parse(args);
