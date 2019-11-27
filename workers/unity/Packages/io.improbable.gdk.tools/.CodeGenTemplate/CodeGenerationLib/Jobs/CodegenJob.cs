@@ -57,7 +57,10 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 }
             }
 
-            logger.Info($"Removed {numRemovedDirectories} directories");
+            if (numRemovedDirectories > 0)
+            {
+                logger.Info($"Directories cleaned: {numRemovedDirectories}");
+            }
         }
 
         public void Run()
@@ -87,6 +90,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
                 logger.Trace($"Written {fileInfo.CompletePath}");
             }
+
+            logger.Info($"Files written: {Content.Count}");
 
             logger.Info($"Finished {jobType}");
         }

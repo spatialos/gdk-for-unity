@@ -48,9 +48,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
-            logger.Info($"Loaded {overrideMap.Count} serialization overrides");
+            logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}");
 
-            logger.Info("Determining types and components");
+            logger.Info("Loading enums, types and components");
+
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
 
@@ -60,13 +61,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             foreach (var file in bundle.SchemaFiles)
             {
-                logger.Info($"Initialising details for {file.CanonicalPath}");
+                logger.Info($"Initialising details from {file.CanonicalPath}");
 
                 foreach (var enumm in file.Enums)
                 {
                     enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
                 }
-                logger.Trace($"Added {file.Enums.Count} enums");
 
                 foreach (var type in file.Types)
                 {
@@ -80,13 +80,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                     types.Add(type.QualifiedName, typeDetails);
                 }
-                logger.Trace($"Added {file.Types.Count} types");
 
                 foreach (var component in file.Components)
                 {
                     components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
                 }
-                logger.Trace($"Added {file.Components.Count} components");
+
+                logger.Trace($"Enums added: {file.Enums.Count}");
+                logger.Trace($"Types added: {file.Types.Count}");
+                logger.Trace($"Components added: {file.Components.Count}");
             }
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);

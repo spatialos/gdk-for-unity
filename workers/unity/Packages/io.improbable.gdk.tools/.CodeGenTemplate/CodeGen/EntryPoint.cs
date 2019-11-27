@@ -149,7 +149,7 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
                 .Select(type =>
                 {
-                    logger.Info($"Found job {type}");
+                    logger.Info($"Creating instance of job {type}");
                     return (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store);
                 })
                 .ToArray();

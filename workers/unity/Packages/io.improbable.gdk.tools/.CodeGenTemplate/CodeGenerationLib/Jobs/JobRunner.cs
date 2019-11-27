@@ -21,13 +21,19 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         public void Run(params CodegenJob[] jobs)
         {
             logger.Info("Finding dirty jobs");
-            PrepareOutputFolders(jobs);
+            var dirtyJobs = PrepareOutputFolders(jobs);
+
+            var dirtyJobList = string.Join(", ", dirtyJobs.Select(job => job.GetType()));
+            logger.Info($"Found {dirtyJobs.Count} dirty jobs: {dirtyJobList}");
 
             logger.Info("Running jobs");
-            RunJobs(jobs);
+            foreach (var dirtyJob in dirtyJobs)
+            {
+                dirtyJob.Run();
+            }
         }
 
-        private void PrepareOutputFolders(CodegenJob[] jobs)
+        private List<CodegenJob> PrepareOutputFolders(CodegenJob[] jobs)
         {
             var outputDirectories = jobs.Select(job => job.OutputDirectory).Distinct();
 
@@ -42,11 +48,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
                     foreach (var job in relatedJobs)
                     {
-                        logger.Info($"Marking {job.GetType()} as dirty");
+                        logger.Trace($"Marking {job.GetType()} as dirty");
                         job.MarkAsDirty();
                     }
                 }
             }
+
+            return jobs.Where(job => job.IsDirty()).ToList();
         }
 
         private bool IsOutputDirectoryDirty(IEnumerable<CodegenJob> jobs, string outputDir)
@@ -58,16 +66,6 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 .Select(path => Path.GetFullPath(Path.Combine(outputDir, path))).ToList();
 
             return outputFolderFiles.Intersect(expectedFiles).Count() != outputFolderFiles.Count;
-        }
-
-        private void RunJobs(CodegenJob[] jobs)
-        {
-            var dirtyJobs = jobs.Where(job => job.IsDirty()).ToList();
-
-            foreach (var job in dirtyJobs)
-            {
-                job.Run();
-            }
         }
     }
 }
