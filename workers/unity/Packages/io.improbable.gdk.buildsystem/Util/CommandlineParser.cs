@@ -21,7 +21,7 @@ namespace Improbable.Gdk.BuildSystem
             var buildTargetFilterArg = string.Empty;
             if (!args.TryGetCommandLineValue("buildTargetFilter", ref buildTargetFilterArg))
             {
-                return new List<BuildTarget>();
+                return null;
             }
 
             return buildTargetFilterArg

@@ -41,6 +41,12 @@ namespace Improbable.Gdk.BuildSystem
                 var buildContexts = GetBuildContexts(wantedWorkerTypes, buildEnvironment, scriptImplementation,
                     buildTargetFilter);
 
+                if (buildContexts.Count == 0)
+                {
+                    throw new BuildFailedException(
+                        $"Attempted a build with no valid targets!");
+                }
+
                 var buildsSucceeded = BuildWorkers(buildContexts);
                 if (!buildsSucceeded)
                 {
