@@ -256,6 +256,10 @@ namespace Improbable.Gdk.BuildSystem
 
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildContext.BuildTargetConfig.Target);
             var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
+            if (activeScriptingBackend != buildContext.ScriptingImplementation)
+            {
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
+            }
 
             try
             {
