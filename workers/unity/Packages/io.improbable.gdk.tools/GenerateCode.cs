@@ -154,13 +154,14 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
+                    latestCodegenLogs = new List<CodegenLog>();
+
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddOutputProcessing(ProcessStdOut)
+                        .AddOutputProcessing(ProcessDotnetOutput)
+                        .AddOutputProcessing(ProcessCodegenOutput)
                         .Run();
-
-                    latestCodegenLogs = CodegenLog.ProcessCodegenLogs(loggerOutputPath);
 
                     var numWarnings = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Warn);
                     var numErrors = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Error);
@@ -224,7 +225,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static void ProcessStdOut(string output)
+        private static void ProcessDotnetOutput(string output)
         {
             var match = dotnetRegex.Match(output);
             if (match.Success)
@@ -242,9 +243,40 @@ namespace Improbable.Gdk.Tools
                         break;
                 }
             }
-            else
+        }
+
+        private static void ProcessCodegenOutput(string output)
+        {
+            try
             {
-                Debug.Log(output);
+                var log = CodegenLog.FromRaw(output);
+                latestCodegenLogs.Append(log);
+
+                switch (log.Level)
+                {
+                    case CodegenLogLevel.Trace:
+                    case CodegenLogLevel.Debug:
+                        break;
+                    case CodegenLogLevel.Info:
+                        Debug.Log($"{log.Message}\n{log.Logger}");
+                        break;
+                    case CodegenLogLevel.Warn:
+                        Debug.LogWarning($"{log.Message}\n{log.Logger}");
+                        break;
+                    case CodegenLogLevel.Error:
+                        Debug.LogError($"{log.Message}\n{log.Logger}");
+                        break;
+                    case CodegenLogLevel.Fatal:
+                        break;
+                    case CodegenLogLevel.Off:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e);
             }
         }
 
@@ -259,7 +291,8 @@ namespace Improbable.Gdk.Tools
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{workerJsonPath}\"",
-                $"--logger-output-dir=\"{loggerOutputPath}\""
+                $"--logger-output-dir=\"{loggerOutputPath}\"",
+                "--enable-stdout"
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();

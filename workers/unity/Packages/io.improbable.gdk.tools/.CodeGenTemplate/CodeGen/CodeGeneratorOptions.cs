@@ -69,8 +69,8 @@ namespace Improbable.Gdk.CodeGenerator
                     q => options.Quiet = q != null
                 },
                 {
-                    "o|stdout", "enable logging to stdout",
-                    l => options.EnableLoggingToStdout = l != null
+                    "o|enable-stdout", "enable logging to stdout",
+                    o => options.EnableLoggingToStdout = o != null
                 },
             };
 

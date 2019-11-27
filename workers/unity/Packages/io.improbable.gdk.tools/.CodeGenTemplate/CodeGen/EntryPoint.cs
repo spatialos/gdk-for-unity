@@ -61,25 +61,23 @@ namespace Improbable.Gdk.CodeGenerator
 
             var config = new NLog.Config.LoggingConfiguration();
 
-            var jsonLayout = new JsonLayout
-            {
-                Attributes =
-                {
-                    new JsonAttribute("time", "${longdate}"),
-                    new JsonAttribute("level", "${level:uppercase=true}"),
-                    new JsonAttribute("logger", "${logger}"),
-                    new JsonAttribute("message", "${message}"),
-                    new JsonAttribute("exception", "${exception:format=ToString}")
-                }
-            };
-
             var minimumLogLevel = codeGeneratorOptions.Quiet ? LogLevel.Info : LogLevel.Trace;
 
             if (codeGeneratorOptions.EnableLoggingToStdout)
             {
                 var consoleTarget = new ConsoleTarget("consoleTarget")
                 {
-                    Layout = jsonLayout
+                    Layout = new JsonLayout
+                    {
+                        Attributes =
+                        {
+                            new JsonAttribute("time", "${longdate}"),
+                            new JsonAttribute("level", "${level:uppercase=true}"),
+                            new JsonAttribute("logger", "${logger}"),
+                            new JsonAttribute("message", "${message}"),
+                            new JsonAttribute("exception", "${exception:format=ToString}")
+                        }
+                    }
                 };
                 config.AddTarget(consoleTarget);
                 config.AddRule(minimumLogLevel, LogLevel.Fatal, consoleTarget);
@@ -88,7 +86,7 @@ namespace Improbable.Gdk.CodeGenerator
             var fileTarget = new FileTarget("fileTarget")
             {
                 FileName = codeGeneratorOptions.AbsoluteLogPath,
-                Layout = jsonLayout,
+                Layout = "${level:uppercase=true:padding=-5} | ${longdate} | ${logger} | ${message} ${exception:format=ToString}",
                 DeleteOldFileOnStartup = true
             };
             config.AddTarget(fileTarget);

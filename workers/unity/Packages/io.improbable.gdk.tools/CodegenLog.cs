@@ -36,7 +36,7 @@ namespace Improbable.Gdk.Tools
 #pragma warning restore
         }
 
-        private static CodegenLog FromRaw(string rawLog)
+        public static CodegenLog FromRaw(string rawLog)
         {
             var rawCodegenLog = JsonUtility.FromJson<RawCodegenLog>(rawLog);
 
@@ -48,13 +48,6 @@ namespace Improbable.Gdk.Tools
                 rawCodegenLog.message,
                 rawCodegenLog.exception
             );
-        }
-
-        public static List<CodegenLog> ProcessCodegenLogs(string logPath)
-        {
-            return File.ReadLines(logPath)
-                .Select(FromRaw)
-                .ToList();
         }
     }
 }
