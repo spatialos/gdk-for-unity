@@ -31,7 +31,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
             catch (Exception e)
             {
-                logger.Error(e, "Code generation failed due to exception");
+                logger?.Error(e, "Code generation failed due to exception");
 
                 Console.Error.WriteLine("Code generation failed with exception: {0}", e);
                 if (e.InnerException != null)
@@ -98,14 +98,12 @@ namespace Improbable.Gdk.CodeGenerator
 
         public int Run()
         {
-            logger.Info("Starting code generation");
             if (options.ShouldShowHelp)
             {
                 ShowHelpMessage();
                 return 0;
             }
 
-            logger.Info("Validating options");
             var optionErrors = options.GetValidationErrors().ToList();
             foreach (var optionError in optionErrors)
             {
@@ -117,6 +115,8 @@ namespace Improbable.Gdk.CodeGenerator
                 ShowHelpMessage();
                 return 1;
             }
+
+            logger.Info("Starting code generation");
 
             logger.Info("Gathering schema information");
             var bundlePath = GenerateBundle();
@@ -141,14 +141,18 @@ namespace Improbable.Gdk.CodeGenerator
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        logger.Error($"Failed to load assembly {assembly.FullName} with error {e}");
+                        logger.Error(e, $"Failed to load assembly {assembly.FullName}");
                         return Enumerable.Empty<Type>();
                     }
                 })
                 .Where(type => typeof(CodegenJob).IsAssignableFrom(type))
                 .Where(type => !type.IsAbstract)
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
-                .Select(type => (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
+                .Select(type =>
+                {
+                    logger.Info($"Found job {type}");
+                    return (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store);
+                })
                 .ToArray();
 
             logger.Info("Calling JobRunner");
@@ -177,6 +181,7 @@ namespace Improbable.Gdk.CodeGenerator
             }.Union(inputPaths).ToList();
 
             logger.Info("Generating schema bundle and descriptor");
+            logger.Trace($"Calling {options.SchemaCompilerPath} with arguments {arguments}");
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
             return bundlePath;

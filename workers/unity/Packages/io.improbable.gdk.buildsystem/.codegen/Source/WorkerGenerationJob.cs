@@ -22,19 +22,29 @@ namespace Improbable.Gdk.CodeGenerator
 
 
         public WorkerGenerationJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore)
-            : base(baseOutputDir, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
+            : base(baseOutputDir, fileSystem, detailsStore)
         {
-            logger.Info("Initialising WorkerGenerationJob");
+            var jobName = nameof(WorkerGenerationJob);
+            logger.Info($"Initialising {jobName}");
 
             logger.Info($"Extracting worker types from {CodeGeneratorOptions.Instance.WorkerJsonDirectory}");
             workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
+            logger.Info($"Extracted {workerTypesToGenerate.Count} worker types");
 
-            logger.Info("Defining job output files");
-            OutputFiles.Add(Path.Combine(relativeEditorPath, workerFileName));
-            OutputFiles.Add(Path.Combine(relativeEditorPath, workerListFileName));
-            OutputFiles.Add(Path.Combine(relativeOutputPath, buildSystemFileName));
+            var outputFilePaths = new List<string>
+            {
+                Path.Combine(relativeEditorPath, workerFileName),
+                Path.Combine(relativeEditorPath, workerListFileName),
+                Path.Combine(relativeOutputPath, buildSystemFileName)
+            };
 
-            logger.Info("Finished initialising WorkerGenerationJob");
+            foreach (var filePath in outputFilePaths)
+            {
+                OutputFiles.Add(filePath);
+                logger.Info($"Defined job output file at {filePath}");
+            }
+
+            logger.Info($"Finished initialising {jobName}");
         }
 
         protected override void RunImpl()
@@ -73,7 +83,6 @@ namespace Improbable.Gdk.CodeGenerator
                     continue;
                 }
 
-                logger.Trace("Parsing to JObject");
                 var jsonRep = JObject.Parse(text);
                 var arguments = jsonRep.SelectToken("external.default.windows.arguments");
                 if (arguments == null)
@@ -88,7 +97,7 @@ namespace Improbable.Gdk.CodeGenerator
                     if (workerTypeFlag.Equals(arguments[i].ToString()))
                     {
                         var workerType = arguments[i + 1].ToString();
-                        logger.Trace($"Adding {workerType} to list of worker type");
+                        logger.Trace($"Adding {workerType} to list of worker types");
                         workerTypes.Add(workerType);
                     }
                 }

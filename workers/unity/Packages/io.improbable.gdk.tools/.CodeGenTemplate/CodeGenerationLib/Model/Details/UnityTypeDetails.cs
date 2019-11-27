@@ -85,7 +85,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                             }
 
                             logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
-                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
                             return true;
                         });
 
@@ -99,7 +98,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                             }
 
                             logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
-                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
                             return true;
                         });
 

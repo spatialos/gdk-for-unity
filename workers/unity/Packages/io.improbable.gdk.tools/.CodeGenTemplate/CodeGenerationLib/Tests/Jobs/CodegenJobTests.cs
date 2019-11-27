@@ -103,10 +103,9 @@ namespace CodeGeneration.Tests.Jobs
 
             internal MockFileSystem myFileSystem;
 
-            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore) : base(outputDirectory, fileSystem, detailsStore, LogManager.GetCurrentClassLogger())
+            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
+                : base(outputDirectory, fileSystem, detailsStore)
             {
-                logger.Info("TEST");
-
                 myFileSystem = (MockFileSystem) fileSystem;
             }
 

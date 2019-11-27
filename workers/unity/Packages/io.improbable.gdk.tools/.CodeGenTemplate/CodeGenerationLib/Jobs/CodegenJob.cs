@@ -26,17 +26,19 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         private IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
 
-        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, Logger logger)
+        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
         {
+            logger = LogManager.GetLogger(GetType().FullName);
+
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
             this.detailsStore = detailsStore;
-            this.logger = logger;
         }
 
         public void Clean()
         {
-            logger.Info("Cleaning output directories");
+            var numRemovedDirectories = 0;
+
             foreach (var entry in OutputFiles)
             {
                 var path = Path.Combine(OutputDirectory, entry);
@@ -51,13 +53,18 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 if (remainingFilesInFolder.Count == 0)
                 {
                     fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
+                    logger.Info($"Removed output directory {fileInfo.DirectoryPath}");
                 }
             }
+
+            logger.Info($"Removed {numRemovedDirectories} directories");
         }
 
         public void Run()
         {
-            logger.Info("Starting code generation job");
+            var jobType = GetType();
+            logger.Info($"Starting {jobType}");
+
             RunImpl();
 
             logger.Info("Writing generated code to disk");
@@ -68,6 +75,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
                 {
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
+                    logger.Trace($"Created output directory {fileInfo.DirectoryPath}");
                 }
 
                 logger.Trace("Fixing line endings");
@@ -76,11 +84,11 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                     .Replace("\r\n", "\n")
                     .Replace("\n", Environment.NewLine);
 
-                logger.Trace($"Writing {fileInfo.CompletePath}");
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
+                logger.Trace($"Written {fileInfo.CompletePath}");
             }
 
-            logger.Info("Finished code generation job");
+            logger.Info($"Finished {jobType}");
         }
 
         public bool IsDirty()

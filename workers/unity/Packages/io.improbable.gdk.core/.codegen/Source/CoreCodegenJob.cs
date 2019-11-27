@@ -19,9 +19,10 @@ namespace Improbable.Gdk.CodeGenerator.Core
         private const string FileExtension = ".cs";
 
         public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
-            : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
+            : base(outputDir, fileSystem, store)
         {
-            logger.Info("Initialising CoreCodegenJob");
+            var jobName = nameof(CoreCodegenJob);
+            logger.Info($"Initialising {jobName}");
 
             InputFiles = store.SchemaFiles.ToList();
             OutputFiles = new List<string>();
@@ -115,7 +116,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 OutputFiles.Add(Path.Combine(enumTarget.OutputPath, fileName));
             }
 
-            logger.Info("Finished initialising CoreCodegenJob");
+            logger.Info($"Finished initialising {jobName}");
         }
 
         protected override void RunImpl()

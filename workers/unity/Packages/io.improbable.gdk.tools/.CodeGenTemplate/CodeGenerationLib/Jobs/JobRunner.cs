@@ -38,9 +38,12 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 if (IsOutputDirectoryDirty(relatedJobs, outputDirectory))
                 {
                     fileSystem.DeleteDirectory(outputDirectory);
+                    logger.Trace($"Removed dirty directory {outputDirectory}");
+
                     foreach (var job in relatedJobs)
                     {
                         job.MarkAsDirty();
+                        logger.Info($"{job.GetType()} marked as dirty");
                     }
                 }
             }

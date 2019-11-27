@@ -42,7 +42,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     }
 
                     logger.Error($"Error in component \"{ComponentName}\". Command \"{commandDetail.RawCommandName}\" clashes with component name.");
-                    Console.Error.WriteLine($"Error in component \"{ComponentName}\". Command \"{commandDetail.RawCommandName}\" clashes with component name.");
                     return false;
                 })
                 .ToList()
@@ -60,7 +59,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     }
 
                     logger.Error($"Error in component \"{ComponentName}\". Event \"{eventDetail.RawEventName}\" clashes with component name.");
-                    Console.Error.WriteLine($"Error in component \"{ComponentName}\". Event \"{eventDetail.RawEventName}\" clashes with component name.");
                     return false;
                 })
                 .ToList()

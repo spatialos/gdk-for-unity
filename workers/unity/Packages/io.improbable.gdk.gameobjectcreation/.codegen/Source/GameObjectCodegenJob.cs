@@ -15,9 +15,10 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
         private const string FileExtension = ".cs";
 
         public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
-            : base(outputDir, fileSystem, store, LogManager.GetCurrentClassLogger())
+            : base(outputDir, fileSystem, store)
         {
-            logger.Info("Initialising GameObjectCodegenJob");
+            var jobName = nameof(GameObjectCodegenJob);
+            logger.Info($"Initialising {jobName}");
 
             InputFiles = store.SchemaFiles.ToList();
             OutputFiles = new List<string>();
@@ -47,7 +48,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
 
-            logger.Info("Finished initialising GameObjectCodegenJob");
+            logger.Info($"Finished initialising {jobName}");
         }
 
         protected override void RunImpl()

@@ -44,8 +44,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     throw new ArgumentException($"Serialization override malformed: {@override}");
                 }
 
+                logger.Info($"Found serialization override {parts[1]} for {parts[0]}");
+
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
+            logger.Info($"Loaded {overrideMap.Count} serialization overrides");
 
             logger.Info("Determining types and components");
             PopulateBlittableMaps();
@@ -63,6 +66,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
                 }
+                logger.Trace($"Added {file.Enums.Count} enums");
 
                 foreach (var type in file.Types)
                 {
@@ -71,15 +75,18 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     if (overrideMap.TryGetValue(typeDetails.FullyQualifiedTypeName, out var staticClassFqn))
                     {
                         typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
+                        logger.Trace($"Added serialization override {staticClassFqn} for {typeDetails.FullyQualifiedTypeName}");
                     }
 
                     types.Add(type.QualifiedName, typeDetails);
                 }
+                logger.Trace($"Added {file.Types.Count} types");
 
                 foreach (var component in file.Components)
                 {
                     components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
                 }
+                logger.Trace($"Added {file.Components.Count} components");
             }
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
@@ -90,21 +97,25 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
+            logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files");
 
             logger.Info("Populating all type details");
             foreach (var kv in Types)
             {
                 kv.Value.Populate(this);
             }
+            logger.Info($"Populated details of {Types.Count} types");
 
-            logger.Info("Populating all component field details");
+            logger.Info($"Populating all component field details");
             foreach (var kv in Components)
             {
                 kv.Value.PopulateFields(this);
             }
+            logger.Info($"Populated field details of {Components.Count} components");
 
             logger.Info("Removing all recursive options");
-            RemoveRecursiveOptions();
+            var fieldsRemoved = RemoveRecursiveOptions();
+            logger.Info($"Removed {fieldsRemoved} recursive options");
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -206,7 +217,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .All(qualifiedName => blittableMap.ContainsKey(qualifiedName));
         }
 
-        private void RemoveRecursiveOptions()
+        private int RemoveRecursiveOptions()
         {
             bool IsRecursive(string fieldType, IEnumerable<string> parentTypes)
             {
@@ -243,16 +254,28 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 }
             }
 
+            var fieldsRemoved = 0;
             foreach (var pair in toRemove)
             {
                 var type = Types[pair.Key];
-                logger.Trace($"Removing type {type.QualifiedName}");
 
                 type.FieldDetails = type.FieldDetails
-                    .Except(pair.Value)
+                    .Where(field =>
+                    {
+                        if (!pair.Value.Contains(field))
+                        {
+                            return true;
+                        }
+
+                        fieldsRemoved++;
+                        logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}");
+                        return false;
+                    })
                     .ToList()
                     .AsReadOnly();
             }
+
+            return fieldsRemoved;
         }
     }
 }
