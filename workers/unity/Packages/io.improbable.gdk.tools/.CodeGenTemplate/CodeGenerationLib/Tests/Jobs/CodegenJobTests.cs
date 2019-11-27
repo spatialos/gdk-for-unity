@@ -116,13 +116,13 @@ namespace CodeGeneration.Tests.Jobs
 
             public void AddInputFile(string path, DateTime timestamp)
             {
-                InputFiles.Add(path);
+                base.AddInputFile(path);
                 myFileSystem.AddFile(path, timestamp);
             }
 
             public void AddOutputFile(string path, DateTime timestamp, bool shouldExist)
             {
-                OutputFiles.Add(path);
+                base.AddOutputFile(path);
                 if (shouldExist)
                 {
                     myFileSystem.AddFile(path, timestamp);

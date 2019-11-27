@@ -27,9 +27,7 @@ namespace Improbable.Gdk.CodeGenerator
             var jobName = nameof(WorkerGenerationJob);
             logger.Info($"Initialising {jobName}");
 
-            logger.Info($"Extracting worker types from {CodeGeneratorOptions.Instance.WorkerJsonDirectory}");
             workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
-            logger.Info($"Extracted {workerTypesToGenerate.Count} worker types");
 
             var outputFilePaths = new List<string>
             {
@@ -38,10 +36,10 @@ namespace Improbable.Gdk.CodeGenerator
                 Path.Combine(relativeOutputPath, buildSystemFileName)
             };
 
+            logger.Info("Adding job output files");
             foreach (var filePath in outputFilePaths)
             {
-                OutputFiles.Add(filePath);
-                logger.Info($"Defined job output file at {filePath}");
+                AddOutputFile(filePath);
             }
 
             logger.Info($"Finished initialising {jobName}");
@@ -52,26 +50,25 @@ namespace Improbable.Gdk.CodeGenerator
             logger.Info($"Generating {workerFileName}");
             var unityWorkerMenuGenerator = new UnityWorkerMenuGenerator();
             var workerCode = unityWorkerMenuGenerator.Generate(workerTypesToGenerate);
-            Content.Add(Path.Combine(relativeEditorPath, workerFileName), workerCode);
-            logger.Info($"Finished generating {workerFileName}");
+            AddContent(Path.Combine(relativeEditorPath, workerFileName), workerCode);
 
             logger.Info($"Generating {buildSystemFileName}");
             var buildSystemAssemblyGenerator = new BuildSystemAssemblyGenerator();
             var assemblyCode = buildSystemAssemblyGenerator.Generate();
-            Content.Add(Path.Combine(relativeOutputPath, buildSystemFileName), assemblyCode);
-            logger.Info($"Finished generating {buildSystemFileName}");
+            AddContent(Path.Combine(relativeOutputPath, buildSystemFileName), assemblyCode);
 
             logger.Info($"Generating {workerListFileName}");
-            Content.Add(Path.Combine(relativeEditorPath, workerListFileName), string.Join(Environment.NewLine, workerTypesToGenerate));
-            logger.Info($"Finished generating {workerListFileName}");
+            AddContent(Path.Combine(relativeEditorPath, workerListFileName), string.Join(Environment.NewLine, workerTypesToGenerate));
         }
 
         private List<string> ExtractWorkerTypes(string path)
         {
+            logger.Info($"Extracting worker types from {path}");
+
             var workerTypes = new List<string>();
 
-            logger.Trace("Finding all worker json files");
-            var fileNames = Directory.EnumerateFiles(path, "*.json");
+            var fileNames = Directory.EnumerateFiles(path, "*.json").ToList();
+            logger.Trace($"Finding {fileNames.Count()} worker json files: {string.Join(", ", fileNames)}");
 
             foreach (var fileName in fileNames)
             {
@@ -79,7 +76,7 @@ namespace Improbable.Gdk.CodeGenerator
                 var text = File.ReadAllText(fileName);
                 if (!text.Contains(workerTypeFlag))
                 {
-                    logger.Warn($"{fileName} does not contain the following flag: {workerTypeFlag}");
+                    logger.Warn($"{fileName} does not contain the '{workerTypeFlag}' flag");
                     continue;
                 }
 
@@ -103,7 +100,7 @@ namespace Improbable.Gdk.CodeGenerator
                 }
             }
 
-            logger.Trace($"Found {workerTypes.Count} worker types");
+            logger.Info($"Found {workerTypes.Count} worker types: {string.Join(", ", workerTypes)}");
             return workerTypes;
         }
     }

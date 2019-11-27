@@ -4,7 +4,6 @@ using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
-using NLog;
 
 namespace Improbable.Gdk.CodeGenerator.Core
 {
@@ -24,8 +23,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             var jobName = nameof(CoreCodegenJob);
             logger.Info($"Initialising {jobName}");
 
-            InputFiles = store.SchemaFiles.ToList();
-            OutputFiles = new List<string>();
+            AddInputFiles(store.SchemaFiles.ToList());
 
             logger.Info("Gathering nested types");
             var allNestedTypes = store.Types
@@ -49,71 +47,71 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Defining job output files for types");
+            logger.Info("Adding job output files for types");
             foreach (var typeTarget in typesToGenerate)
             {
-                logger.Trace($"Defining output file for type {typeTarget.Content.QualifiedName}");
+                logger.Trace($"Adding output file for type {typeTarget.Content.QualifiedName}");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
-                OutputFiles.Add(Path.Combine(typeTarget.OutputPath, fileName));
+                AddOutputFile(Path.Combine(typeTarget.OutputPath, fileName));
             }
 
-            logger.Info("Defining job output files for components");
+            logger.Info("Adding job output files for components");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                logger.Trace($"Defining job output files for component {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}");
 
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
+                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Defining job output files for commands");
+                    logger.Trace("Adding job output files for commands");
 
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension)));
                 }
 
                 if (componentTarget.Content.EventDetails.Count > 0)
                 {
-                    logger.Trace("Defining job output file for events");
+                    logger.Trace("Adding job output file for events");
 
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}Events", FileExtension)));
                 }
 
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}UpdateSender", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ViewStorage", FileExtension)));
-                OutputFiles.Add(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
+                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
 
-            logger.Info("Defining job output files for enums");
+            logger.Info("Adding job output files for enums");
             foreach (var enumTarget in enumsToGenerate)
             {
-                logger.Trace($"Defining job output file for enum {enumTarget.Content.QualifiedName}");
+                logger.Trace($"Adding job output file for enum {enumTarget.Content.QualifiedName}");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
-                OutputFiles.Add(Path.Combine(enumTarget.OutputPath, fileName));
+                AddOutputFile(Path.Combine(enumTarget.OutputPath, fileName));
             }
 
             logger.Info($"Finished initialising {jobName}");
@@ -145,7 +143,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
                 var enumCode = enumGenerator.Generate(enumTarget.Content, enumTarget.Package);
-                Content.Add(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
+                AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
             logger.Info("Finished code generation for enums");
 
@@ -156,7 +154,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
                 var typeCode = typeGenerator.Generate(typeTarget.Content, typeTarget.Package);
-                Content.Add(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
+                AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
             logger.Info("Finished code generation for enums");
 
@@ -171,7 +169,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 var componentFileName = Path.ChangeExtension(componentName, FileExtension);
                 var componentCode = blittableComponentGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentFileName), componentCode);
+                AddContent(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
@@ -182,14 +180,14 @@ namespace Improbable.Gdk.CodeGenerator.Core
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
                     var commandPayloadCode =
                         commandPayloadGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
+                    AddContent(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
 
                     logger.Trace($"Generating {componentName}CommandDiffDeserializer");
                     var commandDiffDeserializerFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
                     var commandDiffDeserializerCode =
                         commandDiffDeserializerGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
+                    AddContent(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
                         commandDiffDeserializerCode);
 
                     logger.Trace($"Generating {componentName}CommandDiffStorage");
@@ -197,7 +195,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension);
                     var commandDiffStorageCode =
                         commandDiffStorageGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
+                    AddContent(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
                         commandDiffStorageCode);
 
                     logger.Trace($"Generating {componentName}CommandMetaDataStorage");
@@ -205,7 +203,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                         Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
                     var commandMetaDataStorageCode =
                         commandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
+                    AddContent(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
                         commandMetaDataStorageCode);
                 }
 
@@ -216,28 +214,28 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     logger.Trace($"Generating {componentName}Events");
                     var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
                     var eventsCode = eventGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
+                    AddContent(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
 
                 logger.Trace($"Generating {componentName}UpdateSender");
                 var updateSenderFileName = Path.ChangeExtension($"{componentName}UpdateSender", FileExtension);
                 var updateSenderCode = componentSenderGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
+                AddContent(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
                 logger.Trace($"Generating {componentName}EcsViewManager");
                 var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
                 var ecsViewManagerCode = ecsViewManagerGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
+                AddContent(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
 
                 logger.Trace($"Generating {componentName}ComponentDiffStorage");
                 var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
                 var componentDiffStorageCode = componentDiffStorageGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
+                AddContent(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
 
                 logger.Trace($"Generating {componentName}ComponentDiffDeserializer");
                 var componentDiffDeserializerFileName = Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension);
                 var componentDiffDeserializerCode = componentDiffDeserializerGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
+                AddContent(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
 
                 if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))
                 {
@@ -247,19 +245,19 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
                     var referenceProviderTranslationCode =
                         referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, referenceProviderFileName),
+                    AddContent(Path.Combine(relativeOutputPath, referenceProviderFileName),
                         referenceProviderTranslationCode);
                 }
 
                 logger.Trace($"Generating {componentName}ViewStorage");
                 var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
                 var viewStorageCode = viewStorageGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
+                AddContent(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
 
                 logger.Trace($"Generating {componentName}Metaclass");
                 var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);
                 var metaclassCode = metaclassGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
+                AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
             }
             logger.Info("Finished code generation for enums");
         }

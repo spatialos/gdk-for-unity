@@ -15,13 +15,16 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
     public abstract class CodegenJob
     {
-        public List<string> InputFiles = new List<string>();
-        public List<string> OutputFiles = new List<string>();
+        public IReadOnlyList<string> InputFiles => inputFiles;
+        public IReadOnlyList<string> OutputFiles => outputFiles;
+
+        private readonly List<string> inputFiles = new List<string>();
+        private readonly List<string> outputFiles = new List<string>();
         public readonly string OutputDirectory;
 
         protected Logger logger { get; }
 
-        protected readonly Dictionary<string, string> Content = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> Content = new Dictionary<string, string>();
 
         private IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
@@ -33,6 +36,32 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
             this.detailsStore = detailsStore;
+        }
+
+        protected void AddInputFiles(IEnumerable<string> inputFilePaths)
+        {
+            foreach (var inputFilePath in inputFilePaths)
+            {
+                AddInputFile(inputFilePath);
+            }
+        }
+
+        protected void AddInputFile(string inputFilePath)
+        {
+            inputFiles.Add(inputFilePath);
+            logger.Trace($"Added input: {inputFilePath}");
+        }
+
+        protected void AddOutputFile(string outputFilePath)
+        {
+            outputFiles.Add(outputFilePath);
+            logger.Trace($"Added output: {outputFilePath}");
+        }
+
+        protected void AddContent(string filePath, string fileContents)
+        {
+            Content.Add(filePath, fileContents);
+            logger.Trace($"Added generated content to {filePath}");
         }
 
         public void Clean()

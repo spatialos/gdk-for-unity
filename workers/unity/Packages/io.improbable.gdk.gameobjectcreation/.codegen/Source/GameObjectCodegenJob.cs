@@ -20,31 +20,28 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
             var jobName = nameof(GameObjectCodegenJob);
             logger.Info($"Initialising {jobName}");
 
-            InputFiles = store.SchemaFiles.ToList();
-            OutputFiles = new List<string>();
+            AddInputFiles(store.SchemaFiles.ToList());
 
             logger.Info("Gathering component details");
             componentsToGenerate = store.Components
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Info("Defining job output files for components");
+            logger.Info("Adding job output files");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                logger.Trace($"Defining job output files for component {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}");
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Defining job output file for command sender and receiver");
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
                 }
 
-                logger.Trace("Defining job output file for component reader and writer");
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
 
@@ -75,7 +72,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
                         commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
+                    AddContent(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 logger.Info("Generating component readers and writers");
@@ -85,7 +82,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
                 var componentReaderWriterCode =
                     componentReaderWriterGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
+                AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
             logger.Info("Finished code generation for components");
         }
