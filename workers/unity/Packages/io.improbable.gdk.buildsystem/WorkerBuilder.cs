@@ -14,12 +14,21 @@ namespace Improbable.Gdk.BuildSystem
 {
     public static class WorkerBuilder
     {
-        private static readonly string PlayerBuildDirectory =
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.SpatialAssemblyDirectory,
-                "worker"));
+        private static BuildContext? currentContext;
 
-        private static readonly string SpatialAssemblyDirectory =
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.SpatialAssemblyDirectory));
+        public static BuildContext CurrentContext
+        {
+            get
+            {
+                if (!currentContext.HasValue)
+                {
+                    throw new InvalidOperationException(
+                        "CurrentContext is only valid while building a SpatialOS worker.");
+                }
+
+                return currentContext.Value;
+            }
+        }
 
         /// <summary>
         ///     Build method that is invoked by commandline
@@ -106,18 +115,12 @@ namespace Improbable.Gdk.BuildSystem
                         $"Skipping ({targetNames}) because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
                 }
 
-                foreach (var targetConfig in targetConfigs)
+                result.AddRange(targetConfigs.Select(targetConfig => new BuildContext
                 {
-                    var context = new BuildContext
-                    {
-                        WorkerType = workerType,
-                        BuildEnvironment = buildEnvironment,
-                        ScriptingImplementation = scriptImplementation ?? ScriptingImplementation.Mono2x,
-                        BuildTargetConfig = targetConfig
-                    };
-
-                    result.Add(context);
-                }
+                    WorkerType = workerType, BuildEnvironment = buildEnvironment,
+                    ScriptingImplementation = scriptImplementation ?? ScriptingImplementation.Mono2x,
+                    BuildTargetConfig = targetConfig
+                }));
             }
 
             return result;
@@ -130,6 +133,7 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
+                    // TODO READ FROM SETTINGS
                     var buildContexts = GetBuildContexts(workerTypes, environment, null, null);
                     BuildWorkers(buildContexts);
                 }
@@ -144,7 +148,7 @@ namespace Improbable.Gdk.BuildSystem
             };
         }
 
-        private static bool BuildWorkers(List<BuildContext> buildContexts)
+        private static bool BuildWorkers(IReadOnlyList<BuildContext> buildContexts)
         {
             var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             var activeBuildTargetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
@@ -168,9 +172,9 @@ namespace Improbable.Gdk.BuildSystem
                 return false;
             }
 
-            if (!Directory.Exists(PlayerBuildDirectory))
+            if (!Directory.Exists(EditorPaths.PlayerBuildDirectory))
             {
-                Directory.CreateDirectory(PlayerBuildDirectory);
+                Directory.CreateDirectory(EditorPaths.PlayerBuildDirectory);
             }
 
             try
@@ -216,9 +220,9 @@ namespace Improbable.Gdk.BuildSystem
         public static void Clean()
         {
             // Delete all but the schema directory where the schema descriptor is placed.
-            if (Directory.Exists(SpatialAssemblyDirectory))
+            if (Directory.Exists(EditorPaths.SpatialAssemblyDirectory))
             {
-                var children = new DirectoryInfo(SpatialAssemblyDirectory).GetDirectories();
+                var children = new DirectoryInfo(EditorPaths.SpatialAssemblyDirectory).GetDirectories();
 
                 foreach (var child in children)
                 {
@@ -263,6 +267,7 @@ namespace Improbable.Gdk.BuildSystem
 
             try
             {
+                currentContext = buildContext;
                 var result = BuildPipeline.BuildPlayer(buildPlayerOptions);
                 if (result.summary.result != BuildResult.Succeeded)
                 {
@@ -287,6 +292,7 @@ namespace Improbable.Gdk.BuildSystem
             }
             finally
             {
+                currentContext = null;
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
             }
 
@@ -302,7 +308,7 @@ namespace Improbable.Gdk.BuildSystem
             if (buildContext.BuildTargetConfig.Target != BuildTarget.Android &&
                 buildContext.BuildTargetConfig.Target != BuildTarget.iOS)
             {
-                Package(workerBuildData.PackageName, buildContext.BuildEnvironment == BuildEnvironment.Cloud);
+                Package(workerBuildData.PackageName, useCompression: buildContext.BuildEnvironment == BuildEnvironment.Cloud);
             }
 
             return true;
@@ -329,7 +335,7 @@ namespace Improbable.Gdk.BuildSystem
 
         private static void Package(string packageName, bool useCompression)
         {
-            var zipPath = Path.Combine(PlayerBuildDirectory, packageName);
+            var zipPath = Path.Combine(EditorPaths.PlayerBuildDirectory, packageName);
             var basePath = Path.Combine(Common.BuildScratchDirectory, packageName);
 
             using (new ShowProgressBarScope($"Package {basePath}"))
