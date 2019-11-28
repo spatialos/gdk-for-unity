@@ -24,14 +24,14 @@ namespace Improbable.Gdk.ModularCodegenTests
         public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore)
             : base(baseOutputDir, fileSystem, detailsStore)
         {
-            OutputFiles.Add(relativeOutputPath);
-            OutputFiles.Add(relativeTemplateOutputPath);
+            AddOutputFile(relativeOutputPath);
+            AddOutputFile(relativeTemplateOutputPath);
         }
 
         protected override void RunImpl()
         {
-            Content.Add(relativeOutputPath, testContent);
-            Content.Add(relativeTemplateOutputPath, new ModularCodegenTestGenerator().Generate());
+            AddContent(relativeOutputPath, testContent);
+            AddContent(relativeTemplateOutputPath, new ModularCodegenTestGenerator().Generate());
         }
     }
 }

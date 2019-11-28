@@ -49,19 +49,19 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected void AddInputFile(string inputFilePath)
         {
             inputFiles.Add(inputFilePath);
-            logger.Trace($"Added input: {inputFilePath}");
+            logger.Trace($"Added input file: {inputFilePath}");
         }
 
         protected void AddOutputFile(string outputFilePath)
         {
             outputFiles.Add(outputFilePath);
-            logger.Trace($"Added output: {outputFilePath}");
+            logger.Trace($"Added output file: {outputFilePath}");
         }
 
         protected void AddContent(string filePath, string fileContents)
         {
             Content.Add(filePath, fileContents);
-            logger.Trace($"Added generated content to {filePath}");
+            logger.Trace($"Added generated content for {filePath}");
         }
 
         public void Clean()
