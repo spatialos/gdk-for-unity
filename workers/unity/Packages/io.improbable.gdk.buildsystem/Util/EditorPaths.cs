@@ -18,7 +18,6 @@ namespace Improbable.Gdk.BuildSystem
             Path.Combine(Application.dataPath, "..", "..", "..", "build", "assembly");
 
         public static readonly string PlayerBuildDirectory =
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), EditorPaths.SpatialAssemblyDirectory,
-                "worker"));
+            Path.GetFullPath(Path.Combine(SpatialAssemblyDirectory, "worker"));
     }
 }

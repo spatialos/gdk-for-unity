@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Improbable.Gdk.Tools;
 using UnityEditor;
 using UnityEngine;
@@ -10,9 +9,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 {
     internal class WorkerBuildData
     {
-        public readonly string WorkerType;
+        private readonly string workerType;
 
-        public string PackageName => $"{WorkerType}@{BuildTargetName}";
+        public string PackageName => $"{workerType}@{BuildTargetName}";
 
         public string BuildScratchDirectory =>
             Path.Combine(Common.BuildScratchDirectory, PackageName, ExecutableName);
@@ -83,15 +82,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 { BuildTarget.iOS, "iOSSupport" }
             };
 
-        internal static IReadOnlyDictionary<BuildTarget, bool> BuildTargetsThatCanBeBuilt
-        {
-            get
-            {
-                return buildTargetsThatCanBeBuilt ?? (buildTargetsThatCanBeBuilt =
-                    AllBuildTargets.ToDictionary(k => k, BuildSupportChecker.CanBuildTarget));
-            }
-        }
-
         internal static BuildTarget CurrentBuildPlatform
         {
             get
@@ -117,7 +107,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 throw new ArgumentException($"Unsupported BuildPlatform {buildTarget}");
             }
 
-            WorkerType = workerType;
+            this.workerType = workerType;
             this.buildTarget = buildTarget;
         }
 
@@ -130,7 +120,5 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], enabled: true, required: false);
         }
-
-        private static IReadOnlyDictionary<BuildTarget, bool> buildTargetsThatCanBeBuilt;
     }
 }

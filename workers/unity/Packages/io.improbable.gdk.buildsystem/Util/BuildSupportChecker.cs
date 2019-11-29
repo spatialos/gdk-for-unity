@@ -1,11 +1,36 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using UnityEditor;
 using UnityEngine;
 
 public static class BuildSupportChecker
 {
+    private static Dictionary<BuildTarget, bool> supportedBuildTargets;
+
+    public static void CheckBuildSupportTargets()
+    {
+        supportedBuildTargets = WorkerBuildData.AllBuildTargets.ToDictionary(k => k, BuildSupportChecker.CheckForBuildSupport);
+    }
+
+
     public static bool CanBuildTarget(BuildTarget target)
+    {
+        if (supportedBuildTargets == null)
+        {
+            CheckBuildSupportTargets();
+        }
+
+        if (supportedBuildTargets.TryGetValue(target, out var supported))
+        {
+            return supported;
+        }
+
+        return false;
+    }
+
+    private static bool CheckForBuildSupport(BuildTarget target)
     {
         var editorDirectory = Directory.GetParent(EditorApplication.applicationPath);
 

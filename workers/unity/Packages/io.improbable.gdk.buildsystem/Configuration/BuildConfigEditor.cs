@@ -645,7 +645,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             // Draw selected build target.
             var buildTarget = env.BuildTargets[selectedBuildTarget.Index];
-            var canBuildTarget = WorkerBuildData.BuildTargetsThatCanBeBuilt[buildTarget.Target];
+            var canBuildTarget = BuildSupportChecker.CanBuildTarget(buildTarget.Target);
 
             var options = buildTarget.Options;
             var enabled = buildTarget.Enabled;
@@ -857,12 +857,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static bool IsBuildTargetWarning(BuildTargetConfig t)
         {
-            return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Enabled;
+            return !BuildSupportChecker.CanBuildTarget(t.Target) && t.Enabled;
         }
 
         private static bool IsBuildTargetError(BuildTargetConfig t)
         {
-            return !WorkerBuildData.BuildTargetsThatCanBeBuilt[t.Target] && t.Required;
+            return !BuildSupportChecker.CanBuildTarget(t.Target) && t.Required;
         }
 
         private static string GetBuildConfigurationStateIcon(WorkerBuildConfiguration configuration)
