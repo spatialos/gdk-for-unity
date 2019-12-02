@@ -1,4 +1,5 @@
 using System;
+using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -6,6 +7,8 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private String Name;
         private String TypeName;
+
+        private Logger logger = LogManager.GetCurrentClassLogger();
 
         public string Generate(string name, string typeName)
         {

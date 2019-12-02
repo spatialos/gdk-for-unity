@@ -67,7 +67,6 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                 {
                     logger.Info("Generating command senders and command receivers");
 
-                    logger.Trace($"Generating {componentName}CommandSenderReceiver");
                     var commandSenderReceiverFileName =
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
@@ -77,7 +76,6 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
                 logger.Info("Generating component readers and writers");
 
-                logger.Trace($"Generating {componentName}ComponentReaderWriter");
                 var componentReaderWriterFileName =
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
                 var componentReaderWriterCode =
