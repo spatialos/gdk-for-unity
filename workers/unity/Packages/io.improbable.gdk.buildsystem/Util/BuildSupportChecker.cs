@@ -7,11 +7,11 @@ using UnityEngine;
 
 public static class BuildSupportChecker
 {
-    private static Dictionary<BuildTarget, bool> supportedBuildTargets;
+    private static HashSet<BuildTarget> supportedBuildTargets;
 
-    public static void CheckBuildSupportTargets()
+    private static void CheckBuildSupportTargets()
     {
-        supportedBuildTargets = WorkerBuildData.AllBuildTargets.ToDictionary(k => k, BuildSupportChecker.CheckForBuildSupport);
+        supportedBuildTargets = new HashSet<BuildTarget>(WorkerBuildData.AllBuildTargets.Where(CheckForBuildSupport));
     }
 
 
@@ -22,12 +22,7 @@ public static class BuildSupportChecker
             CheckBuildSupportTargets();
         }
 
-        if (supportedBuildTargets.TryGetValue(target, out var supported))
-        {
-            return supported;
-        }
-
-        return false;
+        return supportedBuildTargets.Contains(target);
     }
 
     private static bool CheckForBuildSupport(BuildTarget target)

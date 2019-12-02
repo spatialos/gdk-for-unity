@@ -4,7 +4,6 @@ using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using UnityEditor;
-using UnityEditor.Build;
 
 namespace Improbable.Gdk.BuildSystem
 {
@@ -45,37 +44,39 @@ namespace Improbable.Gdk.BuildSystem
                             return BuildTarget.StandaloneOSX;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(target), target,
-                                $"Unknown build target value");
+                                "Unknown build target value");
                     }
                 }).ToList();
         }
 
         internal static ScriptingImplementation GetScriptingImplementation(CommandLineArgs args)
         {
-            var wantedScriptingBackend = args.GetCommandLineValue("scriptingBackend", "mono");
-            switch (wantedScriptingBackend.ToLower())
+            var wantedScriptingBackend = args.GetCommandLineValue("scriptingBackend", "mono").ToLower();
+            switch (wantedScriptingBackend)
             {
                 case "mono":
                     return ScriptingImplementation.Mono2x;
                 case "il2cpp":
                     return ScriptingImplementation.IL2CPP;
                 default:
-                    throw new BuildFailedException("Unknown scripting backend value: " + wantedScriptingBackend);
+                    throw new ArgumentOutOfRangeException(nameof(wantedScriptingBackend), wantedScriptingBackend,
+                        "Unknown scripting backend");
             }
         }
 
         internal static BuildEnvironment GetBuildEnvironment(CommandLineArgs args)
         {
-            var buildEnvironmentArg = args.GetCommandLineValue("buildEnvironment", "local");
+            var buildEnvironmentArg = args.GetCommandLineValue("buildEnvironment", "local").ToLower();
 
-            switch (buildEnvironmentArg.ToLower())
+            switch (buildEnvironmentArg)
             {
                 case "cloud":
                     return BuildEnvironment.Cloud;
                 case "local":
                     return BuildEnvironment.Local;
                 default:
-                    throw new BuildFailedException("Unknown build environment value: " + buildEnvironmentArg);
+                    throw new ArgumentOutOfRangeException(nameof(buildEnvironmentArg), buildEnvironmentArg,
+                        "Unknown build environment");
             }
         }
     }
