@@ -165,7 +165,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path=\"{dir}\"");
 
-            logger.Info("Preparing bundle output path");
+            logger.Info($"Preparing bundle output path: {options.JsonDirectory}");
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
