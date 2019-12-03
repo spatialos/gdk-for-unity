@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- Fixed a bug where cleared fields in a received update would not be applied to the diff. [#1229](https://github.com/spatialos/gdk-for-unity/pull/1229)
+- Fixed a bug where empty list, maps, or options in a component update would not be applied correctly. [#1229](https://github.com/spatialos/gdk-for-unity/pull/1229)
 
 ## `0.3.1` - 2019-11-25
 
