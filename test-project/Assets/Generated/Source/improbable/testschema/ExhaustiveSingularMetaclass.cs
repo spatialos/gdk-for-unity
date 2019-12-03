@@ -28,8 +28,8 @@ namespace Improbable.TestSchema
             public Type EcsViewManager { get; } = typeof(global::Improbable.TestSchema.ExhaustiveSingular.EcsViewManager);
             public Type DynamicInvokable { get; } = typeof(global::Improbable.TestSchema.ExhaustiveSingular.ExhaustiveSingularDynamic);
 
-            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[] 
-            { 
+            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]
+            {
             };
         }
     }

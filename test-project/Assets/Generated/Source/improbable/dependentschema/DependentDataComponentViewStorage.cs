@@ -90,11 +90,11 @@ namespace Improbable.DependentSchema
 
             public void ApplyUpdate(long entityId, in Update update)
             {
-                if (!componentData.TryGetValue(entityId, out var data)) 
+                if (!componentData.TryGetValue(entityId, out var data))
                 {
                     return;
                 }
-                
+
 
                 if (update.Field1.HasValue)
                 {

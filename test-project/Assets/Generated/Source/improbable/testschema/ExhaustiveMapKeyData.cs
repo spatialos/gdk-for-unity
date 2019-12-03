@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace Improbable.TestSchema
 {
-    
     [global::System.Serializable]
     public struct ExhaustiveMapKeyData
     {
@@ -52,6 +51,7 @@ namespace Improbable.TestSchema
             Field17 = field17;
             Field18 = field18;
         }
+    
         public static class Serialization
         {
             public static void Serialize(ExhaustiveMapKeyData instance, global::Improbable.Worker.CInterop.SchemaObject obj)

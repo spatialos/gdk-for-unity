@@ -13,7 +13,7 @@ namespace Improbable.DependentSchema
     {
         internal static class ReferenceTypeProviders
         {
-            public static class AProvider 
+            public static class AProvider
             {
                 private static readonly Dictionary<uint, global::Improbable.TestSchema.ExhaustiveRepeatedData> Storage = new Dictionary<uint, global::Improbable.TestSchema.ExhaustiveRepeatedData>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -66,10 +66,10 @@ namespace Improbable.DependentSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -80,7 +80,7 @@ namespace Improbable.DependentSchema
             }
             
 
-            public static class CProvider 
+            public static class CProvider
             {
                 private static readonly Dictionary<uint, global::Improbable.TestSchema.SomeEnum?> Storage = new Dictionary<uint, global::Improbable.TestSchema.SomeEnum?>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -133,10 +133,10 @@ namespace Improbable.DependentSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -147,7 +147,7 @@ namespace Improbable.DependentSchema
             }
             
 
-            public static class DProvider 
+            public static class DProvider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>> Storage = new Dictionary<uint, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -200,10 +200,10 @@ namespace Improbable.DependentSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -214,7 +214,7 @@ namespace Improbable.DependentSchema
             }
             
 
-            public static class EProvider 
+            public static class EProvider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -267,10 +267,10 @@ namespace Improbable.DependentSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;

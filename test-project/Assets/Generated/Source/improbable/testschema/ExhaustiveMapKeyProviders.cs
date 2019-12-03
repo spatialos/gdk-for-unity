@@ -13,7 +13,7 @@ namespace Improbable.TestSchema
     {
         internal static class ReferenceTypeProviders
         {
-            public static class Field1Provider 
+            public static class Field1Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<bool, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<bool, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -66,10 +66,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -80,7 +80,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field2Provider 
+            public static class Field2Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<float, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<float, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -133,10 +133,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -147,7 +147,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field3Provider 
+            public static class Field3Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[], string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<byte[], string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -200,10 +200,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -214,7 +214,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field4Provider 
+            public static class Field4Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -267,10 +267,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -281,7 +281,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field5Provider 
+            public static class Field5Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -334,10 +334,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -348,7 +348,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field6Provider 
+            public static class Field6Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<double, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<double, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -401,10 +401,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -415,7 +415,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field7Provider 
+            public static class Field7Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<string, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -468,10 +468,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -482,7 +482,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field8Provider 
+            public static class Field8Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -535,10 +535,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -549,7 +549,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field9Provider 
+            public static class Field9Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -602,10 +602,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -616,7 +616,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field10Provider 
+            public static class Field10Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -669,10 +669,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -683,7 +683,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field11Provider 
+            public static class Field11Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -736,10 +736,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -750,7 +750,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field12Provider 
+            public static class Field12Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<uint, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -803,10 +803,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -817,7 +817,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field13Provider 
+            public static class Field13Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<ulong, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -870,10 +870,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -884,7 +884,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field14Provider 
+            public static class Field14Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<int, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -937,10 +937,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -951,7 +951,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field15Provider 
+            public static class Field15Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<long, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -1004,10 +1004,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -1018,7 +1018,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field16Provider 
+            public static class Field16Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -1071,10 +1071,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -1085,7 +1085,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field17Provider 
+            public static class Field17Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -1138,10 +1138,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -1152,7 +1152,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field18Provider 
+            public static class Field18Provider
             {
                 private static readonly Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>> Storage = new Dictionary<uint, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -1205,10 +1205,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;

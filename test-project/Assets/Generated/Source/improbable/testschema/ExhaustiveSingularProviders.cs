@@ -13,7 +13,7 @@ namespace Improbable.TestSchema
     {
         internal static class ReferenceTypeProviders
         {
-            public static class Field3Provider 
+            public static class Field3Provider
             {
                 private static readonly Dictionary<uint, byte[]> Storage = new Dictionary<uint, byte[]>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -66,10 +66,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;
@@ -80,7 +80,7 @@ namespace Improbable.TestSchema
             }
             
 
-            public static class Field7Provider 
+            public static class Field7Provider
             {
                 private static readonly Dictionary<uint, string> Storage = new Dictionary<uint, string>();
                 private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -133,10 +133,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                private static uint GetNextHandle() 
+                private static uint GetNextHandle()
                 {
                     nextHandle++;
-                    
+            
                     while (Storage.ContainsKey(nextHandle))
                     {
                         nextHandle++;

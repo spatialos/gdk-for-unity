@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace Improbable.DependentSchema
 {
-    
     [global::System.Serializable]
     public struct DependentType
     {
@@ -26,6 +25,7 @@ namespace Improbable.DependentSchema
             D = d;
             E = e;
         }
+    
         public static class Serialization
         {
             public static void Serialize(DependentType instance, global::Improbable.Worker.CInterop.SchemaObject obj)

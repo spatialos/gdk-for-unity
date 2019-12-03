@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace Improbable.TestSchema
 {
-    
     [global::System.Serializable]
     public struct NestedTypeSameName
     {
+    
         public static class Serialization
         {
             public static void Serialize(NestedTypeSameName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -25,10 +25,10 @@ namespace Improbable.TestSchema
             }
         }
     
-        
         [global::System.Serializable]
         public struct Other
         {
+        
             public static class Serialization
             {
                 public static void Serialize(Other instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -42,7 +42,6 @@ namespace Improbable.TestSchema
                 }
             }
         
-            
             [global::System.Serializable]
             public struct NestedTypeSameName
             {
@@ -52,6 +51,7 @@ namespace Improbable.TestSchema
                 {
                     NestedField = nestedField;
                 }
+            
                 public static class Serialization
                 {
                     public static void Serialize(NestedTypeSameName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -71,10 +71,10 @@ namespace Improbable.TestSchema
                     }
                 }
             
-                
                 [global::System.Serializable]
                 public struct Other0
                 {
+                
                     public static class Serialization
                     {
                         public static void Serialize(Other0 instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -88,10 +88,10 @@ namespace Improbable.TestSchema
                         }
                     }
                 
-                    
                     [global::System.Serializable]
                     public struct NestedTypeSameName
                     {
+                    
                         public static class Serialization
                         {
                             public static void Serialize(NestedTypeSameName instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -109,10 +109,10 @@ namespace Improbable.TestSchema
                 }
                 
             
-                
                 [global::System.Serializable]
                 public struct Other1
                 {
+                
                     public static class Serialization
                     {
                         public static void Serialize(Other1 instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -126,7 +126,6 @@ namespace Improbable.TestSchema
                         }
                     }
                 
-                    
                     [global::System.Serializable]
                     public enum NestedTypeSameName : uint
                     {
@@ -134,7 +133,6 @@ namespace Improbable.TestSchema
                     }
                     
                 
-                    
                     [global::System.Serializable]
                     public enum NestedEnum : uint
                     {

@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace Improbable.TestSchema
 {
-    
     [global::System.Serializable]
     public struct TypeC
     {
@@ -20,6 +19,7 @@ namespace Improbable.TestSchema
             BList = bList;
             BMap = bMap;
         }
+    
         public static class Serialization
         {
             public static void Serialize(TypeC instance, global::Improbable.Worker.CInterop.SchemaObject obj)

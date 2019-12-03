@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace Improbable.TestSchema
 {
-    
     [global::System.Serializable]
     public struct ExhaustiveEntityData
     {
@@ -26,6 +25,7 @@ namespace Improbable.TestSchema
             Field4 = field4;
             Field5 = field5;
         }
+    
         public static class Serialization
         {
             public static void Serialize(ExhaustiveEntityData instance, global::Improbable.Worker.CInterop.SchemaObject obj)
