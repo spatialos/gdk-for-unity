@@ -170,29 +170,41 @@ namespace Improbable.Gdk.Tools
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError($"Code generation failed! Please check the code generation logs for more information: {loggerOutputPath}");
+                            Debug.LogError(File.Exists(loggerOutputPath)
+                                ? $"Code generation failed! Please check the code generation logs for more information: {loggerOutputPath}"
+                                : "Code generation failed! Please check the console for more information.");
+
                             EditorApplication.delayCall += () =>
                             {
-                                var option = EditorUtility.DisplayDialogComplex("Generate Code",
-                                    $"Code generation failed with {numWarnings} warnings and {numErrors} errors!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
-                                    "Open logfile",
-                                    "Close",
-                                    "");
-
-                                switch (option)
+                                if (File.Exists(loggerOutputPath))
                                 {
-                                    // Open logfile
-                                    case 0:
-                                        Application.OpenURL(loggerOutputPath);
-                                        break;
+                                    var option = EditorUtility.DisplayDialogComplex("Generate Code",
+                                        $"Code generation failed with {numWarnings} warnings and {numErrors} errors!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                        "Open logfile",
+                                        "Close",
+                                        "");
 
-                                    // Close
-                                    case 1:
-                                    // Alt
-                                    case 2:
-                                        break;
-                                    default:
-                                        throw new ArgumentOutOfRangeException("Unrecognised option");
+                                    switch (option)
+                                    {
+                                        // Open logfile
+                                        case 0:
+                                            Application.OpenURL(loggerOutputPath);
+                                            break;
+
+                                        // Close
+                                        case 1:
+                                        // Alt
+                                        case 2:
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException("Unrecognised option");
+                                    }
+                                }
+                                else
+                                {
+                                    EditorUtility.DisplayDialog("Generate Code",
+                                        "Code generation failed.\nPlease check the console for more information.",
+                                        "Close");
                                 }
                             };
                         }
