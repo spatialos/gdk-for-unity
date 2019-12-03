@@ -17,7 +17,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <#
-    logger.Trace($"Generating {componentDetails.ComponentName}ViewStorage class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}ViewStorage class");
 #>
         public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
             IViewComponentUpdater<Update>

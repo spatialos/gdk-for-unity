@@ -17,7 +17,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <#
-    logger.Trace("Generating ComponentMetaclass class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentMetaclass class");
 #>
         public class ComponentMetaclass : IComponentMetaclass
         {
@@ -47,7 +47,7 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var command in commandDetailsList) { #>
 
 <#
-    logger.Trace($"Generating {command.CommandName}Metaclass class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}Metaclass class");
 #>
         public class <#= command.CommandName #>Metaclass : ICommandMetaclass
         {

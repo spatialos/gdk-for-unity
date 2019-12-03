@@ -18,7 +18,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <#
-    logger.Trace("Generating DiffComponentStorage class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentStorage class");
 #>
         public class DiffComponentStorage : IDiffUpdateStorage<Update>, IDiffComponentAddedStorage<Update>, IDiffAuthorityStorage
 <# foreach (var ev in eventDetailsList) {

@@ -20,7 +20,7 @@ using Entity = Unity.Entities.Entity;
 namespace <#= qualifiedNamespace #>
 {
 <#
-    logger.Trace($"Generating {componentDetails.ComponentName}CommandSenderSubscriptionManager class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSenderSubscriptionManager class");
 #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandSenderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandSender>
@@ -137,7 +137,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {componentDetails.ComponentName}CommandReceiverSubscriptionManager class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiverSubscriptionManager class");
 #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandReceiverSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandReceiver>
@@ -263,7 +263,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {componentDetails.ComponentName}CommandSender class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSender class");
 #>
     public class <#= componentDetails.ComponentName #>CommandSender
     {
@@ -322,7 +322,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {componentDetails.ComponentName}CommandReceiver class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiver class");
 #>
     public class <#= componentDetails.ComponentName #>CommandReceiver
     {

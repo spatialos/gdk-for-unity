@@ -7,13 +7,17 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private String Name;
         private String TypeName;
+        private String QualifiedNamespace;
+        private String ComponentName;
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
-        public string Generate(string name, string typeName)
+        public string Generate(string name, string typeName, string qualifiedNamespace, string componentName)
         {
             Name = name;
             TypeName = typeName;
+            QualifiedNamespace = qualifiedNamespace;
+            ComponentName = componentName;
 
             return TransformText();
         }

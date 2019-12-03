@@ -19,7 +19,7 @@ namespace <#= qualifiedNamespace #>
     {
 <# foreach (var eventDetails in eventDetailsList) { #>
 <#
-    logger.Trace($"Generating {eventDetails.EventName}.Event struct");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{eventDetails.EventName} class");
 #>
         public static class <#= eventDetails.EventName #>
         {

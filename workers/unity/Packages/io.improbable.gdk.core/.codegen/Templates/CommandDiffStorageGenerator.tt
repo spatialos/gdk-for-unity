@@ -21,7 +21,7 @@ namespace <#= qualifiedNamespace #>
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
 <#
-    logger.Trace($"Generating {command.CommandName}CommandStorage class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandStorage class");
 #>
         public class Diff<#= command.CommandName #>CommandStorage : IComponentCommandDiffStorage
             , IDiffCommandRequestStorage<<#= receivedRequestType #>>
@@ -142,7 +142,7 @@ namespace <#= qualifiedNamespace #>
         var responseType = command.CommandName + ".Response";
 #>
 <#
-    logger.Trace($"Generating {command.CommandName}CommandsToSendStorage class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandsToSendStorage class");
 #>
         public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
             , ICommandRequestSendStorage<<#= requestType #>>

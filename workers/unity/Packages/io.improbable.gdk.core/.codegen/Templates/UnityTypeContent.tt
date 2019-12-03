@@ -33,9 +33,6 @@ if (fieldDetailsList.Count > 0)
 
 <# } #>
 
-<#
-    logger.Trace("Generating Serialization static class");
-#>
     public static class Serialization
     {
         public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.CInterop.SchemaObject obj)

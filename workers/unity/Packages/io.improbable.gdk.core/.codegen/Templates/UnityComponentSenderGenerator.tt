@@ -25,7 +25,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <#
-    logger.Trace("Generating ComponentReplicator internal class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentReplicator internal class");
 #>
         internal class ComponentReplicator : IComponentReplicationHandler
         {

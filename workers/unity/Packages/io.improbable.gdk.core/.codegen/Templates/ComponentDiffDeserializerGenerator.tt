@@ -17,7 +17,7 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <#
-    logger.Trace("Generating DiffComponentDeserializer class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentDeserializer class");
 #>
         public class DiffComponentDeserializer : IComponentDiffDeserializer
         {
@@ -63,7 +63,7 @@ namespace <#= qualifiedNamespace #>
         }
 
 <#
-    logger.Trace("Generating ComponentSerializer class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentSerializer class");
 #>
         public class ComponentSerializer : IComponentSerializer
         {
