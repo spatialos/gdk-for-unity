@@ -19,7 +19,6 @@
 - Fixed issues ([#957](https://github.com/spatialos/gdk-for-unity/issues/957), [#958](https://github.com/spatialos/gdk-for-unity/issues/958)) where valid schema would generate invalid code due to name clashes. [#1222](https://github.com/spatialos/gdk-for-unity/pull/1222)
     - The offending schema properties will no longer be generated and are now logged in the Unity Editor.
 
-
 ### Internal
 
 - Changed the default Locator port from 444 to 443. [#1220](https://github.com/spatialos/gdk-for-unity/pull/1220)
