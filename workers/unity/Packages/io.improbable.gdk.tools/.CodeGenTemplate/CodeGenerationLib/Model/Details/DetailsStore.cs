@@ -50,7 +50,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
             logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}");
 
-            logger.Info("Loading enums, types and components");
+            logger.Trace("Loading enums, types and components");
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -95,7 +95,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
             Components = new ReadOnlyDictionary<string, UnityComponentDetails>(components);
 
-            logger.Info("Retrieving canonical paths of schema files");
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
@@ -116,8 +115,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             logger.Info($"Populated field details of {Components.Count} components");
 
             logger.Info("Removing all recursive options");
-            var fieldsRemoved = RemoveRecursiveOptions();
-            logger.Info($"Removed {fieldsRemoved} recursive options");
+            var numFieldsRemoved = RemoveRecursiveOptions();
+            logger.Info($"Removed {numFieldsRemoved} recursive options");
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -256,7 +255,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 }
             }
 
-            var fieldsRemoved = 0;
+            var numFieldsRemoved = 0;
             foreach (var pair in toRemove)
             {
                 var type = Types[pair.Key];
@@ -269,7 +268,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                             return true;
                         }
 
-                        fieldsRemoved++;
+                        numFieldsRemoved++;
                         logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}");
                         return false;
                     })
@@ -277,7 +276,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     .AsReadOnly();
             }
 
-            return fieldsRemoved;
+            return numFieldsRemoved;
         }
     }
 }

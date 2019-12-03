@@ -16,6 +16,9 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<#
+    logger.Trace("Generating ComponentMetaclass class");
+#>
         public class ComponentMetaclass : IComponentMetaclass
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
@@ -34,23 +37,26 @@ namespace <#= qualifiedNamespace #>
             public Type EcsViewManager { get; } = typeof(<#= rootNamespace #>.EcsViewManager);
             public Type DynamicInvokable { get; } = typeof(<#= rootNamespace #>.<#= componentDetails.ComponentName #>Dynamic);
 
-            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[] 
-            { 
+            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]
+            {
 <# foreach (var command in commandDetailsList) { #>
                 new <#= command.CommandName #>Metaclass(),
 <# } #>
             };
         }
-<# foreach (var command in commandDetailsList) { #> 
+<# foreach (var command in commandDetailsList) { #>
 
-        public class <#= command.CommandName #>Metaclass : ICommandMetaclass 
+<#
+    logger.Trace($"Generating {command.CommandName}Metaclass class");
+#>
+        public class <#= command.CommandName #>Metaclass : ICommandMetaclass
         {
             public uint CommandIndex => <#= command.CommandIndex #>;
             public string Name => "<#= command.CommandName #>";
 
             public Type DiffDeserializer { get; } = typeof(<#= rootNamespace #>.<#= command.CommandName #>DiffCommandDeserializer);
             public Type Serializer { get; } = typeof(<#= rootNamespace #>.<#= command.CommandName #>CommandSerializer);
-            
+
             public Type MetaDataStorage { get; } = typeof(<#= rootNamespace #>.<#= command.CommandName #>CommandMetaDataStorage);
             public Type SendStorage { get; } = typeof(<#= rootNamespace #>.<#= command.CommandName #>CommandsToSendStorage);
             public Type DiffStorage { get; } = typeof(<#= rootNamespace #>.Diff<#= command.CommandName #>CommandStorage);

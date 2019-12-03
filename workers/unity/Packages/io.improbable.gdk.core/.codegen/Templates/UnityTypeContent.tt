@@ -5,7 +5,9 @@
     var fieldDetailsList = GetFieldDetailsList();
     var hasPartial = PartialDatabase.TryGetPartial(typeDetails.GetPartialResourceTypeName(), out var partial);
 #>
-
+<#
+    logger.Trace($"Generating {typeDetails.CapitalisedName} struct");
+#>
 [global::System.Serializable]
 public struct <#= typeDetails.CapitalisedName #>
 {
@@ -30,6 +32,10 @@ if (fieldDetailsList.Count > 0)
     <#= CommonGeneratorUtils.IndentEveryNewline(partial) #>
 
 <# } #>
+
+<#
+    logger.Trace("Generating Serialization static class");
+#>
     public static class Serialization
     {
         public static void Serialize(<#= typeDetails.CapitalisedName #> instance, global::Improbable.Worker.CInterop.SchemaObject obj)

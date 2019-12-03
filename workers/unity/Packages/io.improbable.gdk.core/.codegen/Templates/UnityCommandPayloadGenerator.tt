@@ -17,6 +17,9 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <# foreach (var commandDetails in commandDetailsList) {#>
+<#
+    logger.Trace($"Generating {commandDetails.CommandName} partial class");
+#>
         public partial class <#= commandDetails.CommandName #>
         {
             public struct Request : ICommandRequest

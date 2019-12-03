@@ -1,6 +1,9 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
-public static class <#= Name #>Provider 
+<#
+    logger.Trace($"Generating {Name}Provider static class");
+#>
+public static class <#= Name #>Provider
 {
     private static readonly Dictionary<uint, <#= TypeName #>> Storage = new Dictionary<uint, <#= TypeName #>>();
     private static readonly Dictionary<uint, global::Unity.Entities.World> WorldMapping = new Dictionary<uint, global::Unity.Entities.World>();
@@ -53,10 +56,10 @@ public static class <#= Name #>Provider
         }
     }
 
-    private static uint GetNextHandle() 
+    private static uint GetNextHandle()
     {
         nextHandle++;
-        
+
         while (Storage.ContainsKey(nextHandle))
         {
             nextHandle++;

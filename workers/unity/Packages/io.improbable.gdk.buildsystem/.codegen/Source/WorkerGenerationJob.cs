@@ -6,7 +6,6 @@ using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Newtonsoft.Json.Linq;
-using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -36,11 +35,11 @@ namespace Improbable.Gdk.CodeGenerator
                 Path.Combine(relativeOutputPath, buildSystemFileName)
             };
 
-            logger.Info("Adding job output files");
             foreach (var filePath in outputFilePaths)
             {
                 AddOutputFile(filePath);
             }
+            logger.Info($"Added {outputFilePaths.Count} job output files");
 
             logger.Info($"Finished initialising {jobName}");
         }
@@ -68,7 +67,7 @@ namespace Improbable.Gdk.CodeGenerator
             var workerTypes = new List<string>();
 
             var fileNames = Directory.EnumerateFiles(path, "*.json").ToList();
-            logger.Trace($"Finding {fileNames.Count()} worker json files: {string.Join(", ", fileNames)}");
+            logger.Trace($"Found {fileNames.Count()} worker json files: {string.Join(", ", fileNames)}");
 
             foreach (var fileName in fileNames)
             {
@@ -88,7 +87,6 @@ namespace Improbable.Gdk.CodeGenerator
                     continue;
                 }
 
-                logger.Trace("Finding worker type in list of arguments");
                 for (var i = 0; i < arguments.Count(); i++)
                 {
                     if (workerTypeFlag.Equals(arguments[i].ToString()))

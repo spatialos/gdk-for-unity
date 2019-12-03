@@ -20,6 +20,9 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<#
+    logger.Trace("Generating ReferenceTypeProviders");
+#>
         internal static class ReferenceTypeProviders
         {
 <# foreach (var fieldDetails in fieldDetailsList) { #>

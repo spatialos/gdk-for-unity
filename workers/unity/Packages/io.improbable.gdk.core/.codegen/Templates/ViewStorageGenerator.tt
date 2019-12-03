@@ -16,6 +16,9 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<#
+    logger.Trace($"Generating {componentDetails.ComponentName}ViewStorage class");
+#>
         public class <#= componentDetails.ComponentName #>ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
             IViewComponentUpdater<Update>
         {
@@ -95,11 +98,11 @@ namespace <#= qualifiedNamespace #>
 
             public void ApplyUpdate(long entityId, in Update update)
             {
-                if (!componentData.TryGetValue(entityId, out var data)) 
+                if (!componentData.TryGetValue(entityId, out var data))
                 {
                     return;
                 }
-                
+
 <# foreach (var field in fields) {
     var name = field.PascalCaseName;
 #>
