@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for Unity build callbacks such as `IPostprocessBuildWithReport`. [#1228](https://github.com/spatialos/gdk-for-unity/pull/1228)
+  - During a build you can now access the `WorkerBuilder.CurrentContext` field which contains all SpatialOS related build information.
+
 ### Fixed
 
 - Fixed a bug where empty list, maps, or options in a component update would not be applied correctly. [#1229](https://github.com/spatialos/gdk-for-unity/pull/1229)

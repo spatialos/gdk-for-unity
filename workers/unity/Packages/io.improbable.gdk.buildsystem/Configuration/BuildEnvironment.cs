@@ -3,7 +3,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     /// <summary>
     /// Represents a group of build targets and settings.
     /// </summary>
-    internal enum BuildEnvironment
+    public enum BuildEnvironment
     {
         /// <summary>
         /// Build targets for local iteration.
