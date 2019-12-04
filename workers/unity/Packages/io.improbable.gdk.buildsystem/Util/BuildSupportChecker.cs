@@ -14,7 +14,6 @@ public static class BuildSupportChecker
         supportedBuildTargets = new HashSet<BuildTarget>(WorkerBuildData.AllBuildTargets.Where(CheckForBuildSupport));
     }
 
-
     public static bool CanBuildTarget(BuildTarget target)
     {
         if (supportedBuildTargets == null)
