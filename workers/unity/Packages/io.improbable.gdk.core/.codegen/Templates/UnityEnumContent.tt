@@ -4,7 +4,7 @@
     var enumDetails = GetEnumDetails();
 #>
 <#
-    logger.Trace($"Generating {preamble}.{enumDetails.TypeName} enum");
+    logger.Trace($"Generating {enumNamespace}.{enumDetails.TypeName} enum");
 #>
 [global::System.Serializable]
 public enum <#=  enumDetails.TypeName #> : uint

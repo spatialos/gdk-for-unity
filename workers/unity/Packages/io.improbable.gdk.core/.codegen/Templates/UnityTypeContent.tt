@@ -6,7 +6,7 @@
     var hasPartial = PartialDatabase.TryGetPartial(typeDetails.GetPartialResourceTypeName(), out var partial);
 #>
 <#
-    logger.Trace($"Generating {preamble}.{typeDetails.CapitalisedName} struct");
+    logger.Trace($"Generating {typeNamespace}.{typeDetails.CapitalisedName} struct");
 #>
 [global::System.Serializable]
 public struct <#= typeDetails.CapitalisedName #>
@@ -69,7 +69,7 @@ if (fieldDetailsList.Count > 0)
     {
 #>
 
-    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, $"{preamble}.{typeDetails.CapitalisedName}")) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(typeGenerator.Generate(nestedType, $"{typeNamespace}.{typeDetails.CapitalisedName}")) #>
 <# } #>
 <#
     var enumGenerator = new UnityEnumContent();
@@ -77,6 +77,6 @@ if (fieldDetailsList.Count > 0)
     {
 #>
 
-    <#= CommonGeneratorUtils.IndentEveryNewline(enumGenerator.Generate(nestedEnum, $"{preamble}.{typeDetails.CapitalisedName}")) #>
+    <#= CommonGeneratorUtils.IndentEveryNewline(enumGenerator.Generate(nestedEnum, $"{typeNamespace}.{typeDetails.CapitalisedName}")) #>
 <# } #>
 }

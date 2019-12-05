@@ -6,14 +6,14 @@ namespace Improbable.Gdk.CodeGenerator
     public partial class UnityEnumContent
     {
         private UnityEnumDetails details;
-        private string preamble;
+        private string enumNamespace;
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
-        public string Generate(UnityEnumDetails details, string preamble)
+        public string Generate(UnityEnumDetails details, string enumNamespace)
         {
             this.details = details;
-            this.preamble = preamble;
+            this.enumNamespace = enumNamespace;
             return TransformText();
         }
 

@@ -10,16 +10,16 @@ namespace Improbable.Gdk.CodeGenerator
         private UnityTypeDetails details;
         private IReadOnlyList<UnityTypeDetails> nestedTypes;
         private IReadOnlyList<UnityEnumDetails> nestedEnums;
-        private string preamble;
+        private string typeNamespace;
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
-        public string Generate(UnityTypeDetails details, string preamble)
+        public string Generate(UnityTypeDetails details, string typeNamespace)
         {
             this.details = details;
             nestedTypes = details.ChildTypes;
             nestedEnums = details.ChildEnums;
-            this.preamble = preamble;
+            this.typeNamespace = typeNamespace;
 
             return TransformText();
         }
