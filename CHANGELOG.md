@@ -6,6 +6,7 @@
 
 - Added support for Unity build callbacks such as `IPostprocessBuildWithReport`. [#1228](https://github.com/spatialos/gdk-for-unity/pull/1228)
   - During a build you can now access the `WorkerBuilder.CurrentContext` field which contains all SpatialOS related build information.
+- Enabled support for QBI frequency in the QBI Helper Module. [#1231](https://github.com/spatialos/gdk-for-unity/pull/1231)
 
 ### Fixed
 
