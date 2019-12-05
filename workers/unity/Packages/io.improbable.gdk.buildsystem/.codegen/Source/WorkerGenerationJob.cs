@@ -34,10 +34,7 @@ namespace Improbable.Gdk.CodeGenerator
                 Path.Combine(relativeOutputPath, BuildSystemFileName)
             };
 
-            foreach (var filePath in outputFilePaths)
-            {
-                AddOutputFile(filePath);
-            }
+            AddOutputFiles(outputFilePaths);
             logger.Info($"Added {outputFilePaths.Count} job output files");
 
             logger.Info($"Finished initialising {jobName}");

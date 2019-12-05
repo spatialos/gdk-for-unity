@@ -103,7 +103,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     Path.ChangeExtension($"{componentName}Providers", FileExtension)));
                 AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ViewStorage", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
+                AddOutputFile(Path.Combine(relativeOutputPath,
+                    Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
             logger.Info($"Added output files for {componentsToGenerate.Count} components");
 
