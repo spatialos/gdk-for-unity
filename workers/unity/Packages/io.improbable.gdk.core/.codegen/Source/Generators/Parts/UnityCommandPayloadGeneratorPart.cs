@@ -12,6 +12,11 @@ namespace Improbable.Gdk.CodeGenerator
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
+        public UnityCommandPayloadGenerator()
+        {
+            logger.Trace($"Constructing {GetType()}");
+        }
+
         public string Generate(UnityComponentDetails details, string package)
         {
             qualifiedNamespace = package;

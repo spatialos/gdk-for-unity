@@ -12,6 +12,11 @@ namespace Improbable.Gdk.CodeGenerator
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
+        public UnityReferenceTypeProviderContent()
+        {
+            logger.Trace($"Constructing {GetType()}");
+        }
+
         public string Generate(string name, string typeName, string qualifiedNamespace, string componentName)
         {
             Name = name;

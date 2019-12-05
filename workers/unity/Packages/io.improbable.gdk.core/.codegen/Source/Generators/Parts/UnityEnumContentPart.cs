@@ -10,6 +10,11 @@ namespace Improbable.Gdk.CodeGenerator
 
         private Logger logger = LogManager.GetCurrentClassLogger();
 
+        public UnityEnumContent()
+        {
+            logger.Trace($"Constructing {GetType()}");
+        }
+
         public string Generate(UnityEnumDetails details, string enumNamespace)
         {
             this.details = details;
