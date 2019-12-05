@@ -44,4 +44,4 @@ These two options describe the behaviour of a worker type, deployment target, an
 | No | Yes | Invalid state and undefined behaviour. If this state ever occurs, please [raise a bug report](https://github.com/spatialos/gdk-for-unity/issues/new). |
 | Yes | Yes | Build is run. If the build support for the platform is not installed, fail the build. |
 
-> **Note:** Running a worker build [from the CLI]({{urlRoot}}/modules/build-system/cli) ignores the Required flag. If the build support is not installed, the build will fail. 
+> **Note:** Running a worker build [from the CLI]({{urlRoot}}/modules/build-system/cli) ignores the Required flag. If the build support is not installed, the build will fail.
