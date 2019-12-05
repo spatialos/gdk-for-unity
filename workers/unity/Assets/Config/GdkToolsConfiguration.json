@@ -2,6 +2,7 @@
     "SchemaSourceDirs": [
         "../../schema"
     ],
+    "VerboseLogging": true,
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "../../build/assembly/schema",
     "DevAuthTokenDir": "Resources",

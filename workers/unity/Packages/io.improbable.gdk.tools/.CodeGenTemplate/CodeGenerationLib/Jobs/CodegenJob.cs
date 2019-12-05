@@ -52,6 +52,14 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             logger.Trace($"Added input file: {inputFilePath}");
         }
 
+        protected void AddOutputFiles(IEnumerable<string> outputFilePaths)
+        {
+            foreach (var outputFilePath in outputFilePaths)
+            {
+                AddOutputFile(outputFilePath);
+            }
+        }
+
         protected void AddOutputFile(string outputFilePath)
         {
             outputFiles.Add(outputFilePath);
@@ -83,13 +91,11 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 {
                     logger.Info($"Deleting output directory {fileInfo.DirectoryPath}");
                     fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
+                    numRemovedDirectories++;
                 }
             }
 
-            if (numRemovedDirectories > 0)
-            {
-                logger.Info($"Directories cleaned: {numRemovedDirectories}");
-            }
+            logger.Info($"Directories cleaned: {numRemovedDirectories}");
         }
 
         public void Run()

@@ -23,8 +23,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             logger.Info("Finding dirty jobs");
             var dirtyJobs = PrepareOutputFolders(jobs);
 
-            var dirtyJobList = string.Join(", ", dirtyJobs.Select(job => job.GetType()));
-            logger.Info($"Found {dirtyJobs.Count} dirty jobs: {dirtyJobList}");
+            var dirtyJobList = string.Join("\n - ", dirtyJobs.Select(job => job.GetType()));
+            logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
 
             logger.Info("Running jobs");
             foreach (var dirtyJob in dirtyJobs)

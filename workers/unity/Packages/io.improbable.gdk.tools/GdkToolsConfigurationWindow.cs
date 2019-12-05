@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Tools
     public class GdkToolsConfigurationWindow : EditorWindow
     {
         internal const string SchemaStdLibDirLabel = "Standard library";
+        internal const string VerboseLoggingLabel = "Verbose logging";
         internal const string CodegenOutputDirLabel = "C# output directory";
         internal const string DescriptorOutputDirLabel = "Descriptor directory";
         internal const string DevAuthTokenDirLabel = "Token directory";
@@ -113,6 +114,8 @@ namespace Improbable.Gdk.Tools
             using (new EditorGUIUtility.IconSizeScope(new Vector2(12, 12)))
             using (new EditorGUI.IndentLevelScope())
             {
+                toolsConfig.VerboseLogging = EditorGUILayout.Toggle(VerboseLoggingLabel, toolsConfig.VerboseLogging);
+
                 toolsConfig.CodegenOutputDir =
                     EditorGUILayout.TextField(CodegenOutputDirLabel, toolsConfig.CodegenOutputDir);
 

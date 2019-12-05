@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var config = new NLog.Config.LoggingConfiguration();
 
-            var minimumLogLevel = codeGeneratorOptions.Quiet ? LogLevel.Info : LogLevel.Trace;
+            var minimumLogLevel = codeGeneratorOptions.Verbose ? LogLevel.Trace : LogLevel.Info;
 
             if (codeGeneratorOptions.EnableLoggingToStdout)
             {

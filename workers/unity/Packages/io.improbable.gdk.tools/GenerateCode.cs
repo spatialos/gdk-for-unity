@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Tools
             @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static List<CodegenLog> latestCodegenLogs;
+        private static Dictionary<CodegenLogLevel, int> codegenLogCounts;
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
@@ -99,13 +99,23 @@ namespace Improbable.Gdk.Tools
 
         private static void SetupProject()
         {
-            Profiler.BeginSample("Install dotnet template");
-            InstallDotnetTemplate();
-            Profiler.EndSample();
+            try
+            {
+                Profiler.BeginSample("Install dotnet template");
+                InstallDotnetTemplate();
+                Profiler.EndSample();
 
-            Profiler.BeginSample("Create dotnet template");
-            CreateTemplate();
-            Profiler.EndSample();
+                Profiler.BeginSample("Create dotnet template");
+                CreateTemplate();
+                Profiler.EndSample();
+            }
+            catch (Exception)
+            {
+                EditorUtility.DisplayDialog("Generate Code",
+                    "Code generation failed.\nPlease check the console for more information.",
+                    "Close");
+                throw;
+            }
         }
 
         private static void Generate()
@@ -154,7 +164,7 @@ namespace Improbable.Gdk.Tools
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    latestCodegenLogs = new List<CodegenLog>();
+                    ResetCodegenLogCounter();
 
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
@@ -163,16 +173,14 @@ namespace Improbable.Gdk.Tools
                         .AddOutputProcessing(ProcessCodegenOutput)
                         .Run();
 
-                    var numWarnings = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Warn);
-                    var numErrors = latestCodegenLogs.Count(line => line.Level == CodegenLogLevel.Error);
+                    var numWarnings = codegenLogCounts[CodegenLogLevel.Warn];
+                    var numErrors = codegenLogCounts[CodegenLogLevel.Error] + codegenLogCounts[CodegenLogLevel.Fatal];
 
-                    if (exitCode.ExitCode != 0)
+                    if (exitCode.ExitCode != 0 || numErrors > 0)
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError(File.Exists(loggerOutputPath)
-                                ? $"Code generation failed! Please check the code generation logs for more information: {loggerOutputPath}"
-                                : "Code generation failed! Please check the console for more information.");
+                            Debug.LogError("Code generation failed! Please check the console for more information.");
 
                             EditorApplication.delayCall += () =>
                             {
@@ -202,18 +210,16 @@ namespace Improbable.Gdk.Tools
                                 }
                                 else
                                 {
-                                    EditorUtility.DisplayDialog("Generate Code",
-                                        "Code generation failed.\nPlease check the console for more information.",
-                                        "Close");
+                                    DisplayGeneralFailure();
                                 }
                             };
                         }
                     }
                     else
                     {
-                        if (numWarnings + numErrors > 0)
+                        if (numWarnings > 0)
                         {
-                            Debug.LogWarning($"Code generation completed successfully with {numWarnings} warnings and {numErrors} errors. Please check the logs for more information: {loggerOutputPath}");
+                            Debug.LogWarning($"Code generation completed successfully with {numWarnings} warnings. Please check the logs for more information: {loggerOutputPath}");
                         }
                         else
                         {
@@ -235,6 +241,26 @@ namespace Improbable.Gdk.Tools
                 Profiler.EndSample();
                 EditorApplication.UnlockReloadAssemblies();
             }
+        }
+
+        private static void ResetCodegenLogCounter()
+        {
+            codegenLogCounts = new Dictionary<CodegenLogLevel, int>
+            {
+                { CodegenLogLevel.Trace, 0 },
+                { CodegenLogLevel.Debug, 0 },
+                { CodegenLogLevel.Info, 0 },
+                { CodegenLogLevel.Warn, 0 },
+                { CodegenLogLevel.Error, 0 },
+                { CodegenLogLevel.Fatal, 0 }
+            };
+        }
+
+        private static void DisplayGeneralFailure()
+        {
+            EditorUtility.DisplayDialog("Generate Code",
+                "Code generation failed.\nPlease check the console for more information.",
+                "Close");
         }
 
         private static void ProcessDotnetOutput(string output)
@@ -262,29 +288,8 @@ namespace Improbable.Gdk.Tools
             try
             {
                 var log = CodegenLog.FromRaw(output);
-                latestCodegenLogs.Append(log);
-
-                switch (log.Level)
-                {
-                    case CodegenLogLevel.Trace:
-                    case CodegenLogLevel.Debug:
-                        break;
-                    case CodegenLogLevel.Info:
-                        Debug.Log($"{log.Message}\n{log.Logger}");
-                        break;
-                    case CodegenLogLevel.Warn:
-                        Debug.LogWarning($"{log.Message}\n{log.Logger}");
-                        break;
-                    case CodegenLogLevel.Error:
-                        Debug.LogError($"{log.Message}\n{log.Logger}");
-                        break;
-                    case CodegenLogLevel.Fatal:
-                        break;
-                    case CodegenLogLevel.Off:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                codegenLogCounts[log.Level]++;
+                Debug.unityLogger.Log(log.GetUnityLogType(), log.Message, log.Logger);
             }
             catch (Exception e)
             {
@@ -292,7 +297,7 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string loggerOutputPath)
+        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string logfilePath)
         {
             var baseArgs = new List<string>
             {
@@ -303,11 +308,15 @@ namespace Improbable.Gdk.Tools
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{workerJsonPath}\"",
-                $"--logger-output-dir=\"{loggerOutputPath}\"",
-                "--enable-stdout"
+                $"--log-file=\"{logfilePath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
+            if (toolsConfig.VerboseLogging)
+            {
+                baseArgs.Add($"--verbose");
+            }
 
             baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
 

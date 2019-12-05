@@ -18,7 +18,7 @@ namespace Improbable.TestSchema
 
             public void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId)
             {
-                if (op.Update.SchemaData.Value.GetFields().GetUniqueFieldIdCount() > 0)
+                if (op.Update.SchemaData.Value.GetFields().GetUniqueFieldIdCount() + op.Update.SchemaData.Value.GetClearedFieldCount() > 0)
                 {
                     var update = global::Improbable.TestSchema.ExhaustiveOptional.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
                     diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);

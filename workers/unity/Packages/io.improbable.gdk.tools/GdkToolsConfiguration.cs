@@ -9,6 +9,7 @@ namespace Improbable.Gdk.Tools
     public class GdkToolsConfiguration
     {
         public List<string> SchemaSourceDirs = new List<string>();
+        public bool VerboseLogging;
         public string CodegenOutputDir;
         public string DescriptorOutputDir;
         public string DevAuthTokenDir;
@@ -99,6 +100,7 @@ namespace Improbable.Gdk.Tools
 
         internal void ResetToDefault()
         {
+            VerboseLogging = DefaultValues.VerboseLogging;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
@@ -129,6 +131,7 @@ namespace Improbable.Gdk.Tools
 
         private static class DefaultValues
         {
+            public const bool VerboseLogging = false;
             public const string CodegenOutputDir = "Assets/Generated/Source";
             public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
