@@ -40,6 +40,7 @@
         - [Build configuration]({{urlRoot}}/modules/build-system/build-config)
         - [Build in the Editor]({{urlRoot}}/modules/build-system/editor-menu)
         - [Command line interface]({{urlRoot}}/modules/build-system/cli)
+        - [Build hooks]({{urlRoot}}/modules/build-system/build-hooks)
     - Debug
         - [Overview]({{urlRoot}}/modules/debug/overview)
         - [Requirable Inspector]({{urlRoot}}/modules/debug/require-inspector)
