@@ -1,12 +1,12 @@
 # Build hooks
 
-During a build, you can use the Unity provided callbacks to add pre- and post-processing to your worker build.
-The build system feature module provides `WorkerBuilder.CurrentContext` containing information such as worker type and build options.
+During a build, you can use the Unity provided callbacks to add pre-processing and/or post-processing to your worker build.
+The Build System Feature Module provides a static readonly variable, `WorkerBuilder.CurrentContext`, which contains information such as the worker type and build options.
 
 This context is only valid during a build.
 
 ```csharp
-public class BuildPreProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+public class BuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
     public int callbackOrder => 0;
     public void OnPreprocessBuild(BuildReport report)
@@ -23,4 +23,4 @@ public class BuildPreProcessor : IPreprocessBuildWithReport, IPostprocessBuildWi
 }
 ```
 
-> Ensure that your Editor assembly definition references `Improbable.Gdk.BuildSystem`.
+> In order to access `WorkerBuilder.CurrentContext`, you must ensure that your Editor assembly definition references `Improbable.Gdk.BuildSystem`.
