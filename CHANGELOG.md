@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for Unity build callbacks such as `IPostprocessBuildWithReport`. [#1228](https://github.com/spatialos/gdk-for-unity/pull/1228)
+    - During a build you can now access the `WorkerBuilder.CurrentContext` field which contains all SpatialOS related build information.
+- Enabled support for QBI frequency in the QBI Helper Module. [#1231](https://github.com/spatialos/gdk-for-unity/pull/1231)
+    - Use the `WithMaxFrequencyHz` method when building an `InterestQuery` to define your query's frequency.
+
 ### Fixed
 
 - Fixed a bug where empty list, maps, or options in a component update would not be applied correctly. [#1229](https://github.com/spatialos/gdk-for-unity/pull/1229)
@@ -18,6 +25,7 @@
     - It will now wait for at least 1 second to elapse after the last change before writing the configuration back to disk.
 - Fixed issues ([#957](https://github.com/spatialos/gdk-for-unity/issues/957), [#958](https://github.com/spatialos/gdk-for-unity/issues/958)) where valid schema would generate invalid code due to name clashes. [#1222](https://github.com/spatialos/gdk-for-unity/pull/1222)
     - The offending schema properties will no longer be generated and are now logged in the Unity Editor.
+- Fixed missing log path error when printing the Unity PlayerConnection debug port. [#1232](https://github.com/spatialos/gdk-for-unity/pull/1232)
 
 ### Internal
 

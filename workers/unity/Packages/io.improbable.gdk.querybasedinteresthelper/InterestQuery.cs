@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,14 +49,18 @@ namespace Improbable.Gdk.QueryBasedInterest
         ///     The maximum frequency (Hz) to return query results.
         /// </param>
         /// <remarks>
-        ///     Although the `Frequency` of a ComponentInterest.Query can be set, the runtime will ignore this field
-        ///     for now as the feature has not yet been rolled out. Until then, this method will remain private.
+        ///     A frequency of 0 means there will be no rate limiting.
         /// </remarks>
         /// <returns>
         ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
-        private InterestQuery WithMaxFrequencyHz(float frequencyHz)
+        public InterestQuery WithMaxFrequencyHz(float frequencyHz)
         {
+            if (frequencyHz < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(frequencyHz), frequencyHz, "The max frequency must be greater than or equal to zero.");
+            }
+
             query.Frequency = frequencyHz;
             return this;
         }
