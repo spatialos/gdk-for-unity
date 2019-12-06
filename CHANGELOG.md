@@ -25,6 +25,7 @@
     - It will now wait for at least 1 second to elapse after the last change before writing the configuration back to disk.
 - Fixed issues ([#957](https://github.com/spatialos/gdk-for-unity/issues/957), [#958](https://github.com/spatialos/gdk-for-unity/issues/958)) where valid schema would generate invalid code due to name clashes. [#1222](https://github.com/spatialos/gdk-for-unity/pull/1222)
     - The offending schema properties will no longer be generated and are now logged in the Unity Editor.
+- Fixed missing log path error when printing the Unity PlayerConnection debug port. [#1232](https://github.com/spatialos/gdk-for-unity/pull/1232)
 
 ### Internal
 
