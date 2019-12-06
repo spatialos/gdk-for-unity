@@ -6,7 +6,7 @@ We expose a single static method: [`Improbable.Gdk.BuildSystem.WorkerBuilder.Bui
 
 - `buildWorkerTypes`: REQUIRED. The type of the worker to build.
 - `buildEnvironment`: REQUIRED. The target for the worker build. Either `local` or `cloud`.
-- `scriptingBackend`: Optional. Which scripting backend to use for the build. Either `mono` or `il2cpp`. If ommitted, this defaults to `mono`.
+- `scriptingBackend`: Optional. Which scripting backend to use for the build. Either `mono` or `il2cpp`. If omitted, this defaults to your current configuration.
 - `buildTargetFilter`: Optional. A comma delimited list of build targets to filter for. For example, "win,macos". If ommitted, this defaults to all targets for the given environment.
 
 ## Example
