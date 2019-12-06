@@ -160,7 +160,9 @@ namespace Improbable.Gdk.Tools
                 }
 
                 var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-                var loggerOutputPath = Path.GetFullPath(Path.Combine(CodegenExeDirectory, "codegen-output.log"));
+
+                var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+                var loggerOutputPath = Path.GetFullPath(Path.Combine(toolsConfig.CodegenLogOutputDir, "codegen-output.log"));
 
                 using (new ShowProgressBarScope("Generating code..."))
                 {

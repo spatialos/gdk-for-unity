@@ -2,7 +2,8 @@
     "SchemaSourceDirs": [
         "Assets/.schema"
     ],
-    "VerboseLogging": true,
+    "VerboseLogging": false,
+    "CodegenLogOutputDir": "logs/",
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "Temp/schema",
     "DevAuthTokenDir": "Resources",
