@@ -19,7 +19,7 @@ using Entity = Unity.Entities.Entity;
 namespace <#= qualifiedNamespace #>
 {
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}ReaderSubscriptionManager class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}ReaderSubscriptionManager class.");
 #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>ReaderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>Reader>
@@ -153,7 +153,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}WriterSubscriptionManager class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}WriterSubscriptionManager class.");
 #>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>WriterSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>Writer>
@@ -279,7 +279,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}Reader class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}Reader class.");
 #>
     public class <#= componentDetails.ComponentName #>Reader
     {
@@ -492,7 +492,7 @@ namespace <#= qualifiedNamespace #>
     }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}Writer class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}Writer class.");
 #>
     public class <#= componentDetails.ComponentName #>Writer : <#= componentDetails.ComponentName #>Reader
     {

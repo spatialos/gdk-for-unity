@@ -17,7 +17,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public UnityCommandSenderReceiverGenerator()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityComponentDetails details, string package)

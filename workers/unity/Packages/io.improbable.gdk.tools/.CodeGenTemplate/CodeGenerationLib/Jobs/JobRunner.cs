@@ -20,13 +20,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         public void Run(params CodegenJob[] jobs)
         {
-            logger.Info("Finding dirty jobs");
+            logger.Info("Finding dirty jobs.");
             var dirtyJobs = PrepareOutputFolders(jobs);
 
             var dirtyJobList = string.Join("\n - ", dirtyJobs.Select(job => job.GetType()));
             logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
 
-            logger.Info("Running jobs");
+            logger.Info("Running jobs.");
             foreach (var dirtyJob in dirtyJobs)
             {
                 dirtyJob.Run();
@@ -43,12 +43,12 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
                 if (IsOutputDirectoryDirty(relatedJobs, outputDirectory))
                 {
-                    logger.Trace($"Deleting dirty directory {outputDirectory}");
+                    logger.Trace($"Deleting dirty directory {outputDirectory}.");
                     fileSystem.DeleteDirectory(outputDirectory);
 
                     foreach (var job in relatedJobs)
                     {
-                        logger.Trace($"Marking {job.GetType()} as dirty");
+                        logger.Trace($"Marking {job.GetType()} as dirty.");
                         job.MarkAsDirty();
                     }
                 }

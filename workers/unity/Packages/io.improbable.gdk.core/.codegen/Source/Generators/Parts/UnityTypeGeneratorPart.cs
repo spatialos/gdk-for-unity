@@ -12,7 +12,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public UnityTypeGenerator()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityTypeDetails details, string package)

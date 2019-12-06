@@ -49,7 +49,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected void AddInputFile(string inputFilePath)
         {
             inputFiles.Add(inputFilePath);
-            logger.Trace($"Added input file: {inputFilePath}");
+            logger.Trace($"Added input file: {inputFilePath}.");
         }
 
         protected void AddOutputFiles(IEnumerable<string> outputFilePaths)
@@ -63,13 +63,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected void AddOutputFile(string outputFilePath)
         {
             outputFiles.Add(outputFilePath);
-            logger.Trace($"Added output file: {outputFilePath}");
+            logger.Trace($"Added output file: {outputFilePath}.");
         }
 
         protected void AddContent(string filePath, string fileContents)
         {
             Content.Add(filePath, fileContents);
-            logger.Trace($"Added generated content for {filePath}");
+            logger.Trace($"Added generated content for {filePath}.");
         }
 
         public void Clean()
@@ -89,46 +89,46 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 var remainingFilesInFolder = fileSystem.GetFilesInDirectory(fileInfo.DirectoryPath);
                 if (remainingFilesInFolder.Count == 0)
                 {
-                    logger.Info($"Deleting output directory {fileInfo.DirectoryPath}");
+                    logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
                     fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
                     numRemovedDirectories++;
                 }
             }
 
-            logger.Info($"Directories cleaned: {numRemovedDirectories}");
+            logger.Info($"Directories cleaned: {numRemovedDirectories}.");
         }
 
         public void Run()
         {
             var jobType = GetType();
-            logger.Info($"Starting {jobType}");
+            logger.Info($"Starting {jobType}.");
 
             RunImpl();
 
-            logger.Info("Writing generated code to disk");
+            logger.Info("Writing generated code to disk.");
             foreach (var entry in Content)
             {
                 var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry.Key));
 
                 if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
                 {
-                    logger.Trace($"Creating output directory {fileInfo.DirectoryPath}");
+                    logger.Trace($"Creating output directory {fileInfo.DirectoryPath}.");
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
                 }
 
-                logger.Trace("Fixing line endings");
+                logger.Trace("Fixing line endings.");
                 // Fix up line endings
                 var contents = entry.Value
                     .Replace("\r\n", "\n")
                     .Replace("\n", Environment.NewLine);
 
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
-                logger.Trace($"Written {fileInfo.CompletePath}");
+                logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            logger.Info($"Files written: {Content.Count}");
+            logger.Info($"Files written: {Content.Count}.");
 
-            logger.Info($"Finished {jobType}");
+            logger.Info($"Finished {jobType}.");
         }
 
         public bool IsDirty()

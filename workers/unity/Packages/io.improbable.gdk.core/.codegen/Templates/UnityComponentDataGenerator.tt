@@ -21,7 +21,7 @@ namespace <#= qualifiedNamespace #>
         public const uint ComponentId = <#= componentDetails.ComponentId #>;
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Component struct");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Component struct.");
 #>
         public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
@@ -158,7 +158,7 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentAuthority struct");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentAuthority struct.");
 #>
         public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
         {
@@ -201,7 +201,7 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Snapshot struct");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Snapshot struct.");
 #>
         [global::System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
@@ -223,7 +223,7 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Serialization static class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Serialization static class.");
 #>
         public static class Serialization
         {
@@ -343,7 +343,7 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Update struct");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Update struct.");
 #>
         public struct Update : ISpatialComponentUpdate
         {
@@ -353,7 +353,7 @@ var fieldDetails = fieldDetailsList[i]; #>
         }
 
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}Dynamic internal class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}Dynamic internal class.");
 #>
         internal class <#= componentDetails.ComponentName  #>Dynamic : IDynamicInvokable
         {

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.CodeGenerator
             var resources = assembly.GetManifestResourceNames();
             if (resources.Contains(resourceName))
             {
-                logger.Info($"Found partial {resourceName}");
+                logger.Info($"Found partial {resourceName}.");
 
                 var reader = new StreamReader(assembly.GetManifestResourceStream(resourceName));
                 content = AdjustLineEndings(reader.ReadToEnd());

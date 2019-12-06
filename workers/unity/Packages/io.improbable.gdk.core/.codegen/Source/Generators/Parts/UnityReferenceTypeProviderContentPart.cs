@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public UnityReferenceTypeProviderContent()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(string name, string typeName, string qualifiedNamespace, string componentName)

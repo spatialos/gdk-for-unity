@@ -13,7 +13,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public ViewStorageGenerator()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityComponentDetails details, string package)

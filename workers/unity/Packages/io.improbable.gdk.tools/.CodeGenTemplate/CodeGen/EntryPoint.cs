@@ -32,7 +32,7 @@ namespace Improbable.Gdk.CodeGenerator
             }
             catch (Exception e)
             {
-                logger?.Error(e, "Code generation failed due to exception");
+                logger?.Error(e, "Code generation failed due to exception.");
 
                 Console.Error.WriteLine("Code generation failed with exception: {0}", e);
                 if (e.InnerException != null)
@@ -115,21 +115,21 @@ namespace Improbable.Gdk.CodeGenerator
                 return 1;
             }
 
-            logger.Info("Starting code generation");
+            logger.Info("Starting code generation.");
 
-            logger.Info("Gathering schema information");
+            logger.Info("Gathering schema information.");
             var bundlePath = GenerateBundle();
 
-            logger.Info("Loading schema bundle from json");
+            logger.Info("Loading schema bundle from json.");
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
 
-            logger.Info("Setting up schema file tree");
+            logger.Info("Setting up schema file tree.");
             var fileTree = new FileTree(options.SchemaInputDirs);
 
-            logger.Info("Initialising DetailsStore");
+            logger.Info("Initialising DetailsStore.");
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
-            logger.Info("Setting up code generation jobs");
+            logger.Info("Setting up code generation jobs.");
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(assembly =>
@@ -140,7 +140,7 @@ namespace Improbable.Gdk.CodeGenerator
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        logger.Error(e, $"Failed to load assembly {assembly.FullName}");
+                        logger.Error(e, $"Failed to load assembly {assembly.FullName}.");
                         return Enumerable.Empty<Type>();
                     }
                 })
@@ -149,15 +149,15 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
                 .Select(type =>
                 {
-                    logger.Info($"Creating instance of {type}");
+                    logger.Info($"Creating instance of {type}.");
                     return (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store);
                 })
                 .ToArray();
 
-            logger.Info("Calling JobRunner");
+            logger.Info("Calling JobRunner.");
             new JobRunner(fileSystem).Run(jobs);
 
-            logger.Info("Finished code generation");
+            logger.Info("Finished code generation.");
             return 0;
         }
 
@@ -165,7 +165,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path=\"{dir}\"");
 
-            logger.Info($"Preparing bundle output path: {options.JsonDirectory}");
+            logger.Info($"Preparing bundle output path: {options.JsonDirectory}.");
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
@@ -179,12 +179,12 @@ namespace Improbable.Gdk.CodeGenerator
                 $"--descriptor_set_out=\"{descriptorPath}\""
             }.Union(inputPaths).ToList();
 
-            logger.Info("Generating schema bundle and descriptor");
-            logger.Trace($"Calling '{options.SchemaCompilerPath} {string.Join(" ", arguments)}'");
+            logger.Info("Generating schema bundle and descriptor.");
+            logger.Trace($"Calling '{options.SchemaCompilerPath} {string.Join(" ", arguments)}'.");
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
-            logger.Info($"Generated bundle at {bundlePath}");
+            logger.Info($"Generated bundle at {bundlePath}.");
             return bundlePath;
         }
 

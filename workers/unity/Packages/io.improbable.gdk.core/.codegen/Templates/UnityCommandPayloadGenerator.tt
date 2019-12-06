@@ -18,7 +18,7 @@ namespace <#= qualifiedNamespace #>
     {
 <# foreach (var commandDetails in commandDetailsList) {#>
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName} partial class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName} partial class.");
 #>
         public partial class <#= commandDetails.CommandName #>
         {

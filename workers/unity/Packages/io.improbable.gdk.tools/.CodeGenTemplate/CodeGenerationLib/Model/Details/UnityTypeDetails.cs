@@ -53,14 +53,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var children = store.GetNestedTypes(raw.QualifiedName);
 
-            logger.Trace($"Populating child type details for type {raw.QualifiedName}");
+            logger.Trace($"Populating child type details for type {raw.QualifiedName}.");
             ChildTypes = store.Types
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
                 .ToList()
                 .AsReadOnly();
 
-            logger.Trace($"Populating child enum details for type {raw.QualifiedName}");
+            logger.Trace($"Populating child enum details for type {raw.QualifiedName}.");
             ChildEnums = store.Enums
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private void PopulateFields(DetailsStore store)
         {
-            logger.Trace($"Populating field details for type {raw.QualifiedName}");
+            logger.Trace($"Populating field details for type {raw.QualifiedName}.");
             FieldDetails = raw.Fields
                 .Select(field => new UnityFieldDetails(field, store))
                 .Where(fieldDetail =>

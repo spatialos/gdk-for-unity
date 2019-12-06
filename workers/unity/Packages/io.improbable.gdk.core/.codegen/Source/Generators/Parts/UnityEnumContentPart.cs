@@ -12,7 +12,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public UnityEnumContent()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityEnumDetails details, string enumNamespace)

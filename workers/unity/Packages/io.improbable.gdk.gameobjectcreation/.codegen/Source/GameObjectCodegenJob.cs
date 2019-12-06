@@ -17,22 +17,22 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
             : base(outputDir, fileSystem, store)
         {
             var jobName = nameof(GameObjectCodegenJob);
-            logger.Info($"Initialising {jobName}");
+            logger.Info($"Initialising {jobName}.");
 
             AddInputFiles(store.SchemaFiles.ToList());
 
-            logger.Info("Gathering component details");
+            logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
-            logger.Trace("Adding job output files");
+            logger.Trace("Adding job output files.");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
-                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
@@ -43,21 +43,21 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                 AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
-            logger.Info($"Added job output files for {componentsToGenerate.Count} components");
+            logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
 
-            logger.Info($"Finished initialising {jobName}");
+            logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
-            logger.Info("Creating generators");
+            logger.Info("Creating generators.");
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
 
-            logger.Info("Starting code generation for components");
+            logger.Info("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}");
+                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
@@ -78,7 +78,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                     componentReaderWriterGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
-            logger.Info($"Finished code generation for {componentsToGenerate.Count} components");
+            logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             FileTree = fileTree;
             this.bundle = bundle;
 
-            logger.Info("Loading serialization overrides");
+            logger.Info("Loading serialization overrides.");
             var overrideMap = serializationOverrides.Select(@override =>
             {
                 var parts = @override.Split(";");
@@ -44,11 +44,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     throw new ArgumentException($"Serialization override malformed: {@override}");
                 }
 
-                logger.Info($"Found serialization override {parts[1]} for {parts[0]}");
+                logger.Info($"Found serialization override {parts[1]} for {parts[0]}.");
 
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
-            logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}");
+            logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -57,10 +57,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             var types = new Dictionary<string, UnityTypeDetails>();
             var components = new Dictionary<string, UnityComponentDetails>();
 
-            logger.Trace("Processing schema files");
+            logger.Trace("Processing schema files.");
             foreach (var file in bundle.SchemaFiles)
             {
-                logger.Info($"Initialising details from {file.CanonicalPath}");
+                logger.Info($"Initialising details from {file.CanonicalPath}.");
 
                 foreach (var enumm in file.Enums)
                 {
@@ -74,7 +74,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     if (overrideMap.TryGetValue(typeDetails.FullyQualifiedTypeName, out var staticClassFqn))
                     {
                         typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
-                        logger.Trace($"Added serialization override {staticClassFqn} for {typeDetails.FullyQualifiedTypeName}");
+                        logger.Trace($"Added serialization override {staticClassFqn} for {typeDetails.FullyQualifiedTypeName}.");
                     }
 
                     types.Add(type.QualifiedName, typeDetails);
@@ -85,11 +85,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
                 }
 
-                logger.Trace($"Enums added: {file.Enums.Count}");
-                logger.Trace($"Types added: {file.Types.Count}");
-                logger.Trace($"Components added: {file.Components.Count}");
+                logger.Trace($"Enums added: {file.Enums.Count}.");
+                logger.Trace($"Types added: {file.Types.Count}.");
+                logger.Trace($"Components added: {file.Components.Count}.");
             }
-            logger.Info($"Processed {bundle.SchemaFiles.Count} schema files");
+            logger.Info($"Processed {bundle.SchemaFiles.Count} schema files.");
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
@@ -98,25 +98,25 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
-            logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files");
+            logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
 
-            logger.Trace("Populating all type details");
+            logger.Trace("Populating all type details.");
             foreach (var kv in Types)
             {
                 kv.Value.Populate(this);
             }
-            logger.Info($"Populated details of {Types.Count} types");
+            logger.Info($"Populated details of {Types.Count} types.");
 
-            logger.Trace($"Populating all component field details");
+            logger.Trace($"Populating all component field details.");
             foreach (var kv in Components)
             {
                 kv.Value.PopulateFields(this);
             }
-            logger.Info($"Populated field details of {Components.Count} components");
+            logger.Info($"Populated field details of {Components.Count} components.");
 
-            logger.Trace("Removing all recursive options");
+            logger.Trace("Removing all recursive options.");
             var numFieldsRemoved = RemoveRecursiveOptions();
-            logger.Info($"Removed {numFieldsRemoved} recursive options");
+            logger.Info($"Removed {numFieldsRemoved} recursive options.");
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -269,7 +269,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         }
 
                         numFieldsRemoved++;
-                        logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}");
+                        logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
                         return false;
                     })
                     .ToList()

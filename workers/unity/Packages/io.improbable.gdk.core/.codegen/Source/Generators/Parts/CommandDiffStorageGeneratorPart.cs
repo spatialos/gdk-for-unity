@@ -15,7 +15,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public CommandDiffStorageGenerator()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityComponentDetails details, string package)

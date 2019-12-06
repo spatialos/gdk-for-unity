@@ -19,7 +19,7 @@ namespace <#= qualifiedNamespace #>
         var receivedResponseType = command.CommandName + ".RawReceivedResponse";
 #>
 <#
-    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandMetaDataStorage class");
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandMetaDataStorage class.");
 #>
         public class <#= command.CommandName #>CommandMetaDataStorage : ICommandMetaDataStorage, ICommandPayloadStorage<<#= command.FqnRequestType #>>
         {

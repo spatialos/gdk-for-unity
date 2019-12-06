@@ -1,7 +1,7 @@
 <#@ template language="C#" #>
 <#@ output extension=".cs" #>
 <#
-    logger.Trace($"Generating {QualifiedNamespace}.{ComponentName}.ReferenceTypeProviders.{Name}Provider static class");
+    logger.Trace($"Generating {QualifiedNamespace}.{ComponentName}.ReferenceTypeProviders.{Name}Provider static class.");
 #>
 public static class <#= Name #>Provider
 {

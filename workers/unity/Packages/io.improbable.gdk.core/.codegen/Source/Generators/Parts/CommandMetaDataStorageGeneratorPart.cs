@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public CommandMetaDataStorageGenerator()
         {
-            logger.Trace($"Constructing {GetType()}");
+            logger.Trace($"Constructing {GetType()}.");
         }
 
         public string Generate(UnityComponentDetails componentDetails, string package)

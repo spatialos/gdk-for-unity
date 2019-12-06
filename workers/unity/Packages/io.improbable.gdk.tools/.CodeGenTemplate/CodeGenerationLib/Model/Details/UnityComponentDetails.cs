@@ -30,7 +30,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             QualifiedName = componentDefinitionRaw.QualifiedName;
             IsBlittable = store.BlittableSet.Contains(componentDefinitionRaw.QualifiedName);
 
-            logger.Trace($"Populating command details for component {componentDefinitionRaw.QualifiedName}");
+            logger.Trace($"Populating command details for component {componentDefinitionRaw.QualifiedName}.");
             CommandDetails = componentDefinitionRaw.Commands
                 .Select(command => new UnityCommandDetails(command))
                 .Where(commandDetail =>
@@ -47,7 +47,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .ToList()
                 .AsReadOnly();
 
-            logger.Trace($"Populating event details for component {componentDefinitionRaw.QualifiedName}");
+            logger.Trace($"Populating event details for component {componentDefinitionRaw.QualifiedName}.");
             EventDetails = componentDefinitionRaw.Events
                 .Select(ev => new UnityEventDetails(ev))
                 .Where(eventDetail =>
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public void PopulateFields(DetailsStore store)
         {
-            logger.Trace($"Populating field details for component {raw.QualifiedName}");
+            logger.Trace($"Populating field details for component {raw.QualifiedName}.");
             if (!string.IsNullOrEmpty(raw.DataDefinition))
             {
                 FieldDetails = store.Types[raw.DataDefinition].FieldDetails;
