@@ -15,8 +15,8 @@ namespace Improbable.Gdk.CodeGenerator
         public string DescriptorDirectory { get; private set; }
         public string NativeOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
-        public bool Verbose { get; private set; }
-        public bool EnableLoggingToStdout { get; private set; }
+        public bool Verbose { get; private set; } = false;
+        public bool EnableLoggingToStdout { get; private set; } = true;
         public string AbsoluteLogPath { get; private set; }
         public string HelpText { get; private set; }
         public List<string> SchemaInputDirs { get; } = new List<string>();

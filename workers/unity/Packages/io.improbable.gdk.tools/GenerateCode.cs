@@ -289,7 +289,7 @@ namespace Improbable.Gdk.Tools
             {
                 var log = CodegenLog.FromRaw(output);
                 codegenLogCounts[log.Level]++;
-                Debug.unityLogger.Log(log.GetUnityLogType(), log.Message, log.Logger);
+                Debug.unityLogger.Log(log.GetUnityLogType(), $"{log.Message}\n{log.Logger}");
             }
             catch (Exception e)
             {
