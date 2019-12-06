@@ -24,7 +24,7 @@ namespace <#= qualifiedNamespace #>
         {
 <# foreach (var fieldDetails in fieldDetailsList) { #>
 <# if (!fieldDetails.IsBlittable) { #>
-            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(fieldDetails.PascalCaseName, fieldDetails.Type), 3) #>
+            <#= CommonGeneratorUtils.IndentEveryNewline(generator.Generate(fieldDetails.PascalCaseName, fieldDetails.Type, qualifiedNamespace, componentDetails.ComponentName), 3) #>
 
 <# } #>
 <# } #>

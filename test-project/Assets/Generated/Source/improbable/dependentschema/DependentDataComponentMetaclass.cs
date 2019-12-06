@@ -28,21 +28,20 @@ namespace Improbable.DependentSchema
             public Type EcsViewManager { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.EcsViewManager);
             public Type DynamicInvokable { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.DependentDataComponentDynamic);
 
-            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[] 
-            { 
+            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]
+            {
                 new BarCommandMetaclass(),
             };
         }
- 
 
-        public class BarCommandMetaclass : ICommandMetaclass 
+        public class BarCommandMetaclass : ICommandMetaclass
         {
             public uint CommandIndex => 1;
             public string Name => "BarCommand";
 
             public Type DiffDeserializer { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.BarCommandDiffCommandDeserializer);
             public Type Serializer { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.BarCommandCommandSerializer);
-            
+
             public Type MetaDataStorage { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.BarCommandCommandMetaDataStorage);
             public Type SendStorage { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.BarCommandCommandsToSendStorage);
             public Type DiffStorage { get; } = typeof(global::Improbable.DependentSchema.DependentDataComponent.DiffBarCommandCommandStorage);

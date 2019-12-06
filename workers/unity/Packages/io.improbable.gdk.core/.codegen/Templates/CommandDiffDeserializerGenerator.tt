@@ -20,6 +20,9 @@ namespace <#= qualifiedNamespace #>
         var requestType = command.CommandName + ".Request";
         var responseType = command.CommandName + ".Response";
 #>
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}DiffCommandDeserializer class.");
+#>
         public class <#= command.CommandName #>DiffCommandDeserializer : ICommandDiffDeserializer
         {
             public uint GetComponentId()
@@ -71,6 +74,9 @@ namespace <#= qualifiedNamespace #>
             }
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandSerializer class.");
+#>
         public class <#= command.CommandName #>CommandSerializer : ICommandSerializer
         {
             public uint GetComponentId()

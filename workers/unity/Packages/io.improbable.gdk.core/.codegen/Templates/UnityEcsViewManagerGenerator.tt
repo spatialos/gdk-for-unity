@@ -18,6 +18,9 @@ namespace <#= qualifiedNamespace #>
 {
     public partial class <#= componentDetails.ComponentName #>
     {
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.EcsViewManager class.");
+#>
         public class EcsViewManager : IEcsViewManager
         {
             private WorkerSystem workerSystem;

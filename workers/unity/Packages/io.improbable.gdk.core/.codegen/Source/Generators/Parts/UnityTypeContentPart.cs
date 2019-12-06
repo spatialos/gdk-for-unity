@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -9,12 +10,21 @@ namespace Improbable.Gdk.CodeGenerator
         private UnityTypeDetails details;
         private IReadOnlyList<UnityTypeDetails> nestedTypes;
         private IReadOnlyList<UnityEnumDetails> nestedEnums;
+        private string typeNamespace;
 
-        public string Generate(UnityTypeDetails details)
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
+        public UnityTypeContent()
+        {
+            logger.Trace($"Constructing {GetType()}.");
+        }
+
+        public string Generate(UnityTypeDetails details, string typeNamespace)
         {
             this.details = details;
             nestedTypes = details.ChildTypes;
             nestedEnums = details.ChildEnums;
+            this.typeNamespace = typeNamespace;
 
             return TransformText();
         }

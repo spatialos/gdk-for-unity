@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -8,6 +9,13 @@ namespace Improbable.Gdk.CodeGenerator
         private string qualifiedNamespace;
         private string spatialNamespace;
         private UnityComponentDetails componentDetails;
+
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
+        public CommandMetaDataStorageGenerator()
+        {
+            logger.Trace($"Constructing {GetType()}.");
+        }
 
         public string Generate(UnityComponentDetails componentDetails, string package)
         {

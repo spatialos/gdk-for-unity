@@ -20,6 +20,9 @@ namespace <#= qualifiedNamespace #>
         var receivedRequestType = command.CommandName + ".ReceivedRequest";
         var receivedResponseType = command.CommandName + ".ReceivedResponse";
 #>
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandStorage class.");
+#>
         public class Diff<#= command.CommandName #>CommandStorage : IComponentCommandDiffStorage
             , IDiffCommandRequestStorage<<#= receivedRequestType #>>
             , IDiffCommandResponseStorage<<#= receivedResponseType #>>
@@ -137,6 +140,9 @@ namespace <#= qualifiedNamespace #>
 <# foreach (var command in commandDetailsList) {
         var requestType = command.CommandName + ".Request";
         var responseType = command.CommandName + ".Response";
+#>
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandsToSendStorage class.");
 #>
         public class <#= command.CommandName #>CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
             , ICommandRequestSendStorage<<#= requestType #>>

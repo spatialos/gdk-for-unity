@@ -2,6 +2,7 @@ using System.IO;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -11,7 +12,7 @@ namespace Improbable.Gdk.CodeGenerator
         private readonly string relativeTemplateOutputPath = Path.Combine("improbable", "modular-codegen-tests", "TemplateTest.cs");
 
         private readonly string testContent = @"
-namespace Improbable.Gdk.ModularCodegenTests 
+namespace Improbable.Gdk.ModularCodegenTests
 {
     public class Test
     {
@@ -20,17 +21,17 @@ namespace Improbable.Gdk.ModularCodegenTests
 }
 ";
 
-        public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore) : base(
-            baseOutputDir, fileSystem, detailsStore)
+        public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore)
+            : base(baseOutputDir, fileSystem, detailsStore)
         {
-            OutputFiles.Add(relativeOutputPath);
-            OutputFiles.Add(relativeTemplateOutputPath);
+            AddOutputFile(relativeOutputPath);
+            AddOutputFile(relativeTemplateOutputPath);
         }
 
         protected override void RunImpl()
         {
-            Content.Add(relativeOutputPath, testContent);
-            Content.Add(relativeTemplateOutputPath, new ModularCodegenTestGenerator().Generate());
+            AddContent(relativeOutputPath, testContent);
+            AddContent(relativeTemplateOutputPath, new ModularCodegenTestGenerator().Generate());
         }
     }
 }

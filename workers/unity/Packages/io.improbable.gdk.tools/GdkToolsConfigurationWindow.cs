@@ -10,6 +10,8 @@ namespace Improbable.Gdk.Tools
     public class GdkToolsConfigurationWindow : EditorWindow
     {
         internal const string SchemaStdLibDirLabel = "Standard library";
+        internal const string VerboseLoggingLabel = "Verbose logging";
+        internal const string CodegenLogOutputDirLabel = "Log output directory";
         internal const string CodegenOutputDirLabel = "C# output directory";
         internal const string DescriptorOutputDirLabel = "Descriptor directory";
         internal const string DevAuthTokenDirLabel = "Token directory";
@@ -113,36 +115,43 @@ namespace Improbable.Gdk.Tools
             using (new EditorGUIUtility.IconSizeScope(new Vector2(12, 12)))
             using (new EditorGUI.IndentLevelScope())
             {
+                toolsConfig.VerboseLogging = EditorGUILayout.Toggle(VerboseLoggingLabel, toolsConfig.VerboseLogging);
+
+                toolsConfig.CodegenLogOutputDir =
+                    EditorGUILayout.TextField(CodegenLogOutputDirLabel, toolsConfig.CodegenLogOutputDir);
+
                 toolsConfig.CodegenOutputDir =
                     EditorGUILayout.TextField(CodegenOutputDirLabel, toolsConfig.CodegenOutputDir);
 
                 toolsConfig.DescriptorOutputDir =
                     EditorGUILayout.TextField(DescriptorOutputDirLabel, toolsConfig.DescriptorOutputDir);
 
-                GUILayout.Label(SchemaSourceDirsLabel, EditorStyles.boldLabel);
-
-                for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
+                EditorGUILayout.LabelField($"{SchemaSourceDirsLabel}", EditorStyles.boldLabel);
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    using (new EditorGUILayout.HorizontalScope())
+                    for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
                     {
-                        toolsConfig.SchemaSourceDirs[i] =
-                            EditorGUILayout.TextField($"Schema path [{i}]", toolsConfig.SchemaSourceDirs[i]);
-
-                        if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton,
-                            GUILayout.ExpandWidth(false)))
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                            toolsConfig.SchemaSourceDirs[i] =
+                                EditorGUILayout.TextField($"Schema path [{i}]", toolsConfig.SchemaSourceDirs[i]);
+
+                            if (GUILayout.Button(RemoveSchemaDirButton, EditorStyles.miniButton,
+                                GUILayout.ExpandWidth(false)))
+                            {
+                                toolsConfig.SchemaSourceDirs.RemoveAt(i);
+                            }
                         }
                     }
-                }
 
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    GUILayout.FlexibleSpace();
-
-                    if (GUILayout.Button(AddSchemaDirButton, EditorStyles.miniButton))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                        GUILayout.FlexibleSpace();
+
+                        if (GUILayout.Button(AddSchemaDirButton, EditorStyles.miniButton))
+                        {
+                            toolsConfig.SchemaSourceDirs.Add(string.Empty);
+                        }
                     }
                 }
             }

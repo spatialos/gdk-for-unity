@@ -2,9 +2,12 @@
     "SchemaSourceDirs": [
         "Assets/.schema"
     ],
+    "VerboseLogging": false,
+    "CodegenLogOutputDir": "logs/",
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "Temp/schema",
     "DevAuthTokenDir": "Resources",
     "DevAuthTokenLifetimeDays": 30,
-    "SaveDevAuthTokenToFile": false
+    "SaveDevAuthTokenToFile": false,
+    "SerializationOverrides": []
 }

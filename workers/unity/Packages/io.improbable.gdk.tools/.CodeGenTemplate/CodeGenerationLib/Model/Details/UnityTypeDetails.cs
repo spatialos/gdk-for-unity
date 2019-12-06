@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Utils;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -10,6 +11,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string Package { get; }
         public string CapitalisedName { get; }
         public string CamelCaseName { get; }
+        public string QualifiedName { get; }
         public string FullyQualifiedTypeName { get; }
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; internal set; }
@@ -23,12 +25,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private TypeDefinition raw;
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public UnityTypeDetails(string package, TypeDefinition typeDefinitionRaw)
         {
             Package = package;
             CapitalisedName = typeDefinitionRaw.Name;
             CamelCaseName = Formatting.PascalCaseToCamelCase(CapitalisedName);
-            FullyQualifiedTypeName = $"global::{Formatting.CapitaliseQualifiedNameParts(typeDefinitionRaw.QualifiedName)}";
+            QualifiedName = typeDefinitionRaw.QualifiedName;
+            FullyQualifiedTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(typeDefinitionRaw.QualifiedName);
 
             raw = typeDefinitionRaw;
         }
@@ -48,12 +53,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             var children = store.GetNestedTypes(raw.QualifiedName);
 
+            logger.Trace($"Populating child type details for type {raw.QualifiedName}.");
             ChildTypes = store.Types
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
                 .ToList()
                 .AsReadOnly();
 
+            logger.Trace($"Populating child enum details for type {raw.QualifiedName}.");
             ChildEnums = store.Enums
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
@@ -63,6 +70,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private void PopulateFields(DetailsStore store)
         {
+            logger.Trace($"Populating field details for type {raw.QualifiedName}.");
             FieldDetails = raw.Fields
                 .Select(field => new UnityFieldDetails(field, store))
                 .Where(fieldDetail =>
@@ -76,7 +84,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                                 return false;
                             }
 
-                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
+                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
                             return true;
                         });
 
@@ -89,7 +97,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                                 return false;
                             }
 
-                            Console.Error.WriteLine($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
+                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
                             return true;
                         });
 

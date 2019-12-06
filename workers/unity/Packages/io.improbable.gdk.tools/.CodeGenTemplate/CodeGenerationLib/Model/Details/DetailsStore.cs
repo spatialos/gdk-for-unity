@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -24,11 +25,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private readonly SchemaBundle bundle;
 
+        private Logger logger;
+
         public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides, IFileTree fileTree)
         {
+            logger = LogManager.GetCurrentClassLogger();
+
             FileTree = fileTree;
             this.bundle = bundle;
 
+            logger.Info("Loading serialization overrides.");
             var overrideMap = serializationOverrides.Select(@override =>
             {
                 var parts = @override.Split(";");
@@ -38,8 +44,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     throw new ArgumentException($"Serialization override malformed: {@override}");
                 }
 
+                logger.Info($"Found serialization override {parts[1]} for {parts[0]}.");
+
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
+            logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -48,8 +57,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             var types = new Dictionary<string, UnityTypeDetails>();
             var components = new Dictionary<string, UnityComponentDetails>();
 
+            logger.Trace("Processing schema files.");
             foreach (var file in bundle.SchemaFiles)
             {
+                logger.Info($"Initialising details from {file.CanonicalPath}.");
+
                 foreach (var enumm in file.Enums)
                 {
                     enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
@@ -62,6 +74,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     if (overrideMap.TryGetValue(typeDetails.FullyQualifiedTypeName, out var staticClassFqn))
                     {
                         typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
+                        logger.Trace($"Added serialization override {staticClassFqn} for {typeDetails.FullyQualifiedTypeName}.");
                     }
 
                     types.Add(type.QualifiedName, typeDetails);
@@ -71,7 +84,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
                 }
+
+                logger.Trace($"Enums added: {file.Enums.Count}.");
+                logger.Trace($"Types added: {file.Types.Count}.");
+                logger.Trace($"Components added: {file.Components.Count}.");
             }
+            logger.Info($"Processed {bundle.SchemaFiles.Count} schema files.");
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
@@ -80,18 +98,25 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
+            logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
 
+            logger.Trace("Populating all type details.");
             foreach (var kv in Types)
             {
                 kv.Value.Populate(this);
             }
+            logger.Info($"Populated details of {Types.Count} types.");
 
+            logger.Trace($"Populating all component field details.");
             foreach (var kv in Components)
             {
                 kv.Value.PopulateFields(this);
             }
+            logger.Info($"Populated field details of {Components.Count} components.");
 
-            RemoveRecursiveOptions();
+            logger.Trace("Removing all recursive options.");
+            var numFieldsRemoved = RemoveRecursiveOptions();
+            logger.Info($"Removed {numFieldsRemoved} recursive options.");
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -193,7 +218,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .All(qualifiedName => blittableMap.ContainsKey(qualifiedName));
         }
 
-        private void RemoveRecursiveOptions()
+        private int RemoveRecursiveOptions()
         {
             bool IsRecursive(string fieldType, IEnumerable<string> parentTypes)
             {
@@ -230,15 +255,28 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 }
             }
 
+            var numFieldsRemoved = 0;
             foreach (var pair in toRemove)
             {
                 var type = Types[pair.Key];
 
                 type.FieldDetails = type.FieldDetails
-                    .Except(pair.Value)
+                    .Where(field =>
+                    {
+                        if (!pair.Value.Contains(field))
+                        {
+                            return true;
+                        }
+
+                        numFieldsRemoved++;
+                        logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
+                        return false;
+                    })
                     .ToList()
                     .AsReadOnly();
             }
+
+            return numFieldsRemoved;
         }
     }
 }

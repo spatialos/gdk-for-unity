@@ -18,6 +18,9 @@ namespace <#= qualifiedNamespace #>
     public partial class <#= componentDetails.ComponentName #>
     {
 <# foreach (var eventDetails in eventDetailsList) { #>
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{eventDetails.EventName} class.");
+#>
         public static class <#= eventDetails.EventName #>
         {
             public readonly struct Event : IEvent

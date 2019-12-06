@@ -7,6 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     {
         public string Package;
         public string TypeName;
+        public string QualifiedName;
         public string FqnTypeName;
 
         public List<(uint, string)> Values;
@@ -15,6 +16,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             Package = package;
             TypeName = enumDefinitionRaw.Name;
+            QualifiedName = enumDefinitionRaw.QualifiedName;
             FqnTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(enumDefinitionRaw.QualifiedName);
             Values = enumDefinitionRaw.Values.Select(value => (value.Value, value.Name)).ToList();
         }

@@ -7,6 +7,7 @@ using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
+using NLog;
 using NUnit.Framework;
 
 namespace CodeGeneration.Tests.Jobs
@@ -102,7 +103,8 @@ namespace CodeGeneration.Tests.Jobs
 
             internal MockFileSystem myFileSystem;
 
-            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore) : base(outputDirectory, fileSystem, detailsStore)
+            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
+                : base(outputDirectory, fileSystem, detailsStore)
             {
                 myFileSystem = (MockFileSystem) fileSystem;
             }
@@ -114,13 +116,13 @@ namespace CodeGeneration.Tests.Jobs
 
             public void AddInputFile(string path, DateTime timestamp)
             {
-                InputFiles.Add(path);
+                base.AddInputFile(path);
                 myFileSystem.AddFile(path, timestamp);
             }
 
             public void AddOutputFile(string path, DateTime timestamp, bool shouldExist)
             {
-                OutputFiles.Add(path);
+                base.AddOutputFile(path);
                 if (shouldExist)
                 {
                     myFileSystem.AddFile(path, timestamp);

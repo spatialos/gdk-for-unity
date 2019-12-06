@@ -20,6 +20,9 @@ namespace <#= qualifiedNamespace #>
     {
         public const uint ComponentId = <#= componentDetails.ComponentId #>;
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Component struct.");
+#>
         public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => <#= componentDetails.ComponentId #>;
@@ -154,6 +157,9 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentAuthority struct.");
+#>
         public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>
         {
             public bool HasAuthority;
@@ -194,6 +200,9 @@ var fieldDetails = fieldDetailsList[i]; #>
             }
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Snapshot struct.");
+#>
         [global::System.Serializable]
         public struct Snapshot : ISpatialComponentSnapshot
         {
@@ -213,6 +222,9 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Serialization static class.");
+#>
         public static class Serialization
         {
             public static void SerializeComponent(<#= componentNamespace #>.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -330,6 +342,9 @@ var fieldDetails = fieldDetailsList[i]; #>
             }
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Update struct.");
+#>
         public struct Update : ISpatialComponentUpdate
         {
 <# foreach(var fieldDetails in fieldDetailsList) { #>
@@ -337,6 +352,9 @@ var fieldDetails = fieldDetailsList[i]; #>
 <# } #>
         }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}Dynamic internal class.");
+#>
         internal class <#= componentDetails.ComponentName  #>Dynamic : IDynamicInvokable
         {
             public uint ComponentId => <#= componentDetails.ComponentName  #>.ComponentId;

@@ -28,8 +28,8 @@ namespace Improbable.DependentSchema
             public Type EcsViewManager { get; } = typeof(global::Improbable.DependentSchema.DependentComponent.EcsViewManager);
             public Type DynamicInvokable { get; } = typeof(global::Improbable.DependentSchema.DependentComponent.DependentComponentDynamic);
 
-            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[] 
-            { 
+            public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]
+            {
             };
         }
     }

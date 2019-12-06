@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace Improbable.Tests
 {
-    
     [global::System.Serializable]
     public struct ModularTarget
     {
@@ -23,6 +22,7 @@ namespace Improbable.Tests
         {
             // I exist!
         }
+    
     
         public static class Serialization
         {

@@ -19,6 +19,9 @@ using Entity = Unity.Entities.Entity;
 
 namespace <#= qualifiedNamespace #>
 {
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSenderSubscriptionManager class.");
+#>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandSenderSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandSender>
     {
@@ -133,6 +136,9 @@ namespace <#= qualifiedNamespace #>
         }
     }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiverSubscriptionManager class.");
+#>
     [AutoRegisterSubscriptionManager]
     public class <#= componentDetails.ComponentName #>CommandReceiverSubscriptionManager : SubscriptionManager<<#= componentDetails.ComponentName #>CommandReceiver>
     {
@@ -256,6 +262,9 @@ namespace <#= qualifiedNamespace #>
         }
     }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSender class.");
+#>
     public class <#= componentDetails.ComponentName #>CommandSender
     {
         public bool IsValid;
@@ -312,6 +321,9 @@ namespace <#= qualifiedNamespace #>
         }
     }
 
+<#
+    logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiver class.");
+#>
     public class <#= componentDetails.ComponentName #>CommandReceiver
     {
         public bool IsValid;

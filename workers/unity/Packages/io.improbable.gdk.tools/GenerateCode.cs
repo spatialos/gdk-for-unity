@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UnityEditor;
@@ -42,6 +41,8 @@ namespace Improbable.Gdk.Tools
         private static readonly Regex dotnetRegex = new Regex(
             @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static Dictionary<CodegenLogLevel, int> codegenLogCounts;
 
         /// <summary>
         ///     Ensure that code is generated on editor startup.
@@ -98,13 +99,23 @@ namespace Improbable.Gdk.Tools
 
         private static void SetupProject()
         {
-            Profiler.BeginSample("Install dotnet template");
-            InstallDotnetTemplate();
-            Profiler.EndSample();
+            try
+            {
+                Profiler.BeginSample("Install dotnet template");
+                InstallDotnetTemplate();
+                Profiler.EndSample();
 
-            Profiler.BeginSample("Create dotnet template");
-            CreateTemplate();
-            Profiler.EndSample();
+                Profiler.BeginSample("Create dotnet template");
+                CreateTemplate();
+                Profiler.EndSample();
+            }
+            catch (Exception)
+            {
+                EditorUtility.DisplayDialog("Generate Code",
+                    "Code generation failed.\nPlease check the console for more information.",
+                    "Close");
+                throw;
+            }
         }
 
         private static void Generate()
@@ -150,32 +161,73 @@ namespace Improbable.Gdk.Tools
 
                 var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
 
+                var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+                var loggerOutputPath = Path.GetFullPath(Path.Combine(toolsConfig.CodegenLogOutputDir, "codegen-output.log"));
+
                 using (new ShowProgressBarScope("Generating code..."))
                 {
-                    var errorMessage = new StringBuilder();
+                    ResetCodegenLogCounter();
+
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
-                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath))
+                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddErrorProcessing((line) => errorMessage.Append($"\n{line}"))
-                        .AddErrorProcessing(Debug.LogError)
-                        .AddOutputProcessing(ProcessStdOut)
+                        .AddOutputProcessing(ProcessDotnetOutput)
+                        .AddOutputProcessing(ProcessCodegenOutput)
                         .Run();
 
-                    if (exitCode.ExitCode != 0)
+                    var numWarnings = codegenLogCounts[CodegenLogLevel.Warn];
+                    var numErrors = codegenLogCounts[CodegenLogLevel.Error] + codegenLogCounts[CodegenLogLevel.Fatal];
+
+                    if (exitCode.ExitCode != 0 || numErrors > 0)
                     {
                         if (!Application.isBatchMode)
                         {
-                            Debug.LogError($"Error(s) compiling schema files!{errorMessage}");
+                            Debug.LogError("Code generation failed! Please check the console for more information.");
+
                             EditorApplication.delayCall += () =>
                             {
-                                EditorUtility.DisplayDialog("Generate Code",
-                                    "Failed to generate code from schema.\nPlease view the console for errors.",
-                                    "Close");
+                                if (File.Exists(loggerOutputPath))
+                                {
+                                    var option = EditorUtility.DisplayDialogComplex("Generate Code",
+                                        $"Code generation failed with {numWarnings} warnings and {numErrors} errors!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                        "Open logfile",
+                                        "Close",
+                                        "");
+
+                                    switch (option)
+                                    {
+                                        // Open logfile
+                                        case 0:
+                                            Application.OpenURL(loggerOutputPath);
+                                            break;
+
+                                        // Close
+                                        case 1:
+                                        // Alt
+                                        case 2:
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException("Unrecognised option");
+                                    }
+                                }
+                                else
+                                {
+                                    DisplayGeneralFailure();
+                                }
                             };
                         }
                     }
                     else
                     {
+                        if (numWarnings > 0)
+                        {
+                            Debug.LogWarning($"Code generation completed successfully with {numWarnings} warnings. Please check the logs for more information: {loggerOutputPath}");
+                        }
+                        else
+                        {
+                            Debug.Log("Code generation complete!");
+                        }
+
                         File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
                     }
                 }
@@ -193,7 +245,27 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static void ProcessStdOut(string output)
+        private static void ResetCodegenLogCounter()
+        {
+            codegenLogCounts = new Dictionary<CodegenLogLevel, int>
+            {
+                { CodegenLogLevel.Trace, 0 },
+                { CodegenLogLevel.Debug, 0 },
+                { CodegenLogLevel.Info, 0 },
+                { CodegenLogLevel.Warn, 0 },
+                { CodegenLogLevel.Error, 0 },
+                { CodegenLogLevel.Fatal, 0 }
+            };
+        }
+
+        private static void DisplayGeneralFailure()
+        {
+            EditorUtility.DisplayDialog("Generate Code",
+                "Code generation failed.\nPlease check the console for more information.",
+                "Close");
+        }
+
+        private static void ProcessDotnetOutput(string output)
         {
             var match = dotnetRegex.Match(output);
             if (match.Success)
@@ -211,13 +283,23 @@ namespace Improbable.Gdk.Tools
                         break;
                 }
             }
-            else
+        }
+
+        private static void ProcessCodegenOutput(string output)
+        {
+            try
             {
-                Debug.Log(output);
+                var log = CodegenLog.FromRaw(output);
+                codegenLogCounts[log.Level]++;
+                Debug.unityLogger.Log(log.GetUnityLogType(), $"{log.Message}\n{log.Logger}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e);
             }
         }
 
-        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath)
+        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string logfilePath)
         {
             var baseArgs = new List<string>
             {
@@ -227,10 +309,16 @@ namespace Improbable.Gdk.Tools
                 "--",
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
-                $"--worker-json-dir=\"{workerJsonPath}\""
+                $"--worker-json-dir=\"{workerJsonPath}\"",
+                $"--log-file=\"{logfilePath}\""
             };
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
+            if (toolsConfig.VerboseLogging)
+            {
+                baseArgs.Add($"--verbose");
+            }
 
             baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
 

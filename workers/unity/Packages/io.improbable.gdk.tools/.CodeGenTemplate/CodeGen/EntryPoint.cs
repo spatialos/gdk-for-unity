@@ -1,13 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Utils;
+using NLog;
+using NLog.Layouts;
+using NLog.Targets;
 
 namespace Improbable.Gdk.CodeGenerator
 {
@@ -15,6 +18,8 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private readonly CodeGeneratorOptions options;
         private readonly IFileSystem fileSystem;
+
+        private static Logger logger;
 
         public static int Main(string[] args)
         {
@@ -27,6 +32,8 @@ namespace Improbable.Gdk.CodeGenerator
             }
             catch (Exception e)
             {
+                logger?.Error(e, "Code generation failed due to exception.");
+
                 Console.Error.WriteLine("Code generation failed with exception: {0}", e);
                 if (e.InnerException != null)
                 {
@@ -43,6 +50,49 @@ namespace Improbable.Gdk.CodeGenerator
         {
             this.options = options;
             this.fileSystem = fileSystem;
+
+            ConfigureLogger();
+            logger = LogManager.GetCurrentClassLogger();
+        }
+
+        private static void ConfigureLogger()
+        {
+            var codeGeneratorOptions =  CodeGeneratorOptions.Instance;
+
+            var config = new NLog.Config.LoggingConfiguration();
+
+            var minimumLogLevel = codeGeneratorOptions.Verbose ? LogLevel.Trace : LogLevel.Info;
+
+            if (codeGeneratorOptions.EnableLoggingToStdout)
+            {
+                var consoleTarget = new ConsoleTarget("consoleTarget")
+                {
+                    Layout = new JsonLayout
+                    {
+                        Attributes =
+                        {
+                            new JsonAttribute("time", "${longdate}"),
+                            new JsonAttribute("level", "${level:uppercase=true}"),
+                            new JsonAttribute("logger", "${logger}"),
+                            new JsonAttribute("message", "${message}"),
+                            new JsonAttribute("exception", "${exception:format=ToString}")
+                        }
+                    }
+                };
+                config.AddTarget(consoleTarget);
+                config.AddRule(minimumLogLevel, LogLevel.Fatal, consoleTarget);
+            }
+
+            var fileTarget = new FileTarget("fileTarget")
+            {
+                FileName = codeGeneratorOptions.AbsoluteLogPath,
+                Layout = "${level:uppercase=true:padding=-5} | ${longdate} | ${logger} | ${message} ${exception:format=ToString}",
+                DeleteOldFileOnStartup = true
+            };
+            config.AddTarget(fileTarget);
+            config.AddRule(minimumLogLevel, LogLevel.Fatal, fileTarget);
+
+            LogManager.Configuration = config;
         }
 
         public int Run()
@@ -53,17 +103,33 @@ namespace Improbable.Gdk.CodeGenerator
                 return 0;
             }
 
-            if (!ValidateOptions())
+            var optionErrors = options.GetValidationErrors().ToList();
+            foreach (var optionError in optionErrors)
+            {
+                Console.WriteLine(optionError);
+            }
+
+            if (optionErrors.Any())
             {
                 ShowHelpMessage();
                 return 1;
             }
 
+            logger.Info("Starting code generation.");
+
+            logger.Info("Gathering schema information.");
             var bundlePath = GenerateBundle();
+
+            logger.Info("Loading schema bundle from json.");
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
+
+            logger.Info("Setting up schema file tree.");
             var fileTree = new FileTree(options.SchemaInputDirs);
+
+            logger.Info("Initialising DetailsStore.");
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
+            logger.Info("Setting up code generation jobs.");
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(assembly =>
@@ -74,7 +140,7 @@ namespace Improbable.Gdk.CodeGenerator
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        Console.Error.WriteLine($"Failed to load assembly {assembly.FullName} with error {e}");
+                        logger.Error(e, $"Failed to load assembly {assembly.FullName}.");
                         return Enumerable.Empty<Type>();
                     }
                 })
@@ -82,10 +148,16 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(type => !type.IsAbstract)
                 .Where(type => !type.GetCustomAttributes(typeof(IgnoreCodegenJobAttribute)).Any())
                 .Select(type =>
-                    (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store))
+                {
+                    logger.Info($"Creating instance of {type}.");
+                    return (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store);
+                })
                 .ToArray();
 
+            logger.Info("Calling JobRunner.");
             new JobRunner(fileSystem).Run(jobs);
+
+            logger.Info("Finished code generation.");
             return 0;
         }
 
@@ -93,6 +165,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path=\"{dir}\"");
 
+            logger.Info($"Preparing bundle output path: {options.JsonDirectory}.");
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
@@ -106,8 +179,12 @@ namespace Improbable.Gdk.CodeGenerator
                 $"--descriptor_set_out=\"{descriptorPath}\""
             }.Union(inputPaths).ToList();
 
+            logger.Info("Generating schema bundle and descriptor.");
+            logger.Trace($"Calling '{options.SchemaCompilerPath} {string.Join(" ", arguments)}'.");
+
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
+            logger.Info($"Generated bundle at {bundlePath}.");
             return bundlePath;
         }
 
@@ -115,35 +192,6 @@ namespace Improbable.Gdk.CodeGenerator
         {
             Console.WriteLine("Usage: ");
             Console.WriteLine(options.HelpText);
-        }
-
-        private bool ValidateOptions()
-        {
-            if (string.IsNullOrEmpty(options.NativeOutputDirectory))
-            {
-                Console.WriteLine("Native output directory not specified");
-                return false;
-            }
-
-            if (options.SchemaInputDirs == null || options.SchemaInputDirs.Count == 0)
-            {
-                Console.WriteLine("Schema input directories not specified");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(options.SchemaCompilerPath))
-            {
-                Console.WriteLine("Schema compiler location not specified");
-                return false;
-            }
-
-            if (!File.Exists(options.SchemaCompilerPath))
-            {
-                Console.WriteLine($"Schema compiler does not exist at '{options.SchemaCompilerPath}'");
-                return false;
-            }
-
-            return true;
         }
     }
 }

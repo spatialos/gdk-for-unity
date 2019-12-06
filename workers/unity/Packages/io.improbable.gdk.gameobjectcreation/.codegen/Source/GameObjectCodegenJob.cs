@@ -13,39 +13,52 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
         private const string FileExtension = ".cs";
 
-        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store) : base(
-            outputDir, fileSystem, store)
+        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
+            : base(outputDir, fileSystem, store)
         {
-            InputFiles = store.SchemaFiles.ToList();
-            OutputFiles = new List<string>();
+            var jobName = nameof(GameObjectCodegenJob);
+            logger.Info($"Initialising {jobName}.");
 
+            AddInputFiles(store.SchemaFiles.ToList());
+
+            logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
                 .ToList();
 
+            logger.Trace("Adding job output files.");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
 
+                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
+
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    OutputFiles.Add(Path.Combine(relativeOutputPath,
+                    AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
                 }
 
-                OutputFiles.Add(Path.Combine(relativeOutputPath,
+                AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
+            logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
+
+            logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
+            logger.Info("Creating generators.");
             var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
             var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
 
+            logger.Info("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
+                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
+
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.ComponentName;
                 var package = componentTarget.Package;
@@ -56,15 +69,16 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
                         commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
-                    Content.Add(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
+                    AddContent(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 var componentReaderWriterFileName =
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
                 var componentReaderWriterCode =
                     componentReaderWriterGenerator.Generate(componentTarget.Content, package);
-                Content.Add(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
+                AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
+            logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
 }
