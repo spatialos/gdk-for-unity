@@ -48,6 +48,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <param name="frequencyHz">
         ///     The maximum frequency (Hz) to return query results.
         /// </param>
+        /// <remarks>
+        ///     A frequency of 0 means there will be no rate limiting.
+        /// </remarks>
         /// <returns>
         ///     An updated <see cref="InterestQuery"/> object.
         /// </returns>
