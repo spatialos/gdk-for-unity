@@ -3,7 +3,7 @@
 During a build, you can use the Unity provided callbacks to add pre-processing and/or post-processing to your worker build.
 The Build System Feature Module provides a static readonly variable, `WorkerBuilder.CurrentContext`, which contains information such as the worker type and build options.
 
-This context is only valid during a build.
+This context is only valid during a build and will throw if accessed outside of a build.
 
 ```csharp
 public class BuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
