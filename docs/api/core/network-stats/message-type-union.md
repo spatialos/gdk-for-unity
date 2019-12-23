@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/network-stats-index">NetworkStats</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L37">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L37">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -58,7 +58,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="commandinfo"></a><b>CommandInfo</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -87,7 +87,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="update-uint"></a><b>Update</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L47">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L47">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -115,7 +115,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="commandrequest-uint-uint"></a><b>CommandRequest</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L56">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L56">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -144,7 +144,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="commandresponse-uint-uint"></a><b>CommandResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L65">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L65">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -173,7 +173,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worldcommandrequest-worldcommand"></a><b>WorldCommandRequest</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L74">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L74">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -201,7 +201,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worldcommandresponse-worldcommand"></a><b>WorldCommandResponse</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L83">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -242,7 +242,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-messagetypeunion"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L92">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L92">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -282,7 +282,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="equals-object"></a><b>Equals</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L116">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L116">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -310,7 +310,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="gethashcode"></a><b>GetHashCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L121">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L121">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -341,7 +341,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-messagetypeunion-messagetypeunion"></a><b>operator==</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L152">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L152">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -370,7 +370,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-messagetypeunion-messagetypeunion"></a><b>operator!=</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L157">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/MessageType.cs/#L157">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

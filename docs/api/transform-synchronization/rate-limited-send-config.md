@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -42,7 +42,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxtransformupdateratehz"></a><b>MaxTransformUpdateRateHz</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L7">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L7">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -57,7 +57,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxpositionupdateratehz"></a><b>MaxPositionUpdateRateHz</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/Components/RateLimitedSendConfig.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

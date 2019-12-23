@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/network-stats-index">NetworkStats</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L3">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L3">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -37,7 +37,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="count"></a><b>Count</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L5">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L5">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -52,7 +52,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="size"></a><b>Size</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L6">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L6">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -85,7 +85,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="operator-datapoint-datapoint"></a><b>operator+</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/NetworkStats/DataPoint.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

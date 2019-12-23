@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/query-based-interest-index">QueryBasedInterest</a><br/>
 GDK package: QueryBasedInterest<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -46,7 +46,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="query-constraint"></a><b>Query</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L30">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -95,8 +95,45 @@ Creates an <a href="{{urlRoot}}/api/query-based-interest/interest-query">Interes
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><a id="withmaxfrequencyhz-float"></a><b>WithMaxFrequencyHz</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L57">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code><a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a> WithMaxFrequencyHz(float frequencyHz)</code></p>
+Sets the maximum frequency (Hz) of the query. 
+</p><b>Returns:</b></br>An updated <a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a> object. 
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>float frequencyHz</code> : The maximum frequency (Hz) to return query results. </li>
+</ul>
+
+
+
+</p>
+
+<b>Notes:</b>
+
+<ul>
+<li>A frequency of 0 means there will be no rate limiting. </li>
+</ul>
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><a id="filterresults-uint-params-uint"></a><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L78">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -134,7 +171,7 @@ Defines what components to return in the query results.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="filterresults-ienumerable-uint"></a><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L99">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L104">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -171,7 +208,7 @@ Defines what components to return in the query results.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ascomponentinterestquery"></a><b>AsComponentInterestQuery</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L115">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L120">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

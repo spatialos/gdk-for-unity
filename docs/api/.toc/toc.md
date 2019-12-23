@@ -1,7 +1,10 @@
 - <h3>API reference</h3>
     - [BuildSystem]({{urlRoot}}/api/build-system-index)
         - [Configuration]({{urlRoot}}/api/build-system/configuration-index)
+            - <a href="{{urlRoot}}/api/build-system/configuration/build-context">BuildContext</a>
             - <a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a>
+            - <a href="{{urlRoot}}/api/build-system/configuration/build-target-config">BuildTargetConfig</a>
+        - <a href="{{urlRoot}}/api/build-system/commandline-parser">CommandlineParser</a>
         - <a href="{{urlRoot}}/api/build-system/editor-paths">EditorPaths</a>
         - <a href="{{urlRoot}}/api/build-system/worker-builder">WorkerBuilder</a>
     - [Core]({{urlRoot}}/api/core-index)
@@ -236,6 +239,7 @@
     - [Tools]({{urlRoot}}/api/tools-index)
         - [MiniJSON]({{urlRoot}}/api/tools/mini-json-index)
             - <a href="{{urlRoot}}/api/tools/mini-json/json">Json</a>
+        - <a href="{{urlRoot}}/api/tools/codegen-log-level">CodegenLogLevel</a>
         - <a href="{{urlRoot}}/api/tools/common">Common</a>
         - <a href="{{urlRoot}}/api/tools/dev-auth-token-utils">DevAuthTokenUtils</a>
         - <a href="{{urlRoot}}/api/tools/editor-config">EditorConfig</a>
