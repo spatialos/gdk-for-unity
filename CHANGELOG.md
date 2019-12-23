@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.2` - 2019-12-23
+
 ### Added
 
 - Added support for Unity build callbacks such as `IPostprocessBuildWithReport`. [#1228](https://github.com/spatialos/gdk-for-unity/pull/1228)
