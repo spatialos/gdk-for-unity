@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
 GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -45,7 +45,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createtransformsnapshot-vector3-quaternion-vector3"></a><b>CreateTransformSnapshot</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L27">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L27">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -84,7 +84,7 @@ Utility method for creating a TransformInternal Snapshot.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tocoordinates-this-vector3"></a><b>ToCoordinates</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L44">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L44">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -112,7 +112,7 @@ Extension method for converting a Unity Vector to a Coordinates value.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tofixedpointvector3-this-vector3"></a><b>ToFixedPointVector3</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L52">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -140,7 +140,7 @@ Extension method for converting a Unity Vector to a FixedPointVector3.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tocompressedquaternion-this-quaternion"></a><b>ToCompressedQuaternion</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.transformsynchronization/TransformUtils.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

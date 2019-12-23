@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a>.<a href="{{urlRoot}}/api/core/commands/world-commands/delete-entity">DeleteEntity</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L41">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L41">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -49,7 +49,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendingentity"></a><b>SendingEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L43">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L43">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -64,7 +64,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="statuscode"></a><b>StatusCode</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L49">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L49">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ The status code of the command response. If equal to StatusCode.Success then the
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="message"></a><b>Message</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L54">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L54">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,7 +94,7 @@ The failure message of the command. Will only be non-null if the command failed.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="entityid"></a><b>EntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L59">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L59">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -109,7 +109,7 @@ The Entity ID that was the target of the DeleteEntity command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="requestpayload"></a><b>RequestPayload</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L64">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L64">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -124,7 +124,7 @@ The request payload that was originally sent with this command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="context"></a><b>Context</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L69">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L69">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -139,7 +139,7 @@ The context object that was provided when sending the command.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="requestid"></a><b>RequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L74">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L74">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -170,7 +170,7 @@ The unique request ID of this command. Will match the request ID in the correspo
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getrequestid"></a><b>GetRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L87">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/DeleteEntity.cs/#L87">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

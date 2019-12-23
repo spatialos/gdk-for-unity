@@ -27,6 +27,10 @@ GDK package: BuildSystem<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/commandline-parser">CommandlineParser</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/editor-paths">EditorPaths</a></td>
 <td style="padding: 14px; border: none;">Contains common directories related to building assets and players. </td>
 </tr>

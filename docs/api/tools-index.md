@@ -88,6 +88,10 @@ GDK package: Tools<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/codegen-log-level">CodegenLogLevel</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/tools/output-redirect-behaviour">OutputRedirectBehaviour</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

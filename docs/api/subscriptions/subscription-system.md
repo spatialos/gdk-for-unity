@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L9">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L9">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -48,7 +48,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="registersubscriptionmanager-type-subscriptionmanagerbase"></a><b>RegisterSubscriptionManager</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -77,7 +77,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribe-t-entityid"></a><b>Subscribe&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L32">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -105,7 +105,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribe-entityid-type"></a><b>Subscribe</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L42">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L42">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -134,7 +134,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribe-entityid-params-type"></a><b>Subscribe</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L52">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L52">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -175,7 +175,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="oncreate"></a><b>OnCreate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L14">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -194,7 +194,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onupdate"></a><b>OnUpdate</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L63">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/Systems/SubscriptionSystem.cs/#L63">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

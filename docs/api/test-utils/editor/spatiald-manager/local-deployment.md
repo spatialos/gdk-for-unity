@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/test-utils-index">TestUtils</a>.<a href="{{urlRoot}}/api/test-utils/editor-index">Editor</a>.<a href="{{urlRoot}}/api/test-utils/editor/spatiald-manager">SpatialdManager</a><br/>
 GDK package: TestUtils<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L240">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L240">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -49,7 +49,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="id"></a><b>Id</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L245">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L245">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -64,7 +64,7 @@ The ID of this deployment.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="name"></a><b>Name</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L250">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L250">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ The name of this deployment.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="projectname"></a><b>ProjectName</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L255">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L255">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -94,7 +94,7 @@ The project that this deployment belongs to.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="tags"></a><b>Tags</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L260">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L260">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -125,7 +125,7 @@ The tags that are present on this deployment.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="adddevlogintag"></a><b>AddDevLoginTag</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L278">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L278">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -153,7 +153,7 @@ Adds the "dev_login" tag to this deployment asynchronously.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L296">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.testutils/Editor/SpatialdManager.cs/#L296">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

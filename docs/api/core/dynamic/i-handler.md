@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/dynamic">Dynamic</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L46">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L46">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="accept-tupdate-tsnapshot-uint-vtable-tupdate-tsnapshot"></a><b>Accept&lt;TUpdate, TSnapshot&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/51790202/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L48">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Dynamic/Dynamic.cs/#L48">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
