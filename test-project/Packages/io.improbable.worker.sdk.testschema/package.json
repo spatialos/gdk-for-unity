@@ -1,11 +1,11 @@
 {
   "name": "io.improbable.worker.sdk.testschema",
   "displayName": "SpatialOS Worker SDK Exhaustive Test Schema",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "unity": "2019.2",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS Worker SDK Exhaustive Test Schema",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.1"
+    "io.improbable.gdk.core": "0.3.2"
   }
 }
