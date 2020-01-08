@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
-    public abstract class ScopeBodyList : IBlock
+    public abstract class ScopeBodyList : ICodeBlock
     {
-        private readonly List<BaseScopeBody> scopeBodies = new List<BaseScopeBody>();
+        private readonly List<ScopeBody> scopeBodies = new List<ScopeBody>();
 
-        protected ScopeBodyList(string declaration, Action<BaseScopeBody> populate)
+        protected ScopeBodyList(string declaration, Action<ScopeBody> populate)
         {
             AddScope(declaration, populate);
         }
 
-        protected void AddScope(string declaration, Action<BaseScopeBody> populate)
+        protected void AddScope(string declaration, Action<ScopeBody> populate)
         {
             scopeBodies.Add(new CustomScopeBlock(declaration, populate));
         }

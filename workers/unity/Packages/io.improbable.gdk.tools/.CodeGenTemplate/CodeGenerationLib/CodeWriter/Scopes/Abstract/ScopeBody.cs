@@ -2,24 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Improbable.Gdk.CodeGeneration.CodeWriter.NoScope;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
-    public abstract class BaseScopeBody : BaseScopeBlock
+    public abstract class ScopeBody : ScopeBlock
     {
-        protected BaseScopeBody(string declaration, Action<BaseScopeBody> populate) : base(declaration)
+        protected ScopeBody(string declaration, Action<ScopeBody> populate) : base(declaration)
         {
             populate(this);
         }
 
-        protected BaseScopeBody(string declaration = null) : base(declaration)
+        protected ScopeBody(string declaration = null) : base(declaration)
         {
         }
 
         public void WriteLine(string snippet)
         {
-            Add(new TextBlock(snippet));
+            Add(new Text(snippet));
         }
 
         public void WriteLine(Action<StringBuilder> populate)
@@ -27,7 +26,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             var sb = new StringBuilder();
             populate(sb);
 
-            Add(new TextBlock(sb.ToString()));
+            Add(new Text(sb.ToString()));
         }
 
         public void WriteLine(IEnumerable<string> snippets)
@@ -40,7 +39,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         public void Initializer(string declaration, Func<IEnumerable<string>> populate)
         {
-            Add(new InitializerBlock(declaration, populate));
+            Add(new InitializerCodeBlock(declaration, populate));
         }
 
         public void CustomScope(Action<CustomScopeBlock> populate)
@@ -58,14 +57,14 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new LoopBlock(declaration, populate));
         }
 
-        public IfElseBlock If(string declaration, Action<BaseScopeBody> populate)
+        public IfElseBlock If(string declaration, Action<ScopeBody> populate)
         {
             var ifElseBlock = new IfElseBlock(declaration, populate);
             Add(ifElseBlock);
             return ifElseBlock;
         }
 
-        public TryCatchBlock Try(Action<BaseScopeBody> populate)
+        public TryCatchBlock Try(Action<ScopeBody> populate)
         {
             var tryCatchBlock = new TryCatchBlock(populate);
             Add(tryCatchBlock);

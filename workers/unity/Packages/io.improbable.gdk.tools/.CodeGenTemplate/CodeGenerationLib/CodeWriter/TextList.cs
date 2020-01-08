@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Improbable.Gdk.CodeGeneration.CodeWriter.NoScope
+namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
-    internal class TextList : IBlock
+    internal class TextList : ICodeBlock
     {
         private readonly string snippetListSeparator;
 
-        private readonly List<TextBlock> textBlocks = new List<TextBlock>();
+        private readonly List<Text> textBlocks = new List<Text>();
         public int Count => textBlocks.Count;
 
         internal TextList(IEnumerable<string> snippets)
@@ -25,7 +25,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.NoScope
 
         private void Add(IEnumerable<string> snippets)
         {
-            textBlocks.AddRange(snippets.Select(s => new TextBlock(s)));
+            textBlocks.AddRange(snippets.Select(s => new Text(s)));
         }
 
         public string Output(int indentLevel = 0)

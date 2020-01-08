@@ -4,17 +4,17 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     public class TryCatchBlock : ScopeBodyList
     {
-        internal TryCatchBlock(Action<BaseScopeBody> populate) : base("try", populate)
+        internal TryCatchBlock(Action<ScopeBody> populate) : base("try", populate)
         {
         }
 
-        public TryCatchBlock Catch(string declaration, Action<BaseScopeBody> populate)
+        public TryCatchBlock Catch(string declaration, Action<ScopeBody> populate)
         {
             AddScope($"catch ({declaration})", populate);
             return this;
         }
 
-        public void Finally(Action<BaseScopeBody> populate)
+        public void Finally(Action<ScopeBody> populate)
         {
             AddScope("finally", populate);
         }

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGeneration.CodeWriter.NoScope
+namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
-    internal class InitializerBlock : IBlock
+    internal class InitializerCodeBlock : ICodeBlock
     {
         private readonly string declaration;
         private readonly TextList initialValues;
 
-        internal InitializerBlock(string declaration, Func<IEnumerable<string>> populate)
+        internal InitializerCodeBlock(string declaration, Func<IEnumerable<string>> populate)
         {
             this.declaration = declaration.Trim();
             initialValues = new TextList($@",{Environment.NewLine}", populate());

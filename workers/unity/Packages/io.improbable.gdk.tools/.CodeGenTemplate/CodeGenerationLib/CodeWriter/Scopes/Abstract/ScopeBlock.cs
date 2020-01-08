@@ -1,18 +1,17 @@
 using System;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration.CodeWriter.NoScope;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
-    public abstract class BaseScopeBlock : BaseContentBlock
+    public abstract class ScopeBlock : CodeBlock
     {
         protected string Annotation;
-        private readonly TextBlock declaration;
+        private readonly Text declaration;
 
-        protected BaseScopeBlock(string declaration)
+        protected ScopeBlock(string declaration)
         {
-            this.declaration = new TextBlock(declaration);
+            this.declaration = new Text(declaration);
         }
 
         // ReSharper disable once OptionalParameterHierarchyMismatch
@@ -21,7 +20,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             return Output(indentLevel, DefaultContentSeparator);
         }
 
-        protected virtual string Output(int indentLevel, string contentSeparator)
+        private string Output(int indentLevel, string contentSeparator)
         {
             var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
 

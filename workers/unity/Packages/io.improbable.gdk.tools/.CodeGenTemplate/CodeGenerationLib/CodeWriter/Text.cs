@@ -1,13 +1,13 @@
 using System;
 using Improbable.Gdk.CodeGeneration.Utils;
 
-namespace Improbable.Gdk.CodeGeneration.CodeWriter.NoScope
+namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
-    internal class TextBlock : IBlock
+    internal class Text : ICodeBlock
     {
         private readonly string snippet;
 
-        internal TextBlock(string snippet)
+        internal Text(string snippet)
         {
             this.snippet = snippet.Trim();
         }
