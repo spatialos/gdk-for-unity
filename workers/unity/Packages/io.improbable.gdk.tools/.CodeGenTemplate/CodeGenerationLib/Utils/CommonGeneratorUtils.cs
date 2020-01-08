@@ -12,11 +12,13 @@ namespace Improbable.Gdk.CodeGeneration.Utils
                 $"regenerated.{System.Environment.NewLine}// ===========";
         }
 
+        // TODO: remove once all TT files have been ported over
         public static string IndentEveryNewline(string input)
         {
             return IndentEveryNewline(input, 1);
         }
 
+        // TODO: remove once all TT files have been ported over
         public static string IndentEveryNewline(string input, int numIndents)
         {
             var spaces = new String(' ', numIndents * SpacesPerIndent);
