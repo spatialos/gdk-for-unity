@@ -4,7 +4,7 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 {
     public static class CommonGeneratorUtils
     {
-        private const int SpacesPerIndent = 4;
+        public const int SpacesPerIndent = 4;
 
         public static string GetGeneratedHeader()
         {

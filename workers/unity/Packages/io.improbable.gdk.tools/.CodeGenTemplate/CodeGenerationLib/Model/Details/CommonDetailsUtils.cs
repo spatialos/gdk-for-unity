@@ -8,5 +8,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return $"global::{Formatting.CapitaliseQualifiedNameParts(qualifiedTypeName)}";
         }
+
+        public static string WriteCheckIsCleared(uint fieldNumber)
+        {
+            return $"var isCleared = updateObj.IsFieldCleared({fieldNumber});";
+        }
     }
 }
