@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
+    /// <summary>
+    /// A ScopeBlock with helpers for writing code found in method bodies.
+    /// </summary>
     public abstract class ScopeBody : ScopeBlock
     {
         protected ScopeBody(string declaration, Action<ScopeBody> populate) : base(declaration)

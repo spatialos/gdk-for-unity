@@ -4,6 +4,9 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
+    /// <summary>
+    /// A CodeBlock with a scope and indentation mechanism.
+    /// </summary>
     public abstract class ScopeBlock : CodeBlock
     {
         protected string Annotation;

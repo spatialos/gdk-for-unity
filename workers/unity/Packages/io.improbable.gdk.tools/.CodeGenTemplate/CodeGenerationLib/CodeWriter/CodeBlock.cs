@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
+    /// <summary>
+    /// A collection of code units that itself is a block of a code.
+    /// </summary>
     public abstract class CodeBlock : ICodeBlock
     {
         protected static readonly string DefaultContentSeparator = $"{Environment.NewLine}{Environment.NewLine}";

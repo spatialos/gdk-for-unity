@@ -2,6 +2,9 @@ using System;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
+    /// <summary>
+    /// A code unit representing a try/catch/finally construct.
+    /// </summary>
     public class TryCatchBlock : ScopeBodyList
     {
         internal TryCatchBlock(Action<ScopeBody> populate) : base("try", populate)

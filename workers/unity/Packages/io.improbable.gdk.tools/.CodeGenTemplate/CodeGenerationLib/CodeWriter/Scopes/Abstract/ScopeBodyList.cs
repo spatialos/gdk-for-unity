@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
+    /// <summary>
+    /// A grouping of scoped bodies.
+    /// </summary>
     public abstract class ScopeBodyList : ICodeBlock
     {
         private readonly List<ScopeBody> scopeBodies = new List<ScopeBody>();

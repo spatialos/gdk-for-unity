@@ -3,6 +3,9 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
+    /// <summary>
+    /// Free-form text to write.
+    /// </summary>
     internal class Text : ICodeBlock
     {
         private readonly string snippet;

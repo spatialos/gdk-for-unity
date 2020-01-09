@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
+    /// <summary>
+    /// A grouping of text to be on consecutive lines.
+    /// </summary>
     internal class TextList : ICodeBlock
     {
         private readonly string snippetListSeparator;

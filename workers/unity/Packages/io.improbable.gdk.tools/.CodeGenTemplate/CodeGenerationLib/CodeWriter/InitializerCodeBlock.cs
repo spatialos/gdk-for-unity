@@ -4,6 +4,9 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
+    /// <summary>
+    /// A code unit to write initializers.
+    /// </summary>
     internal class InitializerCodeBlock : ICodeBlock
     {
         private readonly string declaration;
