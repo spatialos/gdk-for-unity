@@ -5,7 +5,7 @@ using System.Linq;
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
 {
     /// <summary>
-    /// A grouping of text to be on consecutive lines.
+    /// A grouping of un-trimmed text to be on consecutive lines.
     /// </summary>
     internal class TextList : ICodeBlock
     {
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         private void Add(IEnumerable<string> snippets)
         {
-            textBlocks.AddRange(snippets.Select(s => new Text(s)));
+            textBlocks.AddRange(snippets.Select(s => new Text(s, trim: false)));
         }
 
         public string Output(int indentLevel = 0)

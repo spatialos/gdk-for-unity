@@ -10,9 +10,9 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
     {
         private readonly string snippet;
 
-        internal Text(string snippet)
+        internal Text(string snippet, bool trim = true)
         {
-            this.snippet = snippet.Trim();
+            this.snippet = trim ? snippet.Trim() : snippet;
         }
 
         public bool HasValue()

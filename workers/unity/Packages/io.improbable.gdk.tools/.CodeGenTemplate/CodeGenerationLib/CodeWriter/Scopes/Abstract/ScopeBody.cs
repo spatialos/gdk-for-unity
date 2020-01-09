@@ -6,7 +6,7 @@ using System.Text;
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     /// <summary>
-    /// A ScopeBlock with helpers for writing code found in method bodies.
+    /// A scoped unit of code with helpers for writing content found in method bodies.
     /// </summary>
     public abstract class ScopeBody : ScopeBlock
     {
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         public void Initializer(string declaration, Func<IEnumerable<string>> populate)
         {
-            Add(new InitializerCodeBlock(declaration, populate));
+            Add(new InitializerBlock(declaration, populate));
         }
 
         public void CustomScope(Action<CustomScopeBlock> populate)

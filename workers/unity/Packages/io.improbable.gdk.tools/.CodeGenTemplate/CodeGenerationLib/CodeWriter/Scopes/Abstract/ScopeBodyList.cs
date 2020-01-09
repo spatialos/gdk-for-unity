@@ -5,7 +5,7 @@ using System.Linq;
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     /// <summary>
-    /// A grouping of scoped bodies.
+    /// A set of scoped units of code.
     /// </summary>
     public abstract class ScopeBodyList : ICodeBlock
     {

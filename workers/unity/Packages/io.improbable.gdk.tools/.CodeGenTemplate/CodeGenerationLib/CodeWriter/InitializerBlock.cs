@@ -7,12 +7,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
     /// <summary>
     /// A code unit to write initializers.
     /// </summary>
-    internal class InitializerCodeBlock : ICodeBlock
+    internal class InitializerBlock : ICodeBlock
     {
         private readonly string declaration;
         private readonly TextList initialValues;
 
-        internal InitializerCodeBlock(string declaration, Func<IEnumerable<string>> populate)
+        internal InitializerBlock(string declaration, Func<IEnumerable<string>> populate)
         {
             this.declaration = declaration.Trim();
             initialValues = new TextList($@",{Environment.NewLine}", populate());

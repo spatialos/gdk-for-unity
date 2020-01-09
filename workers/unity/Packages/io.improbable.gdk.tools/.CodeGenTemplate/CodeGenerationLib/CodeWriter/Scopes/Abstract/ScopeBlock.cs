@@ -1,14 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     /// <summary>
-    /// A CodeBlock with a scope and indentation mechanism.
+    /// A unit of code with a scope and indented string output.
     /// </summary>
-    public abstract class ScopeBlock : CodeBlock
+    public abstract class ScopeBlock : ICodeBlock
     {
+        protected static readonly string DefaultContentSeparator = $"{Environment.NewLine}{Environment.NewLine}";
+
+        private readonly List<ICodeBlock> content = new List<ICodeBlock>();
+
         protected string Annotation;
         private readonly Text declaration;
 
@@ -17,13 +22,23 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             this.declaration = new Text(declaration);
         }
 
+        protected void Add(ICodeBlock block)
+        {
+            content.Add(block);
+        }
+
+        protected void Add(IEnumerable<ICodeBlock> blocks)
+        {
+            content.AddRange(blocks);
+        }
+
         // ReSharper disable once OptionalParameterHierarchyMismatch
-        public override string Output(int indentLevel = 0)
+        public virtual string Output(int indentLevel = 0)
         {
             return Output(indentLevel, DefaultContentSeparator);
         }
 
-        private string Output(int indentLevel, string contentSeparator)
+        protected string Output(int indentLevel, string contentSeparator)
         {
             var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
 
@@ -33,16 +48,16 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
                 scopeAnnotation = $"{indent}[{Annotation}]{Environment.NewLine}";
             }
 
-            var scopeDeclaration = "";
+            var scopeDeclaration = string.Empty;
             if (declaration.HasValue())
             {
                 scopeDeclaration = $"{declaration.Output(indentLevel)}{Environment.NewLine}";
             }
 
             var scopeOutput = string.Empty;
-            if (Content.Any())
+            if (content.Any())
             {
-                var indentedContents = Content.Select(scopeContent => scopeContent.Output(indentLevel + 1));
+                var indentedContents = content.Select(scopeContent => scopeContent.Output(indentLevel + 1));
                 scopeOutput = $"{string.Join(contentSeparator, indentedContents)}{Environment.NewLine}";
             }
 
