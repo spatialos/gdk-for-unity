@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return !string.IsNullOrEmpty(snippet);
         }
 
-        public string Output(int indentLevel)
+        public string Format(int indentLevel)
         {
             var spaces = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
             var indentedCode = snippet

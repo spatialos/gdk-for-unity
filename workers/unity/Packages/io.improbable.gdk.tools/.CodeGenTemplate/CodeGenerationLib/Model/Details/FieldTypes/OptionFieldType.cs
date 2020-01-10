@@ -34,7 +34,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return new IfElseBlock($"{fieldInstance}.HasValue", then =>
             {
                 then.WriteLine(containedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber)
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
                 then.WriteLine($"{fieldInstance} = new {Type}({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber)
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                             $"{fieldInstance} = new {Type}(value);"
                         });
                     });
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     {
                         then.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                     });
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
@@ -94,7 +94,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         then.WriteLine(
                             $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                     });
-            }).Output();
+            }).Format();
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber)
@@ -102,7 +102,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return new IfElseBlock($"!{fieldInstance}.HasValue", then =>
             {
                 then.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
-            }).Output();
+            }).Format();
         }
     }
 }

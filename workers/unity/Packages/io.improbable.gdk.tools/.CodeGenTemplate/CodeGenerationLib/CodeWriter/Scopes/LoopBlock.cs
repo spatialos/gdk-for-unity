@@ -11,5 +11,15 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
             populate(this);
         }
+
+        public void Continue()
+        {
+            WriteLine("continue;");
+        }
+
+        public void Break()
+        {
+            WriteLine("break;");
+        }
     }
 }

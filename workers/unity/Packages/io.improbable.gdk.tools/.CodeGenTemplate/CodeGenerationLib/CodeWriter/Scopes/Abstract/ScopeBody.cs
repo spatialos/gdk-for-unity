@@ -74,16 +74,6 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             return tryCatchBlock;
         }
 
-        public void Continue()
-        {
-            WriteLine("continue;");
-        }
-
-        public void Break()
-        {
-            WriteLine("break;");
-        }
-
         public void Return()
         {
             WriteLine("return;");
@@ -94,12 +84,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             WriteLine($"return {toReturn};");
         }
 
-        public void ProfileStart(string name)
+        public void ProfilerStart(string name)
         {
             WriteLine($"Profiler.BeginSample(\"{name}\");");
         }
 
-        public void ProfileEnd()
+        public void ProfilerEnd()
         {
             WriteLine("Profiler.EndSample();");
         }

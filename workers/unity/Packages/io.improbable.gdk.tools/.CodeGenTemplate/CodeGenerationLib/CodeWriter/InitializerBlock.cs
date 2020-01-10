@@ -18,14 +18,14 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             initialValues = new TextList($@",{Environment.NewLine}", populate());
         }
 
-        public string Output(int indentLevel = 0)
+        public string Format(int indentLevel = 0)
         {
             var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
 
             var output = "";
             if (initialValues.Count > 0)
             {
-                output = $"{initialValues.Output(indentLevel + 1)}{Environment.NewLine}";
+                output = $"{initialValues.Format(indentLevel + 1)}{Environment.NewLine}";
             }
 
             return

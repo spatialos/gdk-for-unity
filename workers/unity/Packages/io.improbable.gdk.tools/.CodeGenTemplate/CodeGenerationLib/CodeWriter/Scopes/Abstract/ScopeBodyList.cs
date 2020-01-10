@@ -21,9 +21,9 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             scopeBodies.Add(new CustomScopeBlock(declaration, populate));
         }
 
-        public string Output(int indentLevel = 0)
+        public string Format(int indentLevel = 0)
         {
-            return string.Join(Environment.NewLine, scopeBodies.Select(cs => cs.Output(indentLevel)));
+            return string.Join(Environment.NewLine, scopeBodies.Select(cs => cs.Format(indentLevel)));
         }
     }
 }

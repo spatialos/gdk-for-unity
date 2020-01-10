@@ -33,7 +33,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         }
 
         // ReSharper disable once OptionalParameterHierarchyMismatch
-        public virtual string Output(int indentLevel = 0)
+        public virtual string Format(int indentLevel = 0)
         {
             return Output(indentLevel, DefaultContentSeparator);
         }
@@ -51,13 +51,13 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             var scopeDeclaration = string.Empty;
             if (declaration.HasValue())
             {
-                scopeDeclaration = $"{declaration.Output(indentLevel)}{Environment.NewLine}";
+                scopeDeclaration = $"{declaration.Format(indentLevel)}{Environment.NewLine}";
             }
 
             var scopeOutput = string.Empty;
             if (content.Any())
             {
-                var indentedContents = content.Select(scopeContent => scopeContent.Output(indentLevel + 1));
+                var indentedContents = content.Select(scopeContent => scopeContent.Format(indentLevel + 1));
                 scopeOutput = $"{string.Join(contentSeparator, indentedContents)}{Environment.NewLine}";
             }
 

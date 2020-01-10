@@ -5,6 +5,6 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
     /// </summary>
     public interface ICodeBlock
     {
-        string Output(int indentLevel = 0);
+        string Format(int indentLevel = 0);
     }
 }

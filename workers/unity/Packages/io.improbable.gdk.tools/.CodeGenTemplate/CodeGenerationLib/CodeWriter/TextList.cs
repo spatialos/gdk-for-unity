@@ -31,9 +31,9 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             textBlocks.AddRange(snippets.Select(s => new Text(s, trim: false)));
         }
 
-        public string Output(int indentLevel = 0)
+        public string Format(int indentLevel = 0)
         {
-            return string.Join(snippetListSeparator, textBlocks.Select(snippet => snippet.Output(indentLevel)));
+            return string.Join(snippetListSeparator, textBlocks.Select(snippet => snippet.Format(indentLevel)));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return new LoopBlock($"foreach (var value in {fieldInstance})", each =>
             {
                 each.WriteLine(containedType.GetSerializationStatement("value", schemaObject, fieldNumber));
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber)
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     each.WriteLine($"list.Add({containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")});");
                 });
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber)
@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         $"{fieldInstance}.Add(value);"
                     });
                 });
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         $"{updateFieldInstance}.Value.Add(value);"
                     });
                 });
-            }).Output();
+            }).Format();
         }
 
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
@@ -107,7 +107,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         $"{updateFieldInstance}.Value.Add(value);"
                     });
                 });
-            }).Output();
+            }).Format();
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber)
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             return new IfElseBlock($"{fieldInstance}.Count == 0", then =>
             {
                 then.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
-            }).Output();
+            }).Format();
         }
     }
 }
