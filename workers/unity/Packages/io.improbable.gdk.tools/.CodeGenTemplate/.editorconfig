@@ -1,0 +1,22 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+max_line_length = 120
+
+[*.cs]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[core-sdk.version]
+insert_final_newline = false
