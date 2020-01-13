@@ -18,9 +18,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new LoopBlock($"foreach (var keyValuePair in {fieldInstance})", each =>
+            return new LoopBlock($"foreach (var keyValuePair in {fieldInstance})", body =>
             {
-                each.WriteLine(new[]
+                body.Line(new[]
                 {
                     $"var mapObj = {schemaObject}.AddObject({fieldNumber});",
                     keyType.GetSerializationStatement("keyValuePair.Key", "mapObj", 1),
@@ -33,16 +33,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new[]
+                scope.Line(new[]
                 {
                     $"var map = new {Type}();",
                     $"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});",
                     $"{fieldInstance} = map;"
                 });
 
-                scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
+                scope.Loop("for (var i = 0; i < mapSize; i++)", body =>
                 {
-                    each.WriteLine(new[]
+                    body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -57,18 +57,18 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
+                scope.Line($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
 
-                scope.WriteLine(CommonDetailsUtils.WriteCheckIsCleared(fieldNumber));
+                scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
                 scope.If("mapSize > 0 || isCleared", then =>
                 {
-                    then.WriteLine($"{fieldInstance}.Clear();");
+                    then.Line($"{fieldInstance}.Clear();");
                 });
 
-                scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
+                scope.Loop("for (var i = 0; i < mapSize; i++)", body =>
                 {
-                    each.WriteLine(new[]
+                    body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -83,20 +83,20 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
+                scope.Line($"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});");
 
-                scope.WriteLine(CommonDetailsUtils.WriteCheckIsCleared(fieldNumber));
+                scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
                 scope.If("mapSize > 0 || isCleared",
                     then =>
                     {
-                        then.WriteLine(
+                        then.Line(
                             $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
                     });
 
-                scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
+                scope.Loop("for (var i = 0; i < mapSize; i++)", body =>
                 {
-                    each.WriteLine(new[]
+                    body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -111,16 +111,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new[]
+                scope.Line(new[]
                 {
                     $"var map = new {Type}();",
                     $"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});",
                     $"{updateFieldInstance} = map;"
                 });
 
-                scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
+                scope.Loop("for (var i = 0; i < mapSize; i++)", body =>
                 {
-                    each.WriteLine(new[]
+                    body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -135,7 +135,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"{fieldInstance}.Count == 0", then =>
             {
-                then.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
+                then.Line($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
             }).Format();
         }
     }

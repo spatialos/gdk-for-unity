@@ -14,12 +14,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         public void Continue()
         {
-            WriteLine("continue;");
+            Line("continue;");
         }
 
         public void Break()
         {
-            WriteLine("break;");
+            Line("break;");
         }
     }
 }

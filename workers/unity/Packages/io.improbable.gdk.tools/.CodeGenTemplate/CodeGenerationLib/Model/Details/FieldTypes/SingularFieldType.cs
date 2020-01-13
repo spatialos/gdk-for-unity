@@ -27,7 +27,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.WriteLine($"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                then.Line($"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }).Format();
         }
 
@@ -35,7 +35,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.WriteLine($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                then.Line($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }).Format();
         }
 

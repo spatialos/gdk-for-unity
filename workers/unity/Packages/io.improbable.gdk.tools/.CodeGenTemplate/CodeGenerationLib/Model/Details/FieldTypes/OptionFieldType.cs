@@ -33,7 +33,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"{fieldInstance}.HasValue", then =>
             {
-                then.WriteLine(containedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
+                then.Line(containedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
             }).Format();
         }
 
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.WriteLine($"{fieldInstance} = new {Type}({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                then.Line($"{fieldInstance} = new {Type}({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
             }).Format();
         }
 
@@ -49,15 +49,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(CommonDetailsUtils.WriteCheckIsCleared(fieldNumber));
+                scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
                 scope.If("isCleared", then =>
                     {
-                        then.WriteLine($"{fieldInstance} = new {Type}();");
+                        then.Line($"{fieldInstance} = new {Type}();");
                     })
                     .ElseIf($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
                     {
-                        then.WriteLine(new[]
+                        then.Line(new[]
                         {
                             $"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};",
                             $"{fieldInstance} = new {Type}(value);"
@@ -70,16 +70,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(CommonDetailsUtils.WriteCheckIsCleared(fieldNumber));
+                scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
                 scope.If("isCleared",
                     then =>
                     {
-                        then.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
+                        then.Line($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
                     }).ElseIf($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
                     then =>
                     {
-                        then.WriteLine($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                        then.Line($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                     });
             }).Format();
         }
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 scope.If($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
                     then =>
                     {
-                        then.WriteLine(
+                        then.Line(
                             $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                     });
             }).Format();
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new IfElseBlock($"!{fieldInstance}.HasValue", then =>
             {
-                then.WriteLine($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
+                then.Line($"{componentUpdateSchemaObject}.AddClearedField({fieldNumber});");
             }).Format();
         }
     }

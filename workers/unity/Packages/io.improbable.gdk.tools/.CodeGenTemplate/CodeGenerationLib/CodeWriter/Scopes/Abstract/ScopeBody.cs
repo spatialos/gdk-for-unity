@@ -19,12 +19,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
         }
 
-        public void WriteLine(string snippet)
+        public void Line(string snippet)
         {
             Add(new Text(snippet));
         }
 
-        public void WriteLine(Action<StringBuilder> populate)
+        public void Line(Action<StringBuilder> populate)
         {
             var sb = new StringBuilder();
             populate(sb);
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new Text(sb.ToString()));
         }
 
-        public void WriteLine(IEnumerable<string> snippets)
+        public void Line(IEnumerable<string> snippets)
         {
             if (snippets.Any())
             {
@@ -76,22 +76,22 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         public void Return()
         {
-            WriteLine("return;");
+            Line("return;");
         }
 
         public void Return(string toReturn)
         {
-            WriteLine($"return {toReturn};");
+            Line($"return {toReturn};");
         }
 
         public void ProfilerStart(string name)
         {
-            WriteLine($"Profiler.BeginSample(\"{name}\");");
+            Line($"Profiler.BeginSample(\"{name}\");");
         }
 
         public void ProfilerEnd()
         {
-            WriteLine("Profiler.EndSample();");
+            Line("Profiler.EndSample();");
         }
     }
 }
