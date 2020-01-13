@@ -22,16 +22,13 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
         {
             var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
 
-            var output = "";
+            var values = string.Empty;
             if (initialValues.Count > 0)
             {
-                output = $"{initialValues.Format(indentLevel + 1)}{Environment.NewLine}";
+                values = $"{initialValues.Format(indentLevel + 1)}{Environment.NewLine}";
             }
 
-            return
-                $@"{indent}{declaration}
-{indent}{{
-{output}{indent}}};";
+            return $"{indent}{declaration}{Environment.NewLine}{indent}{{{Environment.NewLine}{values}{indent}}};";
         }
     }
 }
