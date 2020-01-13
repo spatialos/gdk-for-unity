@@ -10,6 +10,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
     public abstract class ScopeBodyList : ICodeBlock
     {
         private readonly List<ScopeBody> scopeBodies = new List<ScopeBody>();
+        public int ScopeCount => scopeBodies.Count;
 
         protected ScopeBodyList(string declaration, Action<ScopeBody> populate)
         {

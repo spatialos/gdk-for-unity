@@ -33,7 +33,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new []
+                scope.WriteLine(new[]
                 {
                     $"var map = new {Type}();",
                     $"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});",
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
                 {
-                    each.WriteLine(new []
+                    each.WriteLine(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -68,7 +68,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 scope.Loop("for (var i = 0; i < mapSize; i++)", each =>
                 {
-                    each.WriteLine(new []
+                    each.WriteLine(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
                         $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
@@ -111,7 +111,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new []
+                scope.WriteLine(new[]
                 {
                     $"var map = new {Type}();",
                     $"var mapSize = {schemaObject}.GetObjectCount({fieldNumber});",

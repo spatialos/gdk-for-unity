@@ -57,7 +57,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static void ConfigureLogger()
         {
-            var codeGeneratorOptions =  CodeGeneratorOptions.Instance;
+            var codeGeneratorOptions = CodeGeneratorOptions.Instance;
 
             var config = new NLog.Config.LoggingConfiguration();
 

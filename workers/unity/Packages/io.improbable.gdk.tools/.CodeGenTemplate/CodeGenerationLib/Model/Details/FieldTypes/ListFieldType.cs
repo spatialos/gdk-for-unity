@@ -1,4 +1,3 @@
-using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
@@ -26,7 +25,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new []
+                scope.WriteLine(new[]
                 {
                     $"{fieldInstance} = new {Type}();",
                     $"var list = {fieldInstance};",
@@ -55,7 +54,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 scope.Loop("for (var i = 0; i < listSize; i++)", each =>
                 {
-                    each.WriteLine(new []
+                    each.WriteLine(new[]
                     {
                         $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
                         $"{fieldInstance}.Add(value);"
@@ -93,7 +92,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.WriteLine(new []
+                scope.WriteLine(new[]
                 {
                     $"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};",
                     $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());"

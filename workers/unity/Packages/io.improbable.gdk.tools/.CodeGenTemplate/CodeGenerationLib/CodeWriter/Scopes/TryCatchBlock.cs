@@ -21,5 +21,16 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
             AddScope("finally", populate);
         }
+
+        public new string Format(int indentLevel = 0)
+        {
+            // Ensure that there is at least one Catch/Finally scope after the initial Try scope.
+            if (ScopeCount < 2)
+            {
+                throw new InvalidOperationException("Cannot format TryCatchBlock without Catch or Finally scopes.");
+            }
+
+            return base.Format();
+        }
     }
 }

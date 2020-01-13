@@ -46,7 +46,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber)
         {
-            return "";
+            return string.Empty;
         }
     }
 }
