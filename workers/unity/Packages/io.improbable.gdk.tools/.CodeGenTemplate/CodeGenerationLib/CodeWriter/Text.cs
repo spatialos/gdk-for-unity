@@ -22,7 +22,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         public string Format(int indentLevel)
         {
-            var spaces = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
+            var spaces = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
             var indentedCode = snippet
                 .Replace($"{Environment.NewLine}", $"{Environment.NewLine}{spaces}")
                 .Replace($"{Environment.NewLine}{spaces}{Environment.NewLine}", $"{Environment.NewLine}{Environment.NewLine}");

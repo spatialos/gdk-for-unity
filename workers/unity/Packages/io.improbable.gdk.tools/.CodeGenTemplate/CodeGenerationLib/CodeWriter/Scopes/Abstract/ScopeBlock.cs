@@ -40,7 +40,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         protected string Output(int indentLevel, string contentSeparator)
         {
-            var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
+            var indent = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
 
             var scopeAnnotation = string.Empty;
             if (!string.IsNullOrEmpty(Annotation))

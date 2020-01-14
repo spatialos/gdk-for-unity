@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         public string Format(int indentLevel = 0)
         {
-            var indent = new string(' ', indentLevel * CommonGeneratorUtils.SpacesPerIndent);
+            var indent = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
 
             var values = string.Empty;
             if (initialValues.Count > 0)

@@ -89,6 +89,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 logger.Trace($"Types added: {file.Types.Count}.");
                 logger.Trace($"Components added: {file.Components.Count}.");
             }
+
             logger.Info($"Processed {bundle.SchemaFiles.Count} schema files.");
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
@@ -105,6 +106,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 kv.Value.Populate(this);
             }
+
             logger.Info($"Populated details of {Types.Count} types.");
 
             logger.Trace($"Populating all component field details.");
@@ -112,6 +114,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 kv.Value.PopulateFields(this);
             }
+
             logger.Info($"Populated field details of {Components.Count} components.");
 
             logger.Trace("Removing all recursive options.");

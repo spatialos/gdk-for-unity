@@ -86,15 +86,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new CustomScopeBlock(scope =>
-            {
-                scope.If($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
-                    then =>
-                    {
-                        then.Line(
-                            $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
-                    });
-            }).Format();
+            return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
+                then =>
+                {
+                    then.Line(
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                }).Format();
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber)
