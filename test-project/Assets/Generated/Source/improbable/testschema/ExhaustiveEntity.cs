@@ -230,26 +230,22 @@ namespace Improbable.TestSchema
                 {
                     obj.AddEntity(2, component.Field2.Value);
                 }
-                
                 foreach (var value in component.Field3)
                 {
                     obj.AddEntity(3, value);
                 }
-                
                 foreach (var keyValuePair in component.Field4)
                 {
                     var mapObj = obj.AddObject(4);
                     mapObj.AddEntity(1, keyValuePair.Key);
                     mapObj.AddString(2, keyValuePair.Value);
                 }
-                
                 foreach (var keyValuePair in component.Field5)
                 {
                     var mapObj = obj.AddObject(5);
                     mapObj.AddString(1, keyValuePair.Key);
                     mapObj.AddEntity(2, keyValuePair.Value);
                 }
-                
             }
 
             public static void SerializeUpdate(global::Improbable.TestSchema.ExhaustiveEntity.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
@@ -267,12 +263,10 @@ namespace Improbable.TestSchema
                     {
                         obj.AddEntity(2, component.Field2.Value);
                     }
-                    
                     if (!component.Field2.HasValue)
                     {
                         updateObj.AddClearedField(2);
                     }
-                    
                 }
 
                 if (component.IsDataDirty(2))
@@ -281,12 +275,10 @@ namespace Improbable.TestSchema
                     {
                         obj.AddEntity(3, value);
                     }
-                    
                     if (component.Field3.Count == 0)
                     {
                         updateObj.AddClearedField(3);
                     }
-                    
                 }
 
                 if (component.IsDataDirty(3))
@@ -297,12 +289,10 @@ namespace Improbable.TestSchema
                         mapObj.AddEntity(1, keyValuePair.Key);
                         mapObj.AddString(2, keyValuePair.Value);
                     }
-                    
                     if (component.Field4.Count == 0)
                     {
                         updateObj.AddClearedField(4);
                     }
-                    
                 }
 
                 if (component.IsDataDirty(4))
@@ -313,12 +303,10 @@ namespace Improbable.TestSchema
                         mapObj.AddString(1, keyValuePair.Key);
                         mapObj.AddEntity(2, keyValuePair.Value);
                     }
-                    
                     if (component.Field5.Count == 0)
                     {
                         updateObj.AddClearedField(5);
                     }
-                    
                 }
 
             }
@@ -342,12 +330,10 @@ namespace Improbable.TestSchema
                         {
                             obj.AddEntity(2, field.Value);
                         }
-                        
                         if (!field.HasValue)
                         {
                             updateObj.AddClearedField(2);
                         }
-                        
                     }
                 }
                 {
@@ -358,12 +344,10 @@ namespace Improbable.TestSchema
                         {
                             obj.AddEntity(3, value);
                         }
-                        
                         if (field.Count == 0)
                         {
                             updateObj.AddClearedField(3);
                         }
-                        
                     }
                 }
                 {
@@ -376,12 +360,10 @@ namespace Improbable.TestSchema
                             mapObj.AddEntity(1, keyValuePair.Key);
                             mapObj.AddString(2, keyValuePair.Value);
                         }
-                        
                         if (field.Count == 0)
                         {
                             updateObj.AddClearedField(4);
                         }
-                        
                     }
                 }
                 {
@@ -394,12 +376,10 @@ namespace Improbable.TestSchema
                             mapObj.AddString(1, keyValuePair.Key);
                             mapObj.AddEntity(2, keyValuePair.Value);
                         }
-                        
                         if (field.Count == 0)
                         {
                             updateObj.AddClearedField(5);
                         }
-                        
                     }
                 }
             }
@@ -412,13 +392,11 @@ namespace Improbable.TestSchema
                 {
                     obj.AddEntity(2, snapshot.Field2.Value);
                 }
-                
 
                 foreach (var value in snapshot.Field3)
                 {
                     obj.AddEntity(3, value);
                 }
-                
 
                 foreach (var keyValuePair in snapshot.Field4)
                 {
@@ -426,7 +404,6 @@ namespace Improbable.TestSchema
                     mapObj.AddEntity(1, keyValuePair.Key);
                     mapObj.AddString(2, keyValuePair.Value);
                 }
-                
 
                 foreach (var keyValuePair in snapshot.Field5)
                 {
@@ -434,7 +411,6 @@ namespace Improbable.TestSchema
                     mapObj.AddString(1, keyValuePair.Key);
                     mapObj.AddEntity(2, keyValuePair.Value);
                 }
-                
 
             }
 
@@ -449,23 +425,23 @@ namespace Improbable.TestSchema
                 {
                     component.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(obj.GetEntity(2));
                 }
-                
                 component.field3Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Allocate(world);
                 {
                     component.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
                     var list = component.Field3;
                     var listLength = obj.GetEntityCount(3);
+                
                     for (var i = 0; i < listLength; i++)
                     {
                         list.Add(obj.IndexEntity(3, (uint) i));
                     }
                 }
-                
                 component.field4Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Allocate(world);
                 {
                     var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
                     var mapSize = obj.GetObjectCount(4);
                     component.Field4 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -474,12 +450,12 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 component.field5Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Allocate(world);
                 {
                     var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();
                     var mapSize = obj.GetObjectCount(5);
                     component.Field5 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -488,7 +464,6 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 return component;
             }
 
@@ -501,9 +476,9 @@ namespace Improbable.TestSchema
                 {
                     update.Field1 = obj.GetEntity(1);
                 }
-                
                 {
                     var isCleared = updateObj.IsFieldCleared(2);
+                
                     if (isCleared)
                     {
                         update.Field2 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntitySnapshot?>(new global::Improbable.Gdk.Core.EntitySnapshot?());
@@ -513,28 +488,32 @@ namespace Improbable.TestSchema
                         update.Field2 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntitySnapshot?>(obj.GetEntity(2));
                     }
                 }
-                
                 {
                     var listSize = obj.GetEntityCount(3);
+                
                     var isCleared = updateObj.IsFieldCleared(3);
+                
                     if (listSize > 0 || isCleared)
                     {
                         update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>());
                     }
+                
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexEntity(3, (uint) i);
                         update.Field3.Value.Add(value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(4);
+                
                     var isCleared = updateObj.IsFieldCleared(4);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         update.Field4 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>(new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>());
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -543,14 +522,16 @@ namespace Improbable.TestSchema
                         update.Field4.Value.Add(key, value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(5);
+                
                     var isCleared = updateObj.IsFieldCleared(5);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         update.Field5 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>(new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>());
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -559,7 +540,6 @@ namespace Improbable.TestSchema
                         update.Field5.Value.Add(key, value);
                     }
                 }
-                
                 return update;
             }
 
@@ -569,26 +549,25 @@ namespace Improbable.TestSchema
                 var obj = data.GetFields();
 
                 update.Field1 = obj.GetEntity(1);
-                
                 if (obj.GetEntityCount(2) == 1)
                 {
                     update.Field2 = new global::Improbable.Gdk.Core.Option<global::Improbable.Gdk.Core.EntitySnapshot?>(obj.GetEntity(2));
                 }
-                
                 {
                     var listSize = obj.GetEntityCount(3);
                     update.Field3 = new global::Improbable.Gdk.Core.Option<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>(new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>());
+                
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexEntity(3, (uint) i);
                         update.Field3.Value.Add(value);
                     }
                 }
-                
                 {
                     var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
                     var mapSize = obj.GetObjectCount(4);
                     update.Field4 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -597,11 +576,11 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 {
                     var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();
                     var mapSize = obj.GetObjectCount(5);
                     update.Field5 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -610,7 +589,6 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 return update;
             }
 
@@ -623,21 +601,21 @@ namespace Improbable.TestSchema
                 {
                     component.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(obj.GetEntity(2));
                 }
-                
                 {
                     component.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
                     var list = component.Field3;
                     var listLength = obj.GetEntityCount(3);
+                
                     for (var i = 0; i < listLength; i++)
                     {
                         list.Add(obj.IndexEntity(3, (uint) i));
                     }
                 }
-                
                 {
                     var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
                     var mapSize = obj.GetObjectCount(4);
                     component.Field4 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -646,11 +624,11 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 {
                     var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();
                     var mapSize = obj.GetObjectCount(5);
                     component.Field5 = map;
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -659,7 +637,6 @@ namespace Improbable.TestSchema
                         map.Add(key, value);
                     }
                 }
-                
                 return component;
             }
 
@@ -671,9 +648,9 @@ namespace Improbable.TestSchema
                 {
                     component.Field1 = obj.GetEntity(1);
                 }
-                
                 {
                     var isCleared = updateObj.IsFieldCleared(2);
+                
                     if (isCleared)
                     {
                         component.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?();
@@ -684,28 +661,32 @@ namespace Improbable.TestSchema
                         component.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(value);
                     }
                 }
-                
                 {
                     var listSize = obj.GetEntityCount(3);
+                
                     var isCleared = updateObj.IsFieldCleared(3);
+                
                     if (listSize > 0 || isCleared)
                     {
                         component.Field3.Clear();
                     }
+                
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexEntity(3, (uint) i);
                         component.Field3.Add(value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(4);
+                
                     var isCleared = updateObj.IsFieldCleared(4);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         component.Field4.Clear();
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -714,14 +695,16 @@ namespace Improbable.TestSchema
                         component.Field4.Add(key, value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(5);
+                
                     var isCleared = updateObj.IsFieldCleared(5);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         component.Field5.Clear();
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -730,7 +713,6 @@ namespace Improbable.TestSchema
                         component.Field5.Add(key, value);
                     }
                 }
-                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.TestSchema.ExhaustiveEntity.Snapshot snapshot)
@@ -741,9 +723,9 @@ namespace Improbable.TestSchema
                 {
                     snapshot.Field1 = obj.GetEntity(1);
                 }
-                
                 {
                     var isCleared = updateObj.IsFieldCleared(2);
+                
                     if (isCleared)
                     {
                         snapshot.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?();
@@ -754,28 +736,32 @@ namespace Improbable.TestSchema
                         snapshot.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(value);
                     }
                 }
-                
                 {
                     var listSize = obj.GetEntityCount(3);
+                
                     var isCleared = updateObj.IsFieldCleared(3);
+                
                     if (listSize > 0 || isCleared)
                     {
                         snapshot.Field3.Clear();
                     }
+                
                     for (var i = 0; i < listSize; i++)
                     {
                         var value = obj.IndexEntity(3, (uint) i);
                         snapshot.Field3.Add(value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(4);
+                
                     var isCleared = updateObj.IsFieldCleared(4);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         snapshot.Field4.Clear();
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(4, (uint) i);
@@ -784,14 +770,16 @@ namespace Improbable.TestSchema
                         snapshot.Field4.Add(key, value);
                     }
                 }
-                
                 {
                     var mapSize = obj.GetObjectCount(5);
+                
                     var isCleared = updateObj.IsFieldCleared(5);
+                
                     if (mapSize > 0 || isCleared)
                     {
                         snapshot.Field5.Clear();
                     }
+                
                     for (var i = 0; i < mapSize; i++)
                     {
                         var mapObj = obj.IndexObject(5, (uint) i);
@@ -800,7 +788,6 @@ namespace Improbable.TestSchema
                         snapshot.Field5.Add(key, value);
                     }
                 }
-                
             }
         }
 

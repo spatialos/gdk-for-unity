@@ -745,92 +745,74 @@ namespace Improbable.TestSchema
                 {
                     update.Field1 = obj.GetBool(1);
                 }
-                
                 if (obj.GetFloatCount(2) == 1)
                 {
                     update.Field2 = obj.GetFloat(2);
                 }
-                
                 if (obj.GetBytesCount(3) == 1)
                 {
                     update.Field3 = obj.GetBytes(3);
                 }
-                
                 if (obj.GetInt32Count(4) == 1)
                 {
                     update.Field4 = obj.GetInt32(4);
                 }
-                
                 if (obj.GetInt64Count(5) == 1)
                 {
                     update.Field5 = obj.GetInt64(5);
                 }
-                
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     update.Field6 = obj.GetDouble(6);
                 }
-                
                 if (obj.GetStringCount(7) == 1)
                 {
                     update.Field7 = obj.GetString(7);
                 }
-                
                 if (obj.GetUint32Count(8) == 1)
                 {
                     update.Field8 = obj.GetUint32(8);
                 }
-                
                 if (obj.GetUint64Count(9) == 1)
                 {
                     update.Field9 = obj.GetUint64(9);
                 }
-                
                 if (obj.GetSint32Count(10) == 1)
                 {
                     update.Field10 = obj.GetSint32(10);
                 }
-                
                 if (obj.GetSint64Count(11) == 1)
                 {
                     update.Field11 = obj.GetSint64(11);
                 }
-                
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     update.Field12 = obj.GetFixed32(12);
                 }
-                
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     update.Field13 = obj.GetFixed64(13);
                 }
-                
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     update.Field14 = obj.GetSfixed32(14);
                 }
-                
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     update.Field15 = obj.GetSfixed64(15);
                 }
-                
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     update.Field16 = obj.GetEntityIdStruct(16);
                 }
-                
                 if (obj.GetObjectCount(17) == 1)
                 {
                     update.Field17 = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 }
-                
                 if (obj.GetEnumCount(18) == 1)
                 {
                     update.Field18 = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(18);
                 }
-                
                 return update;
             }
 
@@ -840,41 +822,23 @@ namespace Improbable.TestSchema
                 var obj = data.GetFields();
 
                 update.Field1 = obj.GetBool(1);
-                
                 update.Field2 = obj.GetFloat(2);
-                
                 update.Field3 = obj.GetBytes(3);
-                
                 update.Field4 = obj.GetInt32(4);
-                
                 update.Field5 = obj.GetInt64(5);
-                
                 update.Field6 = obj.GetDouble(6);
-                
                 update.Field7 = obj.GetString(7);
-                
                 update.Field8 = obj.GetUint32(8);
-                
                 update.Field9 = obj.GetUint64(9);
-                
                 update.Field10 = obj.GetSint32(10);
-                
                 update.Field11 = obj.GetSint64(11);
-                
                 update.Field12 = obj.GetFixed32(12);
-                
                 update.Field13 = obj.GetFixed64(13);
-                
                 update.Field14 = obj.GetSfixed32(14);
-                
                 update.Field15 = obj.GetSfixed64(15);
-                
                 update.Field16 = obj.GetEntityIdStruct(16);
-                
                 update.Field17 = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17));
-                
                 update.Field18 = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(18);
-                
                 return update;
             }
 
@@ -911,92 +875,74 @@ namespace Improbable.TestSchema
                 {
                     component.Field1 = obj.GetBool(1);
                 }
-                
                 if (obj.GetFloatCount(2) == 1)
                 {
                     component.Field2 = obj.GetFloat(2);
                 }
-                
                 if (obj.GetBytesCount(3) == 1)
                 {
                     component.Field3 = obj.GetBytes(3);
                 }
-                
                 if (obj.GetInt32Count(4) == 1)
                 {
                     component.Field4 = obj.GetInt32(4);
                 }
-                
                 if (obj.GetInt64Count(5) == 1)
                 {
                     component.Field5 = obj.GetInt64(5);
                 }
-                
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     component.Field6 = obj.GetDouble(6);
                 }
-                
                 if (obj.GetStringCount(7) == 1)
                 {
                     component.Field7 = obj.GetString(7);
                 }
-                
                 if (obj.GetUint32Count(8) == 1)
                 {
                     component.Field8 = obj.GetUint32(8);
                 }
-                
                 if (obj.GetUint64Count(9) == 1)
                 {
                     component.Field9 = obj.GetUint64(9);
                 }
-                
                 if (obj.GetSint32Count(10) == 1)
                 {
                     component.Field10 = obj.GetSint32(10);
                 }
-                
                 if (obj.GetSint64Count(11) == 1)
                 {
                     component.Field11 = obj.GetSint64(11);
                 }
-                
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     component.Field12 = obj.GetFixed32(12);
                 }
-                
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     component.Field13 = obj.GetFixed64(13);
                 }
-                
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     component.Field14 = obj.GetSfixed32(14);
                 }
-                
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     component.Field15 = obj.GetSfixed64(15);
                 }
-                
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     component.Field16 = obj.GetEntityIdStruct(16);
                 }
-                
                 if (obj.GetObjectCount(17) == 1)
                 {
                     component.Field17 = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 }
-                
                 if (obj.GetEnumCount(18) == 1)
                 {
                     component.Field18 = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(18);
                 }
-                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.TestSchema.ExhaustiveSingular.Snapshot snapshot)
@@ -1007,92 +953,74 @@ namespace Improbable.TestSchema
                 {
                     snapshot.Field1 = obj.GetBool(1);
                 }
-                
                 if (obj.GetFloatCount(2) == 1)
                 {
                     snapshot.Field2 = obj.GetFloat(2);
                 }
-                
                 if (obj.GetBytesCount(3) == 1)
                 {
                     snapshot.Field3 = obj.GetBytes(3);
                 }
-                
                 if (obj.GetInt32Count(4) == 1)
                 {
                     snapshot.Field4 = obj.GetInt32(4);
                 }
-                
                 if (obj.GetInt64Count(5) == 1)
                 {
                     snapshot.Field5 = obj.GetInt64(5);
                 }
-                
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     snapshot.Field6 = obj.GetDouble(6);
                 }
-                
                 if (obj.GetStringCount(7) == 1)
                 {
                     snapshot.Field7 = obj.GetString(7);
                 }
-                
                 if (obj.GetUint32Count(8) == 1)
                 {
                     snapshot.Field8 = obj.GetUint32(8);
                 }
-                
                 if (obj.GetUint64Count(9) == 1)
                 {
                     snapshot.Field9 = obj.GetUint64(9);
                 }
-                
                 if (obj.GetSint32Count(10) == 1)
                 {
                     snapshot.Field10 = obj.GetSint32(10);
                 }
-                
                 if (obj.GetSint64Count(11) == 1)
                 {
                     snapshot.Field11 = obj.GetSint64(11);
                 }
-                
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     snapshot.Field12 = obj.GetFixed32(12);
                 }
-                
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     snapshot.Field13 = obj.GetFixed64(13);
                 }
-                
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     snapshot.Field14 = obj.GetSfixed32(14);
                 }
-                
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     snapshot.Field15 = obj.GetSfixed64(15);
                 }
-                
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     snapshot.Field16 = obj.GetEntityIdStruct(16);
                 }
-                
                 if (obj.GetObjectCount(17) == 1)
                 {
                     snapshot.Field17 = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 }
-                
                 if (obj.GetEnumCount(18) == 1)
                 {
                     snapshot.Field18 = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(18);
                 }
-                
             }
         }
 

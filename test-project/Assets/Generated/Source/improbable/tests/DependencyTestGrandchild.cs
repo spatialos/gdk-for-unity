@@ -217,7 +217,6 @@ namespace Improbable.Tests
                 {
                     update.Grandchild = obj.GetUint32(1);
                 }
-                
                 return update;
             }
 
@@ -227,7 +226,6 @@ namespace Improbable.Tests
                 var obj = data.GetFields();
 
                 update.Grandchild = obj.GetUint32(1);
-                
                 return update;
             }
 
@@ -247,7 +245,6 @@ namespace Improbable.Tests
                 {
                     component.Grandchild = obj.GetUint32(1);
                 }
-                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Tests.DependencyTestGrandchild.Snapshot snapshot)
@@ -258,7 +255,6 @@ namespace Improbable.Tests
                 {
                     snapshot.Grandchild = obj.GetUint32(1);
                 }
-                
             }
         }
 

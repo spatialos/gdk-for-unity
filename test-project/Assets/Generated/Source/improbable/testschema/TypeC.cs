@@ -29,7 +29,6 @@ namespace Improbable.TestSchema
                     {
                         global::Improbable.TestSchema.TypeB.Serialization.Serialize(value, obj.AddObject(2));
                     }
-                    
                 }
                 {
                     foreach (var keyValuePair in instance.BMap)
@@ -38,7 +37,6 @@ namespace Improbable.TestSchema
                         mapObj.AddString(1, keyValuePair.Key);
                         global::Improbable.TestSchema.TypeB.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
                     }
-                    
                 }
             }
     
@@ -50,18 +48,19 @@ namespace Improbable.TestSchema
                         instance.BList = new global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB>();
                         var list = instance.BList;
                         var listLength = obj.GetObjectCount(2);
+                    
                         for (var i = 0; i < listLength; i++)
                         {
                             list.Add(global::Improbable.TestSchema.TypeB.Serialization.Deserialize(obj.IndexObject(2, (uint) i)));
                         }
                     }
-                    
                 }
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.TypeB>();
                         var mapSize = obj.GetObjectCount(4);
                         instance.BMap = map;
+                    
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(4, (uint) i);
@@ -70,7 +69,6 @@ namespace Improbable.TestSchema
                             map.Add(key, value);
                         }
                     }
-                    
                 }
                 return instance;
             }
