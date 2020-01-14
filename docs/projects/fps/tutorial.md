@@ -181,7 +181,7 @@ private static void AddHealthPacks(Snapshot snapshot)
 
 > In your own game may want to consider moving default values (such as health pack positions, and health values) into a settings file. But for now, we will keep this example simple.
 
-**Step 4.** Copy and paste the below snippet inside `GenerateDefaultSnapshot()` and `GenerateSessionSnapshot()` to call your new function.
+**Step 4.** Copy and paste the below snippet inside `GenerateDefaultSnapshot()` to call your new function.
 
 ```csharp
     AddHealthPacks(snapshot);
@@ -190,12 +190,13 @@ private static void AddHealthPacks(Snapshot snapshot)
 <%(#Expandable title="What should <code>SnapshotMenu</code> look like when its done?")%>
 ```csharp
 using System.IO;
+using Fps.Config;
 using Improbable;
 using Improbable.Gdk.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Fps
+namespace Fps.Editor
 {
     public class SnapshotMenu : MonoBehaviour
     {
@@ -205,30 +206,17 @@ namespace Fps
         private static readonly string CloudSnapshotPath =
             Path.Combine(Application.dataPath, "../../../snapshots/cloud.snapshot");
 
-        private static readonly string SessionSnapshotPath =
-            Path.Combine(Application.dataPath, "../../../snapshots/session.snapshot");
-
         [MenuItem("SpatialOS/Generate FPS Snapshot")]
         private static void GenerateFpsSnapshot()
         {
             SaveSnapshot(DefaultSnapshotPath, GenerateDefaultSnapshot());
             SaveSnapshot(CloudSnapshotPath, GenerateDefaultSnapshot());
-            SaveSnapshot(SessionSnapshotPath, GenerateSessionSnapshot());
         }
 
         private static Snapshot GenerateDefaultSnapshot()
         {
             var snapshot = new Snapshot();
             snapshot.AddEntity(FpsEntityTemplates.Spawner(Coordinates.Zero));
-            AddHealthPacks(snapshot);
-            return snapshot;
-        }
-
-        private static Snapshot GenerateSessionSnapshot()
-        {
-            var snapshot = new Snapshot();
-            snapshot.AddEntity(FpsEntityTemplates.Spawner(Coordinates.Zero));
-            snapshot.AddEntity(FpsEntityTemplates.DeploymentState());
             AddHealthPacks(snapshot);
             return snapshot;
         }
@@ -241,7 +229,7 @@ namespace Fps
 
         private static void AddHealthPacks(Snapshot snapshot)
         {
-            // Invoke our static function to create an entity template of our health pack with 100 heath.
+            // Invoke our static function to create an entity template of our health pack with 100 health.
             var healthPack = FpsEntityTemplates.HealthPickup(new Vector3(5, 0, 0), 100);
 
             // Add the entity template to the snapshot.
