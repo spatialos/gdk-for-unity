@@ -35,10 +35,10 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         // ReSharper disable once OptionalParameterHierarchyMismatch
         public virtual string Format(int indentLevel = 0)
         {
-            return Output(indentLevel, DefaultContentSeparator);
+            return Format(indentLevel, DefaultContentSeparator);
         }
 
-        protected string Output(int indentLevel, string contentSeparator)
+        protected string Format(int indentLevel, string contentSeparator)
         {
             var indent = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
 
