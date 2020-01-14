@@ -32,7 +32,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new Text(sb.ToString()));
         }
 
-        public void Line(IEnumerable<string> snippets)
+        public void Line(ICollection<string> snippets)
         {
             if (snippets.Any())
             {

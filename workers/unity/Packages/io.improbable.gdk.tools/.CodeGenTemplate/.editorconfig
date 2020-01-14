@@ -17,6 +17,3 @@ indent_size = 4
 
 [*.json]
 indent_size = 2
-
-[core-sdk.version]
-insert_final_newline = false
