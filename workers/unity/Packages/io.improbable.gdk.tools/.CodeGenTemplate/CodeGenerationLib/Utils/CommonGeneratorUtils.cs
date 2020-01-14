@@ -14,8 +14,8 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 
         public static string GetGeneratedHeader()
         {
-            return $"// ==========={System.Environment.NewLine}// DO NOT EDIT - this file is automatically " +
-                $"regenerated.{System.Environment.NewLine}// ===========";
+            return $"// ==========={Environment.NewLine}// DO NOT EDIT - this file is automatically " +
+                $"regenerated.{Environment.NewLine}// ===========";
         }
 
         // TODO: remove once all TT files have been ported over
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGeneration.Utils
         public static string IndentEveryNewline(string input, int numIndents)
         {
             var spaces = new String(' ', numIndents * SpacesPerIndent);
-            return input.Replace($"{System.Environment.NewLine}", $"{System.Environment.NewLine}{spaces}");
+            return input.Replace($"{Environment.NewLine}", $"{Environment.NewLine}{spaces}");
         }
 
         public static string GetIndentSpaces(int indentLevel)
@@ -36,6 +36,7 @@ namespace Improbable.Gdk.CodeGeneration.Utils
             if (!IndentCache.TryGetValue(indentLevel, out var indentSpaces))
             {
                 indentSpaces = new string(' ', indentLevel * SpacesPerIndent);
+                IndentCache.Add(indentLevel, indentSpaces);
             }
 
             return indentSpaces;
