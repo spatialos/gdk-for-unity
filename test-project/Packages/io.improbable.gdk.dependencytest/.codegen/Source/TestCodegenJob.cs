@@ -31,7 +31,7 @@ namespace Improbable.Gdk.ModularCodegenTests
         protected override void RunImpl()
         {
             AddContent(relativeOutputPath, testContent);
-            AddContent(relativeTemplateOutputPath, new ModularCodegenTestGenerator().Generate());
+            AddContent(relativeTemplateOutputPath, ModularCodegenTestGenerator.Generate());
         }
     }
 }
