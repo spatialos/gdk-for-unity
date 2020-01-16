@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodeGenerationLib.CodeWriter.Scopes;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 using Improbable.Gdk.CodeGeneration.Utils;
 
