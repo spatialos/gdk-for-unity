@@ -14,10 +14,9 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 
         public static string GetGeneratedHeader()
         {
-            return @"
-// =====================================================
+            return @"// =====================================================
 // DO NOT EDIT - this file is automatically regenerated.
-// =====================================================".Trim();
+// =====================================================";
         }
 
         // TODO: remove once all TT files have been ported over
