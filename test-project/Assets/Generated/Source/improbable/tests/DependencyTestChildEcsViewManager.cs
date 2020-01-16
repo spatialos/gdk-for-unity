@@ -1,6 +1,6 @@
-// ===========
+// =====================================================
 // DO NOT EDIT - this file is automatically regenerated.
-// ===========
+// =====================================================
 
 using System;
 using Unity.Entities;
