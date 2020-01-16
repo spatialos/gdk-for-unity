@@ -97,7 +97,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             }
 
             var formattedContent = string.Join(ContentSeparator, content.Select(block => block.Format(0)));
-            return $@"{Header}{Environment.NewLine}{fmtUsingDirectives}{Environment.NewLine}{formattedContent}";
+            return $"{Header}{Environment.NewLine}{fmtUsingDirectives}{Environment.NewLine}{formattedContent}{Environment.NewLine}";
         }
     }
 }
