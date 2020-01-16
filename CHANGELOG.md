@@ -6,6 +6,7 @@
 
 - Implemented a new CodeWriter in the code generator which provides a fluent interface for generating C# code. [#1237](https://github.com/spatialos/gdk-for-unity/pull/1237)
     - The `CodeGenerationLib` has been migrated to the new `CodeWriter`.
+- Added support for defining namespaces, structs, classes, enums and methods in the new CodeWriter. [#1239](https://github.com/spatialos/gdk-for-unity/pull/1239)
 
 ## `0.3.2` - 2019-12-23
 
