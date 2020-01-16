@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240)
+
 ### Internal
 
 - Implemented a new CodeWriter in the code generator which provides a fluent interface for generating C# code. [#1237](https://github.com/spatialos/gdk-for-unity/pull/1237)

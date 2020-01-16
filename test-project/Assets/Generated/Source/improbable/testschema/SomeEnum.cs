@@ -1,7 +1,7 @@
 
-// ===========
+// =====================================================
 // DO NOT EDIT - this file is automatically regenerated.
-// ===========
+// =====================================================
 
 namespace Improbable.TestSchema
 {
