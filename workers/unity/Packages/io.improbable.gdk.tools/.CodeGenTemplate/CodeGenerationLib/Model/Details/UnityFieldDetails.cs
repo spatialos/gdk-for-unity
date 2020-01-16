@@ -58,7 +58,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <param name="indents">The indent level that the block of code should be at.</param>
         public string GetSerializationString(string fieldInstance, string schemaObject, int indents)
         {
-            return fieldType.GetSerializationString(fieldInstance, schemaObject, FieldNumber, indents);
+            var serializationString = fieldType.GetSerializationString(fieldInstance, schemaObject, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(serializationString, indents);
         }
 
         /// <summary>
@@ -70,7 +71,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <param name="indents">The indent level that the block of code should be at.</param>
         public string GetDeserializeString(string fieldInstance, string schemaObject, int indents)
         {
-            return fieldType.GetDeserializationString(fieldInstance, schemaObject, FieldNumber, indents);
+            var deserializationString = fieldType.GetDeserializationString(fieldInstance, schemaObject, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
         /// <summary>
@@ -83,8 +85,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <returns></returns>
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int indents)
         {
-            return fieldType.GetDeserializeUpdateString(fieldInstance, schemaObject, FieldNumber,
-                indents);
+            var deserializationString = fieldType.GetDeserializeUpdateString(fieldInstance, schemaObject, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
         /// <summary>
@@ -100,8 +102,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <returns></returns>
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, int indents)
         {
-            return fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber,
-                indents);
+            var deserializationString =
+                fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
         /// <summary>
@@ -117,13 +120,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <returns></returns>
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, int indents)
         {
-            return fieldType.GetDeserializeDataIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber,
-                indents);
+            var deserializationString =
+                fieldType.GetDeserializeDataIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObj, int indents)
         {
-            return fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber, indents);
+            var trySetClearedFieldString = fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber);
+            return CommonGeneratorUtils.IndentEveryNewline(trySetClearedFieldString, indents);
         }
     }
 }

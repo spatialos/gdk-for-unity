@@ -217,7 +217,6 @@ namespace Improbable.Tests
                 {
                     update.Root = obj.GetUint32(1);
                 }
-                
                 return update;
             }
 
@@ -227,7 +226,6 @@ namespace Improbable.Tests
                 var obj = data.GetFields();
 
                 update.Root = obj.GetUint32(1);
-                
                 return update;
             }
 
@@ -247,7 +245,6 @@ namespace Improbable.Tests
                 {
                     component.Root = obj.GetUint32(1);
                 }
-                
             }
 
             public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref global::Improbable.Tests.DependencyTest.Snapshot snapshot)
@@ -258,7 +255,6 @@ namespace Improbable.Tests
                 {
                     snapshot.Root = obj.GetUint32(1);
                 }
-                
             }
         }
 

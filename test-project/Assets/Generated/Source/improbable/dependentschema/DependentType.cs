@@ -41,14 +41,12 @@ namespace Improbable.DependentSchema
                     {
                         obj.AddEnum(3, (uint) instance.C.Value);
                     }
-                    
                 }
                 {
                     foreach (var value in instance.D)
                     {
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
                     }
-                    
                 }
                 {
                     foreach (var keyValuePair in instance.E)
@@ -57,7 +55,6 @@ namespace Improbable.DependentSchema
                         mapObj.AddEnum(1, (uint) keyValuePair.Key);
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(keyValuePair.Value, mapObj.AddObject(2));
                     }
-                    
                 }
             }
     
@@ -75,25 +72,25 @@ namespace Improbable.DependentSchema
                     {
                         instance.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                     }
-                    
                 }
                 {
                     {
                         instance.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
                         var list = instance.D;
                         var listLength = obj.GetObjectCount(4);
+                    
                         for (var i = 0; i < listLength; i++)
                         {
                             list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
                         }
                     }
-                    
                 }
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
                         var mapSize = obj.GetObjectCount(5);
                         instance.E = map;
+                    
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(5, (uint) i);
@@ -102,7 +99,6 @@ namespace Improbable.DependentSchema
                             map.Add(key, value);
                         }
                     }
-                    
                 }
                 return instance;
             }

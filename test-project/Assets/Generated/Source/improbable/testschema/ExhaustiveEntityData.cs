@@ -38,14 +38,12 @@ namespace Improbable.TestSchema
                     {
                         obj.AddEntity(2, instance.Field2.Value);
                     }
-                    
                 }
                 {
                     foreach (var value in instance.Field3)
                     {
                         obj.AddEntity(3, value);
                     }
-                    
                 }
                 {
                     foreach (var keyValuePair in instance.Field4)
@@ -54,7 +52,6 @@ namespace Improbable.TestSchema
                         mapObj.AddEntity(1, keyValuePair.Key);
                         mapObj.AddString(2, keyValuePair.Value);
                     }
-                    
                 }
                 {
                     foreach (var keyValuePair in instance.Field5)
@@ -63,7 +60,6 @@ namespace Improbable.TestSchema
                         mapObj.AddString(1, keyValuePair.Key);
                         mapObj.AddEntity(2, keyValuePair.Value);
                     }
-                    
                 }
             }
     
@@ -78,25 +74,25 @@ namespace Improbable.TestSchema
                     {
                         instance.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(obj.GetEntity(2));
                     }
-                    
                 }
                 {
                     {
                         instance.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
                         var list = instance.Field3;
                         var listLength = obj.GetEntityCount(3);
+                    
                         for (var i = 0; i < listLength; i++)
                         {
                             list.Add(obj.IndexEntity(3, (uint) i));
                         }
                     }
-                    
                 }
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
                         var mapSize = obj.GetObjectCount(4);
                         instance.Field4 = map;
+                    
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(4, (uint) i);
@@ -105,13 +101,13 @@ namespace Improbable.TestSchema
                             map.Add(key, value);
                         }
                     }
-                    
                 }
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();
                         var mapSize = obj.GetObjectCount(5);
                         instance.Field5 = map;
+                    
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(5, (uint) i);
@@ -120,7 +116,6 @@ namespace Improbable.TestSchema
                             map.Add(key, value);
                         }
                     }
-                    
                 }
                 return instance;
             }
