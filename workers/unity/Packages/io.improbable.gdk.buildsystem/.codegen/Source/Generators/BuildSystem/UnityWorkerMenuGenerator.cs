@@ -39,54 +39,51 @@ namespace Improbable.Gdk.CodeGenerator
                             var workerType = workerTypes[i];
                             var workerTypeString = $@"""{workerType}""";
 
-                            buildWorkerMenu.Method($"public static void BuildLocal{workerType}()", m =>
-                            {
-                                m.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})");
-                                m.Line($@"MenuBuildLocal(new[] {{ {workerTypeString} }});");
-                            });
+                            buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})")
+                                .Method($"public static void BuildLocal{workerType}()", () => new[]
+                                {
+                                    $@"MenuBuildLocal(new[] {{ {workerTypeString} }});"
+                                });
 
-                            buildWorkerMenu.Method($"public static void BuildCloud{workerType}()", m =>
-                            {
-                                m.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})");
-                                m.Line($@"MenuBuildCloud(new[] {{ {workerTypeString} }});");
-                            });
+                            buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})")
+                                .Method($"public static void BuildCloud{workerType}()", () => new[]
+                                {
+                                    $@"MenuBuildCloud(new[] {{ {workerTypeString} }});"
+                                });
                         }
 
-                        buildWorkerMenu.Method("public static void BuildLocalAll()", m =>
-                        {
-                            m.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})");
-                            m.Line("MenuBuildLocal(AllWorkers);");
-                        });
-
-                        buildWorkerMenu.Method("public static void BuildCloudAll()", m =>
-                        {
-                            m.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})");
-                            m.Line("MenuBuildCloud(AllWorkers);");
-                        });
-
-                        buildWorkerMenu.Method("public static void Clean()", m =>
-                        {
-                            m.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})");
-                            m.Line("MenuCleanAll();");
-                        });
-
-                        buildWorkerMenu.Method("private static void MenuBuildLocal(string[] filteredWorkerTypes)", m =>
-                        {
-                            m.Line("WorkerBuilder.MenuBuild(BuildEnvironment.Local, filteredWorkerTypes);");
-                        });
-
-                        buildWorkerMenu.Method("private static void MenuBuildCloud(string[] filteredWorkerTypes)", m =>
-                        {
-                            m.Line("WorkerBuilder.MenuBuild(BuildEnvironment.Cloud, filteredWorkerTypes);");
-                        });
-
-                        buildWorkerMenu.Method("private static void MenuCleanAll()", m =>
-                        {
-                            m.Line(new[]
+                        buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
+                            .Method("public static void BuildLocalAll()", () => new[]
                             {
-                                "WorkerBuilder.Clean();",
-                                "Debug.Log(\"Clean completed\");"
+                                "MenuBuildLocal(AllWorkers);"
                             });
+
+                        buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
+                            .Method("public static void BuildCloudAll()", () => new[]
+                            {
+                                "MenuBuildCloud(AllWorkers);"
+                            });
+
+                        buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
+                            .Method("public static void Clean()", () => new[]
+                            {
+                                "MenuCleanAll();"
+                            });
+
+                        buildWorkerMenu.Method("private static void MenuBuildLocal(string[] filteredWorkerTypes)", () => new[]
+                        {
+                            "WorkerBuilder.MenuBuild(BuildEnvironment.Local, filteredWorkerTypes);"
+                        });
+
+                        buildWorkerMenu.Method("private static void MenuBuildCloud(string[] filteredWorkerTypes)", () => new[]
+                        {
+                            "WorkerBuilder.MenuBuild(BuildEnvironment.Cloud, filteredWorkerTypes);"
+                        });
+
+                        buildWorkerMenu.Method("private static void MenuCleanAll()", () => new[]
+                        {
+                            "WorkerBuilder.Clean();",
+                            "Debug.Log(\"Clean completed\");"
                         });
                     });
                 });
