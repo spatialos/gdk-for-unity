@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeGenerationLib.CodeWriter.Scopes;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
@@ -10,6 +11,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         internal NamespaceBlock(string declaration, Action<NamespaceBlock> populate) : base($"namespace {declaration}")
         {
             populate(this);
+        }
+
+        public AnnotationOutsideType Annotate(string annotation)
+        {
+            return new AnnotationOutsideType(this, annotation);
         }
 
         public void Line(string snippet)

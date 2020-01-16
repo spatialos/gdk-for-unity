@@ -2,14 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeGenerationLib.CodeWriter.Scopes;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
-    public class TypeBlock : ScopeBlock, IAnnotatable
+    public class TypeBlock : ScopeBlock
     {
-        internal TypeBlock(string declaration, Action<TypeBlock> populate) : base(declaration)
+        internal TypeBlock(string declaration, Action<TypeBlock> populate, string annotation = "") : base(declaration)
         {
+            Annotation = annotation;
             populate(this);
+        }
+
+        public AnnotationInsideType Annotate(string annotation)
+        {
+            return new AnnotationInsideType(this, annotation);
         }
 
         public void Line(string snippet)
@@ -53,6 +60,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new MethodBlock(declaration, populate));
         }
 
+        public void Method(string declaration, Func<IEnumerable<string>> populate)
+        {
+            Add(new MethodBlock(declaration, populate));
+        }
+
         public void Enum(EnumBlock enumBlock)
         {
             Add(enumBlock);
@@ -71,11 +83,6 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         public void Type(string declaration, Action<TypeBlock> populate)
         {
             Add(new TypeBlock(declaration, populate));
-        }
-
-        public void Annotate(string annotation)
-        {
-            Annotation = annotation;
         }
     }
 }
