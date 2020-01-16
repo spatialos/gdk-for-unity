@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
-    public class EnumBlock : ScopeBlock, IAnnotatable
+    public class EnumBlock : ScopeBlock
     {
         private static readonly string EnumMemberSeparator = $",{Environment.NewLine}";
 
-        internal EnumBlock(string declaration, Action<EnumBlock> populate) : base(declaration)
+        internal EnumBlock(string declaration, Action<EnumBlock> populate, string annotation = "") : base(declaration)
         {
+            Annotation = annotation;
             populate(this);
         }
 
@@ -20,11 +21,6 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         public void Members(ICollection<string> snippets)
         {
             Add(new TextList(EnumMemberSeparator, snippets));
-        }
-
-        public void Annotate(string annotation)
-        {
-            Annotation = annotation;
         }
 
         public override string Format(int indentLevel = 0)

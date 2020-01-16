@@ -10,7 +10,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
     /// </summary>
     public abstract class ScopeBlock : ICodeBlock
     {
-        protected static readonly string DefaultContentSeparator = $"{Environment.NewLine}{Environment.NewLine}";
+        private static readonly string DefaultContentSeparator = $"{Environment.NewLine}{Environment.NewLine}";
 
         private readonly List<ICodeBlock> content = new List<ICodeBlock>();
 
@@ -22,14 +22,9 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             this.declaration = new Text(declaration);
         }
 
-        protected void Add(ICodeBlock block)
+        internal void Add(ICodeBlock block)
         {
             content.Add(block);
-        }
-
-        protected void Add(IEnumerable<ICodeBlock> blocks)
-        {
-            content.AddRange(blocks);
         }
 
         // ReSharper disable once OptionalParameterHierarchyMismatch

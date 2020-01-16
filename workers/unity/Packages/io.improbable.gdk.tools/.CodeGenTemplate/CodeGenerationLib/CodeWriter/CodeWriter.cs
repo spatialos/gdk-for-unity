@@ -25,52 +25,6 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new CodeWriter(populate);
         }
 
-        public void Line(string snippet)
-        {
-            content.Add(new Text(snippet));
-        }
-
-        public void Line(Action<StringBuilder> populate)
-        {
-            var sb = new StringBuilder();
-            populate(sb);
-
-            content.Add(new Text(sb.ToString()));
-        }
-
-        public void Line(ICollection<string> snippets)
-        {
-            if (snippets.Any())
-            {
-                content.Add(new TextList(snippets));
-            }
-        }
-
-        public void CustomScope(Action<CustomScopeBlock> populate)
-        {
-            content.Add(new CustomScopeBlock(populate));
-        }
-
-        public void CustomScope(string declaration, Action<CustomScopeBlock> populate)
-        {
-            content.Add(new CustomScopeBlock(declaration, populate));
-        }
-
-        public void Method(string declaration, Action<MethodBlock> populate)
-        {
-            content.Add(new MethodBlock(declaration, populate));
-        }
-
-        public void Enum(string declaration, Action<EnumBlock> populate)
-        {
-            content.Add(new EnumBlock(declaration, populate));
-        }
-
-        public void Type(string declaration, Action<TypeBlock> populate)
-        {
-            content.Add(new TypeBlock(declaration, populate));
-        }
-
         public void Namespace(string declaration, Action<NamespaceBlock> populate)
         {
             content.Add(new NamespaceBlock(declaration, populate));

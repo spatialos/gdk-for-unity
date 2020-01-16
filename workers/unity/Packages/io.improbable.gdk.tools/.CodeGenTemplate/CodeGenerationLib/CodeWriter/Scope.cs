@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter
@@ -31,6 +32,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
         }
 
         public static MethodBlock Method(string declaration, Action<MethodBlock> populate)
+        {
+            return new MethodBlock(declaration, populate);
+        }
+
+        public static MethodBlock Method(string declaration, Func<IEnumerable<string>> populate)
         {
             return new MethodBlock(declaration, populate);
         }
