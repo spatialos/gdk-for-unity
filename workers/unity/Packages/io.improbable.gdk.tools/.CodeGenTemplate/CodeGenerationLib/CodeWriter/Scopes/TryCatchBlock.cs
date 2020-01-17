@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
@@ -11,13 +12,28 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
         }
 
+        internal TryCatchBlock(Func<IEnumerable<string>> populate) : base("try", populate)
+        {
+        }
+
         public TryCatchBlock Catch(string declaration, Action<ScopeBody> populate)
         {
             AddScope($"catch ({declaration})", populate);
             return this;
         }
 
+        public TryCatchBlock Catch(string declaration, Func<IEnumerable<string>> populate)
+        {
+            AddScope($"catch ({declaration})", populate);
+            return this;
+        }
+
         public void Finally(Action<ScopeBody> populate)
+        {
+            AddScope("finally", populate);
+        }
+
+        public void Finally(Func<IEnumerable<string>> populate)
         {
             AddScope("finally", populate);
         }

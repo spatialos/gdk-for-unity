@@ -60,6 +60,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new LoopBlock(declaration, populate));
         }
 
+        public void Loop(string declaration, Func<IEnumerable<string>> populate)
+        {
+            Add(new LoopBlock(declaration, populate));
+        }
+
         public IfElseBlock If(string declaration, Action<ScopeBody> populate)
         {
             var ifElseBlock = new IfElseBlock(declaration, populate);
@@ -67,7 +72,21 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             return ifElseBlock;
         }
 
+        public IfElseBlock If(string declaration, Func<IEnumerable<string>> populate)
+        {
+            var ifElseBlock = new IfElseBlock(declaration, populate);
+            Add(ifElseBlock);
+            return ifElseBlock;
+        }
+
         public TryCatchBlock Try(Action<ScopeBody> populate)
+        {
+            var tryCatchBlock = new TryCatchBlock(populate);
+            Add(tryCatchBlock);
+            return tryCatchBlock;
+        }
+
+        public TryCatchBlock Try(Func<IEnumerable<string>> populate)
         {
             var tryCatchBlock = new TryCatchBlock(populate);
             Add(tryCatchBlock);
