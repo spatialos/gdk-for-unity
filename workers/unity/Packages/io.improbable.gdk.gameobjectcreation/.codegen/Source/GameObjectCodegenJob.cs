@@ -43,6 +43,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                 AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
+
             logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
 
             logger.Info($"Finished initialising {jobName}.");
@@ -50,10 +51,6 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
         protected override void RunImpl()
         {
-            logger.Info("Creating generators.");
-            var componentReaderWriterGenerator = new UnityComponentReaderWriterGenerator();
-            var commandSenderReceiverGenerator = new UnityCommandSenderReceiverGenerator();
-
             logger.Info("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
@@ -68,16 +65,17 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                     var commandSenderReceiverFileName =
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
-                        commandSenderReceiverGenerator.Generate(componentTarget.Content, package);
+                        UnityCommandSenderReceiverGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 var componentReaderWriterFileName =
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
                 var componentReaderWriterCode =
-                    componentReaderWriterGenerator.Generate(componentTarget.Content, package);
+                    UnityComponentReaderWriterGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
+
             logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
