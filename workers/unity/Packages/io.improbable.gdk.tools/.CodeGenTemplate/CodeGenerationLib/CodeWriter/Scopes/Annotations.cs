@@ -20,9 +20,19 @@ namespace CodeGenerationLib.CodeWriter.Scopes
             ParentBlock.Add(new TypeBlock(declaration, populate, Annotation));
         }
 
+        public void Type(TypeBlock typeBlock)
+        {
+            ParentBlock.Add(typeBlock);
+        }
+
         public void Enum(string declaration, Action<EnumBlock> populate)
         {
             ParentBlock.Add(new EnumBlock(declaration, populate, Annotation));
+        }
+
+        public void Enum(EnumBlock enumBlock)
+        {
+            ParentBlock.Add(enumBlock);
         }
     }
 
@@ -40,6 +50,11 @@ namespace CodeGenerationLib.CodeWriter.Scopes
         public void Method(string declaration, Func<IEnumerable<string>> populate)
         {
             ParentBlock.Add(new MethodBlock(declaration, populate, Annotation));
+        }
+
+        public void Method(MethodBlock methodBlock)
+        {
+            ParentBlock.Add(methodBlock);
         }
     }
 }
