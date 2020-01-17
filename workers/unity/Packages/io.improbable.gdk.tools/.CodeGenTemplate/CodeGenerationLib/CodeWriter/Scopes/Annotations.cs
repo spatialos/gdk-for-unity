@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 
 namespace CodeGenerationLib.CodeWriter.Scopes
@@ -32,6 +33,11 @@ namespace CodeGenerationLib.CodeWriter.Scopes
         }
 
         public void Method(string declaration, Action<MethodBlock> populate)
+        {
+            ParentBlock.Add(new MethodBlock(declaration, populate, Annotation));
+        }
+
+        public void Method(string declaration, Func<IEnumerable<string>> populate)
         {
             ParentBlock.Add(new MethodBlock(declaration, populate, Annotation));
         }

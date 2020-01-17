@@ -12,6 +12,7 @@
     - The `CodeGenerationLib` has been migrated to the new `CodeWriter`.
 - Added support for defining namespaces, structs, classes, enums and methods in the new CodeWriter. [#1239](https://github.com/spatialos/gdk-for-unity/pull/1239)
 - Ported test-project to new CodeWriter. [#1241](https://github.com/spatialos/gdk-for-unity/pull/1241)
+- Ported build system module to new CodeWriter. [#1242](https://github.com/spatialos/gdk-for-unity/pull/1242)
 
 ## `0.3.2` - 2019-12-23
 
