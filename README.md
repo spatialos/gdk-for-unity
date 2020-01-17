@@ -69,4 +69,4 @@ We are not currently accepting public contributions - see our [contributions](ht
 * Version: [alpha](https://docs.improbable.io/reference/latest/shared/release-policy)
 * Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
-&copy; 2019 Improbable
+&copy; 2020 Improbable
