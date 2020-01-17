@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
@@ -11,6 +12,15 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
             Annotation = annotation;
             populate(this);
+        }
+
+        internal EnumBlock(string declaration, Func<IEnumerable<string>> populate, string annotation = "") : base(declaration)
+        {
+            Annotation = annotation;
+            foreach (var member in populate())
+            {
+                Member(member);
+            }
         }
 
         public void Member(string snippet)
