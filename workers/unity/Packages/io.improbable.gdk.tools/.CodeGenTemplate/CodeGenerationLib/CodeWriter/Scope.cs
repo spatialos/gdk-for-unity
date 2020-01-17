@@ -11,7 +11,17 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new CustomScopeBlock(populate);
         }
 
+        public static CustomScopeBlock Custom(Func<IEnumerable<string>> populate)
+        {
+            return new CustomScopeBlock(populate);
+        }
+
         public static CustomScopeBlock Custom(string declaration, Action<CustomScopeBlock> populate)
+        {
+            return new CustomScopeBlock(declaration, populate);
+        }
+
+        public static CustomScopeBlock Custom(string declaration, Func<IEnumerable<string>> populate)
         {
             return new CustomScopeBlock(declaration, populate);
         }
@@ -21,12 +31,27 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new LoopBlock(declaration, populate);
         }
 
+        public static LoopBlock Loop(string declaration, Func<IEnumerable<string>> populate)
+        {
+            return new LoopBlock(declaration, populate);
+        }
+
         public static IfElseBlock IfElse(string declaration, Action<ScopeBody> populate)
         {
             return new IfElseBlock(declaration, populate);
         }
 
+        public static IfElseBlock IfElse(string declaration, Func<IEnumerable<string>> populate)
+        {
+            return new IfElseBlock(declaration, populate);
+        }
+
         public static TryCatchBlock TryCatch(Action<ScopeBody> populate)
+        {
+            return new TryCatchBlock(populate);
+        }
+
+        public static TryCatchBlock TryCatch(Func<IEnumerable<string>> populate)
         {
             return new TryCatchBlock(populate);
         }
@@ -42,6 +67,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
         }
 
         public static EnumBlock Enum(string declaration, Action<EnumBlock> populate)
+        {
+            return new EnumBlock(declaration, populate);
+        }
+
+        public static EnumBlock Enum(string declaration, Func<IEnumerable<string>> populate)
         {
             return new EnumBlock(declaration, populate);
         }

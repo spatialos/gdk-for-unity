@@ -50,7 +50,17 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(new CustomScopeBlock(populate));
         }
 
+        public void CustomScope(Func<IEnumerable<string>> populate)
+        {
+            Add(new CustomScopeBlock(populate));
+        }
+
         public void CustomScope(string declaration, Action<CustomScopeBlock> populate)
+        {
+            Add(new CustomScopeBlock(declaration, populate));
+        }
+
+        public void CustomScope(string declaration, Func<IEnumerable<string>> populate)
         {
             Add(new CustomScopeBlock(declaration, populate));
         }
