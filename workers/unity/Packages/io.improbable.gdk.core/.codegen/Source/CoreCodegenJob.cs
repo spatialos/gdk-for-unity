@@ -55,6 +55,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
                 AddOutputFile(Path.Combine(typeTarget.OutputPath, fileName));
             }
+
             logger.Info($"Added output files for {typesToGenerate.Count} types.");
 
             logger.Trace("Adding job output files for components.");
@@ -106,6 +107,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 AddOutputFile(Path.Combine(relativeOutputPath,
                     Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
+
             logger.Info($"Added output files for {componentsToGenerate.Count} components.");
 
             logger.Trace("Adding job output files for enums.");
@@ -116,8 +118,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
                 AddOutputFile(Path.Combine(enumTarget.OutputPath, fileName));
             }
-            logger.Info($"Added output files for {enumsToGenerate.Count} enums.");
 
+            logger.Info($"Added output files for {enumsToGenerate.Count} enums.");
             logger.Info($"Finished initialising {jobName}.");
         }
 
@@ -149,6 +151,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var enumCode = enumGenerator.Generate(enumTarget.Content, enumTarget.Package);
                 AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
+
             logger.Info($"Finished code generation for {enumsToGenerate.Count} enums.");
 
             logger.Trace("Starting code generation for types.");
@@ -160,6 +163,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var typeCode = typeGenerator.Generate(typeTarget.Content, typeTarget.Package);
                 AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
+
             logger.Info($"Finished code generation for {typesToGenerate.Count} types.");
 
             logger.Trace("Starting code generation for components.");
@@ -251,6 +255,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var metaclassCode = metaclassGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
             }
+
             logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
