@@ -23,6 +23,5 @@ namespace Improbable.DependentSchema
                 }
             }
         }
-
     }
 }

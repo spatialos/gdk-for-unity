@@ -11,8 +11,7 @@ namespace Improbable.Tests
 {
     public partial class DependencyTestChild
     {
-        public class DependencyTestChildViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
-            IViewComponentUpdater<Update>
+        public class DependencyTestChildViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewComponentUpdater<Update>
         {
             private readonly Dictionary<long, Authority> authorityStates = new Dictionary<long, Authority>();
             private readonly Dictionary<long, Snapshot> componentData = new Dictionary<long, Snapshot>();
@@ -94,7 +93,6 @@ namespace Improbable.Tests
                 {
                     return;
                 }
-
 
                 if (update.Child.HasValue)
                 {

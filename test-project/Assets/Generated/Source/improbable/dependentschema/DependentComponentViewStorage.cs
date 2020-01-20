@@ -11,8 +11,7 @@ namespace Improbable.DependentSchema
 {
     public partial class DependentComponent
     {
-        public class DependentComponentViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
-            IViewComponentUpdater<Update>
+        public class DependentComponentViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewComponentUpdater<Update>
         {
             private readonly Dictionary<long, Authority> authorityStates = new Dictionary<long, Authority>();
             private readonly Dictionary<long, Snapshot> componentData = new Dictionary<long, Snapshot>();
@@ -94,7 +93,6 @@ namespace Improbable.DependentSchema
                 {
                     return;
                 }
-
 
                 if (update.A.HasValue)
                 {
