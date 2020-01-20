@@ -126,8 +126,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
         protected override void RunImpl()
         {
             logger.Info("Creating generators.");
-            var typeGenerator = new UnityTypeGenerator();
-            var enumGenerator = new UnityEnumGenerator();
             var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
@@ -148,7 +146,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
-                var enumCode = enumGenerator.Generate(enumTarget.Content, enumTarget.Package);
+                var enumCode = UnityEnumGenerator.Generate(enumTarget.Content, enumTarget.Package);
                 AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
 
@@ -160,7 +158,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
-                var typeCode = typeGenerator.Generate(typeTarget.Content, typeTarget.Package);
+                var typeCode = UnityTypeGenerator.Generate(typeTarget.Content, typeTarget.Package);
                 AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
 
