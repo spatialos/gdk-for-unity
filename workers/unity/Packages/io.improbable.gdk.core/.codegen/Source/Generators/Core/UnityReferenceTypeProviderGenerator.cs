@@ -1,3 +1,4 @@
+using System.Linq;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using NLog;
@@ -25,12 +26,9 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         partial.Type("internal static class ReferenceTypeProviders", providers =>
                         {
-                            foreach (var fieldDetails in componentDetails.FieldDetails)
+                            foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                             {
-                                if (!fieldDetails.IsBlittable)
-                                {
-                                    providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, qualifiedNamespace, componentDetails.ComponentName));
-                                }
+                                providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, qualifiedNamespace, componentDetails.ComponentName));
                             }
                         });
                     });
