@@ -7,7 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
     /// <summary>
     /// A grouping of un-trimmed text to be on consecutive lines.
     /// </summary>
-    internal class TextList : ICodeBlock
+    public class TextList : ICodeBlock
     {
         private readonly string snippetListSeparator;
 
@@ -24,6 +24,16 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
         {
             snippetListSeparator = separator;
             Add(snippets);
+        }
+
+        public static TextList New(IEnumerable<string> snippets)
+        {
+            return new TextList(snippets);
+        }
+
+        public static TextList New(string separator, IEnumerable<string> snippets)
+        {
+            return new TextList(separator, snippets);
         }
 
         private void Add(IEnumerable<string> snippets)
