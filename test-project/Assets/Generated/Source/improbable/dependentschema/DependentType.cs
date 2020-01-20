@@ -16,7 +16,7 @@ namespace Improbable.DependentSchema
         public global::Improbable.TestSchema.SomeEnum? C;
         public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D;
         public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E;
-    
+
         public DependentType(global::Improbable.TestSchema.ExhaustiveRepeatedData a, global::Improbable.TestSchema.SomeEnum b, global::Improbable.TestSchema.SomeEnum? c, global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> d, global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> e)
         {
             A = a;
@@ -25,7 +25,7 @@ namespace Improbable.DependentSchema
             D = d;
             E = e;
         }
-    
+
         public static class Serialization
         {
             public static void Serialize(DependentType instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -33,21 +33,25 @@ namespace Improbable.DependentSchema
                 {
                     global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Serialize(instance.A, obj.AddObject(1));
                 }
+
                 {
                     obj.AddEnum(2, (uint) instance.B);
                 }
+
                 {
                     if (instance.C.HasValue)
                     {
                         obj.AddEnum(3, (uint) instance.C.Value);
                     }
                 }
+
                 {
                     foreach (var value in instance.D)
                     {
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(value, obj.AddObject(4));
                     }
                 }
+
                 {
                     foreach (var keyValuePair in instance.E)
                     {
@@ -57,40 +61,45 @@ namespace Improbable.DependentSchema
                     }
                 }
             }
-    
+
             public static DependentType Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new DependentType();
+
                 {
                     instance.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
                 }
+
                 {
                     instance.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
                 }
+
                 {
                     if (obj.GetEnumCount(3) == 1)
                     {
                         instance.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                     }
                 }
+
                 {
                     {
                         instance.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
                         var list = instance.D;
                         var listLength = obj.GetObjectCount(4);
-                    
+
                         for (var i = 0; i < listLength; i++)
                         {
                             list.Add(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.IndexObject(4, (uint) i)));
                         }
                     }
                 }
+
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();
                         var mapSize = obj.GetObjectCount(5);
                         instance.E = map;
-                    
+
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(5, (uint) i);
@@ -100,9 +109,9 @@ namespace Improbable.DependentSchema
                         }
                     }
                 }
+
                 return instance;
             }
         }
     }
-    
 }

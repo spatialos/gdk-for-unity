@@ -13,13 +13,13 @@ namespace Improbable.TestSchema
     {
         public global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB> BList;
         public global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.TypeB> BMap;
-    
+
         public TypeC(global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB> bList, global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.TypeB> bMap)
         {
             BList = bList;
             BMap = bMap;
         }
-    
+
         public static class Serialization
         {
             public static void Serialize(TypeC instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -30,6 +30,7 @@ namespace Improbable.TestSchema
                         global::Improbable.TestSchema.TypeB.Serialization.Serialize(value, obj.AddObject(2));
                     }
                 }
+
                 {
                     foreach (var keyValuePair in instance.BMap)
                     {
@@ -39,28 +40,30 @@ namespace Improbable.TestSchema
                     }
                 }
             }
-    
+
             public static TypeC Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new TypeC();
+
                 {
                     {
                         instance.BList = new global::System.Collections.Generic.List<global::Improbable.TestSchema.TypeB>();
                         var list = instance.BList;
                         var listLength = obj.GetObjectCount(2);
-                    
+
                         for (var i = 0; i < listLength; i++)
                         {
                             list.Add(global::Improbable.TestSchema.TypeB.Serialization.Deserialize(obj.IndexObject(2, (uint) i)));
                         }
                     }
                 }
+
                 {
                     {
                         var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.TestSchema.TypeB>();
                         var mapSize = obj.GetObjectCount(4);
                         instance.BMap = map;
-                    
+
                         for (var i = 0; i < mapSize; i++)
                         {
                             var mapObj = obj.IndexObject(4, (uint) i);
@@ -70,9 +73,9 @@ namespace Improbable.TestSchema
                         }
                     }
                 }
+
                 return instance;
             }
         }
     }
-    
 }

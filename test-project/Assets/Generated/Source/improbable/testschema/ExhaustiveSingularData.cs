@@ -29,7 +29,7 @@ namespace Improbable.TestSchema
         public global::Improbable.Gdk.Core.EntityId Field16;
         public global::Improbable.TestSchema.SomeType Field17;
         public global::Improbable.TestSchema.SomeEnum Field18;
-    
+
         public ExhaustiveSingularData(bool field1, float field2, byte[] field3, int field4, long field5, double field6, string field7, uint field8, ulong field9, int field10, long field11, uint field12, ulong field13, int field14, long field15, global::Improbable.Gdk.Core.EntityId field16, global::Improbable.TestSchema.SomeType field17, global::Improbable.TestSchema.SomeEnum field18)
         {
             Field1 = field1;
@@ -51,7 +51,7 @@ namespace Improbable.TestSchema
             Field17 = field17;
             Field18 = field18;
         }
-    
+
         public static class Serialization
         {
             public static void Serialize(ExhaustiveSingularData instance, global::Improbable.Worker.CInterop.SchemaObject obj)
@@ -59,119 +59,154 @@ namespace Improbable.TestSchema
                 {
                     obj.AddBool(1, instance.Field1);
                 }
+
                 {
                     obj.AddFloat(2, instance.Field2);
                 }
+
                 {
                     obj.AddBytes(3, instance.Field3);
                 }
+
                 {
                     obj.AddInt32(4, instance.Field4);
                 }
+
                 {
                     obj.AddInt64(5, instance.Field5);
                 }
+
                 {
                     obj.AddDouble(6, instance.Field6);
                 }
+
                 {
                     obj.AddString(7, instance.Field7);
                 }
+
                 {
                     obj.AddUint32(8, instance.Field8);
                 }
+
                 {
                     obj.AddUint64(9, instance.Field9);
                 }
+
                 {
                     obj.AddSint32(10, instance.Field10);
                 }
+
                 {
                     obj.AddSint64(11, instance.Field11);
                 }
+
                 {
                     obj.AddFixed32(12, instance.Field12);
                 }
+
                 {
                     obj.AddFixed64(13, instance.Field13);
                 }
+
                 {
                     obj.AddSfixed32(14, instance.Field14);
                 }
+
                 {
                     obj.AddSfixed64(15, instance.Field15);
                 }
+
                 {
                     obj.AddEntityId(16, instance.Field16);
                 }
+
                 {
                     global::Improbable.TestSchema.SomeType.Serialization.Serialize(instance.Field17, obj.AddObject(17));
                 }
+
                 {
                     obj.AddEnum(18, (uint) instance.Field18);
                 }
             }
-    
+
             public static ExhaustiveSingularData Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 var instance = new ExhaustiveSingularData();
+
                 {
                     instance.Field1 = obj.GetBool(1);
                 }
+
                 {
                     instance.Field2 = obj.GetFloat(2);
                 }
+
                 {
                     instance.Field3 = obj.GetBytes(3);
                 }
+
                 {
                     instance.Field4 = obj.GetInt32(4);
                 }
+
                 {
                     instance.Field5 = obj.GetInt64(5);
                 }
+
                 {
                     instance.Field6 = obj.GetDouble(6);
                 }
+
                 {
                     instance.Field7 = obj.GetString(7);
                 }
+
                 {
                     instance.Field8 = obj.GetUint32(8);
                 }
+
                 {
                     instance.Field9 = obj.GetUint64(9);
                 }
+
                 {
                     instance.Field10 = obj.GetSint32(10);
                 }
+
                 {
                     instance.Field11 = obj.GetSint64(11);
                 }
+
                 {
                     instance.Field12 = obj.GetFixed32(12);
                 }
+
                 {
                     instance.Field13 = obj.GetFixed64(13);
                 }
+
                 {
                     instance.Field14 = obj.GetSfixed32(14);
                 }
+
                 {
                     instance.Field15 = obj.GetSfixed64(15);
                 }
+
                 {
                     instance.Field16 = obj.GetEntityIdStruct(16);
                 }
+
                 {
                     instance.Field17 = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17));
                 }
+
                 {
                     instance.Field18 = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(18);
                 }
+
                 return instance;
             }
         }
     }
-    
 }
