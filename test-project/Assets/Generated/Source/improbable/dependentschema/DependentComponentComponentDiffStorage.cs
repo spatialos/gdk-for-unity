@@ -67,6 +67,7 @@ namespace Improbable.DependentSchema
                 var id = new EntityId(entityId);
 
                 // Adding a component always updates it, so this will catch the case where the component was just added
+
                 if (entitiesUpdated.Remove(id))
                 {
                     updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
@@ -154,4 +155,3 @@ namespace Improbable.DependentSchema
         }
     }
 }
-

@@ -123,7 +123,6 @@ namespace Improbable.DependentSchema
             }
         }
 
-
         public class BarCommandCommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
             , ICommandRequestSendStorage<BarCommand.Request>
             , ICommandResponseSendStorage<BarCommand.Response>
@@ -180,6 +179,5 @@ namespace Improbable.DependentSchema
                 return responseStorage;
             }
         }
-
     }
 }
