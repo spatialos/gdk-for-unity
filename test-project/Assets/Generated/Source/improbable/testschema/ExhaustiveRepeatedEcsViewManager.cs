@@ -78,49 +78,83 @@ namespace Improbable.TestSchema
             public void Clean(World world)
             {
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
-
                 var component = new global::Improbable.TestSchema.ExhaustiveRepeated.Component();
 
                 component.field1Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Allocate(world);
+
                 component.field2Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Allocate(world);
+
                 component.field3Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Allocate(world);
+
                 component.field4Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Allocate(world);
+
                 component.field5Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Allocate(world);
+
                 component.field6Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Allocate(world);
+
                 component.field7Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Allocate(world);
+
                 component.field8Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Allocate(world);
+
                 component.field9Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Allocate(world);
+
                 component.field10Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Allocate(world);
+
                 component.field11Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Allocate(world);
+
                 component.field12Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Allocate(world);
+
                 component.field13Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Allocate(world);
+
                 component.field14Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Allocate(world);
+
                 component.field15Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Allocate(world);
+
                 component.field16Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Allocate(world);
+
                 component.field17Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Allocate(world);
+
                 component.field18Handle = global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Allocate(world);
+
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -132,23 +166,41 @@ namespace Improbable.TestSchema
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.ExhaustiveRepeated.Component>(entity);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field6Provider.Free(data.field6Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field8Provider.Free(data.field8Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field9Provider.Free(data.field9Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field10Provider.Free(data.field10Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field11Provider.Free(data.field11Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field12Provider.Free(data.field12Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field13Provider.Free(data.field13Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field14Provider.Free(data.field14Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+
                 global::Improbable.TestSchema.ExhaustiveRepeated.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
 
                 entityManager.RemoveComponent<global::Improbable.TestSchema.ExhaustiveRepeated.Component>(entity);

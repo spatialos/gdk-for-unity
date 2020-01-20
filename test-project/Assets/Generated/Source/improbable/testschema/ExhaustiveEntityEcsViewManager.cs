@@ -78,23 +78,31 @@ namespace Improbable.TestSchema
             public void Clean(World world)
             {
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
-
                 var component = new global::Improbable.TestSchema.ExhaustiveEntity.Component();
 
                 component.field1Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Allocate(world);
+
                 component.field2Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Allocate(world);
+
                 component.field3Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Allocate(world);
+
                 component.field4Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Allocate(world);
+
                 component.field5Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Allocate(world);
+
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -106,10 +114,15 @@ namespace Improbable.TestSchema
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.ExhaustiveEntity.Component>(entity);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+
                 global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
 
                 entityManager.RemoveComponent<global::Improbable.TestSchema.ExhaustiveEntity.Component>(entity);
