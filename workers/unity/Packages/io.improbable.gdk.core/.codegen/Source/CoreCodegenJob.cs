@@ -125,10 +125,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
         protected override void RunImpl()
         {
-            logger.Info("Creating generators.");
-            var blittableComponentGenerator = new UnityComponentDataGenerator();
-            var componentSenderGenerator = new UnityComponentSenderGenerator();
-
             logger.Trace("Starting code generation for enums.");
             foreach (var enumTarget in enumsToGenerate)
             {
@@ -163,7 +159,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var package = componentTarget.Package;
 
                 var componentFileName = Path.ChangeExtension(componentName, FileExtension);
-                var componentCode = blittableComponentGenerator.Generate(componentTarget.Content, package);
+                var componentCode = UnityComponentDataGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
@@ -208,7 +204,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 }
 
                 var updateSenderFileName = Path.ChangeExtension($"{componentName}UpdateSender", FileExtension);
-                var updateSenderCode = componentSenderGenerator.Generate(componentTarget.Content, package);
+                var updateSenderCode = UnityComponentSenderGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
                 var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
