@@ -78,21 +78,27 @@ namespace Improbable.DependentSchema
             public void Clean(World world)
             {
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.CleanDataInWorld(world);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.CleanDataInWorld(world);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.CleanDataInWorld(world);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.CleanDataInWorld(world);
             }
 
             private void AddComponent(EntityId entityId)
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
-
                 var component = new global::Improbable.DependentSchema.DependentComponent.Component();
 
                 component.aHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Allocate(world);
+
                 component.cHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+
                 component.dHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Allocate(world);
+
                 component.eHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Allocate(world);
+
                 component.MarkDataClean();
                 entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
@@ -104,9 +110,13 @@ namespace Improbable.DependentSchema
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.DependentSchema.DependentComponent.Component>(entity);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Free(data.aHandle);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Free(data.cHandle);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Free(data.dHandle);
+
                 global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Free(data.eHandle);
 
                 entityManager.RemoveComponent<global::Improbable.DependentSchema.DependentComponent.Component>(entity);

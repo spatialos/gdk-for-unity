@@ -36,7 +36,6 @@ namespace Improbable.DependentSchema
                 }
             }
 
-
             public readonly struct ReceivedRequest : IReceivedCommandRequest
             {
                 public readonly EntityId EntityId;

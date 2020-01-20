@@ -82,7 +82,6 @@ namespace Improbable.Tests
             private void AddComponent(EntityId entityId)
             {
                 workerSystem.TryGetEntity(entityId, out var entity);
-
                 var component = new global::Improbable.Tests.DependencyTestGrandchild.Component();
 
                 component.MarkDataClean();
