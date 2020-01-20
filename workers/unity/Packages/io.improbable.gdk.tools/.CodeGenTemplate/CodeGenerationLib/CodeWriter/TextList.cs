@@ -38,7 +38,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         private void Add(IEnumerable<string> snippets)
         {
-            textBlocks.AddRange(snippets.Select(s => new Text(s, trim: false)));
+            textBlocks.AddRange(snippets.Select(Text.New));
         }
 
         public string Format(int indentLevel = 0)
