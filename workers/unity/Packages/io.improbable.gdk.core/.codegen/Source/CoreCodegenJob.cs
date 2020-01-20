@@ -126,17 +126,14 @@ namespace Improbable.Gdk.CodeGenerator.Core
         protected override void RunImpl()
         {
             logger.Info("Creating generators.");
-            var eventGenerator = new UnityEventGenerator();
             var commandPayloadGenerator = new UnityCommandPayloadGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
             var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
-            var referenceTypeProviderGenerator = new UnityReferenceTypeProviderGenerator();
             var componentDiffStorageGenerator = new ComponentDiffStorageGenerator();
             var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
             var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
             var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
-            var viewStorageGenerator = new ViewStorageGenerator();
             var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
             var metaclassGenerator = new MetaclassGenerator();
 
@@ -214,7 +211,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     logger.Trace("Generating code for events.");
 
                     var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
-                    var eventsCode = eventGenerator.Generate(componentTarget.Content, package);
+                    var eventsCode = UnityEventGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
 
@@ -240,13 +237,13 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                     var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
                     var referenceProviderTranslationCode =
-                        referenceTypeProviderGenerator.Generate(componentTarget.Content, package);
+                        UnityReferenceTypeProviderGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, referenceProviderFileName),
                         referenceProviderTranslationCode);
                 }
 
                 var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
-                var viewStorageCode = viewStorageGenerator.Generate(componentTarget.Content, package);
+                var viewStorageCode = ViewStorageGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
 
                 var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);

@@ -11,8 +11,7 @@ namespace Improbable.TestSchema
 {
     public partial class ExhaustiveEntity
     {
-        public class ExhaustiveEntityViewStorage : IViewStorage, IViewComponentStorage<Snapshot>,
-            IViewComponentUpdater<Update>
+        public class ExhaustiveEntityViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewComponentUpdater<Update>
         {
             private readonly Dictionary<long, Authority> authorityStates = new Dictionary<long, Authority>();
             private readonly Dictionary<long, Snapshot> componentData = new Dictionary<long, Snapshot>();
@@ -94,7 +93,6 @@ namespace Improbable.TestSchema
                 {
                     return;
                 }
-
 
                 if (update.Field1.HasValue)
                 {
