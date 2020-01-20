@@ -19,6 +19,16 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
         }
 
+        public void Text(Text text)
+        {
+            Add(text);
+        }
+
+        public void TextList(TextList textList)
+        {
+            Add(textList);
+        }
+
         public void Line(string snippet)
         {
             Add(new Text(snippet));

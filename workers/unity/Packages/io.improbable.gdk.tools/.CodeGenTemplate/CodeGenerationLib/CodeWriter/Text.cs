@@ -6,13 +6,18 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
     /// <summary>
     /// Free-form text to write.
     /// </summary>
-    internal class Text : ICodeBlock
+    public class Text : ICodeBlock
     {
         private readonly string snippet;
 
         internal Text(string snippet, bool trim = true)
         {
             this.snippet = trim ? snippet.Trim() : snippet;
+        }
+
+        public static Text New(string snippet)
+        {
+            return new Text(snippet);
         }
 
         public bool HasValue()
