@@ -126,12 +126,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
         protected override void RunImpl()
         {
             logger.Info("Creating generators.");
-            var commandPayloadGenerator = new UnityCommandPayloadGenerator();
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
-            var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
-            var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
-            var metaclassGenerator = new MetaclassGenerator();
 
             logger.Trace("Starting code generation for enums.");
             foreach (var enumTarget in enumsToGenerate)
@@ -177,7 +173,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     var commandPayloadsFileName =
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
                     var commandPayloadCode =
-                        commandPayloadGenerator.Generate(componentTarget.Content, package);
+                        UnityCommandPayloadGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
 
                     var commandDiffDeserializerFileName =
@@ -197,7 +193,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     var commandMetaDataStorageFileName =
                         Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
                     var commandMetaDataStorageCode =
-                        commandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
+                        CommandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
                         commandMetaDataStorageCode);
                 }
@@ -216,7 +212,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 AddContent(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
                 var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
-                var ecsViewManagerCode = ecsViewManagerGenerator.Generate(componentTarget.Content, package);
+                var ecsViewManagerCode = UnityEcsViewManagerGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
 
                 var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
@@ -243,7 +239,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 AddContent(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
 
                 var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);
-                var metaclassCode = metaclassGenerator.Generate(componentTarget.Content, package);
+                var metaclassCode = MetaclassGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
             }
 
