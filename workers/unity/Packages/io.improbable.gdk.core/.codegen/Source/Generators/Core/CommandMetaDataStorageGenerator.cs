@@ -25,9 +25,6 @@ namespace Improbable.Gdk.CodeGenerator
                         {
                             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandMetaDataStorage class.");
 
-                            var receivedRequestType = $"{command.CommandName}.ReceivedRequest";
-                            var receivedResponseType = $"{command.CommandName}.RawReceivedResponse";
-
                             partial.Line($@"
 public class {command.CommandName}CommandMetaDataStorage : ICommandMetaDataStorage, ICommandPayloadStorage<{command.FqnRequestType}>
 {{
