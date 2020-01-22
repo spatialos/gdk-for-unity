@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Tools
         ///     CS error code
         ///     Message
         /// </summary>
-        /// Example: Generated\Templates\UnityCommandManagerGenerator.tt(11,9): warning CS0219: The variable 'profilingEnd' is assigned but its value is never used [D:\gdk-for-unity\workers\unity\Packages\io.improbable.gdk.tools\.CodeGenerator\GdkCodeGenerator\GdkCodeGenerator.csproj]
+        /// Example: D:\gdk-for-unity\workers\unity\Packages\io.improbable.gdk.core\.codegen\Source\CoreCodegenJob.cs(128,64): error CS1002: ; expected [D:\gdk-for-unity\test-project\build\codegen\CodeGen\CodeGen.csproj]
         private static readonly Regex dotnetRegex = new Regex(
             @"(?<file>[\w\\\.]+)\((?<line>\d+),(?<col>\d+)\): (?<type>\w+) (?<code>\w+): (?<message>[\s\S]+)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -384,12 +384,10 @@ namespace Improbable.Gdk.Tools
                     Source/
                         SourceFile1.cs
                         SourceFile2.cs
-                    Templates/
-                        MyTemplate.tt
                     Partials/
                         Improbable.Vector3f
 
-            Each of the Source, Templates, and Partials folder are optional.
+            Each of the Source and Partials folder are optional.
         */
         private static void UpdateModules()
         {
@@ -425,15 +423,6 @@ namespace Improbable.Gdk.Tools
                     // Ensure that we compile any source code provided by the codegen module.
                     var ele = new XElement("Compile");
                     ele.SetAttributeValue("Include", Path.Combine(sourceDir, "**"));
-                    itemGroup.Add(ele);
-                }
-
-                var templateDir = Path.Combine(dir, "Templates");
-                if (Directory.Exists(templateDir))
-                {
-                    // Ensure that we generate and compile in any T4 templates provided by the codegen module.
-                    var ele = new XElement("T4Files");
-                    ele.SetAttributeValue("Include", Path.Combine(templateDir, "**"));
                     itemGroup.Add(ele);
                 }
 

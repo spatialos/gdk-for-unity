@@ -8,9 +8,6 @@
     <Compile Remove="Generated\**" />
     <EmbeddedResource Remove="Generated\**" />
     <None Remove="Generated\**" />
-    <Compile Remove="dependencies\**" />
-    <EmbeddedResource Remove="dependencies\**" />
-    <None Remove="dependencies\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.Options" Version="5.3.0.1" />
@@ -21,5 +18,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeGenerationLib\CodeGenerationLib.csproj" />
   </ItemGroup>
-  <UsingTask TaskName="Improbable.TextTemplating.TransformAllTask" AssemblyFile="dependencies/Improbable.TextTemplating/Improbable.TextTemplating.dll" />
 </Project>
