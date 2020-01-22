@@ -51,7 +51,6 @@ namespace Improbable.Gdk.CodeGenerator
             const int dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
             var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
 
-
             return Scope.Type(
                 "public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>",
                 component =>
@@ -129,7 +128,7 @@ public void MarkDataDirty(int propertyIndex)", m =>
                             {
                                 "// Retrieve the dirtyBits[0-n] field that tracks this property.",
                                 $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
-                                $"dirtyBits[dirtyBitsByteIndex] |= (byte) (0x1 << (propertyIndex % {dirtyBitsPerEntry - 1}));"
+                                $"dirtyBits[dirtyBitsByteIndex] |= (byte) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
                             });
                         }
                     });
