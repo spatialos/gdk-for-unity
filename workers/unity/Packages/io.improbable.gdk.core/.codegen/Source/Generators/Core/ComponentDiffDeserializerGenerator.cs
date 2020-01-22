@@ -61,7 +61,6 @@ public uint GetComponentId()
 
                             foreach (var ev in eventDetailsList)
                             {
-                                var eventType = $"{ev.EventName}.Event";
                                 m.CustomScope(() => new[]
                                 {
                                     $@"
@@ -71,7 +70,7 @@ if (eventCount > 0)
     for (uint i = 0; i < eventCount; i++)
     {{
         var payload = {ev.FqnPayloadType}.Serialization.Deserialize(eventsObject.IndexObject({ev.EventIndex}, i));
-        var e = new {eventType}(payload);
+        var e = new {ev.EventName}.Event(payload);
         diff.AddEvent(e, op.EntityId, op.Update.ComponentId, updateId);
     }}
 }}
@@ -122,12 +121,10 @@ for (int i = 0; i < updates.Count; ++i)
 
                         foreach (var ev in eventDetailsList)
                         {
-                            var eventType = $"{ev.EventName}.Event";
-
                             m.CustomScope(() => new[]
                             {
                                 $@"
-var events = ((IDiffEventStorage<{eventType}>) storage).GetEvents();
+var events = ((IDiffEventStorage<{ev.EventName}.Event>) storage).GetEvents();
 
 for (int i = 0; i < events.Count; ++i)
 {{

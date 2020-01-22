@@ -37,9 +37,6 @@ namespace Improbable.Gdk.CodeGenerator
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}DiffCommandDeserializer class.");
 
-            var receivedRequestType = $"{command.CommandName}.ReceivedRequest";
-            var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
-
             return Text.New($@"
 public class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserializer
 {{
@@ -57,7 +54,7 @@ public class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserial
     {{
         var deserializedRequest = {command.FqnRequestType}.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
-        var request = new {receivedRequestType}(
+        var request = new {command.CommandName}.ReceivedRequest(
             new EntityId(op.EntityId),
             op.RequestId,
             op.CallerWorkerId,
@@ -78,7 +75,7 @@ public class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserial
         var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, op.RequestId);
         commandMetaData.MarkIdForRemoval(ComponentId, {command.CommandIndex}, op.RequestId);
 
-        var response = new {receivedResponseType}(
+        var response = new {command.CommandName}.ReceivedResponse(
             commandContext.SendingEntity,
             new EntityId(op.EntityId),
             op.Message,

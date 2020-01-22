@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using Improbable.Gdk.CodeGeneration.Utils;
 using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -35,8 +36,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         foreach (var ev in eventDetailsList)
                         {
-                            var eventType = $"{ev.EventName}.Event";
-                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{eventType}>");
+                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{ev.EventName}.Event>");
                         }
 
                         partial.Type(classDefinition.ToString(), storage =>
