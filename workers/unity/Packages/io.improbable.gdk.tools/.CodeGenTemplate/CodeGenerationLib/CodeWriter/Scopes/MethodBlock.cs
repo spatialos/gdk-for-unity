@@ -15,6 +15,8 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         internal MethodBlock(string declaration, Func<IEnumerable<string>> populate, string annotation = "") : base(
             declaration)
         {
+            Annotation = annotation;
+
             var methodBody = populate().ToList();
             if (methodBody.Count > 0)
             {
