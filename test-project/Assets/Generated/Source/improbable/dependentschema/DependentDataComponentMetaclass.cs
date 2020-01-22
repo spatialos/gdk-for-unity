@@ -30,7 +30,7 @@ namespace Improbable.DependentSchema
 
             public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]
             {
-                new BarCommandMetaclass(),
+                new BarCommandMetaclass()
             };
         }
 
