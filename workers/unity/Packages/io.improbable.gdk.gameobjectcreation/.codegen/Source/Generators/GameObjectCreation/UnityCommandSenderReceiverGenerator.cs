@@ -350,9 +350,9 @@ public void Send{commandDetails.CommandName}Command({componentNamespace}.{comman
 
                 c.Line(@"
 public void RemoveAllCallbacks()
-{{
+{
     ++callbackEpoch;
-}}
+}
 ");
             });
         }
