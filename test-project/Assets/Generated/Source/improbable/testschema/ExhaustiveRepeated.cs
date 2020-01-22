@@ -6,6 +6,7 @@ using Improbable.Gdk.Core;
 using Improbable.Worker.CInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.Entities;
 
 namespace Improbable.TestSchema
@@ -14,23 +15,18 @@ namespace Improbable.TestSchema
     {
         public const uint ComponentId = 197717;
 
-        public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
+        public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
             public uint ComponentId => 197717;
 
             // Bit masks for tracking which component properties were changed locally and need to be synced.
-            // Each byte tracks 8 component properties.
-            private byte dirtyBits0;
-            private byte dirtyBits1;
-            private byte dirtyBits2;
+            private fixed UInt32 dirtyBits[1];
 
             public bool IsDataDirty()
             {
                 var isDataDirty = false;
 
-                isDataDirty |= (dirtyBits0 != 0x0);
-                isDataDirty |= (dirtyBits1 != 0x0);
-                isDataDirty |= (dirtyBits2 != 0x0);
+                isDataDirty |= (dirtyBits[0] != 0x0);
 
                 return isDataDirty;
             }
@@ -50,64 +46,38 @@ namespace Improbable.TestSchema
 
             public bool IsDataDirty(int propertyIndex)
             {
-                if (propertyIndex < 0 || propertyIndex >= 18)
-                {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
-                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
-                        "Please contact SpatialOS support if you encounter this issue.");
-                }
+                ValidateFieldIndex(propertyIndex);
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex / 8;
-                switch (dirtyBitsByteIndex)
-                {
-                    case 0:
-                        return (dirtyBits0 & (0x1 << propertyIndex % 8)) != 0x0;
-
-                    case 1:
-                        return (dirtyBits1 & (0x1 << propertyIndex % 8)) != 0x0;
-
-                    case 2:
-                        return (dirtyBits2 & (0x1 << propertyIndex % 8)) != 0x0;
-                }
-
-                return false;
+                var dirtyBitsByteIndex = propertyIndex >> 4;
+                return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & 31))) != 0x0;
             }
 
             // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
             // This method throws an InvalidOperationException in case your component doesn't contain properties.
             public void MarkDataDirty(int propertyIndex)
             {
+                ValidateFieldIndex(propertyIndex);
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex >> 4;
+                dirtyBits[dirtyBitsByteIndex] |= (byte) (0x1 << (propertyIndex & 31));
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits[0] = 0x0;
+            }
+
+            [Conditional("DEBUG")]
+            private void ValidateFieldIndex(int propertyIndex)
+            {
                 if (propertyIndex < 0 || propertyIndex >= 18)
                 {
                     throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
                         "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
                         "Please contact SpatialOS support if you encounter this issue.");
                 }
-
-                // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex / 8;
-                switch (dirtyBitsByteIndex)
-                {
-                    case 0:
-                        dirtyBits0 |= (byte) (0x1 << propertyIndex % 8);
-                        break;
-
-                    case 1:
-                        dirtyBits1 |= (byte) (0x1 << propertyIndex % 8);
-                        break;
-
-                    case 2:
-                        dirtyBits2 |= (byte) (0x1 << propertyIndex % 8);
-                        break;
-                }
-            }
-
-            public void MarkDataClean()
-            {
-                dirtyBits0 = 0x0;
-                dirtyBits1 = 0x0;
-                dirtyBits2 = 0x0;
             }
 
             public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
