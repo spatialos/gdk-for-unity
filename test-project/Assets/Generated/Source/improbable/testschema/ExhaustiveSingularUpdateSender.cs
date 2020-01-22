@@ -40,14 +40,12 @@ namespace Improbable.TestSchema
 
                 var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                 var componentType = system.GetArchetypeChunkComponentType<global::Improbable.TestSchema.ExhaustiveSingular.Component>();
-
                 var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 
                 foreach (var chunk in chunkArray)
                 {
                     var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
                     var componentArray = chunk.GetNativeArray(componentType);
-
                     var authorityIndex = chunk.GetSharedComponentIndex(authorityType);
 
                     if (!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority)
@@ -58,6 +56,7 @@ namespace Improbable.TestSchema
                     for (var i = 0; i < componentArray.Length; i++)
                     {
                         var data = componentArray[i];
+
                         if (data.IsDataDirty())
                         {
                             Update update = new Update();

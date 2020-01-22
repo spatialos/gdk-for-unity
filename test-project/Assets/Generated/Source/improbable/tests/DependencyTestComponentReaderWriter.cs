@@ -383,7 +383,6 @@ namespace Improbable.Tests
             }
         }
 
-
         internal DependencyTestReader(World world, Entity entity, EntityId entityId)
         {
             Entity = entity;
@@ -418,7 +417,6 @@ namespace Improbable.Tests
                 updateCallbackToCallbackKey.Clear();
             }
 
-
             if (rootUpdateCallbackToCallbackKey != null)
             {
                 foreach (var callbackToKey in rootUpdateCallbackToCallbackKey)
@@ -449,7 +447,6 @@ namespace Improbable.Tests
 
             EntityManager.SetComponentData(Entity, component);
         }
-
 
         public void AcknowledgeAuthorityLoss()
         {

@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240)
+- Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
 
 ### Internal
 
@@ -14,6 +14,7 @@
 - Ported test-project to new CodeWriter. [#1241](https://github.com/spatialos/gdk-for-unity/pull/1241)
 - Ported build system module to new CodeWriter. [#1242](https://github.com/spatialos/gdk-for-unity/pull/1242)
 - Ported gameobject creation module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247)
+- Ported core module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247) [#1248](https://github.com/spatialos/gdk-for-unity/pull/1248) [#1249](https://github.com/spatialos/gdk-for-unity/pull/1249) [#1251](https://github.com/spatialos/gdk-for-unity/pull/1251) [#1252](https://github.com/spatialos/gdk-for-unity/pull/1252) [#1253](https://github.com/spatialos/gdk-for-unity/pull/1253)
 
 ## `0.3.2` - 2019-12-23
 

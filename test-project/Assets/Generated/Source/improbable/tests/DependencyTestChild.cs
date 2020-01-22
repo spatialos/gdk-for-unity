@@ -25,7 +25,9 @@ namespace Improbable.Tests
             public bool IsDataDirty()
             {
                 var isDataDirty = false;
+
                 isDataDirty |= (dirtyBits0 != 0x0);
+
                 return isDataDirty;
             }
 
@@ -41,6 +43,7 @@ namespace Improbable.Tests
             In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
             This method throws an InvalidOperationException in case your component doesn't contain properties.
             */
+
             public bool IsDataDirty(int propertyIndex)
             {
                 if (propertyIndex < 0 || propertyIndex >= 1)
@@ -175,20 +178,22 @@ namespace Improbable.Tests
             public static void SerializeUpdate(global::Improbable.Tests.DependencyTestChild.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
+
                 if (component.IsDataDirty(0))
                 {
                     obj.AddUint32(1, component.Child);
                 }
-
             }
 
             public static void SerializeUpdate(global::Improbable.Tests.DependencyTestChild.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)
             {
                 var obj = updateObj.GetFields();
+
                 {
                     if (update.Child.HasValue)
                     {
                         var field = update.Child.Value;
+
                         obj.AddUint32(1, field);
                     }
                 }
@@ -197,7 +202,6 @@ namespace Improbable.Tests
             public static void SerializeSnapshot(global::Improbable.Tests.DependencyTestChild.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)
             {
                 obj.AddUint32(1, snapshot.Child);
-
             }
 
             public static global::Improbable.Tests.DependencyTestChild.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)
@@ -205,6 +209,7 @@ namespace Improbable.Tests
                 var component = new global::Improbable.Tests.DependencyTestChild.Component();
 
                 component.Child = obj.GetUint32(1);
+
                 return component;
             }
 
@@ -217,6 +222,7 @@ namespace Improbable.Tests
                 {
                     update.Child = obj.GetUint32(1);
                 }
+
                 return update;
             }
 
@@ -226,6 +232,7 @@ namespace Improbable.Tests
                 var obj = data.GetFields();
 
                 update.Child = obj.GetUint32(1);
+
                 return update;
             }
 
@@ -234,6 +241,7 @@ namespace Improbable.Tests
                 var component = new global::Improbable.Tests.DependencyTestChild.Snapshot();
 
                 component.Child = obj.GetUint32(1);
+
                 return component;
             }
 
@@ -302,7 +310,7 @@ namespace Improbable.Tests
             {
                 var update = new Update
                 {
-                    Child = snapshot.Child,
+                    Child = snapshot.Child
                 };
 
                 return update;

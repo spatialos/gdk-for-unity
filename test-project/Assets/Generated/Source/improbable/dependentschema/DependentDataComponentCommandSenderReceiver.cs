@@ -371,7 +371,6 @@ namespace Improbable.DependentSchema
 
                 barCommandCallbackToCallbackKey.Clear();
             }
-
         }
     }
 }
