@@ -15,6 +15,7 @@
 - Ported build system module to new CodeWriter. [#1242](https://github.com/spatialos/gdk-for-unity/pull/1242)
 - Ported gameobject creation module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247)
 - Ported core module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247) [#1248](https://github.com/spatialos/gdk-for-unity/pull/1248) [#1249](https://github.com/spatialos/gdk-for-unity/pull/1249) [#1251](https://github.com/spatialos/gdk-for-unity/pull/1251) [#1252](https://github.com/spatialos/gdk-for-unity/pull/1252) [#1253](https://github.com/spatialos/gdk-for-unity/pull/1253)
+- Removed all Text Template Transformation Toolkit (T4) references and dependencies. [#1254](https://github.com/spatialos/gdk-for-unity/pull/1254)
 
 ## `0.3.2` - 2019-12-23
 
