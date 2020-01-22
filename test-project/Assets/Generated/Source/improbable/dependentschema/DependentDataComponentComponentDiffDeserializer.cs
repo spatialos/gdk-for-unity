@@ -23,6 +23,7 @@ namespace Improbable.DependentSchema
                     var update = global::Improbable.DependentSchema.DependentDataComponent.Serialization.DeserializeUpdate(op.Update.SchemaData.Value);
                     diff.AddComponentUpdate(update, op.EntityId, op.Update.ComponentId, updateId);
                 }
+
                 var eventsObject = op.Update.SchemaData.Value.GetEvents();
 
                 {
@@ -68,7 +69,6 @@ namespace Improbable.DependentSchema
                     serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
                 }
 
-
                 {
                     var events = ((IDiffEventStorage<FooEvent.Event>) storage).GetEvents();
 
@@ -80,7 +80,6 @@ namespace Improbable.DependentSchema
                         var obj = schemaUpdate.GetEvents().AddObject(1);
                         global::Improbable.TestSchema.SomeType.Serialization.Serialize(ev.Event.Payload, obj);
                         serializedMessages.AddComponentUpdate(componentUpdate, ev.EntityId.Id);
-
                     }
                 }
             }

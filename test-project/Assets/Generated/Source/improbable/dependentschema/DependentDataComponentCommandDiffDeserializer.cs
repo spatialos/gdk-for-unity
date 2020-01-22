@@ -113,6 +113,5 @@ namespace Improbable.DependentSchema
                 }
             }
         }
-
     }
 }

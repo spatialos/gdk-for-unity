@@ -130,10 +130,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
             var blittableComponentGenerator = new UnityComponentDataGenerator();
             var componentSenderGenerator = new UnityComponentSenderGenerator();
             var ecsViewManagerGenerator = new UnityEcsViewManagerGenerator();
-            var componentDiffStorageGenerator = new ComponentDiffStorageGenerator();
-            var componentDiffDeserializerGenerator = new ComponentDiffDeserializerGenerator();
-            var commandDiffDeserializerGenerator = new CommandDiffDeserializerGenerator();
-            var commandDiffStorageGenerator = new CommandDiffStorageGenerator();
             var commandMetaDataStorageGenerator = new CommandMetaDataStorageGenerator();
             var metaclassGenerator = new MetaclassGenerator();
 
@@ -187,14 +183,14 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     var commandDiffDeserializerFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
                     var commandDiffDeserializerCode =
-                        commandDiffDeserializerGenerator.Generate(componentTarget.Content, package);
+                        CommandDiffDeserializerGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
                         commandDiffDeserializerCode);
 
                     var commandDiffStorageFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension);
                     var commandDiffStorageCode =
-                        commandDiffStorageGenerator.Generate(componentTarget.Content, package);
+                        CommandDiffStorageGenerator.Generate(componentTarget.Content, package);
                     AddContent(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
                         commandDiffStorageCode);
 
@@ -224,11 +220,11 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 AddContent(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
 
                 var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
-                var componentDiffStorageCode = componentDiffStorageGenerator.Generate(componentTarget.Content, package);
+                var componentDiffStorageCode = ComponentDiffStorageGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
 
                 var componentDiffDeserializerFileName = Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension);
-                var componentDiffDeserializerCode = componentDiffDeserializerGenerator.Generate(componentTarget.Content, package);
+                var componentDiffDeserializerCode = ComponentDiffDeserializerGenerator.Generate(componentTarget.Content, package);
                 AddContent(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
 
                 if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))

@@ -53,7 +53,6 @@ namespace Improbable.Tests
                     Serialization.SerializeUpdate(update.Update, schemaUpdate);
                     serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
                 }
-
             }
         }
     }
