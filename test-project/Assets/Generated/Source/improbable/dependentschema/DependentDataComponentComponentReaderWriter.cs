@@ -910,7 +910,6 @@ namespace Improbable.DependentSchema
             }
         }
 
-
         private Dictionary<Action<global::Improbable.TestSchema.SomeType>, ulong> fooEventEventCallbackToCallbackKey;
         public event Action<global::Improbable.TestSchema.SomeType> OnFooEventEvent
         {
@@ -969,7 +968,6 @@ namespace Improbable.DependentSchema
 
                 updateCallbackToCallbackKey.Clear();
             }
-
 
             if (field1UpdateCallbackToCallbackKey != null)
             {

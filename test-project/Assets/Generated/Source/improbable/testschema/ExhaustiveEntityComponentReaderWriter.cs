@@ -507,7 +507,6 @@ namespace Improbable.TestSchema
             }
         }
 
-
         internal ExhaustiveEntityReader(World world, Entity entity, EntityId entityId)
         {
             Entity = entity;
@@ -541,7 +540,6 @@ namespace Improbable.TestSchema
 
                 updateCallbackToCallbackKey.Clear();
             }
-
 
             if (field1UpdateCallbackToCallbackKey != null)
             {
@@ -633,7 +631,6 @@ namespace Improbable.TestSchema
 
             EntityManager.SetComponentData(Entity, component);
         }
-
 
         public void AcknowledgeAuthorityLoss()
         {

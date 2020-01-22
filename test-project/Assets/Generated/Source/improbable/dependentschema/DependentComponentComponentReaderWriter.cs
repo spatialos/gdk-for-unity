@@ -507,7 +507,6 @@ namespace Improbable.DependentSchema
             }
         }
 
-
         internal DependentComponentReader(World world, Entity entity, EntityId entityId)
         {
             Entity = entity;
@@ -541,7 +540,6 @@ namespace Improbable.DependentSchema
 
                 updateCallbackToCallbackKey.Clear();
             }
-
 
             if (aUpdateCallbackToCallbackKey != null)
             {
@@ -633,7 +631,6 @@ namespace Improbable.DependentSchema
 
             EntityManager.SetComponentData(Entity, component);
         }
-
 
         public void AcknowledgeAuthorityLoss()
         {
