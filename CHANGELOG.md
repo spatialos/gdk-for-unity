@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Generated code Assembly Definition now needs to have ` allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
+
 ### Added
 
 - Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
@@ -16,6 +20,7 @@
 - Ported gameobject creation module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247)
 - Ported core module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247) [#1248](https://github.com/spatialos/gdk-for-unity/pull/1248) [#1249](https://github.com/spatialos/gdk-for-unity/pull/1249) [#1251](https://github.com/spatialos/gdk-for-unity/pull/1251) [#1252](https://github.com/spatialos/gdk-for-unity/pull/1252) [#1253](https://github.com/spatialos/gdk-for-unity/pull/1253)
 - Removed all Text Template Transformation Toolkit (T4) references and dependencies. [#1254](https://github.com/spatialos/gdk-for-unity/pull/1254)
+- Simplified dirtyBits logic and code generation [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 
 ## `0.3.2` - 2019-12-23
 
