@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 using Improbable.Gdk.CodeGeneration.Model.Details;
@@ -20,6 +21,7 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Worker.CInterop",
                     "System",
                     "System.Collections.Generic",
+                    "System.Diagnostics",
                     "Unity.Entities"
                 );
 
@@ -46,21 +48,21 @@ namespace Improbable.Gdk.CodeGenerator
 
             var fieldDetailsList = componentDetails.FieldDetails;
 
+            var dirtyType = typeof(uint);
+            var dirtyBytesPerEntry = Marshal.SizeOf(dirtyType);
+            var dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
+            var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
+
             return Scope.Type(
-                "public struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>",
+                "public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>",
                 component =>
                 {
                     component.Line($"public uint ComponentId => {componentDetails.ComponentId};");
 
-                    component.Line(s =>
+                    component.Line(new[]
                     {
-                        s.AppendLine("// Bit masks for tracking which component properties were changed locally and need to be synced.");
-                        s.AppendLine("// Each byte tracks 8 component properties.");
-
-                        for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++)
-                        {
-                            s.AppendLine($"private byte dirtyBits{i};");
-                        }
+                        "// Bit masks for tracking which component properties were changed locally and need to be synced.",
+                        $"private fixed {dirtyType.Name} dirtyBits[{dirtyBitCount}];"
                     });
 
                     component.Method("public bool IsDataDirty()", m =>
@@ -69,9 +71,9 @@ namespace Improbable.Gdk.CodeGenerator
 
                         m.Line(s =>
                         {
-                            for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++)
+                            for (var i = 0; i < (fieldDetailsList.Count / dirtyBitsPerEntry) + 1; i++)
                             {
-                                s.AppendLine($"isDataDirty |= (dirtyBits{i} != 0x0);");
+                                s.AppendLine($"isDataDirty |= (dirtyBits[{i}] != 0x0);");
                             }
                         });
 
@@ -100,33 +102,14 @@ This method throws an InvalidOperationException in case your component doesn't c
                         }
                         else
                         {
-                            m.If($"propertyIndex < 0 || propertyIndex >= {fieldDetailsList.Count}", then =>
+                            m.Line("ValidateFieldIndex(propertyIndex);");
+
+                            m.Line(new[]
                             {
-                                then.Line($@"
-throw new ArgumentException(""\""propertyIndex\"" argument out of range. Valid range is [0, {fieldDetailsList.Count - 1}]. "" +
-    ""Unless you are using custom component replication code, this is most likely caused by a code generation bug. "" +
-    ""Please contact SpatialOS support if you encounter this issue."");
-");
+                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}))) != 0x0;"
                             });
-
-                            m.Line(s =>
-                            {
-                                s.AppendLine("// Retrieve the dirtyBits[0-n] field that tracks this property.");
-                                s.AppendLine("var dirtyBitsByteIndex = propertyIndex / 8;");
-
-                                s.AppendLine(Scope.Custom("switch (dirtyBitsByteIndex)", sw =>
-                                {
-                                    for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++)
-                                    {
-                                        sw.Line($@"
-case {i}:
-    return (dirtyBits{i} & (0x1 << propertyIndex % 8)) != 0x0;
-");
-                                    }
-                                }).Format());
-                            });
-
-                            m.Return("false");
                         }
                     });
 
@@ -141,31 +124,13 @@ public void MarkDataDirty(int propertyIndex)", m =>
                         }
                         else
                         {
-                            m.Line($@"
-if (propertyIndex < 0 || propertyIndex >= {fieldDetailsList.Count})
-{{
-    throw new ArgumentException(""\""propertyIndex\"" argument out of range. Valid range is [0, {fieldDetailsList.Count - 1}]. "" +
-        ""Unless you are using custom component replication code, this is most likely caused by a code generation bug. "" +
-        ""Please contact SpatialOS support if you encounter this issue."");
-}}
-");
+                            m.Line("ValidateFieldIndex(propertyIndex);");
 
-                            m.Line(s =>
+                            m.Line(new[]
                             {
-                                s.AppendLine("// Retrieve the dirtyBits[0-n] field that tracks this property.");
-                                s.AppendLine("var dirtyBitsByteIndex = propertyIndex / 8;");
-
-                                s.AppendLine(Scope.Custom("switch (dirtyBitsByteIndex)", sw =>
-                                {
-                                    for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++)
-                                    {
-                                        sw.Line($@"
-case {i}:
-    dirtyBits{i} |= (byte) (0x1 << propertyIndex % 8);
-    break;
-");
-                                    }
-                                }).Format());
+                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"dirtyBits[dirtyBitsByteIndex] |= ({dirtyType.Name}) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
                             });
                         }
                     });
@@ -174,12 +139,25 @@ case {i}:
                     {
                         m.Line(s =>
                         {
-                            for (var i = 0; i < (fieldDetailsList.Count / 8) + 1; i++)
+                            for (var i = 0; i < (fieldDetailsList.Count / dirtyBitsPerEntry) + 1; i++)
                             {
-                                s.AppendLine($"dirtyBits{i} = 0x0;");
+                                s.AppendLine($"dirtyBits[{i}] = 0x0;");
                             }
                         });
                     });
+
+                    component.Annotate("Conditional(\"DEBUG\")")
+                        .Method("private void ValidateFieldIndex(int propertyIndex)", () => new[]
+                        {
+                            $@"
+if (propertyIndex < 0 || propertyIndex >= {fieldDetailsList.Count})
+{{
+    throw new ArgumentException(""\""propertyIndex\"" argument out of range. Valid range is [0, {fieldDetailsList.Count - 1}]. "" +
+        ""Unless you are using custom component replication code, this is most likely caused by a code generation bug. "" +
+        ""Please contact SpatialOS support if you encounter this issue."");
+}}
+"
+                        });
 
                     component.Line($@"
 public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
