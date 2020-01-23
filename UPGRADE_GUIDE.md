@@ -1,5 +1,12 @@
 # Upgrade Guide
 
+## From `0.3.2` to `0.3.3`
+
+### Allow unsafe code in Generated Code
+
+Code generated from schema now contains the `unsafe` code, which needs to be specifically allowed in the relevant Assembly Definition file.
+If you follow the Blank Project, you can find this option on the `Assets\Generated\Improbable.Gdk.Generated` asset.
+
 ## From `0.2.10` to `0.3.0`
 
 ### Reactive Components
