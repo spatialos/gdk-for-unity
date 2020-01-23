@@ -61,7 +61,7 @@ namespace Improbable.TestSchema
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
                 var dirtyBitsByteIndex = propertyIndex >> 4;
-                dirtyBits[dirtyBitsByteIndex] |= (byte) (0x1 << (propertyIndex & 31));
+                dirtyBits[dirtyBitsByteIndex] |= (UInt32) (0x1 << (propertyIndex & 31));
             }
 
             public void MarkDataClean()
