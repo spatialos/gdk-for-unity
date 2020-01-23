@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
 using Improbable.Gdk.CodeGeneration.Model.Details;
@@ -46,9 +47,10 @@ namespace Improbable.Gdk.CodeGenerator
             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Component struct.");
 
             var fieldDetailsList = componentDetails.FieldDetails;
+
             var dirtyType = typeof(uint);
-            const int dirtyBytesPerEntry = sizeof(uint);
-            const int dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
+            var dirtyBytesPerEntry = Marshal.SizeOf(dirtyType);
+            var dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
             var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
 
             return Scope.Type(
@@ -128,7 +130,7 @@ public void MarkDataDirty(int propertyIndex)", m =>
                             {
                                 "// Retrieve the dirtyBits[0-n] field that tracks this property.",
                                 $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
-                                $"dirtyBits[dirtyBitsByteIndex] |= (byte) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
+                                $"dirtyBits[dirtyBitsByteIndex] |= ({dirtyType.Name}) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
                             });
                         }
                     });
