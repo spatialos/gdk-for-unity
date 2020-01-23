@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Generated code Assembly Definition now needs to have ` allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
+- Your generated code Assembly Definition file now needs to have `allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 
 ### Added
 
