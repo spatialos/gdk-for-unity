@@ -21,6 +21,8 @@ namespace Improbable.Gdk.Tools
         private static readonly string CodegenExeDirectory = Path.Combine(Application.dataPath, "..", "build", "codegen");
         private static readonly string CodegenExe = Path.Combine(CodegenExeDirectory, "CodeGen", "CodeGen.csproj");
 
+        private static readonly string WorkerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+
         private static readonly string SchemaCompilerPath = Path.Combine(
             Common.GetPackagePath("io.improbable.worker.sdk"),
             ".schema_compiler/schema_compiler");
@@ -108,6 +110,10 @@ namespace Improbable.Gdk.Tools
                 Profiler.BeginSample("Create dotnet template");
                 CreateTemplate();
                 Profiler.EndSample();
+
+                Profiler.BeginSample("Generate IDE run configurations");
+                GenerateIdeRunConfigs();
+                Profiler.EndSample();
             }
             catch (Exception)
             {
@@ -140,36 +146,15 @@ namespace Improbable.Gdk.Tools
 
                 Profiler.BeginSample("Code generation");
 
-                var schemaCompilerPath = SchemaCompilerPath;
-
-                switch (Application.platform)
-                {
-                    case RuntimePlatform.WindowsEditor:
-                        schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
-                        break;
-                    case RuntimePlatform.LinuxEditor:
-                    case RuntimePlatform.OSXEditor:
-                        RedirectedProcess.Command("chmod")
-                            .WithArgs("+x", $"\"{schemaCompilerPath}\"")
-                            .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
-                            .Run();
-                        break;
-                    default:
-                        throw new PlatformNotSupportedException(
-                            $"The {Application.platform} platform does not support code generation.");
-                }
-
-                var workerJsonPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-
-                var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-                var loggerOutputPath = Path.GetFullPath(Path.Combine(toolsConfig.CodegenLogOutputDir, "codegen-output.log"));
-
                 using (new ShowProgressBarScope("Generating code..."))
                 {
                     ResetCodegenLogCounter();
 
+                    var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+                    var loggerOutputPath = GetDefaultLoggerOutputPath(toolsConfig);
+
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
-                        .WithArgs(ConstructArgs(CodegenExe, schemaCompilerPath, workerJsonPath, loggerOutputPath))
+                        .WithArgs("run", "-p", $"\"{CodegenExe}\"")
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
                         .AddOutputProcessing(ProcessDotnetOutput)
                         .AddOutputProcessing(ProcessCodegenOutput)
@@ -245,6 +230,36 @@ namespace Improbable.Gdk.Tools
             }
         }
 
+        private static string GetDefaultLoggerOutputPath(GdkToolsConfiguration toolsConfig = null)
+        {
+            toolsConfig = toolsConfig ?? GdkToolsConfiguration.GetOrCreateInstance();
+            return Path.GetFullPath(Path.Combine(toolsConfig.CodegenLogOutputDir, "codegen-output.log"));
+        }
+
+        private static string GetSchemaCompilerPath()
+        {
+            var schemaCompilerPath = SchemaCompilerPath;
+
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsEditor:
+                    schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
+                    break;
+                case RuntimePlatform.LinuxEditor:
+                case RuntimePlatform.OSXEditor:
+                    RedirectedProcess.Command("chmod")
+                        .WithArgs("+x", $"\"{schemaCompilerPath}\"")
+                        .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
+                        .Run();
+                    break;
+                default:
+                    throw new PlatformNotSupportedException(
+                        $"The {Application.platform} platform does not support code generation.");
+            }
+
+            return schemaCompilerPath;
+        }
+
         private static void ResetCodegenLogCounter()
         {
             codegenLogCounts = new Dictionary<CodegenLogLevel, int>
@@ -297,47 +312,6 @@ namespace Improbable.Gdk.Tools
             {
                 Debug.LogWarning(e);
             }
-        }
-
-        private static string[] ConstructArgs(string projectPath, string schemaCompilerPath, string workerJsonPath, string logfilePath)
-        {
-            var baseArgs = new List<string>
-            {
-                "run",
-                "-p",
-                $"\"{projectPath}\"",
-                "--",
-                $"--json-dir=\"{ImprobableJsonDir}\"",
-                $"--schema-compiler-path=\"{schemaCompilerPath}\"",
-                $"--worker-json-dir=\"{workerJsonPath}\"",
-                $"--log-file=\"{logfilePath}\""
-            };
-
-            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-
-            if (toolsConfig.VerboseLogging)
-            {
-                baseArgs.Add($"--verbose");
-            }
-
-            baseArgs.Add($"--native-output-dir=\"{toolsConfig.CodegenOutputDir}\"");
-
-            // Add user defined schema directories
-            baseArgs.AddRange(toolsConfig.SchemaSourceDirs
-                .Where(Directory.Exists)
-                .Select(directory => $"--schema-path=\"{Path.GetFullPath(directory)}\""));
-
-            // Add package schema directories
-            baseArgs.AddRange(FindDirInPackages(SchemaPackageDir)
-                .Select(directory => $"--schema-path=\"{directory}\""));
-
-            // Schema Descriptor
-            baseArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
-
-            baseArgs.AddRange(
-                toolsConfig.SerializationOverrides.Select(@override => $"--serialization-override=\"{@override}\""));
-
-            return baseArgs.ToArray();
         }
 
         private static void InstallDotnetTemplate()
@@ -475,6 +449,92 @@ namespace Improbable.Gdk.Tools
                 .Where(Directory.Exists);
 
             return packagePaths.Union(cachedPackagePaths).Distinct();
+        }
+
+        internal static void GenerateIdeRunConfigs(GdkToolsConfiguration toolsConfig = null)
+        {
+            toolsConfig = toolsConfig ?? GdkToolsConfiguration.GetOrCreateInstance();
+
+            var schemaCompilerPath = GetSchemaCompilerPath();
+            var logfilePath = GetDefaultLoggerOutputPath();
+
+            var codegenArgs = new List<string>
+            {
+                $"--json-dir=\"{ImprobableJsonDir}\"",
+                $"--schema-compiler-path=\"{schemaCompilerPath}\"",
+                $"--worker-json-dir=\"{WorkerJsonPath}\"",
+                $"--log-file=\"{logfilePath}\""
+            };
+
+            if (toolsConfig.VerboseLogging)
+            {
+                codegenArgs.Add($"--verbose");
+            }
+
+            var codegenOutputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", toolsConfig.CodegenOutputDir));
+            codegenArgs.Add($"--native-output-dir=\"{codegenOutputPath}\"");
+
+            // Add user defined schema directories
+            codegenArgs.AddRange(toolsConfig.SchemaSourceDirs
+                .Where(Directory.Exists)
+                .Select(directory => $"--schema-path=\"{Path.GetFullPath(directory)}\""));
+
+            // Add package schema directories
+            codegenArgs.AddRange(FindDirInPackages(SchemaPackageDir)
+                .Select(directory => $"--schema-path=\"{directory}\""));
+
+            // Schema Descriptor
+            codegenArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
+
+            codegenArgs.AddRange(
+                toolsConfig.SerializationOverrides.Select(@override => $"--serialization-override=\"{@override}\""));
+
+            var codegenArgsString = string.Join(" ", codegenArgs);
+
+            // For dotnet run / visual studio
+            try
+            {
+                var csprojXml = XDocument.Load(CodegenExe);
+                var projectNode = csprojXml.Element("Project");
+                var propertyGroup = projectNode.Element("PropertyGroup");
+
+                var args = propertyGroup.Element("StartArguments");
+                args?.Remove();
+
+                propertyGroup.Add(XElement.Parse($"<StartArguments>{codegenArgsString}</StartArguments>"));
+                csprojXml.Save(CodegenExe);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Unable to update csproj with run configuration.");
+                Debug.LogException(e);
+                throw;
+            }
+
+            // For jetbrains rider
+            try
+            {
+                var runConfigPath = Path.Combine(CodegenExeDirectory, ".idea", ".idea.CodeGen", ".idea",
+                    "runConfigurations");
+                Directory.CreateDirectory(runConfigPath);
+                using (var w = new StreamWriter(Path.Combine(runConfigPath, "CodeGen.xml"), false))
+                {
+                    w.Write($@"
+<component name=""ProjectRunConfigurationManager"">
+  <configuration default=""false"" name=""CodeGen"" type=""DotNetProject"" factoryName="".NET Project"">
+    <option name=""PROJECT_PATH"" value=""$PROJECT_DIR$/CodeGen/CodeGen.csproj"" />
+    <option name=""PROGRAM_PARAMETERS"" value=""{codegenArgsString.Replace("\"", "&quot;")}"" />
+  </configuration>
+</component>
+");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Unable to generate Rider run configuration.");
+                Debug.LogException(e);
+                throw;
+            }
         }
     }
 }
