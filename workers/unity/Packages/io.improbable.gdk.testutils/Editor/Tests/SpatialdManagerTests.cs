@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using System.Net;
 using Improbable.Gdk.Tools;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils.Editor.Tests
 {
@@ -15,8 +13,7 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
         {
             using (SpatialdManager.Start().Result)
             {
-                var result = RedirectedProcess.Command(Common.SpatialBinary)
-                    .WithArgs("service", "status")
+                var result = RedirectedProcess.Spatial("service", "status")
                     .InDirectory(Common.SpatialProjectRootDir)
                     .RedirectOutputOptions(OutputRedirectBehaviour.None)
                     .RunAsync()
@@ -33,8 +30,7 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
             {
             }
 
-            var result = RedirectedProcess.Command(Common.SpatialBinary)
-                .WithArgs("service", "status")
+            var result = RedirectedProcess.Spatial("service", "status")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()

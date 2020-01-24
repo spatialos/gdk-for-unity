@@ -33,8 +33,8 @@ namespace Improbable.Gdk.Tools
 
             var receivedMessage = string.Empty;
             RedirectedProcess
-                .Command(Common.SpatialBinary)
-                .WithArgs("project", "auth", "dev-auth-token", "create", "--description", "\"Dev Auth Token\"",
+                .Spatial("project", "auth", "dev-auth-token", "create")
+                .WithArgs("--description", "\"Dev Auth Token\"",
                     "--lifetime", devAuthTokenLifetimeHours, "--json_output")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .AddOutputProcessing(message => receivedMessage = message)

@@ -14,8 +14,6 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
 
             var args = new List<string>
             {
-                "cloud",
-                "upload",
                 config.AssemblyName,
                 "--project_name",
                 config.ProjectName,
@@ -28,7 +26,8 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                 args.Add("--force");
             }
 
-            var task = Task.Run(async () => await RedirectedProcess.Command(Tools.Common.SpatialBinary)
+            var task = Task.Run(async () => await RedirectedProcess
+                .Spatial("cloud", "upload")
                 .InDirectory(Tools.Common.SpatialProjectRootDir)
                 .WithArgs(args.ToArray())
                 .RedirectOutputOptions(OutputRedirectBehaviour.RedirectStdOut |
