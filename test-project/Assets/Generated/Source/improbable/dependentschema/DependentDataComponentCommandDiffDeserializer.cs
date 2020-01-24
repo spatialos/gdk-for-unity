@@ -9,18 +9,8 @@ namespace Improbable.DependentSchema
 {
     public partial class DependentDataComponent
     {
-        public class BarCommandDiffCommandDeserializer : ICommandDiffDeserializer
+        private class BarCommandDiffCommandDeserializer : ICommandDiffDeserializer
         {
-            public uint GetComponentId()
-            {
-                return ComponentId;
-            }
-
-            public uint GetCommandId()
-            {
-                return 1;
-            }
-
             public void AddRequestToDiff(CommandRequestOp op, ViewDiff diff)
             {
                 var deserializedRequest = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
@@ -60,18 +50,8 @@ namespace Improbable.DependentSchema
             }
         }
 
-        public class BarCommandCommandSerializer : ICommandSerializer
+        private class BarCommandCommandSerializer : ICommandSerializer
         {
-            public uint GetComponentId()
-            {
-                return ComponentId;
-            }
-
-            public uint GetCommandId()
-            {
-                return 1;
-            }
-
             public void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages, CommandMetaData commandMetaData)
             {
                 var storage = (BarCommandCommandsToSendStorage) messages.GetCommandSendStorage(ComponentId, 1);

@@ -123,16 +123,10 @@ namespace Improbable.DependentSchema
             }
         }
 
-        public class BarCommandCommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
-            , ICommandRequestSendStorage<BarCommand.Request>
-            , ICommandResponseSendStorage<BarCommand.Response>
+        public class BarCommandCommandsToSendStorage :
+            CommandSendStorage<BarCommand.Request, BarCommand.Response>,
+            IComponentCommandSendStorage
         {
-            private readonly MessageList<CommandRequestWithMetaData<BarCommand.Request>> requestStorage =
-                new MessageList<CommandRequestWithMetaData<BarCommand.Request>>();
-
-            private readonly MessageList<BarCommand.Response> responseStorage =
-                new MessageList<BarCommand.Response>();
-
             public uint GetComponentId()
             {
                 return ComponentId;
@@ -141,42 +135,6 @@ namespace Improbable.DependentSchema
             public uint GetCommandId()
             {
                 return 1;
-            }
-
-            public Type GetRequestType()
-            {
-                return typeof(BarCommand.Request);
-            }
-
-            public Type GetResponseType()
-            {
-                return typeof(BarCommand.Response);
-            }
-
-            public void Clear()
-            {
-                requestStorage.Clear();
-                responseStorage.Clear();
-            }
-
-            public void AddRequest(BarCommand.Request request, Entity entity, long requestId)
-            {
-                requestStorage.Add(new CommandRequestWithMetaData<BarCommand.Request>(request, entity, requestId));
-            }
-
-            public void AddResponse(BarCommand.Response response)
-            {
-                responseStorage.Add(response);
-            }
-
-            internal MessageList<CommandRequestWithMetaData<BarCommand.Request>> GetRequests()
-            {
-                return requestStorage;
-            }
-
-            internal MessageList<BarCommand.Response> GetResponses()
-            {
-                return responseStorage;
             }
         }
     }
