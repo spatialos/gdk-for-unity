@@ -159,20 +159,11 @@ public class Diff{command.CommandName}CommandStorage : IComponentCommandDiffStor
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandsToSendStorage class.");
 
-            var requestType = $"{command.CommandName}.Request";
-            var responseType = $"{command.CommandName}.Response";
-
             return Text.New($@"
-public class {command.CommandName}CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
-    , ICommandRequestSendStorage<{requestType}>
-    , ICommandResponseSendStorage<{responseType}>
+public class {command.CommandName}CommandsToSendStorage :
+    CommandSendStorage<{command.CommandName}.Request, {command.CommandName}.Response>,
+    IComponentCommandSendStorage
 {{
-    private readonly MessageList<CommandRequestWithMetaData<{requestType}>> requestStorage =
-        new MessageList<CommandRequestWithMetaData<{requestType}>>();
-
-    private readonly MessageList<{responseType}> responseStorage =
-        new MessageList<{responseType}>();
-
     public uint GetComponentId()
     {{
         return ComponentId;
@@ -181,42 +172,6 @@ public class {command.CommandName}CommandsToSendStorage : ICommandSendStorage, I
     public uint GetCommandId()
     {{
         return {command.CommandIndex};
-    }}
-
-    public Type GetRequestType()
-    {{
-        return typeof({requestType});
-    }}
-
-    public Type GetResponseType()
-    {{
-        return typeof({responseType});
-    }}
-
-    public void Clear()
-    {{
-        requestStorage.Clear();
-        responseStorage.Clear();
-    }}
-
-    public void AddRequest({requestType} request, Entity entity, long requestId)
-    {{
-        requestStorage.Add(new CommandRequestWithMetaData<{requestType}>(request, entity, requestId));
-    }}
-
-    public void AddResponse({responseType} response)
-    {{
-        responseStorage.Add(response);
-    }}
-
-    internal MessageList<CommandRequestWithMetaData<{requestType}>> GetRequests()
-    {{
-        return requestStorage;
-    }}
-
-    internal MessageList<{responseType}> GetResponses()
-    {{
-        return responseStorage;
     }}
 }}
 ");
