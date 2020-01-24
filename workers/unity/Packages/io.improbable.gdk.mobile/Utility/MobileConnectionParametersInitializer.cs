@@ -10,11 +10,15 @@ namespace Improbable.Gdk.Mobile
             connectionParameters.Network = new NetworkParameters
             {
                 UseExternalIp = true,
-                ConnectionType = NetworkConnectionType.Kcp,
-                Kcp = new KcpNetworkParameters
+                ConnectionType = NetworkConnectionType.ModularKcp,
+                ModularKcp = new ModularKcpNetworkParameters
                 {
-                    // These are the last tested values
-                    Heartbeat = new HeartbeatParameters
+                    DownstreamHeartbeat = new HeartbeatParameters
+                    {
+                        IntervalMillis = 5000,
+                        TimeoutMillis = 10000
+                    },
+                    UpstreamHeartbeat = new HeartbeatParameters
                     {
                         IntervalMillis = 5000,
                         TimeoutMillis = 10000
