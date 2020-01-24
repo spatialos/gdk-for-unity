@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Tools
             var json = JsonUtility.ToJson(this, true);
             File.WriteAllText(JsonFilePath, json);
 
-            GenerateCode.GenerateIdeRunConfigs();
+            GenerateCode.GenerateCodegenRunConfigs();
         }
 
         internal List<string> Validate()

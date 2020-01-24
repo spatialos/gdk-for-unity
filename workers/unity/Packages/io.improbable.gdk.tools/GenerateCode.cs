@@ -112,7 +112,7 @@ namespace Improbable.Gdk.Tools
                 Profiler.EndSample();
 
                 Profiler.BeginSample("Generate IDE run configurations");
-                GenerateIdeRunConfigs();
+                GenerateCodegenRunConfigs();
                 Profiler.EndSample();
             }
             catch (Exception)
@@ -451,7 +451,7 @@ namespace Improbable.Gdk.Tools
             return packagePaths.Union(cachedPackagePaths).Distinct();
         }
 
-        internal static void GenerateIdeRunConfigs(GdkToolsConfiguration toolsConfig = null)
+        internal static void GenerateCodegenRunConfigs(GdkToolsConfiguration toolsConfig = null)
         {
             toolsConfig = toolsConfig ?? GdkToolsConfiguration.GetOrCreateInstance();
 
