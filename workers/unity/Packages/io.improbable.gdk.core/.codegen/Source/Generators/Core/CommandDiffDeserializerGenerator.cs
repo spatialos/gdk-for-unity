@@ -38,18 +38,8 @@ namespace Improbable.Gdk.CodeGenerator
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}DiffCommandDeserializer class.");
 
             return Text.New($@"
-public class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserializer
+private class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserializer
 {{
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
     public void AddRequestToDiff(CommandRequestOp op, ViewDiff diff)
     {{
         var deserializedRequest = {command.FqnRequestType}.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
@@ -97,18 +87,8 @@ public class {command.CommandName}DiffCommandDeserializer : ICommandDiffDeserial
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandSerializer class.");
 
             return Text.New($@"
-public class {command.CommandName}CommandSerializer : ICommandSerializer
+private class {command.CommandName}CommandSerializer : ICommandSerializer
 {{
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
     public void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages, CommandMetaData commandMetaData)
     {{
         var storage = ({command.CommandName}CommandsToSendStorage) messages.GetCommandSendStorage(ComponentId, {command.CommandIndex});
