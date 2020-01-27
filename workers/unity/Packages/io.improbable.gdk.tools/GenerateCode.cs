@@ -474,10 +474,17 @@ namespace Improbable.Gdk.Tools
             var codegenOutputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", toolsConfig.CodegenOutputDir));
             codegenArgs.Add($"--native-output-dir=\"{codegenOutputPath}\"");
 
-            // Add user defined schema directories
-            codegenArgs.AddRange(toolsConfig.SchemaSourceDirs
-                .Where(Directory.Exists)
-                .Select(directory => $"--schema-path=\"{Path.GetFullPath(directory)}\""));
+            // Add user defined schema directories, warn if directory does not exist
+            foreach (var schemaDir in toolsConfig.SchemaSourceDirs)
+            {
+                if (!Directory.Exists(schemaDir))
+                {
+                    Debug.LogWarning($"Schema directory defined in GDK tools configuration does not exist: {schemaDir}");
+                    continue;
+                }
+
+                codegenArgs.Add($"--schema-path=\"{Path.GetFullPath(schemaDir)}\"");
+            }
 
             // Add package schema directories
             codegenArgs.AddRange(FindDirInPackages(SchemaPackageDir)
@@ -504,11 +511,9 @@ namespace Improbable.Gdk.Tools
                 propertyGroup.Add(XElement.Parse($"<StartArguments>{codegenArgsString}</StartArguments>"));
                 csprojXml.Save(CodegenExe);
             }
-            catch (Exception e)
+            catch
             {
-                Debug.LogError("Unable to update csproj with run configuration.");
-                Debug.LogException(e);
-                throw;
+                throw new Exception("Unable to update csproj with run configuration.");
             }
 
             // For jetbrains rider
@@ -529,11 +534,9 @@ namespace Improbable.Gdk.Tools
 ");
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.LogError("Unable to generate Rider run configuration.");
-                Debug.LogException(e);
-                throw;
+                throw new Exception("Unable to generate Rider run configuration.");
             }
         }
     }
