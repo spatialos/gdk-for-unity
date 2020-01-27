@@ -151,7 +151,7 @@ namespace Improbable.Gdk.Tools
                     ResetCodegenLogCounter();
 
                     var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-                    var loggerOutputPath = GetDefaultLoggerOutputPath(toolsConfig);
+                    var loggerOutputPath = toolsConfig.DefaultCodegenLogPath;
 
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs("run", "-p", $"\"{CodegenExe}\"")
@@ -228,12 +228,6 @@ namespace Improbable.Gdk.Tools
                 Profiler.EndSample();
                 EditorApplication.UnlockReloadAssemblies();
             }
-        }
-
-        private static string GetDefaultLoggerOutputPath(GdkToolsConfiguration toolsConfig = null)
-        {
-            toolsConfig = toolsConfig ?? GdkToolsConfiguration.GetOrCreateInstance();
-            return Path.GetFullPath(Path.Combine(toolsConfig.CodegenLogOutputDir, "codegen-output.log"));
         }
 
         private static string GetSchemaCompilerPath()
@@ -451,28 +445,27 @@ namespace Improbable.Gdk.Tools
             return packagePaths.Union(cachedPackagePaths).Distinct();
         }
 
-        internal static void GenerateCodegenRunConfigs(GdkToolsConfiguration toolsConfig = null)
+        internal static void GenerateCodegenRunConfigs()
         {
-            toolsConfig = toolsConfig ?? GdkToolsConfiguration.GetOrCreateInstance();
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var schemaCompilerPath = GetSchemaCompilerPath();
-            var logfilePath = GetDefaultLoggerOutputPath();
+            var logfilePath = toolsConfig.DefaultCodegenLogPath;
 
             var codegenArgs = new List<string>
             {
                 $"--json-dir=\"{ImprobableJsonDir}\"",
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{WorkerJsonPath}\"",
-                $"--log-file=\"{logfilePath}\""
+                $"--log-file=\"{logfilePath}\"",
+                $"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"",
+                $"--native-output-dir=\"{toolsConfig.FullCodegenOutputPath}\""
             };
 
             if (toolsConfig.VerboseLogging)
             {
-                codegenArgs.Add($"--verbose");
+                codegenArgs.Add("--verbose");
             }
-
-            var codegenOutputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", toolsConfig.CodegenOutputDir));
-            codegenArgs.Add($"--native-output-dir=\"{codegenOutputPath}\"");
 
             // Add user defined schema directories, warn if directory does not exist
             foreach (var schemaDir in toolsConfig.SchemaSourceDirs)
@@ -489,9 +482,6 @@ namespace Improbable.Gdk.Tools
             // Add package schema directories
             codegenArgs.AddRange(FindDirInPackages(SchemaPackageDir)
                 .Select(directory => $"--schema-path=\"{directory}\""));
-
-            // Schema Descriptor
-            codegenArgs.Add($"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"");
 
             codegenArgs.AddRange(
                 toolsConfig.SerializationOverrides.Select(@override => $"--serialization-override=\"{@override}\""));
@@ -511,18 +501,17 @@ namespace Improbable.Gdk.Tools
                 propertyGroup.Add(XElement.Parse($"<StartArguments>{codegenArgsString}</StartArguments>"));
                 csprojXml.Save(CodegenExe);
             }
-            catch
+            catch (Exception e)
             {
-                throw new Exception("Unable to update csproj with run configuration.");
+                throw new Exception($"Unable to add run configuration to '{CodegenExe}'.", e);
             }
 
             // For jetbrains rider
+            var runConfigPath = Path.Combine(CodegenExeDirectory, ".idea", ".idea.CodeGen", ".idea", "runConfigurations");
             try
             {
-                var runConfigPath = Path.Combine(CodegenExeDirectory, ".idea", ".idea.CodeGen", ".idea",
-                    "runConfigurations");
                 Directory.CreateDirectory(runConfigPath);
-                using (var w = new StreamWriter(Path.Combine(runConfigPath, "CodeGen.xml"), false))
+                using (var w = new StreamWriter(Path.Combine(runConfigPath, "CodeGen.xml"), append: false))
                 {
                     w.Write($@"
 <component name=""ProjectRunConfigurationManager"">
@@ -534,9 +523,9 @@ namespace Improbable.Gdk.Tools
 ");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                throw new Exception("Unable to generate Rider run configuration.");
+                throw new Exception($"Unable to generate Rider run configuration at '{runConfigPath}'.", e);
             }
         }
     }
