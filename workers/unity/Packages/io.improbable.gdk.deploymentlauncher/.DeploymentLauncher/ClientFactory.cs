@@ -3,16 +3,24 @@ using System.IO;
 using System.Linq;
 using Improbable.SpatialOS.Deployment.V1Alpha1;
 using Improbable.SpatialOS.Platform.Common;
+using Improbable.SpatialOS.Snapshot.V1Alpha1;
 
 namespace Improbable.Gdk.DeploymentLauncher
 {
     public static class ClientFactory
     {
-        public static DeploymentServiceClient Create(Options.Global options)
+        public static DeploymentServiceClient CreateDeploymentClient(Options.Global options)
         {
             return string.IsNullOrEmpty(options.Environment)
                 ? DeploymentServiceClient.Create()
                 : DeploymentServiceClient.Create(GetEndpoint(options.Environment), GetTokenCredential(options.Environment));
+        }
+
+        public static SnapshotServiceClient CreateSnapshotClient(Options.Global options)
+        {
+            return string.IsNullOrEmpty(options.Environment)
+                ? SnapshotServiceClient.Create()
+                : SnapshotServiceClient.Create(GetEndpoint(options.Environment), GetTokenCredential(options.Environment));
         }
 
         private static PlatformApiEndpoint GetEndpoint(string environment)
@@ -36,7 +44,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 _ => throw new ArgumentException($"Unknown environment: {environment}", nameof(environment))
             };
         }
-        
+
         private static string GetRefreshToken(string environment)
         {
             var possibleTokenFiles = new[]

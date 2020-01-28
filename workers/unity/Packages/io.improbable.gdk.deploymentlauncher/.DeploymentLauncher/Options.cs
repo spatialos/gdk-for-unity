@@ -10,7 +10,7 @@ namespace Improbable.Gdk.DeploymentLauncher
             [Option("environment", Required = false, HelpText = "The SpatialOS environment name")]
             public string Environment { get; set; }
         }
-        
+
         [Verb("create", HelpText = "Create a deployment.")]
         public class Create : Global
         {
@@ -71,7 +71,8 @@ namespace Improbable.Gdk.DeploymentLauncher
         public enum DeploymentRegionCode
         {
             US,
-            EU
+            EU,
+            CN
         }
     }
 }

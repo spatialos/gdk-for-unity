@@ -6,7 +6,7 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
     {
         public static int StopDeployment(Options.Stop options)
         {
-            var deploymentServiceClient = DeploymentServiceClient.Create();
+            var deploymentServiceClient = ClientFactory.CreateDeploymentClient(options);
 
             try
             {
