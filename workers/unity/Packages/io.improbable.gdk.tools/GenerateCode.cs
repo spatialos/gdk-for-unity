@@ -239,7 +239,6 @@ namespace Improbable.Gdk.Tools
                 case RuntimePlatform.WindowsEditor:
                     schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
                     break;
-                case RuntimePlatform.LinuxEditor:
                 case RuntimePlatform.OSXEditor:
                     RedirectedProcess.Command("chmod")
                         .WithArgs("+x", $"\"{schemaCompilerPath}\"")
