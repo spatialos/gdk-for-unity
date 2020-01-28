@@ -9,9 +9,9 @@
 ### Added
 
 - Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
-- Added generation of code generator run configurations. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
+- Added generation of code generator run configurations for Jetbrains Rider, Visual Studio, and the `dotnet` CLI. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
     - This means you no longer need to keep the Unity Editor constantly open to iterate on generators.
-- Added error logging in the code generator to log when input schema source directories do not exist. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
+- The code generator now logs an error when an input schema source directory does not exist. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
 
 ### Internal
 
