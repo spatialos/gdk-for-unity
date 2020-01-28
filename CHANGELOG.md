@@ -10,6 +10,10 @@
 
 - Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
 
+### Fixed
+
+- Fixed a bug where build targets which were _not_ marked as required were not skipped if the user did not have the build support installed. [#1257](https://github.com/spatialos/gdk-for-unity/pull/1257)
+
 ### Internal
 
 - Implemented a new CodeWriter in the code generator which provides a fluent interface for generating C# code. [#1237](https://github.com/spatialos/gdk-for-unity/pull/1237)
