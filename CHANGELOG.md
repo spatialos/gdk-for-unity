@@ -13,6 +13,10 @@
     - This means you no longer need to keep the Unity Editor constantly open to iterate on generators.
 - The code generator now logs an error when an input schema source directory does not exist. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
 
+### Fixed
+
+- Fixed a bug where build targets which were _not_ marked as required were not skipped if the user did not have the build support installed. [#1257](https://github.com/spatialos/gdk-for-unity/pull/1257)
+
 ### Internal
 
 - Implemented a new CodeWriter in the code generator which provides a fluent interface for generating C# code. [#1237](https://github.com/spatialos/gdk-for-unity/pull/1237)
