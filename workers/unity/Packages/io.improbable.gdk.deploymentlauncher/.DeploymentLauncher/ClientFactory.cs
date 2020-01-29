@@ -9,14 +9,14 @@ namespace Improbable.Gdk.DeploymentLauncher
 {
     public static class ClientFactory
     {
-        public static DeploymentServiceClient CreateDeploymentClient(Options.Global options)
+        public static DeploymentServiceClient CreateDeploymentClient(Options.Common options)
         {
             return string.IsNullOrEmpty(options.Environment)
                 ? DeploymentServiceClient.Create()
                 : DeploymentServiceClient.Create(GetEndpoint(options.Environment), GetTokenCredential(options.Environment));
         }
 
-        public static SnapshotServiceClient CreateSnapshotClient(Options.Global options)
+        public static SnapshotServiceClient CreateSnapshotClient(Options.Common options)
         {
             return string.IsNullOrEmpty(options.Environment)
                 ? SnapshotServiceClient.Create()
@@ -25,24 +25,28 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private static PlatformApiEndpoint GetEndpoint(string environment)
         {
-            return environment switch
+            switch (environment)
             {
-                "cn-production" => new PlatformApiEndpoint("platform.api.spatialoschina.com", 443),
-                _ => throw new ArgumentException($"Unknown environment: {environment}", nameof(environment))
-            };
+                case "cn-production":
+                    return new PlatformApiEndpoint("platform.api.spatialoschina.com", 443);
+                default:
+                    throw new ArgumentException($"Unknown environment: {environment}", nameof(environment));
+            }
         }
 
         private static PlatformRefreshTokenCredential GetTokenCredential(string environment)
         {
             var refreshToken = GetRefreshToken(environment);
 
-            return environment switch
+            switch (environment)
             {
-                "cn-production" => new PlatformRefreshTokenCredential(refreshToken,
-                    "https://auth.spatialoschina.com/auth/v1/authcode",
-                    "https://auth.spatialoschina.com/auth/v1/token"),
-                _ => throw new ArgumentException($"Unknown environment: {environment}", nameof(environment))
-            };
+                case "cn-production":
+                    return new PlatformRefreshTokenCredential(refreshToken,
+                        "https://auth.spatialoschina.com/auth/v1/authcode",
+                        "https://auth.spatialoschina.com/auth/v1/token");
+                default:
+                    throw new ArgumentException($"Unknown environment: {environment}", nameof(environment));
+            }
         }
 
         private static string GetRefreshToken(string environment)

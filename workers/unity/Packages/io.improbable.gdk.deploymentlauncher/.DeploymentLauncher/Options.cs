@@ -5,14 +5,14 @@ namespace Improbable.Gdk.DeploymentLauncher
 {
     public class Options
     {
-        public class Global
+        public class Common
         {
             [Option("environment", Required = false, HelpText = "The SpatialOS environment name")]
             public string Environment { get; set; }
         }
 
         [Verb("create", HelpText = "Create a deployment.")]
-        public class Create : Global
+        public class Create : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         }
 
         [Verb("stop", HelpText = "Stop a running deployment.")]
-        public class Stop : Global
+        public class Stop : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
@@ -62,7 +62,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         }
 
         [Verb("list", HelpText = "List deployments for a given project.")]
-        public class List : Global
+        public class List : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
