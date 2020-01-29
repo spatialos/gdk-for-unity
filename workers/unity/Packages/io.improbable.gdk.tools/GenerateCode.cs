@@ -240,10 +240,14 @@ namespace Improbable.Gdk.Tools
                     schemaCompilerPath = Path.ChangeExtension(schemaCompilerPath, ".exe");
                     break;
                 case RuntimePlatform.OSXEditor:
-                    RedirectedProcess.Command("chmod")
+                    var result = RedirectedProcess.Command("chmod")
                         .WithArgs("+x", $"\"{schemaCompilerPath}\"")
                         .InDirectory(Path.GetFullPath(Path.Combine(Application.dataPath, "..")))
                         .Run();
+                    if (result.ExitCode != 0)
+                    {
+                        throw new IOException($"Failed to chmod schema compiler:\n{string.Join("\n", result.Stderr)}");
+                    }
                     break;
                 default:
                     throw new PlatformNotSupportedException(
