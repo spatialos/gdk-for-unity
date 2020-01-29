@@ -423,7 +423,8 @@ namespace Improbable.Gdk.DeploymentLauncher
     internal enum DeploymentRegionCode
     {
         US,
-        EU
+        EU,
+        CN
     }
 
     internal class DeploymentInfo

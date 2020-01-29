@@ -7,7 +7,7 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
     {
         public static int ListDeployments(Options.List options)
         {
-            var deploymentServiceClient = DeploymentServiceClient.Create();
+            var deploymentServiceClient = ClientFactory.CreateDeploymentClient(options);
             var listDeploymentsResult = deploymentServiceClient.ListDeployments(new ListDeploymentsRequest
             {
                 ProjectName = options.ProjectName

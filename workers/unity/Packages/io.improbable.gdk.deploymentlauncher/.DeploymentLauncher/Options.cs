@@ -5,8 +5,14 @@ namespace Improbable.Gdk.DeploymentLauncher
 {
     public class Options
     {
+        public class Common
+        {
+            [Option("environment", Required = false, HelpText = "The SpatialOS environment name")]
+            public string Environment { get; set; }
+        }
+
         [Verb("create", HelpText = "Create a deployment.")]
-        public class Create
+        public class Create : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
@@ -46,7 +52,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         }
 
         [Verb("stop", HelpText = "Stop a running deployment.")]
-        public class Stop
+        public class Stop : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
@@ -56,7 +62,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         }
 
         [Verb("list", HelpText = "List deployments for a given project.")]
-        public class List
+        public class List : Common
         {
             [Option("project_name", Required = true, HelpText = "The SpatialOS project name")]
             public string ProjectName { get; set; }
@@ -65,7 +71,8 @@ namespace Improbable.Gdk.DeploymentLauncher
         public enum DeploymentRegionCode
         {
             US,
-            EU
+            EU,
+            CN
         }
     }
 }

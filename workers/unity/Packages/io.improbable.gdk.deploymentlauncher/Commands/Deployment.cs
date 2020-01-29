@@ -91,12 +91,18 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
             CancellationToken token,
             Func<RedirectedProcessResult, T> resultHandler)
         {
+            var config = GdkToolsConfiguration.GetOrCreateInstance();
+
             var wrappedArgs = new[] { "run", "-p", $"\"{DeploymentLauncherProjectPath}\"" }
-                .Concat(programArgs)
-                .ToArray();
+                .Concat(programArgs);
+
+            if (!string.IsNullOrEmpty(config.EnvironmentPlatform))
+            {
+                wrappedArgs = wrappedArgs.Concat(new[] { $"--environment {config.EnvironmentPlatform}" });
+            }
 
             var result = await RedirectedProcess.Command(Tools.Common.DotNetBinary)
-                .WithArgs(wrappedArgs)
+                .WithArgs(wrappedArgs.ToArray())
                 .RedirectOutputOptions(redirectBehaviour)
                 .RunAsync(token)
                 .ConfigureAwait(false);

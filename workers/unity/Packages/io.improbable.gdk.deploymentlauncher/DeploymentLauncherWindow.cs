@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Improbable.Gdk.Core.Editor;
+using Improbable.Gdk.Tools;
 using Improbable.Gdk.Tools.MiniJSON;
 using UnityEditor;
 using UnityEngine;
@@ -108,7 +109,8 @@ namespace Improbable.Gdk.DeploymentLauncher
                 var result = wrappedTask.Task.Result;
                 if (result.IsOkay)
                 {
-                    Application.OpenURL($"https://console.improbable.io/projects/{cachedProjectName}/deployments/{config.Name}/overview");
+                    var host = GetHostForEnvironment();
+                    Application.OpenURL($"{host}/projects/{cachedProjectName}/deployments/{config.Name}/overview");
                 }
                 else
                 {
@@ -198,6 +200,14 @@ namespace Improbable.Gdk.DeploymentLauncher
             }
 
             manager.ClearResults();
+        }
+
+        private static string GetHostForEnvironment()
+        {
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+            return toolsConfig.EnvironmentPlatform == "cn-production"
+                ? "https://console.spatialoschina.com"
+                : "https://console.improbable.io";
         }
 
         private void OnGUI()
@@ -715,7 +725,8 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                         if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
-                            Application.OpenURL($"https://console.improbable.io/projects/{projectName}/deployments/{deplInfo.Name}/overview/{deplInfo.Id}");
+                            var host = GetHostForEnvironment();
+                            Application.OpenURL($"{host}/projects/{projectName}/deployments/{deplInfo.Name}/overview/{deplInfo.Id}");
                         }
 
                         if (check.changed)

@@ -67,15 +67,15 @@ namespace Improbable.Gdk.TestUtils.Editor
         /// <exception cref="Exception">Thrown if this fails to start SpatialD.</exception>
         public static async Task<SpatialdManager> Start()
         {
-            await RedirectedProcess.Command(Common.SpatialBinary)
-                .WithArgs("service", "stop")
+            await RedirectedProcess
+                .Spatial("service", "stop")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()
                 .ConfigureAwait(false);
 
-            var result = await RedirectedProcess.Command(Common.SpatialBinary)
-                .WithArgs("service", "start")
+            var result = await RedirectedProcess
+                .Spatial("service", "start")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()
@@ -124,8 +124,8 @@ namespace Improbable.Gdk.TestUtils.Editor
                 throw new ArgumentException($"Could not find launch config file at {fullSnapshotPath}");
             }
 
-            var buildConfigResult = await RedirectedProcess.Command(Common.SpatialBinary)
-                .WithArgs("build", "build-config")
+            var buildConfigResult = await RedirectedProcess
+                .Spatial("build", "build-config")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()
@@ -221,8 +221,8 @@ namespace Improbable.Gdk.TestUtils.Editor
 
         public void Dispose()
         {
-            var result = RedirectedProcess.Command(Common.SpatialBinary)
-                .WithArgs("service", "stop")
+            var result = RedirectedProcess
+                .Spatial("service", "stop")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
                 .RunAsync()
