@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Tools
             catch (Exception)
             {
                 EditorUtility.DisplayDialog("Generate Code",
-                    "Code generation failed.\nPlease check the console for more information.",
+                    $"Code generation failed.{Environment.NewLine}Please check the console for more information.",
                     "Close");
                 throw;
             }
@@ -174,7 +174,8 @@ namespace Improbable.Gdk.Tools
                                 if (File.Exists(loggerOutputPath))
                                 {
                                     var option = EditorUtility.DisplayDialogComplex("Generate Code",
-                                        $"Code generation failed with {numWarnings} warnings and {numErrors} errors!\n\nPlease check the code generation logs for more information: {loggerOutputPath}",
+                                        $"Code generation failed with {numWarnings} warnings and {numErrors} errors!{Environment.NewLine}{Environment.NewLine}"
+                                        + "Please check the code generation logs for more information: {loggerOutputPath}",
                                         "Open logfile",
                                         "Close",
                                         "");
@@ -246,7 +247,7 @@ namespace Improbable.Gdk.Tools
                         .Run();
                     if (result.ExitCode != 0)
                     {
-                        throw new IOException($"Failed to chmod schema compiler:\n{string.Join("\n", result.Stderr)}");
+                        throw new IOException($"Failed to chmod schema compiler:{Environment.NewLine}{string.Join(Environment.NewLine, result.Stderr)}");
                     }
                     break;
                 default:
@@ -273,7 +274,7 @@ namespace Improbable.Gdk.Tools
         private static void DisplayGeneralFailure()
         {
             EditorUtility.DisplayDialog("Generate Code",
-                "Code generation failed.\nPlease check the console for more information.",
+                $"Code generation failed.{Environment.NewLine}Please check the console for more information.",
                 "Close");
         }
 
@@ -303,7 +304,7 @@ namespace Improbable.Gdk.Tools
             {
                 var log = CodegenLog.FromRaw(output);
                 codegenLogCounts[log.Level]++;
-                Debug.unityLogger.Log(log.GetUnityLogType(), $"{log.Message}\n{log.Logger}");
+                Debug.unityLogger.Log(log.GetUnityLogType(), $"{log.Message}{Environment.NewLine}{log.Logger}");
             }
             catch (Exception e)
             {
