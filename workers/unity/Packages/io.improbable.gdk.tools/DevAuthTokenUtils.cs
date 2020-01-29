@@ -35,7 +35,8 @@ namespace Improbable.Gdk.Tools
             RedirectedProcess
                 .Spatial("project", "auth", "dev-auth-token", "create")
                 .WithArgs("--description", "\"Dev Auth Token\"",
-                    "--lifetime", devAuthTokenLifetimeHours, "--json_output")
+                    "--lifetime", devAuthTokenLifetimeHours,
+                    "--json_output")
                 .InDirectory(Common.SpatialProjectRootDir)
                 .AddOutputProcessing(message => receivedMessage = message)
                 .RedirectOutputOptions(OutputRedirectBehaviour.None)
