@@ -5,10 +5,19 @@
 ### Breaking Changes
 
 - Your generated code Assembly Definition file now needs to have `allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
+- The `RedirectedProcess.WithArgs` API will now concatinate arguments, instead of replace the previously provided arguments. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
 
 ### Added
 
 - Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
+- Added support for the cn-production environment.
+- Added `RedirectedProcess.Spatial` wrapper for calling the spatial toolbelt. This wrapper automatically uses the current project environment. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+
+### Changed
+
+- Upgrade to Worker SDK v14.4.0. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+  - The Raknet, Tcp, and Kcp network protocols have been deprecated. Please use ModularKcp and ModularTcp instead.
+  - ModularUdp has been renamed to ModularKcp.
 
 ### Fixed
 
@@ -25,6 +34,8 @@
 - Ported core module to new CodeWriter. [#1247](https://github.com/spatialos/gdk-for-unity/pull/1247) [#1248](https://github.com/spatialos/gdk-for-unity/pull/1248) [#1249](https://github.com/spatialos/gdk-for-unity/pull/1249) [#1251](https://github.com/spatialos/gdk-for-unity/pull/1251) [#1252](https://github.com/spatialos/gdk-for-unity/pull/1252) [#1253](https://github.com/spatialos/gdk-for-unity/pull/1253)
 - Removed all Text Template Transformation Toolkit (T4) references and dependencies. [#1254](https://github.com/spatialos/gdk-for-unity/pull/1254)
 - Simplified dirtyBits logic and code generation [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
+- Upgrade to Platform SDK v14.4.0. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+  - This only affects the DeploymentLauncher.
 
 ## `0.3.2` - 2019-12-23
 
