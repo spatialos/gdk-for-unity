@@ -35,6 +35,7 @@
 - Removed all Text Template Transformation Toolkit (T4) references and dependencies. [#1254](https://github.com/spatialos/gdk-for-unity/pull/1254)
 - Simplified dirtyBits logic and code generation [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 - The DeploymentLauncher now uses Platform SDK v14.4.0. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+- `init.sh` and `init.ps1` now support the `--china` and `-china` flag respectively to download from the `cn-production` environment. [#1261](https://github.com/spatialos/gdk-for-unity/pull/1261)
 
 ## `0.3.2` - 2019-12-23
 
