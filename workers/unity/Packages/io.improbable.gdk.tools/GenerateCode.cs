@@ -524,6 +524,7 @@ namespace Improbable.Gdk.Tools
 <component name=""ProjectRunConfigurationManager"">
   <configuration default=""false"" name=""CodeGen"" type=""DotNetProject"" factoryName="".NET Project"">
     <option name=""PROJECT_PATH"" value=""$PROJECT_DIR$/CodeGen/CodeGen.csproj"" />
+    <option name=""PROJECT_KIND"" value=""DotNetCore"" />
     <option name=""PROGRAM_PARAMETERS"" value=""{codegenArgsString.Replace("\"", "&quot;")}"" />
   </configuration>
 </component>
