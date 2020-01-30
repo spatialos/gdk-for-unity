@@ -82,7 +82,7 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseEventName}Comparer =
                             {
                                 m.Initializer("return new Type[]", () =>
                                 {
-                                    return eventDetailsList.Select(ev => $"typeof({ev.EventName}.Event),");
+                                    return eventDetailsList.Select(ev => $"typeof({ev.EventName}.Event)");
                                 });
                             });
 

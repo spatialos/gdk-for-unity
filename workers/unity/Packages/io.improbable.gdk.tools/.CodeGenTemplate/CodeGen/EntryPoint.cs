@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -162,7 +163,17 @@ namespace Improbable.Gdk.CodeGenerator
 
         private string GenerateBundle()
         {
-            var inputPaths = options.SchemaInputDirs.Select(dir => $"--schema_path=\"{dir}\"");
+            var inputPaths = new List<string>();
+            foreach (var schemaDir in options.SchemaInputDirs)
+            {
+                if (!Directory.Exists(schemaDir))
+                {
+                    logger.Error($"Schema source directory not found at path \"{schemaDir}\".");
+                    continue;
+                }
+
+                inputPaths.Add($"--schema_path=\"{schemaDir}\"");
+            }
 
             logger.Info($"Preparing bundle output path: {options.JsonDirectory}.");
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);

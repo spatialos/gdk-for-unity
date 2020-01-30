@@ -12,6 +12,9 @@
 - Added public toolkit for writing code generators. [#1240](https://github.com/spatialos/gdk-for-unity/pull/1240) [#1243](https://github.com/spatialos/gdk-for-unity/pull/1243) [#1244](https://github.com/spatialos/gdk-for-unity/pull/1244) [#1245](https://github.com/spatialos/gdk-for-unity/pull/1245) [#1250](https://github.com/spatialos/gdk-for-unity/pull/1250)
 - Added support for the `cn-production` environment.
 - Added `RedirectedProcess.Spatial` wrapper for calling the `spatial` CLI. This wrapper automatically uses the current project environment. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+- Added generation of code generator run configurations for Jetbrains Rider, Visual Studio, and the `dotnet` CLI. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
+    - This means you no longer need to keep the Unity Editor constantly open to iterate on generators.
+- The code generator now logs an error when an input schema source directory does not exist. [#1256](https://github.com/spatialos/gdk-for-unity/pull/1256)
 
 ### Changed
 

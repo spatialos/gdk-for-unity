@@ -23,6 +23,9 @@ namespace Improbable.Gdk.Tools
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
+        public string FullCodegenOutputPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", CodegenOutputDir));
+        public string DefaultCodegenLogPath => Path.GetFullPath(Path.Combine(CodegenLogOutputDir, "codegen-output.log"));
+
         private const string CustomSnapshotPathPrefKey = "CustomSnapshotPath";
 
         public string CustomSnapshotPath
@@ -42,6 +45,8 @@ namespace Improbable.Gdk.Tools
         {
             var json = JsonUtility.ToJson(this, true);
             File.WriteAllText(JsonFilePath, json);
+
+            GenerateCode.GenerateCodegenRunConfigs();
         }
 
         internal List<string> Validate()
