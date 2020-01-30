@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,13 +71,28 @@ namespace Improbable.Gdk.Tools
             return redirectedProcess;
         }
 
+        public static RedirectedProcess Spatial(params string[] args)
+        {
+            var config = GdkToolsConfiguration.GetOrCreateInstance();
+
+            if (!string.IsNullOrEmpty(config.EnvironmentPlatform))
+            {
+                args = args
+                    .Append($"--environment={config.EnvironmentPlatform}")
+                    .ToArray();
+            }
+
+            return Command(Tools.Common.SpatialBinary)
+                .WithArgs(args);
+        }
+
         /// <summary>
         ///     Adds arguments to process command call.
         /// </summary>
         /// <param name="arguments">Parameters that will be passed to the command.</param>
         public RedirectedProcess WithArgs(params string[] arguments)
         {
-            this.arguments = arguments;
+            this.arguments = this.arguments?.Concat(arguments).ToArray() ?? arguments;
             return this;
         }
 

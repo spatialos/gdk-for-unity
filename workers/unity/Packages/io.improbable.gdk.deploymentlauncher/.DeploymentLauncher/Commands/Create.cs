@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Google.Protobuf.WellKnownTypes;
 using Improbable.SpatialOS.Deployment.V1Alpha1;
@@ -27,8 +26,8 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
         private static int CreateDeploymentInternal<TOptions>(TOptions options, Func<TOptions, string> getLaunchConfigJson)
             where TOptions : Options.Create
         {
-            var snapshotServiceClient = SnapshotServiceClient.Create();
-            var deploymentServiceClient = DeploymentServiceClient.Create();
+            var snapshotServiceClient = ClientFactory.CreateSnapshotClient(options);
+            var deploymentServiceClient = ClientFactory.CreateDeploymentClient(options);
 
             try
             {
@@ -46,8 +45,7 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
 
                 if (options.SnapshotPath != null)
                 {
-                    var snapshotId = UploadSnapshot(snapshotServiceClient, options.SnapshotPath, options.ProjectName,
-                        options.DeploymentName);
+                    var snapshotId = UploadSnapshot(snapshotServiceClient, options);
 
                     if (string.IsNullOrEmpty(snapshotId))
                     {
@@ -139,29 +137,28 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
             return launchConfig.ToString();
         }
 
-        private static string UploadSnapshot(SnapshotServiceClient client, string snapshotPath, string projectName,
-            string deploymentName)
+        private static string UploadSnapshot(SnapshotServiceClient client, Options.Create options)
         {
-            if (!File.Exists(snapshotPath))
+            if (!File.Exists(options.SnapshotPath))
             {
-                Ipc.WriteError(Ipc.ErrorCode.NotFound, $"Could not find snapshot file at: {snapshotPath}");
+                Ipc.WriteError(Ipc.ErrorCode.NotFound, $"Could not find snapshot file at: {options.SnapshotPath}");
                 return null;
             }
 
             // Read snapshot.
-            var bytes = File.ReadAllBytes(snapshotPath);
+            var bytes = File.ReadAllBytes(options.SnapshotPath);
 
             if (bytes.Length == 0)
             {
-                Ipc.WriteError(Ipc.ErrorCode.Unknown, $"Snapshot file at {snapshotPath} has zero bytes.");
+                Ipc.WriteError(Ipc.ErrorCode.Unknown, $"Snapshot file at {options.SnapshotPath} has zero bytes.");
                 return null;
             }
 
             // Create HTTP endpoint to upload to.
             var snapshotToUpload = new Snapshot
             {
-                ProjectName = projectName,
-                DeploymentName = deploymentName
+                ProjectName = options.ProjectName,
+                DeploymentName = options.DeploymentName
             };
 
             using (var md5 = MD5.Create())
@@ -180,6 +177,11 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                 {
                     var content = new ByteArrayContent(bytes);
                     content.Headers.Add("Content-MD5", snapshotToUpload.Checksum);
+
+                    if (options.Environment == "cn-production")
+                    {
+                        content.Headers.Add("x-amz-server-side-encryption", "AES256");
+                    }
 
                     using (var response = httpClient.PutAsync(uploadSnapshotResponse.UploadUrl, content).Result)
                     {

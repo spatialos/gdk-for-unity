@@ -162,9 +162,10 @@ namespace Improbable.Gdk.Tools
             EditorApplication.LockReloadAssemblies();
 
             tokenSrc = new CancellationTokenSource();
-            return RedirectedProcess.Command(Common.SpatialBinary)
+            return RedirectedProcess
+                .Spatial("project", "deployment", "worker", "port-forward")
                 .InDirectory(Common.SpatialProjectRootDir)
-                .WithArgs("project", "deployment", "worker", "port-forward",
+                .WithArgs(
                     "-d", deploymentName,
                     "-w", workerId,
                     "-p", $"{port}")

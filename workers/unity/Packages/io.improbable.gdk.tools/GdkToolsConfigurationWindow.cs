@@ -21,6 +21,7 @@ namespace Improbable.Gdk.Tools
         private const string DevAuthTokenLifetimeLabel = "Token lifetime (days)";
         private const string CodeGeneratorLabel = "Code generator";
         private const string CustomSnapshotPathLabel = "Selected snapshot path";
+        private const string GeneralSectionLabel = "General";
         private const string ResetConfigurationButtonText = "Reset to default";
         private const string SaveConfigurationButtonText = "Save";
 
@@ -86,6 +87,8 @@ namespace Improbable.Gdk.Tools
                     }
                 }
 
+                DrawGeneralSection();
+
                 DrawCodeGenerationOptions();
 
                 DrawCustomSnapshotDir();
@@ -102,6 +105,20 @@ namespace Improbable.Gdk.Tools
             {
                 EditorGUILayout.HelpBox(error, MessageType.Error);
             }
+        }
+
+        private void DrawGeneralSection()
+        {
+            var previousWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 180;
+
+            GUILayout.Label(GeneralSectionLabel, EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                toolsConfig.EnvironmentPlatform = EditorGUILayout.TextField("Environment", toolsConfig.EnvironmentPlatform);
+            }
+
+            EditorGUIUtility.labelWidth = previousWidth;
         }
 
         private void DrawCodeGenerationOptions()
