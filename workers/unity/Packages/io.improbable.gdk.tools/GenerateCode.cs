@@ -453,6 +453,17 @@ namespace Improbable.Gdk.Tools
         {
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
+            // Ensure tools config is valid before continuing
+            var configErrors = toolsConfig.Validate();
+            if (configErrors.Count > 0)
+            {
+                foreach (var error in configErrors)
+                {
+                    Debug.LogError(error);
+                }
+                return;
+            }
+
             var schemaCompilerPath = GetSchemaCompilerPath();
             var logfilePath = toolsConfig.DefaultCodegenLogPath;
 
@@ -471,24 +482,16 @@ namespace Improbable.Gdk.Tools
                 codegenArgs.Add("--verbose");
             }
 
-            // Add user defined schema directories, warn if directory does not exist
-            foreach (var schemaDir in toolsConfig.SchemaSourceDirs)
-            {
-                if (!Directory.Exists(schemaDir))
-                {
-                    Debug.LogWarning($"Schema directory defined in GDK tools configuration does not exist: {schemaDir}");
-                    continue;
-                }
-
-                codegenArgs.Add($"--schema-path=\"{Path.GetFullPath(schemaDir)}\"");
-            }
+            // Add user defined schema directories
+            codegenArgs.AddRange(toolsConfig.SchemaSourceDirs
+                .Select(schemaDir => $"--schema-path=\"{Path.GetFullPath(schemaDir)}\""));
 
             // Add package schema directories
             codegenArgs.AddRange(FindDirInPackages(SchemaPackageDir)
                 .Select(directory => $"--schema-path=\"{directory}\""));
 
-            codegenArgs.AddRange(
-                toolsConfig.SerializationOverrides.Select(@override => $"--serialization-override=\"{@override}\""));
+            codegenArgs.AddRange(toolsConfig.SerializationOverrides
+                .Select(@override => $"--serialization-override=\"{@override}\""));
 
             var codegenArgsString = string.Join(" ", codegenArgs);
 
