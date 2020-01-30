@@ -3,6 +3,19 @@ set -e -u -o pipefail
 
 cd "$(dirname "$0")"
 
+if [[ -n "${1:-}" ]]; then
+    case "$1" in
+    --china)
+        echo "Downloading with cn-production environment"
+        ENVIRONMENT_ARGS="--environment=cn-production"
+        ;;
+    *)
+        echo "Unknown flag $1"
+        exit 1
+        ;;
+    esac
+fi
+
 PKG_ROOT="workers/unity/Packages"
 SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
@@ -16,7 +29,7 @@ update_package() {
     local identifier=$2
     local path=$3
 
-    spatial package get $type $identifier $SDK_VERSION "${path}" --unzip --force --json_output
+    spatial package get "${type}" "${identifier}" "${SDK_VERSION}" "${path}" --unzip --force --json_output ${ENVIRONMENT_ARGS:-}
 
     local files=${4:-""}
     for file in $(echo $files | tr ";" "\n"); do
@@ -28,7 +41,7 @@ update_spot() {
     local identifer=$1
     local path=$2
 
-    spatial package get spot $identifer $SPOT_VERSION "${path}" --force --json_output
+    spatial package get spot "${identifer}" "${SPOT_VERSION}" "${path}" --force --json_output ${ENVIRONMENT_ARGS:-}
 }
 
 # Update Core SDK
