@@ -103,12 +103,8 @@ namespace Improbable.Gdk.Tools
         {
             try
             {
-                Profiler.BeginSample("Install dotnet template");
-                InstallDotnetTemplate();
-                Profiler.EndSample();
-
-                Profiler.BeginSample("Create dotnet template");
-                CreateTemplate();
+                Profiler.BeginSample("Copy codegen template");
+                CopyTemplate();
                 Profiler.EndSample();
 
                 Profiler.BeginSample("Generate IDE run configurations");
@@ -312,38 +308,35 @@ namespace Improbable.Gdk.Tools
             }
         }
 
-        private static void InstallDotnetTemplate()
-        {
-            var result = RedirectedProcess.Command(Common.DotNetBinary)
-                .WithArgs("new", "-i", "./")
-                .InDirectory(CodegenTemplatePath)
-                .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                .Run();
-
-            if (result.ExitCode != 0)
-            {
-                throw new Exception("Failed to run.");
-            }
-        }
-
-        private static void CreateTemplate()
+        private static void CopyTemplate()
         {
             if (Directory.Exists(CodegenExeDirectory))
             {
-                Directory.Delete(CodegenExeDirectory, recursive: true);
+                Directory.Delete(CodegenExeDirectory, true);
             }
 
-            Directory.CreateDirectory(CodegenExeDirectory);
+            CopyDirectory(CodegenTemplatePath, CodegenExeDirectory);
+        }
 
-            var result = RedirectedProcess.Command(Common.DotNetBinary)
-                .WithArgs("new", "gdk-for-unity-codegen")
-                .InDirectory(CodegenExeDirectory)
-                .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                .Run();
+        private static void CopyDirectory(string source, string dest)
+        {
+            var dirInfo = new DirectoryInfo(source);
 
-            if (result.ExitCode != 0)
+            if (!dirInfo.Exists)
             {
-                throw new Exception("Failed to run.");
+                throw new DirectoryNotFoundException($"Source directory does not exist: '{source}'");
+            }
+
+            Directory.CreateDirectory(dest);
+
+            foreach (var file in dirInfo.GetFiles())
+            {
+                file.CopyTo(Path.Combine(dest, file.Name));
+            }
+
+            foreach (var dir in dirInfo.GetDirectories())
+            {
+                CopyDirectory(dir.FullName, Path.Combine(dest, dir.Name));
             }
         }
 
