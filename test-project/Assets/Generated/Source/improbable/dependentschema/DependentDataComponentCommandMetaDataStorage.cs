@@ -8,7 +8,7 @@ namespace Improbable.DependentSchema
 {
     public partial class DependentDataComponent
     {
-        public class BarCommandCommandMetaDataStorage :
+        private class BarCommandCommandMetaDataStorage :
             CommandPayloadStorage<global::Improbable.TestSchema.SomeType>,
             ICommandMetaDataStorage
         {

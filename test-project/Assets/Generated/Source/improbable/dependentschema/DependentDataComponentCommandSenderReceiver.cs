@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using Unity.Entities;
-using Unity.Collections;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Worker.CInterop;
@@ -16,20 +15,12 @@ namespace Improbable.DependentSchema
     [AutoRegisterSubscriptionManager]
     public class DependentDataComponentCommandSenderSubscriptionManager : SubscriptionManager<DependentDataComponentCommandSender>
     {
-        private readonly World world;
-        private readonly WorkerSystem workerSystem;
-
         private Dictionary<EntityId, HashSet<Subscription<DependentDataComponentCommandSender>>>
             entityIdToSenderSubscriptions =
                 new Dictionary<EntityId, HashSet<Subscription<DependentDataComponentCommandSender>>>();
 
-        public DependentDataComponentCommandSenderSubscriptionManager(World world)
+        public DependentDataComponentCommandSenderSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
-
-            // Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
-
             var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintSystem.RegisterEntityAddedCallback(entityId =>
@@ -130,8 +121,6 @@ namespace Improbable.DependentSchema
     [AutoRegisterSubscriptionManager]
     public class DependentDataComponentCommandReceiverSubscriptionManager : SubscriptionManager<DependentDataComponentCommandReceiver>
     {
-        private readonly World world;
-        private readonly WorkerSystem workerSystem;
         private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<DependentDataComponentCommandReceiver>>> entityIdToReceiveSubscriptions;
@@ -139,12 +128,8 @@ namespace Improbable.DependentSchema
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        public DependentDataComponentCommandReceiverSubscriptionManager(World world)
+        public DependentDataComponentCommandReceiverSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
-
-            // Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
