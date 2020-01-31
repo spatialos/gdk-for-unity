@@ -7,11 +7,8 @@ namespace Improbable.Gdk.GameObjectCreation
     [AutoRegisterSubscriptionManager]
     internal class LinkedGameObjectMapSubscriptionManager : SubscriptionManager<LinkedGameObjectMap>
     {
-        private readonly World world;
-
-        public LinkedGameObjectMapSubscriptionManager(World world)
+        public LinkedGameObjectMapSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
         }
 
         public override Subscription<LinkedGameObjectMap> Subscribe(EntityId entityId)

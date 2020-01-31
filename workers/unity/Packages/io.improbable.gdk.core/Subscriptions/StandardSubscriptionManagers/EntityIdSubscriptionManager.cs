@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Subscriptions
     [AutoRegisterSubscriptionManager]
     public class EntityIdSubscriptionManager : SubscriptionManager<EntityId>
     {
-        public EntityIdSubscriptionManager(World world)
+        public EntityIdSubscriptionManager(World world) : base(world)
         {
         }
 

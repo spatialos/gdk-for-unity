@@ -11,16 +11,8 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<EntityId, HashSet<Subscription<Entity>>> entityIdToSubscriptions =
             new Dictionary<EntityId, HashSet<Subscription<Entity>>>();
 
-        private readonly WorkerSystem workerSystem;
-
-        public EntitySubscriptionManager(World world)
+        public EntitySubscriptionManager(World world) : base(world)
         {
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
-            if (workerSystem == null)
-            {
-                throw new ArgumentException("No worker");
-            }
-
             var receiveSystem = world.GetExistingSystem<SpatialOSReceiveSystem>();
             if (receiveSystem == null)
             {

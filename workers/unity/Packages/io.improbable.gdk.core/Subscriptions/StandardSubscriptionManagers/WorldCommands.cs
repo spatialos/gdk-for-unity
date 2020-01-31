@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Core
             entityIdToSenderSubscriptions =
                 new Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>();
 
-        public WorldCommandSenderSubscriptionManager(World world)
+        public WorldCommandSenderSubscriptionManager(World world) : base(world)
         {
             this.world = world;
 

@@ -7,11 +7,8 @@ namespace Improbable.Gdk.Subscriptions
     [AutoRegisterSubscriptionManager]
     public class WorkerIdSubscriptionManager : SubscriptionManager<WorkerId>
     {
-        private readonly World world;
-
-        public WorkerIdSubscriptionManager(World world)
+        public WorkerIdSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
         }
 
         public override Subscription<WorkerId> Subscribe(EntityId entityId)

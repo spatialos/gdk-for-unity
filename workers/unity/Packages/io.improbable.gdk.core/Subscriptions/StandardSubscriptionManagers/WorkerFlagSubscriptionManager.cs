@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly World world;
 
-        public WorkerFlagSubscriptionManager(World world)
+        public WorkerFlagSubscriptionManager(World world) : base(world)
         {
             this.world = world;
         }

@@ -19,7 +19,6 @@ namespace Improbable.Gdk.CodeGenerator
                     "System",
                     "System.Collections.Generic",
                     "Unity.Entities",
-                    "Unity.Collections",
                     "Improbable.Gdk.Core",
                     "Improbable.Gdk.Subscriptions",
                     "Improbable.Worker.CInterop",
@@ -40,25 +39,19 @@ namespace Improbable.Gdk.CodeGenerator
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSenderSubscriptionManager class.");
 
+            var commandSenderType = $"{componentDetails.ComponentName}CommandSender";
+
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.ComponentName}CommandSenderSubscriptionManager : SubscriptionManager<{componentDetails.ComponentName}CommandSender>",
+                $"public class {componentDetails.ComponentName}CommandSenderSubscriptionManager : SubscriptionManager<{commandSenderType}>",
                 t =>
                 {
                     t.Line($@"
-private readonly World world;
-private readonly WorkerSystem workerSystem;
-
-private Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}CommandSender>>>
+private Dictionary<EntityId, HashSet<Subscription<{commandSenderType}>>>
     entityIdToSenderSubscriptions =
-        new Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}CommandSender>>>();
+        new Dictionary<EntityId, HashSet<Subscription<{commandSenderType}>>>();
 
-public {componentDetails.ComponentName}CommandSenderSubscriptionManager(World world)
+public {componentDetails.ComponentName}CommandSenderSubscriptionManager(World world) : base(world)
 {{
-    this.world = world;
-
-    // Check that these are there
-    workerSystem = world.GetExistingSystem<WorkerSystem>();
-
     var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
     constraintSystem.RegisterEntityAddedCallback(entityId =>
@@ -73,7 +66,7 @@ public {componentDetails.ComponentName}CommandSenderSubscriptionManager(World wo
         {{
             if (!subscription.HasValue)
             {{
-                subscription.SetAvailable(new {componentDetails.ComponentName}CommandSender(entity, world));
+                subscription.SetAvailable(new {commandSenderType}(entity, world));
             }}
         }}
     }});
@@ -96,11 +89,11 @@ public {componentDetails.ComponentName}CommandSenderSubscriptionManager(World wo
     }});
 }}
 
-public override Subscription<{componentDetails.ComponentName}CommandSender> Subscribe(EntityId entityId)
+public override Subscription<{commandSenderType}> Subscribe(EntityId entityId)
 {{
     if (entityIdToSenderSubscriptions == null)
     {{
-        entityIdToSenderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}CommandSender>>>();
+        entityIdToSenderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{commandSenderType}>>>();
     }}
 
     if (entityId.Id < 0)
@@ -108,21 +101,21 @@ public override Subscription<{componentDetails.ComponentName}CommandSender> Subs
         throw new ArgumentException(""EntityId can not be < 0"");
     }}
 
-    var subscription = new Subscription<{componentDetails.ComponentName}CommandSender>(this, entityId);
+    var subscription = new Subscription<{commandSenderType}>(this, entityId);
 
     if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
     {{
-        subscriptions = new HashSet<Subscription<{componentDetails.ComponentName}CommandSender>>();
+        subscriptions = new HashSet<Subscription<{commandSenderType}>>();
         entityIdToSenderSubscriptions.Add(entityId, subscriptions);
     }}
 
     if (workerSystem.TryGetEntity(entityId, out var entity))
     {{
-        subscription.SetAvailable(new {componentDetails.ComponentName}CommandSender(entity, world));
+        subscription.SetAvailable(new {commandSenderType}(entity, world));
     }}
     else if (entityId.Id == 0)
     {{
-        subscription.SetAvailable(new {componentDetails.ComponentName}CommandSender(Entity.Null, world));
+        subscription.SetAvailable(new {commandSenderType}(Entity.Null, world));
     }}
 
     subscriptions.Add(subscription);
@@ -131,7 +124,7 @@ public override Subscription<{componentDetails.ComponentName}CommandSender> Subs
 
 public override void Cancel(ISubscription subscription)
 {{
-    var sub = ((Subscription<{componentDetails.ComponentName}CommandSender>) subscription);
+    var sub = ((Subscription<{commandSenderType}>) subscription);
     if (sub.HasValue)
     {{
         var sender = sub.Value;
@@ -148,7 +141,7 @@ public override void Cancel(ISubscription subscription)
 
 public override void ResetValue(ISubscription subscription)
 {{
-    var sub = ((Subscription<{componentDetails.ComponentName}CommandSender>) subscription);
+    var sub = ((Subscription<{commandSenderType}>) subscription);
     if (sub.HasValue)
     {{
         sub.Value.RemoveAllCallbacks();
@@ -162,26 +155,22 @@ public override void ResetValue(ISubscription subscription)
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiverSubscriptionManager class.");
 
+            var commandReceiverType = $"{componentDetails.ComponentName}CommandReceiver";
+
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.ComponentName}CommandReceiverSubscriptionManager : SubscriptionManager<{componentDetails.ComponentName}CommandReceiver>",
+                $"public class {componentDetails.ComponentName}CommandReceiverSubscriptionManager : SubscriptionManager<{commandReceiverType}>",
                 t =>
                 {
                     t.Line($@"
-private readonly World world;
-private readonly WorkerSystem workerSystem;
 private readonly ComponentUpdateSystem componentUpdateSystem;
 
-private Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}CommandReceiver>>> entityIdToReceiveSubscriptions;
+private Dictionary<EntityId, HashSet<Subscription<{commandReceiverType}>>> entityIdToReceiveSubscriptions;
 
 private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
 private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-public {componentDetails.ComponentName}CommandReceiverSubscriptionManager(World world)
+public {componentDetails.ComponentName}CommandReceiverSubscriptionManager(World world) : base(world)
 {{
-    this.world = world;
-
-    // Check that these are there
-    workerSystem = world.GetExistingSystem<WorkerSystem>();
     componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
     var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
@@ -199,7 +188,7 @@ public {componentDetails.ComponentName}CommandReceiverSubscriptionManager(World 
 
             foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
             {{
-                subscription.SetAvailable(new {componentDetails.ComponentName}CommandReceiver(world, entity, authorityChange.EntityId));
+                subscription.SetAvailable(new {commandReceiverType}(world, entity, authorityChange.EntityId));
             }}
 
             entitiesMatchingRequirements.Add(authorityChange.EntityId);
@@ -226,18 +215,18 @@ public {componentDetails.ComponentName}CommandReceiverSubscriptionManager(World 
     }});
 }}
 
-public override Subscription<{componentDetails.ComponentName}CommandReceiver> Subscribe(EntityId entityId)
+public override Subscription<{commandReceiverType}> Subscribe(EntityId entityId)
 {{
     if (entityIdToReceiveSubscriptions == null)
     {{
-        entityIdToReceiveSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}CommandReceiver>>>();
+        entityIdToReceiveSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{commandReceiverType}>>>();
     }}
 
-    var subscription = new Subscription<{componentDetails.ComponentName}CommandReceiver>(this, entityId);
+    var subscription = new Subscription<{commandReceiverType}>(this, entityId);
 
     if (!entityIdToReceiveSubscriptions.TryGetValue(entityId, out var subscriptions))
     {{
-        subscriptions = new HashSet<Subscription<{componentDetails.ComponentName}CommandReceiver>>();
+        subscriptions = new HashSet<Subscription<{commandReceiverType}>>();
         entityIdToReceiveSubscriptions.Add(entityId, subscriptions);
     }}
 
@@ -246,7 +235,7 @@ public override Subscription<{componentDetails.ComponentName}CommandReceiver> Su
         && componentUpdateSystem.GetAuthority(entityId, {componentDetails.ComponentName}.ComponentId) != Authority.NotAuthoritative)
     {{
         entitiesMatchingRequirements.Add(entityId);
-        subscription.SetAvailable(new {componentDetails.ComponentName}CommandReceiver(world, entity, entityId));
+        subscription.SetAvailable(new {commandReceiverType}(world, entity, entityId));
     }}
     else
     {{
@@ -259,7 +248,7 @@ public override Subscription<{componentDetails.ComponentName}CommandReceiver> Su
 
 public override void Cancel(ISubscription subscription)
 {{
-    var sub = ((Subscription<{componentDetails.ComponentName}CommandReceiver>) subscription);
+    var sub = ((Subscription<{commandReceiverType}>) subscription);
     if (sub.HasValue)
     {{
         var receiver = sub.Value;
@@ -279,7 +268,7 @@ public override void Cancel(ISubscription subscription)
 
 public override void ResetValue(ISubscription subscription)
 {{
-    var sub = ((Subscription<{componentDetails.ComponentName}CommandReceiver>) subscription);
+    var sub = ((Subscription<{commandReceiverType}>) subscription);
     if (sub.HasValue)
     {{
         sub.Value.RemoveAllCallbacks();
@@ -293,7 +282,9 @@ public override void ResetValue(ISubscription subscription)
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSender class.");
 
-            return Scope.Type($"public class {componentDetails.ComponentName}CommandSender", c =>
+            var commandSenderType = $"{componentDetails.ComponentName}CommandSender";
+
+            return Scope.Type($"public class {commandSenderType}", c =>
             {
                 c.Line($@"
 public bool IsValid;
@@ -305,7 +296,7 @@ private readonly CommandCallbackSystem callbackSystem;
 private int callbackEpoch;
 ");
                 c.Line($@"
-internal {componentDetails.ComponentName}CommandSender(Entity entity, World world)
+internal {commandSenderType}(Entity entity, World world)
 {{
     this.entity = entity;
     callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
@@ -361,7 +352,9 @@ public void RemoveAllCallbacks()
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiver class.");
 
-            return Scope.Type($"public class {componentDetails.ComponentName}CommandReceiver", c =>
+            var commandReceiverType = $"{componentDetails.ComponentName}CommandReceiver";
+
+            return Scope.Type($"public class {commandReceiverType}", c =>
             {
                 c.Line(@"
 public bool IsValid;
@@ -403,7 +396,7 @@ public event Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedRe
                 }
 
                 c.Line($@"
-internal {componentDetails.ComponentName}CommandReceiver(World world, Entity entity, EntityId entityId)
+internal {commandReceiverType}(World world, Entity entity, EntityId entityId)
 {{
     this.entityId = entityId;
     callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();

@@ -73,16 +73,16 @@ namespace Improbable.Gdk.Core
                 var instance = (IComponentCommandSendStorage) Activator.CreateInstance(type);
 
                 commandStorageList.Add(instance);
-                if (!componentIdToCommandIdToStorage.TryGetValue(instance.GetComponentId(),
+                if (!componentIdToCommandIdToStorage.TryGetValue(instance.ComponentId,
                     out var commandIdToStorage))
                 {
                     commandIdToStorage = new Dictionary<uint, IComponentCommandSendStorage>();
-                    componentIdToCommandIdToStorage.Add(instance.GetComponentId(), commandIdToStorage);
+                    componentIdToCommandIdToStorage.Add(instance.ComponentId, commandIdToStorage);
                 }
 
-                commandIdToStorage.Add(instance.GetCommandId(), instance);
-                typeToCommandStorage.Add(instance.GetRequestType(), instance);
-                typeToCommandStorage.Add(instance.GetResponseType(), instance);
+                commandIdToStorage.Add(instance.CommandId, instance);
+                typeToCommandStorage.Add(instance.RequestType, instance);
+                typeToCommandStorage.Add(instance.ResponseType, instance);
             }
 
             commandStorageList.Add(worldCommandStorage);
