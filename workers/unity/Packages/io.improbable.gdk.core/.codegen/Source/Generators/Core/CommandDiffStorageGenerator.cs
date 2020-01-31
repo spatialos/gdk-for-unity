@@ -13,10 +13,8 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "System",
-                    "System.Collections.Generic",
                     "Improbable.Gdk.Core",
-                    "Unity.Entities"
+                    "Improbable.Gdk.Core.Commands"
                 );
 
                 cgw.Namespace(qualifiedNamespace, ns =>
@@ -41,116 +39,11 @@ namespace Improbable.Gdk.CodeGenerator
             var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
 
             return Text.New($@"
-public class Diff{command.CommandName}CommandStorage : IComponentCommandDiffStorage
-    , IDiffCommandRequestStorage<{receivedRequestType}>
-    , IDiffCommandResponseStorage<{receivedResponseType}>
+public class Diff{command.CommandName}CommandStorage
+    : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
 {{
-    private readonly MessageList<{receivedRequestType}> requestStorage =
-        new MessageList<{receivedRequestType}>();
-
-    private readonly MessageList<{receivedResponseType}> responseStorage =
-        new MessageList<{receivedResponseType}>();
-
-    private readonly RequestComparer requestComparer = new RequestComparer();
-    private readonly ResponseComparer responseComparer = new ResponseComparer();
-
-    private bool requestsSorted;
-    private bool responsesSorted;
-
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
-    public Type GetRequestType()
-    {{
-        return typeof({receivedRequestType});
-    }}
-
-    public Type GetResponseType()
-    {{
-        return typeof({receivedResponseType});
-    }}
-
-    public void Clear()
-    {{
-        requestStorage.Clear();
-        responseStorage.Clear();
-        requestsSorted = false;
-        responsesSorted = false;
-    }}
-
-    public void RemoveRequests(long entityId)
-    {{
-        requestStorage.RemoveAll(request => request.EntityId.Id == entityId);
-    }}
-
-    public void AddRequest({receivedRequestType} request)
-    {{
-        requestStorage.Add(request);
-    }}
-
-    public void AddResponse({receivedResponseType} response)
-    {{
-        responseStorage.Add(response);
-    }}
-
-    public MessagesSpan<{receivedRequestType}> GetRequests()
-    {{
-        return requestStorage.Slice();
-    }}
-
-    public MessagesSpan<{receivedRequestType}> GetRequests(EntityId targetEntityId)
-    {{
-        if (!requestsSorted)
-        {{
-            requestStorage.Sort(requestComparer);
-            requestsSorted = true;
-        }}
-
-        var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
-        return requestStorage.Slice(firstIndex, count);
-    }}
-
-    public MessagesSpan<{receivedResponseType}> GetResponses()
-    {{
-        return responseStorage.Slice();
-    }}
-
-    public MessagesSpan<{receivedResponseType}> GetResponse(long requestId)
-    {{
-        if (!responsesSorted)
-        {{
-            responseStorage.Sort(responseComparer);
-            responsesSorted = true;
-        }}
-
-        var responseIndex = responseStorage.GetResponseIndex(requestId);
-        return responseIndex.HasValue
-            ? responseStorage.Slice(responseIndex.Value, 1)
-            : MessagesSpan<{receivedResponseType}>.Empty();
-    }}
-
-    private class RequestComparer : IComparer<{receivedRequestType}>
-    {{
-        public int Compare({receivedRequestType} x, {receivedRequestType} y)
-        {{
-            return x.EntityId.Id.CompareTo(y.EntityId.Id);
-        }}
-    }}
-
-    private class ResponseComparer : IComparer<{receivedResponseType}>
-    {{
-        public int Compare({receivedResponseType} x, {receivedResponseType} y)
-        {{
-            return x.RequestId.CompareTo(y.RequestId);
-        }}
-    }}
+    public override uint ComponentId => ComponentId;
+    public override uint CommandId => {command.CommandIndex};
 }}
 ");
         }

@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
             {
                 var current = (lower + upper) / 2;
 
-                var id = list[current].GetRequestId();
+                var id = list[current].RequestId;
 
                 if (id > requestId)
                 {
@@ -66,11 +66,11 @@ namespace Improbable.Gdk.Core
             {
                 var current = (lower + upper + 1) / 2;
 
-                var id = list[current].GetEntityId().Id;
+                var id = list[current].EntityId.Id;
 
                 if (id == targetId)
                 {
-                    if (current == 0 || list[current - 1].GetEntityId().Id != targetId)
+                    if (current == 0 || list[current - 1].EntityId.Id != targetId)
                     {
                         return (current, lastIndexUpperBound - current);
                     }
@@ -108,11 +108,11 @@ namespace Improbable.Gdk.Core
             {
                 var current = (lower + upper) / 2;
 
-                var id = list[current].GetEntityId().Id;
+                var id = list[current].EntityId.Id;
 
                 if (id == targetId)
                 {
-                    if (current == list.Count - 1 || list[current + 1].GetEntityId().Id != targetId)
+                    if (current == list.Count - 1 || list[current + 1].EntityId.Id != targetId)
                     {
                         return (firstIndexLowerBound + 1, current - firstIndexLowerBound);
                     }

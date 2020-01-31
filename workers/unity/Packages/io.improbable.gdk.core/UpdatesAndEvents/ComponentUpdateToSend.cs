@@ -39,10 +39,7 @@ namespace Improbable.Gdk.Core
             EntityId = entityId;
         }
 
-        EntityId IReceivedEntityMessage.GetEntityId()
-        {
-            return EntityId;
-        }
+        EntityId IReceivedEntityMessage.EntityId => EntityId;
     }
 
     public readonly struct ComponentEventReceived<T> : IReceivedEntityMessage where T : IEvent
@@ -58,10 +55,7 @@ namespace Improbable.Gdk.Core
             EntityId = entityId;
         }
 
-        EntityId IReceivedEntityMessage.GetEntityId()
-        {
-            return EntityId;
-        }
+        EntityId IReceivedEntityMessage.EntityId => EntityId;
     }
 
     public readonly struct AuthorityChangeReceived : IReceivedEntityMessage
@@ -75,9 +69,6 @@ namespace Improbable.Gdk.Core
             EntityId = entityId;
         }
 
-        EntityId IReceivedEntityMessage.GetEntityId()
-        {
-            return EntityId;
-        }
+        EntityId IReceivedEntityMessage.EntityId => EntityId;
     }
 }

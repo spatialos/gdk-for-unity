@@ -1,8 +1,7 @@
 using System;
-using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.Commands
 {
     public abstract class CommandSendStorage<TRequest, TResponse> :
         ICommandRequestSendStorage<TRequest>,

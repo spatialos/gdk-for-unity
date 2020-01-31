@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                callbacks.InvokeAll(request.GetEntityId().Id, request);
+                callbacks.InvokeAll(request.EntityId.Id, request);
             }
         }
 
