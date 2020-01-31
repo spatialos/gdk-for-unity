@@ -171,7 +171,7 @@ namespace Improbable.Gdk.Tools
                                 {
                                     var option = EditorUtility.DisplayDialogComplex("Generate Code",
                                         $"Code generation failed with {numWarnings} warnings and {numErrors} errors!{Environment.NewLine}{Environment.NewLine}"
-                                        + "Please check the code generation logs for more information: {loggerOutputPath}",
+                                        + $"Please check the code generation logs for more information: {loggerOutputPath}",
                                         "Open logfile",
                                         "Close",
                                         "");
@@ -189,7 +189,7 @@ namespace Improbable.Gdk.Tools
                                         case 2:
                                             break;
                                         default:
-                                            throw new ArgumentOutOfRangeException("Unrecognised option");
+                                            throw new ArgumentOutOfRangeException(nameof(option), "Unrecognised option");
                                     }
                                 }
                                 else
