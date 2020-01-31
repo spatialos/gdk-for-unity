@@ -10,19 +10,12 @@ namespace Improbable.Gdk.Core
     [AutoRegisterSubscriptionManager]
     public class WorldCommandSenderSubscriptionManager : SubscriptionManager<WorldCommandSender>
     {
-        private readonly World world;
-        private readonly WorkerSystem workerSystem;
-
         private Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>
             entityIdToSenderSubscriptions =
                 new Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>();
 
         public WorldCommandSenderSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
-
-            // Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
             var constraintsSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintsSystem.RegisterEntityAddedCallback(entityId =>
