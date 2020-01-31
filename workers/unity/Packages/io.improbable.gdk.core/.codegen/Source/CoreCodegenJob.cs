@@ -17,8 +17,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
         private const string FileExtension = ".cs";
 
-        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store)
-            : base(outputDir, fileSystem, store)
+        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
+            : base(outputDir, fileSystem, store, force)
         {
             var jobName = nameof(CoreCodegenJob);
             logger.Info($"Initialising {jobName}.");
