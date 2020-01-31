@@ -14,15 +14,8 @@ namespace Improbable.Gdk.Core.Commands
 
         private readonly MessageList<TResponse> responseStorage = new MessageList<TResponse>();
 
-        public Type GetRequestType()
-        {
-            return typeof(TRequest);
-        }
-
-        public Type GetResponseType()
-        {
-            return typeof(TResponse);
-        }
+        public Type RequestType => typeof(TRequest);
+        public Type ResponseType => typeof(TResponse);
 
         public void Clear()
         {

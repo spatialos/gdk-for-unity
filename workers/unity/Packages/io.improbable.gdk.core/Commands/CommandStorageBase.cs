@@ -21,15 +21,8 @@ namespace Improbable.Gdk.Core.Commands
         public abstract uint ComponentId { get; }
         public abstract uint CommandId { get; }
 
-        public Type RequestType
-        {
-            get { return typeof(TRequest); }
-        }
-
-        public Type ResponseType
-        {
-            get { return typeof(TResponse); }
-        }
+        public Type RequestType => typeof(TRequest);
+        public Type ResponseType => typeof(TResponse);
 
         public void Clear()
         {

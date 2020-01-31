@@ -39,10 +39,10 @@ namespace Improbable.Gdk.CodeGenerator
             var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
 
             return Text.New($@"
-public class Diff{command.CommandName}CommandStorage
+private class Diff{command.CommandName}CommandStorage
     : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
 {{
-    public override uint ComponentId => ComponentId;
+    public override uint ComponentId => {qualifiedNamespace}.{componentName}.ComponentId;
     public override uint CommandId => {command.CommandIndex};
 }}
 ");
@@ -53,19 +53,12 @@ public class Diff{command.CommandName}CommandStorage
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandsToSendStorage class.");
 
             return Text.New($@"
-public class {command.CommandName}CommandsToSendStorage :
+private class {command.CommandName}CommandsToSendStorage :
     CommandSendStorage<{command.CommandName}.Request, {command.CommandName}.Response>,
     IComponentCommandSendStorage
 {{
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
+    uint IComponentCommandSendStorage.ComponentId => ComponentId;
+    uint IComponentCommandSendStorage.CommandId => {command.CommandIndex};
 }}
 ");
         }
