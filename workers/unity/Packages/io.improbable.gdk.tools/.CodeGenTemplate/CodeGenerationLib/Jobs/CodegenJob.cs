@@ -36,7 +36,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
             this.detailsStore = detailsStore;
-            isDirtyOverride = true;
+            isDirtyOverride = force;
         }
 
         protected void AddInputFiles(IEnumerable<string> inputFilePaths)
