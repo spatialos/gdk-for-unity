@@ -41,6 +41,8 @@
 - Simplified dirtyBits logic and code generation [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 - The DeploymentLauncher now uses Platform SDK v14.4.0. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
 - `init.sh` and `init.ps1` now support the `--china` and `-china` flag respectively to download from the `cn-production` environment. [#1261](https://github.com/spatialos/gdk-for-unity/pull/1261)
+- Simplified code generation for Command classes and relevant interfaces. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
+- Add `--force` flag to the CodeGenerator project to skip the dirty checks and re-generate everything. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
 
 ## `0.3.2` - 2019-12-23
 
