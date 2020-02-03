@@ -27,6 +27,7 @@
 
 - Fixed a bug where build targets which were _not_ marked as required were not skipped if the user did not have the build support installed. [#1257](https://github.com/spatialos/gdk-for-unity/pull/1257)
 - Fixed a bug where code generation would fail due to `dotnet new` failing to run. [#1262](https://github.com/spatialos/gdk-for-unity/pull/1262)
+- Fixed a bug where `schema_compiler` errors would be swallowed by the code generator. These should now appear in the Unity Editor and the log file as expected. [#1266](https://github.com/spatialos/gdk-for-unity/pull/1266)
 
 ### Internal
 

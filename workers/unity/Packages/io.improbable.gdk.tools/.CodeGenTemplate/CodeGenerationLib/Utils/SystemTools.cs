@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Utils
 {
@@ -20,6 +21,9 @@ namespace Improbable.Gdk.CodeGeneration.Utils
 
         public static void RunRedirected(string command, List<string> arguments)
         {
+            var exe = Path.GetFileNameWithoutExtension(command);
+            var logger = LogManager.GetLogger($"Command: {exe}");
+
             command = Environment.ExpandEnvironmentVariables(command);
             command = Path.GetFullPath(command);
             arguments = arguments.Select(Environment.ExpandEnvironmentVariables).ToList();
@@ -47,14 +51,14 @@ namespace Improbable.Gdk.CodeGeneration.Utils
                     {
                         if (!string.IsNullOrEmpty(e.Data))
                         {
-                            Console.WriteLine("{0}", e.Data);
+                            logger.Info(e.Data);
                         }
                     };
                     process.ErrorDataReceived += (sender, e) =>
                     {
                         if (!string.IsNullOrEmpty(e.Data))
                         {
-                            Console.Error.WriteLine("{0}", e.Data);
+                            logger.Error(e.Data);
                         }
                     };
 
