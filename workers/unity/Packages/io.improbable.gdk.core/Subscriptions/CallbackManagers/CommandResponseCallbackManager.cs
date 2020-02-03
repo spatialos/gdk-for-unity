@@ -23,8 +23,8 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < responses.Count; ++i)
             {
                 ref readonly var response = ref responses[i];
-                callbacks.InvokeAll(response.GetRequestId(), response);
-                callbacks.RemoveAllCallbacksForIndex(response.GetRequestId());
+                callbacks.InvokeAll(response.RequestId, response);
+                callbacks.RemoveAllCallbacksForIndex(response.RequestId);
             }
         }
 

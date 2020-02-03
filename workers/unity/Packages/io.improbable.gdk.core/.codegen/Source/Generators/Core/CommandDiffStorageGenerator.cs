@@ -13,10 +13,8 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "System",
-                    "System.Collections.Generic",
                     "Improbable.Gdk.Core",
-                    "Unity.Entities"
+                    "Improbable.Gdk.Core.Commands"
                 );
 
                 cgw.Namespace(qualifiedNamespace, ns =>
@@ -41,116 +39,11 @@ namespace Improbable.Gdk.CodeGenerator
             var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
 
             return Text.New($@"
-public class Diff{command.CommandName}CommandStorage : IComponentCommandDiffStorage
-    , IDiffCommandRequestStorage<{receivedRequestType}>
-    , IDiffCommandResponseStorage<{receivedResponseType}>
+private class Diff{command.CommandName}CommandStorage
+    : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
 {{
-    private readonly MessageList<{receivedRequestType}> requestStorage =
-        new MessageList<{receivedRequestType}>();
-
-    private readonly MessageList<{receivedResponseType}> responseStorage =
-        new MessageList<{receivedResponseType}>();
-
-    private readonly RequestComparer requestComparer = new RequestComparer();
-    private readonly ResponseComparer responseComparer = new ResponseComparer();
-
-    private bool requestsSorted;
-    private bool responsesSorted;
-
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
-    public Type GetRequestType()
-    {{
-        return typeof({receivedRequestType});
-    }}
-
-    public Type GetResponseType()
-    {{
-        return typeof({receivedResponseType});
-    }}
-
-    public void Clear()
-    {{
-        requestStorage.Clear();
-        responseStorage.Clear();
-        requestsSorted = false;
-        responsesSorted = false;
-    }}
-
-    public void RemoveRequests(long entityId)
-    {{
-        requestStorage.RemoveAll(request => request.EntityId.Id == entityId);
-    }}
-
-    public void AddRequest({receivedRequestType} request)
-    {{
-        requestStorage.Add(request);
-    }}
-
-    public void AddResponse({receivedResponseType} response)
-    {{
-        responseStorage.Add(response);
-    }}
-
-    public MessagesSpan<{receivedRequestType}> GetRequests()
-    {{
-        return requestStorage.Slice();
-    }}
-
-    public MessagesSpan<{receivedRequestType}> GetRequests(EntityId targetEntityId)
-    {{
-        if (!requestsSorted)
-        {{
-            requestStorage.Sort(requestComparer);
-            requestsSorted = true;
-        }}
-
-        var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
-        return requestStorage.Slice(firstIndex, count);
-    }}
-
-    public MessagesSpan<{receivedResponseType}> GetResponses()
-    {{
-        return responseStorage.Slice();
-    }}
-
-    public MessagesSpan<{receivedResponseType}> GetResponse(long requestId)
-    {{
-        if (!responsesSorted)
-        {{
-            responseStorage.Sort(responseComparer);
-            responsesSorted = true;
-        }}
-
-        var responseIndex = responseStorage.GetResponseIndex(requestId);
-        return responseIndex.HasValue
-            ? responseStorage.Slice(responseIndex.Value, 1)
-            : MessagesSpan<{receivedResponseType}>.Empty();
-    }}
-
-    private class RequestComparer : IComparer<{receivedRequestType}>
-    {{
-        public int Compare({receivedRequestType} x, {receivedRequestType} y)
-        {{
-            return x.EntityId.Id.CompareTo(y.EntityId.Id);
-        }}
-    }}
-
-    private class ResponseComparer : IComparer<{receivedResponseType}>
-    {{
-        public int Compare({receivedResponseType} x, {receivedResponseType} y)
-        {{
-            return x.RequestId.CompareTo(y.RequestId);
-        }}
-    }}
+    public override uint ComponentId => {qualifiedNamespace}.{componentName}.ComponentId;
+    public override uint CommandId => {command.CommandIndex};
 }}
 ");
         }
@@ -159,65 +52,13 @@ public class Diff{command.CommandName}CommandStorage : IComponentCommandDiffStor
         {
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandsToSendStorage class.");
 
-            var requestType = $"{command.CommandName}.Request";
-            var responseType = $"{command.CommandName}.Response";
-
             return Text.New($@"
-public class {command.CommandName}CommandsToSendStorage : ICommandSendStorage, IComponentCommandSendStorage
-    , ICommandRequestSendStorage<{requestType}>
-    , ICommandResponseSendStorage<{responseType}>
+private class {command.CommandName}CommandsToSendStorage :
+    CommandSendStorage<{command.CommandName}.Request, {command.CommandName}.Response>,
+    IComponentCommandSendStorage
 {{
-    private readonly MessageList<CommandRequestWithMetaData<{requestType}>> requestStorage =
-        new MessageList<CommandRequestWithMetaData<{requestType}>>();
-
-    private readonly MessageList<{responseType}> responseStorage =
-        new MessageList<{responseType}>();
-
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
-    public Type GetRequestType()
-    {{
-        return typeof({requestType});
-    }}
-
-    public Type GetResponseType()
-    {{
-        return typeof({responseType});
-    }}
-
-    public void Clear()
-    {{
-        requestStorage.Clear();
-        responseStorage.Clear();
-    }}
-
-    public void AddRequest({requestType} request, Entity entity, long requestId)
-    {{
-        requestStorage.Add(new CommandRequestWithMetaData<{requestType}>(request, entity, requestId));
-    }}
-
-    public void AddResponse({responseType} response)
-    {{
-        responseStorage.Add(response);
-    }}
-
-    internal MessageList<CommandRequestWithMetaData<{requestType}>> GetRequests()
-    {{
-        return requestStorage;
-    }}
-
-    internal MessageList<{responseType}> GetResponses()
-    {{
-        return responseStorage;
-    }}
+    uint IComponentCommandSendStorage.ComponentId => ComponentId;
+    uint IComponentCommandSendStorage.CommandId => {command.CommandIndex};
 }}
 ");
         }

@@ -43,8 +43,6 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     rsm.Line($@"
 private readonly EntityManager entityManager;
-private readonly World world;
-private readonly WorkerSystem workerSystem;
 
 private Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}Reader>>> entityIdToReaderSubscriptions;
 
@@ -54,13 +52,9 @@ private Dictionary<EntityId, (ulong Added, ulong Removed)> entityIdToCallbackKey
 private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
 private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-public {componentDetails.ComponentName}ReaderSubscriptionManager(World world)
+public {componentDetails.ComponentName}ReaderSubscriptionManager(World world) : base(world)
 {{
-    this.world = world;
     entityManager = world.EntityManager;
-
-    // todo Check that these are there
-    workerSystem = world.GetExistingSystem<WorkerSystem>();
 
     var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
@@ -181,8 +175,6 @@ private void OnComponentRemoved(EntityId entityId)
                 wsm =>
                 {
                     wsm.Line($@"
-private readonly World world;
-private readonly WorkerSystem workerSystem;
 private readonly ComponentUpdateSystem componentUpdateSystem;
 
 private Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentName}Writer>>> entityIdToWriterSubscriptions;
@@ -190,12 +182,8 @@ private Dictionary<EntityId, HashSet<Subscription<{componentDetails.ComponentNam
 private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
 private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-public {componentDetails.ComponentName}WriterSubscriptionManager(World world)
+public {componentDetails.ComponentName}WriterSubscriptionManager(World world) : base(world)
 {{
-    this.world = world;
-
-    // todo Check that these are there
-    workerSystem = world.GetExistingSystem<WorkerSystem>();
     componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
     var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();

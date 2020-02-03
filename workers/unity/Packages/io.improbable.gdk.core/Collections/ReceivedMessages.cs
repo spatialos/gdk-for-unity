@@ -6,6 +6,6 @@ namespace Improbable.Gdk.Core
 
     public interface IReceivedEntityMessage : IReceivedMessage
     {
-        EntityId GetEntityId();
+        EntityId EntityId { get; }
     }
 }

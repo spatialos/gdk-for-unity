@@ -95,10 +95,7 @@ namespace Improbable.Gdk.Core.Commands
                         : (EntityId?) null;
                 }
 
-                long IReceivedCommandResponse.GetRequestId()
-                {
-                    return RequestId;
-                }
+                long IReceivedCommandResponse.RequestId => RequestId;
             }
         }
     }

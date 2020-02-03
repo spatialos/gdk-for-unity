@@ -75,15 +75,9 @@ public partial class {commandDetails.CommandName}
             Payload = request;
         }}
 
-        long IReceivedCommandRequest.GetRequestId()
-        {{
-            return RequestId;
-        }}
+        long IReceivedCommandRequest.RequestId => RequestId;
 
-        EntityId IReceivedEntityMessage.GetEntityId()
-        {{
-            return EntityId;
-        }}
+        EntityId IReceivedEntityMessage.EntityId => EntityId;
     }}
 
     /// <summary>
@@ -143,10 +137,7 @@ public partial class {commandDetails.CommandName}
             RequestId = requestId;
         }}
 
-        long IReceivedCommandResponse.GetRequestId()
-        {{
-            return RequestId;
-        }}
+        long IReceivedCommandResponse.RequestId => RequestId;
     }}
 
     public readonly struct RawReceivedResponse : IRawReceivedCommandResponse

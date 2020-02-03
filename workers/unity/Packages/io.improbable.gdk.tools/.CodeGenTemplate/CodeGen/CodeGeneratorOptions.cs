@@ -22,6 +22,7 @@ namespace Improbable.Gdk.CodeGenerator
         public List<string> SchemaInputDirs { get; } = new List<string>();
         public string SchemaCompilerPath { get; private set; }
         public List<string> SerializationOverrides { get; } = new List<string>();
+        public bool Force { get; private set; }
 
         public static CodeGeneratorOptions ParseArguments(ICollection<string> args)
         {
@@ -71,6 +72,10 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     "disable-stdout", "Disable logging to stdout",
                     d => options.EnableLoggingToStdout = d == null
+                },
+                {
+                    "f|force", "Force generating code.",
+                    d => options.Force = true
                 },
             };
 

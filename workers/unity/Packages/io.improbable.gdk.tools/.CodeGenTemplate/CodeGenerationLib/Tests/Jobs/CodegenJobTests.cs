@@ -98,13 +98,13 @@ namespace CodeGeneration.Tests.Jobs
             public static CodegenStub GetCleanInstance()
             {
                 var json = JsonParsingTests.GetBundleContents();
-                return new CodegenStub("", new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree()));
+                return new CodegenStub("", new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree()), false);
             }
 
             internal MockFileSystem myFileSystem;
 
-            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore)
-                : base(outputDirectory, fileSystem, detailsStore)
+            public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
+                : base(outputDirectory, fileSystem, detailsStore, force)
             {
                 myFileSystem = (MockFileSystem) fileSystem;
             }

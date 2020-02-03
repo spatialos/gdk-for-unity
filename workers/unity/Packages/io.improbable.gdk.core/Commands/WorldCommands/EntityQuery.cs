@@ -105,10 +105,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
-                long IReceivedCommandResponse.GetRequestId()
-                {
-                    return RequestId;
-                }
+                long IReceivedCommandResponse.RequestId => RequestId;
             }
         }
     }

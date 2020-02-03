@@ -8,11 +8,8 @@ namespace Improbable.Gdk.Core
     [AutoRegisterSubscriptionManager]
     public class WorkerFlagSubscriptionManager : SubscriptionManager<WorkerFlagReader>
     {
-        private readonly World world;
-
-        public WorkerFlagSubscriptionManager(World world)
+        public WorkerFlagSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
         }
 
         public override void Cancel(ISubscription subscription)

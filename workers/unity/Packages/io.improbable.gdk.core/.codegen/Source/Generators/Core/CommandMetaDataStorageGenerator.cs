@@ -13,7 +13,6 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "System.Collections.Generic",
                     "Improbable.Gdk.Core"
                 );
 
@@ -26,45 +25,11 @@ namespace Improbable.Gdk.CodeGenerator
                             Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandMetaDataStorage class.");
 
                             partial.Line($@"
-public class {command.CommandName}CommandMetaDataStorage : ICommandMetaDataStorage, ICommandPayloadStorage<{command.FqnRequestType}>
+private class {command.CommandName}CommandMetaDataStorage :
+    CommandPayloadStorage<{command.FqnRequestType}>,
+    ICommandMetaDataStorage
 {{
-    private readonly Dictionary<long, CommandContext<{command.FqnRequestType}>> requestIdToRequest =
-        new Dictionary<long, CommandContext<{command.FqnRequestType}>>();
-
-    private readonly Dictionary<long, long> internalRequestIdToRequestId = new Dictionary<long, long>();
-
-    public uint GetComponentId()
-    {{
-        return ComponentId;
-    }}
-
-    public uint GetCommandId()
-    {{
-        return {command.CommandIndex};
-    }}
-
-    public void RemoveMetaData(long internalRequestId)
-    {{
-        var requestId = internalRequestIdToRequestId[internalRequestId];
-        internalRequestIdToRequestId.Remove(internalRequestId);
-        requestIdToRequest.Remove(requestId);
-    }}
-
-    public void SetInternalRequestId(long internalRequestId, long requestId)
-    {{
-        internalRequestIdToRequestId.Add(internalRequestId, requestId);
-    }}
-
-    public void AddRequest(in CommandContext<{command.FqnRequestType}> context)
-    {{
-        requestIdToRequest[context.RequestId] = context;
-    }}
-
-    public CommandContext<{command.FqnRequestType}> GetPayload(long internalRequestId)
-    {{
-        var id = internalRequestIdToRequestId[internalRequestId];
-        return requestIdToRequest[id];
-    }}
+    public uint CommandId => {command.CommandIndex};
 }}
 ");
                         }

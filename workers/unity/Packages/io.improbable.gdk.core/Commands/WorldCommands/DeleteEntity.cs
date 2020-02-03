@@ -84,10 +84,7 @@ namespace Improbable.Gdk.Core.Commands
                     RequestId = requestId;
                 }
 
-                long IReceivedCommandResponse.GetRequestId()
-                {
-                    return RequestId;
-                }
+                long IReceivedCommandResponse.RequestId => RequestId;
             }
         }
     }

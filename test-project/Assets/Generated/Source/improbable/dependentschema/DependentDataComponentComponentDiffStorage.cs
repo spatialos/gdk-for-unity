@@ -47,7 +47,7 @@ namespace Improbable.DependentSchema
             {
                 return new Type[]
                 {
-                    typeof(FooEvent.Event),
+                    typeof(FooEvent.Event)
                 };
             }
 

@@ -16,8 +16,6 @@ namespace Improbable.TestSchema
     public class ExhaustiveMapValueReaderSubscriptionManager : SubscriptionManager<ExhaustiveMapValueReader>
     {
         private readonly EntityManager entityManager;
-        private readonly World world;
-        private readonly WorkerSystem workerSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapValueReader>>> entityIdToReaderSubscriptions;
 
@@ -27,13 +25,9 @@ namespace Improbable.TestSchema
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        public ExhaustiveMapValueReaderSubscriptionManager(World world)
+        public ExhaustiveMapValueReaderSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
             entityManager = world.EntityManager;
-
-            // todo Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
 
             var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
@@ -146,8 +140,6 @@ namespace Improbable.TestSchema
     [AutoRegisterSubscriptionManager]
     public class ExhaustiveMapValueWriterSubscriptionManager : SubscriptionManager<ExhaustiveMapValueWriter>
     {
-        private readonly World world;
-        private readonly WorkerSystem workerSystem;
         private readonly ComponentUpdateSystem componentUpdateSystem;
 
         private Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapValueWriter>>> entityIdToWriterSubscriptions;
@@ -155,12 +147,8 @@ namespace Improbable.TestSchema
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        public ExhaustiveMapValueWriterSubscriptionManager(World world)
+        public ExhaustiveMapValueWriterSubscriptionManager(World world) : base(world)
         {
-            this.world = world;
-
-            // todo Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();

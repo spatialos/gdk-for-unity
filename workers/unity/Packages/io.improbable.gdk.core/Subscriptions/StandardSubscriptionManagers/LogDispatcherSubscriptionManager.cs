@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Subscriptions
     {
         private readonly ILogDispatcher logger;
 
-        public LogDispatcherSubscriptionManager(World world)
+        public LogDispatcherSubscriptionManager(World world) : base(world)
         {
             logger = world.GetExistingSystem<WorkerSystem>().LogDispatcher;
         }

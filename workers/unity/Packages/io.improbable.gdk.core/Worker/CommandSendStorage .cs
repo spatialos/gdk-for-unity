@@ -11,11 +11,11 @@ namespace Improbable.Gdk.Core
 
     public interface IComponentCommandSendStorage : ICommandSendStorage
     {
-        uint GetComponentId();
-        uint GetCommandId();
+        uint ComponentId { get; }
+        uint CommandId { get; }
 
-        Type GetRequestType();
-        Type GetResponseType();
+        Type RequestType { get; }
+        Type ResponseType { get; }
     }
 
     public interface ICommandRequestSendStorage<T> : ICommandSendStorage

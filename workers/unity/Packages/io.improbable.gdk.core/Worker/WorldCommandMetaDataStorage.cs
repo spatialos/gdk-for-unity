@@ -25,15 +25,7 @@ namespace Improbable.Gdk.Core
 
         private readonly Dictionary<long, long> internalRequestIdToRequestId = new Dictionary<long, long>();
 
-        public uint GetComponentId()
-        {
-            return 0;
-        }
-
-        public uint GetCommandId()
-        {
-            return 0;
-        }
+        public uint CommandId => 0;
 
         public void RemoveMetaData(long internalRequestId)
         {

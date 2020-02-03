@@ -12,9 +12,6 @@ namespace Improbable.Gdk.Core
 
     public interface ICommandDiffDeserializer
     {
-        uint GetComponentId();
-        uint GetCommandId();
-
         void AddRequestToDiff(CommandRequestOp op, ViewDiff diff);
         void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData);
     }
