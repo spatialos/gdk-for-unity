@@ -5,7 +5,7 @@ using UnityEditor.Android;
 
 namespace Improbable.Gdk.Mobile
 {
-    // It seems that since 14.4.0, the Worker SDK no longer links in libc++_shared.so and Gradle doesn't
+    // Since 14.4.0, the Worker SDK no longer links 'libc++_shared.so' and Gradle doesn't seem to
     // properly link it in either.
     // So we just manually copy it across.
     // ¯\_(ツ)_/¯

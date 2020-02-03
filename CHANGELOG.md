@@ -6,6 +6,7 @@
 
 - Your generated code Assembly Definition file now needs to have `allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 - The `RedirectedProcess.WithArgs` API will now concatenate arguments, instead of replacing the previously provided arguments. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
+- Building for Android clients now requires the Android NDK to be installed and configured on your machine. [#1265](https://github.com/spatialos/gdk-for-unity/pull/1265)
 
 ### Added
 
