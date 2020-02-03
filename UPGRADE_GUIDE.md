@@ -4,7 +4,7 @@
 
 ### Building for Android now requires the NDK
 
-You can install the NDK from within the Unity Hub. Select "Add Modules" for your Unity install and ensure that the "Unity SDK & NDK" is ticked under the "Android Build Support".
+You can install the NDK from within the Unity Hub. Select "Add Modules" for your Unity install and ensure that the "Unity SDK & NDK" option is ticked underneath "Android Build Support".
 
 See [Unity's documentation](https://docs.unity3d.com/Manual/android-sdksetup.html) for more information.
 
