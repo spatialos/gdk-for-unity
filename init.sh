@@ -60,6 +60,8 @@ update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
 update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
 update_spot spot-macos "${SDK_PATH}/.spot/spot"
 
+chmod -R +x "${SDK_PATH}/.spot"
+
 #Update Mobile SDK
 update_package worker_sdk c-static-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm"
 update_package worker_sdk c-static-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64"
