@@ -84,7 +84,7 @@ namespace Improbable.Gdk.Mobile
 
         private void RefreshAndroidEmulatorsAndDevices()
         {
-            var (emulators, devices) = AndroidLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+            var (emulators, devices) = AndroidUtils.RetrieveAvailableEmulatorsAndDevices();
 
             androidEmulators = (0, emulators);
             androidDevices = (0, devices);
@@ -92,7 +92,7 @@ namespace Improbable.Gdk.Mobile
 
         private void RefreshiOSEmulatorsAndDevices()
         {
-            var (emulators, devices) = iOSLaunchUtils.RetrieveAvailableEmulatorsAndDevices();
+            var (emulators, devices) = iOSUtils.RetrieveAvailableEmulatorsAndDevices();
 
             iOSSimulators = (0, emulators);
             iOSDevices = (0, devices);
