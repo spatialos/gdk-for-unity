@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -12,10 +13,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public BuildTargetConfig BuildTargetConfig;
         public BuildEnvironment BuildEnvironment;
         public ScriptingImplementation ScriptingImplementation;
+        public iOSSdkVersion? IosSdkVersion;
 
         public static List<BuildContext> GetBuildContexts(IEnumerable<string> wantedWorkerTypes,
             BuildEnvironment buildEnvironment, ScriptingImplementation? scriptImplementation = null,
-            ICollection<BuildTarget> buildTargetFilter = null)
+            ICollection<BuildTarget> buildTargetFilter = null, iOSSdkVersion? iosSdkVersion = null)
         {
             var spatialOsBuildConfiguration = BuildConfig.GetInstance();
             var result = new List<BuildContext>();
@@ -60,7 +62,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     WorkerType = workerType, BuildEnvironment = buildEnvironment,
                     ScriptingImplementation = scriptImplementation ??
                         PlayerSettings.GetScriptingBackend(BuildPipeline.GetBuildTargetGroup(targetConfig.Target)),
-                    BuildTargetConfig = targetConfig
+                    BuildTargetConfig = targetConfig,
+                    IosSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? iosSdkVersion : null
                 }));
             }
 

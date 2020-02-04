@@ -35,10 +35,11 @@ namespace Improbable.Gdk.BuildSystem
                 var wantedWorkerTypes = CommandlineParser.GetWorkerTypesToBuild(args);
                 var scriptImplementation = CommandlineParser.GetScriptingImplementation(args);
                 var buildEnvironment = CommandlineParser.GetBuildEnvironment(args);
+                var targetIosSdkVersion = CommandlineParser.GetTargetIosSdk(args);
 
                 // Create BuildContext for each worker
                 var buildContexts = BuildContext.GetBuildContexts(wantedWorkerTypes, buildEnvironment, scriptImplementation,
-                    buildTargetFilter);
+                    buildTargetFilter, targetIosSdkVersion);
 
                 if (buildContexts.Count == 0)
                 {
@@ -174,6 +175,12 @@ namespace Improbable.Gdk.BuildSystem
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
             }
 
+            var activeIosSdkVersion = PlayerSettings.iOS.sdkVersion;
+            if (buildContext.IosSdkVersion.HasValue && activeIosSdkVersion != buildContext.IosSdkVersion)
+            {
+                PlayerSettings.iOS.sdkVersion = buildContext.IosSdkVersion.Value;
+            }
+
             try
             {
                 currentContext = buildContext;
@@ -202,6 +209,7 @@ namespace Improbable.Gdk.BuildSystem
             finally
             {
                 currentContext = null;
+                PlayerSettings.iOS.sdkVersion = activeIosSdkVersion;
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
             }
 
