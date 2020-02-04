@@ -73,6 +73,12 @@ steps:
             type: details
     <<: *linux
 
+  - label: "build deployment launcher :rocket:"
+    command: bash -c ci/build-deployment-launcher.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+
   - label: "build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
