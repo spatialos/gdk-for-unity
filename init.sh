@@ -61,8 +61,8 @@ update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
 update_spot spot-macos "${SDK_PATH}/.spot/spot"
 
 #Update Mobile SDK
-update_package worker_sdk c-static-fullylinked-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm"
-update_package worker_sdk c-static-fullylinked-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64"
+update_package worker_sdk c-static-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm"
+update_package worker_sdk c-static-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64"
 
 update_package worker_sdk c-dynamic-arm64v8a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/arm64"
 update_package worker_sdk c-dynamic-armv7a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/armv7"
