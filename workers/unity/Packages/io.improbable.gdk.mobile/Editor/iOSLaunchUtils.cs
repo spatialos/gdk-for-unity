@@ -98,9 +98,11 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (!TryBuildXCodeProject(developmentTeamId))
+                if (!TryBuildXCodeProject(developmentTeamId, out var xcBuildErrors))
                 {
-                    Debug.LogError("Failed to build your XCode project. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+                    Debug.LogError("Failed to build your XCode project. " +
+                        "Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
+                        $"installed and check the logs:\n {string.Join("\n", xcBuildErrors)}");
                 }
             }
             finally
@@ -179,7 +181,7 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
-        private static bool TryBuildXCodeProject(string developmentTeamId)
+        private static bool TryBuildXCodeProject(string developmentTeamId, out IEnumerable<string> xcBuildErrors)
         {
             var result = RedirectedProcess.Command("xcodebuild")
                 .WithArgs("build-for-testing",
@@ -190,13 +192,8 @@ namespace Improbable.Gdk.Mobile
                     "-allowProvisioningUpdates")
                 .Run();
 
-            if (result.ExitCode == 0)
-            {
-                return true;
-            }
-
-            Debug.LogError(string.Join("\n", result.Stderr));
-            return false;
+            xcBuildErrors = result.Stderr;
+            return result.ExitCode == 0;
         }
 
         private static bool TryLaunchApplication(string deviceId, string filePath)
