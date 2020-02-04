@@ -102,7 +102,7 @@ namespace Improbable.Gdk.Mobile
                 {
                     Debug.LogError("Failed to build your XCode project. " +
                         "Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
-                        $"installed and check the logs:\n {string.Join("\n", xcBuildErrors)}");
+                        $"installed and check the logs:\n{string.Join("\n", xcBuildErrors)}");
                 }
             }
             finally
