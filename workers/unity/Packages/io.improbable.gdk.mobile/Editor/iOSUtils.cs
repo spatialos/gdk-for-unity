@@ -113,7 +113,7 @@ namespace Improbable.Gdk.Mobile
             if (!TryBuildXCodeProject(developmentTeamId, out var xcBuildErrors))
             {
                 throw new BuildFailedException("Failed to build your XCode project. " +
-					"Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
+                    "Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
                     $"installed and check the logs:\n{string.Join("\n", xcBuildErrors)}");
             }
         }
@@ -192,8 +192,8 @@ namespace Improbable.Gdk.Mobile
         {
             /*
              * Unity adds multiple libraries to the XCode project. One of them is libiPhone-lib.
-             * This library will be a dylib, if the Unity project was built for simulator, and otherwise it will be a
-             * static library.
+             * This library will be a dylib if the Unity project was built for simulator.
+             * Otherwise it will be a static library.
              */
             return File.Exists(Path.Combine(XCodeProjectPath, "Library", "libiPhone-lib.a"));
         }
