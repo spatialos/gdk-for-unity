@@ -201,11 +201,11 @@ steps:
       SCRIPTING_BACKEND: "il2cpp"
 
   - label: ":darwin: ~ build UnityGameLogic mono"
-  command: bash -c .shared-ci/scripts/build-worker.sh
-  <<: *macos
-  artifact_paths:
-    - logs/**/*
-  env:
-    WORKER_TYPE: "UnityGameLogic"
-    BUILD_ENVIRONMENT: "cloud"
-    SCRIPTING_BACKEND: "mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityGameLogic"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
