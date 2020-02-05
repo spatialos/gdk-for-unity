@@ -48,7 +48,7 @@
 - `init.sh` and `init.ps1` now support the `--china` and `-china` flag respectively to download from the `cn-production` environment. [#1261](https://github.com/spatialos/gdk-for-unity/pull/1261)
 - Simplified code generation for Command classes and relevant interfaces. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
 - Added `--force` flag to the CodeGenerator project to skip the dirty checks and re-generate everything. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
-- Added `targetiOSSdk` commandline argument for CI builds to select `device` or `simulator` targets when building iOS. [#1269](https://github.com/spatialos/gdk-for-unity/pull/1269)
+- Added the `targetiOSSdk` commandline argument for CI builds for selecting either `device` or `simulator` target when building iOS. [#1269](https://github.com/spatialos/gdk-for-unity/pull/1269)
 
 ## `0.3.2` - 2019-12-23
 
