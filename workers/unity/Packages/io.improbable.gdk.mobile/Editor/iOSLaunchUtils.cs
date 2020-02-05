@@ -88,7 +88,7 @@ namespace Improbable.Gdk.Mobile
 
                 if (!Directory.Exists(XCodeProjectPath))
                 {
-                    Debug.LogError("Was not able to find an XCode project. Did you build your iOS worker?");
+                    Debug.LogError("Unable to find an XCode project. Did you build your iOS worker?");
                     return;
                 }
 
@@ -98,10 +98,11 @@ namespace Improbable.Gdk.Mobile
                     return;
                 }
 
-                if (!TryBuildXCodeProject(developmentTeamId))
+                if (!TryBuildXCodeProject(developmentTeamId, out var xcBuildErrors))
                 {
-                    Debug.LogError(
-                        $"Failed to build your XCode project. Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) installed and check the logs.");
+                    Debug.LogError("Failed to build your XCode project. " +
+                        "Make sure you have the Command line tools for XCode (https://developer.apple.com/download/more/) " +
+                        $"installed and check the logs:\n{string.Join("\n", xcBuildErrors)}");
                 }
             }
             finally
@@ -146,12 +147,13 @@ namespace Improbable.Gdk.Mobile
 
                     // Need to start Simulator before launching application on it
                     // instruments -w <device id> -t <profiling template>
-                    if (RedirectedProcess.Command("xcrun")
+                    var result = RedirectedProcess.Command("xcrun")
                         .WithArgs("instruments", "-w", deviceLaunchConfig.DeviceId, "-t", "Blank")
-                        .Run()
-                        .ExitCode != 0)
+                        .Run();
+
+                    if (result.ExitCode != 0)
                     {
-                        Debug.LogError("Was unable to start iOS Simulator.");
+                        Debug.LogError($"Unable to start iOS Simulator:\n{string.Join("\n", result.Stderr)}");
                         return;
                     }
                 }
@@ -179,17 +181,19 @@ namespace Improbable.Gdk.Mobile
             }
         }
 
-        private static bool TryBuildXCodeProject(string developmentTeamId)
+        private static bool TryBuildXCodeProject(string developmentTeamId, out IEnumerable<string> xcBuildErrors)
         {
-            return RedirectedProcess.Command("xcodebuild")
+            var result = RedirectedProcess.Command("xcodebuild")
                 .WithArgs("build-for-testing",
                     "-project", Path.Combine(XCodeProjectPath, XCodeProjectFile),
                     "-derivedDataPath", DerivedDataPath,
                     "-scheme", "Unity-iPhone",
                     $"DEVELOPMENT_TEAM={developmentTeamId}",
                     "-allowProvisioningUpdates")
-                .Run()
-                .ExitCode == 0;
+                .Run();
+
+            xcBuildErrors = result.Stderr;
+            return result.ExitCode == 0;
         }
 
         private static bool TryLaunchApplication(string deviceId, string filePath)

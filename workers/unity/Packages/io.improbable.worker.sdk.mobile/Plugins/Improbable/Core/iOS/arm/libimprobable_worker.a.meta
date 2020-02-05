@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 611ee1621ab294840a59f51124764c70
+guid: e44bd220fcca7462b85ef2c964ff2444
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -7,7 +7,7 @@ PluginImporter:
   executionOrder: {}
   defineConstraints: []
   isPreloaded: 0
-  isOverridable: 0
+  isOverridable: 1
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
@@ -84,7 +84,7 @@ PluginImporter:
       enabled: 1
       settings:
         AddToEmbeddedBinaries: false
-        CPU: X64
+        CPU: ARM64
         CompileFlags: 
         FrameworkDependencies: 
   userData: 
