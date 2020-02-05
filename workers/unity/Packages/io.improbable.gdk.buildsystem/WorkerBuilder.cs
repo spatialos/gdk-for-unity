@@ -35,11 +35,11 @@ namespace Improbable.Gdk.BuildSystem
                 var wantedWorkerTypes = CommandlineParser.GetWorkerTypesToBuild(args);
                 var scriptImplementation = CommandlineParser.GetScriptingImplementation(args);
                 var buildEnvironment = CommandlineParser.GetBuildEnvironment(args);
-                var targetIosSdkVersion = CommandlineParser.GetTargetIosSdk(args);
+                var targetIOSSdkVersion = CommandlineParser.GetTargetIOSSdk(args);
 
                 // Create BuildContext for each worker
                 var buildContexts = BuildContext.GetBuildContexts(wantedWorkerTypes, buildEnvironment, scriptImplementation,
-                    buildTargetFilter, targetIosSdkVersion);
+                    buildTargetFilter, targetIOSSdkVersion);
 
                 if (buildContexts.Count == 0)
                 {

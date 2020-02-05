@@ -132,7 +132,7 @@ namespace Improbable.Gdk.Mobile
 
                 EditorUtility.DisplayProgressBar("Preparing your Mobile Client", "Preparing launch arguments", 0.0f);
 
-                if (!TryGetXCTestRunPath(useEmulator, out var xcTestRunPath))
+                if (!TryGetXCodeTestRunPath(useEmulator, out var xcTestRunPath))
                 {
                     Debug.LogError(
                         "Unable to find a xctestrun file for the correct architecture. Did you build your client using the correct Target SDK? " +
@@ -239,7 +239,7 @@ namespace Improbable.Gdk.Mobile
             return process != null;
         }
 
-        private static bool TryGetXCTestRunPath(bool useSimulator, out string xctestrunPath)
+        private static bool TryGetXCodeTestRunPath(bool useSimulator, out string xctestrunPath)
         {
             if (!Directory.Exists(DerivedDataPath))
             {

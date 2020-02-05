@@ -80,22 +80,22 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        internal static iOSSdkVersion GetTargetIosSdk(CommandLineArgs args)
+        internal static iOSSdkVersion GetTargetIOSSdk(CommandLineArgs args)
         {
-            var targetIosSdkArg = args.GetCommandLineValue("targetiOSSdk", string.Empty).ToLower();
-            if (string.IsNullOrEmpty(targetIosSdkArg))
+            var targetIOSSdkArg = args.GetCommandLineValue("targetiOSSdk", string.Empty).ToLower();
+            if (string.IsNullOrEmpty(targetIOSSdkArg))
             {
                 return PlayerSettings.iOS.sdkVersion;
             }
 
-            switch (targetIosSdkArg)
+            switch (targetIOSSdkArg)
             {
                 case "device":
                     return iOSSdkVersion.DeviceSDK;
                 case "simulator":
                     return iOSSdkVersion.SimulatorSDK;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(targetIosSdkArg), targetIosSdkArg,
+                    throw new ArgumentOutOfRangeException(nameof(targetIOSSdkArg), targetIOSSdkArg,
                         "Unknown target iOS SDK");
             }
         }
