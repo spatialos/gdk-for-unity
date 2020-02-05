@@ -79,5 +79,25 @@ namespace Improbable.Gdk.BuildSystem
                         "Unknown build environment");
             }
         }
+
+        internal static iOSSdkVersion GetTargetIOSSdk(CommandLineArgs args)
+        {
+            var targetIOSSdkArg = args.GetCommandLineValue("targetiOSSdk", string.Empty).ToLower();
+            if (string.IsNullOrEmpty(targetIOSSdkArg))
+            {
+                return PlayerSettings.iOS.sdkVersion;
+            }
+
+            switch (targetIOSSdkArg)
+            {
+                case "device":
+                    return iOSSdkVersion.DeviceSDK;
+                case "simulator":
+                    return iOSSdkVersion.SimulatorSDK;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(targetIOSSdkArg), targetIOSSdkArg,
+                        "Unknown target iOS SDK");
+            }
+        }
     }
 }

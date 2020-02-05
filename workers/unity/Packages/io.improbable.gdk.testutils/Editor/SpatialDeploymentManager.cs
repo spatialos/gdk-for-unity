@@ -43,7 +43,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             var tcs = new TaskCompletionSource<bool>();
 
             var processInfo =
-                new ProcessStartInfo("spatial", "build build-config")
+                new ProcessStartInfo(Common.SpatialBinary, "build build-config")
                 {
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
@@ -89,7 +89,7 @@ Raw stderr:
             var tcs = new TaskCompletionSource<Process>();
 
             var processInfo =
-                new ProcessStartInfo("spatial", $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false")
+                new ProcessStartInfo(Common.SpatialBinary, $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false")
                 {
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
@@ -224,7 +224,7 @@ Raw stderr:
         {
             return RunProcessAndWaitForExit(
                 "kill",
-                $"-TERM {processId}",
+                $"-KILL {processId}",
                 timeout,
                 out _,
                 out _);

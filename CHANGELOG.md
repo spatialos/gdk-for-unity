@@ -7,6 +7,7 @@
 - Your generated code Assembly Definition file now needs to have `allow unsafe code` selected to compile. [#1255](https://github.com/spatialos/gdk-for-unity/pull/1255)
 - The `RedirectedProcess.WithArgs` API will now concatenate arguments, instead of replacing the previously provided arguments. [#1260](https://github.com/spatialos/gdk-for-unity/pull/1260)
 - Building for Android clients now requires the Android NDK to be installed and configured on your machine. [#1265](https://github.com/spatialos/gdk-for-unity/pull/1265)
+- Renamed `AndroidLaunchUtils` to `AndroidUtils`, and `iOSLaunchUtils` to `iOSUtils`. [#1269](https://github.com/spatialos/gdk-for-unity/pull/1269)
 
 ### Added
 
@@ -47,6 +48,7 @@
 - `init.sh` and `init.ps1` now support the `--china` and `-china` flag respectively to download from the `cn-production` environment. [#1261](https://github.com/spatialos/gdk-for-unity/pull/1261)
 - Simplified code generation for Command classes and relevant interfaces. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
 - Added `--force` flag to the CodeGenerator project to skip the dirty checks and re-generate everything. [#1263](https://github.com/spatialos/gdk-for-unity/pull/1263)
+- Added the `targetiOSSdk` commandline argument for CI builds for selecting either `device` or `simulator` target when building iOS. [#1269](https://github.com/spatialos/gdk-for-unity/pull/1269)
 
 ## `0.3.2` - 2019-12-23
 
