@@ -175,10 +175,10 @@ namespace Improbable.Gdk.BuildSystem
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
             }
 
-            var activeIosSdkVersion = PlayerSettings.iOS.sdkVersion;
-            if (buildContext.IosSdkVersion.HasValue && activeIosSdkVersion != buildContext.IosSdkVersion)
+            var activeIOSSdkVersion = PlayerSettings.iOS.sdkVersion;
+            if (buildContext.IOSSdkVersion.HasValue && activeIOSSdkVersion != buildContext.IOSSdkVersion)
             {
-                PlayerSettings.iOS.sdkVersion = buildContext.IosSdkVersion.Value;
+                PlayerSettings.iOS.sdkVersion = buildContext.IOSSdkVersion.Value;
             }
 
             try
@@ -209,7 +209,7 @@ namespace Improbable.Gdk.BuildSystem
             finally
             {
                 currentContext = null;
-                PlayerSettings.iOS.sdkVersion = activeIosSdkVersion;
+                PlayerSettings.iOS.sdkVersion = activeIOSSdkVersion;
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
             }
 

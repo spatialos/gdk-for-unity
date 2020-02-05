@@ -12,7 +12,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public BuildTargetConfig BuildTargetConfig;
         public BuildEnvironment BuildEnvironment;
         public ScriptingImplementation ScriptingImplementation;
-        public iOSSdkVersion? IosSdkVersion;
+        public iOSSdkVersion? IOSSdkVersion;
 
         public static List<BuildContext> GetBuildContexts(IEnumerable<string> wantedWorkerTypes,
             BuildEnvironment buildEnvironment, ScriptingImplementation? scriptImplementation = null,
@@ -62,7 +62,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     ScriptingImplementation = scriptImplementation ??
                         PlayerSettings.GetScriptingBackend(BuildPipeline.GetBuildTargetGroup(targetConfig.Target)),
                     BuildTargetConfig = targetConfig,
-                    IosSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? iosSdkVersion : null
+                    IOSSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? iosSdkVersion : null
                 }));
             }
 
