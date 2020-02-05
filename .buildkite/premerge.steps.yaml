@@ -46,20 +46,27 @@ linux: &linux
       - exit_status: -1
         limit: 3
 
+macos: &macos
+  agents:
+    - "environment=production"
+    - "permission_set=builder"
+    - "platform=macos"
+    - "queue=v4-1580909052-37c92fd521df8e8b"
+
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
 dag: true
 
 steps:
-  - label: "test"
+  - label: ":windows: ~ test"
     id: "test"
     command: bash -c ci/test.sh
     <<: *common
     artifact_paths:
       - logs/**/*
 
-  - label: "annotate test results :pencil2:"
+  - label: ":debian: ~ annotate test results :pencil2:"
     depends_on:
       - step: "test"
         allow_failure: true
@@ -73,13 +80,13 @@ steps:
             type: details
     <<: *linux
 
-  - label: "build deployment launcher :rocket:"
+  - label: ":windows: ~ build deployment launcher :rocket:"
     command: bash -c ci/build-deployment-launcher.sh
     <<: *common
     artifact_paths:
       - logs/**/*
 
-  - label: "build :android:"
+  - label: ":windows: ~ build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -91,7 +98,7 @@ steps:
       BUILD_TARGET_FILTER: "android"
       SCRIPTING_BACKEND: "mono"
 
-  - label: "build :ios:"
+  - label: ":windows: ~ build :ios:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -103,7 +110,7 @@ steps:
       BUILD_TARGET_FILTER: "ios"
       SCRIPTING_BACKEND: "il2cpp"
 
-  - label: "build UnityClient mono"
+  - label: ":windows: ~ build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -113,7 +120,7 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
 
-  - label: "build UnityClient il2cpp"
+  - label: ":windows: ~ build UnityClient il2cpp"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -123,7 +130,7 @@ steps:
       BUILD_ENVIRONMENT: "local"
       SCRIPTING_BACKEND: "il2cpp"
 
-  - label: "build UnityGameLogic mono"
+  - label: ":windows: ~ build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -132,3 +139,66 @@ steps:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+
+# Need to duplicate steps to be able to run it on Windows & macOS...
+# https://forum.buildkite.community/t/steps-with-a-matrix/46/2
+
+  - label: ":darwin: ~ test"
+    command: bash -c ci/test.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+
+  - label: ":darwin: ~ build :android:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "android"
+      SCRIPTING_BACKEND: "mono"
+
+  - label: ":darwin: ~ build :ios:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "ios"
+      SCRIPTING_BACKEND: "il2cpp"
+      TARGET_IOS_SDK: "simulator"
+
+  - label: ":darwin: ~ build UnityClient mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
+
+  - label: ":darwin: ~ build UnityClient il2cpp"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "local"
+      SCRIPTING_BACKEND: "il2cpp"
+
+  - label: ":darwin: ~ build UnityGameLogic mono"
+  command: bash -c .shared-ci/scripts/build-worker.sh
+  <<: *macos
+  artifact_paths:
+    - logs/**/*
+  env:
+    WORKER_TYPE: "UnityGameLogic"
+    BUILD_ENVIRONMENT: "cloud"
+    SCRIPTING_BACKEND: "mono"
