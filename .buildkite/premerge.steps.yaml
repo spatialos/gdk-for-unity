@@ -48,6 +48,7 @@ linux: &linux
 
 macos: &macos
   agents:
+    - "capable_of_building=gdk-for-unity"
     - "environment=production"
     - "permission_set=builder"
     - "platform=macos"
