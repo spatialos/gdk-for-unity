@@ -19,12 +19,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            partial.Text(GenerateCommandStorage(command, qualifiedNamespace, componentDetails.ComponentName));
-                            partial.Text(GenerateCommandsToSendStorage(command, qualifiedNamespace, componentDetails.ComponentName));
+                            partial.Text(GenerateCommandStorage(command, qualifiedNamespace, componentDetails.Name));
+                            partial.Text(GenerateCommandsToSendStorage(command, qualifiedNamespace, componentDetails.Name));
                         }
                     });
                 });

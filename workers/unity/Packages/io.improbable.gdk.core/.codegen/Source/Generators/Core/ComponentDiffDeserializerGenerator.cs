@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Type(GenerateComponentDeserializer(componentDetails, qualifiedNamespace));
                         partial.Type(GenerateComponentSerializer(componentDetails, qualifiedNamespace));
@@ -31,10 +31,10 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static TypeBlock GenerateComponentDeserializer(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
             var eventDetailsList = componentDetails.EventDetails;
 
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentDeserializer class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.DiffComponentDeserializer class.");
 
             return Scope.Type("public class DiffComponentDeserializer : IComponentDiffDeserializer", deserializer =>
             {

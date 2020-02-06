@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static string Generate(UnityComponentDetails details, string package)
         {
-            var componentNamespace = $"global::{package}.{details.ComponentName}";
+            var componentNamespace = $"global::{package}.{details.Name}";
 
             return CodeWriter.Populate(cgw =>
             {
@@ -36,16 +36,16 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static TypeBlock GenerateCommandSenderSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSenderSubscriptionManager class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandSenderSubscriptionManager class.");
 
-            var commandSenderType = $"{componentDetails.ComponentName}CommandSender";
+            var commandSenderType = $"{componentDetails.Name}CommandSender";
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.ComponentName}CommandSenderSubscriptionManager : CommandSenderSubscriptionManagerBase<{commandSenderType}>",
+                $"public class {componentDetails.Name}CommandSenderSubscriptionManager : CommandSenderSubscriptionManagerBase<{commandSenderType}>",
                 t =>
                 {
                     t.Line($@"
-public {componentDetails.ComponentName}CommandSenderSubscriptionManager(World world) : base(world)
+public {componentDetails.Name}CommandSenderSubscriptionManager(World world) : base(world)
 {{
 }}
 
@@ -59,16 +59,16 @@ protected override {commandSenderType} CreateSender(Entity entity, World world)
 
         private static TypeBlock GenerateCommandReceiverSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiverSubscriptionManager class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandReceiverSubscriptionManager class.");
 
-            var commandReceiverType = $"{componentDetails.ComponentName}CommandReceiver";
+            var commandReceiverType = $"{componentDetails.Name}CommandReceiver";
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.ComponentName}CommandReceiverSubscriptionManager : CommandReceiverSubscriptionManagerBase<{commandReceiverType}>",
+                $"public class {componentDetails.Name}CommandReceiverSubscriptionManager : CommandReceiverSubscriptionManagerBase<{commandReceiverType}>",
                 t =>
                 {
                     t.Line($@"
-public {componentDetails.ComponentName}CommandReceiverSubscriptionManager(World world) : base(world, {componentDetails.ComponentName}.ComponentId)
+public {componentDetails.Name}CommandReceiverSubscriptionManager(World world) : base(world, {componentDetails.Name}.ComponentId)
 {{
 }}
 
@@ -82,9 +82,9 @@ protected override {commandReceiverType} CreateReceiver(World world, Entity enti
 
         private static TypeBlock GenerateCommandSender(UnityComponentDetails componentDetails, string qualifiedNamespace, string componentNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandSender class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandSender class.");
 
-            var commandSenderType = $"{componentDetails.ComponentName}CommandSender";
+            var commandSenderType = $"{componentDetails.Name}CommandSender";
 
             return Scope.Type($"public class {commandSenderType} : ICommandSender", c =>
             {
@@ -110,7 +110,7 @@ internal {commandSenderType}(Entity entity, World world)
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse";
-                    var commandRequest = $"{componentDetails.ComponentName}.{commandDetails.CommandName}.Request";
+                    var commandRequest = $"{componentDetails.Name}.{commandDetails.CommandName}.Request";
 
                     c.Line($@"
 public void Send{commandDetails.CommandName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
@@ -151,9 +151,9 @@ public void RemoveAllCallbacks()
 
         private static TypeBlock GenerateCommandReceiver(UnityComponentDetails componentDetails, string qualifiedNamespace, string componentNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}CommandReceiver class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandReceiver class.");
 
-            var commandReceiverType = $"{componentDetails.ComponentName}CommandReceiver";
+            var commandReceiverType = $"{componentDetails.Name}CommandReceiver";
 
             return Scope.Type($"public class {commandReceiverType} : ICommandReceiver", c =>
             {

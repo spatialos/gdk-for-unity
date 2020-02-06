@@ -16,7 +16,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             var componentDetails = details;
             var commandDetailsList = details.CommandDetails;
-            var rootNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var rootNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
 
             var writer = CodeWriter.Populate(cgw =>
             {
@@ -28,15 +28,15 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentMetaclass class.");
+                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.ComponentMetaclass class.");
 
                         partial.Type("public class ComponentMetaclass : IComponentMetaclass", componentMetaclass =>
                         {
                             componentMetaclass.Line($@"
 public uint ComponentId => {componentDetails.ComponentId};
-public string Name => ""{componentDetails.ComponentName}"";
+public string Name => ""{componentDetails.Name}"";
 
 public Type Data {{ get; }} = typeof({rootNamespace}.Component);
 public Type Snapshot {{ get; }} = typeof({rootNamespace}.Snapshot);
@@ -47,9 +47,9 @@ public Type Serializer {{ get; }} = typeof({rootNamespace}.ComponentSerializer);
 public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.DiffComponentDeserializer);
 
 public Type DiffStorage {{ get; }} = typeof({rootNamespace}.DiffComponentStorage);
-public Type ViewStorage {{ get; }} = typeof({rootNamespace}.{componentDetails.ComponentName}ViewStorage);
+public Type ViewStorage {{ get; }} = typeof({rootNamespace}.{componentDetails.Name}ViewStorage);
 public Type EcsViewManager {{ get; }} = typeof({rootNamespace}.EcsViewManager);
-public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetails.ComponentName}Dynamic);
+public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetails.Name}Dynamic);
 ");
 
                             componentMetaclass.Initializer("public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]",
@@ -61,7 +61,7 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
 
                         foreach (var command in commandDetailsList)
                         {
-                            partial.Type(GenerateCommandMetaclass(qualifiedNamespace, componentDetails.ComponentName, command));
+                            partial.Type(GenerateCommandMetaclass(qualifiedNamespace, componentDetails.Name, command));
                         }
                     });
                 });

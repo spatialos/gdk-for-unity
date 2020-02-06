@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
         public static string Generate(UnityComponentDetails details, string package)
         {
             var qualifiedNamespace = package;
-            var componentName = details.ComponentName;
+            var componentName = details.Name;
 
             return CodeWriter.Populate(cgw =>
             {

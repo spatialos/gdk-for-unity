@@ -26,9 +26,9 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentStorage class.");
+                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.DiffComponentStorage class.");
 
                         var classDefinition = new StringBuilder("public class DiffComponentStorage : IDiffUpdateStorage<Update>, IDiffComponentAddedStorage<Update>, IDiffAuthorityStorage");
 

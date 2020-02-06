@@ -23,16 +23,16 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
             logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
+                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
             logger.Trace("Adding job output files.");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
 
-                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
+                logger.Trace($"Adding job output files for component {componentName}.");
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
@@ -54,10 +54,10 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
             logger.Info("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
+                logger.Trace($"Generating code for {componentTarget.Content.Name}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
                 var package = componentTarget.Package;
 
                 if (componentTarget.Content.CommandDetails.Count > 0)

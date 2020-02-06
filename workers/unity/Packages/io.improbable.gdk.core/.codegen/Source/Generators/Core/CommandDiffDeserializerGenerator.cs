@@ -21,12 +21,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            partial.Text(GenerateDiffCommandDeserializer(command, qualifiedNamespace, componentDetails.ComponentName));
-                            partial.Text(GenerateCommandSerializer(command, qualifiedNamespace, componentDetails.ComponentName));
+                            partial.Text(GenerateDiffCommandDeserializer(command, qualifiedNamespace, componentDetails.Name));
+                            partial.Text(GenerateCommandSerializer(command, qualifiedNamespace, componentDetails.Name));
                         }
                     });
                 });

@@ -10,9 +10,9 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
 
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentReplicator internal class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.ComponentReplicator internal class.");
 
             return CodeWriter.Populate(cgw =>
             {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Type("internal class ComponentReplicator : IComponentReplicationHandler", replicator =>
                         {
@@ -55,7 +55,7 @@ public void SendUpdates(
     ComponentUpdateSystem componentUpdateSystem)
 ", m =>
                             {
-                                m.ProfilerStart(componentDetails.ComponentName);
+                                m.ProfilerStart(componentDetails.Name);
 
                                 m.Line(new[]
                                 {

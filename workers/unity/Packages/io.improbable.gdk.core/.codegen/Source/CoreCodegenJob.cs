@@ -33,18 +33,18 @@ namespace Improbable.Gdk.CodeGenerator.Core
             logger.Info("Gathering types details.");
             typesToGenerate = store.Types
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Package))
+                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
             logger.Info("Gathering enum details.");
             enumsToGenerate = store.Enums
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Package))
+                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
             logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
+                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
             logger.Trace("Adding job output files for types.");
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             {
                 logger.Trace($"Adding output file for type {typeTarget.Content.QualifiedName}.");
 
-                var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
+                var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
                 AddOutputFile(Path.Combine(typeTarget.OutputPath, fileName));
             }
 
@@ -62,11 +62,11 @@ namespace Improbable.Gdk.CodeGenerator.Core
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
 
-                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
+                logger.Trace($"Adding job output files for component {componentTarget.Content.Name}.");
 
-                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.ComponentName, FileExtension)));
+                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.Name, FileExtension)));
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             {
                 logger.Trace($"Adding job output file for enum {enumTarget.Content.QualifiedName}.");
 
-                var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
+                var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
                 AddOutputFile(Path.Combine(enumTarget.OutputPath, fileName));
             }
 
@@ -130,7 +130,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             {
                 logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
 
-                var fileName = Path.ChangeExtension(enumTarget.Content.TypeName, FileExtension);
+                var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
                 var enumCode = UnityEnumGenerator.Generate(enumTarget.Content, enumTarget.Package);
                 AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
@@ -142,7 +142,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             {
                 logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
 
-                var fileName = Path.ChangeExtension(typeTarget.Content.CapitalisedName, FileExtension);
+                var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
                 var typeCode = UnityTypeGenerator.Generate(typeTarget.Content, typeTarget.Package);
                 AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
@@ -152,10 +152,10 @@ namespace Improbable.Gdk.CodeGenerator.Core
             logger.Trace("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
+                logger.Trace($"Generating code for {componentTarget.Content.Name}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
                 var package = componentTarget.Package;
 
                 var componentFileName = Path.ChangeExtension(componentName, FileExtension);
