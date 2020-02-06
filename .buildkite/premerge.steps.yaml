@@ -52,7 +52,7 @@ macos: &macos
     - "environment=production"
     - "permission_set=builder"
     - "platform=macos"
-    - "queue=v4-1580997557-cbf2caa93e6b9134-dirty"
+    - "queue=v4-1580909052-37c92fd521df8e8b"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -66,113 +66,98 @@ macos: &macos
 dag: true
 
 steps:
-  # - label: ":windows: ~ test"
-  #   id: "test"
-  #   command: bash -c ci/test.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
+  - label: ":windows: ~ test"
+    id: "test-windows"
+    command: bash -c ci/test.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
 
-  # - label: ":debian: ~ annotate test results :pencil2:"
-  #   depends_on:
-  #     - step: "test"
-  #       allow_failure: true
-  #   plugins:
-  #     - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
-  #         inputs:
-  #           - label: ":octagonal_sign: Test failures "
-  #             artifact_path: "logs\\nunit\\*.xml"
-  #             type: nunit
-  #         formatter:
-  #           type: details
-  #   <<: *linux
-
-  # - label: ":windows: ~ build deployment launcher :rocket:"
-  #   command: bash -c ci/build-deployment-launcher.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-
-  # - label: ":windows: ~ build :android:"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #     - workers/unity/build/worker/**/*
-  #   env:
-  #     WORKER_TYPE: "MobileClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     BUILD_TARGET_FILTER: "android"
-  #     SCRIPTING_BACKEND: "mono"
-
-  # - label: ":windows: ~ build :ios:"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #     - workers/unity/build/worker/**/*
-  #   env:
-  #     WORKER_TYPE: "MobileClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     BUILD_TARGET_FILTER: "ios"
-  #     SCRIPTING_BACKEND: "il2cpp"
-
-  # - label: ":windows: ~ build UnityClient mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
-
-  # - label: ":windows: ~ build UnityClient il2cpp"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     SCRIPTING_BACKEND: "il2cpp"
-
-  # - label: ":windows: ~ build UnityGameLogic mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *common
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityGameLogic"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
-
-# Need to duplicate steps to be able to run it on Windows & macOS...
-# https://forum.buildkite.community/t/steps-with-a-matrix/46/2
-
-  # - label: ":darwin: ~ test"
-  #   command: bash -c ci/test.sh
-  #   <<: *macos
-  #   artifact_paths:
-  #     - logs/**/*
-
-  # - label: ":darwin: ~ build :android:"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *macos
-  #   artifact_paths:
-  #     - logs/**/*
-  #     - workers/unity/build/worker/**/*
-  #   env:
-  #     WORKER_TYPE: "MobileClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     BUILD_TARGET_FILTER: "android"
-  #     SCRIPTING_BACKEND: "mono"
-
-  - label: ":darwin: ~ debug :ios:"
-    command: bash -c "xcode-select --print-path; printenv; whoami"
+  - label: ":darwin: ~ test"
+    id: "test-darwin"
+    command: bash -c ci/test.sh
     <<: *macos
     artifact_paths:
       - logs/**/*
+
+  - label: ":debian: ~ annotate test results :pencil2:"
+    depends_on:
+      - step: "test-windows"
+        allow_failure: true
+      - step: "test-darwin"
+        allow_failure: true
+    plugins:
+      - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
+          inputs:
+            - label: ":octagonal_sign: :windows: Test failures "
+              artifact_path: "logs\\nunit\\*.xml"
+              type: nunit
+            - label: ":octagonal_sign: :darwin: Test failures "
+              artifact_path: "logs/nunit/*.xml"
+              type: nunit
+          formatter:
+            type: details
+    <<: *linux
+
+  - label: ":windows: ~ build deployment launcher :rocket:"
+    command: bash -c ci/build-deployment-launcher.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+
+  - label: ":windows: ~ build :android:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "android"
+      SCRIPTING_BACKEND: "mono"
+
+  - label: ":windows: ~ build :ios:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+      - workers/unity/build/worker/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "ios"
+      SCRIPTING_BACKEND: "il2cpp"
+
+  - label: ":windows: ~ build UnityClient mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
+
+  - label: ":windows: ~ build UnityClient il2cpp"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityClient"
+      BUILD_ENVIRONMENT: "local"
+      SCRIPTING_BACKEND: "il2cpp"
+
+  - label: ":windows: ~ build UnityGameLogic mono"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *common
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "UnityGameLogic"
+      BUILD_ENVIRONMENT: "cloud"
+      SCRIPTING_BACKEND: "mono"
 
   - label: ":darwin: ~ build :ios:"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -185,33 +170,3 @@ steps:
       BUILD_TARGET_FILTER: "ios"
       SCRIPTING_BACKEND: "il2cpp"
       TARGET_IOS_SDK: "simulator"
-
-  # - label: ":darwin: ~ build UnityClient mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *macos
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
-
-  # - label: ":darwin: ~ build UnityClient il2cpp"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *macos
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityClient"
-  #     BUILD_ENVIRONMENT: "local"
-  #     SCRIPTING_BACKEND: "il2cpp"
-
-  # - label: ":darwin: ~ build UnityGameLogic mono"
-  #   command: bash -c .shared-ci/scripts/build-worker.sh
-  #   <<: *macos
-  #   artifact_paths:
-  #     - logs/**/*
-  #   env:
-  #     WORKER_TYPE: "UnityGameLogic"
-  #     BUILD_ENVIRONMENT: "cloud"
-  #     SCRIPTING_BACKEND: "mono"
