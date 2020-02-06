@@ -5,11 +5,8 @@ using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityTypeDetails
+    public class UnityTypeDetails : GeneratorDetails
     {
-        public readonly string Name;
-        public readonly string Namespace;
-
         private readonly string camelCaseName;
 
         public readonly string QualifiedName;
@@ -30,11 +27,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride)
+        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride) : base(rawTypeDefinition.Name, package)
         {
-            Name = rawTypeDefinition.Name;
-            Namespace = Formatting.CapitaliseQualifiedNameParts(package);
-
             camelCaseName = Formatting.PascalCaseToCamelCase(Name);
 
             QualifiedName = rawTypeDefinition.QualifiedName;

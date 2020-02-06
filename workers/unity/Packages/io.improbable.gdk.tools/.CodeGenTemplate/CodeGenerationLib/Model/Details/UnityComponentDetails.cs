@@ -1,15 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Improbable.Gdk.CodeGeneration.Utils;
 using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityComponentDetails
+    public class UnityComponentDetails : GeneratorDetails
     {
-        public readonly string Name;
-        public readonly string Namespace;
-
         public readonly uint ComponentId;
         public readonly bool IsBlittable;
 
@@ -21,11 +17,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityComponentDetails(string package, ComponentDefinition rawComponentDefinition, DetailsStore store)
+        public UnityComponentDetails(string package, ComponentDefinition rawComponentDefinition, DetailsStore store) : base(rawComponentDefinition.Name, package)
         {
-            Name = rawComponentDefinition.Name;
-            Namespace = Formatting.CapitaliseQualifiedNameParts(package);
-
             ComponentId = rawComponentDefinition.ComponentId;
 
             IsBlittable = store.BlittableSet.Contains(rawComponentDefinition.QualifiedName);
