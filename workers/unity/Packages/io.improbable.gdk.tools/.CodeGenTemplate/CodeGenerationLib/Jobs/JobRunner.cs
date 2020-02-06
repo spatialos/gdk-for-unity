@@ -8,25 +8,23 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 {
     public class JobRunner
     {
-        private IFileSystem fileSystem;
-        private Logger logger;
+        private readonly IFileSystem fileSystem;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public JobRunner(IFileSystem fileSystem)
         {
-            logger = LogManager.GetCurrentClassLogger();
-
             this.fileSystem = fileSystem;
         }
 
         public void Run(params CodegenJob[] jobs)
         {
-            logger.Info("Finding dirty jobs.");
+            Logger.Info("Finding dirty jobs.");
             var dirtyJobs = PrepareOutputFolders(jobs);
 
             var dirtyJobList = string.Join("\n - ", dirtyJobs.Select(job => job.GetType()));
-            logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
+            Logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
 
-            logger.Info("Running jobs.");
+            Logger.Info("Running jobs.");
             foreach (var dirtyJob in dirtyJobs)
             {
                 dirtyJob.Run();
@@ -39,16 +37,16 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
             foreach (var outputDirectory in outputDirectories)
             {
-                var relatedJobs = jobs.Where(job => job.OutputDirectory == outputDirectory);
+                var relatedJobs = jobs.Where(job => job.OutputDirectory == outputDirectory).ToList();
 
                 if (IsOutputDirectoryDirty(relatedJobs, outputDirectory))
                 {
-                    logger.Trace($"Deleting dirty directory {outputDirectory}.");
+                    Logger.Trace($"Deleting dirty directory {outputDirectory}.");
                     fileSystem.DeleteDirectory(outputDirectory);
 
                     foreach (var job in relatedJobs)
                     {
-                        logger.Trace($"Marking {job.GetType()} as dirty.");
+                        Logger.Trace($"Marking {job.GetType()} as dirty.");
                         job.MarkAsDirty();
                     }
                 }

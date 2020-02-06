@@ -21,56 +21,56 @@ namespace Improbable.Gdk.CodeGenerator.Core
             : base(outputDir, fileSystem, store, force)
         {
             var jobName = nameof(CoreCodegenJob);
-            logger.Info($"Initialising {jobName}.");
+            Logger.Info($"Initialising {jobName}.");
 
             AddInputFiles(store.SchemaFiles.ToList());
 
-            logger.Info("Gathering nested types.");
+            Logger.Info("Gathering nested types.");
             var allNestedTypes = store.Types
                 .SelectMany(kv => store.GetNestedTypes(kv.Key))
                 .ToHashSet();
 
-            logger.Info("Gathering types details.");
+            Logger.Info("Gathering types details.");
             typesToGenerate = store.Types
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
                 .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
-            logger.Info("Gathering enum details.");
+            Logger.Info("Gathering enum details.");
             enumsToGenerate = store.Enums
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
                 .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
-            logger.Info("Gathering component details.");
+            Logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
                 .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
-            logger.Trace("Adding job output files for types.");
+            Logger.Trace("Adding job output files for types.");
             foreach (var typeTarget in typesToGenerate)
             {
-                logger.Trace($"Adding output file for type {typeTarget.Content.QualifiedName}.");
+                Logger.Trace($"Adding output file for type {typeTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
                 AddOutputFile(Path.Combine(typeTarget.OutputPath, fileName));
             }
 
-            logger.Info($"Added output files for {typesToGenerate.Count} types.");
+            Logger.Info($"Added output files for {typesToGenerate.Count} types.");
 
-            logger.Trace("Adding job output files for components.");
+            Logger.Trace("Adding job output files for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.Name;
 
-                logger.Trace($"Adding job output files for component {componentTarget.Content.Name}.");
+                Logger.Trace($"Adding job output files for component {componentTarget.Content.Name}.");
 
                 AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.Name, FileExtension)));
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Adding job output files for commands.");
+                    Logger.Trace("Adding job output files for commands.");
 
                     AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 if (componentTarget.Content.EventDetails.Count > 0)
                 {
-                    logger.Trace("Adding job output file for events.");
+                    Logger.Trace("Adding job output file for events.");
 
                     AddOutputFile(Path.Combine(relativeOutputPath,
                         Path.ChangeExtension($"{componentName}Events", FileExtension)));
@@ -108,51 +108,51 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
             }
 
-            logger.Info($"Added output files for {componentsToGenerate.Count} components.");
+            Logger.Info($"Added output files for {componentsToGenerate.Count} components.");
 
-            logger.Trace("Adding job output files for enums.");
+            Logger.Trace("Adding job output files for enums.");
             foreach (var enumTarget in enumsToGenerate)
             {
-                logger.Trace($"Adding job output file for enum {enumTarget.Content.QualifiedName}.");
+                Logger.Trace($"Adding job output file for enum {enumTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
                 AddOutputFile(Path.Combine(enumTarget.OutputPath, fileName));
             }
 
-            logger.Info($"Added output files for {enumsToGenerate.Count} enums.");
-            logger.Info($"Finished initialising {jobName}.");
+            Logger.Info($"Added output files for {enumsToGenerate.Count} enums.");
+            Logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
-            logger.Trace("Starting code generation for enums.");
+            Logger.Trace("Starting code generation for enums.");
             foreach (var enumTarget in enumsToGenerate)
             {
-                logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
+                Logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
                 var enumCode = UnityEnumGenerator.Generate(enumTarget.Content, enumTarget.Package);
                 AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
 
-            logger.Info($"Finished code generation for {enumsToGenerate.Count} enums.");
+            Logger.Info($"Finished code generation for {enumsToGenerate.Count} enums.");
 
-            logger.Trace("Starting code generation for types.");
+            Logger.Trace("Starting code generation for types.");
             foreach (var typeTarget in typesToGenerate)
             {
-                logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
+                Logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
                 var typeCode = UnityTypeGenerator.Generate(typeTarget.Content, typeTarget.Package);
                 AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
 
-            logger.Info($"Finished code generation for {typesToGenerate.Count} types.");
+            Logger.Info($"Finished code generation for {typesToGenerate.Count} types.");
 
-            logger.Trace("Starting code generation for components.");
+            Logger.Trace("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                logger.Trace($"Generating code for {componentTarget.Content.Name}.");
+                Logger.Trace($"Generating code for {componentTarget.Content.Name}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.Name;
@@ -164,7 +164,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
-                    logger.Trace("Generating code for commands.");
+                    Logger.Trace("Generating code for commands.");
 
                     var commandPayloadsFileName =
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
@@ -196,7 +196,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 if (componentTarget.Content.EventDetails.Count > 0)
                 {
-                    logger.Trace("Generating code for events.");
+                    Logger.Trace("Generating code for events.");
 
                     var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
                     var eventsCode = UnityEventGenerator.Generate(componentTarget.Content, package);
@@ -221,7 +221,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                 if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))
                 {
-                    logger.Trace("Generating code for non-blittable fields.");
+                    Logger.Trace("Generating code for non-blittable fields.");
 
                     var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
                     var referenceProviderTranslationCode =
@@ -239,7 +239,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
             }
 
-            logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
+            Logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
 }

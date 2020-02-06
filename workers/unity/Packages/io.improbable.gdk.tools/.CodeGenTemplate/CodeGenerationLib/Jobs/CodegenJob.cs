@@ -15,23 +15,22 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
     public abstract class CodegenJob
     {
-        public IReadOnlyList<string> InputFiles => inputFiles;
-        public IReadOnlyList<string> OutputFiles => outputFiles;
+        public IEnumerable<string> OutputFiles => outputFiles;
 
         private readonly List<string> inputFiles = new List<string>();
         private readonly List<string> outputFiles = new List<string>();
         public readonly string OutputDirectory;
 
-        protected Logger logger { get; }
+        protected readonly Logger Logger;
 
-        private readonly Dictionary<string, string> Content = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> content = new Dictionary<string, string>();
 
-        private IFileSystem fileSystem;
+        private readonly IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
 
-        public CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
+        protected CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
         {
-            logger = LogManager.GetLogger(GetType().FullName);
+            Logger = LogManager.GetLogger(GetType().FullName);
 
             OutputDirectory = baseOutputDirectory;
             this.fileSystem = fileSystem;
@@ -50,7 +49,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected void AddInputFile(string inputFilePath)
         {
             inputFiles.Add(inputFilePath);
-            logger.Trace($"Added input file: {inputFilePath}.");
+            Logger.Trace($"Added input file: {inputFilePath}.");
         }
 
         protected void AddOutputFiles(IEnumerable<string> outputFilePaths)
@@ -64,13 +63,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected void AddOutputFile(string outputFilePath)
         {
             outputFiles.Add(outputFilePath);
-            logger.Trace($"Added output file: {outputFilePath}.");
+            Logger.Trace($"Added output file: {outputFilePath}.");
         }
 
         protected void AddContent(string filePath, string fileContents)
         {
-            Content.Add(filePath, fileContents);
-            logger.Trace($"Added generated content for {filePath}.");
+            content.Add(filePath, fileContents);
+            Logger.Trace($"Added generated content for {filePath}.");
         }
 
         public void Clean()
@@ -90,46 +89,46 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 var remainingFilesInFolder = fileSystem.GetFilesInDirectory(fileInfo.DirectoryPath);
                 if (remainingFilesInFolder.Count == 0)
                 {
-                    logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
+                    Logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
                     fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
                     numRemovedDirectories++;
                 }
             }
 
-            logger.Info($"Directories cleaned: {numRemovedDirectories}.");
+            Logger.Info($"Directories cleaned: {numRemovedDirectories}.");
         }
 
         public void Run()
         {
             var jobType = GetType();
-            logger.Info($"Starting {jobType}.");
+            Logger.Info($"Starting {jobType}.");
 
             RunImpl();
 
-            logger.Info("Writing generated code to disk.");
-            foreach (var entry in Content)
+            Logger.Info("Writing generated code to disk.");
+            foreach (var (filePath, fileContents) in content)
             {
-                var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry.Key));
+                var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, filePath));
 
                 if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
                 {
-                    logger.Trace($"Creating output directory {fileInfo.DirectoryPath}.");
+                    Logger.Trace($"Creating output directory {fileInfo.DirectoryPath}.");
                     fileSystem.CreateDirectory(fileInfo.DirectoryPath);
                 }
 
-                logger.Trace("Fixing line endings.");
+                Logger.Trace("Fixing line endings.");
                 // Fix up line endings
-                var contents = entry.Value
+                var contents = fileContents
                     .Replace("\r\n", "\n")
                     .Replace("\n", Environment.NewLine);
 
                 fileSystem.WriteToFile(fileInfo.CompletePath, contents);
-                logger.Trace($"Written {fileInfo.CompletePath}.");
+                Logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            logger.Info($"Files written: {Content.Count}.");
+            Logger.Info($"Files written: {content.Count}.");
 
-            logger.Info($"Finished {jobType}.");
+            Logger.Info($"Finished {jobType}.");
         }
 
         public bool IsDirty()
@@ -139,7 +138,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 return true;
             }
 
-            var schemaFiles = InputFiles
+            var schemaFiles = inputFiles
                 .Select(file => detailsStore.FileTree.GetFullPathForRelativeSchema(file))
                 .Select(path => fileSystem.GetFileInfo(path))
                 .ToList();
@@ -154,12 +153,9 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             }
 
             //Ensure that all expected output files exist
-            foreach (var file in existingFiles)
+            if (existingFiles.Any(file => !file.Exists()))
             {
-                if (!file.Exists())
-                {
-                    return true;
-                }
+                return true;
             }
 
             var sortedSchemaFileInfo = schemaFiles.OrderByDescending(item => item.LastWriteTime).ToList();
