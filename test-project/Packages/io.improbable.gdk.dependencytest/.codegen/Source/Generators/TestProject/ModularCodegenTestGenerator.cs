@@ -4,7 +4,7 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public static class ModularCodegenTestGenerator
     {
-        public static string Generate()
+        public static CodeWriter Generate()
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                     });
                 });
-            }).Format();
+            });
         }
     }
 }
