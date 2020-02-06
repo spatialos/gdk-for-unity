@@ -215,7 +215,7 @@ namespace Improbable.Gdk.Mobile
                     "-allowProvisioningUpdates")
                 .Run();
 
-            xcBuildErrors = result.Stderr;
+            xcBuildErrors = result.Stderr.Concat(result.Stdout);
             return result.ExitCode == 0;
         }
 
