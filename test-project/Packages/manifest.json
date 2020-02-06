@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "com.unity.ext.nunit": "1.0.0",
-    "com.unity.ide.rider": "1.1.0",
-    "com.unity.test-framework": "1.0.18",
+    "com.unity.ide.rider": "1.1.4",
+    "com.unity.test-framework": "1.1.9",
     "com.unity.ugui": "1.0.0",
     "io.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/io.improbable.gdk.buildsystem",
     "io.improbable.gdk.core": "file:../../workers/unity/Packages/io.improbable.gdk.core",
