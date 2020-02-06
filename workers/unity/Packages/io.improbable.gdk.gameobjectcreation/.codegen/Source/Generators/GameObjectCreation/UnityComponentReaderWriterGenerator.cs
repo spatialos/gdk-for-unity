@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails details, string package)
+        public static CodeWriter Generate(UnityComponentDetails details)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -23,14 +23,14 @@ namespace Improbable.Gdk.CodeGenerator
                     "Entity = Unity.Entities.Entity"
                 );
 
-                cgw.Namespace(package, ns =>
+                cgw.Namespace(details.Namespace, ns =>
                 {
-                    ns.Type(GenerateComponentReaderSubscriptionManager(details, package));
-                    ns.Type(GenerateComponentWriterSubscriptionManager(details, package));
-                    ns.Type(GenerateComponentReader(details, package));
-                    ns.Type(GenerateComponentWriter(details, package));
+                    ns.Type(GenerateComponentReaderSubscriptionManager(details, details.Namespace));
+                    ns.Type(GenerateComponentWriterSubscriptionManager(details, details.Namespace));
+                    ns.Type(GenerateComponentReader(details, details.Namespace));
+                    ns.Type(GenerateComponentWriter(details, details.Namespace));
                 });
-            }).Format();
+            });
         }
 
         private static TypeBlock GenerateComponentReaderSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
