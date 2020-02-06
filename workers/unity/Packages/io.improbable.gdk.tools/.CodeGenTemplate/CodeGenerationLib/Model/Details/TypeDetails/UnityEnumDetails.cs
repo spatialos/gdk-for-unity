@@ -8,7 +8,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly IReadOnlyList<(uint, string)> Values;
 
         public UnityEnumDetails(string package, EnumDefinition rawEnumDefinition)
-            : base(rawEnumDefinition, package)
+            : base(package, rawEnumDefinition)
         {
             Values = rawEnumDefinition.Values.Select(value => (value.Value, value.Name)).ToList();
         }

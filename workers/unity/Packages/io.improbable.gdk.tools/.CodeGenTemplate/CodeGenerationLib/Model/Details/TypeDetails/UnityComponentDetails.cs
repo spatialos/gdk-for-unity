@@ -18,7 +18,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public UnityComponentDetails(string package, ComponentDefinition rawComponentDefinition, DetailsStore store)
-            : base(rawComponentDefinition, package)
+            : base(package, rawComponentDefinition)
         {
             ComponentId = rawComponentDefinition.ComponentId;
 

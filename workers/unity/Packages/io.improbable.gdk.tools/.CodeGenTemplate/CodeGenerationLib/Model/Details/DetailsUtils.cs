@@ -2,7 +2,7 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class DetailsUtils
+    public static class DetailsUtils
     {
         public static string GetCapitalisedFqnTypename(string qualifiedTypeName)
         {

@@ -23,7 +23,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride)
-            : base(rawTypeDefinition, package)
+            : base(package, rawTypeDefinition)
         {
             SerializationOverride = serializationOverride;
             this.rawTypeDefinition = rawTypeDefinition;
