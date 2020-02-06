@@ -4,21 +4,23 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityEventDetails
     {
-        public string RawEventName { get; }
-        public string EventName { get; }
-        public string CamelCaseEventName { get; }
-        public string FqnPayloadType { get; }
-        public uint EventIndex { get; }
+        public readonly string RawEventName;
+        public readonly string EventName;
+        public readonly string CamelCaseEventName;
 
-        public UnityEventDetails(ComponentDefinition.EventDefinition eventDefinitionRaw)
+        public readonly string FqnPayloadType;
+
+        public readonly uint EventIndex;
+
+        public UnityEventDetails(ComponentDefinition.EventDefinition rawEventDefinition)
         {
-            RawEventName = eventDefinitionRaw.Name;
+            RawEventName = rawEventDefinition.Name;
             EventName = Formatting.SnakeCaseToPascalCase(RawEventName);
             CamelCaseEventName = Formatting.PascalCaseToCamelCase(EventName);
 
-            FqnPayloadType = CommonDetailsUtils.GetCapitalisedFqnTypename(eventDefinitionRaw.Type);
+            FqnPayloadType = CommonDetailsUtils.GetCapitalisedFqnTypename(rawEventDefinition.Type);
 
-            EventIndex = eventDefinitionRaw.EventIndex;
+            EventIndex = rawEventDefinition.EventIndex;
         }
     }
 }

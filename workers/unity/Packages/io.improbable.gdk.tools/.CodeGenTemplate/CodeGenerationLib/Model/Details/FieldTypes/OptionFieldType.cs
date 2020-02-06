@@ -24,7 +24,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private readonly ContainedType containedType;
 
-        public OptionFieldType(TypeReference innerType, DetailsStore store)
+        public OptionFieldType(TypeReference innerType)
         {
             containedType = new ContainedType(innerType);
         }

@@ -10,31 +10,33 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class DetailsStore
     {
-        public IReadOnlyDictionary<string, UnityTypeDetails> Types { get; }
-        public IReadOnlyDictionary<string, UnityEnumDetails> Enums { get; }
-        public IReadOnlyDictionary<string, UnityComponentDetails> Components { get; }
+        public readonly IReadOnlyDictionary<string, UnityTypeDetails> Types;
+        public readonly IReadOnlyDictionary<string, UnityEnumDetails> Enums;
+        public readonly IReadOnlyDictionary<string, UnityComponentDetails> Components;
+
         public readonly ImmutableHashSet<string> BlittableSet;
-        public IReadOnlyList<string> SchemaFiles { get; }
+        public readonly IReadOnlyList<string> SchemaFiles;
 
-        public static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
-            { PrimitiveType.Bytes, PrimitiveType.String, PrimitiveType.Entity };
+        private static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
+        {
+            PrimitiveType.Bytes,
+            PrimitiveType.String,
+            PrimitiveType.Entity
+        };
 
-        public IFileTree FileTree { get; }
+        private readonly Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
 
-        private Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
-
+        public readonly IFileTree FileTree;
         private readonly SchemaBundle bundle;
 
-        private Logger logger;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public DetailsStore(SchemaBundle bundle, List<string> serializationOverrides, IFileTree fileTree)
+        public DetailsStore(SchemaBundle bundle, IEnumerable<string> serializationOverrides, IFileTree fileTree)
         {
-            logger = LogManager.GetCurrentClassLogger();
-
-            FileTree = fileTree;
             this.bundle = bundle;
+            FileTree = fileTree;
 
-            logger.Info("Loading serialization overrides.");
+            Logger.Info("Loading serialization overrides.");
             var overrideMap = serializationOverrides.Select(@override =>
             {
                 var parts = @override.Split(";");
@@ -44,11 +46,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     throw new ArgumentException($"Serialization override malformed: {@override}");
                 }
 
-                logger.Info($"Found serialization override {parts[1]} for {parts[0]}.");
+                Logger.Info($"Found serialization override {parts[1]} for {parts[0]}.");
 
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
-            logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
+            Logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -57,26 +59,28 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             var types = new Dictionary<string, UnityTypeDetails>();
             var components = new Dictionary<string, UnityComponentDetails>();
 
-            logger.Trace("Processing schema files.");
+            Logger.Trace("Processing schema files.");
             foreach (var file in bundle.SchemaFiles)
             {
-                logger.Info($"Initialising details from {file.CanonicalPath}.");
+                Logger.Info($"Initialising details from {file.CanonicalPath}.");
 
-                foreach (var enumm in file.Enums)
+                foreach (var rawEnum in file.Enums)
                 {
-                    enums.Add(enumm.QualifiedName, new UnityEnumDetails(file.Package.Name, enumm));
+                    enums.Add(rawEnum.QualifiedName, new UnityEnumDetails(file.Package.Name, rawEnum));
                 }
 
                 foreach (var type in file.Types)
                 {
-                    var typeDetails = new UnityTypeDetails(file.Package.Name, type);
+                    var fqTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(type.QualifiedName);
 
-                    if (overrideMap.TryGetValue(typeDetails.FullyQualifiedTypeName, out var staticClassFqn))
+                    SerializationOverride serializationOverride = null;
+                    if (overrideMap.TryGetValue(fqTypeName, out var staticClassFqn))
                     {
-                        typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
-                        logger.Trace($"Added serialization override {staticClassFqn} for {typeDetails.FullyQualifiedTypeName}.");
+                        serializationOverride = new SerializationOverride(staticClassFqn);
+                        Logger.Trace($"Found serialization override {staticClassFqn} for {fqTypeName}.");
                     }
 
+                    var typeDetails = new UnityTypeDetails(file.Package.Name, type, serializationOverride);
                     types.Add(type.QualifiedName, typeDetails);
                 }
 
@@ -85,12 +89,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
                 }
 
-                logger.Trace($"Enums added: {file.Enums.Count}.");
-                logger.Trace($"Types added: {file.Types.Count}.");
-                logger.Trace($"Components added: {file.Components.Count}.");
+                Logger.Trace($"Enums added: {file.Enums.Count}.");
+                Logger.Trace($"Types added: {file.Types.Count}.");
+                Logger.Trace($"Components added: {file.Components.Count}.");
             }
 
-            logger.Info($"Processed {bundle.SchemaFiles.Count} schema files.");
+            Logger.Info($"Processed {bundle.SchemaFiles.Count} schema files.");
 
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
@@ -99,27 +103,27 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
-            logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
+            Logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
 
-            logger.Trace("Populating all type details.");
+            Logger.Trace("Populating all type details.");
             foreach (var kv in Types)
             {
                 kv.Value.Populate(this);
             }
 
-            logger.Info($"Populated details of {Types.Count} types.");
+            Logger.Info($"Populated details of {Types.Count} types.");
 
-            logger.Trace($"Populating all component field details.");
+            Logger.Trace($"Populating all component field details.");
             foreach (var kv in Components)
             {
                 kv.Value.PopulateFields(this);
             }
 
-            logger.Info($"Populated field details of {Components.Count} components.");
+            Logger.Info($"Populated field details of {Components.Count} components.");
 
-            logger.Trace("Removing all recursive options.");
+            Logger.Trace("Removing all recursive options.");
             var numFieldsRemoved = RemoveRecursiveOptions();
-            logger.Info($"Removed {numFieldsRemoved} recursive options.");
+            Logger.Info($"Removed {numFieldsRemoved} recursive options.");
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -228,14 +232,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 var typeDetails = Types[fieldType];
 
                 var directChildTypes = typeDetails.FieldDetails
-                    .Where(field => field.Raw.TypeSelector == FieldType.Singular)
-                    .Where(field => field.Raw.SingularType.Type.ValueTypeSelector == ValueType.Type)
-                    .Select(field => field.Raw.SingularType.Type.Type);
+                    .Where(field => field.RawFieldDefinition.TypeSelector == FieldType.Singular)
+                    .Where(field => field.RawFieldDefinition.SingularType.Type.ValueTypeSelector == ValueType.Type)
+                    .Select(field => field.RawFieldDefinition.SingularType.Type.Type);
 
                 var optionChildTypes = typeDetails.FieldDetails
-                    .Where(field => field.Raw.TypeSelector == FieldType.Option)
-                    .Where(field => field.Raw.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
-                    .Select(field => field.Raw.OptionType.InnerType.Type);
+                    .Where(field => field.RawFieldDefinition.TypeSelector == FieldType.Option)
+                    .Where(field => field.RawFieldDefinition.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
+                    .Select(field => field.RawFieldDefinition.OptionType.InnerType.Type);
 
                 return directChildTypes.Any(parentTypes.Contains) ||
                     optionChildTypes.Any(parentTypes.Contains) ||
@@ -245,34 +249,34 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             var toRemove = new Dictionary<string, List<UnityFieldDetails>>();
 
-            foreach (var type in Types)
+            foreach (var (typeKey, typeDetails) in Types)
             {
-                var recursiveOptions = type.Value.FieldDetails
-                    .Where(field => field.Raw.TypeSelector == FieldType.Option && field.Raw.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
-                    .Where(field => IsRecursive(field.Raw.OptionType.InnerType.Type, new[] { type.Key }))
+                var recursiveOptions = typeDetails.FieldDetails
+                    .Where(field => field.RawFieldDefinition.TypeSelector == FieldType.Option && field.RawFieldDefinition.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
+                    .Where(field => IsRecursive(field.RawFieldDefinition.OptionType.InnerType.Type, new[] { typeKey }))
                     .ToList();
 
                 if (recursiveOptions.Any())
                 {
-                    toRemove[type.Key] = recursiveOptions;
+                    toRemove[typeKey] = recursiveOptions;
                 }
             }
 
             var numFieldsRemoved = 0;
-            foreach (var pair in toRemove)
+            foreach (var (fieldKey, fieldDetails) in toRemove)
             {
-                var type = Types[pair.Key];
+                var type = Types[fieldKey];
 
                 type.FieldDetails = type.FieldDetails
                     .Where(field =>
                     {
-                        if (!pair.Value.Contains(field))
+                        if (!fieldDetails.Contains(field))
                         {
                             return true;
                         }
 
                         numFieldsRemoved++;
-                        logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
+                        Logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
                         return false;
                     })
                     .ToList()

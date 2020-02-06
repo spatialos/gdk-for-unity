@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Utils;
@@ -8,39 +7,43 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityTypeDetails
     {
-        public string Package { get; }
-        public string CapitalisedName { get; }
-        public string CamelCaseName { get; }
-        public string QualifiedName { get; }
-        public string FullyQualifiedTypeName { get; }
+        public readonly string Name;
+        public readonly string Namespace;
+
+        private readonly string camelCaseName;
+
+        public readonly string QualifiedName;
+
+        public string PartialResourceTypeName => fullyQualifiedTypeName.Split("::")[1];
+        private readonly string fullyQualifiedTypeName;
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; internal set; }
 
-        public IReadOnlyList<UnityTypeDetails> ChildTypes;
-        public IReadOnlyList<UnityEnumDetails> ChildEnums;
+        public IReadOnlyList<UnityTypeDetails> ChildTypes { get; private set; }
+        public IReadOnlyList<UnityEnumDetails> ChildEnums { get; private set; }
 
-        public SerializationOverride SerializationOverride;
+        public readonly SerializationOverride SerializationOverride;
 
         public bool HasSerializationOverride => SerializationOverride != null;
 
-        private TypeDefinition raw;
+        private readonly TypeDefinition rawTypeDefinition;
 
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityTypeDetails(string package, TypeDefinition typeDefinitionRaw)
+        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride)
         {
-            Package = package;
-            CapitalisedName = typeDefinitionRaw.Name;
-            CamelCaseName = Formatting.PascalCaseToCamelCase(CapitalisedName);
-            QualifiedName = typeDefinitionRaw.QualifiedName;
-            FullyQualifiedTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(typeDefinitionRaw.QualifiedName);
+            Name = rawTypeDefinition.Name;
+            Namespace = Formatting.CapitaliseQualifiedNameParts(package);
 
-            raw = typeDefinitionRaw;
-        }
+            camelCaseName = Formatting.PascalCaseToCamelCase(Name);
 
-        public string GetPartialResourceTypeName()
-        {
-            return FullyQualifiedTypeName.Split("::")[1];
+            QualifiedName = rawTypeDefinition.QualifiedName;
+
+            fullyQualifiedTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(rawTypeDefinition.QualifiedName);
+
+            SerializationOverride = serializationOverride;
+
+            this.rawTypeDefinition = rawTypeDefinition;
         }
 
         public void Populate(DetailsStore store)
@@ -51,16 +54,16 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private void PopulateChildren(DetailsStore store)
         {
-            var children = store.GetNestedTypes(raw.QualifiedName);
+            var children = store.GetNestedTypes(rawTypeDefinition.QualifiedName);
 
-            logger.Trace($"Populating child type details for type {raw.QualifiedName}.");
+            Logger.Trace($"Populating child type details for type {rawTypeDefinition.QualifiedName}.");
             ChildTypes = store.Types
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
                 .ToList()
                 .AsReadOnly();
 
-            logger.Trace($"Populating child enum details for type {raw.QualifiedName}.");
+            Logger.Trace($"Populating child enum details for type {rawTypeDefinition.QualifiedName}.");
             ChildEnums = store.Enums
                 .Where(kv => children.Contains(kv.Key))
                 .Select(kv => kv.Value)
@@ -70,8 +73,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private void PopulateFields(DetailsStore store)
         {
-            logger.Trace($"Populating field details for type {raw.QualifiedName}.");
-            FieldDetails = raw.Fields
+            Logger.Trace($"Populating field details for type {rawTypeDefinition.QualifiedName}.");
+            FieldDetails = rawTypeDefinition.Fields
                 .Select(field => new UnityFieldDetails(field, store))
                 .Where(fieldDetail =>
                 {
@@ -79,12 +82,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childEnum =>
                         {
                             // When field does not clash with child enum, return false
-                            if (!fieldDetail.PascalCaseName.Equals(childEnum.TypeName))
+                            if (!fieldDetail.PascalCaseName.Equals(childEnum.Name))
                             {
                                 return false;
                             }
 
-                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child enum \"{childEnum.TypeName}\".");
+                            Logger.Error($"Error in type \"{Name}\". Field \"{fieldDetail.RawFieldDefinition.Name}\" clashes with child enum \"{childEnum.Name}\".");
                             return true;
                         });
 
@@ -92,12 +95,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childType =>
                         {
                             // When field does not clash with child type, return false
-                            if (!fieldDetail.PascalCaseName.Equals(childType.CapitalisedName))
+                            if (!fieldDetail.PascalCaseName.Equals(childType.Name))
                             {
                                 return false;
                             }
 
-                            logger.Error($"Error in type \"{CapitalisedName}\". Field \"{fieldDetail.Raw.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
+                            Logger.Error($"Error in type \"{Name}\". Field \"{fieldDetail.RawFieldDefinition.Name}\" clashes with child type \"{childType.camelCaseName}\".");
                             return true;
                         });
 
@@ -111,7 +114,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
     public class SerializationOverride
     {
-        private string staticClassFqn;
+        private readonly string staticClassFqn;
 
         public SerializationOverride(string staticClassFqn)
         {
