@@ -15,7 +15,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 case ValueType.Enum:
                     category = ValueType.Enum;
-                    FqnType = Formatting.CapitaliseQualifiedNameParts(innerType.Enum);
+                    FqnType = DetailsUtils.GetCapitalisedFqnTypename(innerType.Enum);
                     primitiveType = null;
                     break;
                 case ValueType.Primitive:
@@ -25,7 +25,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     break;
                 case ValueType.Type:
                     category = ValueType.Type;
-                    FqnType = Formatting.CapitaliseQualifiedNameParts(innerType.Type);
+                    FqnType = DetailsUtils.GetCapitalisedFqnTypename(innerType.Type);
                     primitiveType = null;
                     break;
                 default:

@@ -10,13 +10,13 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly string QualifiedName;
         public readonly string FullyQualifiedName;
 
-        protected GeneratorInputDetails(BaseTypeDetails baseTypeDetails, string package) : base(baseTypeDetails.Name)
+        protected GeneratorInputDetails(QualifiedDefinition qualifiedDefinition, string package) : base(qualifiedDefinition)
         {
             Namespace = Formatting.CapitaliseQualifiedNameParts(package);
             NamespacePath = Formatting.GetNamespacePath(package);
 
-            QualifiedName = baseTypeDetails.QualifiedName;
-            FullyQualifiedName = Formatting.CapitaliseQualifiedNameParts(baseTypeDetails.QualifiedName);
+            QualifiedName = qualifiedDefinition.QualifiedName;
+            FullyQualifiedName = DetailsUtils.GetCapitalisedFqnTypename(qualifiedDefinition.QualifiedName);
         }
     }
 }

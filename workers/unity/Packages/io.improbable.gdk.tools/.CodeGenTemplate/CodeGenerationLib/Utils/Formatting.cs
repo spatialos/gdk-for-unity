@@ -12,7 +12,7 @@ namespace Improbable.Gdk.CodeGeneration.Utils
                 .Select(s =>
                     SnakeCaseToPascalCase(char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1)))
                 .ToArray();
-            return $"global::{string.Join(".", parts)}";
+            return string.Join(".", parts);
         }
 
         public static string SnakeCaseToPascalCase(string text)
