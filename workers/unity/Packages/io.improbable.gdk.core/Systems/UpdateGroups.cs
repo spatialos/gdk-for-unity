@@ -1,5 +1,5 @@
 using Unity.Entities;
-using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.PlayerLoop;
 
 namespace Improbable.Gdk.Core
 {
