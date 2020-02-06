@@ -8,10 +8,8 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string package)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
-            var qualifiedNamespace = package;
-
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
@@ -19,18 +17,18 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Worker.CInterop"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            partial.Text(GenerateDiffCommandDeserializer(command, qualifiedNamespace, componentDetails.Name));
-                            partial.Text(GenerateCommandSerializer(command, qualifiedNamespace, componentDetails.Name));
+                            partial.Text(GenerateDiffCommandDeserializer(command, componentDetails.Namespace, componentDetails.Name));
+                            partial.Text(GenerateCommandSerializer(command, componentDetails.Namespace, componentDetails.Name));
                         }
                     });
                 });
-            }).Format();
+            });
         }
 
         private static Text GenerateDiffCommandDeserializer(UnityCommandDetails command, string qualifiedNamespace, string componentName)

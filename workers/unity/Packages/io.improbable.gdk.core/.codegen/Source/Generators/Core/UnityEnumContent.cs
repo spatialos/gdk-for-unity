@@ -11,12 +11,10 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static EnumBlock Generate(UnityEnumDetails details, string enumNamespace)
         {
-            var enumName = details.Name;
-
-            Logger.Trace($"Generating {enumNamespace}.{enumName} enum.");
+            Logger.Trace($"Generating {enumNamespace}.{details.Name} enum.");
 
             return Scope.AnnotatedEnum("global::System.Serializable",
-                $"public enum {enumName} : uint", e =>
+                $"public enum {details.Name} : uint", e =>
                 {
                     foreach (var (item1, item2) in details.Values)
                     {

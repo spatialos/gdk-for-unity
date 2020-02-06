@@ -1,18 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
+using Improbable.Gdk.CodeGeneration.Jobs;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using NLog;
 
 namespace Improbable.Gdk.CodeGenerator
 {
-    public static class UnityComponentDataGenerator
+    public class UnityComponentDataGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -25,26 +27,26 @@ namespace Improbable.Gdk.CodeGenerator
                     "Unity.Entities"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Line($"public const uint ComponentId = {componentDetails.ComponentId};");
 
-                        partial.Type(GenerateComponentStruct(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateComponentAuthorityStruct(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateSnapshotStruct(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateSerializationClass(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateUpdateStruct(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateInternalDynamicClass(componentDetails, qualifiedNamespace));
+                        partial.Type(GenerateComponentStruct(componentDetails));
+                        partial.Type(GenerateComponentAuthorityStruct(componentDetails));
+                        partial.Type(GenerateSnapshotStruct(componentDetails));
+                        partial.Type(GenerateSerializationClass(componentDetails));
+                        partial.Type(GenerateUpdateStruct(componentDetails));
+                        partial.Type(GenerateInternalDynamicClass(componentDetails));
                     });
                 });
-            }).Format();
+            });
         }
 
-        private static TypeBlock GenerateComponentStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentStruct(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Component struct.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.Component struct.");
 
             var fieldDetailsList = componentDetails.FieldDetails;
 
@@ -199,11 +201,11 @@ internal uint {fieldDetails.CamelCaseName}Handle;
 
 public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 {{
-    get => global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
+    get => global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
     set
     {{
         MarkDataDirty({i});
-        global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
+        global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
     }}
 }}
 ");
@@ -212,11 +214,10 @@ public {fieldDetails.Type} {fieldDetails.PascalCaseName}
                 });
         }
 
-        private static TypeBlock GenerateComponentAuthorityStruct(UnityComponentDetails componentDetails,
-            string qualifiedNamespace)
+        private static TypeBlock GenerateComponentAuthorityStruct(UnityComponentDetails componentDetails)
         {
             Logger.Trace(
-                $"Generating {qualifiedNamespace}.{componentDetails.Name}.ComponentAuthority struct.");
+                $"Generating {componentDetails.Namespace}.{componentDetails.Name}.ComponentAuthority struct.");
 
             return Scope.Type("public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>",
                 t =>
@@ -262,9 +263,9 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                 });
         }
 
-        private static TypeBlock GenerateSnapshotStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateSnapshotStruct(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Snapshot struct.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.Snapshot struct.");
 
             var fieldDetailsList = componentDetails.FieldDetails;
 
@@ -285,11 +286,11 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                 });
         }
 
-        private static TypeBlock GenerateSerializationClass(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateSerializationClass(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Serialization static class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.Serialization static class.");
 
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
+            var componentNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
             var fieldDetailsList = componentDetails.FieldDetails;
             var shouldGenerateClearedFieldsSet = ShouldGenerateClearedFieldsSet(fieldDetailsList);
 
@@ -367,7 +368,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         {
                             if (!fieldDetails.IsBlittable)
                             {
-                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
                             }
 
                             m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
@@ -447,9 +448,9 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
             });
         }
 
-        private static TypeBlock GenerateUpdateStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateUpdateStruct(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Update struct.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.Update struct.");
 
             return Scope.Type("public struct Update : ISpatialComponentUpdate",
                 update =>
@@ -459,9 +460,9 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                 });
         }
 
-        private static TypeBlock GenerateInternalDynamicClass(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateInternalDynamicClass(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{componentDetails.Name}Dynamic internal class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.{componentDetails.Name}Dynamic internal class.");
 
             return Scope.Type($"internal class {componentDetails.Name}Dynamic : IDynamicInvokable",
                 dynamic =>

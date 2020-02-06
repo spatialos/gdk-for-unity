@@ -8,7 +8,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -19,13 +19,13 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Gdk.Core.Commands"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var commandDetails in componentDetails.CommandDetails)
                         {
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{commandDetails.PascalCaseName} partial class.");
+                            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.{commandDetails.PascalCaseName} partial class.");
 
                             partial.Line($@"
 public partial class {commandDetails.PascalCaseName}
@@ -167,7 +167,7 @@ public partial class {commandDetails.PascalCaseName}
                         }
                     });
                 });
-            }).Format();
+            });
         }
     }
 }
