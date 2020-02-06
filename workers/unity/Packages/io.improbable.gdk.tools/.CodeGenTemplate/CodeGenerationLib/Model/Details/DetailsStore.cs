@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
+using Improbable.Gdk.CodeGeneration.Utils;
 using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
@@ -71,7 +72,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 foreach (var type in file.Types)
                 {
-                    var fqTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(type.QualifiedName);
+                    var fqTypeName = Formatting.CapitaliseQualifiedNameParts(type.QualifiedName);
 
                     SerializationOverride serializationOverride = null;
                     if (overrideMap.TryGetValue(fqTypeName, out var staticClassFqn))

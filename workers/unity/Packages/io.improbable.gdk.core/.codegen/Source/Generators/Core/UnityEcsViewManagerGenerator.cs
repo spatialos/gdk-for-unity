@@ -97,7 +97,7 @@ public void Init(World world)
                             {
                                 foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                 {
-                                    m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.CleanDataInWorld(world);");
+                                    m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.Name}Provider.CleanDataInWorld(world);");
                                 }
                             });
 
@@ -111,7 +111,7 @@ public void Init(World world)
 
                                 foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                 {
-                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = {componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = {componentNamespace}.ReferenceTypeProviders.{fieldDetails.Name}Provider.Allocate(world);");
                                 }
 
                                 m.Line(new[]
@@ -135,7 +135,7 @@ public void Init(World world)
                                     m.Line($"var data = entityManager.GetComponentData<{componentNamespace}.Component>(entity);");
                                     foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                     {
-                                        m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Free(data.{fieldDetails.CamelCaseName}Handle);");
+                                        m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.Name}Provider.Free(data.{fieldDetails.CamelCaseName}Handle);");
                                     }
                                 }
 
@@ -156,9 +156,9 @@ var data = dataFromEntity[entity];
                                 foreach (var fieldDetails in componentDetails.FieldDetails)
                                 {
                                     m.Line($@"
-if (update.Update.{fieldDetails.PascalCaseName}.HasValue)
+if (update.Update.{fieldDetails.Name}.HasValue)
 {{
-    data.{fieldDetails.PascalCaseName} = update.Update.{fieldDetails.PascalCaseName}.Value;
+    data.{fieldDetails.Name} = update.Update.{fieldDetails.Name}.Value;
 }}
 ");
                                 }

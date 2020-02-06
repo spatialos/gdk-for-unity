@@ -90,7 +90,7 @@ public void SendUpdates(
                                                 var fieldDetails = componentDetails.FieldDetails[i];
                                                 componentDirtyThen.If($"data.IsDataDirty({i})", () => new[]
                                                 {
-                                                    $"update.{fieldDetails.PascalCaseName} = data.{fieldDetails.PascalCaseName};"
+                                                    $"update.{fieldDetails.Name} = data.{fieldDetails.Name};"
                                                 });
                                             }
 

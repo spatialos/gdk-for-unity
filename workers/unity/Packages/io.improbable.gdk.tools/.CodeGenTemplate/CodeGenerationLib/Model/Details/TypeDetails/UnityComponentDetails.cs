@@ -4,7 +4,7 @@ using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityComponentDetails : GeneratorDetails
+    public class UnityComponentDetails : GeneratorInputDetails
     {
         public readonly uint ComponentId;
         public readonly bool IsBlittable;
@@ -17,7 +17,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityComponentDetails(string package, ComponentDefinition rawComponentDefinition, DetailsStore store) : base(rawComponentDefinition.Name, package)
+        public UnityComponentDetails(string package, ComponentDefinition rawComponentDefinition, DetailsStore store)
+            : base(rawComponentDefinition, package)
         {
             ComponentId = rawComponentDefinition.ComponentId;
 
@@ -29,12 +30,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Where(commandDetail =>
                 {
                     // Return true to keep commands that do not have a name clash with the component
-                    if (!commandDetail.CommandName.Equals(Name))
+                    if (!commandDetail.Name.Equals(Name))
                     {
                         return true;
                     }
 
-                    Logger.Error($"Error in component \"{Name}\". Command \"{commandDetail.RawCommandName}\" clashes with component name.");
+                    Logger.Error($"Error in component \"{Name}\". Command \"{commandDetail.Name}\" clashes with component name.");
                     return false;
                 })
                 .ToList()
@@ -46,12 +47,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Where(eventDetail =>
                 {
                     // Return true to keep events that do not have a name clash with the component
-                    if (!eventDetail.EventName.Equals(Name))
+                    if (!eventDetail.Name.Equals(Name))
                     {
                         return true;
                     }
 
-                    Logger.Error($"Error in component \"{Name}\". Event \"{eventDetail.RawEventName}\" clashes with component name.");
+                    Logger.Error($"Error in component \"{Name}\". Event \"{eventDetail.Name}\" clashes with component name.");
                     return false;
                 })
                 .ToList()

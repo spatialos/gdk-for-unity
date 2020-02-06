@@ -5,14 +5,9 @@ using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityTypeDetails : GeneratorDetails
+    public class UnityTypeDetails : GeneratorInputDetails
     {
-        private readonly string camelCaseName;
-
-        public readonly string QualifiedName;
-
-        public string PartialResourceTypeName => fullyQualifiedTypeName.Split("::")[1];
-        private readonly string fullyQualifiedTypeName;
+        public string PartialResourceTypeName => FullyQualifiedName.Split("::")[1];
 
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; internal set; }
 
@@ -27,16 +22,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride) : base(rawTypeDefinition.Name, package)
+        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride)
+            : base(rawTypeDefinition, package)
         {
-            camelCaseName = Formatting.PascalCaseToCamelCase(Name);
-
-            QualifiedName = rawTypeDefinition.QualifiedName;
-
-            fullyQualifiedTypeName = CommonDetailsUtils.GetCapitalisedFqnTypename(rawTypeDefinition.QualifiedName);
-
             SerializationOverride = serializationOverride;
-
             this.rawTypeDefinition = rawTypeDefinition;
         }
 
@@ -76,7 +65,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childEnum =>
                         {
                             // When field does not clash with child enum, return false
-                            if (!fieldDetail.PascalCaseName.Equals(childEnum.Name))
+                            if (!fieldDetail.Name.Equals(childEnum.Name))
                             {
                                 return false;
                             }
@@ -89,12 +78,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childType =>
                         {
                             // When field does not clash with child type, return false
-                            if (!fieldDetail.PascalCaseName.Equals(childType.Name))
+                            if (!fieldDetail.Name.Equals(childType.Name))
                             {
                                 return false;
                             }
 
-                            Logger.Error($"Error in type \"{Name}\". Field \"{fieldDetail.RawFieldDefinition.Name}\" clashes with child type \"{childType.camelCaseName}\".");
+                            Logger.Error($"Error in type \"{Name}\". Field \"{fieldDetail.RawFieldDefinition.Name}\" clashes with child type \"{childType.CamelCaseName}\".");
                             return true;
                         });
 

@@ -109,23 +109,23 @@ internal {commandSenderType}(Entity entity, World world)
 ");
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
-                    var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse";
-                    var commandRequest = $"{componentDetails.Name}.{commandDetails.CommandName}.Request";
+                    var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.Name}.ReceivedResponse";
+                    var commandRequest = $"{componentDetails.Name}.{commandDetails.Name}.Request";
 
                     c.Line($@"
-public void Send{commandDetails.CommandName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
+public void Send{commandDetails.Name}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
 {{
     var commandRequest = new {commandRequest}(targetEntityId, request);
-    Send{commandDetails.CommandName}Command(commandRequest, callback);
+    Send{commandDetails.Name}Command(commandRequest, callback);
 }}
 
-public void Send{commandDetails.CommandName}Command({componentNamespace}.{commandDetails.CommandName}.Request request, Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse> callback = null)
+public void Send{commandDetails.Name}Command({componentNamespace}.{commandDetails.Name}.Request request, Action<{componentNamespace}.{commandDetails.Name}.ReceivedResponse> callback = null)
 {{
     int validCallbackEpoch = callbackEpoch;
     var requestId = commandSender.SendCommand(request, entity);
     if (callback != null)
     {{
-        Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedResponse> wrappedCallback = response =>
+        Action<{componentNamespace}.{commandDetails.Name}.ReceivedResponse> wrappedCallback = response =>
         {{
             if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
             {{
@@ -168,29 +168,29 @@ public bool IsValid { get; set; }
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-private Dictionary<Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest>, ulong> {commandDetails.CamelCaseCommandName}CallbackToCallbackKey;
+private Dictionary<Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
 
-public event Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest> On{commandDetails.CommandName}RequestReceived
+public event Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest> On{commandDetails.Name}RequestReceived
 {{
     add
     {{
-        if ({commandDetails.CamelCaseCommandName}CallbackToCallbackKey == null)
+        if ({commandDetails.CamelCaseName}CallbackToCallbackKey == null)
         {{
-            {commandDetails.CamelCaseCommandName}CallbackToCallbackKey = new Dictionary<Action<{componentNamespace}.{commandDetails.CommandName}.ReceivedRequest>, ulong>();
+            {commandDetails.CamelCaseName}CallbackToCallbackKey = new Dictionary<Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest>, ulong>();
         }}
 
         var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
-        {commandDetails.CamelCaseCommandName}CallbackToCallbackKey.Add(value, key);
+        {commandDetails.CamelCaseName}CallbackToCallbackKey.Add(value, key);
     }}
     remove
     {{
-        if (!{commandDetails.CamelCaseCommandName}CallbackToCallbackKey.TryGetValue(value, out var key))
+        if (!{commandDetails.CamelCaseName}CallbackToCallbackKey.TryGetValue(value, out var key))
         {{
             return;
         }}
 
         callbackSystem.UnregisterCommandRequestCallback(key);
-        {commandDetails.CamelCaseCommandName}CallbackToCallbackKey.Remove(value);
+        {commandDetails.CamelCaseName}CallbackToCallbackKey.Remove(value);
     }}
 }}
 ");
@@ -211,19 +211,19 @@ internal {commandReceiverType}(World world, Entity entity, EntityId entityId)
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-public void Send{commandDetails.CommandName}Response({componentNamespace}.{commandDetails.CommandName}.Response response)
+public void Send{commandDetails.Name}Response({componentNamespace}.{commandDetails.Name}.Response response)
 {{
     commandSystem.SendResponse(response);
 }}
 
-public void Send{commandDetails.CommandName}Response(long requestId, {commandDetails.FqnResponseType} response)
+public void Send{commandDetails.Name}Response(long requestId, {commandDetails.FqnResponseType} response)
 {{
-    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.CommandName}.Response(requestId, response));
+    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.Name}.Response(requestId, response));
 }}
 
-public void Send{commandDetails.CommandName}Failure(long requestId, string failureMessage)
+public void Send{commandDetails.Name}Failure(long requestId, string failureMessage)
 {{
-    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.CommandName}.Response(requestId, failureMessage));
+    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.Name}.Response(requestId, failureMessage));
 }}
 ");
                 }
@@ -233,14 +233,14 @@ public void Send{commandDetails.CommandName}Failure(long requestId, string failu
                     foreach (var commandDetails in componentDetails.CommandDetails)
                     {
                         m.Line($@"
-if ({commandDetails.CamelCaseCommandName}CallbackToCallbackKey != null)
+if ({commandDetails.CamelCaseName}CallbackToCallbackKey != null)
 {{
-    foreach (var callbackToKey in {commandDetails.CamelCaseCommandName}CallbackToCallbackKey)
+    foreach (var callbackToKey in {commandDetails.CamelCaseName}CallbackToCallbackKey)
     {{
         callbackSystem.UnregisterCommandRequestCallback(callbackToKey.Value);
     }}
 
-    {commandDetails.CamelCaseCommandName}CallbackToCallbackKey.Clear();
+    {commandDetails.CamelCaseName}CallbackToCallbackKey.Clear();
 }}
 ");
                     }

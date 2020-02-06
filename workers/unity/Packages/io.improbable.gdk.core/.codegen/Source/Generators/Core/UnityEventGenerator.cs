@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         foreach (var eventDetail in details.EventDetails)
                         {
-                            var eventName = eventDetail.EventName;
+                            var eventName = eventDetail.Name;
                             var payloadType = eventDetail.FqnPayloadType;
 
                             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{eventName} class.");

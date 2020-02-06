@@ -2,12 +2,9 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityFieldDetails
+    public class UnityFieldDetails : Details
     {
         public string Type => fieldType.Type;
-
-        public readonly string PascalCaseName;
-        public readonly string CamelCaseName;
 
         private readonly uint fieldNumber;
 
@@ -18,11 +15,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         internal readonly FieldDefinition RawFieldDefinition;
 
-        public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store)
+        public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store) : base(rawFieldDefinition.Name)
         {
-            PascalCaseName = Formatting.SnakeCaseToPascalCase(rawFieldDefinition.Name);
-            CamelCaseName = Formatting.PascalCaseToCamelCase(PascalCaseName);
-
             fieldNumber = rawFieldDefinition.FieldId;
 
             IsBlittable = store.CheckBlittable(rawFieldDefinition);

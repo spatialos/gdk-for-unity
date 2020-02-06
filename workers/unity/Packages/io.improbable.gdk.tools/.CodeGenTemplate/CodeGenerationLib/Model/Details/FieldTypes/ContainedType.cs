@@ -1,4 +1,5 @@
 using System;
+using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
@@ -14,7 +15,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 case ValueType.Enum:
                     category = ValueType.Enum;
-                    FqnType = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Enum);
+                    FqnType = Formatting.CapitaliseQualifiedNameParts(innerType.Enum);
                     primitiveType = null;
                     break;
                 case ValueType.Primitive:
@@ -24,7 +25,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     break;
                 case ValueType.Type:
                     category = ValueType.Type;
-                    FqnType = CommonDetailsUtils.GetCapitalisedFqnTypename(innerType.Type);
+                    FqnType = Formatting.CapitaliseQualifiedNameParts(innerType.Type);
                     primitiveType = null;
                     break;
                 default:

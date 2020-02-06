@@ -25,10 +25,10 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         foreach (var commandDetails in componentDetails.CommandDetails)
                         {
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{commandDetails.CommandName} partial class.");
+                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{commandDetails.Name} partial class.");
 
                             partial.Line($@"
-public partial class {commandDetails.CommandName}
+public partial class {commandDetails.Name}
 {{
     public struct Request : ICommandRequest
     {{

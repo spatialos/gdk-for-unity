@@ -22,10 +22,10 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{command.CommandName}CommandMetaDataStorage class.");
+                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{command.Name}CommandMetaDataStorage class.");
 
                             partial.Line($@"
-private class {command.CommandName}CommandMetaDataStorage :
+private class {command.Name}CommandMetaDataStorage :
     CommandPayloadStorage<{command.FqnRequestType}>,
     ICommandMetaDataStorage
 {{

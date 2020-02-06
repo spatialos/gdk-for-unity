@@ -144,13 +144,17 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public uint Value;
     }
 
+    public abstract class BaseTypeDetails
+    {
+        public string Name;
+        public string QualifiedName;
+    }
+
     [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
-    public class EnumDefinition
+    public class EnumDefinition : BaseTypeDetails
     {
         public IReadOnlyList<Annotation> Annotations;
-        public string Name;
         public string OuterType;
-        public string QualifiedName;
         public SourceReference SourceReference;
         public IReadOnlyList<EnumValueDefinition> Values;
     }
@@ -232,18 +236,16 @@ namespace Improbable.Gdk.CodeGeneration.Model
     }
 
     [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
-    public class TypeDefinition
+    public class TypeDefinition : BaseTypeDetails
     {
         public IReadOnlyList<Annotation> Annotations;
         public IReadOnlyList<FieldDefinition> Fields;
-        public string Name;
         public string OuterType;
-        public string QualifiedName;
         public SourceReference SourceReference;
     }
 
     [DebuggerDisplay("{" + nameof(QualifiedName) + "} {" + nameof(ComponentId) + "}")]
-    public class ComponentDefinition
+    public class ComponentDefinition : BaseTypeDetails
     {
         public IReadOnlyList<Annotation> Annotations;
         public IReadOnlyList<CommandDefinition> Commands;
@@ -253,9 +255,7 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public IReadOnlyList<EventDefinition> Events;
 
         public IReadOnlyList<FieldDefinition> Fields;
-        public string Name;
 
-        public string QualifiedName;
         public SourceReference SourceReference;
 
         [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]

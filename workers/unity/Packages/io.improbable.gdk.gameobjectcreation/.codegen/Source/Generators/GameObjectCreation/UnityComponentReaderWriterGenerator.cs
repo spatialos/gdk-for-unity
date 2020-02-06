@@ -387,7 +387,7 @@ public event Action<{componentDetails.Name}.Update> OnUpdate
                     {
                         reader.Line($@"
 private Dictionary<Action<{fieldDetails.Type}>, ulong> {fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey;
-public event Action<{fieldDetails.Type}> On{fieldDetails.PascalCaseName}Update
+public event Action<{fieldDetails.Type}> On{fieldDetails.Name}Update
 {{
     add
     {{
@@ -398,9 +398,9 @@ public event Action<{fieldDetails.Type}> On{fieldDetails.PascalCaseName}Update
 
         var key = CallbackSystem.RegisterComponentUpdateCallback<{componentDetails.Name}.Update>(EntityId, update =>
         {{
-            if (update.{fieldDetails.PascalCaseName}.HasValue)
+            if (update.{fieldDetails.Name}.HasValue)
             {{
-                value(update.{fieldDetails.PascalCaseName}.Value);
+                value(update.{fieldDetails.Name}.Value);
             }}
         }});
         {fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey.Add(value, key);
@@ -421,31 +421,31 @@ public event Action<{fieldDetails.Type}> On{fieldDetails.PascalCaseName}Update
 
                     foreach (var eventDetails in componentDetails.EventDetails)
                     {
-                        var eventType = $"{componentDetails.Name}.{eventDetails.EventName}.Event";
+                        var eventType = $"{componentDetails.Name}.{eventDetails.Name}.Event";
 
                         reader.Line($@"
-private Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong> {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey;
-public event Action<{eventDetails.FqnPayloadType}> On{eventDetails.EventName}Event
+private Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong> {eventDetails.CamelCaseName}EventCallbackToCallbackKey;
+public event Action<{eventDetails.FqnPayloadType}> On{eventDetails.Name}Event
 {{
     add
     {{
-        if ({eventDetails.CamelCaseEventName}EventCallbackToCallbackKey == null)
+        if ({eventDetails.CamelCaseName}EventCallbackToCallbackKey == null)
         {{
-            {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey = new Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong>();
+            {eventDetails.CamelCaseName}EventCallbackToCallbackKey = new Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong>();
         }}
 
         var key = CallbackSystem.RegisterComponentEventCallback<{eventType}>(EntityId, ev => value(ev.Payload));
-        {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey.Add(value, key);
+        {eventDetails.CamelCaseName}EventCallbackToCallbackKey.Add(value, key);
     }}
     remove
     {{
-        if (!{eventDetails.CamelCaseEventName}EventCallbackToCallbackKey.TryGetValue(value, out var key))
+        if (!{eventDetails.CamelCaseName}EventCallbackToCallbackKey.TryGetValue(value, out var key))
         {{
             return;
         }}
 
         CallbackSystem.UnregisterCallback(key);
-        {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey.Remove(value);
+        {eventDetails.CamelCaseName}EventCallbackToCallbackKey.Remove(value);
     }}
 }}
 ");
@@ -507,14 +507,14 @@ if ({fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey != null)
                         foreach (var eventDetails in componentDetails.EventDetails)
                         {
                             m.Line($@"
-if ({eventDetails.CamelCaseEventName}EventCallbackToCallbackKey != null)
+if ({eventDetails.CamelCaseName}EventCallbackToCallbackKey != null)
 {{
-    foreach (var callbackToKey in {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey)
+    foreach (var callbackToKey in {eventDetails.CamelCaseName}EventCallbackToCallbackKey)
     {{
         CallbackSystem.UnregisterCallback(callbackToKey.Value);
     }}
 
-    {eventDetails.CamelCaseEventName}EventCallbackToCallbackKey.Clear();
+    {eventDetails.CamelCaseName}EventCallbackToCallbackKey.Clear();
 }}
 ");
                         }
@@ -542,9 +542,9 @@ internal {componentDetails.Name}Writer(World world, Entity entity, EntityId enti
                         foreach (var fieldDetails in componentDetails.FieldDetails)
                         {
                             m.Line($@"
-if (update.{fieldDetails.PascalCaseName}.HasValue)
+if (update.{fieldDetails.Name}.HasValue)
 {{
-    component.{fieldDetails.PascalCaseName} = update.{fieldDetails.PascalCaseName}.Value;
+    component.{fieldDetails.Name} = update.{fieldDetails.Name}.Value;
 }}
 ");
                         }
@@ -554,11 +554,11 @@ if (update.{fieldDetails.PascalCaseName}.HasValue)
 
                     foreach (var eventDetails in componentDetails.EventDetails)
                     {
-                        var eventType = $"{componentDetails.Name}.{eventDetails.EventName}.Event";
+                        var eventType = $"{componentDetails.Name}.{eventDetails.Name}.Event";
                         writer.Line($@"
-public void Send{eventDetails.EventName}Event({eventDetails.FqnPayloadType} {eventDetails.CamelCaseEventName})
+public void Send{eventDetails.Name}Event({eventDetails.FqnPayloadType} {eventDetails.CamelCaseName})
 {{
-    var eventToSend = new {eventType}({eventDetails.CamelCaseEventName});
+    var eventToSend = new {eventType}({eventDetails.CamelCaseName});
     ComponentUpdateSystem.SendEvent(eventToSend, EntityId);
 }}
 ");

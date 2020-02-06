@@ -33,13 +33,13 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static Text GenerateCommandStorage(UnityCommandDetails command, string qualifiedNamespace, string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandStorage class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.Name}CommandStorage class.");
 
-            var receivedRequestType = $"{command.CommandName}.ReceivedRequest";
-            var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
+            var receivedRequestType = $"{command.Name}.ReceivedRequest";
+            var receivedResponseType = $"{command.Name}.ReceivedResponse";
 
             return Text.New($@"
-private class Diff{command.CommandName}CommandStorage
+private class Diff{command.Name}CommandStorage
     : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
 {{
     public override uint ComponentId => {qualifiedNamespace}.{componentName}.ComponentId;
@@ -50,11 +50,11 @@ private class Diff{command.CommandName}CommandStorage
 
         private static Text GenerateCommandsToSendStorage(UnityCommandDetails command, string qualifiedNamespace, string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandsToSendStorage class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.Name}CommandsToSendStorage class.");
 
             return Text.New($@"
-private class {command.CommandName}CommandsToSendStorage :
-    CommandSendStorage<{command.CommandName}.Request, {command.CommandName}.Response>,
+private class {command.Name}CommandsToSendStorage :
+    CommandSendStorage<{command.Name}.Request, {command.Name}.Response>,
     IComponentCommandSendStorage
 {{
     uint IComponentCommandSendStorage.ComponentId => ComponentId;

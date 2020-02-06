@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static TypeBlock Generate(UnityFieldDetails fieldDetails, string qualifiedNamespace, string componentName)
         {
-            var fieldName = fieldDetails.PascalCaseName;
+            var fieldName = fieldDetails.Name;
             var typeName = fieldDetails.Type;
 
             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.ReferenceTypeProviders.{fieldName}Provider static class.");
