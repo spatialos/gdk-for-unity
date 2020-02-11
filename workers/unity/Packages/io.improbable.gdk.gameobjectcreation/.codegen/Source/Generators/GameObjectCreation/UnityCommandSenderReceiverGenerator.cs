@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static CodeWriter Generate(UnityComponentDetails details)
         {
-            var Namespace = $"global::{details.Namespace}.{details.Name}";
+            var fullyQualifiedNamespace = $"global::{details.Namespace}.{details.Name}";
 
             return CodeWriter.Populate(cgw =>
             {
@@ -26,17 +26,17 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(details.Namespace, ns =>
                 {
-                    ns.Type(GenerateCommandSenderSubscriptionManager(details, details.Namespace));
-                    ns.Type(GenerateCommandReceiverSubscriptionManager(details, details.Namespace));
-                    ns.Type(GenerateCommandSender(details, details.Namespace, Namespace));
-                    ns.Type(GenerateCommandReceiver(details, details.Namespace, Namespace));
+                    ns.Type(GenerateCommandSenderSubscriptionManager(details));
+                    ns.Type(GenerateCommandReceiverSubscriptionManager(details));
+                    ns.Type(GenerateCommandSender(details, fullyQualifiedNamespace));
+                    ns.Type(GenerateCommandReceiver(details, fullyQualifiedNamespace));
                 });
             });
         }
 
-        private static TypeBlock GenerateCommandSenderSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateCommandSenderSubscriptionManager(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandSenderSubscriptionManager class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}CommandSenderSubscriptionManager class.");
 
             var commandSenderType = $"{componentDetails.Name}CommandSender";
 
@@ -57,9 +57,9 @@ protected override {commandSenderType} CreateSender(Entity entity, World world)
                 });
         }
 
-        private static TypeBlock GenerateCommandReceiverSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateCommandReceiverSubscriptionManager(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandReceiverSubscriptionManager class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}CommandReceiverSubscriptionManager class.");
 
             var commandReceiverType = $"{componentDetails.Name}CommandReceiver";
 
@@ -80,9 +80,9 @@ protected override {commandReceiverType} CreateReceiver(World world, Entity enti
                 });
         }
 
-        private static TypeBlock GenerateCommandSender(UnityComponentDetails componentDetails, string qualifiedNamespace, string Namespace)
+        private static TypeBlock GenerateCommandSender(UnityComponentDetails componentDetails, string fullyQualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandSender class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}CommandSender class.");
 
             var commandSenderType = $"{componentDetails.Name}CommandSender";
 
@@ -109,7 +109,7 @@ internal {commandSenderType}(Entity entity, World world)
 ");
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
-                    var receivedCommandResponseType = $"{Namespace}.{commandDetails.PascalCaseName}.ReceivedResponse";
+                    var receivedCommandResponseType = $"{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse";
                     var commandRequest = $"{componentDetails.Name}.{commandDetails.PascalCaseName}.Request";
 
                     c.Line($@"
@@ -119,13 +119,13 @@ public void Send{commandDetails.PascalCaseName}Command(EntityId targetEntityId, 
     Send{commandDetails.PascalCaseName}Command(commandRequest, callback);
 }}
 
-public void Send{commandDetails.PascalCaseName}Command({Namespace}.{commandDetails.PascalCaseName}.Request request, Action<{Namespace}.{commandDetails.PascalCaseName}.ReceivedResponse> callback = null)
+public void Send{commandDetails.PascalCaseName}Command({fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Request request, Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> callback = null)
 {{
     int validCallbackEpoch = callbackEpoch;
     var requestId = commandSender.SendCommand(request, entity);
     if (callback != null)
     {{
-        Action<{Namespace}.{commandDetails.PascalCaseName}.ReceivedResponse> wrappedCallback = response =>
+        Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> wrappedCallback = response =>
         {{
             if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
             {{
@@ -149,9 +149,9 @@ public void RemoveAllCallbacks()
             });
         }
 
-        private static TypeBlock GenerateCommandReceiver(UnityComponentDetails componentDetails, string qualifiedNamespace, string Namespace)
+        private static TypeBlock GenerateCommandReceiver(UnityComponentDetails componentDetails, string fullyQualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}CommandReceiver class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}CommandReceiver class.");
 
             var commandReceiverType = $"{componentDetails.Name}CommandReceiver";
 
@@ -168,15 +168,15 @@ public bool IsValid { get; set; }
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-private Dictionary<Action<{Namespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
+private Dictionary<Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
 
-public event Action<{Namespace}.{commandDetails.PascalCaseName}.ReceivedRequest> On{commandDetails.PascalCaseName}RequestReceived
+public event Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest> On{commandDetails.PascalCaseName}RequestReceived
 {{
     add
     {{
         if ({commandDetails.CamelCaseName}CallbackToCallbackKey == null)
         {{
-            {commandDetails.CamelCaseName}CallbackToCallbackKey = new Dictionary<Action<{Namespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong>();
+            {commandDetails.CamelCaseName}CallbackToCallbackKey = new Dictionary<Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong>();
         }}
 
         var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -211,19 +211,19 @@ internal {commandReceiverType}(World world, Entity entity, EntityId entityId)
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-public void Send{commandDetails.PascalCaseName}Response({Namespace}.{commandDetails.PascalCaseName}.Response response)
+public void Send{commandDetails.PascalCaseName}Response({fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Response response)
 {{
     commandSystem.SendResponse(response);
 }}
 
 public void Send{commandDetails.PascalCaseName}Response(long requestId, {commandDetails.FqnResponseType} response)
 {{
-    commandSystem.SendResponse(new {Namespace}.{commandDetails.PascalCaseName}.Response(requestId, response));
+    commandSystem.SendResponse(new {fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Response(requestId, response));
 }}
 
 public void Send{commandDetails.PascalCaseName}Failure(long requestId, string failureMessage)
 {{
-    commandSystem.SendResponse(new {Namespace}.{commandDetails.PascalCaseName}.Response(requestId, failureMessage));
+    commandSystem.SendResponse(new {fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Response(requestId, failureMessage));
 }}
 ");
                 }

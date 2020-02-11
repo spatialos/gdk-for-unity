@@ -25,17 +25,17 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(details.Namespace, ns =>
                 {
-                    ns.Type(GenerateComponentReaderSubscriptionManager(details, details.Namespace));
-                    ns.Type(GenerateComponentWriterSubscriptionManager(details, details.Namespace));
-                    ns.Type(GenerateComponentReader(details, details.Namespace));
-                    ns.Type(GenerateComponentWriter(details, details.Namespace));
+                    ns.Type(GenerateComponentReaderSubscriptionManager(details));
+                    ns.Type(GenerateComponentWriterSubscriptionManager(details));
+                    ns.Type(GenerateComponentReader(details));
+                    ns.Type(GenerateComponentWriter(details));
                 });
             });
         }
 
-        private static TypeBlock GenerateComponentReaderSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentReaderSubscriptionManager(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}ReaderSubscriptionManager class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}ReaderSubscriptionManager class.");
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
                 $"public class {componentDetails.Name}ReaderSubscriptionManager : SubscriptionManager<{componentDetails.Name}Reader>",
@@ -166,9 +166,9 @@ private void OnComponentRemoved(EntityId entityId)
                 });
         }
 
-        private static TypeBlock GenerateComponentWriterSubscriptionManager(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentWriterSubscriptionManager(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}WriterSubscriptionManager class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}WriterSubscriptionManager class.");
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
                 $"public class {componentDetails.Name}WriterSubscriptionManager : SubscriptionManager<{componentDetails.Name}Writer>",
@@ -291,9 +291,9 @@ public override void ResetValue(ISubscription subscription)
                 });
         }
 
-        private static TypeBlock GenerateComponentReader(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentReader(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}Reader class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}Reader class.");
 
             return Scope.Type($"public class {componentDetails.Name}Reader",
                 reader =>
@@ -522,9 +522,9 @@ if ({eventDetails.CamelCaseName}EventCallbackToCallbackKey != null)
                 });
         }
 
-        private static TypeBlock GenerateComponentWriter(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentWriter(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}Writer class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}Writer class.");
 
             return Scope.Type($"public class {componentDetails.Name}Writer : {componentDetails.Name}Reader",
                 writer =>
