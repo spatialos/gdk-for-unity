@@ -245,6 +245,7 @@ namespace Improbable.Gdk.Tools
                     {
                         throw new IOException($"Failed to chmod schema compiler:{Environment.NewLine}{string.Join(Environment.NewLine, result.Stderr)}");
                     }
+
                     break;
                 default:
                     throw new PlatformNotSupportedException(
@@ -454,6 +455,7 @@ namespace Improbable.Gdk.Tools
                 {
                     Debug.LogError(error);
                 }
+
                 return;
             }
 
