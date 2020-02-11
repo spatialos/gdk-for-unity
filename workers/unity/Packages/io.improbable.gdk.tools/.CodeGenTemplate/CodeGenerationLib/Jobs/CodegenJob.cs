@@ -15,7 +15,11 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
     public abstract class CodegenJob
     {
-        public IEnumerable<string> ExpectedOutputFiles => expectedOutputFiles.Select(filePath => Path.Combine(OutputDirectory, filePath));
+        public IEnumerable<string> ExpectedOutputFiles
+            => expectedOutputFiles
+                .Select(filePath => Path.Combine(OutputDirectory, filePath))
+                .Union(jobTargets.Select(target => target.FilePath));
+
         private readonly List<string> expectedOutputFiles = new List<string>();
 
         private readonly List<string> expectedInputFiles = new List<string>();
@@ -24,6 +28,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         protected readonly Logger Logger;
 
         private readonly Dictionary<string, string> content = new Dictionary<string, string>();
+        private readonly List<JobTarget> jobTargets = new List<JobTarget>();
 
         private readonly IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
@@ -72,14 +77,47 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             Logger.Trace($"Added generated content for {filePath}.");
         }
 
+        protected void AddJobTarget(string filePath, Func<CodeWriter.CodeWriter> generateFunc)
+        {
+            jobTargets.Add(new JobTarget(Path.Combine(OutputDirectory, filePath), generateFunc));
+        }
+
+        protected void AddJobTarget(string filePath, Func<string> generateFunc)
+        {
+            jobTargets.Add(new JobTarget(Path.Combine(OutputDirectory, filePath), generateFunc));
+        }
+
+        protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, CodeWriter.CodeWriter> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
+        {
+            jobTargets.AddRange(details.SelectMany(d =>
+            {
+                return generatorJobs.Select(generator =>
+                {
+                    var (filePath, generateImpl) = generator(d);
+                    return new JobTarget(Path.Combine(OutputDirectory, d.NamespacePath, filePath), () => generateImpl(d));
+                });
+            }));
+        }
+
+        protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, string> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
+        {
+            jobTargets.AddRange(details.SelectMany(d =>
+            {
+                return generatorJobs.Select(generator =>
+                {
+                    var (filePath, generateImpl) = generator(d);
+                    return new JobTarget(Path.Combine(OutputDirectory, d.NamespacePath, filePath), () => CodeWriter.CodeWriter.Raw(generateImpl(d)));
+                });
+            }));
+        }
+
         public void Clean()
         {
             var numRemovedDirectories = 0;
 
-            foreach (var entry in ExpectedOutputFiles)
+            foreach (var filePath in ExpectedOutputFiles)
             {
-                var path = Path.Combine(OutputDirectory, entry);
-                var fileInfo = fileSystem.GetFileInfo(path);
+                var fileInfo = fileSystem.GetFileInfo(filePath);
 
                 if (fileInfo.Exists())
                 {
@@ -87,12 +125,14 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 }
 
                 var remainingFilesInFolder = fileSystem.GetFilesInDirectory(fileInfo.DirectoryPath);
-                if (remainingFilesInFolder.Count == 0)
+                if (remainingFilesInFolder.Count != 0)
                 {
-                    Logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
-                    fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
-                    numRemovedDirectories++;
+                    continue;
                 }
+
+                Logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
+                fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
+                numRemovedDirectories++;
             }
 
             Logger.Info($"Directories cleaned: {numRemovedDirectories}.");
@@ -103,7 +143,15 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var jobType = GetType();
             Logger.Info($"Starting {jobType}.");
 
+            // run for content
             RunImpl();
+
+            // Run generators for all targets
+            foreach (var jobTarget in jobTargets)
+            {
+                Logger.Trace($"Generating {jobTarget.FilePath}.");
+                jobTarget.Generate();
+            }
 
             Logger.Info("Writing generated code to disk.");
             foreach (var (filePath, fileContents) in content)
@@ -126,7 +174,23 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 Logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            Logger.Info($"Files written: {content.Count}.");
+            // Write generated code to disk
+            Logger.Info("Writing generated code to disk.");
+            foreach (var jobTarget in jobTargets)
+            {
+                var fileInfo = fileSystem.GetFileInfo(jobTarget.FilePath);
+
+                if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
+                {
+                    Logger.Trace($"Creating output directory {fileInfo.DirectoryPath}.");
+                    fileSystem.CreateDirectory(fileInfo.DirectoryPath);
+                }
+
+                fileSystem.WriteToFile(fileInfo.CompletePath, jobTarget.Format());
+                Logger.Trace($"Written {fileInfo.CompletePath}.");
+            }
+
+            Logger.Info($"Files written: {content.Count + jobTargets.Count}.");
 
             Logger.Info($"Finished {jobType}.");
         }
@@ -143,9 +207,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 .Select(path => fileSystem.GetFileInfo(path))
                 .ToList();
 
-            var existingFiles = ExpectedOutputFiles
-                .Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry)))
-                .ToList();
+            var existingFiles = ExpectedOutputFiles.Select(fileSystem.GetFileInfo).ToList();
 
             if (schemaFiles.Count == 0 || existingFiles.Count == 0)
             {
