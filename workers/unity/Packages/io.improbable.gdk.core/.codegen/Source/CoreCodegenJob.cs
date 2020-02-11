@@ -64,7 +64,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.Name;
 
-                Logger.Trace($"Adding job output files for component {componentTarget.Content.Name}.");
+                Logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
 
                 AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.Name, FileExtension)));
 
@@ -152,7 +152,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             Logger.Trace("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                Logger.Trace($"Generating code for {componentTarget.Content.Name}.");
+                Logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.Name;
