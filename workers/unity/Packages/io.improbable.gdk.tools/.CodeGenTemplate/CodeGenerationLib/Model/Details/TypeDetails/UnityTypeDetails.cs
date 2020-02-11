@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public IReadOnlyList<UnityTypeDetails> ChildTypes { get; private set; }
         public IReadOnlyList<UnityEnumDetails> ChildEnums { get; private set; }
 
-        public readonly SerializationOverride SerializationOverride;
+        public SerializationOverride SerializationOverride { get; internal set; }
 
         public bool HasSerializationOverride => SerializationOverride != null;
 
@@ -22,10 +22,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition, SerializationOverride serializationOverride)
+        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition)
             : base(package, rawTypeDefinition)
         {
-            SerializationOverride = serializationOverride;
             this.rawTypeDefinition = rawTypeDefinition;
         }
 

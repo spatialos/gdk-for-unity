@@ -72,16 +72,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 foreach (var type in file.Types)
                 {
-                    var fqTypeName = Formatting.CapitaliseQualifiedNameParts(type.QualifiedName);
+                    var typeDetails = new UnityTypeDetails(file.Package.Name, type);
 
-                    SerializationOverride serializationOverride = null;
-                    if (overrideMap.TryGetValue(fqTypeName, out var staticClassFqn))
+                    if (overrideMap.TryGetValue(typeDetails.FullyQualifiedName, out var staticClassFqn))
                     {
-                        serializationOverride = new SerializationOverride(staticClassFqn);
-                        Logger.Trace($"Found serialization override {staticClassFqn} for {fqTypeName}.");
+                        typeDetails.SerializationOverride = new SerializationOverride(staticClassFqn);
+                        Logger.Trace($"Adding serialization override {staticClassFqn} for {typeDetails.QualifiedName}.");
                     }
 
-                    var typeDetails = new UnityTypeDetails(file.Package.Name, type, serializationOverride);
                     types.Add(type.QualifiedName, typeDetails);
                 }
 
@@ -250,23 +248,23 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
             var toRemove = new Dictionary<string, List<UnityFieldDetails>>();
 
-            foreach (var (typeKey, typeDetails) in Types)
+            foreach (var (qualifiedTypeName, typeDetails) in Types)
             {
                 var recursiveOptions = typeDetails.FieldDetails
                     .Where(field => field.RawFieldDefinition.TypeSelector == FieldType.Option && field.RawFieldDefinition.OptionType.InnerType.ValueTypeSelector == ValueType.Type)
-                    .Where(field => IsRecursive(field.RawFieldDefinition.OptionType.InnerType.Type, new[] { typeKey }))
+                    .Where(field => IsRecursive(field.RawFieldDefinition.OptionType.InnerType.Type, new[] { qualifiedTypeName }))
                     .ToList();
 
                 if (recursiveOptions.Any())
                 {
-                    toRemove[typeKey] = recursiveOptions;
+                    toRemove[qualifiedTypeName] = recursiveOptions;
                 }
             }
 
             var numFieldsRemoved = 0;
-            foreach (var (fieldKey, fieldDetails) in toRemove)
+            foreach (var (qualifiedTypeName, fieldDetails) in toRemove)
             {
-                var type = Types[fieldKey];
+                var type = Types[qualifiedTypeName];
 
                 type.FieldDetails = type.FieldDetails
                     .Where(field =>
