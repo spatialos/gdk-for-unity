@@ -9,22 +9,24 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
     public class JobRunner
     {
         private readonly IFileSystem fileSystem;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger logger;
 
         public JobRunner(IFileSystem fileSystem)
         {
+            logger = LogManager.GetCurrentClassLogger();
+
             this.fileSystem = fileSystem;
         }
 
         public void Run(params CodegenJob[] jobs)
         {
-            Logger.Info("Finding dirty jobs.");
+            logger.Info("Finding dirty jobs.");
             var dirtyJobs = PrepareOutputFolders(jobs);
 
             var dirtyJobList = string.Join("\n - ", dirtyJobs.Select(job => job.GetType()));
-            Logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
+            logger.Info($"Found {dirtyJobs.Count} dirty jobs:\n - {dirtyJobList}");
 
-            Logger.Info("Running jobs.");
+            logger.Info("Running jobs.");
             foreach (var dirtyJob in dirtyJobs)
             {
                 dirtyJob.Run();
@@ -37,18 +39,20 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
             foreach (var outputDirectory in outputDirectories)
             {
-                var relatedJobs = jobs.Where(job => job.OutputDirectory == outputDirectory).ToList();
+                var relatedJobs = jobs.Where(job => job.OutputDirectory == outputDirectory);
 
-                if (IsOutputDirectoryDirty(relatedJobs, outputDirectory))
+                if (!IsOutputDirectoryDirty(relatedJobs, outputDirectory))
                 {
-                    Logger.Trace($"Deleting dirty directory {outputDirectory}.");
-                    fileSystem.DeleteDirectory(outputDirectory);
+                    continue;
+                }
 
-                    foreach (var job in relatedJobs)
-                    {
-                        Logger.Trace($"Marking {job.GetType()} as dirty.");
-                        job.MarkAsDirty();
-                    }
+                logger.Trace($"Deleting dirty directory {outputDirectory}.");
+                fileSystem.DeleteDirectory(outputDirectory);
+
+                foreach (var job in relatedJobs)
+                {
+                    logger.Trace($"Marking {job.GetType()} as dirty.");
+                    job.MarkAsDirty();
                 }
             }
 
@@ -60,8 +64,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var outputFolderFiles = fileSystem.GetFilesInDirectory(outputDir)
                 .Select(file => Path.GetFullPath(file.CompletePath)).ToList();
 
-            var expectedFiles = jobs.SelectMany(job => job.OutputFiles)
-                .Select(path => Path.GetFullPath(Path.Combine(outputDir, path))).ToList();
+            var expectedFiles = jobs.SelectMany(job => job.ExpectedOutputFiles);
 
             return outputFolderFiles.Intersect(expectedFiles).Count() != outputFolderFiles.Count;
         }

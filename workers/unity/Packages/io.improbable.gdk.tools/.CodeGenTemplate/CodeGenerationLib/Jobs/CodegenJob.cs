@@ -15,10 +15,10 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
     public abstract class CodegenJob
     {
-        public IEnumerable<string> OutputFiles => outputFiles;
+        public IEnumerable<string> ExpectedOutputFiles => expectedOutputFiles.Select(filePath => Path.Combine(OutputDirectory, filePath));
+        private readonly List<string> expectedOutputFiles = new List<string>();
 
-        private readonly List<string> inputFiles = new List<string>();
-        private readonly List<string> outputFiles = new List<string>();
+        private readonly List<string> expectedInputFiles = new List<string>();
         public readonly string OutputDirectory;
 
         protected readonly Logger Logger;
@@ -48,7 +48,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         protected void AddInputFile(string inputFilePath)
         {
-            inputFiles.Add(inputFilePath);
+            expectedInputFiles.Add(inputFilePath);
             Logger.Trace($"Added input file: {inputFilePath}.");
         }
 
@@ -62,7 +62,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         protected void AddOutputFile(string outputFilePath)
         {
-            outputFiles.Add(outputFilePath);
+            expectedOutputFiles.Add(outputFilePath);
             Logger.Trace($"Added output file: {outputFilePath}.");
         }
 
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         {
             var numRemovedDirectories = 0;
 
-            foreach (var entry in OutputFiles)
+            foreach (var entry in ExpectedOutputFiles)
             {
                 var path = Path.Combine(OutputDirectory, entry);
                 var fileInfo = fileSystem.GetFileInfo(path);
@@ -138,12 +138,12 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 return true;
             }
 
-            var schemaFiles = inputFiles
+            var schemaFiles = expectedInputFiles
                 .Select(file => detailsStore.FileTree.GetFullPathForRelativeSchema(file))
                 .Select(path => fileSystem.GetFileInfo(path))
                 .ToList();
 
-            var existingFiles = OutputFiles
+            var existingFiles = ExpectedOutputFiles
                 .Select(entry => fileSystem.GetFileInfo(Path.Combine(OutputDirectory, entry)))
                 .ToList();
 
