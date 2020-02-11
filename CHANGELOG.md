@@ -26,6 +26,7 @@
 - Changed the Worker SDK package installed for iOS. [#1268](https://github.com/spatialos/gdk-for-unity/pull/1268)
     - Changed `c-static-fullylinked-arm-clang-ios` to `c-static-arm-clang-ios`.
     - Changed `c-static-fullylinked-x86_64-clang-ios` to `c-static-x86_64-clang-ios`.
+- Upgrade to Worker SDK v14.4.1. [#1274](https://github.com/spatialos/gdk-for-unity/pull/1274)
 
 ### Fixed
 
