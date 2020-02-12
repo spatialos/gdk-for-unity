@@ -27,10 +27,5 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
             Logger.Info($"Finished initialising {jobName}.");
         }
-
-        protected override void RunImpl()
-        {
-            // base CodegenJob runs jobs
-        }
     }
 }

@@ -78,10 +78,5 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
             Logger.Info($"Finished initialising {jobName}.");
         }
-
-        protected override void RunImpl()
-        {
-            // base CodegenJob runs jobs
-        }
     }
 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Model.Details;
-using Improbable.Gdk.CodeGeneration.Utils;
 using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Jobs
@@ -16,17 +15,13 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
     public abstract class CodegenJob
     {
         public IEnumerable<string> ExpectedOutputFiles
-            => expectedOutputFiles
-                .Select(filePath => Path.Combine(OutputDirectory, filePath))
-                .Union(jobTargets.Select(target => target.FilePath));
+            => jobTargets.Select(target => target.FilePath);
 
-        private readonly List<string> expectedOutputFiles = new List<string>();
         private readonly List<string> expectedInputFiles = new List<string>();
         public readonly string OutputDirectory;
 
         protected readonly Logger Logger;
 
-        private readonly Dictionary<string, string> content = new Dictionary<string, string>();
         private readonly List<JobTarget> jobTargets = new List<JobTarget>();
 
         private readonly IFileSystem fileSystem;
@@ -54,26 +49,6 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         {
             expectedInputFiles.Add(inputFilePath);
             Logger.Trace($"Added input file: {inputFilePath}.");
-        }
-
-        protected void AddOutputFiles(IEnumerable<string> outputFilePaths)
-        {
-            foreach (var outputFilePath in outputFilePaths)
-            {
-                AddOutputFile(outputFilePath);
-            }
-        }
-
-        protected void AddOutputFile(string outputFilePath)
-        {
-            expectedOutputFiles.Add(outputFilePath);
-            Logger.Trace($"Added output file: {outputFilePath}.");
-        }
-
-        protected void AddContent(string filePath, string fileContents)
-        {
-            content.Add(filePath, fileContents);
-            Logger.Trace($"Added generated content for {filePath}.");
         }
 
         protected void AddJobTarget(string filePath, Func<CodeWriter.CodeWriter> generateFunc)
@@ -150,9 +125,6 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var jobType = GetType();
             Logger.Info($"Starting {jobType}.");
 
-            // Run generators through legacy system
-            RunImpl();
-
             // Run generators for all targets
             foreach (var jobTarget in jobTargets)
             {
@@ -160,30 +132,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 jobTarget.Generate();
             }
 
+            // Write generated code to disk
             Logger.Info("Writing generated code to disk.");
-
-            // Write code generated from legacy system to disk
-            foreach (var (filePath, fileContents) in content)
-            {
-                var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, filePath));
-
-                if (!fileSystem.DirectoryExists(fileInfo.DirectoryPath))
-                {
-                    Logger.Trace($"Creating output directory {fileInfo.DirectoryPath}.");
-                    fileSystem.CreateDirectory(fileInfo.DirectoryPath);
-                }
-
-                Logger.Trace("Fixing line endings.");
-                // Fix up line endings
-                var contents = fileContents
-                    .Replace("\r\n", "\n")
-                    .Replace("\n", Environment.NewLine);
-
-                fileSystem.WriteToFile(fileInfo.CompletePath, contents);
-                Logger.Trace($"Written {fileInfo.CompletePath}.");
-            }
-
-            // Write code generated from job targets to disk
             foreach (var jobTarget in jobTargets)
             {
                 var fileInfo = fileSystem.GetFileInfo(jobTarget.FilePath);
@@ -198,9 +148,16 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 Logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            Logger.Info($"Files written: {content.Count + jobTargets.Count}.");
+            Logger.Info($"Files written: {jobTargets.Count}.");
 
             Logger.Info($"Finished {jobType}.");
+        }
+
+        private bool isDirtyOverride;
+
+        public void MarkAsDirty()
+        {
+            isDirtyOverride = true;
         }
 
         public bool IsDirty()
@@ -232,28 +189,6 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var sortedExistingFiles = existingFiles.OrderByDescending(item => item.LastWriteTime).ToList();
 
             return sortedSchemaFileInfo.First().LastWriteTime > sortedExistingFiles.First().LastWriteTime;
-        }
-
-        public void MarkAsDirty()
-        {
-            isDirtyOverride = true;
-        }
-
-        protected abstract void RunImpl();
-        private bool isDirtyOverride;
-
-        protected struct GenerationTarget<T>
-        {
-            public readonly T Content;
-            public readonly string Package;
-            public readonly string OutputPath;
-
-            public GenerationTarget(T content, string package)
-            {
-                Content = content;
-                Package = Formatting.CapitaliseQualifiedNameParts(package);
-                OutputPath = Formatting.GetNamespacePath(package);
-            }
         }
     }
 }

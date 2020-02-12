@@ -86,10 +86,5 @@ namespace Improbable.Gdk.CodeGenerator
             Logger.Info($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
             return workerTypes;
         }
-
-        protected override void RunImpl()
-        {
-            // base CodegenJob runs jobs
-        }
     }
 }
