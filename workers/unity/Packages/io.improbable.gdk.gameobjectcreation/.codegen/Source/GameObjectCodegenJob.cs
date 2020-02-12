@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
@@ -9,73 +7,30 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 {
     public class GameObjectCodegenJob : CodegenJob
     {
-        private readonly List<GenerationTarget<UnityComponentDetails>> componentsToGenerate;
-
-        private const string FileExtension = ".cs";
-
         public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
             : base(outputDir, fileSystem, store, force)
         {
-            var jobName = nameof(GameObjectCodegenJob);
+            const string jobName = nameof(GameObjectCodegenJob);
             Logger.Info($"Initialising {jobName}.");
 
-            AddInputFiles(store.SchemaFiles.ToList());
+            AddInputFiles(store.SchemaFiles);
 
-            Logger.Info("Gathering component details.");
-            componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
-                .ToList();
+            var componentsToGenerate = store.Components.Values.ToList();
+            AddGenerators(componentsToGenerate, c
+                => ($"{c.Name}ComponentReaderWriter.cs", UnityComponentReaderWriterGenerator.Generate));
+            Logger.Info($"Added job targets for {componentsToGenerate.Count} components.");
 
-            Logger.Trace("Adding job output files.");
-            foreach (var componentTarget in componentsToGenerate)
-            {
-                var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.Name;
-
-                Logger.Trace($"Adding job output files for component {componentName}.");
-
-                if (componentTarget.Content.CommandDetails.Count > 0)
-                {
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension)));
-                }
-
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
-            }
-
-            Logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
+            var componentsWithCommands = componentsToGenerate.Where(c => c.CommandDetails.Count > 0).ToList();
+            AddGenerators(componentsWithCommands, c
+                => ($"{c.Name}CommandSenderReceiver.cs", UnityCommandSenderReceiverGenerator.Generate));
+            Logger.Info($"Added job targets for {componentsWithCommands.Count} components with commands.");
 
             Logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
-            Logger.Info("Starting code generation for components.");
-            foreach (var componentTarget in componentsToGenerate)
-            {
-                Logger.Trace($"Generating code for {componentTarget.Content.Name}.");
-
-                var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.Name;
-
-                if (componentTarget.Content.CommandDetails.Count > 0)
-                {
-                    var commandSenderReceiverFileName =
-                        Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
-                    var commandSenderReceiverCode =
-                        UnityCommandSenderReceiverGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
-                }
-
-                var componentReaderWriterFileName =
-                    Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
-                var componentReaderWriterCode =
-                    UnityComponentReaderWriterGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
-            }
-
-            Logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
+            // base CodegenJob runs jobs
         }
     }
 }
