@@ -127,7 +127,7 @@ namespace Improbable.Gdk.Mobile
 
                 if (GUILayout.Button("Build XCode project"))
                 {
-                    iOSLaunchUtils.Build(mobileLaunchConfig.DevelopmentTeamId);
+                    iOSUtils.Build(mobileLaunchConfig.DevelopmentTeamId);
                 }
 
                 CommonUIElements.DrawHorizontalLine(8, DarkGrey);
