@@ -112,7 +112,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                     continue;
                 }
 
-                Logger.Info($"Deleting output directory {fileInfo.DirectoryPath}.");
+                Logger.Trace($"Deleting output directory {fileInfo.DirectoryPath}.");
                 fileSystem.DeleteDirectory(fileInfo.DirectoryPath);
                 numRemovedDirectories++;
             }
@@ -133,7 +133,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             }
 
             // Write generated code to disk
-            Logger.Info("Writing generated code to disk.");
+            Logger.Trace("Writing generated code to disk.");
             foreach (var jobTarget in jobTargets)
             {
                 var fileInfo = fileSystem.GetFileInfo(jobTarget.FilePath);
@@ -148,9 +148,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 Logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            Logger.Info($"Files written: {jobTargets.Count}.");
-
-            Logger.Info($"Finished {jobType}.");
+            Logger.Info($"Finished {jobType}. Files written: {jobTargets.Count}.");
         }
 
         private bool isDirtyOverride;

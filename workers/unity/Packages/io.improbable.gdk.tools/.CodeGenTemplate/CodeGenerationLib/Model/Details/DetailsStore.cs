@@ -30,7 +30,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             this.bundle = bundle;
             FileTree = fileTree;
 
-            Logger.Info("Loading serialization overrides.");
+            Logger.Trace("Loading serialization overrides.");
             var overrideMap = serializationOverrides.Select(@override =>
             {
                 var parts = @override.Split(";");
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 return (parts[0], parts[1]);
             }).ToDictionary(pair => pair.Item1, pair => pair.Item2);
-            Logger.Info($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
+            Logger.Trace($"Found {overrideMap.Count} serialization {(overrideMap.Count == 1 ? "override" : "overrides")}.");
 
             PopulateBlittableMaps();
             BlittableSet = ImmutableHashSet.CreateRange(blittableMap.Where(kv => kv.Value).Select(kv => kv.Key));
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Logger.Trace("Processing schema files.");
             foreach (var file in bundle.SchemaFiles)
             {
-                Logger.Info($"Initialising details from {file.CanonicalPath}.");
+                Logger.Trace($"Initialising details from {file.CanonicalPath}.");
 
                 foreach (var rawEnum in file.Enums)
                 {
@@ -95,7 +95,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)
                 .ToList().AsReadOnly();
-            Logger.Info($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
+            Logger.Trace($"Retrieved canonical paths of {SchemaFiles.Count} schema files.");
 
             Logger.Trace("Populating all type details.");
             foreach (var kv in Types)

@@ -120,10 +120,10 @@ namespace Improbable.Gdk.CodeGenerator
             logger.Info("Gathering schema information.");
             var bundlePath = GenerateBundle();
 
-            logger.Info("Loading schema bundle from json.");
+            logger.Trace("Loading schema bundle from json.");
             var schemaBundle = SchemaBundle.LoadBundle(File.ReadAllText(bundlePath));
 
-            logger.Info("Setting up schema file tree.");
+            logger.Trace("Setting up schema file tree.");
             var fileTree = new FileTree(options.SchemaInputDirs);
 
             logger.Info("Initialising DetailsStore.");
@@ -175,7 +175,7 @@ namespace Improbable.Gdk.CodeGenerator
                 inputPaths.Add($"--schema_path=\"{schemaDir}\"");
             }
 
-            logger.Info($"Preparing bundle output path: {options.JsonDirectory}.");
+            logger.Trace($"Preparing bundle output path: {options.JsonDirectory}.");
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
@@ -194,7 +194,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);
 
-            logger.Info($"Generated bundle at {bundlePath}.");
+            logger.Trace($"Generated schema bundle at {bundlePath}.");
             return bundlePath;
         }
 
