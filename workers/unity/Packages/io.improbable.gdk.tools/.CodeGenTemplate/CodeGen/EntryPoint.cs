@@ -129,7 +129,7 @@ namespace Improbable.Gdk.CodeGenerator
             logger.Info("Initialising DetailsStore.");
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
-            logger.Info("Setting up code generation jobs.");
+            logger.Trace("Setting up code generation jobs.");
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(assembly =>
@@ -189,7 +189,7 @@ namespace Improbable.Gdk.CodeGenerator
                 $"--descriptor_set_out=\"{descriptorPath}\""
             }.Union(inputPaths).ToList();
 
-            logger.Info("Generating schema bundle and descriptor.");
+            logger.Trace("Generating schema bundle and descriptor.");
             logger.Trace($"Calling '{options.SchemaCompilerPath} {string.Join(" ", arguments)}'.");
 
             SystemTools.RunRedirected(options.SchemaCompilerPath, arguments);

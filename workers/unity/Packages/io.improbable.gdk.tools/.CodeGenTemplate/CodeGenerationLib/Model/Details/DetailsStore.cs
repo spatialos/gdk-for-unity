@@ -103,7 +103,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 kv.Value.Populate(this);
             }
 
-            Logger.Info($"Populated details of {Types.Count} types.");
+            Logger.Trace($"Populated details of {Types.Count} types.");
 
             Logger.Trace($"Populating all component field details.");
             foreach (var kv in Components)
@@ -111,11 +111,14 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 kv.Value.PopulateFields(this);
             }
 
-            Logger.Info($"Populated field details of {Components.Count} components.");
+            Logger.Trace($"Populated field details of {Components.Count} components.");
 
             Logger.Trace("Removing all recursive options.");
             var numFieldsRemoved = RemoveRecursiveOptions();
-            Logger.Info($"Removed {numFieldsRemoved} recursive options.");
+            if (numFieldsRemoved > 0)
+            {
+                Logger.Info($"Removed {numFieldsRemoved} recursive options.");
+            }
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -268,7 +271,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         }
 
                         numFieldsRemoved++;
-                        Logger.Info($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
+                        Logger.Warn($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
                         return false;
                     })
                     .ToList()

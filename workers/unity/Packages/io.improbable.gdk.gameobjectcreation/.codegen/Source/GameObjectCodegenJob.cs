@@ -11,21 +11,21 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
             : base(outputDir, fileSystem, store, force)
         {
             const string jobName = nameof(GameObjectCodegenJob);
-            Logger.Info($"Initialising {jobName}.");
+            Logger.Trace($"Initialising {jobName}.");
 
             AddInputFiles(store.SchemaFiles);
 
             var componentsToGenerate = store.Components.Values.ToList();
             AddGenerators(componentsToGenerate, c
                 => ($"{c.Name}ComponentReaderWriter.cs", UnityComponentReaderWriterGenerator.Generate));
-            Logger.Info($"Added job targets for {componentsToGenerate.Count} components.");
+            Logger.Trace($"Added job targets for {componentsToGenerate.Count} components.");
 
             var componentsWithCommands = componentsToGenerate.Where(c => c.CommandDetails.Count > 0).ToList();
             AddGenerators(componentsWithCommands, c
                 => ($"{c.Name}CommandSenderReceiver.cs", UnityCommandSenderReceiverGenerator.Generate));
-            Logger.Info($"Added job targets for {componentsWithCommands.Count} components with commands.");
+            Logger.Trace($"Added job targets for {componentsWithCommands.Count} components with commands.");
 
-            Logger.Info($"Finished initialising {jobName}.");
+            Logger.Trace($"Finished initialising {jobName}.");
         }
     }
 }

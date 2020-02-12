@@ -22,7 +22,7 @@ namespace Improbable.Gdk.CodeGenerator
             : base(baseOutputDir, fileSystem, detailsStore, force)
         {
             const string jobName = nameof(WorkerGenerationJob);
-            Logger.Info($"Initialising {jobName}.");
+            Logger.Trace($"Initialising {jobName}.");
 
             var workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
 
@@ -38,14 +38,12 @@ namespace Improbable.Gdk.CodeGenerator
             AddJobTarget(Path.Combine(relativeOutputPath, WorkerListFileName),
                 () => string.Join(Environment.NewLine, workerTypesToGenerate));
 
-            Logger.Info("Added 3 job targets.");
-
-            Logger.Info($"Finished initialising {jobName}.");
+            Logger.Trace($"Finished initialising {jobName}.");
         }
 
         private List<string> ExtractWorkerTypes(string path)
         {
-            Logger.Info($"Extracting worker types from {path}.");
+            Logger.Trace($"Extracting worker types from {path}.");
 
             var workerTypes = new List<string>();
 
@@ -83,7 +81,7 @@ namespace Improbable.Gdk.CodeGenerator
                 }
             }
 
-            Logger.Info($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
+            Logger.Trace($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
             return workerTypes;
         }
     }

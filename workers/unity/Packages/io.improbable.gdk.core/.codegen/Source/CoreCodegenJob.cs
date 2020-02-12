@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             : base(outputDir, fileSystem, store, force)
         {
             const string jobName = nameof(CoreCodegenJob);
-            Logger.Info($"Initialising {jobName}.");
+            Logger.Trace($"Initialising {jobName}.");
 
             AddInputFiles(store.SchemaFiles);
 
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             Logger.Trace("Adding job targets for types.");
             AddGenerators(typesToGenerate, t => ($"{t.Name}.cs", UnityTypeGenerator.Generate));
 
-            Logger.Info($"Added job targets for {typesToGenerate.Count} types.");
+            Logger.Trace($"Added job targets for {typesToGenerate.Count} types.");
 
             // Enums
             Logger.Trace("Gathering enum details.");
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             AddGenerators(enumsToGenerate,
                 e => ($"{e.Name}.cs", UnityEnumGenerator.Generate));
 
-            Logger.Info($"Added job targets for {enumsToGenerate.Count} enums.");
+            Logger.Trace($"Added job targets for {enumsToGenerate.Count} enums.");
 
             // Components
             Logger.Trace("Gathering component details.");
@@ -74,9 +74,9 @@ namespace Improbable.Gdk.CodeGenerator.Core
             AddGenerators(componentsToGenerate.Where(c => c.FieldDetails.Any(field => !field.IsBlittable)),
                 c => ($"{c.Name}Providers.cs", UnityReferenceTypeProviderGenerator.Generate));
 
-            Logger.Info($"Added job targets for {componentsToGenerate.Count} components.");
+            Logger.Trace($"Added job targets for {componentsToGenerate.Count} components.");
 
-            Logger.Info($"Finished initialising {jobName}.");
+            Logger.Trace($"Finished initialising {jobName}.");
         }
     }
 }
