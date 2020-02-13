@@ -2,7 +2,7 @@
 
 # ECS: System update order
 
-The SpatialOS GDK for Unity (GDK) defines several update groups which run relative to [`PlayerLoop.Update`](https://docs.unity3d.com/ScriptReference/Experimental.LowLevel.PlayerLoop.html). Most of your systems should belong to one of these groups to ensure that the system is run in the right order relative to GDK receive and send systems.
+The SpatialOS GDK for Unity (GDK) defines several update groups which run relative to [`PlayerLoop.Update`](https://docs.unity3d.com/2019.2/Documentation/ScriptReference/Experimental.LowLevel.PlayerLoop.html). Most of your systems should belong to one of these groups to ensure that the system is run in the right order relative to GDK receive and send systems.
 
 ## Update groups
 
