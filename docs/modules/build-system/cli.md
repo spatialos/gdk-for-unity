@@ -67,4 +67,4 @@ Unity.exe -projectPath "${GDK_PROJECT_PATH}" \
     +targetiOSSdk "simulator"
 ```
 
-> **Note** This argument is only valid when building iOS workers and will be ignored otherwise.
+> **Note:** This argument is only valid when building iOS workers and will be ignored otherwise.
