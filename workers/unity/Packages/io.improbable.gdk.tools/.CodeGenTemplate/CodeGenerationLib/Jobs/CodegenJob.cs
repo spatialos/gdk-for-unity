@@ -21,7 +21,6 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 .Union(jobTargets.Select(target => target.FilePath));
 
         private readonly List<string> expectedOutputFiles = new List<string>();
-
         private readonly List<string> expectedInputFiles = new List<string>();
         public readonly string OutputDirectory;
 
@@ -89,24 +88,24 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
 
         protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, CodeWriter.CodeWriter> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
         {
-            jobTargets.AddRange(details.SelectMany(d =>
+            jobTargets.AddRange(details.SelectMany(detail =>
             {
                 return generatorJobs.Select(generator =>
                 {
-                    var (filePath, generateImpl) = generator(d);
-                    return new JobTarget(Path.Combine(OutputDirectory, d.NamespacePath, filePath), () => generateImpl(d));
+                    var (filePath, generateImpl) = generator(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => generateImpl(detail));
                 });
             }));
         }
 
         protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, string> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
         {
-            jobTargets.AddRange(details.SelectMany(d =>
+            jobTargets.AddRange(details.SelectMany(detail =>
             {
                 return generatorJobs.Select(generator =>
                 {
-                    var (filePath, generateImpl) = generator(d);
-                    return new JobTarget(Path.Combine(OutputDirectory, d.NamespacePath, filePath), () => CodeWriter.CodeWriter.Raw(generateImpl(d)));
+                    var (filePath, generateImpl) = generator(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => CodeWriter.CodeWriter.Raw(generateImpl(detail)));
                 });
             }));
         }
@@ -143,7 +142,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             var jobType = GetType();
             Logger.Info($"Starting {jobType}.");
 
-            // run for content
+            // Run generators through legacy system
             RunImpl();
 
             // Run generators for all targets
@@ -154,6 +153,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             }
 
             Logger.Info("Writing generated code to disk.");
+
+            // Write code generated from legacy system to disk
             foreach (var (filePath, fileContents) in content)
             {
                 var fileInfo = fileSystem.GetFileInfo(Path.Combine(OutputDirectory, filePath));
@@ -174,8 +175,7 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
                 Logger.Trace($"Written {fileInfo.CompletePath}.");
             }
 
-            // Write generated code to disk
-            Logger.Info("Writing generated code to disk.");
+            // Write code generated from job targets to disk
             foreach (var jobTarget in jobTargets)
             {
                 var fileInfo = fileSystem.GetFileInfo(jobTarget.FilePath);
