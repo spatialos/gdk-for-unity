@@ -18,13 +18,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly ImmutableHashSet<string> BlittableSet;
         public readonly IReadOnlyList<string> SchemaFiles;
 
-        private static readonly HashSet<PrimitiveType> NonBlittableSchemaTypes = new HashSet<PrimitiveType>
-        {
-            PrimitiveType.Bytes,
-            PrimitiveType.String,
-            PrimitiveType.Entity
-        };
-
         private readonly Dictionary<string, bool> blittableMap = new Dictionary<string, bool>();
 
         public readonly IFileTree FileTree;
@@ -208,7 +201,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Enum:
                     return true;
                 case ValueType.Primitive:
-                    return !NonBlittableSchemaTypes.Contains(innerSingularType.Type.Primitive);
+                    return innerSingularType.Type.Primitive.IsBlittable();
                 case ValueType.Type:
                     return blittableMap[innerSingularType.Type.Type];
                 default:

@@ -4,8 +4,6 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityFieldDetails : Details
     {
-        public new string Name => PascalCaseName;
-
         public string Type => fieldType.Type;
 
         private readonly uint fieldNumber;
@@ -18,7 +16,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         internal readonly FieldDefinition RawFieldDefinition;
 
         public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store)
-            : base(rawFieldDefinition)
+            : base(rawFieldDefinition, defaultCase: Case.PascalCase)
         {
             fieldNumber = rawFieldDefinition.FieldId;
 

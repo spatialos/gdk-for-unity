@@ -28,6 +28,16 @@ namespace Improbable.Gdk.CodeGeneration.Model
         Entity = 17
     }
 
+    public static class PrimitiveTypeExtensions
+    {
+        public static bool IsBlittable(this PrimitiveType primitiveType)
+        {
+            return primitiveType != PrimitiveType.Bytes
+                && primitiveType != PrimitiveType.String
+                && primitiveType != PrimitiveType.Entity;
+        }
+    }
+
     public enum ValueType
     {
         Enum,
