@@ -47,3 +47,24 @@ Unity.exe -projectPath "${GDK_PROJECT_PATH}" \
 This command builds the `UnityClient` worker type for cloud with the `mono` scripting backend, but only for MacOS. A `UnityClient` for Windows is _not_ built.
 
 > **Note:** The build target filter must be a subset of the available build targets for a given worker type on a given environment. Otherwise, an error will be thrown.
+
+### Enforcing iOS SDK target
+
+When building for iOS you can use the `targetiOSSdk` argument to set the target SDK to `simulated` or `device`.
+
+The argument can be provided as following:
+
+```bash
+Unity.exe -projectPath "${GDK_PROJECT_PATH}" \
+    -batchmode \
+    -quit \
+    -logfile ${LOG_FILE_PATH} \
+    -executeMethod "Improbable.Gdk.BuildSystem.WorkerBuilder.Build" \
+    +buildWorkerTypes "MobileClient" \
+    +buildEnvironment "cloud" \
+    +scriptingBackend "il2cpp" \
+    +buildTargetFilter "ios" \
+    +targetiOSSdk "simulator"
+```
+
+> **Note** This argument is only valid when building iOS workers and will be ignored otherwise.
