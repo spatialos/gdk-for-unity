@@ -86,26 +86,34 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             jobTargets.Add(new JobTarget(Path.Combine(OutputDirectory, filePath), generateFunc));
         }
 
-        protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, CodeWriter.CodeWriter> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
+        protected delegate TR GenerateDelegate<in T, out TR>(T details)
+            where T : GeneratorInputDetails;
+
+        protected delegate (string relativeFilePath, GenerateDelegate<T, TR> generateFunc) GeneratorSetupDelegate<T, TR>(T details)
+            where T : GeneratorInputDetails;
+
+        protected void AddGenerators<T>(IEnumerable<T> details, params GeneratorSetupDelegate<T, CodeWriter.CodeWriter>[] generatorSetupDelegates)
+            where T : GeneratorInputDetails
         {
             jobTargets.AddRange(details.SelectMany(detail =>
             {
-                return generatorJobs.Select(generator =>
+                return generatorSetupDelegates.Select(generatorSetup =>
                 {
-                    var (filePath, generateImpl) = generator(detail);
-                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => generateImpl(detail));
+                    var (filePath, generate) = generatorSetup(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => generate(detail));
                 });
             }));
         }
 
-        protected void AddGenerators<T>(IEnumerable<T> details, params Func<T, (string relativeFilePath, Func<T, string> generateFunc)>[] generatorJobs) where T : GeneratorInputDetails
+        protected void AddGenerators<T>(IEnumerable<T> details, params GeneratorSetupDelegate<T, string>[] generatorSetupDelegates)
+            where T : GeneratorInputDetails
         {
             jobTargets.AddRange(details.SelectMany(detail =>
             {
-                return generatorJobs.Select(generator =>
+                return generatorSetupDelegates.Select(generatorSetup =>
                 {
-                    var (filePath, generateImpl) = generator(detail);
-                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => CodeWriter.CodeWriter.Raw(generateImpl(detail)));
+                    var (filePath, generate) = generatorSetup(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, detail.NamespacePath, filePath), () => generate(detail));
                 });
             }));
         }
