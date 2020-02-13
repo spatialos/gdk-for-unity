@@ -52,7 +52,7 @@ macos: &macos
     - "environment=production"
     - "permission_set=builder"
     - "platform=macos"
-    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1580997557-cbf2caa93e6b9134-dirty}"
+    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1581527732-ecad8f66a0965c5a-dirty}"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
