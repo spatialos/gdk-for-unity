@@ -7,6 +7,24 @@ using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
+    internal static class ViewDiffMetadata
+    {
+        internal static readonly List<(uint ComponentId, Type DiffStorageType)> ComponentStorageTypes;
+        internal static readonly List<Type> CommandStorageTypes;
+
+        static ViewDiffMetadata()
+        {
+            ComponentStorageTypes = ComponentDatabase.Metaclasses
+                .Select(pair => (pair.Key, pair.Value.DiffStorage))
+                .ToList();
+
+            CommandStorageTypes = ComponentDatabase.Metaclasses
+                .SelectMany(pair => pair.Value.Commands)
+                .Select(metaclass => metaclass.DiffStorage)
+                .ToList();
+        }
+    }
+
     public class ViewDiff
     {
         public string DisconnectMessage;
@@ -14,9 +32,6 @@ namespace Improbable.Gdk.Core
         public bool Disconnected { get; private set; }
 
         public bool InCriticalSection { get; private set; }
-
-        private static List<Type> componentStorageTypes;
-        private static List<Type> commandStorageTypes;
 
         private readonly HashSet<EntityId> entitiesAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
@@ -47,27 +62,12 @@ namespace Improbable.Gdk.Core
 
         public ViewDiff()
         {
-            if (componentStorageTypes == null)
+            foreach (var (componentId, diffStorageType) in ViewDiffMetadata.ComponentStorageTypes)
             {
-                componentStorageTypes = ComponentDatabase.Metaclasses
-                    .Select(pair => pair.Value.DiffStorage)
-                    .ToList();
-            }
-
-            if (commandStorageTypes == null)
-            {
-                commandStorageTypes = ComponentDatabase.Metaclasses
-                    .SelectMany(pair => pair.Value.Commands)
-                    .Select(metaclass => metaclass.DiffStorage)
-                    .ToList();
-            }
-
-            foreach (var type in componentStorageTypes)
-            {
-                var instance = (IComponentDiffStorage) Activator.CreateInstance(type);
+                var instance = (IComponentDiffStorage) Activator.CreateInstance(diffStorageType);
 
                 componentStorageList.Add(instance);
-                componentIdToComponentStorage.Add(instance.GetComponentId(), instance);
+                componentIdToComponentStorage.Add(componentId, instance);
 
                 typeToComponentStorage.Add(instance.GetUpdateType(), instance);
                 foreach (var eventType in instance.GetEventTypes())
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            foreach (var type in commandStorageTypes)
+            foreach (var type in ViewDiffMetadata.CommandStorageTypes)
             {
                 var instance = (IComponentCommandDiffStorage) Activator.CreateInstance(type);
 

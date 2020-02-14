@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
     ///     Instances of this type should be treated as transient identifiers that will not be
     ///     consistent between different runs of the same simulation.
     /// </remarks>
-    public struct EntityId : IEquatable<EntityId>
+    public readonly struct EntityId : IEquatable<EntityId>
     {
         /// <summary>
         ///     The value of the EntityId.
