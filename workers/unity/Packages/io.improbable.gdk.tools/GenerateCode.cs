@@ -245,6 +245,7 @@ namespace Improbable.Gdk.Tools
                     {
                         throw new IOException($"Failed to chmod schema compiler:{Environment.NewLine}{string.Join(Environment.NewLine, result.Stderr)}");
                     }
+
                     break;
                 default:
                     throw new PlatformNotSupportedException(
@@ -331,7 +332,10 @@ namespace Improbable.Gdk.Tools
 
             foreach (var file in dirInfo.GetFiles())
             {
-                file.CopyTo(Path.Combine(dest, file.Name));
+                var filePath = Path.Combine(dest, file.Name);
+                file.CopyTo(filePath);
+                var fileInfo = new FileInfo(filePath);
+                fileInfo.IsReadOnly = false;
             }
 
             foreach (var dir in dirInfo.GetDirectories())
@@ -454,6 +458,7 @@ namespace Improbable.Gdk.Tools
                 {
                     Debug.LogError(error);
                 }
+
                 return;
             }
 
