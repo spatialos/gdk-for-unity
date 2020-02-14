@@ -1,9 +1,9 @@
 
-# iOSLaunchUtils Class
+# iOSUtils Class
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L15">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSUtils.cs/#L16">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -36,7 +36,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="emulators"></a><b>emulators</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSUtils.cs/#L26">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -65,12 +65,40 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><a id="build-string"></a><b>Build</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L83">Source</a></td>
+        <td style="border-right:none"><a id="menubuild-string"></a><b>MenuBuild</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSUtils.cs/#L84">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>void Build(string developmentTeamId)</code></p>
+<code>void MenuBuild(string developmentTeamId)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>string developmentTeamId</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><a id="build-string"></a><b>Build</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSUtils.cs/#L97">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code>void Build(string developmentTeamId = &quot;&quot;)</code></p>
 
 
 
@@ -94,7 +122,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="launch-devicelaunchconfig-mobilelaunchconfig"></a><b>Launch</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSLaunchUtils.cs/#L113">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/iOSUtils.cs/#L121">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

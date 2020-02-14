@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a><br/>
 GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L12">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L12">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -47,7 +47,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="spatialassemblydirectory"></a><b>SpatialAssemblyDirectory</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -62,7 +62,7 @@ The path to the SpatialOS assembly directory where SpatialOS assembly artifacts 
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="playerbuilddirectory"></a><b>PlayerBuildDirectory</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/EditorPaths.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

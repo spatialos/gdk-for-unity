@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/CommandComponents.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Commands/CommandComponents.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -13,7 +13,7 @@ code {
 }
 </style>
 </sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#methods">Methods</a>
+<nav id="pageToc" class="page-toc"><ul><li><a href="#properties">Properties</a>
 </ul></nav>
 
 
@@ -31,12 +31,9 @@ code {
 
 
 
-
-
-
 </p>
 <hr style="width:100%; border-top-color:#d8d8d8" />
-#### Methods
+#### Properties
 
 
 </p>
@@ -46,21 +43,21 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><a id="getrequestid"></a><b>GetRequestId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Commands/CommandComponents.cs/#L13">Source</a></td>
+        <td style="border-right:none"><a id="requestid"></a><b>RequestId</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Commands/CommandComponents.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>long GetRequestId()</code></p>
+<code> long RequestId { get; }</code></p>
 Gets the request ID from the request. For use in generic methods. 
-</p><b>Returns:</b></br>The request ID associated with the request 
-
-
 
 
 </td>
     </tr>
 </table>
+
+
+
 
 
 

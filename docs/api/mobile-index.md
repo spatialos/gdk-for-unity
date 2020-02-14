@@ -16,7 +16,7 @@ GDK package: Mobile<br />
 
 <table>
 <tr>
-<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/android-launch-utils">AndroidLaunchUtils</a></td>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/android-utils">AndroidUtils</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
@@ -28,7 +28,7 @@ GDK package: Mobile<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
-<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/i-os-launch-utils">iOSLaunchUtils</a></td>
+<td style="padding: 14px; border: none; width: 37ch"><a href="{{urlRoot}}/api/mobile/i-os-utils">iOSUtils</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>

@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L5">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L5">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addentityid-this-schemaobject-uint-entityid"></a><b>AddEntityId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L7">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L7">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -69,7 +69,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getentityidstruct-this-schemaobject-uint"></a><b>GetEntityIdStruct</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="indexentityidstruct-this-schemaobject-uint-uint"></a><b>IndexEntityIdStruct</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -128,7 +128,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addentity-this-schemaobject-uint-entitysnapshot"></a><b>AddEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L22">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L22">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -158,7 +158,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getentity-this-schemaobject-uint"></a><b>GetEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L28">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L28">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -187,7 +187,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="indexentity-this-schemaobject-uint-uint"></a><b>IndexEntity</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L34">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L34">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -217,7 +217,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getentitycount-this-schemaobject-uint"></a><b>GetEntityCount</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L40">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/SchemaObjectExtensions.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

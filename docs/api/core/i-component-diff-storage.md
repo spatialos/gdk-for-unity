@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L7">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L7">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="geteventtypes"></a><b>GetEventTypes</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L9">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -60,7 +60,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getupdatetype"></a><b>GetUpdateType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L10">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L10">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -79,7 +79,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getcomponentid"></a><b>GetComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -98,7 +98,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -117,7 +117,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="removeentitycomponent-long"></a><b>RemoveEntityComponent</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L14">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -145,7 +145,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getcomponentsadded"></a><b>GetComponentsAdded</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L16">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L16">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -164,7 +164,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getcomponentsremoved"></a><b>GetComponentsRemoved</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/DiffStorage.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

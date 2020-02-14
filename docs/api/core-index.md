@@ -74,6 +74,10 @@ GDK package: Core<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/command-payload-storage">CommandPayloadStorage</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 41ch"><a href="{{urlRoot}}/api/core/command-request-id-generator">CommandRequestIdGenerator</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

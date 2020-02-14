@@ -37,11 +37,19 @@ GDK package: Subscriptions<br />
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/command-receiver-subscription-manager-base">CommandReceiverSubscriptionManagerBase</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/command-request-callback-manager">CommandRequestCallbackManager</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/command-response-callback-manager">CommandResponseCallbackManager</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/command-sender-subscription-manager-base">CommandSenderSubscriptionManagerBase</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>
 <tr>
@@ -162,6 +170,14 @@ GDK package: Subscriptions<br />
 #### Interfaces
 
 <table>
+<tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/i-command-receiver">ICommandReceiver</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/i-command-sender">ICommandSender</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
 <tr>
 <td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/subscriptions/i-subscription">ISubscription</a></td>
 <td style="padding: 14px; border: none;"></td>

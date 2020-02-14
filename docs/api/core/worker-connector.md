@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L19">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L19">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -52,7 +52,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="maxconnectionattempts"></a><b>MaxConnectionAttempts</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L24">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L24">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ The number of connection attempts before giving up.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worker"></a><b>Worker</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L32">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L32">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -104,7 +104,7 @@ Represents a SpatialOS worker.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onworkercreationfinished"></a><b>OnWorkerCreationFinished</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L39">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L39">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -132,7 +132,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createnewworkerid-string"></a><b>CreateNewWorkerId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L205">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L205">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -173,7 +173,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onapplicationquit"></a><b>OnApplicationQuit</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L55">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L55">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -192,7 +192,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ondestroy"></a><b>OnDestroy</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -211,7 +211,7 @@ An event that triggers when the worker has been fully created.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="connect-iconnectionhandlerbuilder-ilogdispatcher"></a><b>Connect</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L71">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L71">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -240,7 +240,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="handleworkerconnectionestablished"></a><b>HandleWorkerConnectionEstablished</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L153">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L153">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -259,7 +259,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="handleworkerconnectionfailure-string"></a><b>HandleWorkerConnectionFailure</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L157">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L157">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -287,7 +287,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="createconnectionparameters-string-iconnectionparameterinitializer"></a><b>CreateConnectionParameters</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L210">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L210">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -316,7 +316,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="deferreddisposeworker"></a><b>DeferredDisposeWorker</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L240">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L240">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -335,7 +335,7 @@ Asynchronously connects a worker to the SpatialOS runtime.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="dispose"></a><b>Dispose</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L248">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/WorkerConnector.cs/#L248">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

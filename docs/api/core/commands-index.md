@@ -15,6 +15,14 @@ GDK package: Core<br />
 
 <table>
 <tr>
+<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/command-send-storage">CommandSendStorage</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
+<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/diff-spawn-cube-command-storage">DiffSpawnCubeCommandStorage</a></td>
+<td style="padding: 14px; border: none;"></td>
+</tr>
+<tr>
 <td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a></td>
 <td style="padding: 14px; border: none;"></td>
 </tr>

@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/codegen-adapters-index">CodegenAdapters</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L6">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L6">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="componentid"></a><b>ComponentId</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L8">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L8">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -55,7 +55,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="componentupdatequery"></a><b>ComponentUpdateQuery</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L9">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L9">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -85,7 +85,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendupdates-nativearray-archetypechunk-componentsystembase-entitymanager-componentupdatesystem"></a><b>SendUpdates</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/CodegenAdapters/IComponentReplicationHandler.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
