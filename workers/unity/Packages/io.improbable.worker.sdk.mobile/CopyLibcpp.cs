@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Android;
+using UnityEditor.Build;
 
 namespace Improbable.Gdk.Mobile
 {
@@ -13,8 +14,7 @@ namespace Improbable.Gdk.Mobile
     {
         public int callbackOrder { get; }
 
-        private static readonly string NdkLibRoot = Path.Combine(EditorPrefs.GetString("AndroidNdkRootR16b"), "sources",
-            "cxx-stl", "llvm-libc++", "libs");
+        private static string NdkLibRoot => Path.Combine(GetNDKDirectory(), "sources", "cxx-stl", "llvm-libc++", "libs");
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
@@ -34,7 +34,31 @@ namespace Improbable.Gdk.Mobile
         private static void CopyLibcppSo(DirectoryInfo architectureFolder)
         {
             var architecture = architectureFolder.Name;
-            File.Copy(Path.Combine(NdkLibRoot, architecture, "libc++_shared.so"), Path.Combine(architectureFolder.FullName, "libc++_shared.so"));
+            var filePath = Path.Combine(NdkLibRoot, architecture, "libc++_shared.so");
+            if (!File.Exists(filePath))
+            {
+                throw new BuildFailedException("Unable to find libc++_shared.so. Ensure that the Android NDK is installed properly.");
+            }
+
+            File.Copy(filePath, Path.Combine(architectureFolder.FullName, "libc++_shared.so"));
+        }
+
+        private static bool UseEmbeddedNDK()
+        {
+            const string NDKPrefKey = "NdkUseEmbedded";
+            return !EditorPrefs.HasKey(NDKPrefKey) || EditorPrefs.GetBool(NDKPrefKey);
+        }
+
+        private static string GetNDKDirectory()
+        {
+            if (UseEmbeddedNDK())
+            {
+                return Path.Combine(BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None), "NDK");
+            }
+            else
+            {
+                return EditorPrefs.GetString("AndroidNdkRootR16b");
+            }
         }
     }
 }
