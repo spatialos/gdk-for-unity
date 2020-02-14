@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
 GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileDeviceType.cs/#L3">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Utility/MobileDeviceType.cs/#L3">Source</a>
 </sup>
 
 

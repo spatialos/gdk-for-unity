@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a>.<a href="{{urlRoot}}/api/build-system/configuration-index">Configuration</a><br/>
 GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L9">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L9">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -37,7 +37,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L11">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L11">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -52,7 +52,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="buildtargetconfig"></a><b>BuildTargetConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L12">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L12">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="buildenvironment"></a><b>BuildEnvironment</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L13">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L13">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -82,11 +82,26 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="scriptingimplementation"></a><b>ScriptingImplementation</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L14">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L14">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
 <code> ScriptingImplementation ScriptingImplementation</code></p>
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><a id="iossdkversion"></a><b>IOSSdkVersion</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L15">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> iOSSdkVersion? IOSSdkVersion</code></p>
 
 
 </td>
@@ -110,12 +125,12 @@ code {
 
 <table width="100%">
     <tr>
-        <td style="border-right:none"><a id="getbuildcontexts-ienumerable-string-buildenvironment-scriptingimplementation-icollection-buildtarget"></a><b>GetBuildContexts</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L16">Source</a></td>
+        <td style="border-right:none"><a id="getbuildcontexts-ienumerable-string-buildenvironment-scriptingimplementation-icollection-buildtarget-iossdkversion"></a><b>GetBuildContexts</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildContext.cs/#L17">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
-<code>List&lt;<a href="{{urlRoot}}/api/build-system/configuration/build-context">BuildContext</a>&gt; GetBuildContexts(IEnumerable&lt;string&gt; wantedWorkerTypes, <a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a> buildEnvironment, ScriptingImplementation? scriptImplementation = null, ICollection&lt;BuildTarget&gt; buildTargetFilter = null)</code></p>
+<code>List&lt;<a href="{{urlRoot}}/api/build-system/configuration/build-context">BuildContext</a>&gt; GetBuildContexts(IEnumerable&lt;string&gt; wantedWorkerTypes, <a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a> buildEnvironment, ScriptingImplementation? scriptImplementation = null, ICollection&lt;BuildTarget&gt; buildTargetFilter = null, iOSSdkVersion? iosSdkVersion = null)</code></p>
 
 
 
@@ -128,6 +143,7 @@ code {
 <li><code><a href="{{urlRoot}}/api/build-system/configuration/build-environment">BuildEnvironment</a> buildEnvironment</code> : </li>
 <li><code>ScriptingImplementation? scriptImplementation</code> : </li>
 <li><code>ICollection&lt;BuildTarget&gt; buildTargetFilter</code> : </li>
+<li><code>iOSSdkVersion? iosSdkVersion</code> : </li>
 </ul>
 
 

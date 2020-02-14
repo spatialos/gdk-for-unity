@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L102">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L95">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -38,7 +38,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isvalid"></a><b>IsValid</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L104">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L97">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -68,7 +68,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="worldcommandsender-entity-world"></a><b>WorldCommandSender</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L110">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L103">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -109,7 +109,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendcreateentitycommand-worldcommands-createentity-request-action-worldcommands-createentity-receivedresponse"></a><b>SendCreateEntityCommand</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L119">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L112">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -138,7 +138,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="senddeleteentitycommand-worldcommands-deleteentity-request-action-worldcommands-deleteentity-receivedresponse"></a><b>SendDeleteEntityCommand</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L138">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L131">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -167,7 +167,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendreserveentityidscommand-worldcommands-reserveentityids-request-action-worldcommands-reserveentityids-receivedresponse"></a><b>SendReserveEntityIdsCommand</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L157">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L150">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -196,7 +196,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="sendentityquerycommand-worldcommands-entityquery-request-action-worldcommands-entityquery-receivedresponse"></a><b>SendEntityQueryCommand</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L176">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorldCommands.cs/#L169">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

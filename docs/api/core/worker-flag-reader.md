@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L42">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L39">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -39,7 +39,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="isvalid"></a><b>IsValid</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L44">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L41">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -67,7 +67,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="onworkerflagchange"></a><b>OnWorkerFlagChange</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L58">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L55">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,7 +96,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="workerflagreader-world"></a><b>WorkerFlagReader</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L51">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L48">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -136,7 +136,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="getflag-string"></a><b>GetFlag</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L96">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/StandardSubscriptionManagers/WorkerFlagSubscriptionManager.cs/#L93">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

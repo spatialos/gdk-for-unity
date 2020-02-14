@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a>.<a href="{{urlRoot}}/api/build-system/configuration-index">Configuration</a><br/>
 GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -43,7 +43,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="options"></a><b>Options</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L15">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L15">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -58,7 +58,7 @@ The options to apply when the target is built.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="target"></a><b>Target</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L20">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L20">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -73,7 +73,7 @@ The target to build.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="enabled"></a><b>Enabled</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L25">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -88,7 +88,7 @@ Should this target be built?
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="required"></a><b>Required</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L31">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -118,7 +118,7 @@ Is this build target required? If a required target cannot be built, it will be 
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="buildtargetconfig-buildtarget-buildoptions-bool-bool"></a><b>BuildTargetConfig</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L60">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildTargetConfig.cs/#L60">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

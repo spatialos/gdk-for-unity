@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
 GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L10">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L10">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -41,7 +41,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="messagestosend"></a><b>MessagesToSend</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L40">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L40">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -72,7 +72,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="clear"></a><b>Clear</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L95">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L95">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -91,7 +91,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="acknowledgeauthorityloss-long-uint"></a><b>AcknowledgeAuthorityLoss</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L112">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L112">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -120,7 +120,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addcomponentupdate-t-in-t-long"></a><b>AddComponentUpdate&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L117">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L117">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -149,7 +149,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addevent-t-t-long"></a><b>AddEvent&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L127">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L127">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -178,7 +178,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addcommandrequest-t-t-unity-entities-entity-long"></a><b>AddCommandRequest&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L136">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L136">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -208,7 +208,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addcommandresponse-t-t"></a><b>AddCommandResponse&lt;T&gt;</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L142">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L142">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -236,7 +236,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addlogmessage-in-logmessagetosend"></a><b>AddLogMessage</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L149">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L149">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -264,7 +264,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="addmetrics-metrics"></a><b>AddMetrics</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L154">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/MessagesToSend.cs/#L154">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

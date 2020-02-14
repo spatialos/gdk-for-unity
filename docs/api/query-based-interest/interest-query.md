@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/query-based-interest-index">QueryBasedInterest</a><br/>
 GDK package: QueryBasedInterest<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L11">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L11">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -46,7 +46,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="query-constraint"></a><b>Query</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L31">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L31">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -96,7 +96,7 @@ Creates an <a href="{{urlRoot}}/api/query-based-interest/interest-query">Interes
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="withmaxfrequencyhz-float"></a><b>WithMaxFrequencyHz</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L57">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L57">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -133,7 +133,7 @@ Sets the maximum frequency (Hz) of the query.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="filterresults-uint-params-uint"></a><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L83">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L83">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -171,7 +171,7 @@ Defines what components to return in the query results.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="filterresults-ienumerable-uint"></a><b>FilterResults</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L104">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L104">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -208,7 +208,7 @@ Defines what components to return in the query results.
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="ascomponentinterestquery"></a><b>AsComponentInterestQuery</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L120">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper/InterestQuery.cs/#L120">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">

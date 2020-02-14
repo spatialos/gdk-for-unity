@@ -13,6 +13,8 @@
         - [Collections]({{urlRoot}}/api/core/collections-index)
             - <a href="{{urlRoot}}/api/core/collections/result">Result</a>
         - [Commands]({{urlRoot}}/api/core/commands-index)
+            - <a href="{{urlRoot}}/api/core/commands/command-send-storage">CommandSendStorage</a>
+            - <a href="{{urlRoot}}/api/core/commands/diff-spawn-cube-command-storage">DiffSpawnCubeCommandStorage</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-metaclass">ICommandMetaclass</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a>
             - <a href="{{urlRoot}}/api/core/commands/i-command-response">ICommandResponse</a>
@@ -42,6 +44,7 @@
         - <a href="{{urlRoot}}/api/core/command-line-connection-parameter-initializer">CommandLineConnectionParameterInitializer</a>
         - <a href="{{urlRoot}}/api/core/command-meta-data">CommandMetaData</a>
         - <a href="{{urlRoot}}/api/core/command-meta-data-aggregate">CommandMetaDataAggregate</a>
+        - <a href="{{urlRoot}}/api/core/command-payload-storage">CommandPayloadStorage</a>
         - <a href="{{urlRoot}}/api/core/command-request-id-generator">CommandRequestIdGenerator</a>
         - <a href="{{urlRoot}}/api/core/command-system">CommandSystem</a>
         - <a href="{{urlRoot}}/api/core/component-database">ComponentDatabase</a>
@@ -165,12 +168,12 @@
         - <a href="{{urlRoot}}/api/game-object-creation/i-entity-game-object-creator">IEntityGameObjectCreator</a>
         - <a href="{{urlRoot}}/api/game-object-creation/spatial-os-entity">SpatialOSEntity</a>
     - [Mobile]({{urlRoot}}/api/mobile-index)
-        - <a href="{{urlRoot}}/api/mobile/android-launch-utils">AndroidLaunchUtils</a>
+        - <a href="{{urlRoot}}/api/mobile/android-utils">AndroidUtils</a>
         - <a href="{{urlRoot}}/api/mobile/build-post-process-x-code">BuildPostProcessXCode</a>
         - <a href="{{urlRoot}}/api/mobile/device-info">DeviceInfo</a>
         - <a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a>
         - <a href="{{urlRoot}}/api/mobile/device-type">DeviceType</a>
-        - <a href="{{urlRoot}}/api/mobile/i-os-launch-utils">iOSLaunchUtils</a>
+        - <a href="{{urlRoot}}/api/mobile/i-os-utils">iOSUtils</a>
         - <a href="{{urlRoot}}/api/mobile/launch-arguments">LaunchArguments</a>
         - <a href="{{urlRoot}}/api/mobile/mobile-connection-flow-initializer">MobileConnectionFlowInitializer</a>
         - <a href="{{urlRoot}}/api/mobile/mobile-connection-parameters-initializer">MobileConnectionParametersInitializer</a>
@@ -198,13 +201,17 @@
             - <a href="{{urlRoot}}/api/subscriptions/editor/prefab-preprocessor">PrefabPreprocessor</a>
         - <a href="{{urlRoot}}/api/subscriptions/auto-register-subscription-manager-attribute">AutoRegisterSubscriptionManagerAttribute</a>
         - <a href="{{urlRoot}}/api/subscriptions/command-callback-system">CommandCallbackSystem</a>
+        - <a href="{{urlRoot}}/api/subscriptions/command-receiver-subscription-manager-base">CommandReceiverSubscriptionManagerBase</a>
         - <a href="{{urlRoot}}/api/subscriptions/command-request-callback-manager">CommandRequestCallbackManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/command-response-callback-manager">CommandResponseCallbackManager</a>
+        - <a href="{{urlRoot}}/api/subscriptions/command-sender-subscription-manager-base">CommandSenderSubscriptionManagerBase</a>
         - <a href="{{urlRoot}}/api/subscriptions/component-callback-system">ComponentCallbackSystem</a>
         - <a href="{{urlRoot}}/api/subscriptions/component-constraints-callback-system">ComponentConstraintsCallbackSystem</a>
         - <a href="{{urlRoot}}/api/subscriptions/entity-game-object-linker">EntityGameObjectLinker</a>
         - <a href="{{urlRoot}}/api/subscriptions/entity-id-subscription-manager">EntityIdSubscriptionManager</a>
         - <a href="{{urlRoot}}/api/subscriptions/entity-subscription-manager">EntitySubscriptionManager</a>
+        - <a href="{{urlRoot}}/api/subscriptions/i-command-receiver">ICommandReceiver</a>
+        - <a href="{{urlRoot}}/api/subscriptions/i-command-sender">ICommandSender</a>
         - <a href="{{urlRoot}}/api/subscriptions/indexed-callbacks">IndexedCallbacks</a>
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription">ISubscription</a>
         - <a href="{{urlRoot}}/api/subscriptions/i-subscription-availability-handler">ISubscriptionAvailabilityHandler</a>

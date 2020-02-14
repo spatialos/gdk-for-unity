@@ -3,7 +3,7 @@
 <sup>
 Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/subscriptions-index">Subscriptions</a><br/>
 GDK package: Subscriptions<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L15">Source</a>
+<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L16">Source</a>
 <style>
 a code {
                     padding: 0em 0.25em!important;
@@ -14,6 +14,7 @@ code {
 </style>
 </sup>
 <nav id="pageToc" class="page-toc"><ul><li><a href="#fields">Fields</a>
+<li><a href="#constructors">Constructors</a>
 <li><a href="#methods">Methods</a>
 <li><a href="#overrides">Overrides</a>
 </ul></nav>
@@ -43,8 +44,38 @@ code {
 
 <table width="100%">
     <tr>
+        <td style="border-right:none"><a id="world"></a><b>world</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L18">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> readonly World world</code></p>
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><a id="workersystem"></a><b>workerSystem</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L19">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> readonly <a href="{{urlRoot}}/api/core/worker-system">WorkerSystem</a> workerSystem</code></p>
+
+
+</td>
+    </tr>
+</table>
+
+
+<table width="100%">
+    <tr>
         <td style="border-right:none"><a id="subscriptiontype"></a><b>SubscriptionType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L19">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L23">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -58,6 +89,45 @@ code {
 
 
 
+
+
+
+</p>
+<hr style="width:100%; border-top-color:#d8d8d8" />
+#### Constructors
+
+
+</p>
+
+
+
+
+<table width="100%">
+    <tr>
+        <td style="border-right:none"><a id="subscriptionmanager-world"></a><b>SubscriptionManager</b></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L30">Source</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+<code> SubscriptionManager(World world)</code></p>
+
+
+
+</p>
+
+<b>Parameters</b>
+
+<ul>
+<li><code>World world</code> : </li>
+</ul>
+
+
+
+
+
+</td>
+    </tr>
+</table>
 
 
 
@@ -75,7 +145,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribe-entityid"></a><b>Subscribe</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L17">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L21">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -115,7 +185,7 @@ code {
 <table width="100%">
     <tr>
         <td style="border-right:none"><a id="subscribetypeerased-entityid"></a><b>SubscribeTypeErased</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/3a2a2965/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L21">Source</a></td>
+        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Subscriptions/SubscriptionManagerBase.cs/#L25">Source</a></td>
     </tr>
     <tr>
         <td colspan="2">
