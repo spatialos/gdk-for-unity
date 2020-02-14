@@ -332,7 +332,10 @@ namespace Improbable.Gdk.Tools
 
             foreach (var file in dirInfo.GetFiles())
             {
-                file.CopyTo(Path.Combine(dest, file.Name));
+                var filePath = Path.Combine(dest, file.Name);
+                file.CopyTo(filePath);
+                var fileInfo = new FileInfo(filePath);
+                fileInfo.IsReadOnly = false;
             }
 
             foreach (var dir in dirInfo.GetDirectories())
