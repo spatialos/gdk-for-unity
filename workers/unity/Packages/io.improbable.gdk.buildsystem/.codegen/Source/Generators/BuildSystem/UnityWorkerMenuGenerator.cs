@@ -6,7 +6,7 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public static class UnityWorkerMenuGenerator
     {
-        public static string Generate(List<string> workerTypes)
+        public static CodeWriter Generate(List<string> workerTypes)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.CodeGenerator
                         });
                     });
                 });
-            }).Format();
+            });
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -18,23 +18,23 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Worker.CInterop"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        partial.Type(GenerateComponentDeserializer(componentDetails, qualifiedNamespace));
-                        partial.Type(GenerateComponentSerializer(componentDetails, qualifiedNamespace));
+                        partial.Type(GenerateComponentDeserializer(componentDetails));
+                        partial.Type(GenerateComponentSerializer(componentDetails));
                     });
                 });
-            }).Format();
+            });
         }
 
-        private static TypeBlock GenerateComponentDeserializer(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentDeserializer(UnityComponentDetails componentDetails)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
+            var componentNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
             var eventDetailsList = componentDetails.EventDetails;
 
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.DiffComponentDeserializer class.");
+            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.DiffComponentDeserializer class.");
 
             return Scope.Type("public class DiffComponentDeserializer : IComponentDiffDeserializer", deserializer =>
             {
@@ -88,7 +88,7 @@ if (eventCount > 0)
             });
         }
 
-        private static TypeBlock GenerateComponentSerializer(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        private static TypeBlock GenerateComponentSerializer(UnityComponentDetails componentDetails)
         {
             var eventDetailsList = componentDetails.EventDetails;
 

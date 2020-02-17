@@ -9,9 +9,9 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
+            var componentNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
 
             return CodeWriter.Populate(cgw =>
             {
@@ -22,11 +22,11 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Gdk.Core"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.EcsViewManager class.");
+                        Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.EcsViewManager class.");
 
                         partial.Type("public class EcsViewManager : IEcsViewManager", evm =>
                         {
@@ -195,7 +195,7 @@ private void SetAuthority(EntityId entityId, Authority authority)
                         });
                     });
                 });
-            }).Format();
+            });
         }
     }
 }

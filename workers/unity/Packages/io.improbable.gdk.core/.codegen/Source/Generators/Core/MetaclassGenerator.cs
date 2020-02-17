@@ -10,15 +10,12 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails details, string package)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
-            var qualifiedNamespace = package;
+            var commandDetailsList = componentDetails.CommandDetails;
+            var rootNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
 
-            var componentDetails = details;
-            var commandDetailsList = details.CommandDetails;
-            var rootNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
-
-            var writer = CodeWriter.Populate(cgw =>
+            return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
                     "System",
@@ -26,11 +23,11 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Gdk.Core.Commands"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.ComponentMetaclass class.");
+                        Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.ComponentMetaclass class.");
 
                         partial.Type("public class ComponentMetaclass : IComponentMetaclass", componentMetaclass =>
                         {
@@ -61,13 +58,11 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
 
                         foreach (var command in commandDetailsList)
                         {
-                            partial.Type(GenerateCommandMetaclass(qualifiedNamespace, componentDetails.Name, command));
+                            partial.Type(GenerateCommandMetaclass(componentDetails.Namespace, componentDetails.Name, command));
                         }
                     });
                 });
             });
-
-            return writer.Format();
         }
 
         private static TypeBlock GenerateCommandMetaclass(string qualifiedNamespace, string componentName, UnityCommandDetails command)

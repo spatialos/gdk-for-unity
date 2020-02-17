@@ -58,21 +58,20 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 
                 var relativeOutputPath = componentTarget.OutputPath;
                 var componentName = componentTarget.Content.Name;
-                var package = componentTarget.Package;
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
                     var commandSenderReceiverFileName =
                         Path.ChangeExtension($"{componentName}CommandSenderReceiver", FileExtension);
                     var commandSenderReceiverCode =
-                        UnityCommandSenderReceiverGenerator.Generate(componentTarget.Content, package);
+                        UnityCommandSenderReceiverGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, commandSenderReceiverFileName), commandSenderReceiverCode);
                 }
 
                 var componentReaderWriterFileName =
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension);
                 var componentReaderWriterCode =
-                    UnityComponentReaderWriterGenerator.Generate(componentTarget.Content, package);
+                    UnityComponentReaderWriterGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
 

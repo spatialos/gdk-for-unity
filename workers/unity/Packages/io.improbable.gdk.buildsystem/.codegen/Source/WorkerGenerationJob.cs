@@ -43,7 +43,7 @@ namespace Improbable.Gdk.CodeGenerator
         protected override void RunImpl()
         {
             Logger.Info($"Generating {WorkerFileName}.");
-            var workerCode = UnityWorkerMenuGenerator.Generate(workerTypesToGenerate);
+            var workerCode = UnityWorkerMenuGenerator.Generate(workerTypesToGenerate).Format();
             AddContent(Path.Combine(relativeEditorPath, WorkerFileName), workerCode);
 
             Logger.Info($"Generating {BuildSystemFileName}.");

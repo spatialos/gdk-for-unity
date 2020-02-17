@@ -8,10 +8,8 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityTypeDetails details, string package)
+        public static CodeWriter Generate(UnityTypeDetails details)
         {
-            var qualifiedNamespace = package;
-
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
@@ -20,11 +18,11 @@ namespace Improbable.Gdk.CodeGenerator
                     "UnityEngine"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(details.Namespace, ns =>
                 {
-                    ns.Type(UnityTypeContent.Generate(details, qualifiedNamespace));
+                    ns.Type(UnityTypeContent.Generate(details, details.Namespace));
                 });
-            }).Format();
+            });
         }
     }
 }

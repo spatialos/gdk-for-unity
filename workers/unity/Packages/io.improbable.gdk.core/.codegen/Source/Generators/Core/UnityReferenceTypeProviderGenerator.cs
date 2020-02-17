@@ -9,7 +9,7 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
+        public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
             return CodeWriter.Populate(cgw =>
             {
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
                     "Improbable.Gdk.Core"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
@@ -28,12 +28,12 @@ namespace Improbable.Gdk.CodeGenerator
                         {
                             foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                             {
-                                providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, qualifiedNamespace, componentDetails.Name));
+                                providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, componentDetails.Namespace, componentDetails.Name));
                             }
                         });
                     });
                 });
-            }).Format();
+            });
         }
     }
 }

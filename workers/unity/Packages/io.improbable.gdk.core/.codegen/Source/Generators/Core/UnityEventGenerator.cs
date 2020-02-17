@@ -8,9 +8,8 @@ namespace Improbable.Gdk.CodeGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string Generate(UnityComponentDetails details, string package)
+        public static CodeWriter Generate(UnityComponentDetails details)
         {
-            var qualifiedNamespace = package;
             var componentName = details.Name;
 
             return CodeWriter.Populate(cgw =>
@@ -22,7 +21,7 @@ namespace Improbable.Gdk.CodeGenerator
                     "Unity.Entities"
                 );
 
-                cgw.Namespace(qualifiedNamespace, ns =>
+                cgw.Namespace(details.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentName}", partial =>
                     {
@@ -31,7 +30,7 @@ namespace Improbable.Gdk.CodeGenerator
                             var eventName = eventDetail.PascalCaseName;
                             var payloadType = eventDetail.FqnPayloadType;
 
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{eventName} class.");
+                            Logger.Trace($"Generating {details.Namespace}.{componentName}.{eventName} class.");
                             partial.Line($@"
 public static class {eventName}
 {{
@@ -49,7 +48,7 @@ public static class {eventName}
                         }
                     });
                 });
-            }).Format();
+            });
         }
     }
 }

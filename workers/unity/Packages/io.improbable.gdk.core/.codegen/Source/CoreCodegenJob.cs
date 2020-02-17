@@ -131,7 +131,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 Logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
-                var enumCode = UnityEnumGenerator.Generate(enumTarget.Content, enumTarget.Package);
+                var enumCode = UnityEnumGenerator.Generate(enumTarget.Content).Format();
                 AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
             }
 
@@ -143,7 +143,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 Logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
 
                 var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
-                var typeCode = UnityTypeGenerator.Generate(typeTarget.Content, typeTarget.Package);
+                var typeCode = UnityTypeGenerator.Generate(typeTarget.Content).Format();
                 AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
             }
 
@@ -159,7 +159,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 var package = componentTarget.Package;
 
                 var componentFileName = Path.ChangeExtension(componentName, FileExtension);
-                var componentCode = UnityComponentDataGenerator.Generate(componentTarget.Content, package);
+                var componentCode = UnityComponentDataGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, componentFileName), componentCode);
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
@@ -169,27 +169,27 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     var commandPayloadsFileName =
                         Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
                     var commandPayloadCode =
-                        UnityCommandPayloadGenerator.Generate(componentTarget.Content, package);
+                        UnityCommandPayloadGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
 
                     var commandDiffDeserializerFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
                     var commandDiffDeserializerCode =
-                        CommandDiffDeserializerGenerator.Generate(componentTarget.Content, package);
+                        CommandDiffDeserializerGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
                         commandDiffDeserializerCode);
 
                     var commandDiffStorageFileName =
                         Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension);
                     var commandDiffStorageCode =
-                        CommandDiffStorageGenerator.Generate(componentTarget.Content, package);
+                        CommandDiffStorageGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
                         commandDiffStorageCode);
 
                     var commandMetaDataStorageFileName =
                         Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
                     var commandMetaDataStorageCode =
-                        CommandMetaDataStorageGenerator.Generate(componentTarget.Content, package);
+                        CommandMetaDataStorageGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
                         commandMetaDataStorageCode);
                 }
@@ -199,24 +199,24 @@ namespace Improbable.Gdk.CodeGenerator.Core
                     Logger.Trace("Generating code for events.");
 
                     var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
-                    var eventsCode = UnityEventGenerator.Generate(componentTarget.Content, package);
+                    var eventsCode = UnityEventGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
                 }
 
                 var updateSenderFileName = Path.ChangeExtension($"{componentName}UpdateSender", FileExtension);
-                var updateSenderCode = UnityComponentSenderGenerator.Generate(componentTarget.Content, package);
+                var updateSenderCode = UnityComponentSenderGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
 
                 var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
-                var ecsViewManagerCode = UnityEcsViewManagerGenerator.Generate(componentTarget.Content, package);
+                var ecsViewManagerCode = UnityEcsViewManagerGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
 
                 var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
-                var componentDiffStorageCode = ComponentDiffStorageGenerator.Generate(componentTarget.Content, package);
+                var componentDiffStorageCode = ComponentDiffStorageGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
 
                 var componentDiffDeserializerFileName = Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension);
-                var componentDiffDeserializerCode = ComponentDiffDeserializerGenerator.Generate(componentTarget.Content, package);
+                var componentDiffDeserializerCode = ComponentDiffDeserializerGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
 
                 if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))
@@ -225,17 +225,17 @@ namespace Improbable.Gdk.CodeGenerator.Core
 
                     var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
                     var referenceProviderTranslationCode =
-                        UnityReferenceTypeProviderGenerator.Generate(componentTarget.Content, package);
+                        UnityReferenceTypeProviderGenerator.Generate(componentTarget.Content).Format();
                     AddContent(Path.Combine(relativeOutputPath, referenceProviderFileName),
                         referenceProviderTranslationCode);
                 }
 
                 var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
-                var viewStorageCode = ViewStorageGenerator.Generate(componentTarget.Content, package);
+                var viewStorageCode = ViewStorageGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
 
                 var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);
-                var metaclassCode = MetaclassGenerator.Generate(componentTarget.Content, package);
+                var metaclassCode = MetaclassGenerator.Generate(componentTarget.Content).Format();
                 AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
             }
 
