@@ -118,6 +118,16 @@ namespace Improbable.Gdk.Tools
                 toolsConfig.EnvironmentPlatform = EditorGUILayout.TextField("Environment", toolsConfig.EnvironmentPlatform);
             }
 
+            using (new EditorGUI.IndentLevelScope())
+            {
+                /*
+                    TODO: When the GDK has a pinned golden version, we should probably
+                          display this version like we do for the dev auth token filepath.
+                */
+                toolsConfig.RuntimeVersionOverride =
+                    EditorGUILayout.TextField("Runtime Version Override", toolsConfig.RuntimeVersionOverride);
+            }
+
             EditorGUIUtility.labelWidth = previousWidth;
         }
 
