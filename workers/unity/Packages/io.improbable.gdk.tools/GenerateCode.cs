@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Tools
         [MenuItem("SpatialOS/Generate code", isValidateFunction: false, MenuPriorities.GenerateCodePriority)]
         private static void GenerateMenu()
         {
-            Debug.Log("Generating code...");
+            Debug.Log("Generating code.");
             EditorApplication.delayCall += Generate;
         }
 
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Tools
             MenuPriorities.GenerateCodeForcePriority)]
         private static void ForceGenerateMenu()
         {
-            Debug.Log("Generating code (forced rebuild)...");
+            Debug.Log("Generating code. (forced rebuild)");
             EditorApplication.delayCall += ForceGenerate;
         }
 

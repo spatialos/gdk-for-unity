@@ -26,10 +26,5 @@ namespace Improbable.Gdk.ModularCodegenTests
             AddJobTarget(relativeOutputPath, () => TestContent);
             AddJobTarget(relativeTemplateOutputPath, () => ModularCodegenTestGenerator.Generate());
         }
-
-        protected override void RunImpl()
-        {
-            // base CodegenJob runs jobs
-        }
     }
 }

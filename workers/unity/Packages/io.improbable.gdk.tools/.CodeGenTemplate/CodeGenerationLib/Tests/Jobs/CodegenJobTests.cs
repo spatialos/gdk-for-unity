@@ -84,7 +84,7 @@ namespace CodeGeneration.Tests.Jobs
 
             job.Clean();
 
-            var files = job.myFileSystem.GetFilesInDirectory("output").Cast<MockFile>();
+            var files = job.MyFileSystem.GetFilesInDirectory("output").Cast<MockFile>();
 
             foreach (var file in files)
             {
@@ -101,23 +101,18 @@ namespace CodeGeneration.Tests.Jobs
                 return new CodegenStub("", new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree()), false);
             }
 
-            internal MockFileSystem myFileSystem;
+            internal readonly MockFileSystem MyFileSystem;
 
             public CodegenStub(string outputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
                 : base(outputDirectory, fileSystem, detailsStore, force)
             {
-                myFileSystem = (MockFileSystem) fileSystem;
-            }
-
-            protected override void RunImpl()
-            {
-                throw new NotImplementedException();
+                MyFileSystem = (MockFileSystem) fileSystem;
             }
 
             public void AddInputFile(string path, DateTime timestamp)
             {
                 base.AddInputFile(path);
-                myFileSystem.AddFile(path, timestamp);
+                MyFileSystem.AddFile(path, timestamp);
             }
 
             public void AddOutputFile(string path, DateTime timestamp, bool shouldExist)
@@ -125,7 +120,7 @@ namespace CodeGeneration.Tests.Jobs
                 AddJobTarget(path, () => string.Empty);
                 if (shouldExist)
                 {
-                    myFileSystem.AddFile(path, timestamp);
+                    MyFileSystem.AddFile(path, timestamp);
                 }
             }
         }
