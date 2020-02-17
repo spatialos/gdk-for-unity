@@ -4,23 +4,23 @@ using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    internal static class ViewDiffMetadata
-    {
-        internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentStorageTypes => ComponentDatabase
-            .Metaclasses
-            .Select(pair => (pair.Key, pair.Value.DiffStorage));
-
-        internal static IEnumerable<(uint Key, IEnumerable<Type> storageTypes)> CommandDiffStorageTypes => ComponentDatabase.Metaclasses
-            .Select(componentCommands => (componentCommands.Key,
-                componentCommands.Value.Commands.Select(m => m.DiffStorage)));
-    }
-
     public class ViewDiff
     {
+        private static class ViewDiffMetadata
+        {
+            internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentStorageTypes => ComponentDatabase
+                .Metaclasses
+                .Select(pair => (pair.Key, pair.Value.DiffStorage));
+
+            internal static IEnumerable<(uint Key, IEnumerable<Type> storageTypes)> CommandDiffStorageTypes => ComponentDatabase.Metaclasses
+                .Select(componentCommands => (componentCommands.Key,
+                    componentCommands.Value.Commands.Select(m => m.DiffStorage)));
+        }
+
+
         public string DisconnectMessage;
 
         public bool Disconnected { get; private set; }

@@ -6,18 +6,18 @@ using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {
-    internal static class MessagesToSendMetadata
-    {
-        internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentTypes => ComponentDatabase.Metaclasses
-            .Select(pair => (pair.Key, pair.Value.DiffStorage));
-
-        internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandSendStorageTypes => ComponentDatabase.Metaclasses
-            .Select(componentCommands => (componentCommands.Key,
-                componentCommands.Value.Commands.Select(m => m.SendStorage)));
-    }
-
     public class MessagesToSend
     {
+        private static class MessagesToSendMetadata
+        {
+            internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentTypes => ComponentDatabase.Metaclasses
+                .Select(pair => (pair.Key, pair.Value.DiffStorage));
+
+            internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandSendStorageTypes => ComponentDatabase.Metaclasses
+                .Select(componentCommands => (componentCommands.Key,
+                    componentCommands.Value.Commands.Select(m => m.SendStorage)));
+        }
+
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
