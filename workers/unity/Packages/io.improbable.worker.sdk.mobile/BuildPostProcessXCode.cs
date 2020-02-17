@@ -48,7 +48,7 @@ namespace Improbable.Gdk.Mobile
             // Get Target GUIDs
             var unityTargetName = InvokeStaticMethod<string>("GetUnityTargetName");
             var unityTestTargetName = InvokeStaticMethod<string>("GetUnityTestTargetName");
-            var targetGUID = InvokeMethod<string>(xcodeObject, "TargetGuidByName", unityTargetName);
+            var targetGUID = InvokeMethod<string>(xcodeObject, "GetUnityMainTargetGuid");
             var targetTestingGUID = InvokeMethod<string>(xcodeObject, "TargetGuidByName", unityTestTargetName);
 
             // Enumerate configGUIDs that need library path patching
