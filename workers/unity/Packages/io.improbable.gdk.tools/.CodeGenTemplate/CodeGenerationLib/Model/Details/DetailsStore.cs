@@ -117,7 +117,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             var numFieldsRemoved = RemoveRecursiveOptions();
             if (numFieldsRemoved > 0)
             {
-                Logger.Info($"Removed {numFieldsRemoved} recursive options.");
+                Logger.Trace($"Removed {numFieldsRemoved} recursive options.");
             }
         }
 
@@ -271,7 +271,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         }
 
                         numFieldsRemoved++;
-                        Logger.Warn($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}.");
+                        Logger.Warn($"Excluding field {field.CamelCaseName} from type {type.QualifiedName}. Recursive option types are unsupported.");
                         return false;
                     })
                     .ToList()
