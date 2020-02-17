@@ -86,14 +86,14 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             jobTargets.Add(new JobTarget(Path.Combine(OutputDirectory, filePath), generateFunc));
         }
 
-        protected delegate TR GenerateDelegate<in T, out TR>(T details)
-            where T : GeneratorInputDetails;
+        protected delegate TGenOutput GenerateDelegate<in TDetails, out TGenOutput>(TDetails details)
+            where TDetails : GeneratorInputDetails;
 
-        protected delegate (string relativeFilePath, GenerateDelegate<T, TR> generateFunc) GeneratorSetupDelegate<T, TR>(T details)
-            where T : GeneratorInputDetails;
+        protected delegate (string relativeFilePath, GenerateDelegate<TDetails, TGenOutput> generateFunc) GeneratorSetupDelegate<TDetails, TGenOutput>(TDetails details)
+            where TDetails : GeneratorInputDetails;
 
-        protected void AddGenerators<T>(IEnumerable<T> details, params GeneratorSetupDelegate<T, CodeWriter.CodeWriter>[] generatorSetupDelegates)
-            where T : GeneratorInputDetails
+        protected void AddGenerators<TDetails>(IEnumerable<TDetails> details, params GeneratorSetupDelegate<TDetails, CodeWriter.CodeWriter>[] generatorSetupDelegates)
+            where TDetails : GeneratorInputDetails
         {
             jobTargets.AddRange(details.SelectMany(detail =>
             {
@@ -105,8 +105,8 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             }));
         }
 
-        protected void AddGenerators<T>(IEnumerable<T> details, params GeneratorSetupDelegate<T, string>[] generatorSetupDelegates)
-            where T : GeneratorInputDetails
+        protected void AddGenerators<TDetails>(IEnumerable<TDetails> details, params GeneratorSetupDelegate<TDetails, string>[] generatorSetupDelegates)
+            where TDetails : GeneratorInputDetails
         {
             jobTargets.AddRange(details.SelectMany(detail =>
             {
