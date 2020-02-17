@@ -13,11 +13,14 @@ namespace Improbable.Gdk.Tools
         public string CodegenLogOutputDir;
         public string CodegenOutputDir;
         public string DescriptorOutputDir;
+        public List<string> SerializationOverrides = new List<string>();
+
         public string DevAuthTokenDir;
         public int DevAuthTokenLifetimeDays;
         public bool SaveDevAuthTokenToFile;
+
         public string EnvironmentPlatform;
-        public List<string> SerializationOverrides = new List<string>();
+        public string RuntimeVersionOverride;
 
         public string DevAuthTokenFullDir => Path.Combine(Application.dataPath, DevAuthTokenDir);
         public string DevAuthTokenFilepath => Path.Combine(DevAuthTokenFullDir, "DevAuthToken.txt");
@@ -112,15 +115,20 @@ namespace Improbable.Gdk.Tools
 
         internal void ResetToDefault()
         {
+            SchemaSourceDirs.Clear();
+            SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
             VerboseLogging = DefaultValues.VerboseLogging;
             CodegenLogOutputDir = DefaultValues.CodegenLogOutputDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
+            SerializationOverrides.Clear();
+
             DevAuthTokenDir = DefaultValues.DevAuthTokenDir;
             DevAuthTokenLifetimeDays = DefaultValues.DevAuthTokenLifetimeDays;
+            SaveDevAuthTokenToFile = false;
 
-            SchemaSourceDirs.Clear();
-            SchemaSourceDirs.Add(DefaultValues.SchemaSourceDir);
+            EnvironmentPlatform = string.Empty;
+            RuntimeVersionOverride = string.Empty;
         }
 
         public static GdkToolsConfiguration GetOrCreateInstance()
