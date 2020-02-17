@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The GDK for Unity now supports Unity 2019.3. You will need to upgrade your Unity project. [#1272](https://github.com/spatialos/gdk-for-unity/pull/1272)
+
 ## `0.3.3` - 2020-02-14
 
 ### Breaking Changes
