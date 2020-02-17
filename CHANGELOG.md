@@ -7,6 +7,8 @@
 - Added ability to construct a `CodeWriter` using just the raw string content. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
     - This will override anything defined through the ergonomic `CodeWriter` API.
 - Introduced a new `CodegenJob` model. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
+- Added an option in the GDK Tools Configuration for pinning the SpatialOS Runtime version. [#1289](https://github.com/spatialos/gdk-for-unity/pull/1289)
+    - This version will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
 
 ### Changed
 
