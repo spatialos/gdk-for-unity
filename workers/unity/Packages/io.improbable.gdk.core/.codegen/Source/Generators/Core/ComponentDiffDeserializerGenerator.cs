@@ -20,7 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Type(GenerateComponentDeserializer(componentDetails, qualifiedNamespace));
                         partial.Type(GenerateComponentSerializer(componentDetails, qualifiedNamespace));
@@ -31,10 +31,10 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static TypeBlock GenerateComponentDeserializer(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
             var eventDetailsList = componentDetails.EventDetails;
 
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentDeserializer class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.DiffComponentDeserializer class.");
 
             return Scope.Type("public class DiffComponentDeserializer : IComponentDiffDeserializer", deserializer =>
             {
@@ -70,7 +70,7 @@ if (eventCount > 0)
     for (uint i = 0; i < eventCount; i++)
     {{
         var payload = {ev.FqnPayloadType}.Serialization.Deserialize(eventsObject.IndexObject({ev.EventIndex}, i));
-        var e = new {ev.EventName}.Event(payload);
+        var e = new {ev.PascalCaseName}.Event(payload);
         diff.AddEvent(e, op.EntityId, op.Update.ComponentId, updateId);
     }}
 }}
@@ -124,7 +124,7 @@ for (int i = 0; i < updates.Count; ++i)
                             m.CustomScope(() => new[]
                             {
                                 $@"
-var events = ((IDiffEventStorage<{ev.EventName}.Event>) storage).GetEvents();
+var events = ((IDiffEventStorage<{ev.PascalCaseName}.Event>) storage).GetEvents();
 
 for (int i = 0; i < events.Count; ++i)
 {{

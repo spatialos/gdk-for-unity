@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
         public static string Generate(UnityComponentDetails details, string package)
         {
             var qualifiedNamespace = package;
-            var componentName = details.ComponentName;
+            var componentName = details.Name;
 
             return CodeWriter.Populate(cgw =>
             {
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         foreach (var eventDetail in details.EventDetails)
                         {
-                            var eventName = eventDetail.EventName;
+                            var eventName = eventDetail.PascalCaseName;
                             var payloadType = eventDetail.FqnPayloadType;
 
                             Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{eventName} class.");

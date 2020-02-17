@@ -18,12 +18,12 @@ namespace Improbable.Gdk.CodeGenerator
 
             var typeDetails = details;
             var fieldDetailsList = details.FieldDetails;
-            var hasPartial = PartialDatabase.TryGetPartial(typeDetails.GetPartialResourceTypeName(), out var partial);
+            var hasPartial = PartialDatabase.TryGetPartial(typeDetails.PartialResourceTypeName, out var partial);
 
-            Logger.Trace($"Generating {typeNamespace}.{typeDetails.CapitalisedName} struct.");
+            Logger.Trace($"Generating {typeNamespace}.{typeDetails.Name} struct.");
 
             return Scope.AnnotatedType("global::System.Serializable",
-                $"public struct {typeDetails.CapitalisedName}", s =>
+                $"public struct {typeDetails.Name}", s =>
                 {
                     if (fieldDetailsList.Count > 0)
                     {
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         var constructorArgs = GetConstructorArgs(fieldDetailsList);
 
-                        s.Method($"public {typeDetails.CapitalisedName}({constructorArgs})", m =>
+                        s.Method($"public {typeDetails.Name}({constructorArgs})", m =>
                         {
                             m.Line(sb =>
                             {
@@ -54,12 +54,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                     foreach (var nestedType in nestedTypes)
                     {
-                        s.Type(Generate(nestedType, $"{typeNamespace}.{typeDetails.CapitalisedName}"));
+                        s.Type(Generate(nestedType, $"{typeNamespace}.{typeDetails.Name}"));
                     }
 
                     foreach (var nestedEnum in nestedEnums)
                     {
-                        s.Enum(UnityEnumContent.Generate(nestedEnum, $"{typeNamespace}.{typeDetails.CapitalisedName}"));
+                        s.Enum(UnityEnumContent.Generate(nestedEnum, $"{typeNamespace}.{typeDetails.Name}"));
                     }
                 });
         }
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             return Scope.Type("public static class Serialization", s =>
             {
-                s.Method($"public static void Serialize({typeDetails.CapitalisedName} instance, global::Improbable.Worker.CInterop.SchemaObject obj)",
+                s.Method($"public static void Serialize({typeDetails.Name} instance, global::Improbable.Worker.CInterop.SchemaObject obj)",
                     serializeMethod =>
                     {
                         if (typeDetails.HasSerializationOverride)
@@ -92,7 +92,7 @@ namespace Improbable.Gdk.CodeGenerator
                         }
                     });
 
-                s.Method($"public static {typeDetails.CapitalisedName} Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)",
+                s.Method($"public static {typeDetails.Name} Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj)",
                     deserializeMethod =>
                     {
                         if (typeDetails.HasSerializationOverride)
@@ -102,7 +102,7 @@ namespace Improbable.Gdk.CodeGenerator
                         }
                         else
                         {
-                            deserializeMethod.Line($"var instance = new {typeDetails.CapitalisedName}();");
+                            deserializeMethod.Line($"var instance = new {typeDetails.Name}();");
 
                             foreach (var fieldDetail in fieldDetails)
                             {

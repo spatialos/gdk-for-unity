@@ -10,7 +10,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         private readonly ContainedType keyType;
         private readonly ContainedType valueType;
 
-        public MapFieldType(TypeReference keyType, TypeReference valueType, DetailsStore store)
+        public MapFieldType(TypeReference keyType, TypeReference valueType)
         {
             this.keyType = new ContainedType(keyType);
             this.valueType = new ContainedType(valueType);

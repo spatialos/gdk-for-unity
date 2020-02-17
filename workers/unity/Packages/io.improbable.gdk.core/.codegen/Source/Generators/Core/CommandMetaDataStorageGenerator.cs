@@ -18,14 +18,14 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{command.CommandName}CommandMetaDataStorage class.");
+                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{command.PascalCaseName}CommandMetaDataStorage class.");
 
                             partial.Line($@"
-private class {command.CommandName}CommandMetaDataStorage :
+private class {command.PascalCaseName}CommandMetaDataStorage :
     CommandPayloadStorage<{command.FqnRequestType}>,
     ICommandMetaDataStorage
 {{

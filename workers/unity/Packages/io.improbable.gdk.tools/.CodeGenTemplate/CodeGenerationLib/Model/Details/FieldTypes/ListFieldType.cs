@@ -8,7 +8,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private readonly ContainedType containedType;
 
-        public ListFieldType(TypeReference innerType, DetailsStore store)
+        public ListFieldType(TypeReference innerType)
         {
             containedType = new ContainedType(innerType);
         }

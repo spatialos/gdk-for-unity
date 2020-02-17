@@ -17,22 +17,22 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
             : base(outputDir, fileSystem, store, force)
         {
             var jobName = nameof(GameObjectCodegenJob);
-            logger.Info($"Initialising {jobName}.");
+            Logger.Info($"Initialising {jobName}.");
 
             AddInputFiles(store.SchemaFiles.ToList());
 
-            logger.Info("Gathering component details.");
+            Logger.Info("Gathering component details.");
             componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Package))
+                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
                 .ToList();
 
-            logger.Trace("Adding job output files.");
+            Logger.Trace("Adding job output files.");
             foreach (var componentTarget in componentsToGenerate)
             {
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
 
-                logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
+                Logger.Trace($"Adding job output files for component {componentName}.");
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
                 {
@@ -44,20 +44,20 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                     Path.ChangeExtension($"{componentName}ComponentReaderWriter", FileExtension)));
             }
 
-            logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
+            Logger.Info($"Added job output files for {componentsToGenerate.Count} components.");
 
-            logger.Info($"Finished initialising {jobName}.");
+            Logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
-            logger.Info("Starting code generation for components.");
+            Logger.Info("Starting code generation for components.");
             foreach (var componentTarget in componentsToGenerate)
             {
-                logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
+                Logger.Trace($"Generating code for {componentTarget.Content.Name}.");
 
                 var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.ComponentName;
+                var componentName = componentTarget.Content.Name;
                 var package = componentTarget.Package;
 
                 if (componentTarget.Content.CommandDetails.Count > 0)
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
                 AddContent(Path.Combine(relativeOutputPath, componentReaderWriterFileName), componentReaderWriterCode);
             }
 
-            logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
+            Logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
         }
     }
 }

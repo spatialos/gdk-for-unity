@@ -22,13 +22,13 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Type("internal static class ReferenceTypeProviders", providers =>
                         {
                             foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                             {
-                                providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, qualifiedNamespace, componentDetails.ComponentName));
+                                providers.Type(UnityReferenceTypeProviderContent.Generate(fieldDetails, qualifiedNamespace, componentDetails.Name));
                             }
                         });
                     });

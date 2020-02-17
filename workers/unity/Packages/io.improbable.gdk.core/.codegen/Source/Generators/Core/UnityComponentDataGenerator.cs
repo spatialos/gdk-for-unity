@@ -27,7 +27,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Line($"public const uint ComponentId = {componentDetails.ComponentId};");
 
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static TypeBlock GenerateComponentStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Component struct.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Component struct.");
 
             var fieldDetailsList = componentDetails.FieldDetails;
 
@@ -199,11 +199,11 @@ internal uint {fieldDetails.CamelCaseName}Handle;
 
 public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 {{
-    get => global::{qualifiedNamespace}.{componentDetails.ComponentName}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
+    get => global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
     set
     {{
         MarkDataDirty({i});
-        global::{qualifiedNamespace}.{componentDetails.ComponentName}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
+        global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
     }}
 }}
 ");
@@ -216,7 +216,7 @@ public {fieldDetails.Type} {fieldDetails.PascalCaseName}
             string qualifiedNamespace)
         {
             Logger.Trace(
-                $"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.ComponentAuthority struct.");
+                $"Generating {qualifiedNamespace}.{componentDetails.Name}.ComponentAuthority struct.");
 
             return Scope.Type("public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>",
                 t =>
@@ -264,7 +264,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
         private static TypeBlock GenerateSnapshotStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Snapshot struct.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Snapshot struct.");
 
             var fieldDetailsList = componentDetails.FieldDetails;
 
@@ -287,9 +287,9 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
         private static TypeBlock GenerateSerializationClass(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Serialization static class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Serialization static class.");
 
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
             var fieldDetailsList = componentDetails.FieldDetails;
             var shouldGenerateClearedFieldsSet = ShouldGenerateClearedFieldsSet(fieldDetailsList);
 
@@ -367,7 +367,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         {
                             if (!fieldDetails.IsBlittable)
                             {
-                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{qualifiedNamespace}.{componentDetails.ComponentName}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
                             }
 
                             m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
@@ -449,7 +449,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
         private static TypeBlock GenerateUpdateStruct(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.Update struct.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.Update struct.");
 
             return Scope.Type("public struct Update : ISpatialComponentUpdate",
                 update =>
@@ -461,12 +461,12 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
         private static TypeBlock GenerateInternalDynamicClass(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}Dynamic internal class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{componentDetails.Name}Dynamic internal class.");
 
-            return Scope.Type($"internal class {componentDetails.ComponentName}Dynamic : IDynamicInvokable",
+            return Scope.Type($"internal class {componentDetails.Name}Dynamic : IDynamicInvokable",
                 dynamic =>
                 {
-                    dynamic.Line($"public uint ComponentId => {componentDetails.ComponentName}.ComponentId;");
+                    dynamic.Line($"public uint ComponentId => {componentDetails.Name}.ComponentId;");
 
                     dynamic.Line(@"
 internal static Dynamic.VTable<Update, Snapshot> VTable = new Dynamic.VTable<Update, Snapshot>

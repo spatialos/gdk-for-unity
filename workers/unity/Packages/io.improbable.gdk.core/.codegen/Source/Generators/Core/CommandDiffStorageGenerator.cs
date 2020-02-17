@@ -19,12 +19,12 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var command in componentDetails.CommandDetails)
                         {
-                            partial.Text(GenerateCommandStorage(command, qualifiedNamespace, componentDetails.ComponentName));
-                            partial.Text(GenerateCommandsToSendStorage(command, qualifiedNamespace, componentDetails.ComponentName));
+                            partial.Text(GenerateCommandStorage(command, qualifiedNamespace, componentDetails.Name));
+                            partial.Text(GenerateCommandsToSendStorage(command, qualifiedNamespace, componentDetails.Name));
                         }
                     });
                 });
@@ -33,13 +33,13 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static Text GenerateCommandStorage(UnityCommandDetails command, string qualifiedNamespace, string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandStorage class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.PascalCaseName}CommandStorage class.");
 
-            var receivedRequestType = $"{command.CommandName}.ReceivedRequest";
-            var receivedResponseType = $"{command.CommandName}.ReceivedResponse";
+            var receivedRequestType = $"{command.PascalCaseName}.ReceivedRequest";
+            var receivedResponseType = $"{command.PascalCaseName}.ReceivedResponse";
 
             return Text.New($@"
-private class Diff{command.CommandName}CommandStorage
+private class Diff{command.PascalCaseName}CommandStorage
     : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
 {{
     public override uint ComponentId => {qualifiedNamespace}.{componentName}.ComponentId;
@@ -50,11 +50,11 @@ private class Diff{command.CommandName}CommandStorage
 
         private static Text GenerateCommandsToSendStorage(UnityCommandDetails command, string qualifiedNamespace, string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.CommandName}CommandsToSendStorage class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.PascalCaseName}CommandsToSendStorage class.");
 
             return Text.New($@"
-private class {command.CommandName}CommandsToSendStorage :
-    CommandSendStorage<{command.CommandName}.Request, {command.CommandName}.Response>,
+private class {command.PascalCaseName}CommandsToSendStorage :
+    CommandSendStorage<{command.PascalCaseName}.Request, {command.PascalCaseName}.Response>,
     IComponentCommandSendStorage
 {{
     uint IComponentCommandSendStorage.ComponentId => ComponentId;

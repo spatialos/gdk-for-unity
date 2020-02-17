@@ -9,5 +9,6 @@
     "DevAuthTokenDir": "Resources",
     "DevAuthTokenLifetimeDays": 30,
     "SaveDevAuthTokenToFile": false,
+    "EnvironmentPlatform": "",
     "SerializationOverrides": []
 }

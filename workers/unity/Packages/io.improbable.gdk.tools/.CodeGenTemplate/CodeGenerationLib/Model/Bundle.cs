@@ -28,6 +28,16 @@ namespace Improbable.Gdk.CodeGeneration.Model
         Entity = 17
     }
 
+    public static class PrimitiveTypeExtensions
+    {
+        public static bool IsBlittable(this PrimitiveType primitiveType)
+        {
+            return primitiveType != PrimitiveType.Bytes
+                && primitiveType != PrimitiveType.String
+                && primitiveType != PrimitiveType.Entity;
+        }
+    }
+
     public enum ValueType
     {
         Enum,
@@ -135,24 +145,16 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public TypeValue TypeValue;
     }
 
-    public class EnumValueDefinition
+    public abstract class Definition
     {
         public IReadOnlyList<Annotation> Annotations;
         public string Name;
         public SourceReference SourceReference;
-
-        public uint Value;
     }
 
-    [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
-    public class EnumDefinition
+    public class EnumValueDefinition : Definition
     {
-        public IReadOnlyList<Annotation> Annotations;
-        public string Name;
-        public string OuterType;
-        public string QualifiedName;
-        public SourceReference SourceReference;
-        public IReadOnlyList<EnumValueDefinition> Values;
+        public uint Value;
     }
 
     public enum FieldType
@@ -164,20 +166,14 @@ namespace Improbable.Gdk.CodeGeneration.Model
     }
 
     [DebuggerDisplay("{" + nameof(Name) + "}" + " ({" + nameof(FieldId) + "})")]
-    public class FieldDefinition
+    public class FieldDefinition : Definition
     {
-        public IReadOnlyList<Annotation> Annotations;
-
         public uint FieldId;
 
         public ListTypeRef ListType;
         public MapTypeRef MapType;
-
-        public string Name;
         public OptionTypeRef OptionType;
-
         public SingularTypeRef SingularType;
-        public SourceReference SourceReference;
 
         public bool Transient;
 
@@ -231,53 +227,48 @@ namespace Improbable.Gdk.CodeGeneration.Model
         }
     }
 
-    [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
-    public class TypeDefinition
+    public abstract class QualifiedDefinition : Definition
     {
-        public IReadOnlyList<Annotation> Annotations;
-        public IReadOnlyList<FieldDefinition> Fields;
-        public string Name;
-        public string OuterType;
         public string QualifiedName;
-        public SourceReference SourceReference;
+    }
+
+    [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
+    public class EnumDefinition : QualifiedDefinition
+    {
+        public string OuterType;
+        public IReadOnlyList<EnumValueDefinition> Values;
+    }
+
+    [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
+    public class TypeDefinition : QualifiedDefinition
+    {
+        public string OuterType;
+        public IReadOnlyList<FieldDefinition> Fields;
     }
 
     [DebuggerDisplay("{" + nameof(QualifiedName) + "} {" + nameof(ComponentId) + "}")]
-    public class ComponentDefinition
+    public class ComponentDefinition : QualifiedDefinition
     {
-        public IReadOnlyList<Annotation> Annotations;
         public IReadOnlyList<CommandDefinition> Commands;
         public uint ComponentId;
 
         public string DataDefinition;
         public IReadOnlyList<EventDefinition> Events;
-
         public IReadOnlyList<FieldDefinition> Fields;
-        public string Name;
-
-        public string QualifiedName;
-        public SourceReference SourceReference;
 
         [DebuggerDisplay("{" + nameof(QualifiedName) + "}")]
-        public class EventDefinition
+        public class EventDefinition : Definition
         {
-            public IReadOnlyList<Annotation> Annotations;
             public uint EventIndex;
-            public string Name;
-            public SourceReference SourceReference;
             public string Type;
         }
 
         [DebuggerDisplay("{" + nameof(QualifiedName) + "}" + " {" + nameof(CommandIndex) + "}")]
-        public class CommandDefinition
+        public class CommandDefinition : Definition
         {
-            public IReadOnlyList<Annotation> Annotations;
             public uint CommandIndex;
-
-            public string Name;
             public string RequestType;
             public string ResponseType;
-            public SourceReference SourceReference;
         }
     }
 

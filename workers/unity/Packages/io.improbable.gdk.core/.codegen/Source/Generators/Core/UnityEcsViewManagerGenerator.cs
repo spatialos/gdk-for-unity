@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static string Generate(UnityComponentDetails componentDetails, string qualifiedNamespace)
         {
-            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.ComponentName}";
+            var componentNamespace = $"global::{qualifiedNamespace}.{componentDetails.Name}";
 
             return CodeWriter.Populate(cgw =>
             {
@@ -24,9 +24,9 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.EcsViewManager class.");
+                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.EcsViewManager class.");
 
                         partial.Type("public class EcsViewManager : IEcsViewManager", evm =>
                         {

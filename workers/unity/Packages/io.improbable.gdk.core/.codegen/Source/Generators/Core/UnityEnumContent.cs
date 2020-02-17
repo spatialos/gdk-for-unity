@@ -11,7 +11,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         public static EnumBlock Generate(UnityEnumDetails details, string enumNamespace)
         {
-            var enumName = details.TypeName;
+            var enumName = details.Name;
 
             Logger.Trace($"Generating {enumNamespace}.{enumName} enum.");
 

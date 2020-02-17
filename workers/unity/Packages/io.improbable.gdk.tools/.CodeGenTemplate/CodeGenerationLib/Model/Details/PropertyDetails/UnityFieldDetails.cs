@@ -2,51 +2,46 @@ using Improbable.Gdk.CodeGeneration.Utils;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
-    public class UnityFieldDetails
+    public class UnityFieldDetails : Details
     {
         public string Type => fieldType.Type;
 
-        public string PascalCaseName { get; }
-        public string CamelCaseName { get; }
-        public uint FieldNumber { get; }
+        private readonly uint fieldNumber;
 
-        public bool IsBlittable { get; }
-        public bool CanBeEmpty { get; }
+        public readonly bool IsBlittable;
+        public readonly bool CanBeEmpty;
 
-        private IFieldType fieldType;
+        private readonly IFieldType fieldType;
 
-        internal FieldDefinition Raw;
+        internal readonly FieldDefinition RawFieldDefinition;
 
-        public UnityFieldDetails(FieldDefinition field, DetailsStore store)
+        public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store) : base(rawFieldDefinition)
         {
-            PascalCaseName = Formatting.SnakeCaseToPascalCase(field.Name);
-            CamelCaseName = Formatting.PascalCaseToCamelCase(PascalCaseName);
-            FieldNumber = field.FieldId;
+            fieldNumber = rawFieldDefinition.FieldId;
 
-            IsBlittable = store.CheckBlittable(field);
+            IsBlittable = store.CheckBlittable(rawFieldDefinition);
 
-            if (field.OptionType != null)
+            if (rawFieldDefinition.OptionType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new OptionFieldType(field.OptionType.InnerType, store);
+                fieldType = new OptionFieldType(rawFieldDefinition.OptionType.InnerType);
             }
-            else if (field.ListType != null)
+            else if (rawFieldDefinition.ListType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new ListFieldType(field.ListType.InnerType, store);
+                fieldType = new ListFieldType(rawFieldDefinition.ListType.InnerType);
             }
-            else if (field.MapType != null)
+            else if (rawFieldDefinition.MapType != null)
             {
                 CanBeEmpty = true;
-                fieldType = new MapFieldType(field.MapType.KeyType, field.MapType.ValueType, store);
+                fieldType = new MapFieldType(rawFieldDefinition.MapType.KeyType, rawFieldDefinition.MapType.ValueType);
             }
             else
             {
-                var singularType = field.SingularType.Type;
-                fieldType = new SingularFieldType(singularType, store);
+                fieldType = new SingularFieldType(rawFieldDefinition.SingularType.Type);
             }
 
-            Raw = field;
+            RawFieldDefinition = rawFieldDefinition;
         }
 
         /// <summary>
@@ -58,7 +53,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <param name="indents">The indent level that the block of code should be at.</param>
         public string GetSerializationString(string fieldInstance, string schemaObject, int indents)
         {
-            var serializationString = fieldType.GetSerializationString(fieldInstance, schemaObject, FieldNumber);
+            var serializationString = fieldType.GetSerializationString(fieldInstance, schemaObject, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(serializationString, indents);
         }
 
@@ -71,7 +66,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <param name="indents">The indent level that the block of code should be at.</param>
         public string GetDeserializeString(string fieldInstance, string schemaObject, int indents)
         {
-            var deserializationString = fieldType.GetDeserializationString(fieldInstance, schemaObject, FieldNumber);
+            var deserializationString = fieldType.GetDeserializationString(fieldInstance, schemaObject, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
@@ -85,7 +80,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// <returns></returns>
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, int indents)
         {
-            var deserializationString = fieldType.GetDeserializeUpdateString(fieldInstance, schemaObject, FieldNumber);
+            var deserializationString = fieldType.GetDeserializeUpdateString(fieldInstance, schemaObject, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
@@ -103,7 +98,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, int indents)
         {
             var deserializationString =
-                fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber);
+                fieldType.GetDeserializeUpdateIntoUpdateString(updateFieldInstance, schemaObject, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
@@ -121,13 +116,13 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, int indents)
         {
             var deserializationString =
-                fieldType.GetDeserializeDataIntoUpdateString(updateFieldInstance, schemaObject, FieldNumber);
+                fieldType.GetDeserializeDataIntoUpdateString(updateFieldInstance, schemaObject, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(deserializationString, indents);
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObj, int indents)
         {
-            var trySetClearedFieldString = fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, FieldNumber);
+            var trySetClearedFieldString = fieldType.GetTrySetClearedFieldString(fieldInstance, componentUpdateSchemaObj, fieldNumber);
             return CommonGeneratorUtils.IndentEveryNewline(trySetClearedFieldString, indents);
         }
     }

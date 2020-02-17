@@ -21,11 +21,11 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{componentDetails.ComponentName}ViewStorage class.");
+                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{componentDetails.Name}ViewStorage class.");
 
-                        partial.Type($"public class {componentDetails.ComponentName}ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewComponentUpdater<Update>",
+                        partial.Type($"public class {componentDetails.Name}ViewStorage : IViewStorage, IViewComponentStorage<Snapshot>, IViewComponentUpdater<Update>",
                             vs =>
                             {
                                 vs.Line(@"

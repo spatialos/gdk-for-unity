@@ -26,15 +26,15 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.DiffComponentStorage class.");
+                        Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.DiffComponentStorage class.");
 
                         var classDefinition = new StringBuilder("public class DiffComponentStorage : IDiffUpdateStorage<Update>, IDiffComponentAddedStorage<Update>, IDiffAuthorityStorage");
 
                         foreach (var ev in eventDetailsList)
                         {
-                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{ev.EventName}.Event>");
+                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{ev.PascalCaseName}.Event>");
                         }
 
                         partial.Type(classDefinition.ToString(), storage =>
@@ -66,12 +66,12 @@ private MessageList<AuthorityChangeReceived> authorityChanges =
 
                             foreach (var ev in eventDetailsList)
                             {
-                                var eventType = $"{ev.EventName}.Event";
+                                var eventType = $"{ev.PascalCaseName}.Event";
                                 storage.Line($@"
-private MessageList<ComponentEventReceived<{eventType}>> {ev.CamelCaseEventName}EventStorage =
+private MessageList<ComponentEventReceived<{eventType}>> {ev.CamelCaseName}EventStorage =
     new MessageList<ComponentEventReceived<{eventType}>>();
 
-private readonly EventComparer<{eventType}> {ev.CamelCaseEventName}Comparer =
+private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
     new EventComparer<{eventType}>();
 ");
                             }
@@ -80,7 +80,7 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseEventName}Comparer =
                             {
                                 m.Initializer("return new Type[]", () =>
                                 {
-                                    return eventDetailsList.Select(ev => $"typeof({ev.EventName}.Event)");
+                                    return eventDetailsList.Select(ev => $"typeof({ev.PascalCaseName}.Event)");
                                 });
                             });
 
@@ -105,7 +105,7 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseEventName}Comparer =
                                     "componentsRemoved.Clear();"
                                 });
 
-                                m.Line(eventDetailsList.Select(ev => $"{ev.CamelCaseEventName}EventStorage.Clear();").ToList());
+                                m.Line(eventDetailsList.Select(ev => $"{ev.CamelCaseName}EventStorage.Clear();").ToList());
                             });
 
                             storage.Method("public void RemoveEntityComponent(long entityId)", m =>
@@ -122,7 +122,7 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseEventName}Comparer =
                                     });
 
                                     then.Line(eventDetailsList.Select(ev =>
-                                        $"{ev.CamelCaseEventName}EventStorage.RemoveAll(change => change.EntityId.Id == entityId);").ToList());
+                                        $"{ev.CamelCaseName}EventStorage.RemoveAll(change => change.EntityId.Id == entityId);").ToList());
                                 });
 
                                 m.If("!componentsAdded.Remove(id)", () => new[]
@@ -207,22 +207,22 @@ public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entity
 ");
                             foreach (var ev in eventDetailsList)
                             {
-                                var eventType = $"{ev.EventName}.Event";
+                                var eventType = $"{ev.PascalCaseName}.Event";
 
                                 storage.Method($"MessagesSpan<ComponentEventReceived<{eventType}>> IDiffEventStorage<{eventType}>.GetEvents(EntityId entityId)", () => new[]
                                 {
-                                    $"var range = {ev.CamelCaseEventName}EventStorage.GetEntityRange(entityId);",
-                                    $"return {ev.CamelCaseEventName}EventStorage.Slice(range.FirstIndex, range.Count);"
+                                    $"var range = {ev.CamelCaseName}EventStorage.GetEntityRange(entityId);",
+                                    $"return {ev.CamelCaseName}EventStorage.Slice(range.FirstIndex, range.Count);"
                                 });
 
                                 storage.Method($"MessagesSpan<ComponentEventReceived<{eventType}>> IDiffEventStorage<{eventType}>.GetEvents()", () => new[]
                                 {
-                                    $"return {ev.CamelCaseEventName}EventStorage.Slice();"
+                                    $"return {ev.CamelCaseName}EventStorage.Slice();"
                                 });
 
                                 storage.Method($"void IDiffEventStorage<{eventType}>.AddEvent(ComponentEventReceived<{eventType}> ev)", () => new[]
                                 {
-                                    $"{ev.CamelCaseEventName}EventStorage.InsertSorted(ev, {ev.CamelCaseEventName}Comparer);"
+                                    $"{ev.CamelCaseName}EventStorage.InsertSorted(ev, {ev.CamelCaseName}Comparer);"
                                 });
                             }
                         });

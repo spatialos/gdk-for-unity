@@ -21,14 +21,14 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace(qualifiedNamespace, ns =>
                 {
-                    ns.Type($"public partial class {componentDetails.ComponentName}", partial =>
+                    ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         foreach (var commandDetails in componentDetails.CommandDetails)
                         {
-                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.ComponentName}.{commandDetails.CommandName} partial class.");
+                            Logger.Trace($"Generating {qualifiedNamespace}.{componentDetails.Name}.{commandDetails.PascalCaseName} partial class.");
 
                             partial.Line($@"
-public partial class {commandDetails.CommandName}
+public partial class {commandDetails.PascalCaseName}
 {{
     public struct Request : ICommandRequest
     {{
