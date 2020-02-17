@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- Added ability to construct a `CodeWriter` using just the raw string content. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
+    - This will override anything defined through the ergonomic `CodeWriter` API.
+- Introduced a new `CodegenJob` model. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
+
 ## `0.3.3` - 2020-02-14
 
 ### Breaking Changes
