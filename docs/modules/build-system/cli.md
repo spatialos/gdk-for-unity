@@ -50,7 +50,7 @@ This command builds the `UnityClient` worker type for cloud with the `mono` scri
 
 ### Enforcing iOS SDK target
 
-When building for iOS you can use the `targetiOSSdk` argument to set the target SDK to `simulated` or `device`.
+When building for iOS you can use the `targetiOSSdk` argument to set the target SDK to `simulator` or `device`.
 
 The argument can be provided as following:
 
