@@ -8,6 +8,18 @@
     - This will override anything defined through the ergonomic `CodeWriter` API.
 - Introduced a new `CodegenJob` model. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
 
+### Changed
+
+- Downgraded the level of several code generator logs from `Info` to `Trace`. [#1277](https://github.com/spatialos/gdk-for-unity/pull/1277)
+
+### Removed
+
+- Removed the old `CodegenJob` model. [#1277](https://github.com/spatialos/gdk-for-unity/pull/1277)
+
+### Internal
+
+- Ported all modules to the new `CodegenJob` model. [#1276](https://github.com/spatialos/gdk-for-unity/pull/1276)
+
 ## `0.3.3` - 2020-02-14
 
 ### Breaking Changes
