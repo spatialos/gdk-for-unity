@@ -15,8 +15,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         internal readonly FieldDefinition RawFieldDefinition;
 
-        public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store)
-            : base(rawFieldDefinition, defaultCase: Case.PascalCase)
+        public UnityFieldDetails(FieldDefinition rawFieldDefinition, DetailsStore store) : base(rawFieldDefinition)
         {
             fieldNumber = rawFieldDefinition.FieldId;
 

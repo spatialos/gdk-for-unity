@@ -35,16 +35,16 @@ namespace Improbable.Gdk.CodeGenerator
 
         private static Text GenerateDiffCommandDeserializer(UnityCommandDetails command, string qualifiedNamespace, string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.Name}DiffCommandDeserializer class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.PascalCaseName}DiffCommandDeserializer class.");
 
             return Text.New($@"
-private class {command.Name}DiffCommandDeserializer : ICommandDiffDeserializer
+private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDeserializer
 {{
     public void AddRequestToDiff(CommandRequestOp op, ViewDiff diff)
     {{
         var deserializedRequest = {command.FqnRequestType}.Serialization.Deserialize(op.Request.SchemaData.Value.GetObject());
 
-        var request = new {command.Name}.ReceivedRequest(
+        var request = new {command.PascalCaseName}.ReceivedRequest(
             new EntityId(op.EntityId),
             op.RequestId,
             op.CallerWorkerId,
@@ -65,7 +65,7 @@ private class {command.Name}DiffCommandDeserializer : ICommandDiffDeserializer
         var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, op.RequestId);
         commandMetaData.MarkIdForRemoval(ComponentId, {command.CommandIndex}, op.RequestId);
 
-        var response = new {command.Name}.ReceivedResponse(
+        var response = new {command.PascalCaseName}.ReceivedResponse(
             commandContext.SendingEntity,
             new EntityId(op.EntityId),
             op.Message,
@@ -84,14 +84,14 @@ private class {command.Name}DiffCommandDeserializer : ICommandDiffDeserializer
         private static Text GenerateCommandSerializer(UnityCommandDetails command, string qualifiedNamespace,
             string componentName)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.Name}CommandSerializer class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.PascalCaseName}CommandSerializer class.");
 
             return Text.New($@"
-private class {command.Name}CommandSerializer : ICommandSerializer
+private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
 {{
     public void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages, CommandMetaData commandMetaData)
     {{
-        var storage = ({command.Name}CommandsToSendStorage) messages.GetCommandSendStorage(ComponentId, {command.CommandIndex});
+        var storage = ({command.PascalCaseName}CommandsToSendStorage) messages.GetCommandSendStorage(ComponentId, {command.CommandIndex});
 
         var requests = storage.GetRequests();
 

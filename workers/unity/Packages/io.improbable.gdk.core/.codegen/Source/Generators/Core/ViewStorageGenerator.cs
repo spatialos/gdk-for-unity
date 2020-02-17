@@ -114,7 +114,7 @@ if (!componentData.TryGetValue(entityId, out var data))
 ");
                                     foreach (var field in componentDetails.FieldDetails)
                                     {
-                                        var fieldName = field.Name;
+                                        var fieldName = field.PascalCaseName;
                                         m.Line($@"
 if (update.{fieldName}.HasValue)
 {{

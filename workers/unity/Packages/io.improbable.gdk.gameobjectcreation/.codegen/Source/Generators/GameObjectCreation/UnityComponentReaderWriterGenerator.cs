@@ -387,7 +387,7 @@ public event Action<{componentDetails.Name}.Update> OnUpdate
                     {
                         reader.Line($@"
 private Dictionary<Action<{fieldDetails.Type}>, ulong> {fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey;
-public event Action<{fieldDetails.Type}> On{fieldDetails.Name}Update
+public event Action<{fieldDetails.Type}> On{fieldDetails.PascalCaseName}Update
 {{
     add
     {{
@@ -398,9 +398,9 @@ public event Action<{fieldDetails.Type}> On{fieldDetails.Name}Update
 
         var key = CallbackSystem.RegisterComponentUpdateCallback<{componentDetails.Name}.Update>(EntityId, update =>
         {{
-            if (update.{fieldDetails.Name}.HasValue)
+            if (update.{fieldDetails.PascalCaseName}.HasValue)
             {{
-                value(update.{fieldDetails.Name}.Value);
+                value(update.{fieldDetails.PascalCaseName}.Value);
             }}
         }});
         {fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey.Add(value, key);
@@ -421,11 +421,11 @@ public event Action<{fieldDetails.Type}> On{fieldDetails.Name}Update
 
                     foreach (var eventDetails in componentDetails.EventDetails)
                     {
-                        var eventType = $"{componentDetails.Name}.{eventDetails.Name}.Event";
+                        var eventType = $"{componentDetails.Name}.{eventDetails.PascalCaseName}.Event";
 
                         reader.Line($@"
 private Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong> {eventDetails.CamelCaseName}EventCallbackToCallbackKey;
-public event Action<{eventDetails.FqnPayloadType}> On{eventDetails.Name}Event
+public event Action<{eventDetails.FqnPayloadType}> On{eventDetails.PascalCaseName}Event
 {{
     add
     {{
@@ -542,9 +542,9 @@ internal {componentDetails.Name}Writer(World world, Entity entity, EntityId enti
                         foreach (var fieldDetails in componentDetails.FieldDetails)
                         {
                             m.Line($@"
-if (update.{fieldDetails.Name}.HasValue)
+if (update.{fieldDetails.PascalCaseName}.HasValue)
 {{
-    component.{fieldDetails.Name} = update.{fieldDetails.Name}.Value;
+    component.{fieldDetails.PascalCaseName} = update.{fieldDetails.PascalCaseName}.Value;
 }}
 ");
                         }
@@ -554,9 +554,9 @@ if (update.{fieldDetails.Name}.HasValue)
 
                     foreach (var eventDetails in componentDetails.EventDetails)
                     {
-                        var eventType = $"{componentDetails.Name}.{eventDetails.Name}.Event";
+                        var eventType = $"{componentDetails.Name}.{eventDetails.PascalCaseName}.Event";
                         writer.Line($@"
-public void Send{eventDetails.Name}Event({eventDetails.FqnPayloadType} {eventDetails.CamelCaseName})
+public void Send{eventDetails.PascalCaseName}Event({eventDetails.FqnPayloadType} {eventDetails.CamelCaseName})
 {{
     var eventToSend = new {eventType}({eventDetails.CamelCaseName});
     ComponentUpdateSystem.SendEvent(eventToSend, EntityId);

@@ -70,7 +70,7 @@ if (eventCount > 0)
     for (uint i = 0; i < eventCount; i++)
     {{
         var payload = {ev.FqnPayloadType}.Serialization.Deserialize(eventsObject.IndexObject({ev.EventIndex}, i));
-        var e = new {ev.Name}.Event(payload);
+        var e = new {ev.PascalCaseName}.Event(payload);
         diff.AddEvent(e, op.EntityId, op.Update.ComponentId, updateId);
     }}
 }}
@@ -124,7 +124,7 @@ for (int i = 0; i < updates.Count; ++i)
                             m.CustomScope(() => new[]
                             {
                                 $@"
-var events = ((IDiffEventStorage<{ev.Name}.Event>) storage).GetEvents();
+var events = ((IDiffEventStorage<{ev.PascalCaseName}.Event>) storage).GetEvents();
 
 for (int i = 0; i < events.Count; ++i)
 {{

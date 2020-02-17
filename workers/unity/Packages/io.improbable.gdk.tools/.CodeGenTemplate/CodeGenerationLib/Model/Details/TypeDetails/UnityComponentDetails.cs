@@ -30,12 +30,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Where(commandDetail =>
                 {
                     // Return true to keep commands that do not have a name clash with the component
-                    if (!commandDetail.Name.Equals(Name))
+                    if (!commandDetail.PascalCaseName.Equals(Name))
                     {
                         return true;
                     }
 
-                    Logger.Error($"Error in component \"{Name}\". Command \"{commandDetail.Name}\" clashes with component name.");
+                    Logger.Error($"Error in component \"{Name}\". Command \"{commandDetail.PascalCaseName}\" clashes with component name.");
                     return false;
                 })
                 .ToList()
@@ -47,12 +47,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Where(eventDetail =>
                 {
                     // Return true to keep events that do not have a name clash with the component
-                    if (!eventDetail.Name.Equals(Name))
+                    if (!eventDetail.PascalCaseName.Equals(Name))
                     {
                         return true;
                     }
 
-                    Logger.Error($"Error in component \"{Name}\". Event \"{eventDetail.Name}\" clashes with component name.");
+                    Logger.Error($"Error in component \"{Name}\". Event \"{eventDetail.PascalCaseName}\" clashes with component name.");
                     return false;
                 })
                 .ToList()

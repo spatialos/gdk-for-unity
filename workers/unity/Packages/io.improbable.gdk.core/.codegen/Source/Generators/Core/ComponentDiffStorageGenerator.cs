@@ -34,7 +34,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         foreach (var ev in eventDetailsList)
                         {
-                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{ev.Name}.Event>");
+                            classDefinition.Append($"{Environment.NewLine}    , IDiffEventStorage<{ev.PascalCaseName}.Event>");
                         }
 
                         partial.Type(classDefinition.ToString(), storage =>
@@ -66,7 +66,7 @@ private MessageList<AuthorityChangeReceived> authorityChanges =
 
                             foreach (var ev in eventDetailsList)
                             {
-                                var eventType = $"{ev.Name}.Event";
+                                var eventType = $"{ev.PascalCaseName}.Event";
                                 storage.Line($@"
 private MessageList<ComponentEventReceived<{eventType}>> {ev.CamelCaseName}EventStorage =
     new MessageList<ComponentEventReceived<{eventType}>>();
@@ -80,7 +80,7 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
                             {
                                 m.Initializer("return new Type[]", () =>
                                 {
-                                    return eventDetailsList.Select(ev => $"typeof({ev.Name}.Event)");
+                                    return eventDetailsList.Select(ev => $"typeof({ev.PascalCaseName}.Event)");
                                 });
                             });
 
@@ -207,7 +207,7 @@ public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entity
 ");
                             foreach (var ev in eventDetailsList)
                             {
-                                var eventType = $"{ev.Name}.Event";
+                                var eventType = $"{ev.PascalCaseName}.Event";
 
                                 storage.Method($"MessagesSpan<ComponentEventReceived<{eventType}>> IDiffEventStorage<{eventType}>.GetEvents(EntityId entityId)", () => new[]
                                 {

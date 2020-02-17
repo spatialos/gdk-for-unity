@@ -7,8 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly string FqnPayloadType;
         public readonly uint EventIndex;
 
-        public UnityEventDetails(ComponentDefinition.EventDefinition rawEventDefinition)
-            : base(rawEventDefinition, defaultCase: Case.PascalCase)
+        public UnityEventDetails(ComponentDefinition.EventDefinition rawEventDefinition) : base(rawEventDefinition)
         {
             FqnPayloadType = DetailsUtils.GetCapitalisedFqnTypename(rawEventDefinition.Type);
             EventIndex = rawEventDefinition.EventIndex;

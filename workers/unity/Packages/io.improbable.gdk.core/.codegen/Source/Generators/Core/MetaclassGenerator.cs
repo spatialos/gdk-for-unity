@@ -55,7 +55,7 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
                             componentMetaclass.Initializer("public ICommandMetaclass[] Commands { get; } = new ICommandMetaclass[]",
                                 () =>
                                 {
-                                    return commandDetailsList.Select(command => $"new {command.Name}Metaclass()");
+                                    return commandDetailsList.Select(command => $"new {command.PascalCaseName}Metaclass()");
                                 });
                         });
 
@@ -72,23 +72,23 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
 
         private static TypeBlock GenerateCommandMetaclass(string qualifiedNamespace, string componentName, UnityCommandDetails command)
         {
-            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.Name}Metaclass class.");
+            Logger.Trace($"Generating {qualifiedNamespace}.{componentName}.{command.PascalCaseName}Metaclass class.");
 
             var rootNamespace = $"global::{qualifiedNamespace}.{componentName}";
 
-            return Scope.Type($"public class {command.Name}Metaclass : ICommandMetaclass",
+            return Scope.Type($"public class {command.PascalCaseName}Metaclass : ICommandMetaclass",
                 commandMetaclass =>
                 {
                     commandMetaclass.Line($@"
 public uint CommandIndex => {command.CommandIndex};
-public string Name => ""{command.Name}"";
+public string Name => ""{command.PascalCaseName}"";
 
-public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.{command.Name}DiffCommandDeserializer);
-public Type Serializer {{ get; }} = typeof({rootNamespace}.{command.Name}CommandSerializer);
+public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}DiffCommandDeserializer);
+public Type Serializer {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}CommandSerializer);
 
-public Type MetaDataStorage {{ get; }} = typeof({rootNamespace}.{command.Name}CommandMetaDataStorage);
-public Type SendStorage {{ get; }} = typeof({rootNamespace}.{command.Name}CommandsToSendStorage);
-public Type DiffStorage {{ get; }} = typeof({rootNamespace}.Diff{command.Name}CommandStorage);
+public Type MetaDataStorage {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}CommandMetaDataStorage);
+public Type SendStorage {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}CommandsToSendStorage);
+public Type DiffStorage {{ get; }} = typeof({rootNamespace}.Diff{command.PascalCaseName}CommandStorage);
 ");
                 });
         }

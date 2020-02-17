@@ -64,7 +64,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childEnum =>
                         {
                             // When field does not clash with child enum, return false
-                            if (!fieldDetail.Name.Equals(childEnum.Name))
+                            if (!fieldDetail.PascalCaseName.Equals(childEnum.Name))
                             {
                                 return false;
                             }
@@ -77,7 +77,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                         .Where(childType =>
                         {
                             // When field does not clash with child type, return false
-                            if (!fieldDetail.Name.Equals(childType.Name))
+                            if (!fieldDetail.PascalCaseName.Equals(childType.Name))
                             {
                                 return false;
                             }

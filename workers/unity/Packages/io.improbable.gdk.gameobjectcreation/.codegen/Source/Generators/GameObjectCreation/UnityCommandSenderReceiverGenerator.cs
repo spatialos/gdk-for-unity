@@ -109,23 +109,23 @@ internal {commandSenderType}(Entity entity, World world)
 ");
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
-                    var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.Name}.ReceivedResponse";
-                    var commandRequest = $"{componentDetails.Name}.{commandDetails.Name}.Request";
+                    var receivedCommandResponseType = $"{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse";
+                    var commandRequest = $"{componentDetails.Name}.{commandDetails.PascalCaseName}.Request";
 
                     c.Line($@"
-public void Send{commandDetails.Name}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
+public void Send{commandDetails.PascalCaseName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
 {{
     var commandRequest = new {commandRequest}(targetEntityId, request);
-    Send{commandDetails.Name}Command(commandRequest, callback);
+    Send{commandDetails.PascalCaseName}Command(commandRequest, callback);
 }}
 
-public void Send{commandDetails.Name}Command({componentNamespace}.{commandDetails.Name}.Request request, Action<{componentNamespace}.{commandDetails.Name}.ReceivedResponse> callback = null)
+public void Send{commandDetails.PascalCaseName}Command({componentNamespace}.{commandDetails.PascalCaseName}.Request request, Action<{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> callback = null)
 {{
     int validCallbackEpoch = callbackEpoch;
     var requestId = commandSender.SendCommand(request, entity);
     if (callback != null)
     {{
-        Action<{componentNamespace}.{commandDetails.Name}.ReceivedResponse> wrappedCallback = response =>
+        Action<{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> wrappedCallback = response =>
         {{
             if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
             {{
@@ -168,15 +168,15 @@ public bool IsValid { get; set; }
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-private Dictionary<Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
+private Dictionary<Action<{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
 
-public event Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest> On{commandDetails.Name}RequestReceived
+public event Action<{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest> On{commandDetails.PascalCaseName}RequestReceived
 {{
     add
     {{
         if ({commandDetails.CamelCaseName}CallbackToCallbackKey == null)
         {{
-            {commandDetails.CamelCaseName}CallbackToCallbackKey = new Dictionary<Action<{componentNamespace}.{commandDetails.Name}.ReceivedRequest>, ulong>();
+            {commandDetails.CamelCaseName}CallbackToCallbackKey = new Dictionary<Action<{componentNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong>();
         }}
 
         var key = callbackSystem.RegisterCommandRequestCallback(entityId, value);
@@ -211,19 +211,19 @@ internal {commandReceiverType}(World world, Entity entity, EntityId entityId)
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
                     c.Line($@"
-public void Send{commandDetails.Name}Response({componentNamespace}.{commandDetails.Name}.Response response)
+public void Send{commandDetails.PascalCaseName}Response({componentNamespace}.{commandDetails.PascalCaseName}.Response response)
 {{
     commandSystem.SendResponse(response);
 }}
 
-public void Send{commandDetails.Name}Response(long requestId, {commandDetails.FqnResponseType} response)
+public void Send{commandDetails.PascalCaseName}Response(long requestId, {commandDetails.FqnResponseType} response)
 {{
-    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.Name}.Response(requestId, response));
+    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.PascalCaseName}.Response(requestId, response));
 }}
 
-public void Send{commandDetails.Name}Failure(long requestId, string failureMessage)
+public void Send{commandDetails.PascalCaseName}Failure(long requestId, string failureMessage)
 {{
-    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.Name}.Response(requestId, failureMessage));
+    commandSystem.SendResponse(new {componentNamespace}.{commandDetails.PascalCaseName}.Response(requestId, failureMessage));
 }}
 ");
                 }

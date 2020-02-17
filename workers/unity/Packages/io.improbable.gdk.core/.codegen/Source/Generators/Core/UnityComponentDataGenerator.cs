@@ -181,7 +181,7 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
                             component.Line($@"
 private {fieldDetails.Type} {fieldDetails.CamelCaseName};
 
-public {fieldDetails.Type} {fieldDetails.Name}
+public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 {{
     get => {fieldDetails.CamelCaseName};
     set
@@ -197,13 +197,13 @@ public {fieldDetails.Type} {fieldDetails.Name}
                             component.Line($@"
 internal uint {fieldDetails.CamelCaseName}Handle;
 
-public {fieldDetails.Type} {fieldDetails.Name}
+public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 {{
-    get => global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.Name}Provider.Get({fieldDetails.CamelCaseName}Handle);
+    get => global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
     set
     {{
         MarkDataDirty({i});
-        global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.Name}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
+        global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
     }}
 }}
 ");
@@ -273,13 +273,13 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                 {
                     snapshot.Line($"public uint ComponentId => {componentDetails.ComponentId};");
 
-                    snapshot.Line(fieldDetailsList.Select(fd => $"public {fd.Type} {fd.Name};").ToList());
+                    snapshot.Line(fieldDetailsList.Select(fd => $"public {fd.Type} {fd.PascalCaseName};").ToList());
 
                     if (fieldDetailsList.Count > 0)
                     {
                         snapshot.Method($"public Snapshot({GetConstructorArgs(fieldDetailsList)})", () =>
                         {
-                            return fieldDetailsList.Select(fd => $"{fd.Name} = {fd.CamelCaseName};");
+                            return fieldDetailsList.Select(fd => $"{fd.PascalCaseName} = {fd.CamelCaseName};");
                         });
                     }
                 });
@@ -300,7 +300,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                     {
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
                     });
 
@@ -316,11 +316,11 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                             m.If($"component.IsDataDirty({i})",
                                 then =>
                                 {
-                                    then.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.Name}", "obj", 0));
+                                    then.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
 
                                     if (shouldGenerateClearedFieldsSet)
                                     {
-                                        then.Line(fieldDetails.GetTrySetClearedFieldString($"component.{fieldDetails.Name}", "updateObj", 0));
+                                        then.Line(fieldDetails.GetTrySetClearedFieldString($"component.{fieldDetails.PascalCaseName}", "updateObj", 0));
                                     }
                                 });
                         }
@@ -335,9 +335,9 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         {
                             m.CustomScope(cs =>
                             {
-                                cs.If($"update.{fieldDetails.Name}.HasValue", then =>
+                                cs.If($"update.{fieldDetails.PascalCaseName}.HasValue", then =>
                                 {
-                                    then.Line($"var field = update.{fieldDetails.Name}.Value;");
+                                    then.Line($"var field = update.{fieldDetails.PascalCaseName}.Value;");
                                     then.Line(fieldDetails.GetSerializationString("field", "obj", 0));
 
                                     if (shouldGenerateClearedFieldsSet)
@@ -354,7 +354,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                     {
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetSerializationString($"snapshot.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetSerializationString($"snapshot.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
                     });
 
@@ -367,10 +367,10 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         {
                             if (!fieldDetails.IsBlittable)
                             {
-                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.Name}Provider.Allocate(world);");
+                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{qualifiedNamespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
                             }
 
-                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("component");
@@ -387,7 +387,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateIntoUpdateString($"update.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateIntoUpdateString($"update.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("update");
@@ -404,7 +404,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeDataIntoUpdateString($"update.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeDataIntoUpdateString($"update.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("update");
@@ -417,7 +417,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("component");
@@ -430,7 +430,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateString($"component.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
                     });
 
@@ -441,7 +441,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateString($"snapshot.{fieldDetails.Name}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateString($"snapshot.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
                     });
             });
@@ -455,7 +455,7 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                 update =>
                 {
                     update.Line(componentDetails.FieldDetails.Select(fd =>
-                        $"public Option<{fd.Type}> {fd.Name};").ToList());
+                        $"public Option<{fd.Type}> {fd.PascalCaseName};").ToList());
                 });
         }
 
@@ -505,7 +505,7 @@ private static void SerializeSnapshot(Snapshot snapshot, ComponentData data)
                         m.Initializer("var update = new Update", () =>
                         {
                             return componentDetails.FieldDetails.Select(fd =>
-                                $"{fd.Name} = snapshot.{fd.Name}");
+                                $"{fd.PascalCaseName} = snapshot.{fd.PascalCaseName}");
                         });
 
                         m.Return("update");

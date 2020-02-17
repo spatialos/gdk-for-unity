@@ -1,5 +1,3 @@
-using Improbable.Gdk.CodeGeneration.Utils;
-
 namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class UnityCommandDetails : Details
@@ -9,8 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public readonly uint CommandIndex;
 
-        public UnityCommandDetails(ComponentDefinition.CommandDefinition rawCommandDefinition)
-            : base(rawCommandDefinition, defaultCase: Case.PascalCase)
+        public UnityCommandDetails(ComponentDefinition.CommandDefinition rawCommandDefinition) : base(rawCommandDefinition)
         {
             FqnRequestType = DetailsUtils.GetCapitalisedFqnTypename(rawCommandDefinition.RequestType);
             FqnResponseType = DetailsUtils.GetCapitalisedFqnTypename(rawCommandDefinition.ResponseType);

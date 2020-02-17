@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator
                     if (fieldDetailsList.Count > 0)
                     {
                         s.Line(fieldDetailsList
-                            .Select(fd => $"public {fd.Type} {fd.Name};")
+                            .Select(fd => $"public {fd.Type} {fd.PascalCaseName};")
                             .ToList());
 
                         var constructorArgs = GetConstructorArgs(fieldDetailsList);
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.CodeGenerator
                             {
                                 foreach (var fd in fieldDetailsList)
                                 {
-                                    sb.AppendLine($"{fd.Name} = {fd.CamelCaseName};");
+                                    sb.AppendLine($"{fd.PascalCaseName} = {fd.CamelCaseName};");
                                 }
                             });
                         });
@@ -86,7 +86,7 @@ namespace Improbable.Gdk.CodeGenerator
                             {
                                 serializeMethod.CustomScope(() => new[]
                                 {
-                                    fieldDetail.GetSerializationString($"instance.{fieldDetail.Name}", "obj", 0)
+                                    fieldDetail.GetSerializationString($"instance.{fieldDetail.PascalCaseName}", "obj", 0)
                                 });
                             }
                         }
@@ -108,7 +108,7 @@ namespace Improbable.Gdk.CodeGenerator
                             {
                                 deserializeMethod.CustomScope(() => new[]
                                 {
-                                    fieldDetail.GetDeserializeString($"instance.{fieldDetail.Name}", "obj", 0)
+                                    fieldDetail.GetDeserializeString($"instance.{fieldDetail.PascalCaseName}", "obj", 0)
                                 });
                             }
 
