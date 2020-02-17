@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Jobs;
@@ -9,237 +7,81 @@ namespace Improbable.Gdk.CodeGenerator.Core
 {
     public class CoreCodegenJob : CodegenJob
     {
-        private readonly List<GenerationTarget<UnityComponentDetails>> componentsToGenerate;
-
-        private readonly List<GenerationTarget<UnityTypeDetails>> typesToGenerate;
-
-        private readonly List<GenerationTarget<UnityEnumDetails>> enumsToGenerate;
-
-        private const string FileExtension = ".cs";
-
         public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
             : base(outputDir, fileSystem, store, force)
         {
-            var jobName = nameof(CoreCodegenJob);
+            const string jobName = nameof(CoreCodegenJob);
             Logger.Info($"Initialising {jobName}.");
 
-            AddInputFiles(store.SchemaFiles.ToList());
+            AddInputFiles(store.SchemaFiles);
 
-            Logger.Info("Gathering nested types.");
+            // Types
+            Logger.Trace("Gathering nested types.");
             var allNestedTypes = store.Types
                 .SelectMany(kv => store.GetNestedTypes(kv.Key))
                 .ToHashSet();
 
-            Logger.Info("Gathering types details.");
-            typesToGenerate = store.Types
+            Logger.Trace("Gathering types details.");
+            var typesToGenerate = store.Types
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityTypeDetails>(kv.Value, kv.Value.Namespace))
+                .Select(kv => kv.Value)
                 .ToList();
 
-            Logger.Info("Gathering enum details.");
-            enumsToGenerate = store.Enums
+            Logger.Trace("Adding job targets for types.");
+            AddGenerators(typesToGenerate, t => ($"{t.Name}.cs", UnityTypeGenerator.Generate));
+
+            Logger.Info($"Added job targets for {typesToGenerate.Count} types.");
+
+            // Enums
+            Logger.Trace("Gathering enum details.");
+            var enumsToGenerate = store.Enums
                 .Where(kv => !allNestedTypes.Contains(kv.Key))
-                .Select(kv => new GenerationTarget<UnityEnumDetails>(kv.Value, kv.Value.Namespace))
+                .Select(kv => kv.Value)
                 .ToList();
 
-            Logger.Info("Gathering component details.");
-            componentsToGenerate = store.Components
-                .Select(kv => new GenerationTarget<UnityComponentDetails>(kv.Value, kv.Value.Namespace))
-                .ToList();
+            Logger.Trace("Adding job targets for enums.");
+            AddGenerators(enumsToGenerate,
+                e => ($"{e.Name}.cs", UnityEnumGenerator.Generate));
 
-            Logger.Trace("Adding job output files for types.");
-            foreach (var typeTarget in typesToGenerate)
-            {
-                Logger.Trace($"Adding output file for type {typeTarget.Content.QualifiedName}.");
+            Logger.Info($"Added job targets for {enumsToGenerate.Count} enums.");
 
-                var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
-                AddOutputFile(Path.Combine(typeTarget.OutputPath, fileName));
-            }
+            // Components
+            Logger.Trace("Gathering component details.");
+            var componentsToGenerate = store.Components.Values.ToList();
 
-            Logger.Info($"Added output files for {typesToGenerate.Count} types.");
+            Logger.Trace("Adding job targets for components.");
+            AddGenerators(componentsToGenerate,
+                c => ($"{c.Name}.cs", UnityComponentDataGenerator.Generate),
+                c => ($"{c.Name}UpdateSender.cs", UnityComponentSenderGenerator.Generate),
+                c => ($"{c.Name}EcsViewManager.cs", UnityEcsViewManagerGenerator.Generate),
+                c => ($"{c.Name}ComponentDiffStorage.cs", ComponentDiffStorageGenerator.Generate),
+                c => ($"{c.Name}ComponentDiffDeserializer.cs", ComponentDiffDeserializerGenerator.Generate),
+                c => ($"{c.Name}ViewStorage.cs", ViewStorageGenerator.Generate),
+                c => ($"{c.Name}Metaclass.cs", MetaclassGenerator.Generate));
 
-            Logger.Trace("Adding job output files for components.");
-            foreach (var componentTarget in componentsToGenerate)
-            {
-                var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.Name;
+            Logger.Trace("Adding job targets for commands.");
+            AddGenerators(componentsToGenerate.Where(c => c.CommandDetails.Count > 0),
+                c => ($"{c.Name}CommandPayloads.cs", UnityCommandPayloadGenerator.Generate),
+                c => ($"{c.Name}CommandDiffDeserializer.cs", CommandDiffDeserializerGenerator.Generate),
+                c => ($"{c.Name}CommandDiffStorage.cs", CommandDiffStorageGenerator.Generate),
+                c => ($"{c.Name}CommandMetaDataStorage.cs", CommandMetaDataStorageGenerator.Generate));
 
-                Logger.Trace($"Adding job output files for component {componentTarget.Content.QualifiedName}.");
+            Logger.Trace("Adding job targets for events.");
+            AddGenerators(componentsToGenerate.Where(c => c.EventDetails.Count > 0),
+                c => ($"{c.Name}Events.cs", UnityEventGenerator.Generate));
 
-                AddOutputFile(Path.Combine(relativeOutputPath, Path.ChangeExtension(componentTarget.Content.Name, FileExtension)));
+            Logger.Trace("Adding job targets for non-blittable fields.");
+            AddGenerators(componentsToGenerate.Where(c => c.FieldDetails.Any(field => !field.IsBlittable)),
+                c => ($"{c.Name}Providers.cs", UnityReferenceTypeProviderGenerator.Generate));
 
-                if (componentTarget.Content.CommandDetails.Count > 0)
-                {
-                    Logger.Trace("Adding job output files for commands.");
+            Logger.Info($"Added job targets for {componentsToGenerate.Count} components.");
 
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension)));
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandComponents", FileExtension)));
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension)));
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension)));
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension)));
-                }
-
-                if (componentTarget.Content.EventDetails.Count > 0)
-                {
-                    Logger.Trace("Adding job output file for events.");
-
-                    AddOutputFile(Path.Combine(relativeOutputPath,
-                        Path.ChangeExtension($"{componentName}Events", FileExtension)));
-                }
-
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}UpdateSender", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}Providers", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}ViewStorage", FileExtension)));
-                AddOutputFile(Path.Combine(relativeOutputPath,
-                    Path.ChangeExtension($"{componentName}Metaclass", FileExtension)));
-            }
-
-            Logger.Info($"Added output files for {componentsToGenerate.Count} components.");
-
-            Logger.Trace("Adding job output files for enums.");
-            foreach (var enumTarget in enumsToGenerate)
-            {
-                Logger.Trace($"Adding job output file for enum {enumTarget.Content.QualifiedName}.");
-
-                var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
-                AddOutputFile(Path.Combine(enumTarget.OutputPath, fileName));
-            }
-
-            Logger.Info($"Added output files for {enumsToGenerate.Count} enums.");
             Logger.Info($"Finished initialising {jobName}.");
         }
 
         protected override void RunImpl()
         {
-            Logger.Trace("Starting code generation for enums.");
-            foreach (var enumTarget in enumsToGenerate)
-            {
-                Logger.Trace($"Generating code for {enumTarget.Content.QualifiedName}.");
-
-                var fileName = Path.ChangeExtension(enumTarget.Content.Name, FileExtension);
-                var enumCode = UnityEnumGenerator.Generate(enumTarget.Content).Format();
-                AddContent(Path.Combine(enumTarget.OutputPath, fileName), enumCode);
-            }
-
-            Logger.Info($"Finished code generation for {enumsToGenerate.Count} enums.");
-
-            Logger.Trace("Starting code generation for types.");
-            foreach (var typeTarget in typesToGenerate)
-            {
-                Logger.Trace($"Generating code for {typeTarget.Content.QualifiedName}.");
-
-                var fileName = Path.ChangeExtension(typeTarget.Content.Name, FileExtension);
-                var typeCode = UnityTypeGenerator.Generate(typeTarget.Content).Format();
-                AddContent(Path.Combine(typeTarget.OutputPath, fileName), typeCode);
-            }
-
-            Logger.Info($"Finished code generation for {typesToGenerate.Count} types.");
-
-            Logger.Trace("Starting code generation for components.");
-            foreach (var componentTarget in componentsToGenerate)
-            {
-                Logger.Trace($"Generating code for {componentTarget.Content.QualifiedName}.");
-
-                var relativeOutputPath = componentTarget.OutputPath;
-                var componentName = componentTarget.Content.Name;
-                var package = componentTarget.Package;
-
-                var componentFileName = Path.ChangeExtension(componentName, FileExtension);
-                var componentCode = UnityComponentDataGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, componentFileName), componentCode);
-
-                if (componentTarget.Content.CommandDetails.Count > 0)
-                {
-                    Logger.Trace("Generating code for commands.");
-
-                    var commandPayloadsFileName =
-                        Path.ChangeExtension($"{componentName}CommandPayloads", FileExtension);
-                    var commandPayloadCode =
-                        UnityCommandPayloadGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, commandPayloadsFileName), commandPayloadCode);
-
-                    var commandDiffDeserializerFileName =
-                        Path.ChangeExtension($"{componentName}CommandDiffDeserializer", FileExtension);
-                    var commandDiffDeserializerCode =
-                        CommandDiffDeserializerGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, commandDiffDeserializerFileName),
-                        commandDiffDeserializerCode);
-
-                    var commandDiffStorageFileName =
-                        Path.ChangeExtension($"{componentName}CommandDiffStorage", FileExtension);
-                    var commandDiffStorageCode =
-                        CommandDiffStorageGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, commandDiffStorageFileName),
-                        commandDiffStorageCode);
-
-                    var commandMetaDataStorageFileName =
-                        Path.ChangeExtension($"{componentName}CommandMetaDataStorage", FileExtension);
-                    var commandMetaDataStorageCode =
-                        CommandMetaDataStorageGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, commandMetaDataStorageFileName),
-                        commandMetaDataStorageCode);
-                }
-
-                if (componentTarget.Content.EventDetails.Count > 0)
-                {
-                    Logger.Trace("Generating code for events.");
-
-                    var eventsFileName = Path.ChangeExtension($"{componentName}Events", FileExtension);
-                    var eventsCode = UnityEventGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, eventsFileName), eventsCode);
-                }
-
-                var updateSenderFileName = Path.ChangeExtension($"{componentName}UpdateSender", FileExtension);
-                var updateSenderCode = UnityComponentSenderGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, updateSenderFileName), updateSenderCode);
-
-                var ecsViewManagerFileName = Path.ChangeExtension($"{componentName}EcsViewManager", FileExtension);
-                var ecsViewManagerCode = UnityEcsViewManagerGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, ecsViewManagerFileName), ecsViewManagerCode);
-
-                var componentDiffStorageFileName = Path.ChangeExtension($"{componentName}ComponentDiffStorage", FileExtension);
-                var componentDiffStorageCode = ComponentDiffStorageGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, componentDiffStorageFileName), componentDiffStorageCode);
-
-                var componentDiffDeserializerFileName = Path.ChangeExtension($"{componentName}ComponentDiffDeserializer", FileExtension);
-                var componentDiffDeserializerCode = ComponentDiffDeserializerGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, componentDiffDeserializerFileName), componentDiffDeserializerCode);
-
-                if (componentTarget.Content.FieldDetails.Any(field => !field.IsBlittable))
-                {
-                    Logger.Trace("Generating code for non-blittable fields.");
-
-                    var referenceProviderFileName = Path.ChangeExtension($"{componentName}Providers", FileExtension);
-                    var referenceProviderTranslationCode =
-                        UnityReferenceTypeProviderGenerator.Generate(componentTarget.Content).Format();
-                    AddContent(Path.Combine(relativeOutputPath, referenceProviderFileName),
-                        referenceProviderTranslationCode);
-                }
-
-                var viewStorageFileName = Path.ChangeExtension($"{componentName}ViewStorage", FileExtension);
-                var viewStorageCode = ViewStorageGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, viewStorageFileName), viewStorageCode);
-
-                var metaclassFileName = Path.ChangeExtension($"{componentName}Metaclass", FileExtension);
-                var metaclassCode = MetaclassGenerator.Generate(componentTarget.Content).Format();
-                AddContent(Path.Combine(relativeOutputPath, metaclassFileName), metaclassCode);
-            }
-
-            Logger.Info($"Finished code generation for {componentsToGenerate.Count} components.");
+            // base CodegenJob runs jobs
         }
     }
 }

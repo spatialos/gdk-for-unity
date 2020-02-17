@@ -11,7 +11,6 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public class WorkerGenerationJob : CodegenJob
     {
-        private readonly List<string> workerTypesToGenerate;
         private const string WorkerTypeFlag = "+workerType";
         private const string WorkerFileName = "WorkerMenu.cs";
         private const string WorkerListFileName = "WorkerMenu.txt";
@@ -25,33 +24,23 @@ namespace Improbable.Gdk.CodeGenerator
             const string jobName = nameof(WorkerGenerationJob);
             Logger.Info($"Initialising {jobName}.");
 
-            workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
+            var workerTypesToGenerate = ExtractWorkerTypes(CodeGeneratorOptions.Instance.WorkerJsonDirectory);
 
-            var outputFilePaths = new List<string>
-            {
-                Path.Combine(relativeEditorPath, WorkerFileName),
-                Path.Combine(relativeEditorPath, WorkerListFileName),
-                Path.Combine(relativeOutputPath, BuildSystemFileName)
-            };
+            Logger.Trace($"Adding job target {WorkerFileName}.");
+            AddJobTarget(Path.Combine(relativeEditorPath, WorkerFileName),
+                () => UnityWorkerMenuGenerator.Generate(workerTypesToGenerate));
 
-            AddOutputFiles(outputFilePaths);
-            Logger.Info($"Added {outputFilePaths.Count} job output files.");
+            Logger.Trace($"Adding job target for {BuildSystemFileName}.");
+            AddJobTarget(Path.Combine(relativeEditorPath, BuildSystemFileName),
+                () => BuildSystemAssemblyGenerator.Generate());
+
+            Logger.Trace($"Adding job target for {WorkerListFileName}.");
+            AddJobTarget(Path.Combine(relativeOutputPath, WorkerListFileName),
+                () => string.Join(Environment.NewLine, workerTypesToGenerate));
+
+            Logger.Info("Added 3 job targets.");
 
             Logger.Info($"Finished initialising {jobName}.");
-        }
-
-        protected override void RunImpl()
-        {
-            Logger.Info($"Generating {WorkerFileName}.");
-            var workerCode = UnityWorkerMenuGenerator.Generate(workerTypesToGenerate).Format();
-            AddContent(Path.Combine(relativeEditorPath, WorkerFileName), workerCode);
-
-            Logger.Info($"Generating {BuildSystemFileName}.");
-            var assemblyCode = BuildSystemAssemblyGenerator.Generate();
-            AddContent(Path.Combine(relativeOutputPath, BuildSystemFileName), assemblyCode);
-
-            Logger.Info($"Generating {WorkerListFileName}.");
-            AddContent(Path.Combine(relativeEditorPath, WorkerListFileName), string.Join(Environment.NewLine, workerTypesToGenerate));
         }
 
         private List<string> ExtractWorkerTypes(string path)
@@ -61,7 +50,7 @@ namespace Improbable.Gdk.CodeGenerator
             var workerTypes = new List<string>();
 
             var fileNames = Directory.EnumerateFiles(path, "*.json").ToList();
-            Logger.Trace($"Found {fileNames.Count()} worker json files:\n - {string.Join("\n - ", fileNames)}");
+            Logger.Trace($"Found {fileNames.Count} worker json files:\n - {string.Join("\n - ", fileNames)}");
 
             foreach (var fileName in fileNames)
             {
@@ -96,6 +85,11 @@ namespace Improbable.Gdk.CodeGenerator
 
             Logger.Info($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
             return workerTypes;
+        }
+
+        protected override void RunImpl()
+        {
+            // base CodegenJob runs jobs
         }
     }
 }

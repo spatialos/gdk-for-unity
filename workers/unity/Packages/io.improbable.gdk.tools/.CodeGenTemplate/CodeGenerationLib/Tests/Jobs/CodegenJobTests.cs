@@ -122,7 +122,7 @@ namespace CodeGeneration.Tests.Jobs
 
             public void AddOutputFile(string path, DateTime timestamp, bool shouldExist)
             {
-                base.AddOutputFile(path);
+                AddJobTarget(path, () => string.Empty);
                 if (shouldExist)
                 {
                     myFileSystem.AddFile(path, timestamp);
