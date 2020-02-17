@@ -225,6 +225,11 @@ namespace Improbable.Gdk.Tools
                 commandArgs = $"{commandArgs} --runtime_ip={runtimeIp}";
             }
 
+            if (!string.IsNullOrEmpty(toolsConfig.RuntimeVersionOverride))
+            {
+                commandArgs = $"{commandArgs} --experimental_runtime={toolsConfig.RuntimeVersionOverride}";
+            }
+
             if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 command = "osascript";
