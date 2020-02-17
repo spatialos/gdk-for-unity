@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core
         internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentTypes => ComponentDatabase.Metaclasses
             .Select(pair => (pair.Key, pair.Value.DiffStorage));
 
-        internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandTypes => ComponentDatabase.Metaclasses
+        internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandSendStorageTypes => ComponentDatabase.Metaclasses
             .Select(componentCommands => (componentCommands.Key,
                 componentCommands.Value.Commands.Select(m => m.SendStorage)));
     }
@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            foreach (var (componentId, storageTypes) in MessagesToSendMetadata.CommandTypes)
+            foreach (var (componentId, storageTypes) in MessagesToSendMetadata.CommandSendStorageTypes)
             {
                 foreach (var sendStorageType in storageTypes)
                 {

@@ -57,9 +57,19 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
                                 });
                             });
 
+                            if (eventDetailsList.Count > 0)
+                            {
+                                storage.Method("public override void Clear()", m =>
+                                {
+                                    m.Line("base.Clear();");
+                                    m.Line(eventDetailsList
+                                        .Select(ev => $"{ev.CamelCaseName}EventStorage.Clear();").ToList());
+                                });
+                            }
+
                             storage.Method("protected override void ClearEventStorage(long entityId)", m =>
                             {
-                                m.Line(eventDetailsList.Select(ev => $"{ev.CamelCaseName}EventStorage.Clear();").ToList());
+                                m.Line(eventDetailsList.Select(ev => $"{ev.CamelCaseName}EventStorage.RemoveAll(change => change.EntityId.Id == entityId);").ToList());
                             });
 
                             foreach (var ev in eventDetailsList)
