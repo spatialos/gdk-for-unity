@@ -35,6 +35,9 @@ namespace Improbable.Gdk.DeploymentLauncher
             [Option("tags", Required = false, HelpText = "Tags to add to this deployment. Comma separated",
                 Separator = ',')]
             public IEnumerable<string> Tags { get; set; }
+
+            [Option("runtime_version", Required = false, HelpText = "The runtime version to use for this deployment.")]
+            public string RuntimeVersion { get; set; }
         }
 
         [Verb("create-sim", HelpText = "Create a simulated player deployment")]
