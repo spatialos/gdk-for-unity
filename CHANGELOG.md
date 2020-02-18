@@ -14,6 +14,11 @@
 
 - Downgraded the level of several code generator logs from `Info` to `Trace`. [#1277](https://github.com/spatialos/gdk-for-unity/pull/1277)
 
+### Fixed
+
+- Fixed a bug where code generation would happen on every Unity compilation, despite the code generator returning successfully. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
+- Fixed a bug where dotnet output from the code generator would cause exceptions to be thrown. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
+
 ### Removed
 
 - Removed the old `CodegenJob` model. [#1277](https://github.com/spatialos/gdk-for-unity/pull/1277)
@@ -21,6 +26,7 @@
 ### Internal
 
 - Ported all modules to the new `CodegenJob` model. [#1276](https://github.com/spatialos/gdk-for-unity/pull/1276)
+- Running forced code generation now deletes the `ImprobableCodegen.marker` file. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
 
 ## `0.3.3` - 2020-02-14
 

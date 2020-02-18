@@ -89,6 +89,8 @@ namespace Improbable.Gdk.Tools
 
         private static void ForceGenerate()
         {
+            File.Delete(StartupCodegenMarkerFile);
+
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
@@ -152,12 +154,16 @@ namespace Improbable.Gdk.Tools
                     var exitCode = RedirectedProcess.Command(Common.DotNetBinary)
                         .WithArgs("run", "-p", $"\"{CodegenExe}\"")
                         .RedirectOutputOptions(OutputRedirectBehaviour.None)
-                        .AddOutputProcessing(ProcessDotnetOutput)
-                        .AddOutputProcessing(ProcessCodegenOutput)
+                        .AddOutputProcessing(ProcessCodegenStdOut)
                         .Run();
 
                     var numWarnings = codegenLogCounts[CodegenLogLevel.Warn];
                     var numErrors = codegenLogCounts[CodegenLogLevel.Error] + codegenLogCounts[CodegenLogLevel.Fatal];
+
+                    if (exitCode.ExitCode == 0)
+                    {
+                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
+                    }
 
                     if (exitCode.ExitCode != 0 || numErrors > 0)
                     {
@@ -209,8 +215,6 @@ namespace Improbable.Gdk.Tools
                         {
                             Debug.Log("Code generation complete!");
                         }
-
-                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
                     }
                 }
 
@@ -275,27 +279,36 @@ namespace Improbable.Gdk.Tools
                 "Close");
         }
 
-        private static void ProcessDotnetOutput(string output)
+        private static void ProcessCodegenStdOut(string output)
         {
             var match = dotnetRegex.Match(output);
             if (match.Success)
             {
-                switch (match.Groups["type"].Value)
-                {
-                    case "warning":
-                        Debug.LogWarning(output);
-                        break;
-                    case "error":
-                        Debug.LogError(output);
-                        break;
-                    default:
-                        Debug.Log(output);
-                        break;
-                }
+                ProcessDotnetOutput(output, match);
+            }
+            else
+            {
+                ProcessJsonOutput(output);
             }
         }
 
-        private static void ProcessCodegenOutput(string output)
+        private static void ProcessDotnetOutput(string output, Match match)
+        {
+            switch (match.Groups["type"].Value)
+            {
+                case "warning":
+                    Debug.LogWarning(output);
+                    break;
+                case "error":
+                    Debug.LogError(output);
+                    break;
+                default:
+                    Debug.Log(output);
+                    break;
+            }
+        }
+
+        private static void ProcessJsonOutput(string output)
         {
             try
             {
