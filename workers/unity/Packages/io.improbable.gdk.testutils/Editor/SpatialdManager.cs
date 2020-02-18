@@ -191,7 +191,17 @@ namespace Improbable.Gdk.TestUtils.Editor
                 .RunAsync()
                 .ConfigureAwait(false);
 
+            if (result.ExitCode != 0)
+            {
+                throw new Exception($"Failed to list deployments with error:\n {string.Join("\n", result.Stderr)}");
+            }
+
             var json = Json.Deserialize(string.Join("", result.Stdout));
+            if (json == null)
+            {
+                throw new Exception($"Failed to list deployments with error:\nEmpty output\n {string.Join("\n", result.Stderr)}");
+            }
+
             var content = (Dictionary<string, object>) json["content"];
 
             if (!content.TryGetValue("deployments", out var deploymentsObj))
