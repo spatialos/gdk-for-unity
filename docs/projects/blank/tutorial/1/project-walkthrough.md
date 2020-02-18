@@ -19,7 +19,7 @@ Before exploring the contents of the Blank Project, we recommend you first downl
 
 <%(#Expandable title="Zip file download")%>
 
- While we recommend using Git, if you prefer to, you can get the source code for the Blank Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-blank-project/releases" target="_blank">here</a>. Please download the latest release, the file should be called something like `gdk-for-unity-blank-project-x.y.z.zip`.
+ While we recommend using Git, if you prefer to, you can get the source code for the Blank Project by downloading one zip file <a href="https://github.com/spatialos/gdk-for-unity-blank-project/releases" target="_blank">here</a>. Please download the latest release, the file should be called `Source code`.
 
 <%(/Expandable)%>
 
