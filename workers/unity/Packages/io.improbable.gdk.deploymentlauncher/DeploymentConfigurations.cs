@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Improbable.Gdk.Tools;
 
 namespace Improbable.Gdk.DeploymentLauncher
 {
@@ -298,6 +299,13 @@ namespace Improbable.Gdk.DeploymentLauncher
             if (Tags.Count > 0)
             {
                 args.Add($"--tags={string.Join(",", Tags)}");
+            }
+
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
+            if (!string.IsNullOrEmpty(toolsConfig.RuntimeVersionOverride))
+            {
+                args.Add($"--runtime_version={toolsConfig.RuntimeVersionOverride}");
             }
 
             return args;
