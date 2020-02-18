@@ -14,7 +14,12 @@ namespace Improbable.Gdk.CodeGenerator
         ""Editor""
     ],
     ""excludePlatforms"": [],
-    ""allowUnsafeCode"": false
+    ""allowUnsafeCode"": false,
+    ""overrideReferences"": false,
+    ""precompiledReferences"": [],
+    ""autoReferenced"": true,
+    ""defineConstraints"": [],
+    ""versionDefines"": []
 }
 ";
         }
