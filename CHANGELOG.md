@@ -14,7 +14,7 @@
 
 ### Fixed
 
-- Fixed a bug where the `ImprobableCodegen.marker` file would not get created despite the code generator returning successfully. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
+- Fixed a bug where code generation would happen on every Unity compilation, despite the code generator returning successfully. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
 - Fixed a bug where dotnet output from the code generator would cause exceptions to be thrown. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
 
 ### Removed
