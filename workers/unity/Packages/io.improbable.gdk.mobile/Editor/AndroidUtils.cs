@@ -26,10 +26,10 @@ namespace Improbable.Gdk.Mobile
             the "product" capture would be "starltexx", "model" would be "SM_G960F" and "device" would be "starlte".
         */
         private static readonly Regex DeviceMatchRegex = new Regex(pattern:
-            "(?:(?<id>[\\w_\\d-]+)\\s*device).*" +
-            "(?:product:(?<product>[\\w_\\d]+))\\s*" +
-            "(?:model:(?<model>[\\w_\\d]+))\\s*" +
-            "(?:device:(?<device>[\\w_\\d]+)).*");
+            "(?:(?<id>[\\w\\d_-]+)\\s*device).*" +
+            "(?:product:(?<product>[\\w\\d_-]+))\\s*" +
+            "(?:model:(?<model>[\\w\\d_-]+))\\s*" +
+            "(?:device:(?<device>[\\w\\d_-]+)).*");
 
         public static (List<DeviceLaunchConfig> emulators, List<DeviceLaunchConfig> devices) RetrieveAvailableEmulatorsAndDevices()
         {
