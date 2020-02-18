@@ -89,6 +89,8 @@ namespace Improbable.Gdk.Tools
 
         private static void ForceGenerate()
         {
+            File.Delete(StartupCodegenMarkerFile);
+
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
@@ -159,6 +161,11 @@ namespace Improbable.Gdk.Tools
                     var numWarnings = codegenLogCounts[CodegenLogLevel.Warn];
                     var numErrors = codegenLogCounts[CodegenLogLevel.Error] + codegenLogCounts[CodegenLogLevel.Fatal];
 
+                    if (exitCode.ExitCode == 0)
+                    {
+                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
+                    }
+
                     if (exitCode.ExitCode != 0 || numErrors > 0)
                     {
                         if (!Application.isBatchMode)
@@ -209,8 +216,6 @@ namespace Improbable.Gdk.Tools
                         {
                             Debug.Log("Code generation complete!");
                         }
-
-                        File.WriteAllText(StartupCodegenMarkerFile, string.Empty);
                     }
                 }
 
