@@ -63,6 +63,11 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                     }
                 }
 
+                if (!string.IsNullOrEmpty(options.RuntimeVersion))
+                {
+                    deployment.RuntimeVersion = options.RuntimeVersion;
+                }
+
                 var deploymentOp = deploymentServiceClient.CreateDeployment(new CreateDeploymentRequest
                 {
                     Deployment = deployment

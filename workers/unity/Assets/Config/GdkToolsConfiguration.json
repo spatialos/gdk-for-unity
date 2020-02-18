@@ -6,8 +6,10 @@
     "CodegenLogOutputDir": "logs/",
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "../../build/assembly/schema",
+    "SerializationOverrides": [],
     "DevAuthTokenDir": "Resources",
     "DevAuthTokenLifetimeDays": 30,
     "SaveDevAuthTokenToFile": false,
-    "SerializationOverrides": []
+    "EnvironmentPlatform": "",
+    "RuntimeVersionOverride": ""
 }
