@@ -32,7 +32,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [Test]
-        public void Reader_is_disabled_if_component_removed()
+        public void Reader_is_disabled_if_gameobject_unlinked()
         {
             createdGameObject = CreateAndLinkGameObjectWithComponent<PositionReaderBehaviour>(EntityId);
             var reader = createdGameObject.GetComponent<PositionReaderBehaviour>().Reader;
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [Test]
-        public void Writer_is_disabled_if_loses_auth()
+        public void Writer_is_disabled_if_gameobject_unlinked()
         {
             ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
             Update();
@@ -59,7 +59,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [Test]
-        public void CommandSender_is_disabled_if_entity_removed()
+        public void CommandSender_is_disabled_if_gameobject_unlinked()
         {
             createdGameObject = CreateAndLinkGameObjectWithComponent<CommandSender>(EntityId);
             var sender = createdGameObject.GetComponent<CommandSender>().Sender;
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [Test]
-        public void CommandReceiver_is_disabled_if_loses_auth()
+        public void CommandReceiver_is_disabled_if_gameobject_unlinked()
         {
             ConnectionHandler.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
             Update();
@@ -93,22 +93,31 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
 
         private class PositionReaderBehaviour : MonoBehaviour
         {
+#pragma warning disable 649
             [Require] public PositionReader Reader;
+#pragma warning restore 649
         }
 
         private class PositionWriterBehaviour : MonoBehaviour
         {
+#pragma warning disable 649
             [Require] public PositionWriter Writer;
+#pragma warning restore 649
         }
 
         private class CommandSender : MonoBehaviour
         {
+#pragma warning disable 649
+
             [Require] public TestCommandsCommandSender Sender;
+#pragma warning restore 649
         }
 
         private class CommandReceiver : MonoBehaviour
         {
+#pragma warning disable 649
             [Require] public TestCommandsCommandReceiver Receiver;
+#pragma warning restore 649
         }
     }
 }
