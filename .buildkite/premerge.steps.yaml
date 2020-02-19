@@ -46,40 +46,54 @@ linux: &linux
       - exit_status: -1
         limit: 3
 
+macos: &macos
+  agents:
+    - "capable_of_building=gdk-for-unity"
+    - "environment=production"
+    - "permission_set=builder"
+    - "platform=macos"
+    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
+  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
+  retry:
+    automatic:
+        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+      - exit_status: -1
+        limit: 3
+
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
 
 dag: true
 
 steps:
-  - label: "test"
-    id: "test"
+  - label: ":windows: ~ test"
+    id: "test-windows"
     command: bash -c ci/test.sh
     <<: *common
     artifact_paths:
       - logs/**/*
 
-  - label: "annotate test results :pencil2:"
+  - label: ":debian: ~ annotate test results :pencil2:"
     depends_on:
-      - step: "test"
+      - step: "test-windows"
         allow_failure: true
     plugins:
       - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
           inputs:
-            - label: ":octagonal_sign: Test failures "
+            - label: ":octagonal_sign: :windows: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
               type: nunit
           formatter:
             type: details
     <<: *linux
 
-  - label: "build deployment launcher :rocket:"
+  - label: ":windows: ~ build deployment launcher :rocket:"
     command: bash -c ci/build-deployment-launcher.sh
     <<: *common
     artifact_paths:
       - logs/**/*
 
-  - label: "build :android:"
+  - label: ":windows: ~ build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -91,19 +105,7 @@ steps:
       BUILD_TARGET_FILTER: "android"
       SCRIPTING_BACKEND: "mono"
 
-  - label: "build :ios:"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *common
-    artifact_paths:
-      - logs/**/*
-      - workers/unity/build/worker/**/*
-    env:
-      WORKER_TYPE: "MobileClient"
-      BUILD_ENVIRONMENT: "local"
-      BUILD_TARGET_FILTER: "ios"
-      SCRIPTING_BACKEND: "il2cpp"
-
-  - label: "build UnityClient mono"
+  - label: ":windows: ~ build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -113,7 +115,7 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
 
-  - label: "build UnityClient il2cpp"
+  - label: ":windows: ~ build UnityClient il2cpp"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -123,7 +125,7 @@ steps:
       BUILD_ENVIRONMENT: "local"
       SCRIPTING_BACKEND: "il2cpp"
 
-  - label: "build UnityGameLogic mono"
+  - label: ":windows: ~ build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *common
     artifact_paths:
@@ -132,3 +134,15 @@ steps:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+
+  - label: ":darwin: ~ build :ios:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "ios"
+      SCRIPTING_BACKEND: "il2cpp"
+      TARGET_IOS_SDK: "simulator"
