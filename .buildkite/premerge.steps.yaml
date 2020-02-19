@@ -52,7 +52,7 @@ macos: &macos
     - "environment=production"
     - "permission_set=builder"
     - "platform=macos"
-    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1581595003-dd6bb2dfc0b0f477}"
+    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -73,27 +73,15 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: ":darwin: ~ test"
-    id: "test-darwin"
-    command: bash -c ci/test.sh
-    <<: *macos
-    artifact_paths:
-      - logs/**/*
-
   - label: ":debian: ~ annotate test results :pencil2:"
     depends_on:
       - step: "test-windows"
-        allow_failure: true
-      - step: "test-darwin"
         allow_failure: true
     plugins:
       - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
           inputs:
             - label: ":octagonal_sign: :windows: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
-              type: nunit
-            - label: ":octagonal_sign: :darwin: Test failures "
-              artifact_path: "logs/nunit/*.xml"
               type: nunit
           formatter:
             type: details
