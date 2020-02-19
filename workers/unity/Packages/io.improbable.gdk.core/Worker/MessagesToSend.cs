@@ -14,8 +14,7 @@ namespace Improbable.Gdk.Core
                 .Select(pair => (pair.Key, pair.Value.DiffStorage));
 
             internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandSendStorageTypes => ComponentDatabase.Metaclasses
-                .Select(componentCommands => (componentCommands.Key,
-                    componentCommands.Value.Commands.Select(m => m.SendStorage)));
+                .Select(componentCommands => (componentCommands.Key, componentCommands.Value.Commands.Select(m => m.SendStorage)));
         }
 
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =

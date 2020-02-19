@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     public abstract class DiffComponentStorage<TUpdate> : IDiffUpdateStorage<TUpdate>, IDiffComponentAddedStorage<TUpdate>, IDiffAuthorityStorage
         where TUpdate : ISpatialComponentUpdate
     {
-        private readonly HashSet<EntityId> entitiesUpdated = new HashSet<EntityId>();
+        protected readonly HashSet<EntityId> EntitiesUpdated = new HashSet<EntityId>();
         private readonly uint componentId;
 
         private readonly List<EntityId> componentsAdded = new List<EntityId>();
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core
 
         public virtual void Clear()
         {
-            entitiesUpdated.Clear();
+            EntitiesUpdated.Clear();
             updateStorage.Clear();
             authorityChanges.Clear();
             componentsAdded.Clear();
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core
             var id = new EntityId(entityId);
 
             // Adding a component always updates it, so this will catch the case where the component was just added
-            if (entitiesUpdated.Remove(id))
+            if (EntitiesUpdated.Remove(id))
             {
                 updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
                 authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
@@ -80,7 +80,7 @@ namespace Improbable.Gdk.Core
 
         public void AddUpdate(ComponentUpdateReceived<TUpdate> update)
         {
-            entitiesUpdated.Add(update.EntityId);
+            EntitiesUpdated.Add(update.EntityId);
             updateStorage.InsertSorted(update, updateComparer);
         }
 
