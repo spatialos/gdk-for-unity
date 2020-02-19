@@ -28,6 +28,7 @@
 
 - Ported all modules to the new `CodegenJob` model. [#1276](https://github.com/spatialos/gdk-for-unity/pull/1276)
 - Running forced code generation now deletes the `ImprobableCodegen.marker` file. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
+- Added tests coverage for the interaction between unlinking a GameObject and Reader/Writer/CommandSender/CommandReceiver state. [#1295](https://github.com/spatialos/gdk-for-unity/pull/1295)
 
 ## `0.3.3` - 2020-02-14
 
