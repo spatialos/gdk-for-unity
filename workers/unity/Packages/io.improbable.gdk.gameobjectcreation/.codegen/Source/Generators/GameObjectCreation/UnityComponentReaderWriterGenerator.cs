@@ -129,12 +129,7 @@ public override Subscription<{componentDetails.Name}Reader> Subscribe(EntityId e
 public override void Cancel(ISubscription subscription)
 {{
     var sub = ((Subscription<{componentDetails.Name}Reader>) subscription);
-    if (sub.HasValue)
-    {{
-        var reader = sub.Value;
-        reader.IsValid = false;
-        reader.RemoveAllCallbacks();
-    }}
+    ResetValue(sub);
 
     var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
     subscriptions.Remove(sub);
@@ -151,7 +146,9 @@ public override void ResetValue(ISubscription subscription)
     var sub = ((Subscription<{componentDetails.Name}Reader>) subscription);
     if (sub.HasValue)
     {{
-        sub.Value.RemoveAllCallbacks();
+        var reader = sub.Value;
+        reader.IsValid = false;
+        reader.RemoveAllCallbacks();
     }}
 }}
 
@@ -262,12 +259,7 @@ public override Subscription<{componentDetails.Name}Writer> Subscribe(EntityId e
 public override void Cancel(ISubscription subscription)
 {{
     var sub = ((Subscription<{componentDetails.Name}Writer>) subscription);
-    if (sub.HasValue)
-    {{
-        var reader = sub.Value;
-        reader.IsValid = false;
-        reader.RemoveAllCallbacks();
-    }}
+    ResetValue(sub);
 
     var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
     subscriptions.Remove(sub);
@@ -284,7 +276,9 @@ public override void ResetValue(ISubscription subscription)
     var sub = ((Subscription<{componentDetails.Name}Writer>) subscription);
     if (sub.HasValue)
     {{
-        sub.Value.RemoveAllCallbacks();
+        var reader = sub.Value;
+        reader.IsValid = false;
+        reader.RemoveAllCallbacks();
     }}
 }}
 ");
