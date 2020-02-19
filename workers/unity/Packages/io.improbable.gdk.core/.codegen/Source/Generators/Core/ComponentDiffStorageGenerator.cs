@@ -89,7 +89,8 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
 
                                 storage.Method($"void IDiffEventStorage<{eventType}>.AddEvent(ComponentEventReceived<{eventType}> ev)", () => new[]
                                 {
-                                    $"{ev.CamelCaseName}EventStorage.InsertSorted(ev, {ev.CamelCaseName}Comparer);"
+                                    $"{ev.CamelCaseName}EventStorage.InsertSorted(ev, {ev.CamelCaseName}Comparer);",
+                                    "EntitiesUpdated.Add(ev.EntityId);"
                                 });
                             }
                         });
