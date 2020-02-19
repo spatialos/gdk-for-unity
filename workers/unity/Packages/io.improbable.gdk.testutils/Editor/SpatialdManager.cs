@@ -199,7 +199,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             var json = Json.Deserialize(string.Join("", result.Stdout));
             if (json == null)
             {
-                throw new Exception($"Failed to list deployments with error:\nEmpty output\n {string.Join("\n", result.Stderr)}");
+                throw new Exception($"Failed to list deployments because there was no output. Error: \n {string.Join("\n", result.Stderr)}");
             }
 
             var content = (Dictionary<string, object>) json["content"];
