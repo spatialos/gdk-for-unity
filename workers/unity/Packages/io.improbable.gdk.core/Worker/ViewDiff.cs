@@ -11,15 +11,13 @@ namespace Improbable.Gdk.Core
     {
         private static class ViewDiffMetadata
         {
-            internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentStorageTypes => ComponentDatabase
-                .Metaclasses
+            internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentStorageTypes => ComponentDatabase.Metaclasses
                 .Select(pair => (pair.Key, pair.Value.DiffStorage));
 
             internal static IEnumerable<(uint Key, IEnumerable<Type> storageTypes)> CommandDiffStorageTypes => ComponentDatabase.Metaclasses
                 .Select(componentCommands => (componentCommands.Key,
                     componentCommands.Value.Commands.Select(m => m.DiffStorage)));
         }
-
 
         public string DisconnectMessage;
 

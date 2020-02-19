@@ -54,7 +54,6 @@ namespace Improbable.Gdk.Core
                 updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
                 authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
 
-                //playerCollidedEventStorage.RemoveAll(change => change.EntityId.Id == entityId);
                 ClearEventStorage(entityId);
             }
 
@@ -65,7 +64,6 @@ namespace Improbable.Gdk.Core
         }
 
         protected abstract void ClearEventStorage(long entityId);
-
 
         public void AddEntityComponent(long entityId, TUpdate component)
         {
