@@ -29,6 +29,10 @@ namespace Improbable.Gdk.Tools
         public string FullCodegenOutputPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", CodegenOutputDir));
         public string DefaultCodegenLogPath => Path.GetFullPath(Path.Combine(CodegenLogOutputDir, "codegen-output.log"));
 
+        public string RuntimeVersion => string.IsNullOrEmpty(RuntimeVersionOverride)
+            ? DefaultValues.RuntimeVersion.Value
+            : RuntimeVersionOverride;
+
         private const string CustomSnapshotPathPrefKey = "CustomSnapshotPath";
 
         public string CustomSnapshotPath
@@ -159,6 +163,12 @@ namespace Improbable.Gdk.Tools
             public const string SchemaSourceDir = "../../schema";
             public const string DevAuthTokenDir = "Resources";
             public const int DevAuthTokenLifetimeDays = 30;
+
+            // NOTE: Cannot use regular static initialization as we cannot read package metadata when it is
+            // initialized. We also don't want to hit the filesystem every single time we access this. So we use
+            // Lazy<T>! 
+            public static readonly Lazy<string> RuntimeVersion = new Lazy<string>(() => File.ReadAllText(PinnedRuntimeFilePath).Trim());
+            private static string PinnedRuntimeFilePath => Path.Combine(Common.GetThisPackagePath(), "runtime.pinned");
         }
     }
 }
