@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public class MessagesToSend
     {
-        private static List<Type> componentTypes;
-        private static List<Type> commandTypes;
+        private static class MessagesToSendMetadata
+        {
+            internal static IEnumerable<(uint componentId, Type diffStorageType)> ComponentTypes => ComponentDatabase.Metaclasses
+                .Select(pair => (pair.Key, pair.Value.DiffStorage));
+
+            internal static IEnumerable<(uint componentId, IEnumerable<Type> storageTypes)> CommandSendStorageTypes => ComponentDatabase.Metaclasses
+                .Select(componentCommands => (componentCommands.Key, componentCommands.Value.Commands.Select(m => m.SendStorage)));
+        }
 
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
@@ -20,8 +25,8 @@ namespace Improbable.Gdk.Core
 
         private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
 
-        private readonly Dictionary<uint, Dictionary<uint, IComponentCommandSendStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, IComponentCommandSendStorage>>();
+        private readonly Dictionary<(uint componentId, uint commandId), IComponentCommandSendStorage> componentCommandToStorage =
+            new Dictionary<(uint componentId, uint commandId), IComponentCommandSendStorage>();
 
         private readonly Dictionary<Type, ICommandSendStorage> typeToCommandStorage =
             new Dictionary<Type, ICommandSendStorage>();
@@ -39,27 +44,12 @@ namespace Improbable.Gdk.Core
 
         public MessagesToSend()
         {
-            if (componentTypes == null)
+            foreach (var (componentId, diffStorageType) in MessagesToSendMetadata.ComponentTypes)
             {
-                componentTypes = ComponentDatabase.Metaclasses
-                    .Select(pair => pair.Value.DiffStorage)
-                    .ToList();
-            }
-
-            if (commandTypes == null)
-            {
-                commandTypes = ComponentDatabase.Metaclasses
-                    .SelectMany(pair => pair.Value.Commands)
-                    .Select(metaclass => metaclass.SendStorage)
-                    .ToList();
-            }
-
-            foreach (var type in componentTypes)
-            {
-                var instance = (IComponentDiffStorage) Activator.CreateInstance(type);
+                var instance = (IComponentDiffStorage) Activator.CreateInstance(diffStorageType);
 
                 componentStorageList.Add(instance);
-                componentIdToComponentStorage.Add(instance.GetComponentId(), instance);
+                componentIdToComponentStorage.Add(componentId, instance);
 
                 typeToComponentStorage.Add(instance.GetUpdateType(), instance);
                 foreach (var eventType in instance.GetEventTypes())
@@ -68,21 +58,17 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            foreach (var type in commandTypes)
+            foreach (var (componentId, storageTypes) in MessagesToSendMetadata.CommandSendStorageTypes)
             {
-                var instance = (IComponentCommandSendStorage) Activator.CreateInstance(type);
-
-                commandStorageList.Add(instance);
-                if (!componentIdToCommandIdToStorage.TryGetValue(instance.ComponentId,
-                    out var commandIdToStorage))
+                foreach (var sendStorageType in storageTypes)
                 {
-                    commandIdToStorage = new Dictionary<uint, IComponentCommandSendStorage>();
-                    componentIdToCommandIdToStorage.Add(instance.ComponentId, commandIdToStorage);
-                }
+                    var instance = (IComponentCommandSendStorage) Activator.CreateInstance(sendStorageType);
 
-                commandIdToStorage.Add(instance.CommandId, instance);
-                typeToCommandStorage.Add(instance.RequestType, instance);
-                typeToCommandStorage.Add(instance.ResponseType, instance);
+                    commandStorageList.Add(instance);
+                    componentCommandToStorage.Add((componentId, instance.CommandId), instance);
+                    typeToCommandStorage.Add(instance.RequestType, instance);
+                    typeToCommandStorage.Add(instance.ResponseType, instance);
+                }
             }
 
             commandStorageList.Add(worldCommandStorage);
@@ -203,17 +189,12 @@ namespace Improbable.Gdk.Core
 
         internal IComponentCommandSendStorage GetCommandSendStorage(uint componentId, uint commandId)
         {
-            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            if (!componentCommandToStorage.TryGetValue((componentId, commandId), out var commandSendStorage))
             {
-                throw new ArgumentException($"Can not find command send storage. Unknown component ID {componentId}");
+                throw new ArgumentException($"Can not find command send storage. Could not find Command ID {commandId} for Component ID {componentId}");
             }
 
-            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-            {
-                throw new ArgumentException($"Can not find command send storage. Unknown command ID {commandId}");
-            }
-
-            return storage;
+            return commandSendStorage;
         }
 
         internal WorldCommandsToSendStorage GetWorldCommandStorage()

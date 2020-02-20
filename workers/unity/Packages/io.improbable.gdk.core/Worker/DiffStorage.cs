@@ -8,7 +8,6 @@ namespace Improbable.Gdk.Core
     {
         Type[] GetEventTypes();
         Type GetUpdateType();
-        uint GetComponentId();
 
         void Clear();
         void RemoveEntityComponent(long entityId);
