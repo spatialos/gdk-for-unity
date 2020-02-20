@@ -307,7 +307,7 @@ public {componentDetails.Name}.Component Data
     {{
         if (!IsValid)
         {{
-            throw new InvalidOperationException(""Oh noes!"");
+            throw new InvalidOperationException(""Cannot read component data when Reader is not valid."");
         }}
 
         return EntityManager.GetComponentData<{componentDetails.Name}.Component>(Entity);
@@ -320,7 +320,7 @@ public Authority Authority
     {{
         if (!IsValid)
         {{
-            throw new InvalidOperationException(""Oh noes!"");
+            throw new InvalidOperationException(""Cannot read authority when Reader is not valid"");
         }}
 
         return ComponentUpdateSystem.GetAuthority(EntityId, {componentDetails.Name}.ComponentId);
