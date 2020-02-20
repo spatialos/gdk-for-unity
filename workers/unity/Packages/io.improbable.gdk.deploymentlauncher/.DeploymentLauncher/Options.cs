@@ -36,7 +36,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 Separator = ',')]
             public IEnumerable<string> Tags { get; set; }
 
-            [Option("runtime_version", Required = false, HelpText = "The runtime version to use for this deployment.")]
+            [Option("runtime_version", Required = true, HelpText = "The runtime version to use for this deployment.")]
             public string RuntimeVersion { get; set; }
         }
 
