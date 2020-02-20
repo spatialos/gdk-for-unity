@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core.EditmodeTests
+namespace Improbable.Gdk.EditmodeTests
 {
     [TestFixture]
     public class DisableAutoCreationSystemsTests

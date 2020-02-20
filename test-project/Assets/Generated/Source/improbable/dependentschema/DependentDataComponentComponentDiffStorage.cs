@@ -52,6 +52,7 @@ namespace Improbable.DependentSchema
             void IDiffEventStorage<FooEvent.Event>.AddEvent(ComponentEventReceived<FooEvent.Event> ev)
             {
                 fooEventEventStorage.InsertSorted(ev, fooEventComparer);
+                EntitiesUpdated.Add(ev.EntityId);
             }
         }
     }
