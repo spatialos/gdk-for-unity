@@ -57,10 +57,7 @@ namespace Improbable.Gdk.Subscriptions
 
             foreach (var field in info.RequiredFields)
             {
-                if (!field.FieldType.IsValueType)
-                {
-                    field.SetValue(target, null);
-                }
+                field.SetValue(target, null);
             }
         }
 
@@ -77,6 +74,11 @@ namespace Improbable.Gdk.Subscriptions
         private void HandleSubscriptionsNoLongerSatisfied()
         {
             onDisable?.Invoke();
+
+            foreach (var field in info.RequiredFields)
+            {
+                field.SetValue(target, null);
+            }
         }
 
         private class Handler : ISubscriptionAvailabilityHandler

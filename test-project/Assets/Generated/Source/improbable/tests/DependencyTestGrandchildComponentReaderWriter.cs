@@ -102,12 +102,7 @@ namespace Improbable.Tests
         public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<DependencyTestGrandchildReader>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
+            ResetValue(sub);
 
             var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
@@ -124,7 +119,9 @@ namespace Improbable.Tests
             var sub = ((Subscription<DependencyTestGrandchildReader>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.RemoveAllCallbacks();
+                var reader = sub.Value;
+                reader.IsValid = false;
+                reader.RemoveAllCallbacks();
             }
         }
 
@@ -227,12 +224,7 @@ namespace Improbable.Tests
         public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<DependencyTestGrandchildWriter>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
+            ResetValue(sub);
 
             var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
@@ -249,7 +241,9 @@ namespace Improbable.Tests
             var sub = ((Subscription<DependencyTestGrandchildWriter>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.RemoveAllCallbacks();
+                var reader = sub.Value;
+                reader.IsValid = false;
+                reader.RemoveAllCallbacks();
             }
         }
     }
@@ -270,7 +264,7 @@ namespace Improbable.Tests
             {
                 if (!IsValid)
                 {
-                    throw new InvalidOperationException("Oh noes!");
+                    throw new InvalidOperationException("Cannot read component data when Reader is not valid.");
                 }
 
                 return EntityManager.GetComponentData<DependencyTestGrandchild.Component>(Entity);
@@ -283,7 +277,7 @@ namespace Improbable.Tests
             {
                 if (!IsValid)
                 {
-                    throw new InvalidOperationException("Oh noes!");
+                    throw new InvalidOperationException("Cannot read authority when Reader is not valid");
                 }
 
                 return ComponentUpdateSystem.GetAuthority(EntityId, DependencyTestGrandchild.ComponentId);

@@ -103,11 +103,7 @@ namespace Improbable.Gdk.Subscriptions
         public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<T>) subscription);
-            if (sub.HasValue)
-            {
-                var sender = sub.Value;
-                sender.IsValid = false;
-            }
+            ResetValue(sub);
 
             var subscriptions = entityIdToSenderSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
@@ -122,7 +118,8 @@ namespace Improbable.Gdk.Subscriptions
             var sub = ((Subscription<T>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.RemoveAllCallbacks();
+                var sender = sub.Value;
+                sender.IsValid = false;
             }
         }
     }
@@ -222,12 +219,7 @@ namespace Improbable.Gdk.Subscriptions
         public override void Cancel(ISubscription subscription)
         {
             var sub = ((Subscription<T>) subscription);
-            if (sub.HasValue)
-            {
-                var receiver = sub.Value;
-                receiver.IsValid = false;
-                receiver.RemoveAllCallbacks();
-            }
+            ResetValue(sub);
 
             var subscriptions = entityIdToReceiveSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
@@ -244,7 +236,9 @@ namespace Improbable.Gdk.Subscriptions
             var sub = ((Subscription<T>) subscription);
             if (sub.HasValue)
             {
-                sub.Value.RemoveAllCallbacks();
+                var receiver = sub.Value;
+                receiver.IsValid = false;
+                receiver.RemoveAllCallbacks();
             }
         }
     }
