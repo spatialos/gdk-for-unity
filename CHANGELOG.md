@@ -20,6 +20,8 @@
 - Fixed a bug where dotnet output from the code generator would cause exceptions to be thrown. [#1294](https://github.com/spatialos/gdk-for-unity/pull/1294)
 - Fixed a bug where the Mobile Launcher window wouldn't find Android devices that contained hyphens in their product name. [#1288](https://github.com/spatialos/gdk-for-unity/issues/1288) [#1296](https://github.com/spatialos/gdk-for-unity/pull/1296)
 - Fixed a bug where component events were not dropped properly when the entity-component pair was removed from the View. [#1298])(https://github.com/spatialos/gdk-for-unity/pull/1298)
+- Fixed a bug where Reader/Writer/CommandSender/CommandReceiver fields would not have their state set to invalid when the underlying constraints were not met. [#1297](https://github.com/spatialos/gdk-for-unity/pull/1297)
+    - This bug would manifest itself in situations like a `Reader` reference attempting to read data that does not exist in your worker's view anymore.
 
 ### Removed
 
