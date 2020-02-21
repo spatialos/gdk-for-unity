@@ -36,128 +36,20 @@ namespace Improbable.Gdk.CodeGenerator
         private static TypeBlock GenerateComponentReaderSubscriptionManager(UnityComponentDetails componentDetails)
         {
             Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}ReaderSubscriptionManager class.");
+            var componentReaderType = $"{componentDetails.Name}Reader";
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.Name}ReaderSubscriptionManager : SubscriptionManager<{componentDetails.Name}Reader>",
+                $"public class {componentDetails.Name}ReaderSubscriptionManager : ReaderSubscriptionManager<{componentDetails.Name}.Component, {componentReaderType}>",
                 rsm =>
                 {
                     rsm.Line($@"
-private readonly EntityManager entityManager;
-
-private Dictionary<EntityId, HashSet<Subscription<{componentDetails.Name}Reader>>> entityIdToReaderSubscriptions;
-
-private Dictionary<EntityId, (ulong Added, ulong Removed)> entityIdToCallbackKey =
-    new Dictionary<EntityId, (ulong Added, ulong Removed)>();
-
-private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
-public {componentDetails.Name}ReaderSubscriptionManager(World world) : base(world)
-{{
-    entityManager = world.EntityManager;
-
-    var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-    constraintCallbackSystem.RegisterComponentAddedCallback({componentDetails.Name}.ComponentId, entityId =>
-    {{
-        if (!entitiesNotMatchingRequirements.Contains(entityId))
-        {{
-            return;
-        }}
-
-        workerSystem.TryGetEntity(entityId, out var entity);
-
-        foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-        {{
-            subscription.SetAvailable(new {componentDetails.Name}Reader(world, entity, entityId));
-        }}
-
-        entitiesMatchingRequirements.Add(entityId);
-        entitiesNotMatchingRequirements.Remove(entityId);
-    }});
-
-    constraintCallbackSystem.RegisterComponentRemovedCallback({componentDetails.Name}.ComponentId, entityId =>
-    {{
-        if (!entitiesMatchingRequirements.Contains(entityId))
-        {{
-            return;
-        }}
-
-        workerSystem.TryGetEntity(entityId, out var entity);
-
-        foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-        {{
-            ResetValue(subscription);
-            subscription.SetUnavailable();
-        }}
-
-        entitiesNotMatchingRequirements.Add(entityId);
-        entitiesMatchingRequirements.Remove(entityId);
-    }});
-}}
-
-public override Subscription<{componentDetails.Name}Reader> Subscribe(EntityId entityId)
-{{
-    if (entityIdToReaderSubscriptions == null)
-    {{
-        entityIdToReaderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{componentDetails.Name}Reader>>>();
-    }}
-
-    var subscription = new Subscription<{componentDetails.Name}Reader>(this, entityId);
-
-    if (!entityIdToReaderSubscriptions.TryGetValue(entityId, out var subscriptions))
-    {{
-        subscriptions = new HashSet<Subscription<{componentDetails.Name}Reader>>();
-        entityIdToReaderSubscriptions.Add(entityId, subscriptions);
-    }}
-
-    if (workerSystem.TryGetEntity(entityId, out var entity)
-        && entityManager.HasComponent<{componentDetails.Name}.Component>(entity))
-    {{
-        entitiesMatchingRequirements.Add(entityId);
-        subscription.SetAvailable(new {componentDetails.Name}Reader(world, entity, entityId));
-    }}
-    else
-    {{
-        entitiesNotMatchingRequirements.Add(entityId);
-    }}
-
-    subscriptions.Add(subscription);
-    return subscription;
-}}
-
-public override void Cancel(ISubscription subscription)
-{{
-    var sub = ((Subscription<{componentDetails.Name}Reader>) subscription);
-    ResetValue(sub);
-
-    var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
-    subscriptions.Remove(sub);
-    if (subscriptions.Count == 0)
-    {{
-        entityIdToReaderSubscriptions.Remove(sub.EntityId);
-        entitiesMatchingRequirements.Remove(sub.EntityId);
-        entitiesNotMatchingRequirements.Remove(sub.EntityId);
-    }}
-}}
-
-public override void ResetValue(ISubscription subscription)
-{{
-    var sub = ((Subscription<{componentDetails.Name}Reader>) subscription);
-    if (sub.HasValue)
-    {{
-        var reader = sub.Value;
-        reader.IsValid = false;
-        reader.RemoveAllCallbacks();
-    }}
-}}
-
-private void OnComponentAdded(EntityId entityId)
+public {componentDetails.Name}ReaderSubscriptionManager(World world) : base({componentDetails.Name}.ComponentId, world)
 {{
 }}
 
-private void OnComponentRemoved(EntityId entityId)
+protected override {componentReaderType} CreateReader(Entity entity, EntityId entityId)
 {{
+    return new {componentReaderType}(world, entity, entityId);
 }}
 ");
                 });
@@ -166,120 +58,20 @@ private void OnComponentRemoved(EntityId entityId)
         private static TypeBlock GenerateComponentWriterSubscriptionManager(UnityComponentDetails componentDetails)
         {
             Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}WriterSubscriptionManager class.");
+            var componentWriterType = $"{componentDetails.Name}Writer";
 
             return Scope.AnnotatedType("AutoRegisterSubscriptionManager",
-                $"public class {componentDetails.Name}WriterSubscriptionManager : SubscriptionManager<{componentDetails.Name}Writer>",
+                $"public class {componentDetails.Name}WriterSubscriptionManager : WriterSubscriptionManager<{componentWriterType}>",
                 wsm =>
                 {
                     wsm.Line($@"
-private readonly ComponentUpdateSystem componentUpdateSystem;
-
-private Dictionary<EntityId, HashSet<Subscription<{componentDetails.Name}Writer>>> entityIdToWriterSubscriptions;
-
-private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
-public {componentDetails.Name}WriterSubscriptionManager(World world) : base(world)
+public {componentDetails.Name}WriterSubscriptionManager(World world) : base({componentDetails.Name}.ComponentId, world)
 {{
-    componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-
-    var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-    constraintCallbackSystem.RegisterAuthorityCallback({componentDetails.Name}.ComponentId, authorityChange =>
-    {{
-        if (authorityChange.Authority == Authority.Authoritative)
-        {{
-            if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
-            {{
-                return;
-            }}
-
-            workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-            foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-            {{
-                subscription.SetAvailable(new {componentDetails.Name}Writer(world, entity, authorityChange.EntityId));
-            }}
-
-            entitiesMatchingRequirements.Add(authorityChange.EntityId);
-            entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
-        }}
-        else if (authorityChange.Authority == Authority.NotAuthoritative)
-        {{
-            if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
-            {{
-                return;
-            }}
-
-            workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-            foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-            {{
-                ResetValue(subscription);
-                subscription.SetUnavailable();
-            }}
-
-            entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
-            entitiesMatchingRequirements.Remove(authorityChange.EntityId);
-        }}
-    }});
 }}
 
-public override Subscription<{componentDetails.Name}Writer> Subscribe(EntityId entityId)
+protected override {componentWriterType} CreateWriter(Entity entity, EntityId entityId)
 {{
-    if (entityIdToWriterSubscriptions == null)
-    {{
-        entityIdToWriterSubscriptions = new Dictionary<EntityId, HashSet<Subscription<{componentDetails.Name}Writer>>>();
-    }}
-
-    var subscription = new Subscription<{componentDetails.Name}Writer>(this, entityId);
-
-    if (!entityIdToWriterSubscriptions.TryGetValue(entityId, out var subscriptions))
-    {{
-        subscriptions = new HashSet<Subscription<{componentDetails.Name}Writer>>();
-        entityIdToWriterSubscriptions.Add(entityId, subscriptions);
-    }}
-
-    if (workerSystem.TryGetEntity(entityId, out var entity)
-        && componentUpdateSystem.HasComponent({componentDetails.Name}.ComponentId, entityId)
-        && componentUpdateSystem.GetAuthority(entityId, {componentDetails.Name}.ComponentId) != Authority.NotAuthoritative)
-    {{
-        entitiesMatchingRequirements.Add(entityId);
-        subscription.SetAvailable(new {componentDetails.Name}Writer(world, entity, entityId));
-    }}
-    else
-    {{
-        entitiesNotMatchingRequirements.Add(entityId);
-    }}
-
-    subscriptions.Add(subscription);
-    return subscription;
-}}
-
-public override void Cancel(ISubscription subscription)
-{{
-    var sub = ((Subscription<{componentDetails.Name}Writer>) subscription);
-    ResetValue(sub);
-
-    var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
-    subscriptions.Remove(sub);
-    if (subscriptions.Count == 0)
-    {{
-        entityIdToWriterSubscriptions.Remove(sub.EntityId);
-        entitiesMatchingRequirements.Remove(sub.EntityId);
-        entitiesNotMatchingRequirements.Remove(sub.EntityId);
-    }}
-}}
-
-public override void ResetValue(ISubscription subscription)
-{{
-    var sub = ((Subscription<{componentDetails.Name}Writer>) subscription);
-    if (sub.HasValue)
-    {{
-        var reader = sub.Value;
-        reader.IsValid = false;
-        reader.RemoveAllCallbacks();
-    }}
+    return new {componentWriterType}(world, entity, entityId);
 }}
 ");
                 });
@@ -289,11 +81,11 @@ public override void ResetValue(ISubscription subscription)
         {
             Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}Reader class.");
 
-            return Scope.Type($"public class {componentDetails.Name}Reader",
+            return Scope.Type($"public class {componentDetails.Name}Reader : IRequireable",
                 reader =>
                 {
                     reader.Line($@"
-public bool IsValid;
+public bool IsValid {{ get; set; }}
 
 protected readonly ComponentUpdateSystem ComponentUpdateSystem;
 protected readonly ComponentCallbackSystem CallbackSystem;
