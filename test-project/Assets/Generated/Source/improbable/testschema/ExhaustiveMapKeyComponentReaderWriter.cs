@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -13,328 +12,73 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.TestSchema
 {
     [AutoRegisterSubscriptionManager]
-    public class ExhaustiveMapKeyReaderSubscriptionManager : SubscriptionManager<ExhaustiveMapKeyReader>
+    public class ExhaustiveMapKeyReaderSubscriptionManager : ReaderSubscriptionManager<ExhaustiveMapKey.Component, ExhaustiveMapKeyReader>
     {
-        private readonly EntityManager entityManager;
-
-        private Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapKeyReader>>> entityIdToReaderSubscriptions;
-
-        private Dictionary<EntityId, (ulong Added, ulong Removed)> entityIdToCallbackKey =
-            new Dictionary<EntityId, (ulong Added, ulong Removed)>();
-
-        private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-        private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
         public ExhaustiveMapKeyReaderSubscriptionManager(World world) : base(world)
         {
-            entityManager = world.EntityManager;
-
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-            constraintCallbackSystem.RegisterComponentAddedCallback(ExhaustiveMapKey.ComponentId, entityId =>
-            {
-                if (!entitiesNotMatchingRequirements.Contains(entityId))
-                {
-                    return;
-                }
-
-                workerSystem.TryGetEntity(entityId, out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-                {
-                    subscription.SetAvailable(new ExhaustiveMapKeyReader(world, entity, entityId));
-                }
-
-                entitiesMatchingRequirements.Add(entityId);
-                entitiesNotMatchingRequirements.Remove(entityId);
-            });
-
-            constraintCallbackSystem.RegisterComponentRemovedCallback(ExhaustiveMapKey.ComponentId, entityId =>
-            {
-                if (!entitiesMatchingRequirements.Contains(entityId))
-                {
-                    return;
-                }
-
-                workerSystem.TryGetEntity(entityId, out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-                {
-                    ResetValue(subscription);
-                    subscription.SetUnavailable();
-                }
-
-                entitiesNotMatchingRequirements.Add(entityId);
-                entitiesMatchingRequirements.Remove(entityId);
-            });
         }
 
-        public override Subscription<ExhaustiveMapKeyReader> Subscribe(EntityId entityId)
+        protected override ExhaustiveMapKeyReader CreateReader(Entity entity, EntityId entityId)
         {
-            if (entityIdToReaderSubscriptions == null)
-            {
-                entityIdToReaderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapKeyReader>>>();
-            }
-
-            var subscription = new Subscription<ExhaustiveMapKeyReader>(this, entityId);
-
-            if (!entityIdToReaderSubscriptions.TryGetValue(entityId, out var subscriptions))
-            {
-                subscriptions = new HashSet<Subscription<ExhaustiveMapKeyReader>>();
-                entityIdToReaderSubscriptions.Add(entityId, subscriptions);
-            }
-
-            if (workerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent<ExhaustiveMapKey.Component>(entity))
-            {
-                entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new ExhaustiveMapKeyReader(world, entity, entityId));
-            }
-            else
-            {
-                entitiesNotMatchingRequirements.Add(entityId);
-            }
-
-            subscriptions.Add(subscription);
-            return subscription;
-        }
-
-        public override void Cancel(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveMapKeyReader>) subscription);
-            ResetValue(sub);
-
-            var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToReaderSubscriptions.Remove(sub.EntityId);
-                entitiesMatchingRequirements.Remove(sub.EntityId);
-                entitiesNotMatchingRequirements.Remove(sub.EntityId);
-            }
-        }
-
-        public override void ResetValue(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveMapKeyReader>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
-        }
-
-        private void OnComponentAdded(EntityId entityId)
-        {
-        }
-
-        private void OnComponentRemoved(EntityId entityId)
-        {
+            return new ExhaustiveMapKeyReader(world, entity, entityId);
         }
     }
 
     [AutoRegisterSubscriptionManager]
-    public class ExhaustiveMapKeyWriterSubscriptionManager : SubscriptionManager<ExhaustiveMapKeyWriter>
+    public class ExhaustiveMapKeyWriterSubscriptionManager : WriterSubscriptionManager<ExhaustiveMapKey.Component, ExhaustiveMapKeyWriter>
     {
-        private readonly ComponentUpdateSystem componentUpdateSystem;
-
-        private Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapKeyWriter>>> entityIdToWriterSubscriptions;
-
-        private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-        private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
         public ExhaustiveMapKeyWriterSubscriptionManager(World world) : base(world)
         {
-            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-            constraintCallbackSystem.RegisterAuthorityCallback(ExhaustiveMapKey.ComponentId, authorityChange =>
-            {
-                if (authorityChange.Authority == Authority.Authoritative)
-                {
-                    if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-                    {
-                        subscription.SetAvailable(new ExhaustiveMapKeyWriter(world, entity, authorityChange.EntityId));
-                    }
-
-                    entitiesMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
-                }
-                else if (authorityChange.Authority == Authority.NotAuthoritative)
-                {
-                    if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-                    {
-                        ResetValue(subscription);
-                        subscription.SetUnavailable();
-                    }
-
-                    entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesMatchingRequirements.Remove(authorityChange.EntityId);
-                }
-            });
         }
 
-        public override Subscription<ExhaustiveMapKeyWriter> Subscribe(EntityId entityId)
+        protected override ExhaustiveMapKeyWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            if (entityIdToWriterSubscriptions == null)
-            {
-                entityIdToWriterSubscriptions = new Dictionary<EntityId, HashSet<Subscription<ExhaustiveMapKeyWriter>>>();
-            }
-
-            var subscription = new Subscription<ExhaustiveMapKeyWriter>(this, entityId);
-
-            if (!entityIdToWriterSubscriptions.TryGetValue(entityId, out var subscriptions))
-            {
-                subscriptions = new HashSet<Subscription<ExhaustiveMapKeyWriter>>();
-                entityIdToWriterSubscriptions.Add(entityId, subscriptions);
-            }
-
-            if (workerSystem.TryGetEntity(entityId, out var entity)
-                && componentUpdateSystem.HasComponent(ExhaustiveMapKey.ComponentId, entityId)
-                && componentUpdateSystem.GetAuthority(entityId, ExhaustiveMapKey.ComponentId) != Authority.NotAuthoritative)
-            {
-                entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new ExhaustiveMapKeyWriter(world, entity, entityId));
-            }
-            else
-            {
-                entitiesNotMatchingRequirements.Add(entityId);
-            }
-
-            subscriptions.Add(subscription);
-            return subscription;
-        }
-
-        public override void Cancel(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveMapKeyWriter>) subscription);
-            ResetValue(sub);
-
-            var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToWriterSubscriptions.Remove(sub.EntityId);
-                entitiesMatchingRequirements.Remove(sub.EntityId);
-                entitiesNotMatchingRequirements.Remove(sub.EntityId);
-            }
-        }
-
-        public override void ResetValue(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveMapKeyWriter>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
+            return new ExhaustiveMapKeyWriter(world, entity, entityId);
         }
     }
 
-    public class ExhaustiveMapKeyReader
+    public class ExhaustiveMapKeyReader : Reader<ExhaustiveMapKey.Component, ExhaustiveMapKey.Update>
     {
-        public bool IsValid;
-
-        protected readonly ComponentUpdateSystem ComponentUpdateSystem;
-        protected readonly ComponentCallbackSystem CallbackSystem;
-        protected readonly EntityManager EntityManager;
-        protected readonly Entity Entity;
-        protected readonly EntityId EntityId;
-
-        public ExhaustiveMapKey.Component Data
-        {
-            get
-            {
-                if (!IsValid)
-                {
-                    throw new InvalidOperationException("Cannot read component data when Reader is not valid.");
-                }
-
-                return EntityManager.GetComponentData<ExhaustiveMapKey.Component>(Entity);
-            }
-        }
-
-        public Authority Authority
-        {
-            get
-            {
-                if (!IsValid)
-                {
-                    throw new InvalidOperationException("Cannot read authority when Reader is not valid");
-                }
-
-                return ComponentUpdateSystem.GetAuthority(EntityId, ExhaustiveMapKey.ComponentId);
-            }
-        }
-
-        private Dictionary<Action<Authority>, ulong> authorityCallbackToCallbackKey;
-        public event Action<Authority> OnAuthorityUpdate
-        {
-            add
-            {
-                if (authorityCallbackToCallbackKey == null)
-                {
-                    authorityCallbackToCallbackKey = new Dictionary<Action<Authority>, ulong>();
-                }
-
-                var key = CallbackSystem.RegisterAuthorityCallback(EntityId, ExhaustiveMapKey.ComponentId, value);
-                authorityCallbackToCallbackKey.Add(value, key);
-            }
-            remove
-            {
-                if (!authorityCallbackToCallbackKey.TryGetValue(value, out var key))
-                {
-                    return;
-                }
-
-                CallbackSystem.UnregisterCallback(key);
-                authorityCallbackToCallbackKey.Remove(value);
-            }
-        }
-
-        private Dictionary<Action<ExhaustiveMapKey.Update>, ulong> updateCallbackToCallbackKey;
-        public event Action<ExhaustiveMapKey.Update> OnUpdate
-        {
-            add
-            {
-                if (updateCallbackToCallbackKey == null)
-                {
-                    updateCallbackToCallbackKey = new Dictionary<Action<ExhaustiveMapKey.Update>, ulong>();
-                }
-
-                var key = CallbackSystem.RegisterComponentUpdateCallback(EntityId, value);
-                updateCallbackToCallbackKey.Add(value, key);
-            }
-            remove
-            {
-                if (!updateCallbackToCallbackKey.TryGetValue(value, out var key))
-                {
-                    return;
-                }
-
-                CallbackSystem.UnregisterCallback(key);
-                updateCallbackToCallbackKey.Remove(value);
-            }
-        }
-
         private Dictionary<Action<global::System.Collections.Generic.Dictionary<bool, string>>, ulong> field1UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<float, string>>, ulong> field2UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[], string>>, ulong> field3UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field4UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field5UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<double, string>>, ulong> field6UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, string>>, ulong> field7UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field8UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field9UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field10UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field11UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field12UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field13UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field14UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field15UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>>, ulong> field16UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>>, ulong> field17UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>>, ulong> field18UpdateCallbackToCallbackKey;
+
+        internal ExhaustiveMapKeyReader(World world, Entity entity, EntityId entityId) : base(world, entity, entityId)
+        {
+        }
+
         public event Action<global::System.Collections.Generic.Dictionary<bool, string>> OnField1Update
         {
             add
@@ -365,7 +109,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<float, string>>, ulong> field2UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<float, string>> OnField2Update
         {
             add
@@ -396,7 +139,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<byte[], string>>, ulong> field3UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<byte[], string>> OnField3Update
         {
             add
@@ -427,7 +169,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field4UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField4Update
         {
             add
@@ -458,7 +199,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field5UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField5Update
         {
             add
@@ -489,7 +229,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<double, string>>, ulong> field6UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<double, string>> OnField6Update
         {
             add
@@ -520,7 +259,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, string>>, ulong> field7UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<string, string>> OnField7Update
         {
             add
@@ -551,7 +289,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field8UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<uint, string>> OnField8Update
         {
             add
@@ -582,7 +319,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field9UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<ulong, string>> OnField9Update
         {
             add
@@ -613,7 +349,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field10UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField10Update
         {
             add
@@ -644,7 +379,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field11UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField11Update
         {
             add
@@ -675,7 +409,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<uint, string>>, ulong> field12UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<uint, string>> OnField12Update
         {
             add
@@ -706,7 +439,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<ulong, string>>, ulong> field13UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<ulong, string>> OnField13Update
         {
             add
@@ -737,7 +469,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<int, string>>, ulong> field14UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<int, string>> OnField14Update
         {
             add
@@ -768,7 +499,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<long, string>>, ulong> field15UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<long, string>> OnField15Update
         {
             add
@@ -799,7 +529,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>>, ulong> field16UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntityId, string>> OnField16Update
         {
             add
@@ -830,7 +559,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>>, ulong> field17UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeType, string>> OnField17Update
         {
             add
@@ -861,7 +589,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>>, ulong> field18UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, string>> OnField18Update
         {
             add
@@ -892,40 +619,8 @@ namespace Improbable.TestSchema
             }
         }
 
-        internal ExhaustiveMapKeyReader(World world, Entity entity, EntityId entityId)
+        protected override void RemoveFieldCallbacks()
         {
-            Entity = entity;
-            EntityId = entityId;
-
-            IsValid = true;
-
-            ComponentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-            CallbackSystem = world.GetExistingSystem<ComponentCallbackSystem>();
-            EntityManager = world.EntityManager;
-        }
-
-        public void RemoveAllCallbacks()
-        {
-            if (authorityCallbackToCallbackKey != null)
-            {
-                foreach (var callbackToKey in authorityCallbackToCallbackKey)
-                {
-                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
-                }
-
-                authorityCallbackToCallbackKey.Clear();
-            }
-
-            if (updateCallbackToCallbackKey != null)
-            {
-                foreach (var callbackToKey in updateCallbackToCallbackKey)
-                {
-                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
-                }
-
-                updateCallbackToCallbackKey.Clear();
-            }
-
             if (field1UpdateCallbackToCallbackKey != null)
             {
                 foreach (var callbackToKey in field1UpdateCallbackToCallbackKey)
