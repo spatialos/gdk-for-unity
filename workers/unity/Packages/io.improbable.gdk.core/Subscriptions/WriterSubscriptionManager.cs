@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        private readonly uint componentId = ComponentDatabase.GetComponentId<TComponent>();
+        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
 
         protected WriterSubscriptionManager(World world) : base(world)
         {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
-            constraintCallbackSystem.RegisterAuthorityCallback(componentId, authorityChange =>
+            constraintCallbackSystem.RegisterAuthorityCallback(ComponentId, authorityChange =>
             {
                 if (authorityChange.Authority == Authority.Authoritative)
                 {
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    workerSystem.TryGetEntity(authorityChange.EntityId, out _);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
@@ -86,8 +86,8 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             if (workerSystem.TryGetEntity(entityId, out var entity)
-                && componentUpdateSystem.HasComponent(componentId, entityId)
-                && componentUpdateSystem.GetAuthority(entityId, componentId) != Authority.NotAuthoritative)
+                && componentUpdateSystem.HasComponent(ComponentId, entityId)
+                && componentUpdateSystem.GetAuthority(entityId, ComponentId) != Authority.NotAuthoritative)
             {
                 entitiesMatchingRequirements.Add(entityId);
                 subscription.SetAvailable(CreateWriter(entity, entityId));
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public override void Cancel(ISubscription subscription)
         {
-            var sub = ((Subscription<TWriter>) subscription);
+            var sub = (Subscription<TWriter>) subscription;
             ResetValue(sub);
 
             var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
@@ -118,7 +118,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public override void ResetValue(ISubscription subscription)
         {
-            var sub = ((Subscription<TWriter>) subscription);
+            var sub = (Subscription<TWriter>) subscription;
             if (sub.HasValue)
             {
                 var reader = sub.Value;

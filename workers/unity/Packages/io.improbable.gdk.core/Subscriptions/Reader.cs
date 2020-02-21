@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Subscriptions
         protected readonly EntityManager EntityManager;
         protected readonly Entity Entity;
         protected readonly EntityId EntityId;
-        private readonly uint componentId = ComponentDatabase.GetComponentId<TComponent>();
+        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
 
         private Dictionary<Action<Authority>, ulong> authorityCallbackToCallbackKey;
         private Dictionary<Action<TUpdate>, ulong> updateCallbackToCallbackKey;
@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Subscriptions
                     throw new InvalidOperationException("Cannot read authority when Reader is not valid");
                 }
 
-                return ComponentUpdateSystem.GetAuthority(EntityId, componentId);
+                return ComponentUpdateSystem.GetAuthority(EntityId, ComponentId);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Improbable.Gdk.Subscriptions
                     authorityCallbackToCallbackKey = new Dictionary<Action<Authority>, ulong>();
                 }
 
-                var key = CallbackSystem.RegisterAuthorityCallback(EntityId, componentId, value);
+                var key = CallbackSystem.RegisterAuthorityCallback(EntityId, ComponentId, value);
                 authorityCallbackToCallbackKey.Add(value, key);
             }
             remove

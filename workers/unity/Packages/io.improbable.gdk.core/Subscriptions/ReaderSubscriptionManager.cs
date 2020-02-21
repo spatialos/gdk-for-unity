@@ -5,7 +5,8 @@ using Unity.Entities;
 namespace Improbable.Gdk.Subscriptions
 {
     public abstract class ReaderSubscriptionManager<TComponent, TReader> : SubscriptionManager<TReader>
-        where TReader : IRequireable where TComponent : ISpatialComponentData
+        where TComponent : struct, ISpatialComponentData
+        where TReader : IRequireable
     {
         private readonly EntityManager entityManager;
 
@@ -13,22 +14,23 @@ namespace Improbable.Gdk.Subscriptions
 
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
+        
+        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
 
         protected ReaderSubscriptionManager(World world) : base(world)
         {
             entityManager = world.EntityManager;
 
-            var componentId = ComponentDatabase.GetComponentId<TComponent>();
-            RegisterComponentCallbacks(componentId);
+            RegisterComponentCallbacks();
         }
 
         protected abstract TReader CreateReader(Entity entity, EntityId entityId);
 
-        private void RegisterComponentCallbacks(uint componentId)
+        private void RegisterComponentCallbacks()
         {
             var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
-            constraintCallbackSystem.RegisterComponentAddedCallback(componentId, entityId =>
+            constraintCallbackSystem.RegisterComponentAddedCallback(ComponentId, entityId =>
             {
                 if (!entitiesNotMatchingRequirements.Contains(entityId))
                 {
@@ -46,14 +48,14 @@ namespace Improbable.Gdk.Subscriptions
                 entitiesNotMatchingRequirements.Remove(entityId);
             });
 
-            constraintCallbackSystem.RegisterComponentRemovedCallback(componentId, entityId =>
+            constraintCallbackSystem.RegisterComponentRemovedCallback(ComponentId, entityId =>
             {
                 if (!entitiesMatchingRequirements.Contains(entityId))
                 {
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out var entity);
+                workerSystem.TryGetEntity(entityId, out _);
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
