@@ -25,7 +25,7 @@ echo "--- Testing Unity: Editmode :writing_hand:"
 
 pushd "workers/unity"
     if [[ "${BUILDKITE_AGENT_META_DATA_OS}" == "darwin" ]]; then
-        FILTER_TESTS_ARG="-testFilter \"^(?!Improbable.Gdk.TestUtils.Editor.Tests.SpatialDeploymentManagerTests).*\""
+        FILTER_TESTS_ARG="-editorTestsFilter \"^(?!Improbable.Gdk.TestUtils.Editor.Tests.SpatialDeploymentManagerTests).*\""
     fi
 
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -34,7 +34,7 @@ pushd "workers/unity"
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
         -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
-        -testCategory "Uncategorized" \
+        -editorTestsCategories "Uncategorized" \
         ${FILTER_TESTS_ARG:-}
 popd
 
