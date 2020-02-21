@@ -6,8 +6,8 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public abstract class WriterSubscriptionManager<TWriter> : SubscriptionManager<TWriter>
-        where TWriter : IRequireable
+    public abstract class WriterSubscriptionManager<TComponent, TWriter> : SubscriptionManager<TWriter>
+        where TWriter : IRequireable where TComponent : ISpatialComponentData
     {
         private readonly ComponentUpdateSystem componentUpdateSystem;
         private Dictionary<EntityId, HashSet<Subscription<TWriter>>> entityIdToWriterSubscriptions;
@@ -15,12 +15,11 @@ namespace Improbable.Gdk.Subscriptions
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        private readonly uint componentId;
+        private readonly uint componentId = ComponentDatabase.GetComponentId<TComponent>();
 
-        protected WriterSubscriptionManager(uint componentId, World world) : base(world)
+        protected WriterSubscriptionManager(World world) : base(world)
         {
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-            this.componentId = componentId;
 
             RegisterComponentCallbacks();
         }

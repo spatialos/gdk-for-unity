@@ -5,7 +5,7 @@ using Unity.Entities;
 namespace Improbable.Gdk.Subscriptions
 {
     public abstract class ReaderSubscriptionManager<TComponent, TReader> : SubscriptionManager<TReader>
-        where TReader : IRequireable
+        where TReader : IRequireable where TComponent : ISpatialComponentData
     {
         private readonly EntityManager entityManager;
 
@@ -14,15 +14,17 @@ namespace Improbable.Gdk.Subscriptions
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        protected ReaderSubscriptionManager(uint componentId, World world) : base(world)
+        protected ReaderSubscriptionManager(World world) : base(world)
         {
             entityManager = world.EntityManager;
+
+            var componentId = ComponentDatabase.GetComponentId<TComponent>();
             RegisterComponentCallbacks(componentId);
         }
 
         protected abstract TReader CreateReader(Entity entity, EntityId entityId);
 
-        protected void RegisterComponentCallbacks(uint componentId)
+        private void RegisterComponentCallbacks(uint componentId)
         {
             var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
