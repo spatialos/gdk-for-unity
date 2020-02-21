@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private void RegisterComponentCallbacks()
         {
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
+            var constraintCallbackSystem = World.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintCallbackSystem.RegisterComponentAddedCallback(ComponentId, entityId =>
             {
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out var entity);
+                WorkerSystem.TryGetEntity(entityId, out var entity);
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out _);
+                WorkerSystem.TryGetEntity(entityId, out _);
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToReaderSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity)
+            if (WorkerSystem.TryGetEntity(entityId, out var entity)
                 && entityManager.HasComponent<TComponent>(entity))
             {
                 entitiesMatchingRequirements.Add(entityId);

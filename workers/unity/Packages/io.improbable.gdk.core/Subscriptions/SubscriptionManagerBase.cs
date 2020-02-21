@@ -15,8 +15,8 @@ namespace Improbable.Gdk.Subscriptions
 
     public abstract class SubscriptionManager<T> : SubscriptionManagerBase
     {
-        protected readonly World world;
-        protected readonly WorkerSystem workerSystem;
+        protected readonly World World;
+        protected readonly WorkerSystem WorkerSystem;
 
         public abstract Subscription<T> Subscribe(EntityId entityId);
 
@@ -29,10 +29,8 @@ namespace Improbable.Gdk.Subscriptions
 
         protected SubscriptionManager(World world)
         {
-            this.world = world;
-
-            // Check that these are there
-            workerSystem = world.GetExistingSystem<WorkerSystem>();
+            World = world;
+            WorkerSystem = world.GetExistingSystem<WorkerSystem>();
         }
     }
 }

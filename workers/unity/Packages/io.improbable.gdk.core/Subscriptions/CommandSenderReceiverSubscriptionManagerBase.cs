@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out var entity);
+                WorkerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     if (!subscription.HasValue)
@@ -87,13 +87,13 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToSenderSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity))
+            if (WorkerSystem.TryGetEntity(entityId, out var entity))
             {
-                subscription.SetAvailable(CreateSender(entity, world));
+                subscription.SetAvailable(CreateSender(entity, World));
             }
             else if (entityId.Id == 0)
             {
-                subscription.SetAvailable(CreateSender(Entity.Null, world));
+                subscription.SetAvailable(CreateSender(Entity.Null, World));
             }
 
             subscriptions.Add(subscription);
@@ -152,7 +152,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
                     foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
                     {
@@ -169,7 +169,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
                     foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
                     {
@@ -200,12 +200,12 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToReceiveSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity)
+            if (WorkerSystem.TryGetEntity(entityId, out var entity)
                 && componentUpdateSystem.HasComponent(componentId, entityId)
                 && componentUpdateSystem.GetAuthority(entityId, componentId) != Authority.NotAuthoritative)
             {
                 entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(CreateReceiver(world, entity, entityId));
+                subscription.SetAvailable(CreateReceiver(World, entity, entityId));
             }
             else
             {

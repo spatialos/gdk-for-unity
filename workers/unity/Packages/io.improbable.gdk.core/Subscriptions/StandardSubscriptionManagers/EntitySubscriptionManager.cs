@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out var entity);
+                WorkerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     if (!subscription.HasValue)
@@ -71,7 +71,7 @@ namespace Improbable.Gdk.Subscriptions
             var subscription = new Subscription<Entity>(this, entityId);
             subscriptions.Add(subscription);
 
-            if (workerSystem.TryGetEntity(entityId, out var entity))
+            if (WorkerSystem.TryGetEntity(entityId, out var entity))
             {
                 subscription.SetAvailable(entity);
             }

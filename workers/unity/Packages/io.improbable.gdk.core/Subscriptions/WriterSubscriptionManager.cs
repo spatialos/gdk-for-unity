@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private void RegisterComponentCallbacks()
         {
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
+            var constraintCallbackSystem = World.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 
             constraintCallbackSystem.RegisterAuthorityCallback(ComponentId, authorityChange =>
             {
@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out _);
+                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out _);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToWriterSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity)
+            if (WorkerSystem.TryGetEntity(entityId, out var entity)
                 && componentUpdateSystem.HasComponent(ComponentId, entityId)
                 && componentUpdateSystem.GetAuthority(entityId, ComponentId) != Authority.NotAuthoritative)
             {

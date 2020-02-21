@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
         public override Subscription<World> Subscribe(EntityId entityId)
         {
             var worldSubscription = new Subscription<World>(this, new EntityId(0));
-            worldSubscription.SetAvailable(world);
+            worldSubscription.SetAvailable(World);
 
             return worldSubscription;
         }

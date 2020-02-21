@@ -48,7 +48,7 @@ public {componentDetails.Name}ReaderSubscriptionManager(World world) : base(worl
 
 protected override {componentReaderType} CreateReader(Entity entity, EntityId entityId)
 {{
-    return new {componentReaderType}(world, entity, entityId);
+    return new {componentReaderType}(World, entity, entityId);
 }}
 ");
                 });
@@ -70,7 +70,7 @@ public {componentDetails.Name}WriterSubscriptionManager(World world) : base(worl
 
 protected override {componentWriterType} CreateWriter(Entity entity, EntityId entityId)
 {{
-    return new {componentWriterType}(world, entity, entityId);
+    return new {componentWriterType}(World, entity, entityId);
 }}
 ");
                 });
