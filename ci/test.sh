@@ -20,6 +20,7 @@ dotnet test \
     --logger:"nunit;LogFilePath=${TEST_RESULTS_DIR}/code-gen-lib-test-results.xml" \
     workers/unity/Packages/io.improbable.gdk.tools/.CodeGenTemplate/CodeGenerationLib/CodeGenerationLib.csproj
 
+echo ""
 echo "--- Testing Unity: Editmode :writing_hand:"
 
 pushd "workers/unity"
@@ -33,6 +34,7 @@ pushd "workers/unity"
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
         -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
+        -testCategory "Uncategorized" \
         ${FILTER_TESTS_ARG:-}
 popd
 

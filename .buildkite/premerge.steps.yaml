@@ -73,7 +73,7 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: ":windows: ~ test"
+  - label: ":darwin: ~ test"
     id: "test-darwin"
     command: bash -c ci/test.sh
     <<: *macos
