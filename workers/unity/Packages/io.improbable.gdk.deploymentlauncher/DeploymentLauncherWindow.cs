@@ -22,6 +22,7 @@ namespace Improbable.Gdk.DeploymentLauncher
         private const string BuiltInErrorIcon = "console.erroricon.sml";
         private const string BuiltInRefreshIcon = "Refresh";
         private const string BuiltInWebIcon = "BuildSettings.Web.Small";
+        private const string BuiltInEditIcon = "editicon.sml";
 
         private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
         private readonly Color horizontalLineColor = new Color(0.3f, 0.3f, 0.3f, 1);
@@ -245,6 +246,26 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
 
                     EditorGUILayout.LabelField("Project Name", projectName);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    using (new EditorGUI.DisabledScope(manager.IsActive))
+                    {
+                        var buttonIcon = new GUIContent(EditorGUIUtility.IconContent(BuiltInEditIcon))
+                        {
+                            tooltip = "Edit the Runtime version."
+                        };
+
+                        if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        {
+                            GdkToolsConfigurationWindow.ShowWindow();
+                        }
+                    }
+
+                    var config = GdkToolsConfiguration.GetOrCreateInstance();
+
+                    EditorGUILayout.LabelField("Runtime Version", config.RuntimeVersion);
                 }
 
                 CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
