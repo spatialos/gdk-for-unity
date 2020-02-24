@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.Core.EditmodeTests
@@ -9,8 +8,6 @@ namespace Improbable.Gdk.Core.EditmodeTests
         [Test]
         public void Parameterless_constructor_creates_empty_option()
         {
-            throw new Exception("BREAKING A TEST ON PURPOSE");
-
             var option = new Option<bool>();
             Assert.AreEqual(false, option.HasValue);
         }
