@@ -14,6 +14,7 @@
 - The SpatialOS Runtime version is now pinned by the GDK. This has been initially set to `14.4.0`. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
     - You can override this version in the GDK Tools Configuration. [#1289](https://github.com/spatialos/gdk-for-unity/pull/1289)
     - This version (or your override) will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
+    - The currently selected version will be displayed in the Deployment Launcher. [#1302](https://github.com/spatialos/gdk-for-unity/pull/1302)
 
 ### Changed
 
