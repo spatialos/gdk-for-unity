@@ -222,7 +222,7 @@ namespace Improbable.Gdk.Tools
 
             AddErrorProcessing(error =>
             {
-                lock (processStandardOutput)
+                lock (processStandardError)
                 {
                     processStandardError.Add(error);
                 }
@@ -242,26 +242,22 @@ namespace Improbable.Gdk.Tools
                     Stderr = processStandardError
                 };
 
-                taskCompletionSource.SetResult(result);
-
                 var trimmedOutput = outputLog?.ToString().TrimStart();
 
-                if (string.IsNullOrEmpty(trimmedOutput))
+                if (!string.IsNullOrEmpty(trimmedOutput))
                 {
-                    process.Dispose();
-                    return;
-                }
-
-                if (process.ExitCode == 0)
-                {
-                    Debug.Log(trimmedOutput);
-                }
-                else
-                {
-                    Debug.LogError(trimmedOutput);
+                    if (process.ExitCode == 0)
+                    {
+                        Debug.Log(trimmedOutput);
+                    }
+                    else
+                    {
+                        Debug.LogError(trimmedOutput);
+                    }
                 }
 
                 process.Dispose();
+                taskCompletionSource.SetResult(result);
             };
 
             Start(process);
