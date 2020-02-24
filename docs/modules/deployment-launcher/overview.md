@@ -44,4 +44,6 @@ The Deployment Launcher uses the Runtime version override in your `GdkToolsConfi
 2. Set the **Runtime Version Override** field to your desired value.
 3. Select **Save** at the top of the GDK Tools Configuration Window.
 
+> **Note:** This will change the Runtime version for local deployments as well.
+
 <img src="{{assetRoot}}assets/modules/deployment-launcher/edit-runtime-version-button.png" style="margin: 0 auto; width: auto; display: block;" />
