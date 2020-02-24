@@ -2,13 +2,18 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The `DeploymentLauncher` project has an additional required argument `runtime_version`. If you invoke this manually through `dotnet`, you'll need to provide this argument. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
+
 ### Added
 
 - Added ability to construct a `CodeWriter` using just the raw string content. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
     - This will override anything defined through the ergonomic `CodeWriter` API.
 - Introduced a new `CodegenJob` model. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
-- Added an option in the GDK Tools Configuration for pinning the SpatialOS Runtime version. [#1289](https://github.com/spatialos/gdk-for-unity/pull/1289)
-    - This version will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
+- The SpatialOS Runtime version is now pinned by the GDK. This has been initially set to `14.4.0`. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
+    - You can override this version in the GDK Tools Configuration. [#1289](https://github.com/spatialos/gdk-for-unity/pull/1289)
+    - This version (or your override) will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
 
 ### Changed
 

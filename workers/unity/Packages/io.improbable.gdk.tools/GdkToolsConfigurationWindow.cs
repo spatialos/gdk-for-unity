@@ -120,12 +120,10 @@ namespace Improbable.Gdk.Tools
 
             using (new EditorGUI.IndentLevelScope())
             {
-                /*
-                    TODO: When the GDK has a pinned golden version, we should probably
-                          display this version like we do for the dev auth token filepath.
-                */
                 toolsConfig.RuntimeVersionOverride =
                     EditorGUILayout.TextField("Runtime Version Override", toolsConfig.RuntimeVersionOverride);
+
+                GUILayout.Label($"Current Runtime version: {toolsConfig.RuntimeVersion}", EditorStyles.helpBox);
             }
 
             EditorGUIUtility.labelWidth = previousWidth;

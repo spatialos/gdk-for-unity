@@ -214,20 +214,15 @@ namespace Improbable.Gdk.Tools
             var command = Common.SpatialBinary;
 
 #if UNITY_EDITOR_OSX
-            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot '{toolsConfig.CustomSnapshotPath}'";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot '{toolsConfig.CustomSnapshotPath}' --experimental_runtime={toolsConfig.RuntimeVersion}";
 #else
-            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\"";
+            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\" --experimental_runtime={toolsConfig.RuntimeVersion}";
 #endif
 
             var runtimeIp = EditorPrefs.GetString(Common.RuntimeIpEditorPrefKey);
             if (!string.IsNullOrEmpty(runtimeIp))
             {
                 commandArgs = $"{commandArgs} --runtime_ip={runtimeIp}";
-            }
-
-            if (!string.IsNullOrEmpty(toolsConfig.RuntimeVersionOverride))
-            {
-                commandArgs = $"{commandArgs} --experimental_runtime={toolsConfig.RuntimeVersionOverride}";
             }
 
             if (Application.platform == RuntimePlatform.OSXEditor)

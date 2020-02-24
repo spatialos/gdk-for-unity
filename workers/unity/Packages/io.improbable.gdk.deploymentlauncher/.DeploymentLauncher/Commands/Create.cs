@@ -40,7 +40,8 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                     },
                     Name = options.DeploymentName,
                     ProjectName = options.ProjectName,
-                    RegionCode = options.Region.ToString()
+                    RegionCode = options.Region.ToString(),
+                    RuntimeVersion = options.RuntimeVersion
                 };
 
                 if (options.SnapshotPath != null)
@@ -61,11 +62,6 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                     {
                         deployment.Tag.Add(tag);
                     }
-                }
-
-                if (!string.IsNullOrEmpty(options.RuntimeVersion))
-                {
-                    deployment.RuntimeVersion = options.RuntimeVersion;
                 }
 
                 var deploymentOp = deploymentServiceClient.CreateDeployment(new CreateDeploymentRequest

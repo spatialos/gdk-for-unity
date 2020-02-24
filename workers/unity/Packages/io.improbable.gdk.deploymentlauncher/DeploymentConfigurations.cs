@@ -283,12 +283,15 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         internal virtual List<string> GetCreateArguments()
         {
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
             var args = new List<string>
             {
                 "create",
                 $"--deployment_name={Name}",
                 $"--launch_json_path=\"{Path.Combine(Tools.Common.SpatialProjectRootDir, LaunchJson)}\"",
-                $"--region={Region.ToString()}"
+                $"--region={Region.ToString()}",
+                $"--runtime_version={toolsConfig.RuntimeVersion}"
             };
 
             if (!string.IsNullOrEmpty(SnapshotPath))
@@ -299,13 +302,6 @@ namespace Improbable.Gdk.DeploymentLauncher
             if (Tags.Count > 0)
             {
                 args.Add($"--tags={string.Join(",", Tags)}");
-            }
-
-            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
-
-            if (!string.IsNullOrEmpty(toolsConfig.RuntimeVersionOverride))
-            {
-                args.Add($"--runtime_version={toolsConfig.RuntimeVersionOverride}");
             }
 
             return args;
