@@ -20,6 +20,8 @@ dotnet test \
     --logger:"nunit;LogFilePath=${TEST_RESULTS_DIR}/code-gen-lib-test-results.xml" \
     workers/unity/Packages/io.improbable.gdk.tools/.CodeGenTemplate/CodeGenerationLib/CodeGenerationLib.csproj
 
+#dotnet output does not end with a newline, we force one here to fix buildkite output.
+echo ""
 echo "--- Testing Unity: Editmode :writing_hand:"
 
 pushd "workers/unity"

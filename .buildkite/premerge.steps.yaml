@@ -73,18 +73,41 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: ":debian: ~ annotate test results :pencil2:"
+  - label: ":darwin: ~ test"
+    id: "test-darwin"
+    command: bash -c ci/test.sh
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+
+  - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
       - step: "test-windows"
         allow_failure: true
     plugins:
-      - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
+      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
           inputs:
             - label: ":octagonal_sign: :windows: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
               type: nunit
           formatter:
             type: details
+          context: test-summary-windows
+    <<: *linux
+
+  - label: ":debian: ~ annotate :darwin: test results :pencil2:"
+    depends_on:
+      - step: "test-darwin"
+        allow_failure: true
+    plugins:
+      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
+          inputs:
+            - label: ":octagonal_sign: :darwin: Test failures "
+              artifact_path: "logs/nunit/*.xml"
+              type: nunit
+          formatter:
+            type: details
+          context: test-summary-darwin
     <<: *linux
 
   - label: ":windows: ~ build deployment launcher :rocket:"
