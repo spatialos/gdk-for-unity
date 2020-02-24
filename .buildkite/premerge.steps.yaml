@@ -80,11 +80,9 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: ":debian: ~ annotate test results :pencil2:"
+  - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
       - step: "test-windows"
-        allow_failure: true
-      - step: "test-darwin"
         allow_failure: true
     plugins:
       - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
@@ -92,6 +90,17 @@ steps:
             - label: ":octagonal_sign: :windows: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
               type: nunit
+          formatter:
+            type: details
+    <<: *linux
+
+    - label: ":debian: ~ annotate :darwin: test results :pencil2:"
+    depends_on:
+      - step: "test-darwin"
+        allow_failure: true
+    plugins:
+      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
+          inputs:
             - label: ":octagonal_sign: :darwin: Test failures "
               artifact_path: "logs/nunit/*.xml"
               type: nunit
