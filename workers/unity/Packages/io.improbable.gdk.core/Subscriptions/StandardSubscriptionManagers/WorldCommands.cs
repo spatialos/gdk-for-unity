@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
-                workerSystem.TryGetEntity(entityId, out var entity);
+                WorkerSystem.TryGetEntity(entityId, out var entity);
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new WorldCommandSender(entity, world));
@@ -62,9 +62,9 @@ namespace Improbable.Gdk.Core
                 entityIdToSenderSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (workerSystem.TryGetEntity(entityId, out var entity))
+            if (WorkerSystem.TryGetEntity(entityId, out var entity))
             {
-                subscription.SetAvailable(new WorldCommandSender(entity, world));
+                subscription.SetAvailable(new WorldCommandSender(entity, World));
             }
 
             subscriptions.Add(subscription);

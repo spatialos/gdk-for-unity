@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -13,328 +12,47 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.TestSchema
 {
     [AutoRegisterSubscriptionManager]
-    public class ExhaustiveEntityReaderSubscriptionManager : SubscriptionManager<ExhaustiveEntityReader>
+    public class ExhaustiveEntityReaderSubscriptionManager : ReaderSubscriptionManager<ExhaustiveEntity.Component, ExhaustiveEntityReader>
     {
-        private readonly EntityManager entityManager;
-
-        private Dictionary<EntityId, HashSet<Subscription<ExhaustiveEntityReader>>> entityIdToReaderSubscriptions;
-
-        private Dictionary<EntityId, (ulong Added, ulong Removed)> entityIdToCallbackKey =
-            new Dictionary<EntityId, (ulong Added, ulong Removed)>();
-
-        private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-        private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
         public ExhaustiveEntityReaderSubscriptionManager(World world) : base(world)
         {
-            entityManager = world.EntityManager;
-
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-            constraintCallbackSystem.RegisterComponentAddedCallback(ExhaustiveEntity.ComponentId, entityId =>
-            {
-                if (!entitiesNotMatchingRequirements.Contains(entityId))
-                {
-                    return;
-                }
-
-                workerSystem.TryGetEntity(entityId, out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-                {
-                    subscription.SetAvailable(new ExhaustiveEntityReader(world, entity, entityId));
-                }
-
-                entitiesMatchingRequirements.Add(entityId);
-                entitiesNotMatchingRequirements.Remove(entityId);
-            });
-
-            constraintCallbackSystem.RegisterComponentRemovedCallback(ExhaustiveEntity.ComponentId, entityId =>
-            {
-                if (!entitiesMatchingRequirements.Contains(entityId))
-                {
-                    return;
-                }
-
-                workerSystem.TryGetEntity(entityId, out var entity);
-
-                foreach (var subscription in entityIdToReaderSubscriptions[entityId])
-                {
-                    ResetValue(subscription);
-                    subscription.SetUnavailable();
-                }
-
-                entitiesNotMatchingRequirements.Add(entityId);
-                entitiesMatchingRequirements.Remove(entityId);
-            });
         }
 
-        public override Subscription<ExhaustiveEntityReader> Subscribe(EntityId entityId)
+        protected override ExhaustiveEntityReader CreateReader(Entity entity, EntityId entityId)
         {
-            if (entityIdToReaderSubscriptions == null)
-            {
-                entityIdToReaderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<ExhaustiveEntityReader>>>();
-            }
-
-            var subscription = new Subscription<ExhaustiveEntityReader>(this, entityId);
-
-            if (!entityIdToReaderSubscriptions.TryGetValue(entityId, out var subscriptions))
-            {
-                subscriptions = new HashSet<Subscription<ExhaustiveEntityReader>>();
-                entityIdToReaderSubscriptions.Add(entityId, subscriptions);
-            }
-
-            if (workerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent<ExhaustiveEntity.Component>(entity))
-            {
-                entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new ExhaustiveEntityReader(world, entity, entityId));
-            }
-            else
-            {
-                entitiesNotMatchingRequirements.Add(entityId);
-            }
-
-            subscriptions.Add(subscription);
-            return subscription;
-        }
-
-        public override void Cancel(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveEntityReader>) subscription);
-            ResetValue(sub);
-
-            var subscriptions = entityIdToReaderSubscriptions[sub.EntityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToReaderSubscriptions.Remove(sub.EntityId);
-                entitiesMatchingRequirements.Remove(sub.EntityId);
-                entitiesNotMatchingRequirements.Remove(sub.EntityId);
-            }
-        }
-
-        public override void ResetValue(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveEntityReader>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
-        }
-
-        private void OnComponentAdded(EntityId entityId)
-        {
-        }
-
-        private void OnComponentRemoved(EntityId entityId)
-        {
+            return new ExhaustiveEntityReader(world, entity, entityId);
         }
     }
 
     [AutoRegisterSubscriptionManager]
-    public class ExhaustiveEntityWriterSubscriptionManager : SubscriptionManager<ExhaustiveEntityWriter>
+    public class ExhaustiveEntityWriterSubscriptionManager : WriterSubscriptionManager<ExhaustiveEntity.Component, ExhaustiveEntityWriter>
     {
-        private readonly ComponentUpdateSystem componentUpdateSystem;
-
-        private Dictionary<EntityId, HashSet<Subscription<ExhaustiveEntityWriter>>> entityIdToWriterSubscriptions;
-
-        private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-        private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
         public ExhaustiveEntityWriterSubscriptionManager(World world) : base(world)
         {
-            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-
-            var constraintCallbackSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-            constraintCallbackSystem.RegisterAuthorityCallback(ExhaustiveEntity.ComponentId, authorityChange =>
-            {
-                if (authorityChange.Authority == Authority.Authoritative)
-                {
-                    if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-                    {
-                        subscription.SetAvailable(new ExhaustiveEntityWriter(world, entity, authorityChange.EntityId));
-                    }
-
-                    entitiesMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
-                }
-                else if (authorityChange.Authority == Authority.NotAuthoritative)
-                {
-                    if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
-                    {
-                        return;
-                    }
-
-                    workerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
-
-                    foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
-                    {
-                        ResetValue(subscription);
-                        subscription.SetUnavailable();
-                    }
-
-                    entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesMatchingRequirements.Remove(authorityChange.EntityId);
-                }
-            });
         }
 
-        public override Subscription<ExhaustiveEntityWriter> Subscribe(EntityId entityId)
+        protected override ExhaustiveEntityWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            if (entityIdToWriterSubscriptions == null)
-            {
-                entityIdToWriterSubscriptions = new Dictionary<EntityId, HashSet<Subscription<ExhaustiveEntityWriter>>>();
-            }
-
-            var subscription = new Subscription<ExhaustiveEntityWriter>(this, entityId);
-
-            if (!entityIdToWriterSubscriptions.TryGetValue(entityId, out var subscriptions))
-            {
-                subscriptions = new HashSet<Subscription<ExhaustiveEntityWriter>>();
-                entityIdToWriterSubscriptions.Add(entityId, subscriptions);
-            }
-
-            if (workerSystem.TryGetEntity(entityId, out var entity)
-                && componentUpdateSystem.HasComponent(ExhaustiveEntity.ComponentId, entityId)
-                && componentUpdateSystem.GetAuthority(entityId, ExhaustiveEntity.ComponentId) != Authority.NotAuthoritative)
-            {
-                entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(new ExhaustiveEntityWriter(world, entity, entityId));
-            }
-            else
-            {
-                entitiesNotMatchingRequirements.Add(entityId);
-            }
-
-            subscriptions.Add(subscription);
-            return subscription;
-        }
-
-        public override void Cancel(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveEntityWriter>) subscription);
-            ResetValue(sub);
-
-            var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToWriterSubscriptions.Remove(sub.EntityId);
-                entitiesMatchingRequirements.Remove(sub.EntityId);
-                entitiesNotMatchingRequirements.Remove(sub.EntityId);
-            }
-        }
-
-        public override void ResetValue(ISubscription subscription)
-        {
-            var sub = ((Subscription<ExhaustiveEntityWriter>) subscription);
-            if (sub.HasValue)
-            {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
-            }
+            return new ExhaustiveEntityWriter(world, entity, entityId);
         }
     }
 
-    public class ExhaustiveEntityReader
+    public class ExhaustiveEntityReader : Reader<ExhaustiveEntity.Component, ExhaustiveEntity.Update>
     {
-        public bool IsValid;
-
-        protected readonly ComponentUpdateSystem ComponentUpdateSystem;
-        protected readonly ComponentCallbackSystem CallbackSystem;
-        protected readonly EntityManager EntityManager;
-        protected readonly Entity Entity;
-        protected readonly EntityId EntityId;
-
-        public ExhaustiveEntity.Component Data
-        {
-            get
-            {
-                if (!IsValid)
-                {
-                    throw new InvalidOperationException("Cannot read component data when Reader is not valid.");
-                }
-
-                return EntityManager.GetComponentData<ExhaustiveEntity.Component>(Entity);
-            }
-        }
-
-        public Authority Authority
-        {
-            get
-            {
-                if (!IsValid)
-                {
-                    throw new InvalidOperationException("Cannot read authority when Reader is not valid");
-                }
-
-                return ComponentUpdateSystem.GetAuthority(EntityId, ExhaustiveEntity.ComponentId);
-            }
-        }
-
-        private Dictionary<Action<Authority>, ulong> authorityCallbackToCallbackKey;
-        public event Action<Authority> OnAuthorityUpdate
-        {
-            add
-            {
-                if (authorityCallbackToCallbackKey == null)
-                {
-                    authorityCallbackToCallbackKey = new Dictionary<Action<Authority>, ulong>();
-                }
-
-                var key = CallbackSystem.RegisterAuthorityCallback(EntityId, ExhaustiveEntity.ComponentId, value);
-                authorityCallbackToCallbackKey.Add(value, key);
-            }
-            remove
-            {
-                if (!authorityCallbackToCallbackKey.TryGetValue(value, out var key))
-                {
-                    return;
-                }
-
-                CallbackSystem.UnregisterCallback(key);
-                authorityCallbackToCallbackKey.Remove(value);
-            }
-        }
-
-        private Dictionary<Action<ExhaustiveEntity.Update>, ulong> updateCallbackToCallbackKey;
-        public event Action<ExhaustiveEntity.Update> OnUpdate
-        {
-            add
-            {
-                if (updateCallbackToCallbackKey == null)
-                {
-                    updateCallbackToCallbackKey = new Dictionary<Action<ExhaustiveEntity.Update>, ulong>();
-                }
-
-                var key = CallbackSystem.RegisterComponentUpdateCallback(EntityId, value);
-                updateCallbackToCallbackKey.Add(value, key);
-            }
-            remove
-            {
-                if (!updateCallbackToCallbackKey.TryGetValue(value, out var key))
-                {
-                    return;
-                }
-
-                CallbackSystem.UnregisterCallback(key);
-                updateCallbackToCallbackKey.Remove(value);
-            }
-        }
-
         private Dictionary<Action<global::Improbable.Gdk.Core.EntitySnapshot>, ulong> field1UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::Improbable.Gdk.Core.EntitySnapshot?>, ulong> field2UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field3UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>, ulong> field4UpdateCallbackToCallbackKey;
+
+        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field5UpdateCallbackToCallbackKey;
+
+        internal ExhaustiveEntityReader(World world, Entity entity, EntityId entityId) : base(world, entity, entityId)
+        {
+        }
+
         public event Action<global::Improbable.Gdk.Core.EntitySnapshot> OnField1Update
         {
             add
@@ -365,7 +83,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::Improbable.Gdk.Core.EntitySnapshot?>, ulong> field2UpdateCallbackToCallbackKey;
         public event Action<global::Improbable.Gdk.Core.EntitySnapshot?> OnField2Update
         {
             add
@@ -396,7 +113,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field3UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>> OnField3Update
         {
             add
@@ -427,7 +143,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>, ulong> field4UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>> OnField4Update
         {
             add
@@ -458,7 +173,6 @@ namespace Improbable.TestSchema
             }
         }
 
-        private Dictionary<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>, ulong> field5UpdateCallbackToCallbackKey;
         public event Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>> OnField5Update
         {
             add
@@ -489,40 +203,8 @@ namespace Improbable.TestSchema
             }
         }
 
-        internal ExhaustiveEntityReader(World world, Entity entity, EntityId entityId)
+        protected override void RemoveFieldCallbacks()
         {
-            Entity = entity;
-            EntityId = entityId;
-
-            IsValid = true;
-
-            ComponentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
-            CallbackSystem = world.GetExistingSystem<ComponentCallbackSystem>();
-            EntityManager = world.EntityManager;
-        }
-
-        public void RemoveAllCallbacks()
-        {
-            if (authorityCallbackToCallbackKey != null)
-            {
-                foreach (var callbackToKey in authorityCallbackToCallbackKey)
-                {
-                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
-                }
-
-                authorityCallbackToCallbackKey.Clear();
-            }
-
-            if (updateCallbackToCallbackKey != null)
-            {
-                foreach (var callbackToKey in updateCallbackToCallbackKey)
-                {
-                    CallbackSystem.UnregisterCallback(callbackToKey.Value);
-                }
-
-                updateCallbackToCallbackKey.Clear();
-            }
-
             if (field1UpdateCallbackToCallbackKey != null)
             {
                 foreach (var callbackToKey in field1UpdateCallbackToCallbackKey)

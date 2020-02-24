@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Core
         public override Subscription<WorkerFlagReader> Subscribe(EntityId entityId)
         {
             var subscription = new Subscription<WorkerFlagReader>(this, new EntityId(0));
-            subscription.SetAvailable(new WorkerFlagReader(world));
+            subscription.SetAvailable(new WorkerFlagReader(World));
 
             return subscription;
         }

@@ -15,7 +15,7 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             var linkedGameObjectMapSubscription = new Subscription<LinkedGameObjectMap>(this, new EntityId(0));
 
-            var goSystem = world.GetExistingSystem<GameObjectInitializationSystem>();
+            var goSystem = World.GetExistingSystem<GameObjectInitializationSystem>();
             if (goSystem != null)
             {
                 linkedGameObjectMapSubscription.SetAvailable(new LinkedGameObjectMap(goSystem.Linker));
