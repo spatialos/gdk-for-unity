@@ -87,7 +87,7 @@ steps:
       - step: "test-darwin"
         allow_failure: true
     plugins:
-      - improbable/test-summary#d7289cac8297018fd1b452dcf828979307b3ebc6:
+      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
           inputs:
             - label: ":octagonal_sign: :windows: Test failures "
               artifact_path: "logs\\nunit\\*.xml"
