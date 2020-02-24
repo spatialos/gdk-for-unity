@@ -94,7 +94,7 @@ steps:
             type: details
     <<: *linux
 
-    - label: ":debian: ~ annotate :darwin: test results :pencil2:"
+  - label: ":debian: ~ annotate :darwin: test results :pencil2:"
     depends_on:
       - step: "test-darwin"
         allow_failure: true
