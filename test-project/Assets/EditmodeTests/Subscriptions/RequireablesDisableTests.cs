@@ -1,117 +1,158 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.Test;
-using Improbable.Gdk.TestBases;
+using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
 
 namespace Improbable.Gdk.EditmodeTests.Subscriptions
 {
-    public class RequireablesDisableTests : SubscriptionsTestBase
+    public class RequireablesDisableTests : MockBase
     {
         private const long EntityId = 100;
-        private GameObject createdGameObject;
-
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-            var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new TestCommands.Snapshot(), "worker");
-            ConnectionHandler.CreateEntity(EntityId, template);
-            Update();
-        }
 
         [Test]
         public void Reader_is_disabled_if_component_removed()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<PositionReaderBehaviour>(EntityId);
-            var reader = createdGameObject.GetComponent<PositionReaderBehaviour>().Reader;
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<PositionReaderBehaviour>(EntityId);
+                    return (readerBehaviour: readerBehaviour, reader: readerBehaviour.Reader);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
+                })
+                .Step((world, context) =>
+                {
+                    var (readerBehaviour, reader) = context;
 
-            ConnectionHandler.RemoveComponent(EntityId, Position.ComponentId);
-            Update();
-
-            Assert.IsNull(createdGameObject.GetComponent<PositionReaderBehaviour>().Reader);
-            Assert.IsFalse(reader.IsValid);
+                    Assert.IsNull(readerBehaviour.Reader);
+                    Assert.IsFalse(reader.IsValid);
+                });
         }
 
         [Test]
         public void Writer_is_disabled_if_loses_auth()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
-            Update();
-
-            createdGameObject = CreateAndLinkGameObjectWithComponent<PositionWriterBehaviour>(EntityId);
-            var writer = createdGameObject.GetComponent<PositionWriterBehaviour>().Writer;
-
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.NotAuthoritative);
-            Update();
-
-            Assert.IsNull(createdGameObject.GetComponent<PositionWriterBehaviour>().Writer);
-            Assert.IsFalse(writer.IsValid);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetTemplate()); })
+                .Step(world =>
+                {
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<PositionWriterBehaviour>(EntityId);
+                    return (writerBehaviour: writerBehaviour, writer: writerBehaviour.Writer);
+                })
+                .Step(world =>
+                {
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.NotAuthoritative);
+                })
+                .Step((world, context) =>
+                {
+                    var (writerBehaviour, positionWriter) = context;
+                    Assert.IsNull(writerBehaviour.Writer);
+                    Assert.IsFalse(positionWriter.IsValid);
+                });
         }
 
         [Test]
         public void CommandSender_is_disabled_if_entity_removed()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<CommandSender>(EntityId);
-            var sender = createdGameObject.GetComponent<CommandSender>().Sender;
-
-            ConnectionHandler.RemoveComponent(EntityId, Position.ComponentId);
-            ConnectionHandler.RemoveComponent(EntityId, TestCommands.ComponentId);
-            ConnectionHandler.RemoveEntity(EntityId);
-            Update();
-
-            Assert.IsNull(createdGameObject.GetComponent<CommandSender>().Sender);
-            Assert.IsFalse(sender.IsValid);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetTemplate()); })
+                .Step(world =>
+                {
+                    var (_, senderBehaviour) = world.CreateGameObject<CommandSender>(EntityId);
+                    return (senderBehaviour: senderBehaviour, sender: senderBehaviour.Sender);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
+                    world.Connection.RemoveComponent(EntityId, TestCommands.ComponentId);
+                    world.Connection.RemoveEntity(EntityId);
+                })
+                .Step((world, context) =>
+                {
+                    var (senderBehaviour, testCommandsCommandSender) = context;
+                    Assert.IsNull(senderBehaviour.Sender);
+                    Assert.IsFalse(testCommandsCommandSender.IsValid);
+                });
         }
 
         [Test]
         public void CommandReceiver_is_disabled_if_loses_auth()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
-            Update();
-
-            createdGameObject = CreateAndLinkGameObjectWithComponent<CommandReceiver>(EntityId);
-            var receiver = createdGameObject.GetComponent<CommandReceiver>().Receiver;
-
-            ConnectionHandler.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.NotAuthoritative);
-            Update();
-
-            Assert.IsNull(createdGameObject.GetComponent<CommandReceiver>().Receiver);
-            Assert.IsFalse(receiver.IsValid);
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, receiverBehaviour) = world.CreateGameObject<CommandReceiver>(EntityId);
+                    return (receiverBehaviour: receiverBehaviour, receiver: receiverBehaviour.Receiver);
+                })
+                .Step(world =>
+                {
+                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId,
+                        Authority.NotAuthoritative);
+                })
+                .Step((world, context) =>
+                {
+                    var (receiverBehaviour, testCommandsCommandReceiver) = context;
+                    Assert.IsNull(receiverBehaviour.Receiver);
+                    Assert.IsFalse(testCommandsCommandReceiver.IsValid);
+                });
         }
 
         [Test]
         public void Only_field_which_lost_constraints_is_invalid()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<MultipleReaderBehaviour>(EntityId);
-            var component = createdGameObject.GetComponent<MultipleReaderBehaviour>();
-            var position = component.PositionReader;
-            var testCommands = component.TestCommandsReader;
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    var (_, component) = world.CreateGameObject<MultipleReaderBehaviour>(EntityId);
+                    return (component: component, positionReader: component.PositionReader,
+                        testCommandsReader: component.TestCommandsReader);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, TestCommands.ComponentId);
+                })
+                .Step((world, context) =>
+                {
+                    var (component, positionReader, testCommandsReader) = context;
 
-            ConnectionHandler.RemoveComponent(EntityId, TestCommands.ComponentId);
-            Update();
-
-            Assert.IsNull(component.PositionReader);
-            Assert.IsNull(component.TestCommandsReader);
-            Assert.IsFalse(position.IsValid);
-            Assert.IsFalse(testCommands.IsValid);
+                    Assert.IsNull(component.PositionReader);
+                    Assert.IsNull(component.TestCommandsReader);
+                    Assert.IsFalse(positionReader.IsValid);
+                    Assert.IsFalse(testCommandsReader.IsValid);
+                });
         }
 
-        public override void TearDown()
+        private static EntityTemplate GetTemplate()
         {
-            base.TearDown();
-            Object.DestroyImmediate(createdGameObject);
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), "worker");
+            template.AddComponent(new TestCommands.Snapshot(), "worker");
+            return template;
         }
 
-        private void Update()
-        {
-            ReceiveSystem.Update();
-            RequireLifecycleSystem.Update();
-        }
+#pragma warning disable 649
 
         private class PositionReaderBehaviour : MonoBehaviour
         {
@@ -138,5 +179,8 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
             [Require] public PositionReader PositionReader;
             [Require] public TestCommandsReader TestCommandsReader;
         }
+
+#pragma warning restore 649
+
     }
 }
