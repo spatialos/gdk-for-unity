@@ -5,3 +5,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Improbable.Gdk.EditmodeTests")]
 [assembly: InternalsVisibleTo("Improbable.Gdk.PlaymodeTests")]
 [assembly: InternalsVisibleTo("Improbable.Gdk.Debug")]
+[assembly: InternalsVisibleTo("Improbable.Gdk.TestUtils")]
