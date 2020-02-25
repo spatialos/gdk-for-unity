@@ -7,6 +7,7 @@ using System.Text;
 using Improbable.Gdk.Core.Editor;
 using Improbable.Gdk.Tools;
 using Improbable.Gdk.Tools.MiniJSON;
+using Improbable.Worker.CInterop;
 using UnityEditor;
 using UnityEngine;
 using UploadTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Tools.RedirectedProcessResult, Improbable.Gdk.DeploymentLauncher.AssemblyConfig>;
@@ -19,14 +20,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 {
     internal class DeploymentLauncherWindow : EditorWindow
     {
-        private const string BuiltInErrorIcon = "console.erroricon.sml";
-        private const string BuiltInRefreshIcon = "Refresh";
-        private const string BuiltInWebIcon = "BuildSettings.Web.Small";
-        private const string BuiltInEditIcon = "editicon.sml";
-
-        private static readonly Vector2 SmallIconSize = new Vector2(12, 12);
-        private readonly Color horizontalLineColor = new Color(0.3f, 0.3f, 0.3f, 1);
-        private Material spinnerMaterial;
+        private DeploymentLauncherWindowStyle style;
 
         private readonly TaskManager manager = new TaskManager();
         private readonly UIStateManager stateManager = new UIStateManager();
@@ -65,8 +59,6 @@ namespace Improbable.Gdk.DeploymentLauncher
                 launcherConfig.SetProjectName(projectName);
                 MarkConfigAsDirty();
             }
-
-            spinnerMaterial = new Material(Shader.Find("UI/Default"));
 
             Application.quitting += OnExit;
         }
@@ -213,6 +205,11 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private void OnGUI()
         {
+            if (style == null)
+            {
+                style = new DeploymentLauncherWindowStyle();
+            }
+
             if (launcherConfig == null)
             {
                 EditorGUILayout.HelpBox($"Could not find a {nameof(DeploymentLauncherConfig)} instance.\nPlease create one via the Assets > Create > SpatialOS menu.", MessageType.Info);
@@ -232,12 +229,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 {
                     using (new EditorGUI.DisabledScope(manager.IsActive))
                     {
-                        var buttonIcon = new GUIContent(EditorGUIUtility.IconContent(BuiltInRefreshIcon))
-                        {
-                            tooltip = "Refresh your project name."
-                        };
-
-                        if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button(style.ProjectRefreshButtonContents, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
                             projectName = GetProjectName();
                             launcherConfig.SetProjectName(projectName);
@@ -252,12 +244,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 {
                     using (new EditorGUI.DisabledScope(manager.IsActive))
                     {
-                        var buttonIcon = new GUIContent(EditorGUIUtility.IconContent(BuiltInEditIcon))
-                        {
-                            tooltip = "Edit the Runtime version."
-                        };
-
-                        if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button(style.EditRuntimeVersionButtonContents, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
                             GdkToolsConfigurationWindow.ShowWindow();
                         }
@@ -268,7 +255,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     EditorGUILayout.LabelField("Runtime Version", config.RuntimeVersion);
                 }
 
-                CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
+                CommonUIElements.DrawHorizontalLine(5, style.HorizontalLineColor);
 
                 launcherConfig.AssemblyConfig = DrawAssemblyConfig(launcherConfig.AssemblyConfig);
 
@@ -336,7 +323,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
                 }
 
-                CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
+                CommonUIElements.DrawHorizontalLine(5, style.HorizontalLineColor);
                 GUILayout.Label("Live Deployments", EditorStyles.boldLabel);
                 DrawDeploymentList();
 
@@ -361,7 +348,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
 
                     var rect = EditorGUILayout.GetControlRect(false, 20);
-                    DrawSpinner(Time.realtimeSinceStartup * 10, rect);
+                    style.DrawSpinner(Time.realtimeSinceStartup * 10, rect);
 
                     Repaint();
                 }
@@ -437,7 +424,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     var shouldBeVertical = EditorGUIUtility.currentViewWidth < 550;
-                    /* Response Layout, Intuitive API! */
+                    /* Responsive Layout, Intuitive API! */
                     if (shouldBeVertical)
                     {
                         EditorGUILayout.BeginVertical();
@@ -478,7 +465,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 }
             }
 
-            CommonUIElements.DrawHorizontalLine(3, horizontalLineColor);
+            CommonUIElements.DrawHorizontalLine(3, style.HorizontalLineColor);
 
             return copy;
         }
@@ -498,20 +485,14 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                     GUILayout.FlexibleSpace();
 
-                    using (new EditorGUIUtility.IconSizeScope(SmallIconSize))
+                    using (new EditorGUIUtility.IconSizeScope(style.SmallIconSize))
                     {
                         if (errors.Any())
                         {
-                            GUILayout.Label(new GUIContent(EditorGUIUtility.IconContent(BuiltInErrorIcon))
-                            {
-                                tooltip = "One or more errors in deployment configuration."
-                            });
+                            GUILayout.Label(style.DeploymentConfigurationErrorContents);
                         }
 
-                        var buttonContent = new GUIContent(string.Empty, "Remove deployment configuration");
-                        buttonContent.image = EditorGUIUtility.IconContent("Toolbar Minus").image;
-
-                        if (GUILayout.Button(buttonContent, EditorStyles.miniButton))
+                        if (GUILayout.Button(style.RemoveDeploymentConfigurationButtonContents, EditorStyles.miniButton))
                         {
                             return (true, null);
                         }
@@ -584,7 +565,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 }
             }
 
-            CommonUIElements.DrawHorizontalLine(5, horizontalLineColor);
+            CommonUIElements.DrawHorizontalLine(5, style.HorizontalLineColor);
 
             return (false, copy);
         }
@@ -628,12 +609,9 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                     GUILayout.FlexibleSpace();
 
-                    using (new EditorGUIUtility.IconSizeScope(SmallIconSize))
+                    using (new EditorGUIUtility.IconSizeScope(style.SmallIconSize))
                     {
-                        var buttonContent = new GUIContent(string.Empty, "Remove simulated player deployment");
-                        buttonContent.image = EditorGUIUtility.IconContent("Toolbar Minus").image;
-
-                        if (GUILayout.Button(buttonContent, EditorStyles.miniButton))
+                        if (GUILayout.Button(style.RemoveSimPlayerDeploymentButtonContents, EditorStyles.miniButton))
                         {
                             return (true, null);
                         }
@@ -739,12 +717,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     {
                         foldoutState = EditorGUILayout.Foldout(foldoutState, new GUIContent(deplInfo.Name), true);
 
-                        var buttonIcon = new GUIContent(EditorGUIUtility.IconContent(BuiltInWebIcon))
-                        {
-                            tooltip = "Open this deployment in your browser."
-                        };
-
-                        if (GUILayout.Button(buttonIcon, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button(style.OpenDeploymentButtonContents, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
                             var host = GetHostForEnvironment();
                             Application.OpenURL($"{host}/projects/{projectName}/deployments/{deplInfo.Name}/overview/{deplInfo.Id}");
@@ -789,7 +762,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                             }
                         }
 
-                        CommonUIElements.DrawHorizontalLine(3, horizontalLineColor);
+                        CommonUIElements.DrawHorizontalLine(3, style.HorizontalLineColor);
                     }
                 }
 
@@ -843,7 +816,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         private string GetProjectName()
         {
-            var spatialJsonFile = Path.Combine(Tools.Common.SpatialProjectRootDir, "spatialos.json");
+            var spatialJsonFile = Path.Combine(Common.SpatialProjectRootDir, "spatialos.json");
 
             if (!File.Exists(spatialJsonFile))
             {
@@ -939,14 +912,6 @@ namespace Improbable.Gdk.DeploymentLauncher
         private bool IsSelectedValid<T>(List<T> list, int index)
         {
             return index >= 0 && index < list.Count;
-        }
-
-        private void DrawSpinner(float value, Rect rect)
-        {
-            // There are 11 frames in the spinner animation, 0 till 11.
-            var imageId = Mathf.RoundToInt(value) % 12;
-            var icon = EditorGUIUtility.IconContent($"d_WaitSpin{imageId:D2}");
-            EditorGUI.DrawPreviewTexture(rect, icon.image, spinnerMaterial, ScaleMode.ScaleToFit, 1);
         }
     }
 }
