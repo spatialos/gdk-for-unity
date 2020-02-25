@@ -1,6 +1,7 @@
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Gdk.TestBases;
+using Improbable.Gdk.TestUtils;
 using Improbable.TestSchema;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
@@ -12,118 +13,161 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
     ///     This tests the injection criteria for a reader or writer.
     /// </summary>
     [TestFixture]
-    public class ReaderWriterInjectionCriteriaTests : SubscriptionsTestBase
+    public class ReaderWriterInjectionCriteriaTests : MockBase
     {
         private const long EntityId = 100;
-
-        private GameObject createdGameObject;
-
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-
-            var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            ConnectionHandler.CreateEntity(EntityId, template);
-            ReceiveSystem.Update();
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
-            Object.DestroyImmediate(createdGameObject);
-        }
 
         [Test]
         public void Reader_is_not_injected_when_entity_component_is_not_checked_out()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<ExhaustiveSingularReaderBehaviour>(EntityId);
-            var readerBehaviour = createdGameObject.GetComponent<ExhaustiveSingularReaderBehaviour>();
-
-            Assert.IsFalse(readerBehaviour.enabled);
-            Assert.IsNull(readerBehaviour.Reader);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<ExhaustiveSingularReaderBehaviour>(EntityId);
+                    return readerBehaviour;
+                })
+                .Step((world, reader) =>
+                {
+                    Assert.IsFalse(reader.enabled);
+                    Assert.IsNull(reader.Reader);
+                });
         }
 
         [Test]
         public void Reader_is_injected_when_entity_component_is_checked_out()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<PositionReaderBehaviour>(EntityId);
-            var readerBehaviour = createdGameObject.GetComponent<PositionReaderBehaviour>();
-
-            Assert.IsTrue(readerBehaviour.enabled);
-            Assert.IsNotNull(readerBehaviour.Reader);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<PositionReaderBehaviour>(EntityId);
+                    return readerBehaviour;
+                })
+                .Step((world, readerBehaviour) =>
+                {
+                    Assert.IsTrue(readerBehaviour.enabled);
+                    Assert.IsNotNull(readerBehaviour.Reader);
+                });
         }
 
         [Test]
         public void Writer_is_not_injected_when_entity_component_is_not_checked_out()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<ExhaustiveSingularWriterBehaviour>(EntityId);
-            var writerBehaviour = createdGameObject.GetComponent<ExhaustiveSingularWriterBehaviour>();
-
-            Assert.IsFalse(writerBehaviour.enabled);
-            Assert.IsNull(writerBehaviour.Writer);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<ExhaustiveSingularWriterBehaviour>(EntityId);
+                    return writerBehaviour;
+                })
+                .Step((world, writerBehaviour) =>
+                {
+                    Assert.IsFalse(writerBehaviour.enabled);
+                    Assert.IsNull(writerBehaviour.Writer);
+                });
         }
 
         [Test]
         public void Writer_is_not_injected_when_entity_component_is_checked_out_and_unauthoritative()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<PositionWriterBehaviour>(EntityId);
-            var writerBehaviour = createdGameObject.GetComponent<PositionWriterBehaviour>();
-
-            Assert.IsFalse(writerBehaviour.enabled);
-            Assert.IsNull(writerBehaviour.Writer);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<PositionWriterBehaviour>(EntityId);
+                    return writerBehaviour;
+                })
+                .Step((world, writerBehaviour) =>
+                {
+                    Assert.IsFalse(writerBehaviour.enabled);
+                    Assert.IsNull(writerBehaviour.Writer);
+                });
         }
 
         [Test]
         public void Writer_is_injected_when_entity_component_is_checked_out_and_authoritative()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
-            ReceiveSystem.Update();
-
-            createdGameObject = CreateAndLinkGameObjectWithComponent<PositionWriterBehaviour>(EntityId);
-            var writerBehaviour = createdGameObject.GetComponent<PositionWriterBehaviour>();
-
-            Assert.IsTrue(writerBehaviour.enabled);
-            Assert.IsNotNull(writerBehaviour.Writer);
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, BasicEntity());
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<PositionWriterBehaviour>(EntityId);
+                    return writerBehaviour;
+                })
+                .Step((world, writerBehaviour) =>
+                {
+                    Assert.IsTrue(writerBehaviour.enabled);
+                    Assert.IsNotNull(writerBehaviour.Writer);
+                });
         }
 
         [Test]
         public void Injection_does_not_happen_if_not_all_constraints_are_satisfied()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<CompositeBehaviour>(EntityId);
-            var compositeBehaviour = createdGameObject.GetComponent<CompositeBehaviour>();
-
-            Assert.IsFalse(compositeBehaviour.enabled);
-            Assert.IsNull(compositeBehaviour.Reader);
-            Assert.IsNull(compositeBehaviour.Writer);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, compositeBehaviour) = world.CreateGameObject<CompositeBehaviour>(EntityId);
+                    return compositeBehaviour;
+                })
+                .Step((world, compositeBehaviour) =>
+                {
+                    Assert.IsFalse(compositeBehaviour.enabled);
+                    Assert.IsNull(compositeBehaviour.Reader);
+                    Assert.IsNull(compositeBehaviour.Writer);
+                });
         }
 
         [Test]
         public void Injection_happens_if_all_constraints_are_satisfied()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
-            ReceiveSystem.Update();
-
-            createdGameObject = CreateAndLinkGameObjectWithComponent<CompositeBehaviour>(EntityId);
-            var compositeBehaviour = createdGameObject.GetComponent<CompositeBehaviour>();
-
-            Assert.IsTrue(compositeBehaviour.enabled);
-            Assert.IsNotNull(compositeBehaviour.Reader);
-            Assert.IsNotNull(compositeBehaviour.Writer);
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, BasicEntity());
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, compositeBehaviour) = world.CreateGameObject<CompositeBehaviour>(EntityId);
+                    return compositeBehaviour;
+                })
+                .Step((world, compositeBehaviour) =>
+                {
+                    Assert.IsTrue(compositeBehaviour.enabled);
+                    Assert.IsNotNull(compositeBehaviour.Reader);
+                    Assert.IsNotNull(compositeBehaviour.Writer);
+                });
         }
 
         [Test]
         public void Injection_happens_if_inherited_constraints_are_satisfied()
         {
-            ReceiveSystem.Update();
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<InheritanceBehaviour>(EntityId);
+                    return readerBehaviour;
+                })
+                .Step((world, readerBehaviour) =>
+                {
+                    Assert.IsTrue(readerBehaviour.enabled);
+                    Assert.IsNotNull(readerBehaviour.OwnReader);
+                });
+        }
 
-            createdGameObject = CreateAndLinkGameObjectWithComponent<InheritanceBehaviour>(EntityId);
-            var inheritanceBehaviour = createdGameObject.GetComponent<InheritanceBehaviour>();
-
-            Assert.IsTrue(inheritanceBehaviour.enabled);
-            Assert.IsNotNull(inheritanceBehaviour.OwnReader);
+        private static EntityTemplate BasicEntity()
+        {
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), "worker");
+            return template;
         }
 
 #pragma warning disable 649
