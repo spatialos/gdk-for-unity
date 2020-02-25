@@ -35,3 +35,15 @@ The Deployment Launcher reads your SpatialOS project name from the `spatialos.js
 2. Press the refresh button in the Deployment Launcher window, next to the **Project Name** label to reload the project name.
 
 <img src="{{assetRoot}}assets/modules/deployment-launcher/refresh-button.png" style="margin: 0 auto; width: auto; display: block;" />
+
+### Change the Runtime version used in the Deployment Launcher
+
+The Deployment Launcher uses the Runtime version override in your `GdkToolsConfiguration.json` file or the default Runtime version if the override is not set. To change which Runtime version the Deployment Launcher uses:
+
+1. Select the edit button next to the **Runtime Version** label to open the Gdk Tools Configuration window.
+2. Set the **Runtime Version Override** field to your desired value.
+3. Select **Save** at the top of the GDK Tools Configuration Window.
+
+> **Note:** This will change the Runtime version for local deployments as well.
+
+<img src="{{assetRoot}}assets/modules/deployment-launcher/edit-runtime-version-button.png" style="margin: 0 auto; width: auto; display: block;" />
