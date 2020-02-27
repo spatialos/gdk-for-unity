@@ -8,7 +8,13 @@
     "dimensions": {
       "xMeters": 500,
       "zMeters": 500
-    }
+    },
+    "legacy_flags": [
+      {
+        "name": "interest_queries_components_are_filtered_by_component_delivery",
+        "value": "false"
+      }
+    ]
   },
   "load_balancing": {
     "layer_configurations": [

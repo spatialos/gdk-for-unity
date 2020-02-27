@@ -21,14 +21,9 @@
         "MobileClient"
       ]
     },
-    "entity_interest": {
-      "range_entity_interest": {
-        "radius": 25
-      }
-    },
     "component_delivery": {
       "default": "RELIABLE_ORDERED",
-      "checkoutAllInitially": true
+      "checkoutAllInitially": false
     }
   },
   "external": {
