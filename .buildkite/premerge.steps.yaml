@@ -7,7 +7,7 @@
 # You may find the example pipeline steps listed here helpful: https://buildkite.com/docs/pipelines/defining-steps#example-pipeline but please
 #  note that the setup is already done, so you should not manually adjust anything through the BuildKite interface.
 #
-common: &common
+windows: &windows
   agents:
     - "capable_of_building=gdk-for-unity"
     - "environment=production"
@@ -66,10 +66,14 @@ macos: &macos
 dag: true
 
 steps:
+  - label: ":debian: ~ lint :lint-roller:"
+    command: bash -c ci/lint.sh
+    <<: *linux
+
   - label: ":windows: ~ test"
     id: "test-windows"
     command: bash -c ci/test.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
 
@@ -112,13 +116,13 @@ steps:
 
   - label: ":windows: ~ build deployment launcher :rocket:"
     command: bash -c ci/build-deployment-launcher.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
 
   - label: ":windows: ~ build :android:"
     command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
       - workers/unity/build/worker/**/*
@@ -130,7 +134,7 @@ steps:
 
   - label: ":windows: ~ build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
     env:
@@ -140,7 +144,7 @@ steps:
 
   - label: ":windows: ~ build UnityClient il2cpp"
     command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
     env:
@@ -150,7 +154,7 @@ steps:
 
   - label: ":windows: ~ build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *common
+    <<: *windows
     artifact_paths:
       - logs/**/*
     env:

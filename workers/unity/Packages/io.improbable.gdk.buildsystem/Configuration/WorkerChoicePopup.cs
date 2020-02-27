@@ -15,7 +15,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private int hover = -1;
 
         public WorkerChoicePopup(Rect parentRect, BuildConfig config, string[] allWorkers)
-        {          
+        {
             windowSize = parentRect.size;
 
             Choices =

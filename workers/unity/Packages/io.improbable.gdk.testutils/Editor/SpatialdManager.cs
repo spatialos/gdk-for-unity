@@ -155,7 +155,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             {
                 throw new Exception($"Failed to create deployment because there was no output. Error: \n {string.Join("\n", result.Stderr)}");
             }
-            
+
             var content = (Dictionary<string, object>) deploymentData["content"];
             var id = (string) content["id"];
 

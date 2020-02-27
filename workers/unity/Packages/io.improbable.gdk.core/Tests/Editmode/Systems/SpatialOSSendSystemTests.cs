@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Improbable.Gdk.Core.CodegenAdapters;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;

@@ -162,14 +162,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     {
                         foldoutState.Icon =
                             new GUIContent(EditorGUIUtility.IconContent(buildStateIcon))
-                                { tooltip = "Missing build support for one or more build targets." };
+                            {
+                                tooltip = "Missing build support for one or more build targets."
+                            };
                     }
                     else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(NeedsAndroidSdk) ||
                         configurationForWorker.LocalBuildConfig.BuildTargets.Any(NeedsAndroidSdk))
                     {
                         foldoutState.Icon =
                             new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
-                                { tooltip = "Missing Android SDK installation. Go to Preferences > External Tools to set it up." };
+                            {
+                                tooltip = "Missing Android SDK installation. Go to Preferences > External Tools to set it up."
+                            };
                     }
                     else
                     {
@@ -569,13 +573,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     foldoutState.Icon =
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
-                            { tooltip = "Missing build support for one or more build targets." };
+                        { tooltip = "Missing build support for one or more build targets." };
                 }
                 else if (environmentConfiguration.BuildTargets.Any(IsBuildTargetWarning))
                 {
                     foldoutState.Icon =
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInWarningIcon))
-                            { tooltip = "Missing build support for one or more build targets." };
+                        { tooltip = "Missing build support for one or more build targets." };
                 }
                 else
                 {

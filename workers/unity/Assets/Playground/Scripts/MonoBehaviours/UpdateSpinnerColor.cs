@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Improbable.Gdk.Subscriptions;
 using UnityEngine;
 
