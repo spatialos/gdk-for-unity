@@ -5,6 +5,7 @@ using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Playground.MonoBehaviours
@@ -16,13 +17,17 @@ namespace Playground.MonoBehaviours
         [Require] private CubeSpawnerCommandReceiver cubeSpawnerCommandRequestHandler;
         [Require] private CubeSpawnerWriter cubeSpawnerWriter;
         [Require] private WorldCommandSender worldCommandRequestSender;
+        [Require] private World world;
 
         [Require] private ILogDispatcher logDispatcher;
 #pragma warning restore 649
 
+        private Vector3 offset;
+
         public void OnEnable()
         {
             cubeSpawnerCommandRequestHandler.OnSpawnCubeRequestReceived += OnSpawnCubeRequest;
+            offset = world.GetExistingSystem<WorkerSystem>().Origin;
         }
 
         private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestReceived)
@@ -50,6 +55,7 @@ namespace Playground.MonoBehaviours
 
             var location = gameObject.transform.position;
             location.y += 2;
+            location -= offset;
 
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
 
