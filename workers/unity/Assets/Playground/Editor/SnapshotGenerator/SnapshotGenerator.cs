@@ -2,6 +2,7 @@ using System;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.QueryBasedInterest;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
 
@@ -108,6 +109,11 @@ namespace Playground.Editor.SnapshotGenerator
             template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
+
+            var query = InterestQuery.Query(Constraint.RelativeSphere(radius: 25));
+            var interest = InterestTemplate.Create()
+                .AddQueries<Position.Component>(query);
+            template.AddComponent(interest.ToSnapshot(), WorkerUtils.UnityGameLogic);
 
             template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);

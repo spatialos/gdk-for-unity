@@ -4,9 +4,10 @@
         "Improbable.Playground",
         "Improbable.Gdk.Core",
         "Improbable.Gdk.Generated",
-        "Improbable.Gdk.TransformSynchronization"
+        "Improbable.Gdk.TransformSynchronization",
+        "Improbable.Gdk.QueryBasedInterestHelper",
+        "Unity.Entities"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],

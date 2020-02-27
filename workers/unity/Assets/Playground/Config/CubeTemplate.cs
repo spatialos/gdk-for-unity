@@ -1,5 +1,6 @@
 using Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.QueryBasedInterest;
 using Improbable.Gdk.TransformSynchronization;
 
 namespace Playground
@@ -17,6 +18,11 @@ namespace Playground
                 WorkerUtils.UnityGameLogic);
             template.AddComponent(new Launchable.Snapshot(), WorkerUtils.UnityGameLogic);
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic);
+
+            var query = InterestQuery.Query(Constraint.RelativeSphere(radius: 25));
+            var interest = InterestTemplate.Create()
+                .AddQueries<Position.Component>(query);
+            template.AddComponent(interest.ToSnapshot(), WorkerUtils.UnityGameLogic);
 
             template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
