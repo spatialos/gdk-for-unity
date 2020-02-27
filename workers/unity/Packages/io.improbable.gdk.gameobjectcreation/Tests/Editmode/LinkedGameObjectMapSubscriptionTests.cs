@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.EditmodeTests.Subscriptions;
 using Improbable.Gdk.Subscriptions;
 using NUnit.Framework;

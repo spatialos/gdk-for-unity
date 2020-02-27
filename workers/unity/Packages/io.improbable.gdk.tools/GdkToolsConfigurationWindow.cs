@@ -56,10 +56,14 @@ namespace Improbable.Gdk.Tools
             if (AddSchemaDirButton == null)
             {
                 AddSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Plus"))
-                    { tooltip = "Add schema directory" };
+                {
+                    tooltip = "Add schema directory"
+                };
 
                 RemoveSchemaDirButton = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
-                    { tooltip = "Remove schema directory" };
+                {
+                    tooltip = "Remove schema directory"
+                };
             }
 
             using (new EditorGUILayout.VerticalScope())

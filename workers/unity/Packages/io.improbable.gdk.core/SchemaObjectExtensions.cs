@@ -1,4 +1,4 @@
-﻿using Improbable.Worker.CInterop;
+using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
 {

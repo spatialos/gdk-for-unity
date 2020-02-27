@@ -43,7 +43,7 @@ namespace Playground
         protected override void HandleWorkerConnectionEstablished()
         {
             WorkerUtils.AddGameLogicSystems(Worker.World);
-            
+
             if (level == null)
             {
                 return;

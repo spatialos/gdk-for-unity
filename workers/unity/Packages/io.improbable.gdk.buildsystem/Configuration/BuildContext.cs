@@ -58,7 +58,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
                 result.AddRange(targetConfigs.Select(targetConfig => new BuildContext
                 {
-                    WorkerType = workerType, BuildEnvironment = buildEnvironment,
+                    WorkerType = workerType,
+                    BuildEnvironment = buildEnvironment,
                     ScriptingImplementation = scriptImplementation ??
                         PlayerSettings.GetScriptingBackend(BuildPipeline.GetBuildTargetGroup(targetConfig.Target)),
                     BuildTargetConfig = targetConfig,
