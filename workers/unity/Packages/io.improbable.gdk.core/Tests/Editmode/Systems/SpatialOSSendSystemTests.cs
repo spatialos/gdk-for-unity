@@ -12,7 +12,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
     public class SpatialOSSendSystemTests
     {
         internal const uint TestComponentId = 1;
-        private const uint UnknownComponentId = 0;
 
         private WorkerInWorld worker;
         private ComponentSendSystem sendSystem;
@@ -36,19 +35,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         public void OneTimeTearDown()
         {
             worker.Dispose();
-        }
-
-        [Test]
-        public void TryRegisterCustomReplicationSystem_should_return_false_if_there_isnt_an_enabled_default_replicator()
-        {
-            Assert.IsFalse(sendSystem.TryRegisterCustomReplicationSystem(UnknownComponentId));
-        }
-
-        [Test]
-        public void TryRegisterCustomReplicationSystem_should_return_true_the_first_time_for_a_component_id()
-        {
-            Assert.IsTrue(sendSystem.TryRegisterCustomReplicationSystem(TestComponentId));
-            Assert.IsFalse(sendSystem.TryRegisterCustomReplicationSystem(TestComponentId));
         }
     }
 
