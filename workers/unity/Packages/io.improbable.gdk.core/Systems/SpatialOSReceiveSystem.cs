@@ -2,7 +2,6 @@ using System;
 using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -32,23 +31,13 @@ namespace Improbable.Gdk.Core
         {
             try
             {
-                Profiler.BeginSample("GetMessages");
                 worker.Tick();
-                Profiler.EndSample();
 
                 var diff = worker.Diff;
-
-                Profiler.BeginSample("ApplyDiff ECS");
+                worker.View.ApplyDiff(diff);
                 ecsViewSystem.ApplyDiff(diff);
-                Profiler.EndSample();
-
-                Profiler.BeginSample("ApplyDiff Entity");
                 entitySystem.ApplyDiff(diff);
-                Profiler.EndSample();
-
-                Profiler.BeginSample("ApplyDiff Networking Statistics");
                 networkStatisticsSystem.ApplyDiff(diff);
-                Profiler.EndSample();
             }
             catch (Exception e)
             {

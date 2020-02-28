@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
+using Unity.Profiling;
 using UnityEngine;
 using Entity = Unity.Entities.Entity;
 
@@ -36,6 +37,8 @@ namespace Improbable.Gdk.Core
 
         internal ViewDiff Diff => Worker.ViewDiff;
         internal MessagesToSend MessagesToSend => Worker.MessagesToSend;
+        
+        private ProfilerMarker tickMarker = new ProfilerMarker("WorkerSystem.Tick");
 
         public WorkerSystem(WorkerInWorld worker)
         {
@@ -86,7 +89,10 @@ namespace Improbable.Gdk.Core
 
         internal void Tick()
         {
-            Worker.Tick();
+            using (tickMarker.Auto())
+            {
+                Worker.Tick();
+            }
         }
 
         internal void SendMessages(NetFrameStats frameStats)
