@@ -51,127 +51,17 @@ namespace Improbable.Gdk.CodeGenerator
             var dirtyType = typeof(uint);
             var dirtyBytesPerEntry = Marshal.SizeOf(dirtyType);
             var dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
-            var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
+            var dirtyBitCount = fieldDetailsList.Count / dirtyBitsPerEntry + 1;
 
             return Scope.Type(
                 "public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>",
                 component =>
                 {
-                    component.Line($"public uint ComponentId => {componentDetails.ComponentId};");
-
                     component.Line(new[]
                     {
                         "// Bit masks for tracking which component properties were changed locally and need to be synced.",
                         $"private fixed {dirtyType.Name} dirtyBits[{dirtyBitCount}];"
                     });
-
-                    component.Method("public bool IsDataDirty()", m =>
-                    {
-                        m.Line("var isDataDirty = false;");
-
-                        m.Line(s =>
-                        {
-                            for (var i = 0; i < (fieldDetailsList.Count / dirtyBitsPerEntry) + 1; i++)
-                            {
-                                s.AppendLine($"isDataDirty |= (dirtyBits[{i}] != 0x0);");
-                            }
-                        });
-
-                        m.Return("isDataDirty");
-                    });
-
-                    component.Line(@"
-/*
-The propertyIndex argument counts up from 0 in the order defined in your schema component.
-It is not the schema field number itself. For example:
-component MyComponent
-{
-    id = 1337;
-    bool val_a = 1;
-    bool val_b = 3;
-}
-In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
-This method throws an InvalidOperationException in case your component doesn't contain properties.
-*/
-");
-                    component.Method("public bool IsDataDirty(int propertyIndex)", m =>
-                    {
-                        if (fieldDetailsList.Count == 0)
-                        {
-                            m.Line("throw new InvalidOperationException(\"IsDataDirty(int propertyIndex) may not be called on components with no properties.\");");
-                        }
-                        else
-                        {
-                            m.Line("ValidateFieldIndex(propertyIndex);");
-
-                            m.Line(new[]
-                            {
-                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
-                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
-                                $"return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}))) != 0x0;"
-                            });
-                        }
-                    });
-
-                    component.Method(@"
-// Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
-// This method throws an InvalidOperationException in case your component doesn't contain properties.
-public void MarkDataDirty(int propertyIndex)", m =>
-                    {
-                        if (fieldDetailsList.Count == 0)
-                        {
-                            m.Line("throw new InvalidOperationException(\"MarkDataDirty(int propertyIndex) may not be called on components with no properties.\");");
-                        }
-                        else
-                        {
-                            m.Line("ValidateFieldIndex(propertyIndex);");
-
-                            m.Line(new[]
-                            {
-                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
-                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
-                                $"dirtyBits[dirtyBitsByteIndex] |= ({dirtyType.Name}) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
-                            });
-                        }
-                    });
-
-                    component.Method("public void MarkDataClean()", m =>
-                    {
-                        m.Line(s =>
-                        {
-                            for (var i = 0; i < (fieldDetailsList.Count / dirtyBitsPerEntry) + 1; i++)
-                            {
-                                s.AppendLine($"dirtyBits[{i}] = 0x0;");
-                            }
-                        });
-                    });
-
-                    component.Annotate("Conditional(\"DEBUG\")")
-                        .Method("private void ValidateFieldIndex(int propertyIndex)", () => new[]
-                        {
-                            $@"
-if (propertyIndex < 0 || propertyIndex >= {fieldDetailsList.Count})
-{{
-    throw new ArgumentException(""\""propertyIndex\"" argument out of range. Valid range is [0, {fieldDetailsList.Count - 1}]. "" +
-        ""Unless you are using custom component replication code, this is most likely caused by a code generation bug. "" +
-        ""Please contact SpatialOS support if you encounter this issue."");
-}}
-"
-                        });
-
-                    component.Line($@"
-public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
-{{
-    var componentDataSchema = new ComponentData({componentDetails.ComponentId}, SchemaComponentData.Create());
-    Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-    var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
-
-    componentDataSchema.SchemaData?.Destroy();
-    componentDataSchema.SchemaData = null;
-
-    return snapshot;
-}}
-");
 
                     for (var i = 0; i < fieldDetailsList.Count; i++)
                     {
@@ -209,6 +99,116 @@ public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 ");
                         }
                     }
+
+                    component.Method("public bool IsDataDirty()", m =>
+                    {
+                        m.Line("var isDataDirty = false;");
+
+                        m.Line(s =>
+                        {
+                            for (var i = 0; i < fieldDetailsList.Count / dirtyBitsPerEntry + 1; i++)
+                            {
+                                s.AppendLine($"isDataDirty |= (dirtyBits[{i}] != 0x0);");
+                            }
+                        });
+
+                        m.Return("isDataDirty");
+                    });
+
+                    component.Line(@"
+/*
+The propertyIndex argument counts up from 0 in the order defined in your schema component.
+It is not the schema field number itself. For example:
+component MyComponent
+{
+    id = 1337;
+    bool val_a = 1;
+    bool val_b = 3;
+}
+In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+This method throws an InvalidOperationException in case your component doesn't contain properties.
+*/
+");
+                    component.Method("public bool IsDataDirty(int propertyIndex)", m =>
+                    {
+                        if (fieldDetailsList.Count == 0)
+                        {
+                            m.Line(
+                                "throw new InvalidOperationException(\"IsDataDirty(int propertyIndex) may not be called on components with no properties.\");");
+                        }
+                        else
+                        {
+                            m.Line("ValidateFieldIndex(propertyIndex);");
+
+                            m.Line(new[]
+                            {
+                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}))) != 0x0;"
+                            });
+                        }
+                    });
+
+                    component.Method(@"
+// Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+// This method throws an InvalidOperationException in case your component doesn't contain properties.
+public void MarkDataDirty(int propertyIndex)", m =>
+                    {
+                        if (fieldDetailsList.Count == 0)
+                        {
+                            m.Line(
+                                "throw new InvalidOperationException(\"MarkDataDirty(int propertyIndex) may not be called on components with no properties.\");");
+                        }
+                        else
+                        {
+                            m.Line("ValidateFieldIndex(propertyIndex);");
+
+                            m.Line(new[]
+                            {
+                                "// Retrieve the dirtyBits[0-n] field that tracks this property.",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"dirtyBits[dirtyBitsByteIndex] |= ({dirtyType.Name}) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
+                            });
+                        }
+                    });
+
+                    component.Method("public void MarkDataClean()", m =>
+                    {
+                        m.Line(s =>
+                        {
+                            for (var i = 0; i < fieldDetailsList.Count / dirtyBitsPerEntry + 1; i++)
+                            {
+                                s.AppendLine($"dirtyBits[{i}] = 0x0;");
+                            }
+                        });
+                    });
+
+                    component.Annotate("Conditional(\"DEBUG\")")
+                        .Method("private void ValidateFieldIndex(int propertyIndex)", () => new[]
+                        {
+                            $@"
+if (propertyIndex < 0 || propertyIndex >= {fieldDetailsList.Count})
+{{
+    throw new ArgumentException(""\""propertyIndex\"" argument out of range. Valid range is [0, {fieldDetailsList.Count - 1}]. "" +
+        ""Unless you are using custom component replication code, this is most likely caused by a code generation bug. "" +
+        ""Please contact SpatialOS support if you encounter this issue."");
+}}
+"
+                        });
+
+                    component.Line($@"
+public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+{{
+    var componentDataSchema = new ComponentData({componentDetails.ComponentId}, SchemaComponentData.Create());
+    Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+    var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
+
+    componentDataSchema.SchemaData?.Destroy();
+    componentDataSchema.SchemaData = null;
+
+    return snapshot;
+}}
+");
                 });
         }
 
@@ -276,17 +276,19 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                     if (fieldDetailsList.Count > 0)
                     {
-                        snapshot.Method($"public Snapshot({GetConstructorArgs(fieldDetailsList)})", () =>
-                        {
-                            return fieldDetailsList.Select(fd => $"{fd.PascalCaseName} = {fd.CamelCaseName};");
-                        });
+                        snapshot.Method($"public Snapshot({GetConstructorArgs(fieldDetailsList)})",
+                            () =>
+                            {
+                                return fieldDetailsList.Select(fd => $"{fd.PascalCaseName} = {fd.CamelCaseName};");
+                            });
                     }
                 });
         }
 
         private static TypeBlock GenerateSerializationClass(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.Serialization static class.");
+            Logger.Trace(
+                $"Generating {componentDetails.Namespace}.{componentDetails.Name}.Serialization static class.");
 
             var componentNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
             var fieldDetailsList = componentDetails.FieldDetails;
@@ -294,16 +296,19 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
             return Scope.Type("public static class Serialization", serialization =>
             {
-                serialization.Method($"public static void SerializeComponent({componentNamespace}.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)",
+                serialization.Method(
+                    $"public static void SerializeComponent({componentNamespace}.Component component, global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)",
                     m =>
                     {
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.PascalCaseName}",
+                                "obj", 0));
                         }
                     });
 
-                serialization.Method($"public static void SerializeUpdate({componentNamespace}.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
+                serialization.Method(
+                    $"public static void SerializeUpdate({componentNamespace}.Component component, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
                     m =>
                     {
                         m.Line("var obj = updateObj.GetFields();");
@@ -315,17 +320,20 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                             m.If($"component.IsDataDirty({i})",
                                 then =>
                                 {
-                                    then.Line(fieldDetails.GetSerializationString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
+                                    then.Line(fieldDetails.GetSerializationString(
+                                        $"component.{fieldDetails.PascalCaseName}", "obj", 0));
 
                                     if (shouldGenerateClearedFieldsSet)
                                     {
-                                        then.Line(fieldDetails.GetTrySetClearedFieldString($"component.{fieldDetails.PascalCaseName}", "updateObj", 0));
+                                        then.Line(fieldDetails.GetTrySetClearedFieldString(
+                                            $"component.{fieldDetails.PascalCaseName}", "updateObj", 0));
                                     }
                                 });
                         }
                     });
 
-                serialization.Method($"public static void SerializeUpdate({componentNamespace}.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
+                serialization.Method(
+                    $"public static void SerializeUpdate({componentNamespace}.Update update, global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
                     m =>
                     {
                         m.Line("var obj = updateObj.GetFields();");
@@ -348,16 +356,19 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         }
                     });
 
-                serialization.Method($"public static void SerializeSnapshot({componentNamespace}.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)",
+                serialization.Method(
+                    $"public static void SerializeSnapshot({componentNamespace}.Snapshot snapshot, global::Improbable.Worker.CInterop.SchemaObject obj)",
                     m =>
                     {
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetSerializationString($"snapshot.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetSerializationString($"snapshot.{fieldDetails.PascalCaseName}", "obj",
+                                0));
                         }
                     });
 
-                serialization.Method($"public static {componentNamespace}.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)",
+                serialization.Method(
+                    $"public static {componentNamespace}.Component Deserialize(global::Improbable.Worker.CInterop.SchemaObject obj, global::Unity.Entities.World world)",
                     m =>
                     {
                         m.Line($"var component = new {componentNamespace}.Component();");
@@ -366,16 +377,19 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
                         {
                             if (!fieldDetails.IsBlittable)
                             {
-                                m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                m.Line(
+                                    $"component.{fieldDetails.CamelCaseName}Handle = global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
                             }
 
-                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj",
+                                0));
                         }
 
                         m.Return("component");
                     });
 
-                serialization.Method($"public static {componentNamespace}.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
+                serialization.Method(
+                    $"public static {componentNamespace}.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj)",
                     m =>
                     {
                         m.Line(new[]
@@ -386,13 +400,15 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateIntoUpdateString($"update.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateIntoUpdateString(
+                                $"update.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("update");
                     });
 
-                serialization.Method($"public static {componentNamespace}.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)",
+                serialization.Method(
+                    $"public static {componentNamespace}.Update DeserializeUpdate(global::Improbable.Worker.CInterop.SchemaComponentData data)",
                     m =>
                     {
                         m.Line(new[]
@@ -403,44 +419,51 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeDataIntoUpdateString($"update.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeDataIntoUpdateString(
+                                $"update.{fieldDetails.PascalCaseName}", "obj", 0));
                         }
 
                         m.Return("update");
                     });
 
-                serialization.Method($"public static {componentNamespace}.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)",
+                serialization.Method(
+                    $"public static {componentNamespace}.Snapshot DeserializeSnapshot(global::Improbable.Worker.CInterop.SchemaObject obj)",
                     m =>
                     {
                         m.Line($"var component = new {componentNamespace}.Snapshot();");
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj",
+                                0));
                         }
 
                         m.Return("component");
                     });
 
-                serialization.Method($"public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref {componentNamespace}.Component component)",
+                serialization.Method(
+                    $"public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref {componentNamespace}.Component component)",
                     m =>
                     {
                         m.Line("var obj = updateObj.GetFields();");
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateString($"component.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateString($"component.{fieldDetails.PascalCaseName}",
+                                "obj", 0));
                         }
                     });
 
-                serialization.Method($"public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref {componentNamespace}.Snapshot snapshot)",
+                serialization.Method(
+                    $"public static void ApplyUpdate(global::Improbable.Worker.CInterop.SchemaComponentUpdate updateObj, ref {componentNamespace}.Snapshot snapshot)",
                     m =>
                     {
                         m.Line($"var obj = updateObj.GetFields();");
 
                         foreach (var fieldDetails in fieldDetailsList)
                         {
-                            m.Line(fieldDetails.GetDeserializeUpdateString($"snapshot.{fieldDetails.PascalCaseName}", "obj", 0));
+                            m.Line(fieldDetails.GetDeserializeUpdateString($"snapshot.{fieldDetails.PascalCaseName}",
+                                "obj", 0));
                         }
                     });
             });
@@ -460,7 +483,8 @@ public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
 
         private static TypeBlock GenerateInternalDynamicClass(UnityComponentDetails componentDetails)
         {
-            Logger.Trace($"Generating {componentDetails.Namespace}.{componentDetails.Name}.{componentDetails.Name}Dynamic internal class.");
+            Logger.Trace(
+                $"Generating {componentDetails.Namespace}.{componentDetails.Name}.{componentDetails.Name}Dynamic internal class.");
 
             return Scope.Type($"internal class {componentDetails.Name}Dynamic : IDynamicInvokable",
                 dynamic =>
@@ -526,7 +550,8 @@ public void InvokeHandler(Dynamic.IHandler handler)
 
         private static string GetConstructorArgs(IEnumerable<UnityFieldDetails> fieldDetailsList)
         {
-            var constructorArgsList = fieldDetailsList.Select(fieldDetails => $"{fieldDetails.Type} {fieldDetails.CamelCaseName}");
+            var constructorArgsList =
+                fieldDetailsList.Select(fieldDetails => $"{fieldDetails.Type} {fieldDetails.CamelCaseName}");
             return string.Join(", ", constructorArgsList);
         }
     }
