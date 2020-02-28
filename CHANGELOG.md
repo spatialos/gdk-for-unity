@@ -45,6 +45,7 @@
 - De-duplicated code for generated `ComponentDiffStorage` instances. [#1290](https://github.com/spatialos/gdk-for-unity/pull/1290)
 - `Improbable.Gdk.Core.EntityId` is now a readonly struct. [#1290](https://github.com/spatialos/gdk-for-unity/pull/1290)
 - The Playground project now uses QBI instead of CBI. [#1370](https://github.com/spatialos/gdk-for-unity/pull/1307)
+- Added `MockWorld` and `MockBase` classes to the `Improbable.Gdk.TestUtils` package. These are designed as a framework for testing Core code. [#1305](https://github.com/spatialos/gdk-for-unity/pull/1305)
 
 ## `0.3.3` - 2020-02-14
 
