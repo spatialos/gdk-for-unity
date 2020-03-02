@@ -51,7 +51,7 @@ namespace Improbable.Gdk.CodeGenerator
             var dirtyType = typeof(uint);
             var dirtyBytesPerEntry = Marshal.SizeOf(dirtyType);
             var dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
-            var dirtyBitCount = fieldDetailsList.Count / dirtyBitsPerEntry + 1;
+            var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
 
             return Scope.Type(
                 "public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>",
@@ -106,7 +106,7 @@ public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 
                         m.Line(s =>
                         {
-                            for (var i = 0; i < fieldDetailsList.Count / dirtyBitsPerEntry + 1; i++)
+                            for (var i = 0; i < dirtyBitCount; i++)
                             {
                                 s.AppendLine($"isDataDirty |= (dirtyBits[{i}] != 0x0);");
                             }
@@ -176,7 +176,7 @@ public void MarkDataDirty(int propertyIndex)", m =>
                     {
                         m.Line(s =>
                         {
-                            for (var i = 0; i < fieldDetailsList.Count / dirtyBitsPerEntry + 1; i++)
+                            for (var i = 0; i < dirtyBitCount; i++)
                             {
                                 s.AppendLine($"dirtyBits[{i}] = 0x0;");
                             }
