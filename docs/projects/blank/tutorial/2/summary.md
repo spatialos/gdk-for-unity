@@ -1,7 +1,11 @@
-# 2.4 - Summary
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-In this chapter of the Blank Project tutorial series, we covered worker connectors, how they relate to worker prefabs and the need for worker offsets. We then looked at how to instantiate a basic level object when a worker connects to SpatialOS.
-
-We also covered how to set up the GameObject Creation feature module, and how to leverage the default GameObject creator to spawn a GameObject corresponding to a Player entity.
-
-<img src="{{assetRoot}}assets/blank/tutorial/2/player-with-color.png" style="margin: 0 auto; width: 100%; display: block;" />

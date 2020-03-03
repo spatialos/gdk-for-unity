@@ -1,32 +1,11 @@
-
-# ConnectionService Enum
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
-GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Config/RuntimeConfig.cs/#L38">Source</a>
-</sup>
-
-</p>
-
-
-
-An enum listing the available connection services. 
-
-
-
-</p>
-
-#### Fields
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 12ch">Receptionist</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 12ch">Locator</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

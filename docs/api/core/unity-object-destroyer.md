@@ -1,77 +1,11 @@
-
-# UnityObjectDestroyer Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
-GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Utility/UnityObjectDestroyer.cs/#L8">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#static-methods">Static Methods</a>
-</ul></nav>
-
-</p>
-
-
-
-<p>Provides a helper method for calling Object.DestroyImmediate() instead of Object.Destroy() in EditMode unit tests. </p>
-
-
-
-
-
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Static Methods
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="destroy-object"></a><b>Destroy</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Utility/UnityObjectDestroyer.cs/#L10">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>void Destroy(Object obj)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code>Object obj</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

@@ -1,99 +1,11 @@
-
-# AndroidUtils Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/mobile-index">Mobile</a><br/>
-GDK package: Mobile<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/AndroidUtils.cs/#L12">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#static-fields">Static Fields</a>
-<li><a href="#static-methods">Static Methods</a>
-</ul></nav>
-
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Static Fields
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="emulators"></a><b>emulators</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/AndroidUtils.cs/#L34">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> List&lt;<a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a>&gt; emulators</code></p>
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Static Methods
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="launch-devicelaunchconfig-mobilelaunchconfig"></a><b>Launch</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.mobile/Editor/AndroidUtils.cs/#L93">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>void Launch(<a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a> deviceLaunchConfig, <a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a> mobileLaunchConfig)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code><a href="{{urlRoot}}/api/mobile/device-launch-config">DeviceLaunchConfig</a> deviceLaunchConfig</code> : </li>
-<li><code><a href="{{urlRoot}}/api/mobile/mobile-launch-config">MobileLaunchConfig</a> mobileLaunchConfig</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

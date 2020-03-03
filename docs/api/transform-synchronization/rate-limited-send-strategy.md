@@ -1,79 +1,11 @@
-
-# RateLimitedSendStrategy Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
-GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/SendStrategies/RateLimitedSendStrategy.cs/#L7">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#fields">Fields</a>
-</ul></nav>
-
-
-
-</p>
-
-<b>Inheritance</b>
-
-<code><a href="{{urlRoot}}/api/transform-synchronization/transform-synchronization-send-strategy">Improbable.Gdk.TransformSynchronization.TransformSynchronizationSendStrategy</a></code>
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Fields
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="maxtransformupdateratehz"></a><b>MaxTransformUpdateRateHz</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/SendStrategies/RateLimitedSendStrategy.cs/#L9">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> float MaxTransformUpdateRateHz</code></p>
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="maxpositionupdateratehz"></a><b>MaxPositionUpdateRateHz</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/SendStrategies/RateLimitedSendStrategy.cs/#L10">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> float MaxPositionUpdateRateHz</code></p>
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

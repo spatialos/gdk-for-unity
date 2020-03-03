@@ -1,7 +1,11 @@
-# Editor menu
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-The Build System Feature Module provides a set of Unity Editor menu items to build your workers from your Unity Editor. These can be accessed via the **SpatialOS** menu item.
-
-You can build for a specific target: **Build for local** and **Build for cloud** and then either select a specific worker type or build all workers for this target.
-
-For example, to build for the worker type `UnityClient` for a cloud deployment you would select **SpatialOS** > **Build for cloud** > **UnityClient**.

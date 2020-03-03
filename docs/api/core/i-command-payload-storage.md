@@ -1,99 +1,11 @@
-
-# ICommandPayloadStorage&lt;T&gt; Interface
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
-GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/ICommandMetaDataStorage.cs/#L14">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#methods">Methods</a>
-</ul></nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Methods
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="getpayload-long"></a><b>GetPayload</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/ICommandMetaDataStorage.cs/#L16">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code><a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;T&gt; GetPayload(long internalRequestId)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code>long internalRequestId</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="addrequest-in-commandcontext-t"></a><b>AddRequest</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Worker/ICommandMetaDataStorage.cs/#L17">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code>void AddRequest(in <a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;T&gt; context)</code></p>
-
-
-
-</p>
-
-<b>Parameters</b>
-
-<ul>
-<li><code>in <a href="{{urlRoot}}/api/core/command-context">CommandContext</a>&lt;T&gt; context</code> : </li>
-</ul>
-
-
-
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

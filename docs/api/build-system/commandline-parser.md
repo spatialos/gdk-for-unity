@@ -1,31 +1,11 @@
-
-# CommandlineParser Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a><br/>
-GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Util/CommandlineParser.cs/#L10">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

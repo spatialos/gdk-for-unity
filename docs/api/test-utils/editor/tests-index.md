@@ -1,29 +1,11 @@
-
-# Improbable.Gdk.TestUtils.Editor.Tests Namespace
-<nav id="pageToc" class="page-toc"><ul><li><a href="#classes">Classes</a>
-</ul></nav>
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/test-utils-index">TestUtils</a>.<a href="{{urlRoot}}/api/test-utils/editor-index">Editor</a><br/>
-GDK package: TestUtils<br />
-</sup>
-
-
-</p>
-
-#### Classes
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/test-utils/editor/tests/spatial-deployment-manager-tests">SpatialDeploymentManagerTests</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 29ch"><a href="{{urlRoot}}/api/test-utils/editor/tests/spatiald-manager-tests">SpatialdManagerTests</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

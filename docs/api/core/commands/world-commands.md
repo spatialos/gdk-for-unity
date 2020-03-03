@@ -1,55 +1,11 @@
-
-# WorldCommands Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a>.<a href="{{urlRoot}}/api/core/commands-index">Commands</a><br/>
-GDK package: Core<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.core/Commands/WorldCommands/CreateEntity.cs/#L6">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-
-
-
-
-
-
-</p>
-
-<b>Child types</b>
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/core/commands/world-commands/create-entity">CreateEntity</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/core/commands/world-commands/delete-entity">DeleteEntity</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/core/commands/world-commands/entity-query">EntityQuery</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 16ch"><a href="{{urlRoot}}/api/core/commands/world-commands/reserve-entity-ids">ReserveEntityIds</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-
-
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

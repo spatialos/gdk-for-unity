@@ -1,11 +1,11 @@
-# Setup & installation
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-<br/>
-
-<%(Include file="fragments/machine-setup.md")%>
-
-## Next steps
-
-If you’re ready to get started, the _Get started_  guide takes you through setting up the GDK and launching the  FPS Starter Project. (Note that the GDK is aimed at users comfortable with programming in Unity.)
-
-**[Get started with the SpatialOS GDK for Unity.]({{urlRoot}}/projects/fps/get-started/get-started)**

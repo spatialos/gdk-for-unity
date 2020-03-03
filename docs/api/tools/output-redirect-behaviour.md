@@ -1,38 +1,11 @@
-
-# OutputRedirectBehaviour Enum
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/tools-index">Tools</a><br/>
-GDK package: Tools<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.tools/RedirectedProcess.cs/#L21">Source</a>
-</sup>
-
-
-
-</p>
-
-#### Fields
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 25ch">None</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 25ch">RedirectStdOut</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 25ch">RedirectStdErr</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 25ch">RedirectAccumulatedOutput</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 25ch">ProcessSpatialOutput</td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

@@ -1,66 +1,11 @@
-
-# Improbable.Gdk.Core.Commands Namespace
-<nav id="pageToc" class="page-toc"><ul><li><a href="#classes">Classes</a>
-<li><a href="#interfaces">Interfaces</a>
-</ul></nav>
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/core-index">Core</a><br/>
-GDK package: Core<br />
-</sup>
-
-
-</p>
-
-#### Classes
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/command-send-storage">CommandSendStorage</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/diff-spawn-cube-command-storage">DiffSpawnCubeCommandStorage</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/world-commands">WorldCommands</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-
-</p>
-
-#### Interfaces
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-command-metaclass">ICommandMetaclass</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-command-request">ICommandRequest</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-command-response">ICommandResponse</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-raw-received-command-response">IRawReceivedCommandResponse</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-received-command-request">IReceivedCommandRequest</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 27ch"><a href="{{urlRoot}}/api/core/commands/i-received-command-response">IReceivedCommandResponse</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

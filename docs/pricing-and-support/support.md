@@ -1,7 +1,11 @@
-# Support
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-We provide free technical support to all users via our [forums](https://forums.improbable.io/) and our [Discord](https://discordapp.com/channels/311273633307951114/) channels. 
-
-For more details, see [Support](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/pricing-and-support/support).
-
-We also offer additional paid tiers of support. For more details, [get in touch](https://improbable.io/contact-us).

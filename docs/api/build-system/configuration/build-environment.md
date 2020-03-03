@@ -1,32 +1,11 @@
-
-# BuildEnvironment Enum
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/build-system-index">BuildSystem</a>.<a href="{{urlRoot}}/api/build-system/configuration-index">Configuration</a><br/>
-GDK package: BuildSystem<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.buildsystem/Configuration/BuildEnvironment.cs/#L6">Source</a>
-</sup>
-
-</p>
-
-
-
-Represents a group of build targets and settings. 
-
-
-
-</p>
-
-#### Fields
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 5ch">Local</td>
-<td style="padding: 14px; border: none;">Build targets for local iteration. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 5ch">Cloud</td>
-<td style="padding: 14px; border: none;">Build targets to use for cloud deployment and distribution to players. </td>
-</tr>
-</table>
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

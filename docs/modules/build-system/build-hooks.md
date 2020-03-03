@@ -1,26 +1,11 @@
-# Build hooks
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-During a build, you can use the Unity provided callbacks to add pre-processing and/or post-processing to your worker build.
-The Build System Feature Module provides a static readonly variable, `WorkerBuilder.CurrentContext`, which contains information such as the worker type and build options.
-
-This context is only valid during a build and will throw if accessed outside of a build.
-
-```csharp
-public class BuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
-{
-    public int callbackOrder => 0;
-    public void OnPreprocessBuild(BuildReport report)
-    {
-        var workerType = WorkerBuilder.CurrentContext.WorkerType;
-        Debug.Log($"Pre-processing build with worker type {workerType}");
-    }
-
-    public void OnPostprocessBuild(BuildReport report)
-    {
-        var workerType = WorkerBuilder.CurrentContext.WorkerType;
-        Debug.Log($"Post-processing build with worker type {workerType}");
-    }
-}
-```
-
-> In order to access `WorkerBuilder.CurrentContext`, you must ensure that your Editor assembly definition references `Improbable.Gdk.BuildSystem`.

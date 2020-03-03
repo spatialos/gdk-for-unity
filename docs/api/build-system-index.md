@@ -1,46 +1,11 @@
-
-# Improbable.Gdk.BuildSystem Namespace
-<nav id="pageToc" class="page-toc"><ul><li><a href="#namespaces">Namespaces</a>
-<li><a href="#classes">Classes</a>
-</ul></nav>
-<sup>
-Namespace: Improbable.Gdk<br/>
-GDK package: BuildSystem<br />
-</sup>
-
-</p>
-
-#### Namespaces
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/configuration-index">Configuration</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-</p>
-
-#### Classes
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/commandline-parser">CommandlineParser</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/editor-paths">EditorPaths</a></td>
-<td style="padding: 14px; border: none;">Contains common directories related to building assets and players. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 40ch"><a href="{{urlRoot}}/api/build-system/worker-builder">WorkerBuilder</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

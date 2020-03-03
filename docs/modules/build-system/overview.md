@@ -1,19 +1,11 @@
-# Build System Feature Module
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-This feature module provides tooling for building your GDK for Unity workers inside the Unity Editor.
-
-> **Note:** The Build System Feature Module does not have an integration for building non-Unity workers at this time.
-
-## Installation
-
-Add this feature module to your project via the [Package Manager UI](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@2.1/manual/index.html#installing-a-new-package).
-
-Or add it to your `Packages/manifest.json`:
-
-```json
-{
-  "dependencies": {
-    "io.improbable.gdk.buildsystem": "<%(Var key="current_version")%>"
-  },
-}
-```

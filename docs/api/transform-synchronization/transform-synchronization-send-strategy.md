@@ -1,64 +1,11 @@
-
-# TransformSynchronizationSendStrategy Class
-<sup>
-Namespace: Improbable.Gdk.<a href="{{urlRoot}}/api/transform-synchronization-index">TransformSynchronization</a><br/>
-GDK package: TransformSynchronization<br/>
-<a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/TransformSynchronizationSendStrategy.cs/#L6">Source</a>
-<style>
-a code {
-                    padding: 0em 0.25em!important;
-}
-code {
-                    background-color: #ffffff!important;
-}
-</style>
-</sup>
-<nav id="pageToc" class="page-toc"><ul><li><a href="#fields">Fields</a>
-</ul></nav>
-
-
-
-</p>
-
-<b>Inheritance</b>
-
-<code>ScriptableObject</code>
-
-
-
-
-
-
-</p>
-<hr style="width:100%; border-top-color:#d8d8d8" />
-#### Fields
-
-
-</p>
-
-
-
-
-<table width="100%">
-    <tr>
-        <td style="border-right:none"><a id="workertype"></a><b>WorkerType</b></td>
-        <td style="border-left:none; text-align:right"><a href="https://www.github.com/spatialos/gdk-for-unity/blob/0.3.3/workers/unity/Packages/io.improbable.gdk.transformsynchronization/ScriptableObjects/TransformSynchronizationSendStrategy.cs/#L8">Source</a></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-<code> string WorkerType</code></p>
-
-
-</td>
-    </tr>
-</table>
-
-
-
-
-
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

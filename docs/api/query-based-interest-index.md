@@ -1,37 +1,11 @@
-
-# Improbable.Gdk.QueryBasedInterest Namespace
-<nav id="pageToc" class="page-toc"><ul><li><a href="#classes">Classes</a>
-</ul></nav>
-<sup>
-Namespace: Improbable.Gdk<br/>
-GDK package: QueryBasedInterest<br />
-</sup>
-
-
-</p>
-
-#### Classes
-
-<table>
-<tr>
-<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/constraint">Constraint</a></td>
-<td style="padding: 14px; border: none;">Utility class to help define QueryConstraint objects for Interest queries. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/interest-query">InterestQuery</a></td>
-<td style="padding: 14px; border: none;">Utility class to help construct ComponentInterest.Query objects. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/interest-template">InterestTemplate</a></td>
-<td style="padding: 14px; border: none;">Utility class to help construct Interest component snapshots. </td>
-</tr>
-<tr>
-<td style="padding: 14px; border: none; width: 23ch"><a href="{{urlRoot}}/api/query-based-interest/query-based-interest-utils">QueryBasedInterestUtils</a></td>
-<td style="padding: 14px; border: none;"></td>
-</tr>
-</table>
-
-
-
-
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 

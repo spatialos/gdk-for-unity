@@ -1,7 +1,11 @@
-# Pricing
+<html>
+<head>
+<meta http-equiv="refresh" content="5;url=https://documentation.improbable.io/gdk-for-unity/docs" />
+<title>Page Moved</title>
+</head>
+<body>
+<h2>Our documentation has moved (version 14.4 and later)</h2>
+<p>This page will automatically redirect in a few seconds. If it doesn't, click <a href="https://documentation.improbable.io/gdk-for-unity/docs">here</a> to go to the new documentation.</p>
+</body>
+</html>
 
-The GDK for Unity uses SpatialOS core technology and cloud hosting. This means that when you use the GDK, you need to consider the SpatialOS pricing model.
-
-SpatialOS has a free tier and a paid tier, and you can use the GDK on either of these. For an introduction to the pricing model, see [Pricing introduction](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/pricing-and-support/pricing-intro).
-
-For more details, including information about what the free tier includes, an in-depth explanation of how we calculate prices, and examples of how much different types of games would cost, see [Pricing details](https://docs.improbable.io/reference/<%(Var key="worker_sdk_version")%>/shared/pricing-and-support/pricing-details).
