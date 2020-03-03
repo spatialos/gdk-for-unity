@@ -5,9 +5,9 @@
 ### Breaking Changes
 
 - The `DeploymentLauncher` project has an additional required argument `runtime_version`. If you invoke this manually through `dotnet`, you'll need to provide this argument. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
-- Schema components in ECS no longer have a ComponentId property. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
-    - You should use use `ComponentDatabase.GetComponentId<T>()` instead.
-- CustomSpatialOSSendSystem is no longer available. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
+- Schema components in ECS no longer have a `ComponentId` property. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
+    - You should use `ComponentDatabase.GetComponentId<T>()` instead.
+- `CustomSpatialOSSendSystem` is no longer available. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
 
 ### Added
 
