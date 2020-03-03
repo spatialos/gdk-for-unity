@@ -53,9 +53,8 @@ namespace Playground.MonoBehaviours
                 return;
             }
 
-            var location = gameObject.transform.position;
+            var location = gameObject.transform.position - offset;
             location.y += 2;
-            location -= offset;
 
             var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
 
