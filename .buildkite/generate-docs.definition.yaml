@@ -1,0 +1,9 @@
+agent_queue_id: trigger-pipelines
+description: Generate API docs for ReadMe.io
+github:
+  default_branch: develop
+teams:
+- name: Everyone
+  permission: BUILD_AND_READ
+- name: gbu/develop/unity
+  permission: MANAGE_BUILD_AND_READ

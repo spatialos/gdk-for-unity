@@ -1,0 +1,36 @@
+---
+linux: &linux
+  agents:
+    - "capable_of_building=gdk-for-unity"
+    - "queue=${LINUX_QUEUE:-v3-1568738590-4881a8663c5d900a-------z}"
+    - "platform=linux"
+    - "permission_set=builder"
+    - "scaler_version=2"
+    - "machine_type=single"
+    - "environment=${CI_ENVIRONMENT:-production}"
+  timeout_in_minutes: 60
+  retry:
+    automatic:
+        # These are designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+      - exit_status: -1
+        limit: 3
+      - exit_status: 255
+        limit: 3
+      - exit_status: 240 # Within platform, we interpret this to be a Docker-related exit code
+        limit: 3
+
+steps:
+  - block: Configure docs generation
+    prompt: Fill out the parameters for docs generation
+    fields: 
+      - text: Release version
+        key: release-version
+        required: true
+        hint: The version to generate docs for. Must be a git tag.
+
+  # Note: This step will generate a trigger step for the uploading.
+  - label: Generate docs
+    command: "ci/generate-docs.sh"
+    <<: *linux
+    artifact_paths:
+      - docs-output/**/*
