@@ -39,18 +39,6 @@ namespace Improbable.Gdk.Core
             base.OnDestroy();
         }
 
-        public bool TryRegisterCustomReplicationSystem(uint componentId)
-        {
-            if (componentReplicators.All(componentReplicator => componentReplicator.ComponentId != componentId))
-            {
-                return false;
-            }
-
-            // The default replication system is removed, instead the custom one is responsible for replication.
-            return componentReplicators.Remove(componentReplicators.First(
-                componentReplicator => componentReplicator.ComponentId == componentId));
-        }
-
         protected override void OnUpdate()
         {
             var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
