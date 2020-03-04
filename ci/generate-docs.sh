@@ -2,12 +2,13 @@
 
 set -e -u -x -o pipefail
 
-if [ ! "$#" -eq 1 ]; then
-    echo "Expected usage: generate-docs.sh <git_hash>"
-    exit 1
-fi
+cd "$(dirname "$0")/../"
 
-TAG="${1}"
+CURRENT_DIR=$(pwd)
+TMP_DIR=$(mktemp -d)
+OUTPUT_DIR="${CURRENT_DIR}/docs-output"
+rm -rf "${OUTPUT_DIR}"
+mkdir "${OUTPUT_DIR}"
 
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
@@ -19,58 +20,33 @@ function cleanUp() {
 
 trap cleanUp EXIT
 
-cd "$(dirname "$0")/../"
+TAG=$(buildkite-agent meta-data get release-version)
 
-# Make a copy of this repo and the docs repo.
-CLONE_URL="git@github.com:spatialos/gdk-for-unity.git"
-DOCGEN_CLONE_URL="git@github.com:improbable/gdk-for-unity-docgen.git"
-
-CURRENT_DIR=$(pwd)
-TMP_DIR=$(mktemp -d)
-DOCGEN_DIR="${TMP_DIR}/docgen"
-CODE_DIR="${TMP_DIR}/code"
-DOCS_DIR="${TMP_DIR}/docs"
-
-# Clone docgen repo.
-git clone "${DOCGEN_CLONE_URL}" "${DOCGEN_DIR}"
+# Check if this tag is valid.
+git rev-parse "${TAG}"
 
 # Clone and checkout correct code tag.
-git clone "${CLONE_URL}" "${CODE_DIR}"
-pushd "${CODE_DIR}"
-    git checkout "${TAG}"
+CLONE_URL="git@github.com:spatialos/gdk-for-unity.git"
+CODE_DIR="${TMP_DIR}/code"
+git clone "${CLONE_URL}" "${CODE_DIR}" --branch "${TAG}" --depth 1
+
+# Clone docgen repo.
+DOCGEN_CLONE_URL="git@github.com:improbable/gdk-for-unity-docgen.git"
+DOCGEN_DIR="${TMP_DIR}/docgen"
+git clone "${DOCGEN_CLONE_URL}" "${DOCGEN_DIR}"
+
+pushd "${DOCGEN_DIR}"
+    docker build . --tag docgen
 popd
 
-# Clone and create branch for docs
-DOCS_BRANCH="docs/api-docs-${TAG}"
-git clone "${CLONE_URL}" "${DOCS_DIR}"
-pushd "${DOCS_DIR}"
-    git checkout docs-next
-    if [ -n "$(git show-ref origin/${DOCS_BRANCH})" ]; then
-        echo "Docs branch ${DOCS_BRANCH} already exists"
-        exit 1
-    fi
-    git checkout -b "${DOCS_BRANCH}"
-popd
+docker run --rm \
+    -v "${CODE_DIR}/workers/unity/Packages:/input" \
+    -v "${OUTPUT_DIR}:/output" \
+    docgen \
+        --target-namespace="Improbable.Gdk" \
+        --namespace-filter=".*EditmodeTests" \
+        --namespace-filter=".*DeploymentLauncher" \
+        --namespace-filter=".*PlaymodeTests" \
+        --git-tag="${TAG}"
 
-# Generate API docs
-dotnet run -p "${DOCGEN_DIR}/Docgen/Docgen.csproj" -- \
-    --target-directory="${CODE_DIR}/workers/unity/Packages/" \
-    --target-namespace="Improbable.Gdk" \
-    --output-directory="${DOCS_DIR}/docs/api" \
-    --namespace-filter=".*EditmodeTests" \
-    --namespace-filter=".*DeploymentLauncher" \
-    --namespace-filter=".*PlaymodeTests" \
-    --api-path="api" \
-    --git-tag="${TAG}"
-
-# Commit and push
-pushd "${DOCS_DIR}"
-    git add --all
-    git commit -m 'api docs'
-    git push origin "${DOCS_BRANCH}"
-popd
-
-# If the hub CLI is on the command line, open a PR automatically.
-if [ -x "$(command -v hub)" ]; then
-    hub pull-request -b spatialos/gdk-for-unity:docs-next -h "spatialos/gdk-for-unity:${DOCS_BRANCH}" -o -m "API docs update for ${TAG}"
-fi
+# TODO: Trigger Filip's pipeline when that's live
