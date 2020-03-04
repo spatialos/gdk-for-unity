@@ -11,12 +11,16 @@ A `CodegenJob` is considered "dirty" if it meets at least one of the following c
 
 > The code generator also contains a `--force` flag to force all jobs to be marked as dirty.
 
+---
+
 ## When should I run `Generate code (force)` instead of `Generate code`?
 
 You should run `Generate code (force)` if any of the below apply to you:
 
 - you have added, modified or removed schema source directories.
 - you want to clean and reset the build directory's `CodeGen` solution.
+
+---
 
 ## How does `CodegenJob` execute its job targets?
 
@@ -35,6 +39,8 @@ The `EntryPoint` then calls the `JobRunner` to:
 1. Run the dirty jobs.
 
 The base `CodegenJob` calls the `Generate()` method on each `JobTarget` in the list. It then proceeds to write the generated code to the target filepath, creating the output directory if it has to.
+
+---
 
 ## When does `CodeWriter` formatting work?
 
