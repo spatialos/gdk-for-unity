@@ -22,6 +22,7 @@ function cleanUp() {
 trap cleanUp EXIT
 
 TAG=$(buildkite-agent meta-data get release-version)
+CATEGORY_ID=$(buildkite-agent meta-data get category-id)
 
 # Check if this tag is valid.
 git rev-parse "${TAG}"
@@ -42,3 +43,17 @@ docker run --rm \
         --git-tag="${TAG}"
 
 # TODO: Trigger Filip's pipeline when that's live
+
+function generate_step() {
+    echo "steps:"
+    echo "  - trigger: platform-release-docs-readme"
+    echo "    label: Upload documentation"
+    echo "    build:"
+    echo "      env:"
+    echo "        bk_readme_project_name: gdk-for-unity"
+    echo "        bk_readme_catergory_id: ${CATEGORY_ID}"
+    echo "        bk_readme_version: ${TAG}"
+    echo "        bk_readme_artifact_path: docs-output/**/*"
+}
+
+generate_step | buildkite-agent pipeline upload --no-interpolation
