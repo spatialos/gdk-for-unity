@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.QueryBasedInterest;
 using Improbable.Gdk.TransformSynchronization;
 
 namespace Playground
@@ -20,6 +21,13 @@ namespace Playground
             template.AddComponent(new Launcher.Snapshot(100, 0), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Score.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new CubeSpawner.Snapshot(new List<EntityId>()), WorkerUtils.UnityGameLogic);
+
+            var query = InterestQuery.Query(Constraint.RelativeSphere(radius: 25));
+            var interest = InterestTemplate.Create()
+                .AddQueries<Position.Component>(query)
+                .AddQueries<Metadata.Component>(query);
+
+            template.AddComponent(interest.ToSnapshot(), WorkerUtils.UnityGameLogic);
 
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
             PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerId, WorkerUtils.UnityGameLogic);
