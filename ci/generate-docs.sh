@@ -4,6 +4,7 @@ set -e -u -x -o pipefail
 
 cd "$(dirname "$0")/../"
 
+DOCGEN_PIN="${DOCGEN_OVERRIDE:-v1.0}"
 CURRENT_DIR=$(pwd)
 TMP_DIR=$(mktemp -d)
 OUTPUT_DIR="${CURRENT_DIR}/docs-output"
@@ -30,19 +31,10 @@ CLONE_URL="git@github.com:spatialos/gdk-for-unity.git"
 CODE_DIR="${TMP_DIR}/code"
 git clone "${CLONE_URL}" "${CODE_DIR}" --branch "${TAG}" --depth 1
 
-# Clone docgen repo.
-DOCGEN_CLONE_URL="git@github.com:improbable/gdk-for-unity-docgen.git"
-DOCGEN_DIR="${TMP_DIR}/docgen"
-git clone "${DOCGEN_CLONE_URL}" "${DOCGEN_DIR}"
-
-pushd "${DOCGEN_DIR}"
-    docker build . --tag docgen
-popd
-
 docker run --rm \
     -v "${CODE_DIR}/workers/unity/Packages:/input" \
     -v "${OUTPUT_DIR}:/output" \
-    docgen \
+    "eu.gcr.io/io-crafty-shelter/gdk-for-unity-docgen:${DOCGEN_PIN}" \
         --target-namespace="Improbable.Gdk" \
         --namespace-filter=".*EditmodeTests" \
         --namespace-filter=".*DeploymentLauncher" \
