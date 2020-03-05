@@ -54,6 +54,50 @@ All code generation logic must be defined inside the `.codegen/Source` directory
 This is where any logic should be defined for a codegen unit. This is the directory where you should define your generators and the codegen job that calls them.
 
 > Think carefully about how to structure `Source/`. The `CodeGen.sln` solution coalesces all contents and directories within each codegen unit's `Source/` directory into the `CodeGen.csproj` project.
+>
+> <details><summary>Click to expand example.</summary>
+>
+> For example, take the following directory structure:
+>
+> ```text
+> <project-packages-root>
+>     ├── package.A
+>         ├── .codegen/
+>             ├── Source
+>                 ├── JobA.cs
+>                 ├── Generators/
+>                     ├── GenA1.cs
+>                     ├── GenA2.cs
+>     ├── package.B
+>         ├── .codegen/
+>             ├── Source
+>                 ├── JobB.cs
+>                 ├── Generators/
+>                     ├── GenB1.cs
+>     ├── package.C
+>         ├── .codegen/
+>             ├── Source
+>                 ├── JobC.cs
+>                     ├── OtherGenerators/
+>                         ├── GenCX.cs
+> ```
+>
+> This corresponds to a `CodeGen` structure of:
+>
+> ```text
+> CodeGen
+>     ├── Generators/
+>         ├── GenA1.cs
+>         ├── GenA2.cs
+>         ├── GenB1.cs
+>     ├── OtherGenerators/
+>         ├── GenCX.cs
+>     ├── JobA.cs
+>     ├── JobB.cs
+>     ├── JobC.cs
+> ```
+>
+> </details>
 
 ## 2. Create a codegen job
 
