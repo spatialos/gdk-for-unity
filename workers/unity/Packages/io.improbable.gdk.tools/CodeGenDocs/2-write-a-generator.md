@@ -1,8 +1,8 @@
 # Write a generator with the CodeWriter API
 
-### _``It's lambdas all the way down!''_
+### _"It's lambdas all the way down!"_
 
-## Set up generator
+## Set up a generator
 
 Create a static class in your code generator's namespace that implements a `Generate` method, returning a `CodeWriter`.
 
@@ -39,14 +39,14 @@ public static CodeWriter Generate(UnityTypeDetails details);
 public static CodeWriter Generate(UnityEnumDetails details);
 ```
 
-> Note: the methods do not _have_ to be public. Their accessibility should depend on where you are calling them from.
+> Note: the methods do not _have_ to be called `Generate` nor be public. Their accessibility should depend on where you are calling them from.
 
 ### Returning raw text
 
-If you are preparing your own `text` to return and do not intend to take advantage of the `CodeWriter` API, you can either:
+If you are preparing your own `string` to return and do not intend to take advantage of the `CodeWriter` API, you can either:
 
-* Use `CodeWriter.Raw(text)` to define a verbatim `CodeWriter`.
-* Directly return `text` from the `Generate` method.
+* Use `CodeWriter.Raw(string text)` to define a verbatim `CodeWriter`.
+* Directly return `string` from the `Generate` method.
 
 To take advantage of the `AddGenerators` method on the `CodegenJob`, your function must match one of the following signatures:
 
@@ -56,11 +56,13 @@ public static string Generate(UnityTypeDetails details);
 public static string Generate(UnityEnumDetails details);
 ```
 
-> Note: `internal` methods can also be valid.
+> Note: the methods do not _have_ to be called `Generate` nor be public. Their accessibility should depend on where you are calling them from.
 
 ## CodeWriter: Introduction
 
 To create a new CodeWriter, use the static `Populate` method. Use the provided APIs to define the contents of your file.
+
+> See [here](3-using-the-codewriter.md) for an in-depth guide to using the `CodeWriter` API.
 
 Here's an example:
 

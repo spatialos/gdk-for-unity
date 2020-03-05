@@ -1,6 +1,6 @@
 # How to configure a codegen unit
 
-As mentioned in the overview, the GDK is responsible for finding and linking relevant codegen units to the `CodeGen` project. This means that configuring a new codegen unit is as simple as:
+As mentioned in the [overview](0-overview.md), the GDK is responsible for finding and linking relevant codegen units to the `CodeGen` project. This means that configuring a new codegen unit is as simple as:
 
 1. Creating a `.codegen` directory inside your package.
 1. Creating a codegen job class that inherits from `CodegenJob`.
@@ -10,7 +10,7 @@ As mentioned in the overview, the GDK is responsible for finding and linking rel
 
 ## 1. Create a `.codegen` directory
 
-To find each unit easily, all modular codegen units must be defined inside a `.codegen` directory of a package in the Unity project.
+All modular codegen units must be defined inside a `.codegen` directory of a package in the Unity project.
 
 For example:
 
@@ -31,14 +31,14 @@ For example:
 
 ### Partials
 
+Partials are code snippets that are injected verbatim into generated code where a type's qualified name matches the file name of the partial.
+
 All partials must be defined inside the `.codegen/Partial` directory.
 
 ```text
 ├── .codegen/
     ├── Partials
 ```
-
-Partials are code snippets that are injected verbatim into generated code where a type's qualified name matches the file name of the partial.
 
 For example, the `Improbable.Coordinates` partial defined in the `io.improbable.gdk.core` codegen unit defines a set of operators and extension methods for the `Improbable.Coordinates` type.
 
@@ -55,13 +55,10 @@ This is where any logic should be defined for a codegen unit. This is the direct
 
 > Think carefully about how to structure `Source/`. The `CodeGen.sln` solution coalesces all contents and directories within each codegen unit's `Source/` directory into the `CodeGen.csproj` project.
 
-Click [here](2-write-a-generator.md) for documentation on writing a generator.
-
 ## 2. Create a codegen job
 
 When performing code generation, the `CodeGen` entry point:
 
-1. Parses schema and stores their details.
 1. Finds all `CodegenJob` classes in the `CodeGen` project.
 1. Uses reflection to instantiate each `CodegenJob` that was found.
 1. Checks which jobs are dirty.
@@ -69,7 +66,7 @@ When performing code generation, the `CodeGen` entry point:
 
 The base `CodegenJob`, defined in the `CodeGenerationLib`, contains methods to:
 
-* Add files to depend on for dirty checks.
+* Add schema file dependencies for dirty checks.
 * Run dirty checks for the job.
 * Add job targets.
 * Clean up the job.

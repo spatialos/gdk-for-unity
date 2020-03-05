@@ -1,8 +1,8 @@
 # Modular code generator overview
 
-The modular code generator is responsible for finding schema across a project's packages, and executing code generation jobs defined for found schema.
+The modular code generator is responsible for finding schema across a project's packages, and executing code generation jobs defined for that schema.
 
-In addition to those explicitly defined in the GDK tools configuration, the code generator finds all `.schema` directories within packages used by your Unity project.
+In addition to schema sources explicitly defined in the GDK tools configuration, the code generator finds all `.schema` directories within packages used by your Unity project.
 
 Aside from schema, the modular code generator has several key elements:
 
@@ -28,15 +28,15 @@ For example, the following GDK packages all have codegen units:
 
 ## `CodeGen`
 
-The base `CodeGen` template is an entry point for the code generator, and therefore responsible for:
+The base `CodeGen` template is the entry point for the code generator, and therefore responsible for:
 
 * Parsing command line arguments.
-* Calling the schema compiler given the locations of each schema directory.
+* Invoking the schema compiler to produce a schema bundle.
 * Using `CodeGenerationLib` to parse and store important schema details.
 * Finding code generation jobs in linked codegen units.
 * Providing schema details to each code generation job it runs.
 
-Once copied into the project build directory, `CodeGen` is linked to any modular code generation units found in the packages that your Unity project depends on. The code generator will run all code generation jobs defined in each linked modular codegen unit.
+Once copied into the project build directory, `CodeGen.csproj` is updated with references to any modular code generation units found in the packages that your Unity project depends on. The code generator will run all code generation jobs defined in each referenced modular codegen unit.
 
 > The linking step is done by the `GenerateCode.cs` script on each call to the code generator from the Unity Editor.
 
@@ -60,11 +60,11 @@ This script also exposes the `Generate code` and `Generate code (force)` options
 
 When opening up your project in Unity, the contents of `.CodeGenTemplate/` are first copied from the `io.improbable.gdk.tools` package into the `<projectroot>/build/codegen/` directory. This ensures that the base `CodeGen` template and the `CodeGenerationLib` it depends on are ready for consumption in the project's build directory.
 
-Once this is done, the GDK generates run configurations for the code generator. This step searches all project packages for `.schema` directories, and sets this information in the run configurations for the code generator to use.
+Once this is done, the GDK generates run configurations for the code generator. This step searches all project packages for `.schema` directories, combines it with the schema source directories defined the GDK tools configuration, and sets this information in the run configurations for the code generator to use.
 
 These configurations are used to ensure the code generator is always* called with the correct, validated arguments across Visual Studio, JetBrains Rider, and the dotnet CLI.
 
-> Note: this enables you to iterate on code generation modules within an IDE, without having to switch back and forth with the Unity Editor.
+> Note: this enables you to iterate on code generation modules within an IDE without having to switch back and forth with the Unity Editor.
 
 _\*unless a user tinkers with things they shouldn't be._
 
