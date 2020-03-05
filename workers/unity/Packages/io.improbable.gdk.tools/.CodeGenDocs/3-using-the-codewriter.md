@@ -12,7 +12,7 @@ public static CodeWriter Generate()
 }
 ```
 
-Each `CodeWriter` is designed to be a separate file, therefore each instance exposes the `UsingDirectives` method to define a list of using directives that should be at the top of the file:
+The output of each `CodeWriter` is intended to be a separate file, therefore each instance exposes the `UsingDirectives` method to define a list of using directives that should be at the top of the file:
 
 ```csharp
 public static CodeWriter Generate()
@@ -401,11 +401,11 @@ foreach (var x in xs)
 }
 ```
 
-## If/else statements
+### If/else statements
 
 The `If` method is an entry point for defining `If/ElseIf/Else` statements.
 
-### Example: if-else
+#### Example: if-else
 
 ```csharp
 m.If("condition", then =>
@@ -423,7 +423,7 @@ if (condition)
 }
 ```
 
-### Example: if-elseif-else
+#### Example: if-elseif-else
 
 ```csharp
 m.If("condition1", then =>
@@ -456,13 +456,13 @@ else
 }
 ```
 
-## Try/catch statements
+### Try/catch statements
 
 The `Try` method is an entry point for defining `Try/Catch/Finally` statements.
 
 Note that you **must** define at least one `Catch` or `Finally` scope, otherwise an `InvalidOperationException` will be thrown at format-time.
 
-### Example: try-catch-finally
+#### Example: try-catch-finally
 
 ```csharp
 m.Try(t =>
@@ -504,7 +504,7 @@ finally
 }
 ```
 
-### Example: try-finally
+#### Example: try-finally
 
 ```csharp
 m.Try(t =>
@@ -531,11 +531,11 @@ finally
 }
 ```
 
-## Custom scopes
+### Custom scopes
 
 A custom scope can be declared with or without a declaration.
 
-### Example: without declaration
+#### Example: without declaration
 
 ```csharp
 m.CustomScope(cs =>
@@ -552,7 +552,7 @@ Generated code:
 }
 ```
 
-### Example: with declaration
+#### Example: with declaration
 
 ```csharp
 m.CustomScope("using (var x = Some.RandomThing())", cs =>
@@ -762,7 +762,7 @@ In addition to the API described above, the following methods also provide an ov
 - `If`/`ElseIf`/`Else`
 - `Try`/`Catch`/`Finally`
 
-This override is effectively a wrapper for defining the above scopes with a `TextList`, therefore the formatted scope will have eacch element of the `IEnumerable<string>` placed on a different line.
+This override is effectively a wrapper for defining the above scopes with a `TextList`, therefore the formatted scope will have each element of the `IEnumerable<string>` placed on a different line.
 
 ### Comparisons
 
