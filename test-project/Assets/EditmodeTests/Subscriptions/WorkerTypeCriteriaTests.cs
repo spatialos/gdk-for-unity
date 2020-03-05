@@ -1,6 +1,6 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Gdk.TestBases;
+using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
@@ -8,94 +8,132 @@ using UnityEngine;
 namespace Improbable.Gdk.EditmodeTests.Subscriptions
 {
     [TestFixture]
-    public class WorkerTypeCriteriaTests : SubscriptionsTestBase
+    public class WorkerTypeCriteriaTests : MockBase
     {
         private const string WorkerType = "TestWorkerType";
         private const long EntityId = 100;
 
-        private GameObject createdGameObject;
-
-        [SetUp]
-        public override void Setup()
+        protected override MockWorld.Options GetOptions()
         {
-            base.Setup();
-
-            var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            ConnectionHandler.CreateEntity(EntityId, template);
-            ReceiveSystem.Update();
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
-
-            Object.DestroyImmediate(createdGameObject);
+            return new MockWorld.Options
+            {
+                WorkerType = WorkerType
+            };
         }
 
         [Test]
         public void Monobehaviour_is_enabled_with_matching_WorkerType()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<MatchingWorkerType>(EntityId);
-            var behaviour = createdGameObject.GetComponent<MatchingWorkerType>();
-
-            Assert.IsTrue(behaviour.enabled);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetEntityTemplate()); })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<MatchingWorkerType>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsTrue(behaviour.enabled);
+                });
         }
 
         [Test]
         public void Monobehaviour_is_disabled_with_non_matching_WorkerType()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<NonMatchingWorkerType>(EntityId);
-            var behaviour = createdGameObject.GetComponent<NonMatchingWorkerType>();
-
-            Assert.IsFalse(behaviour.enabled);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetEntityTemplate()); })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<NonMatchingWorkerType>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsFalse(behaviour.enabled);
+                });
         }
 
         [Test]
         public void Monobehaviour_is_disabled_with_matching_WorkerType_but_unsatisfied_requireable()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<MatchingWorkerTypeWithRequireable>(EntityId);
-            var behaviour = createdGameObject.GetComponent<MatchingWorkerTypeWithRequireable>();
-
-            Assert.IsFalse(behaviour.enabled);
-            Assert.IsNull(behaviour.Writer);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetEntityTemplate()); })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<MatchingWorkerTypeWithRequireable>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsFalse(behaviour.enabled);
+                    Assert.IsNull(behaviour.Writer);
+                });
         }
 
         [Test]
         public void Monobehaviour_is_enabled_with_matching_WorkerType_and_satisfied_requireable()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
-            ReceiveSystem.Update();
-
-            createdGameObject = CreateAndLinkGameObjectWithComponent<MatchingWorkerTypeWithRequireable>(EntityId);
-            var behaviour = createdGameObject.GetComponent<MatchingWorkerTypeWithRequireable>();
-
-            Assert.IsTrue(behaviour.enabled);
-            Assert.IsNotNull(behaviour.Writer);
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetEntityTemplate());
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<MatchingWorkerTypeWithRequireable>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsTrue(behaviour.enabled);
+                    Assert.IsNotNull(behaviour.Writer);
+                });
         }
 
         [Test]
         public void Monobehaviour_is_disabled_with_non_matching_WorkerType_and_unsatisfied_requireable()
         {
-            createdGameObject = CreateAndLinkGameObjectWithComponent<NonMatchingWorkerTypeWithRequireable>(EntityId);
-            var behaviour = createdGameObject.GetComponent<NonMatchingWorkerTypeWithRequireable>();
-
-            Assert.IsFalse(behaviour.enabled);
-            Assert.IsNull(behaviour.Writer);
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetEntityTemplate()); })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<NonMatchingWorkerTypeWithRequireable>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsFalse(behaviour.enabled);
+                    Assert.IsNull(behaviour.Writer);
+                });
         }
 
         [Test]
         public void Monobehaviour_is_disabled_with_non_matching_WorkerType_and_satisfied_requireable()
         {
-            ConnectionHandler.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
-            ReceiveSystem.Update();
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetEntityTemplate());
+                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, behaviour) = world.CreateGameObject<NonMatchingWorkerTypeWithRequireable>(EntityId);
+                    return behaviour;
+                })
+                .Step((world, behaviour) =>
+                {
+                    Assert.IsFalse(behaviour.enabled);
+                    Assert.IsNull(behaviour.Writer);
+                });
+        }
 
-            createdGameObject = CreateAndLinkGameObjectWithComponent<NonMatchingWorkerTypeWithRequireable>(EntityId);
-            var behaviour = createdGameObject.GetComponent<NonMatchingWorkerTypeWithRequireable>();
-
-            Assert.IsFalse(behaviour.enabled);
-            Assert.IsNull(behaviour.Writer);
+        private static EntityTemplate GetEntityTemplate()
+        {
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), "worker");
+            return template;
         }
 
 #pragma warning disable 649

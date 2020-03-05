@@ -114,7 +114,6 @@ namespace Improbable.Gdk.Core
 
         public void PushMessagesToSend(MessagesToSend messages, NetFrameStats netFrameStats)
         {
-            throw new System.NotImplementedException();
         }
 
         public bool IsConnected()
