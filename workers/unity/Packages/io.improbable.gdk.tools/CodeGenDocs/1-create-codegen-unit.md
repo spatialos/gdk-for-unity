@@ -51,8 +51,6 @@ All code generation logic must be defined inside the `.codegen/Source` directory
     ├── Source
 ```
 
-This is where any logic should be defined for a codegen unit. This is the directory where you should define your generators and the codegen job that calls them.
-
 > Think carefully about how to structure `Source/`. The `CodeGen.sln` solution coalesces all contents and directories within each codegen unit's `Source/` directory into the `CodeGen.csproj` project.
 >
 > <details><summary>Click to expand example.</summary>
