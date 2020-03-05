@@ -88,7 +88,6 @@ namespace Your.Own.CodeGenerator
         public YourCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
             : base(outputDir, fileSystem, store, force)
         {
-            // Add job targets here
         }
     }
 }

@@ -6,49 +6,12 @@ In addition to schema sources explicitly defined in the GDK tools configuration,
 
 Aside from schema, the modular code generator has several key elements:
 
-* [Code generation units](#codegen-units).
+* [`GenerateCode.cs` script](#generatecodecs).
 * [`CodeGen` C# project](#codegen).
 * [`CodeGenerationLib` C# project](#codegenerationlib).
-* [`GenerateCode.cs` script](#generatecodecs).
+* [Code generation units](#codegen-units).
 
 The base `CodeGen` template and `CodeGenerationLib` projects are found inside the `.CodeGenTemplate` directory within the `io.improbable.gdk.tools` package.
-
-## Codegen units
-
-A codegen unit is defined in a `.codegen` directory at the root of a package that the Unity project depends on. You would write your codegen logic inside this directory.
-
-For example, the following GDK packages all have codegen units:
-
-* `io.improbable.gdk.buildsystem`
-* `io.improbable.gdk.core`
-* `io.improbable.gdk.gameobjectcreation`
-* `io.improbable.gdk.transformsynchronization`
-
-> The `io.improbable.gdk.dependencytest` package inside the `test-project` also contains a codegen unit.
-
-## `CodeGen`
-
-The base `CodeGen` template is the entry point for the code generator, and therefore responsible for:
-
-* Parsing command line arguments.
-* Invoking the schema compiler to produce a schema bundle.
-* Using `CodeGenerationLib` to parse and store important schema details.
-* Finding code generation jobs in linked codegen units.
-* Providing schema details to each code generation job it runs.
-
-Once copied into the project build directory, `CodeGen.csproj` is updated with references to any modular code generation units found in the packages that your Unity project depends on. The code generator will run all code generation jobs defined in each referenced modular codegen unit.
-
-> The linking step is done by the `GenerateCode.cs` script on each call to the code generator from the Unity Editor.
-
-## `CodeGenerationLib`
-
-The `CodeGenerationLib` project is a library used by the base `CodeGen` project and linked codegen units to:
-
-* Parse schema bundles.
-* Store schema details in a structured format.
-* Let developers use an ergonomic CodeWriter API to write code generators.
-* Define code generation jobs based on stored schema detais.
-* Write generated code to disk.
 
 ## `GenerateCode.cs`
 
@@ -64,9 +27,9 @@ Once this is done, the GDK generates run configurations for the code generator. 
 
 These configurations are used to ensure the code generator is always* called with the correct, validated arguments across Visual Studio, JetBrains Rider, and the dotnet CLI.
 
-> Note: this enables you to iterate on code generation modules within an IDE without having to switch back and forth with the Unity Editor.
+<sup>_\*unless a user tinkers with things they shouldn't be._</sup>
 
-_\*unless a user tinkers with things they shouldn't be._
+> Note: this enables you to iterate on code generation modules within an IDE without having to switch back and forth with the Unity Editor.
 
 ### Generate code
 
@@ -81,3 +44,40 @@ When you click the `Generate code` button, the GDK:
 #### Generate code (force)
 
 The `Generate code (force)` option effectively "resets" the code generator before running it. The directory containing generated code and the previously copied code generator template are both deleted. The code generator template in the `io.improbable.gdk.tools` package is then copied across again before a freshly set up code generator is run.
+
+## `CodeGen`
+
+The base `CodeGen` template is the entry point for the code generator, and therefore responsible for:
+
+* Parsing command line arguments.
+* Invoking the schema compiler to produce a schema bundle.
+* Using `CodeGenerationLib` to parse and store important schema details.
+* Finding code generation jobs in linked codegen units.
+* Providing schema details to each code generation job it runs.
+
+Once copied into the project build directory, `CodeGen.csproj` is updated with references to any modular code generation units found in the packages that your Unity project depends on.
+
+The code generator will run all code generation jobs defined in each referenced modular codegen unit.
+
+## `CodeGenerationLib`
+
+The `CodeGenerationLib` project is a library used by the base `CodeGen` project and referenced codegen units to:
+
+* Parse schema bundles.
+* Store schema details in a structured format.
+* Let developers use an ergonomic CodeWriter API to write code generators.
+* Define code generation jobs based on stored schema detais.
+* Write generated code to disk.
+
+## Codegen units
+
+A codegen unit is defined in a `.codegen` directory at the root of a package that the Unity project depends on. You would write your codegen logic inside this directory.
+
+For example, the following GDK packages all have codegen units:
+
+* `io.improbable.gdk.buildsystem`
+* `io.improbable.gdk.core`
+* `io.improbable.gdk.gameobjectcreation`
+* `io.improbable.gdk.transformsynchronization`
+
+> The `io.improbable.gdk.dependencytest` package inside the `test-project` also contains a codegen unit.
