@@ -42,7 +42,9 @@ docker run --rm \
         --namespace-filter=".*PlaymodeTests" \
         --git-tag="${TAG}"
 
-# TODO: Trigger Filip's pipeline when that's live
+pushd "${OUTPUT_DIR}"
+    buildkite-agent artifact upload "**/*.md"
+popd
 
 function generate_step() {
     echo "steps:"
@@ -53,7 +55,7 @@ function generate_step() {
     echo "        bk_readme_project_name: gdk-for-unity"
     echo "        bk_readme_catergory_id: ${CATEGORY_ID}"
     echo "        bk_readme_version: ${TAG}"
-    echo "        bk_readme_artifact_path: docs-output/**/*"
+    echo "        bk_readme_artifact_path: \"**/*\""
 }
 
 generate_step | buildkite-agent pipeline upload --no-interpolation
