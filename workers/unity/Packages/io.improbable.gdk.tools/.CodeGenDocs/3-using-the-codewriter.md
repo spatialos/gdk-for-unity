@@ -651,7 +651,7 @@ public bool ExampleMethod()
 
 ## Lines of code
 
-The `Line` and `TextList` methods exit to define individual lines of code. To ensure they work in a similar way, the base `Text` construct exists.
+The `Line` and `TextList` methods exist to define individual lines of code. To ensure they work in a similar way, the base `Text` construct exists.
 
 ### Text
 
