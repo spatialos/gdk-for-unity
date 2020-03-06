@@ -114,9 +114,9 @@ The base `CodegenJob`, defined in the `CodeGenerationLib`, contains methods to:
 * Clean up the job.
 * Run the job.
 
-> [FAQ: How does `CodeGen` figure out whether a `CodegenJob` is dirty?](faq.md)
+> [FAQ: When is a `CodegenJob` dirty?](faq.md)
 
-Therefore, create a class that inherits from `CodegenJob` as below:
+Therefore, to create your own codegen job you create a class that inherits from `CodegenJob` as below:
 
 ```csharp
 using Improbable.Gdk.CodeGeneration.FileHandling;
@@ -184,7 +184,7 @@ A `JobTarget` consists of a function to generate code for one file, as well as t
 
 > A `CodeWriter` is the class used to access the ergonomic API for writing code generators.
 
-There are two key ways to add job targets to a codegen job:
+There are two ways to add job targets to a codegen job:
 
 * Adding a single job target.
 * Adding multiple job targets that operate on the same input.

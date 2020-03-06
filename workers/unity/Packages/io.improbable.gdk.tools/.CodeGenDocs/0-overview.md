@@ -23,7 +23,7 @@ This script also exposes the `Generate code` and `Generate code (force)` options
 
 When opening up your project in Unity, the contents of `.CodeGenTemplate/` are first copied from the `io.improbable.gdk.tools` package into the `<projectroot>/build/codegen/` directory. This ensures that the base `CodeGen` template and the `CodeGenerationLib` it depends on are ready for consumption in the project's build directory.
 
-Once this is done, the GDK generates run configurations for the code generator. This step searches all project packages for `.schema` directories, combines it with the schema source directories defined the GDK tools configuration, and sets this information in the run configurations for the code generator to use.
+Once this is done, the GDK generates run configurations for the code generator. This step searches all project packages for `.schema` directories, combines it with the schema source directories defined in the GDK tools configuration, and sets this information in the run configurations for the code generator to use.
 
 These configurations are used to ensure the code generator is always* called with the correct, validated arguments across Visual Studio, JetBrains Rider, and the dotnet CLI.
 
@@ -71,7 +71,7 @@ The `CodeGenerationLib` project is a library used by the base `CodeGen` project 
 
 ## Codegen units
 
-A codegen unit is defined in a `.codegen` directory at the root of a package that the Unity project depends on. You would write your codegen logic inside this directory.
+A codegen unit is defined in a `.codegen` directory at the root of a package that the Unity project depends on. You would write your codegen logic for that package inside this directory.
 
 For example, the following GDK packages all have codegen units:
 
