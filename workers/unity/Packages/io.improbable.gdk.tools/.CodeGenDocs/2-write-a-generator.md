@@ -39,7 +39,7 @@ public static CodeWriter Generate(UnityTypeDetails details);
 public static CodeWriter Generate(UnityEnumDetails details);
 ```
 
-> Note: the methods do not _have_ to be called `Generate` nor be public. Their accessibility should depend on where you are calling them from.
+> Note: the methods do not _have_ to be called `Generate`, but they must return a `CodeWriter` and consume a type of `GeneratorInputDetails`. They also do not have to be public: accessibility should depend on where you are calling them from.
 
 ### Returning raw text
 
@@ -56,7 +56,7 @@ public static string Generate(UnityTypeDetails details);
 public static string Generate(UnityEnumDetails details);
 ```
 
-> Note: the methods do not _have_ to be called `Generate` nor be public. Their accessibility should depend on where you are calling them from.
+> Note: the methods do not _have_ to be called `Generate`, but they must return a `CodeWriter` and consume a type of `GeneratorInputDetails`. They also do not have to be public: accessibility should depend on where you are calling them from.
 
 ## CodeWriter: Introduction
 
@@ -86,41 +86,15 @@ public static CodeWriter Generate()
 
 ## CodeWriter: Namespaces
 
-You can use the following methods when constructing a namespace:
-
-* `Annotate`
-* `Text`
-* `TextList`
-* `Line`
-* `CustomScope`
-* `Enum`
-* `Type`
+Use the `Namespace` method as above to start defining a namespace:
 
 ## CodeWriter: Structs and classes
 
 Structs and classes can be defined using the `Type` method where available.
 
-You can use the following familiar methods when constructing structs and classes:
-
-* `Annotate`
-* `Text`
-* `TextList`
-* `Line`
-* `CustomScope`
-* `Enum`
-* `Type`
-
-In addition, the following two methods are exposed:
-
-* `Initializer`
-* `Method`
-
 ## Enums
 
-You can use the following methods when constructing enums:
-
-* `Member`
-* `Members`
+Enums can be defined with the `Enum` method where available.
 
 ## CodeWriter: Other scoped bodies
 
@@ -130,24 +104,7 @@ A scoped body is a generic body of code that is either a method or can lie withi
 * `Method`
 * `Loop`
 
-You can use the following methods when defining a scoped body:
-
-* `Text`
-* `TextList`
-* `Line`
-* `CustomScope`
-* `Initializer`
-
-The following methods are also exposed:
-
-* `Loop`
-* `If/ElseIf/Else`
-* `Try/Catch/Finally`
-* `Return/Return(x)`
-* `ProfilerStart(x)`
-* `ProfilerEnd()`
-
-> Note: the above methods are not exposed at top level types/namespaces/enums as they can only be used within method bodies.
+> Note: the API available within scoped bodies is not exposed at top level types/namespaces/enums as they can only be used inside method bodies.
 
 ### Custom scope
 
