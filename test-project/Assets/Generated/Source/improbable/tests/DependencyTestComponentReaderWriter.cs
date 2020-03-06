@@ -20,7 +20,7 @@ namespace Improbable.Tests
 
         protected override DependencyTestReader CreateReader(Entity entity, EntityId entityId)
         {
-            return new DependencyTestReader(world, entity, entityId);
+            return new DependencyTestReader(World, entity, entityId);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Improbable.Tests
 
         protected override DependencyTestWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            return new DependencyTestWriter(world, entity, entityId);
+            return new DependencyTestWriter(World, entity, entityId);
         }
     }
 

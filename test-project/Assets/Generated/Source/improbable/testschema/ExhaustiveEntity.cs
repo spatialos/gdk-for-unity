@@ -17,10 +17,68 @@ namespace Improbable.TestSchema
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 197720;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
+
+            internal uint field1Handle;
+
+            public global::Improbable.Gdk.Core.EntitySnapshot Field1
+            {
+                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
+                set
+                {
+                    MarkDataDirty(0);
+                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
+                }
+            }
+
+            internal uint field2Handle;
+
+            public global::Improbable.Gdk.Core.EntitySnapshot? Field2
+            {
+                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
+                set
+                {
+                    MarkDataDirty(1);
+                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
+                }
+            }
+
+            internal uint field3Handle;
+
+            public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> Field3
+            {
+                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
+                set
+                {
+                    MarkDataDirty(2);
+                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
+                }
+            }
+
+            internal uint field4Handle;
+
+            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> Field4
+            {
+                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
+                set
+                {
+                    MarkDataDirty(3);
+                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
+                }
+            }
+
+            internal uint field5Handle;
+
+            public global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> Field5
+            {
+                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
+                set
+                {
+                    MarkDataDirty(4);
+                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
+                }
+            }
 
             public bool IsDataDirty()
             {
@@ -90,66 +148,6 @@ namespace Improbable.TestSchema
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
-            }
-
-            internal uint field1Handle;
-
-            public global::Improbable.Gdk.Core.EntitySnapshot Field1
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
-                set
-                {
-                    MarkDataDirty(0);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
-                }
-            }
-
-            internal uint field2Handle;
-
-            public global::Improbable.Gdk.Core.EntitySnapshot? Field2
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
-                set
-                {
-                    MarkDataDirty(1);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
-                }
-            }
-
-            internal uint field3Handle;
-
-            public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> Field3
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
-                set
-                {
-                    MarkDataDirty(2);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
-                }
-            }
-
-            internal uint field4Handle;
-
-            public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> Field4
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
-                set
-                {
-                    MarkDataDirty(3);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
-                }
-            }
-
-            internal uint field5Handle;
-
-            public global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> Field5
-            {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
-                set
-                {
-                    MarkDataDirty(4);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
-                }
             }
         }
 
