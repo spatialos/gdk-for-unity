@@ -6,7 +6,7 @@ cd "$(dirname "$0")/../"
 
 DOCGEN_PIN="${DOCGEN_OVERRIDE:-v1.0}"
 CURRENT_DIR=$(pwd)
-TMP_DIR=$(mktemp -d)
+TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
 OUTPUT_DIR="${CURRENT_DIR}/docs-output"
 rm -rf "${OUTPUT_DIR}"
 mkdir "${OUTPUT_DIR}"
