@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
         private NativeArray<JobHandle> gatheringJobs;
-        
+
         private ProfilerMarker gatherChunksMarker = new ProfilerMarker("GatherAllChunks");
         private ProfilerMarker executeReplication = new ProfilerMarker("ExecuteReplication");
 

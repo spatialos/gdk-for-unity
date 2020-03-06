@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
             new Dictionary<uint, IEcsViewManager>();
 
         private WorkerSystem worker;
-        
+
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("EcsViewSystem.ApplyDiff");
         private ProfilerMarker addEntityMarker = new ProfilerMarker("EcsViewSystem.OnAddEntity");
         private ProfilerMarker removeEntityMarker = new ProfilerMarker("EcsViewSystem.OnRemoveEntity");

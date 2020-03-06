@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Core
 
         internal ViewDiff Diff => Worker.ViewDiff;
         internal MessagesToSend MessagesToSend => Worker.MessagesToSend;
-        
+
         private ProfilerMarker tickMarker = new ProfilerMarker("WorkerSystem.Tick");
 
         public WorkerSystem(WorkerInWorld worker)

@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
         private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
-        
+
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("View.ApplyDiff");
 
         public View()

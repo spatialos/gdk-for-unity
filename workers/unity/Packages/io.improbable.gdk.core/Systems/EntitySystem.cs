@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
         private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
-        
+
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("EntitySystem.ApplyDiff");
 
         private WorkerSystem workerSystem;
