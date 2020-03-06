@@ -27,10 +27,6 @@ steps:
         key: release-version
         required: true
         hint: The version to generate docs for. Must be a git tag.
-      - text: Category ID
-        key: category-id
-        required: true
-        hint: The category ID for the generated docs section (changes every version). Use the Chrome Inspector to find it.
 
   # Note: This step will generate a trigger step for the uploading.
   - label: Generate docs
