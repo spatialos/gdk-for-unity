@@ -127,5 +127,10 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
         {
             Add(new CustomScopeBlock($"using ({markerVariableName}.Auto())", populate));
         }
+
+        public void ProfileScope(string markerVariableName, Func<IEnumerable<string>> populate)
+        {
+            Add(new CustomScopeBlock($"using ({markerVariableName}.Auto())", populate));
+        }
     }
 }
