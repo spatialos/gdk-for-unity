@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
@@ -8,12 +9,13 @@ namespace Improbable.Gdk.Core
     public class EntityReservationSystem : ComponentSystem
     {
         // Some sort of range queue
-        // private EntityRangeQueue queue;
+        private EntityRangeCollection queue;
 
-        public long TargetEntityIdCount = 200;
+        public uint TargetEntityIdCount = 200;
+        public uint MinimumReservationCount = 10;
 
         // Actual entities left on stack
-        private long count;
+        private long unreservedCount;
         private long inFlightCount;
 
         private readonly HashSet<long> requestIds = new HashSet<long>();
@@ -38,7 +40,8 @@ namespace Improbable.Gdk.Core
 
         private void RefillQueue()
         {
-            var requestCount = (uint) (count - TargetEntityIdCount + inFlightCount);
+            var requestCount = (uint) (unreservedCount - TargetEntityIdCount + inFlightCount);
+            requestCount = Math.Max(requestCount, MinimumReservationCount);
             var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request(requestCount);
             commandSystem.SendCommand(reserveEntityIdsRequest);
         }
@@ -57,6 +60,8 @@ namespace Improbable.Gdk.Core
                 if (request.StatusCode == StatusCode.Success)
                 {
                     //Add range to queue
+                    var range = new EntityRangeCollection.EntityIdRange(request.FirstEntityId.Value, (uint) request.NumberOfEntityIds);
+                    queue.Add(range);
                 }
 
                 inFlightCount += request.RequestPayload.NumberOfEntityIds;
