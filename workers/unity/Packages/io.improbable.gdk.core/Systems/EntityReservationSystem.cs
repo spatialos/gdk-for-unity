@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
@@ -8,9 +10,6 @@ namespace Improbable.Gdk.Core
 {
     public class EntityReservationSystem : ComponentSystem
     {
-        // Some sort of range queue
-        private EntityRangeCollection queue;
-
         public uint TargetEntityIdCount = 200;
         public uint MinimumReservationCount = 10;
 
@@ -19,6 +18,11 @@ namespace Improbable.Gdk.Core
         private long inFlightCount;
 
         private readonly HashSet<long> requestIds = new HashSet<long>();
+
+        private readonly Queue<(TaskCompletionSource<EntityRangeCollection> taskCompletionSource, uint count)> queuedReservations =
+            new Queue<(TaskCompletionSource<EntityRangeCollection> taskCompletionSource, uint count)>();
+
+        private readonly EntityRangeCollection entityIdQueue = new EntityRangeCollection();
         private CommandSystem commandSystem;
 
         protected override void OnCreate()
@@ -35,15 +39,18 @@ namespace Improbable.Gdk.Core
             ResolveQueuedRequests();
 
             // Request new entity id's? (Maybe move to another system)
-            RefillQueue();
+            RequestQueueRefill();
         }
 
-        private void RefillQueue()
+        private void RequestQueueRefill()
         {
-            var requestCount = (uint) (unreservedCount - TargetEntityIdCount + inFlightCount);
-            requestCount = Math.Max(requestCount, MinimumReservationCount);
-            var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request(requestCount);
-            commandSystem.SendCommand(reserveEntityIdsRequest);
+            var requestCount = -(unreservedCount - TargetEntityIdCount + inFlightCount);
+            if (requestCount > 0)
+            {
+                requestCount = Math.Max(requestCount, MinimumReservationCount);
+                var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request((uint) requestCount);
+                commandSystem.SendCommand(reserveEntityIdsRequest);
+            }
         }
 
         private void HandleReservationRequests()
@@ -61,7 +68,8 @@ namespace Improbable.Gdk.Core
                 {
                     //Add range to queue
                     var range = new EntityRangeCollection.EntityIdRange(request.FirstEntityId.Value, (uint) request.NumberOfEntityIds);
-                    queue.Add(range);
+                    entityIdQueue.Add(range);
+                    unreservedCount += range.Count;
                 }
 
                 inFlightCount += request.RequestPayload.NumberOfEntityIds;
@@ -73,7 +81,50 @@ namespace Improbable.Gdk.Core
 
         private void ResolveQueuedRequests()
         {
+            // Remove canceled reservations from the queue
+            while (queuedReservations.Count > 0)
+            {
+                var (taskCompletionSource, count) = queuedReservations.Peek();
+                if (!taskCompletionSource.Task.IsCanceled)
+                {
+                    break;
+                }
+
+                unreservedCount += count;
+                queuedReservations.Dequeue();
+            }
+
             // Loop over queued request, check if we have enough, and call them
+            foreach (var (taskCompletionSource, count) in queuedReservations)
+            {
+                if (entityIdQueue.Count < count)
+                {
+                    break;
+                }
+
+                taskCompletionSource.SetResult(entityIdQueue.Take(count));
+            }
+        }
+
+        public Task<EntityRangeCollection> Take(uint count, CancellationToken cancellationToken = default)
+        {
+            unreservedCount -= count;
+
+            if (unreservedCount >= 0)
+            {
+                return Task.FromResult(entityIdQueue.Take(count));
+            }
+            else
+            {
+                var tcs = new TaskCompletionSource<EntityRangeCollection>();
+                cancellationToken.Register((source) =>
+                {
+                    ((TaskCompletionSource<EntityRangeCollection>) source).TrySetCanceled();
+                }, tcs);
+
+                queuedReservations.Enqueue((tcs, count));
+                return tcs.Task;
+            }
         }
     }
 }
