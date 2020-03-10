@@ -47,6 +47,24 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
+        public void EntityRangeCollection_dequeue_valid()
+        {
+            var collection = new EntityRangeCollection();
+            collection.Add(validRange);
+            var result = collection.Dequeue();
+
+            Assert.AreEqual(validRange.FirstEntityId, result);
+            Assert.AreEqual(ValidRangeCount - 1, collection.Count);
+        }
+
+        [Test]
+        public void EntityRangeCollection_dequeue_empty_throws()
+        {
+            var collection = new EntityRangeCollection();
+            Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
+        }
+
+        [Test]
         public void EntityRangeCollection_taking_whole_range()
         {
             var collection = new EntityRangeCollection();
