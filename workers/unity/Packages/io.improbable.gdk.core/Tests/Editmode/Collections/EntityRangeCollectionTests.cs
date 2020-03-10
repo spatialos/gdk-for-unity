@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             collection.Add(validRange);
             var result = collection.Take(ValidRangeCount);
 
-            Assert.AreEqual(ValidRangeCount, result.Count);
+            Assert.AreEqual(ValidRangeCount, result.Length);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             collection.Add(validRange);
             var result = collection.Take(validRange.Count / 2);
 
-            Assert.AreEqual(ValidRangeCount / 2, result.Count);
+            Assert.AreEqual(ValidRangeCount / 2, result.Length);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             var idCollection = Enumerable.Range(1, ValidRangeCount).Select(x => (long) x).ToList();
 
             var check = 0;
-            foreach (var entityId in collection)
+            foreach (var entityId in collection.Take(collection.Count))
             {
                 Assert.AreEqual(idCollection[check], entityId.Id);
                 check++;
@@ -122,7 +122,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             var idCollection = Enumerable.Range(1, ValidRangeCount * 2).Select(x => (long) x).ToList();
 
             var check = 0;
-            foreach (var entityId in collection)
+            foreach (var entityId in collection.Take(collection.Count))
             {
                 Assert.AreEqual(idCollection[check], entityId.Id);
                 check++;

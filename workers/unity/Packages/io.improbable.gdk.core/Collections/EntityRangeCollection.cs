@@ -1,31 +1,44 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core
 {
-    public class EntityRangeCollection : IEnumerable<EntityId>
+    internal class EntityRangeCollection
     {
         private EntityIdRange firstElement;
         private readonly Queue<EntityIdRange> queue = new Queue<EntityIdRange>();
-        private int version = 0;
 
         public uint Count { get; private set; } = 0;
 
-        public EntityRangeCollection Take(uint count)
+        public EntityId Dequeue()
+        {
+            if (firstElement.Count <= 0)
+            {
+                throw new InvalidOperationException($"{nameof(EntityRangeCollection)} is empty");
+            }
+
+            var (splitRange, remainder) = firstElement.Split(1);
+            firstElement = remainder;
+            Count -= 1;
+            return splitRange.FirstEntityId;
+        }
+
+        public EntityId[] Take(uint count)
         {
             if (count > Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(count), count, "Collection does not have enough ids stored");
             }
 
-            var collection = new EntityRangeCollection();
+            var collection = new EntityId[count];
+            uint index = 0;
             while (count > 0)
             {
                 if (firstElement.Count <= count)
                 {
                     count -= firstElement.Count;
-                    collection.Add(firstElement);
+                    firstElement.CopyTo(collection, index);
+                    index += firstElement.Count;
                     firstElement = queue.Count > 0
                         ? queue.Dequeue()
                         : new EntityIdRange();
@@ -33,14 +46,13 @@ namespace Improbable.Gdk.Core
                 else
                 {
                     var (splitRange, remainder) = firstElement.Split(count);
-                    collection.Add(splitRange);
                     firstElement = remainder;
+                    splitRange.CopyTo(collection, index);
                     break;
                 }
             }
 
             Count -= count;
-            version++;
 
             return collection;
         }
@@ -67,7 +79,6 @@ namespace Improbable.Gdk.Core
             }
 
             Count += range.Count;
-            version++;
         }
 
         public void Clear()
@@ -75,7 +86,6 @@ namespace Improbable.Gdk.Core
             firstElement = new EntityIdRange();
             queue.Clear();
             Count = 0;
-            version++;
         }
 
         internal readonly struct EntityIdRange
@@ -101,93 +111,18 @@ namespace Improbable.Gdk.Core
 
                 return (part, remainder);
             }
-        }
 
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        IEnumerator<EntityId> IEnumerable<EntityId>.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public struct Enumerator : IEnumerator<EntityId>
-        {
-            private readonly EntityRangeCollection collection;
-
-            private EntityIdRange activeRange;
-            private Queue<EntityIdRange>.Enumerator enumerator;
-
-            private int index;
-            private readonly int version;
-            private EntityId current;
-
-            public Enumerator(EntityRangeCollection collection)
+            public void CopyTo(EntityId[] collection, uint index)
             {
-                this.collection = collection;
-                activeRange = collection.firstElement;
-                enumerator = collection.queue.GetEnumerator();
-
-                index = 0;
-                version = collection.version;
-                current = default;
-            }
-
-            public bool MoveNext()
-            {
-                if (version != collection.version)
+                if (collection.Length < index + Count)
                 {
-                    throw new InvalidOperationException("Collection was modified; enumeration operation may not execute");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Target array too small for given index");
                 }
 
-                if (index >= collection.Count)
+                for (var i = 0; i < Count; i++)
                 {
-                    return false;
+                    collection[index + i] = new EntityId(FirstEntityId.Id + i);
                 }
-
-                current = activeRange.FirstEntityId;
-                activeRange = new EntityIdRange(new EntityId(activeRange.FirstEntityId.Id + 1), activeRange.Count - 1);
-
-                // Grab next range in the queue
-                if (activeRange.Count == 0)
-                {
-                    activeRange = enumerator.MoveNext()
-                        ? enumerator.Current
-                        : default;
-                }
-
-                index++;
-
-                return true;
-            }
-
-            public void Reset()
-            {
-                index = 0;
-                activeRange = collection.firstElement;
-                enumerator = collection.queue.GetEnumerator();
-                current = default;
-            }
-
-            public EntityId Current
-            {
-                get
-                {
-                    return current;
-                }
-            }
-
-            object IEnumerator.Current => Current;
-
-            public void Dispose()
-            {
             }
         }
     }
