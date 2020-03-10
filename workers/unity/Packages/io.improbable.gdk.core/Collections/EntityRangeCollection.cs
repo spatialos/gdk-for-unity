@@ -32,10 +32,9 @@ namespace Improbable.Gdk.Core
                 }
                 else
                 {
-                    var splitRange = new EntityIdRange(firstElement.FirstEntityId, count);
+                    var (splitRange, remainder) = firstElement.Split(count);
                     collection.Add(splitRange);
-                    firstElement.FirstEntityId = new EntityId(firstElement.FirstEntityId.Id + count);
-                    firstElement.Count -= count;
+                    firstElement = remainder;
                     break;
                 }
             }
@@ -79,15 +78,28 @@ namespace Improbable.Gdk.Core
             version++;
         }
 
-        internal struct EntityIdRange
+        internal readonly struct EntityIdRange
         {
-            public EntityId FirstEntityId;
-            public uint Count;
+            public readonly EntityId FirstEntityId;
+            public readonly uint Count;
 
             public EntityIdRange(EntityId firstEntityId, uint count)
             {
                 Count = count;
                 FirstEntityId = firstEntityId;
+            }
+
+            public (EntityIdRange part, EntityIdRange remainder) Split(uint count)
+            {
+                if (count > Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(count), count, "Split count out of range");
+                }
+
+                var part = new EntityIdRange(FirstEntityId, count);
+                var remainder = new EntityIdRange(new EntityId(FirstEntityId.Id + count), Count - count);
+
+                return (part, remainder);
             }
         }
 
@@ -108,13 +120,13 @@ namespace Improbable.Gdk.Core
 
         public struct Enumerator : IEnumerator<EntityId>
         {
-            private EntityRangeCollection collection;
+            private readonly EntityRangeCollection collection;
 
             private EntityIdRange activeRange;
             private Queue<EntityIdRange>.Enumerator enumerator;
 
             private int index;
-            private int version;
+            private readonly int version;
             private EntityId current;
 
             public Enumerator(EntityRangeCollection collection)
@@ -132,7 +144,7 @@ namespace Improbable.Gdk.Core
             {
                 if (version != collection.version)
                 {
-                    throw new InvalidOperationException("Cannot iterate over collection which has been altered.");
+                    throw new InvalidOperationException("Collection was modified; enumeration operation may not execute");
                 }
 
                 if (index >= collection.Count)
@@ -141,8 +153,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 current = activeRange.FirstEntityId;
-                activeRange.FirstEntityId = new EntityId(activeRange.FirstEntityId.Id + 1);
-                --activeRange.Count;
+                activeRange = new EntityIdRange(new EntityId(activeRange.FirstEntityId.Id + 1), activeRange.Count - 1);
 
                 // Grab next range in the queue
                 if (activeRange.Count == 0)
