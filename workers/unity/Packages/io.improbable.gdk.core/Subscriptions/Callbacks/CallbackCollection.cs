@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class Callbacks<T> where T : struct
+    internal class CallbackCollection<T> where T : struct
     {
         private readonly List<WrappedCallback> callbacks = new List<WrappedCallback>();
         private readonly HashSet<ulong> currentKeys = new HashSet<ulong>();

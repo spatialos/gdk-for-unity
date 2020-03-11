@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
@@ -7,10 +8,8 @@ namespace Improbable.Gdk.Subscriptions
 {
     public class CommandResponseCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandResponse
     {
-        private readonly SingleUseIndexCallbacks<T> callbacks = new SingleUseIndexCallbacks<T>();
+        private readonly Dictionary<long, Action<T>> callbacks = new Dictionary<long, Action<T>>();
         private readonly CommandSystem commandSystem;
-
-        private ulong nextCallbackId = 1;
 
         public CommandResponseCallbackManager(World world)
         {
@@ -23,20 +22,22 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < responses.Count; ++i)
             {
                 ref readonly var response = ref responses[i];
-                callbacks.InvokeAll(response.RequestId, response);
-                callbacks.RemoveAllCallbacksForIndex(response.RequestId);
+                if (callbacks.TryGetValue(response.RequestId, out var callback))
+                {
+                    callbacks.Remove(response.RequestId);
+                    callback(response);
+                }
             }
         }
 
-        public ulong RegisterCallback(long requestId, Action<T> callback)
+        public void RegisterCallback(long requestId, Action<T> callback)
         {
-            callbacks.Add(requestId, nextCallbackId, callback);
-            return nextCallbackId++;
+            callbacks.Add(requestId, callback);
         }
 
-        public bool UnregisterCallback(ulong callbackKey)
+        public bool UnregisterCallback(ulong requestId)
         {
-            return callbacks.Remove(callbackKey);
+            return callbacks.Remove((long) requestId);
         }
     }
 }

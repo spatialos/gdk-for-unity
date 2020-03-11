@@ -167,10 +167,13 @@ public bool IsValid { get; set; }
 
                 foreach (var commandDetails in componentDetails.CommandDetails)
                 {
+                    var receivedRequestType =
+                        $"{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest";
+                
                     c.Line($@"
-private Dictionary<Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
+private Dictionary<Action<{receivedRequestType}>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
 
-public event Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest> On{commandDetails.PascalCaseName}RequestReceived
+public event Action<{receivedRequestType}> On{commandDetails.PascalCaseName}RequestReceived
 {{
     add
     {{
@@ -189,7 +192,7 @@ public event Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Re
             return;
         }}
 
-        callbackSystem.UnregisterCommandRequestCallback(key);
+        callbackSystem.UnregisterCommandRequestCallback<{receivedRequestType}>(key);
         {commandDetails.CamelCaseName}CallbackToCallbackKey.Remove(value);
     }}
 }}
@@ -232,12 +235,15 @@ public void Send{commandDetails.PascalCaseName}Failure(long requestId, string fa
                 {
                     foreach (var commandDetails in componentDetails.CommandDetails)
                     {
+                        var receivedRequestType =
+                            $"{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest";
+                        
                         m.Line($@"
 if ({commandDetails.CamelCaseName}CallbackToCallbackKey != null)
 {{
     foreach (var callbackToKey in {commandDetails.CamelCaseName}CallbackToCallbackKey)
     {{
-        callbackSystem.UnregisterCommandRequestCallback(callbackToKey.Value);
+        callbackSystem.UnregisterCommandRequestCallback<{receivedRequestType}>(callbackToKey.Value);
     }}
 
     {commandDetails.CamelCaseName}CallbackToCallbackKey.Clear();

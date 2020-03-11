@@ -13,60 +13,61 @@ namespace Improbable.Gdk.Subscriptions
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class CommandCallbackSystem : ComponentSystem
     {
-        private readonly GuardedCallbackManagerSet<Type, ICallbackManager> callbackManagers =
+        private readonly GuardedCallbackManagerSet<Type, ICallbackManager> requestCallbackManagers =
+            new GuardedCallbackManagerSet<Type, ICallbackManager>();
+        
+        private readonly GuardedCallbackManagerSet<Type, ICallbackManager> responseCallbackManagers =
             new GuardedCallbackManagerSet<Type, ICallbackManager>();
 
-        private readonly Dictionary<ulong, (ulong key, ICallbackManager manager)> keyToInternalKeyAndManager =
-            new Dictionary<ulong, (ulong key, ICallbackManager manager)>();
-
-        private ulong callbacksRegistered = 1;
-
+        private CommandSystem commandSystem;
+        
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
             where T : struct, IReceivedCommandRequest
         {
-            if (!callbackManagers.TryGetManager(typeof(T), out var manager))
+            if (!requestCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
-                manager = new CommandRequestCallbackManager<T>(World);
-                callbackManagers.AddCallbackManager(typeof(T), manager);
+                manager = new CommandRequestCallbackManager<T>(commandSystem);
+                requestCallbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
-            var key = ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
-            keyToInternalKeyAndManager.Add(callbacksRegistered, (key, manager));
-            return callbacksRegistered++;
+            return ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
         }
 
         public void RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
             where T : struct, IReceivedCommandResponse
         {
-            if (!callbackManagers.TryGetManager(typeof(T), out var manager))
+            if (!responseCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
                 manager = new CommandResponseCallbackManager<T>(World);
-                callbackManagers.AddCallbackManager(typeof(T), manager);
+                responseCallbackManagers.AddCallbackManager(typeof(T), manager);
             }
 
             ((CommandResponseCallbackManager<T>) manager).RegisterCallback(requestId, callback);
         }
 
-        public bool UnregisterCommandRequestCallback(ulong callbackKey)
+        public bool UnregisterCommandRequestCallback<T>(ulong callbackKey)
+            where T : struct, IReceivedCommandRequest
         {
-            if (!keyToInternalKeyAndManager.TryGetValue(callbackKey, out var keyAndManager))
+            if (!requestCallbackManagers.TryGetManager(typeof(T), out var manager))
             {
                 return false;
             }
-
-            return keyAndManager.manager.UnregisterCallback(keyAndManager.key);
+            
+            return manager.UnregisterCallback(callbackKey);
         }
 
         internal void InvokeCallbacks()
         {
-            // todo could split these out to ensure requests are done before responses
-            callbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
+            responseCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
+            requestCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
         }
 
         protected override void OnCreate()
         {
             base.OnCreate();
             Enabled = false;
+
+            commandSystem = World.GetExistingSystem<CommandSystem>();
         }
 
         protected override void OnUpdate()

@@ -7,14 +7,12 @@ namespace Improbable.Gdk.Subscriptions
 {
     public class CommandRequestCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandRequest
     {
-        private readonly IndexedCallbacks<T> callbacks = new IndexedCallbacks<T>();
+        private readonly EntityCallbacks<T> callbacks = new EntityCallbacks<T>();
         private readonly CommandSystem commandSystem;
 
-        private ulong nextCallbackId = 1;
-
-        public CommandRequestCallbackManager(World world)
+        public CommandRequestCallbackManager(CommandSystem commandSystem)
         {
-            commandSystem = world.GetExistingSystem<CommandSystem>();
+            this.commandSystem = commandSystem;
         }
 
         public void InvokeCallbacks()
@@ -23,14 +21,13 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                callbacks.InvokeAll(request.EntityId.Id, request);
+                callbacks.InvokeAll(request.EntityId, request);
             }
         }
 
         public ulong RegisterCallback(EntityId entityId, Action<T> callback)
         {
-            callbacks.Add(entityId.Id, nextCallbackId, callback);
-            return nextCallbackId++;
+            return callbacks.Add(entityId, callback);
         }
 
         public bool UnregisterCallback(ulong callbackKey)
