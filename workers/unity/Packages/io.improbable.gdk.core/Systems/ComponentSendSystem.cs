@@ -7,6 +7,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Jobs.LowLevel.Unsafe;
+using Unity.Profiling;
 using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
@@ -23,6 +24,9 @@ namespace Improbable.Gdk.Core
         private readonly List<ComponentReplicator> componentReplicators = new List<ComponentReplicator>();
         private NativeArray<ArchetypeChunk>[] chunkArrayCache;
         private NativeArray<JobHandle> gatheringJobs;
+
+        private ProfilerMarker gatherChunksMarker = new ProfilerMarker("GatherAllChunks");
+        private ProfilerMarker executeReplication = new ProfilerMarker("ExecuteReplication");
 
         protected override void OnCreate()
         {
@@ -43,28 +47,28 @@ namespace Improbable.Gdk.Core
         {
             var componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            Profiler.BeginSample("GatherChunks");
-            for (var i = 0; i < componentReplicators.Count; i++)
+            using (gatherChunksMarker.Auto())
             {
-                var replicator = componentReplicators[i];
-                chunkArrayCache[i] = replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
-                gatheringJobs[i] = jobHandle;
+                for (var i = 0; i < componentReplicators.Count; i++)
+                {
+                    var replicator = componentReplicators[i];
+                    chunkArrayCache[i] =
+                        replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
+                    gatheringJobs[i] = jobHandle;
+                }
             }
 
-            Profiler.EndSample();
-
             for (var i = 0; i < componentReplicators.Count; i++)
             {
-                Profiler.BeginSample("ExecuteReplication");
+                using (executeReplication.Auto())
+                {
+                    gatheringJobs[i].Complete();
+                    var replicator = componentReplicators[i];
+                    var chunkArray = chunkArrayCache[i];
 
-                gatheringJobs[i].Complete();
-                var replicator = componentReplicators[i];
-                var chunkArray = chunkArrayCache[i];
-
-                replicator.Handler.SendUpdates(chunkArray, this, EntityManager, componentUpdateSystem);
-                chunkArray.Dispose();
-
-                Profiler.EndSample();
+                    replicator.Handler.SendUpdates(chunkArray, this, EntityManager, componentUpdateSystem);
+                    chunkArray.Dispose();
+                }
             }
         }
 

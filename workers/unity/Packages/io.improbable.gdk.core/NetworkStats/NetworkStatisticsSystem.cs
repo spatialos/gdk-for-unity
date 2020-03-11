@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Unity.Entities;
+using Unity.Profiling;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -24,6 +25,7 @@ namespace Improbable.Gdk.Core.NetworkStats
         private readonly NetStats netStats = new NetStats(DefaultBufferSize);
         private readonly NetFrameStats lastIncomingData = new NetFrameStats();
         private readonly NetFrameStats lastOutgoingData = new NetFrameStats();
+        private ProfilerMarker applyDiffMarker = new ProfilerMarker("NetworkStatisticsSystem.ApplyDiff");
 
         private float lastFrameTime;
 
@@ -54,7 +56,10 @@ namespace Improbable.Gdk.Core.NetworkStats
         [Conditional("UNITY_EDITOR")]
         internal void ApplyDiff(ViewDiff diff)
         {
-            lastIncomingData.CopyFrom(diff.GetNetStats());
+            using (applyDiffMarker.Auto())
+            {
+                lastIncomingData.CopyFrom(diff.GetNetStats());
+            }
         }
 
         [Conditional("UNITY_EDITOR")]

@@ -17,10 +17,44 @@ namespace Improbable.TestSchema
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 18800;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
+
+            internal uint aHandle;
+
+            public global::Improbable.TestSchema.TypeA A
+            {
+                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
+                set
+                {
+                    MarkDataDirty(0);
+                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
+                }
+            }
+
+            internal uint bHandle;
+
+            public global::Improbable.TestSchema.TypeB B
+            {
+                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Get(bHandle);
+                set
+                {
+                    MarkDataDirty(1);
+                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Set(bHandle, value);
+                }
+            }
+
+            internal uint cHandle;
+
+            public global::Improbable.TestSchema.TypeC C
+            {
+                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
+                set
+                {
+                    MarkDataDirty(2);
+                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
+                }
+            }
 
             public bool IsDataDirty()
             {
@@ -90,42 +124,6 @@ namespace Improbable.TestSchema
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
-            }
-
-            internal uint aHandle;
-
-            public global::Improbable.TestSchema.TypeA A
-            {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
-                set
-                {
-                    MarkDataDirty(0);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
-                }
-            }
-
-            internal uint bHandle;
-
-            public global::Improbable.TestSchema.TypeB B
-            {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Get(bHandle);
-                set
-                {
-                    MarkDataDirty(1);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Set(bHandle, value);
-                }
-            }
-
-            internal uint cHandle;
-
-            public global::Improbable.TestSchema.TypeC C
-            {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
-                set
-                {
-                    MarkDataDirty(2);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
-                }
             }
         }
 

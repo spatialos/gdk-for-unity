@@ -123,14 +123,14 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Line($"return {toReturn};");
         }
 
-        public void ProfilerStart(string name)
+        public void ProfileScope(string markerVariableName, Action<CustomScopeBlock> populate)
         {
-            Line($"Profiler.BeginSample(\"{name}\");");
+            Add(new CustomScopeBlock($"using ({markerVariableName}.Auto())", populate));
         }
 
-        public void ProfilerEnd()
+        public void ProfileScope(string markerVariableName, Func<IEnumerable<string>> populate)
         {
-            Line("Profiler.EndSample();");
+            Add(new CustomScopeBlock($"using ({markerVariableName}.Auto())", populate));
         }
     }
 }

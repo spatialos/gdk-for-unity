@@ -570,31 +570,66 @@ using (var x = Some.RandomThing())
 }
 ```
 
-## Profiler sampling
+### Profiler sampling scopes
 
-The `ProfilerStart` and `ProfilerEnd` methods are wrappers for adding profile markers to generated code.
+The `ProfileScope` methods allow you to add Unity profiler markers to a block of code.
+
+#### Example: populate custom scope
 
 ```csharp
+
+t.Line("private ProfileMarker marker = new ProfileMarker(\"some name\");");
+
 t.Method("public void ExampleMethod()", m =>
 {
-    m.ProfilerStart("Sample name");
-
-    //define code
-
-    m.ProfilerEnd();
+    m.ProfilerScope("marker", cs => {
+        // define code here
+    })
 });
 ```
 
 Generated code:
 
 ```csharp
+private ProfileMarker marker = new ProfileMarker("some name");
+
 public void ExampleMethod()
 {
-    Profiler.BeginSample("Sample name");
+    using (marker.Auto())
+    {
+        // code here
+    }
+}
+```
 
-    //code
 
-    Profiler.EndSample();
+#### Example: return enumerable
+
+```csharp
+
+t.Line("private ProfileMarker marker = new ProfileMarker(\"some name\");");
+
+t.Method("public void ExampleMethod()", m =>
+{
+    m.ProfilerScope("marker", () => {
+        yield return "// define code here";
+        yield return "// define more code here";
+    });
+});
+```
+
+Generated code:
+
+```csharp
+private ProfileMarker marker = new ProfileMarker("some name");
+
+public void ExampleMethod()
+{
+    using (marker.Auto())
+    {
+        // code here
+        // more code here
+    }
 }
 ```
 

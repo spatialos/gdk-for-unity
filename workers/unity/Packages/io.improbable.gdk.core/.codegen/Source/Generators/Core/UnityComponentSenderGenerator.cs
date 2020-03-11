@@ -17,15 +17,11 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "System",
-                    "System.Collections.Generic",
-                    "UnityEngine",
-                    "UnityEngine.Profiling",
-                    "Unity.Mathematics",
                     "Unity.Entities",
                     "Unity.Collections",
                     "Improbable.Gdk.Core",
-                    "Improbable.Gdk.Core.CodegenAdapters"
+                    "Improbable.Gdk.Core.CodegenAdapters",
+                    "Unity.Profiling"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
@@ -35,6 +31,8 @@ namespace Improbable.Gdk.CodeGenerator
                         partial.Type("internal class ComponentReplicator : IComponentReplicationHandler", replicator =>
                         {
                             replicator.Line($@"
+private ProfilerMarker componentMarker = new ProfilerMarker(""{componentDetails.Name}"");
+
 public uint ComponentId => {componentDetails.ComponentId};
 
 public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
@@ -55,56 +53,57 @@ public void SendUpdates(
     ComponentUpdateSystem componentUpdateSystem)
 ", m =>
                             {
-                                m.ProfilerStart(componentDetails.Name);
-
-                                m.Line(new[]
+                                m.ProfileScope("componentMarker", s =>
                                 {
-                                    "var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);",
-                                    $"var componentType = system.GetArchetypeChunkComponentType<{componentNamespace}.Component>();",
-                                    "var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();"
-                                });
-
-                                m.Loop("foreach (var chunk in chunkArray)", outerLoop =>
-                                {
-                                    outerLoop.Line(new[]
+                                    s.Line(new[]
                                     {
-                                        "var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);",
-                                        "var componentArray = chunk.GetNativeArray(componentType);",
-                                        "var authorityIndex = chunk.GetSharedComponentIndex(authorityType);",
+                                        "var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);",
+                                        $"var componentType = system.GetArchetypeChunkComponentType<{componentNamespace}.Component>();",
+                                        "var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();"
                                     });
 
-                                    outerLoop.If("!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority", () => new[]
+                                    s.Loop("foreach (var chunk in chunkArray)", outerLoop =>
                                     {
-                                        "continue;"
-                                    });
-
-                                    outerLoop.Loop("for (var i = 0; i < componentArray.Length; i++)", innerLoop =>
-                                    {
-                                        innerLoop.Line("var data = componentArray[i];");
-
-                                        innerLoop.If("data.IsDataDirty()", componentDirtyThen =>
+                                        outerLoop.Line(new[]
                                         {
-                                            componentDirtyThen.Line("Update update = new Update();");
-                                            for (var i = 0; i < componentDetails.FieldDetails.Count; i++)
-                                            {
-                                                var fieldDetails = componentDetails.FieldDetails[i];
-                                                componentDirtyThen.If($"data.IsDataDirty({i})", () => new[]
-                                                {
-                                                    $"update.{fieldDetails.PascalCaseName} = data.{fieldDetails.PascalCaseName};"
-                                                });
-                                            }
+                                            "var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);",
+                                            "var componentArray = chunk.GetNativeArray(componentType);",
+                                            "var authorityIndex = chunk.GetSharedComponentIndex(authorityType);",
+                                        });
 
-                                            componentDirtyThen.Line(new[]
+                                        outerLoop.If(
+                                            "!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority",
+                                            () => new[]
                                             {
-                                                "componentUpdateSystem.SendUpdate(in update, entityIdArray[i].EntityId);",
-                                                "data.MarkDataClean();",
-                                                "componentArray[i] = data;"
+                                                "continue;"
+                                            });
+
+                                        outerLoop.Loop("for (var i = 0; i < componentArray.Length; i++)", innerLoop =>
+                                        {
+                                            innerLoop.Line("var data = componentArray[i];");
+
+                                            innerLoop.If("data.IsDataDirty()", componentDirtyThen =>
+                                            {
+                                                componentDirtyThen.Line("var update = new Update();");
+                                                for (var i = 0; i < componentDetails.FieldDetails.Count; i++)
+                                                {
+                                                    var fieldDetails = componentDetails.FieldDetails[i];
+                                                    componentDirtyThen.If($"data.IsDataDirty({i})", () => new[]
+                                                    {
+                                                        $"update.{fieldDetails.PascalCaseName} = data.{fieldDetails.PascalCaseName};"
+                                                    });
+                                                }
+
+                                                componentDirtyThen.Line(new[]
+                                                {
+                                                    "componentUpdateSystem.SendUpdate(in update, entityIdArray[i].EntityId);",
+                                                    "data.MarkDataClean();",
+                                                    "componentArray[i] = data;"
+                                                });
                                             });
                                         });
                                     });
                                 });
-
-                                m.ProfilerEnd();
                             });
                         });
                     });

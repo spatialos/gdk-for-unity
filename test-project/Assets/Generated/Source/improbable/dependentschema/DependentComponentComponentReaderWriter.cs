@@ -20,7 +20,7 @@ namespace Improbable.DependentSchema
 
         protected override DependentComponentReader CreateReader(Entity entity, EntityId entityId)
         {
-            return new DependentComponentReader(world, entity, entityId);
+            return new DependentComponentReader(World, entity, entityId);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Improbable.DependentSchema
 
         protected override DependentComponentWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            return new DependentComponentWriter(world, entity, entityId);
+            return new DependentComponentWriter(World, entity, entityId);
         }
     }
 

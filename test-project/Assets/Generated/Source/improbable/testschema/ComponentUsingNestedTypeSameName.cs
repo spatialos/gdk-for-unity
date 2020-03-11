@@ -17,10 +17,44 @@ namespace Improbable.TestSchema
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 198730;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
+
+            private int nestedField;
+
+            public int NestedField
+            {
+                get => nestedField;
+                set
+                {
+                    MarkDataDirty(0);
+                    this.nestedField = value;
+                }
+            }
+
+            private global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName other0Field;
+
+            public global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName Other0Field
+            {
+                get => other0Field;
+                set
+                {
+                    MarkDataDirty(1);
+                    this.other0Field = value;
+                }
+            }
+
+            private global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName other1Field;
+
+            public global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName Other1Field
+            {
+                get => other1Field;
+                set
+                {
+                    MarkDataDirty(2);
+                    this.other1Field = value;
+                }
+            }
 
             public bool IsDataDirty()
             {
@@ -90,42 +124,6 @@ namespace Improbable.TestSchema
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
-            }
-
-            private int nestedField;
-
-            public int NestedField
-            {
-                get => nestedField;
-                set
-                {
-                    MarkDataDirty(0);
-                    this.nestedField = value;
-                }
-            }
-
-            private global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName other0Field;
-
-            public global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName Other0Field
-            {
-                get => other0Field;
-                set
-                {
-                    MarkDataDirty(1);
-                    this.other0Field = value;
-                }
-            }
-
-            private global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName other1Field;
-
-            public global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName Other1Field
-            {
-                get => other1Field;
-                set
-                {
-                    MarkDataDirty(2);
-                    this.other1Field = value;
-                }
             }
         }
 

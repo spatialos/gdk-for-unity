@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Worker.CInterop;
-using UnityEngine;
+using Unity.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<EntityId> entities = new HashSet<EntityId>();
         private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
+
+        private ProfilerMarker applyDiffMarker = new ProfilerMarker("View.ApplyDiff");
 
         public View()
         {
@@ -127,26 +129,29 @@ namespace Improbable.Gdk.Core
 
         internal void ApplyDiff(ViewDiff diff)
         {
-            var entitiesAdded = diff.GetEntitiesAdded();
-            foreach (var entity in entitiesAdded)
+            using (applyDiffMarker.Auto())
             {
-                entities.Add(entity);
-            }
+                var entitiesAdded = diff.GetEntitiesAdded();
+                foreach (var entity in entitiesAdded)
+                {
+                    entities.Add(entity);
+                }
 
-            var entitiesRemoved = diff.GetEntitiesRemoved();
-            foreach (var entity in entitiesRemoved)
-            {
-                entities.Remove(entity);
-            }
+                var entitiesRemoved = diff.GetEntitiesRemoved();
+                foreach (var entity in entitiesRemoved)
+                {
+                    entities.Remove(entity);
+                }
 
-            foreach (var storage in viewStorages)
-            {
-                storage.ApplyDiff(diff);
-            }
+                foreach (var storage in viewStorages)
+                {
+                    storage.ApplyDiff(diff);
+                }
 
-            foreach (var pair in diff.GetWorkerFlagChanges())
-            {
-                workerFlags[pair.Item1] = pair.Item2;
+                foreach (var pair in diff.GetWorkerFlagChanges())
+                {
+                    workerFlags[pair.Item1] = pair.Item2;
+                }
             }
         }
     }
