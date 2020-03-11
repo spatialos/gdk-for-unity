@@ -115,25 +115,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void Enumerator_returns_single_range()
-        {
-            var collection = new EntityRangeCollection();
-            collection.Add(validRange);
-
-            var idCollection = Enumerable.Range(1, ValidRangeCount).Select(x => (long) x).ToList();
-
-            var check = 0;
-            foreach (var entityId in collection.Take(collection.Count))
-            {
-                Assert.AreEqual(idCollection[check], entityId.Id);
-                check++;
-            }
-
-            Assert.AreEqual(collection.Count, check);
-        }
-
-        [Test]
-        public void Enumerator_returns_multiple_ranges()
+        public void Take_returns_valid_entity_ids()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
