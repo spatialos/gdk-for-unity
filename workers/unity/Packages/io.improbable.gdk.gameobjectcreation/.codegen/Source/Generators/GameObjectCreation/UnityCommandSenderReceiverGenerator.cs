@@ -18,6 +18,7 @@ namespace Improbable.Gdk.CodeGenerator
                 cgw.UsingDirectives(
                     "System",
                     "System.Collections.Generic",
+                    "System.Threading.Tasks",
                     "Unity.Entities",
                     "Improbable.Gdk.Core",
                     "Improbable.Gdk.Subscriptions",
@@ -113,29 +114,30 @@ internal {commandSenderType}(Entity entity, World world)
                     var commandRequest = $"{componentDetails.Name}.{commandDetails.PascalCaseName}.Request";
 
                     c.Line($@"
-public void Send{commandDetails.PascalCaseName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
+public Task<{receivedCommandResponseType}> Send{commandDetails.PascalCaseName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request)
 {{
     var commandRequest = new {commandRequest}(targetEntityId, request);
-    Send{commandDetails.PascalCaseName}Command(commandRequest, callback);
+    return Send{commandDetails.PascalCaseName}Command(commandRequest);
 }}
 
-public void Send{commandDetails.PascalCaseName}Command({fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Request request, Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> callback = null)
+public Task<{receivedCommandResponseType}> Send{commandDetails.PascalCaseName}Command({fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Request request)
 {{
-    int validCallbackEpoch = callbackEpoch;
+    var validCallbackEpoch = callbackEpoch;
     var requestId = commandSender.SendCommand(request, entity);
-    if (callback != null)
-    {{
-        Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> wrappedCallback = response =>
-        {{
-            if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
-            {{
-                return;
-            }}
+    var tcs = new TaskCompletionSource<{receivedCommandResponseType}>();
 
-            callback(response);
-        }};
-        callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
-    }}
+    callbackSystem.RegisterCommandResponseCallback<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse>(requestId, response =>
+    {{
+        if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
+        {{
+            tcs.SetCanceled();
+            return;
+        }}
+
+        tcs.TrySetResult(response);
+    }});
+    
+    return tcs.Task;
 }}
 ");
                 }

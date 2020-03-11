@@ -20,16 +20,47 @@ namespace Playground.MonoBehaviours
         [Require] private ILogDispatcher logDispatcher;
 #pragma warning restore 649
 
-        private void OnSpawnCubeResponse(CubeSpawner.SpawnCube.ReceivedResponse response)
+        private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SendSpawnCubeCommand();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                SendDeleteCubeCommand();
+            }
+        }
+
+        private async void SendSpawnCubeCommand()
+        {
+            var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
+            var response = await cubeSpawnerCommandSender.SendSpawnCubeCommand(request);
+            
             if (response.StatusCode != StatusCode.Success)
             {
                 logDispatcher.HandleLog(LogType.Error, new LogEvent($"Spawn error: {response.Message}"));
             }
         }
 
-        private void OnDeleteSpawnedCubeResponse(CubeSpawner.DeleteSpawnedCube.ReceivedResponse response)
+        private async void SendDeleteCubeCommand()
         {
+            var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
+
+            if (spawnedCubes.Count == 0)
+            {
+                logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
+                return;
+            }
+
+            var request = new CubeSpawner.DeleteSpawnedCube.Request(entityId, new DeleteCubeRequest
+            {
+                CubeEntityId = spawnedCubes[0]
+            });
+
+            var response = await cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request);
+
             switch (response.StatusCode)
             {
                 case StatusCode.Success:
@@ -48,42 +79,6 @@ namespace Playground.MonoBehaviours
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SendSpawnCubeCommand();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                SendDeleteCubeCommand();
-            }
-        }
-
-        private void SendSpawnCubeCommand()
-        {
-            var request = new CubeSpawner.SpawnCube.Request(entityId, new Empty());
-            cubeSpawnerCommandSender.SendSpawnCubeCommand(request, OnSpawnCubeResponse);
-        }
-
-        private void SendDeleteCubeCommand()
-        {
-            var spawnedCubes = cubeSpawnerReader.Data.SpawnedCubes;
-
-            if (spawnedCubes.Count == 0)
-            {
-                logDispatcher.HandleLog(LogType.Log, new LogEvent("No cubes left to delete."));
-                return;
-            }
-
-            var request = new CubeSpawner.DeleteSpawnedCube.Request(entityId, new DeleteCubeRequest
-            {
-                CubeEntityId = spawnedCubes[0]
-            });
-            cubeSpawnerCommandSender.SendDeleteSpawnedCubeCommand(request, OnDeleteSpawnedCubeResponse);
         }
     }
 }
