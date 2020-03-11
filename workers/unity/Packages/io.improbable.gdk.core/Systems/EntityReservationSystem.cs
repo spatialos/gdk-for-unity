@@ -8,6 +8,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    [DisableAutoCreation]
     public class EntityReservationSystem : ComponentSystem
     {
         public uint TargetEntityIdCount = 100;
