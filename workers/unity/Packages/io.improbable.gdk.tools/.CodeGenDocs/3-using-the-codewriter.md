@@ -597,7 +597,7 @@ public void ExampleMethod()
 {
     using (marker.Auto())
     {
-        // define code here
+        // code here
     }
 }
 ```
@@ -612,8 +612,8 @@ t.Line("private ProfileMarker marker = new ProfileMarker(\"some name\");");
 t.Method("public void ExampleMethod()", m =>
 {
     m.ProfilerScope("marker", () => {
-        yield return "//code goes here";
-        yield return "//more code";
+        yield return "// define code here";
+        yield return "// define more code here";
     });
 });
 ```
@@ -627,8 +627,8 @@ public void ExampleMethod()
 {
     using (marker.Auto())
     {
-        // code goes here
-        // more code
+        // code here
+        // more code here
     }
 }
 ```
