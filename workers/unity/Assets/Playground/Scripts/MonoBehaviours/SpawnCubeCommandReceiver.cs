@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
@@ -30,29 +31,18 @@ namespace Playground.MonoBehaviours
             offset = world.GetExistingSystem<WorkerSystem>().Origin;
         }
 
-        private void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestReceived)
+        private async void OnSpawnCubeRequest(CubeSpawner.SpawnCube.ReceivedRequest requestReceived)
         {
             cubeSpawnerCommandRequestHandler.SendSpawnCubeResponse(
                 new CubeSpawner.SpawnCube.Response(requestReceived.RequestId, new Empty()));
 
-            var request = new WorldCommands.ReserveEntityIds.Request
-            {
-                NumberOfEntityIds = 1,
-                Context = this,
-            };
-            worldCommandRequestSender.SendReserveEntityIdsCommand(request, OnEntityIdsReserved);
+            var entityReservationSystem = world.GetExistingSystem<EntityReservationSystem>();
+            var entityIds = await entityReservationSystem.Take(1);
+            SpawnCube(entityIds[0]);
         }
 
-        private void OnEntityIdsReserved(WorldCommands.ReserveEntityIds.ReceivedResponse response)
+        private void SpawnCube(EntityId entityId)
         {
-            if (response.StatusCode != StatusCode.Success)
-            {
-                logDispatcher.HandleLog(LogType.Error,
-                    new LogEvent("ReserveEntityIds failed.").WithField("Reason", response.Message));
-
-                return;
-            }
-
             var location = gameObject.transform.position - offset;
             location.y += 2;
 
@@ -61,10 +51,8 @@ namespace Playground.MonoBehaviours
             cubeEntityTemplate.SetComponent(new Position.Snapshot(location.ToCoordinates()));
             cubeEntityTemplate.SetComponent(TransformUtils.CreateTransformSnapshot(location, Quaternion.identity));
 
-            var expectedEntityId = response.FirstEntityId.Value;
-
             worldCommandRequestSender.SendCreateEntityCommand(
-                new WorldCommands.CreateEntity.Request(cubeEntityTemplate, expectedEntityId), OnEntityCreated);
+                new WorldCommands.CreateEntity.Request(cubeEntityTemplate, entityId), OnEntityCreated);
         }
 
         private void OnEntityCreated(WorldCommands.CreateEntity.ReceivedResponse response)

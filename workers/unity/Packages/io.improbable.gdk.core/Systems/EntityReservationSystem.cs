@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public class EntityReservationSystem : ComponentSystem
     {
-        public uint TargetEntityIdCount = 100;
+        public uint TargetEntityIdCount = 0;
         public uint MinimumReservationCount = 10;
 
         // Actual entities left on stack
@@ -50,7 +51,9 @@ namespace Improbable.Gdk.Core
                 requestCount = Math.Max(requestCount, MinimumReservationCount);
                 inFlightCount += requestCount;
                 var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request((uint) requestCount);
-                commandSystem.SendCommand(reserveEntityIdsRequest);
+                var requestId = commandSystem.SendCommand(reserveEntityIdsRequest);
+                requestIds.Add(requestId);
+                Debug.Log($"Requesting {requestCount} Entity IDs");
             }
         }
 
@@ -70,6 +73,7 @@ namespace Improbable.Gdk.Core
                     //Add range to queue
                     var range = new EntityRangeCollection.EntityIdRange(request.FirstEntityId.Value, (uint) request.NumberOfEntityIds);
                     entityIdQueue.Add(range);
+                    Debug.Log($"Now have {entityIdQueue.Count} Entity IDs");
                 }
 
                 inFlightCount -= request.RequestPayload.NumberOfEntityIds;
@@ -81,28 +85,23 @@ namespace Improbable.Gdk.Core
 
         private void ResolveQueuedRequests()
         {
-            // Remove canceled reservations from the queue
             while (queuedReservations.Count > 0)
             {
                 var (taskCompletionSource, count) = queuedReservations.Peek();
-                if (!taskCompletionSource.Task.IsCanceled)
+                if (taskCompletionSource.Task.IsCanceled)
                 {
+                    // Remove canceled tasks
+                    queuedReservationCount -= count;
+                    queuedReservations.Dequeue();
+                }
+                else if (entityIdQueue.Count < count)
+                {
+                    // Early out if we don't have enough id's yet
                     break;
                 }
 
                 queuedReservationCount -= count;
                 queuedReservations.Dequeue();
-            }
-
-            // Loop over queued request, check if we have enough, and call them
-            foreach (var (taskCompletionSource, count) in queuedReservations)
-            {
-                if (entityIdQueue.Count < count)
-                {
-                    break;
-                }
-
-                queuedReservationCount -= count;
                 taskCompletionSource.SetResult(entityIdQueue.Take(count));
             }
         }
@@ -123,10 +122,12 @@ namespace Improbable.Gdk.Core
         {
             if (entityIdQueue.Count >= count)
             {
+                Debug.Log($"Taking {count} Entity ID");
                 return Task.FromResult(entityIdQueue.Take(count));
             }
             else
             {
+                Debug.Log($"Queueing {count} Entity IDs");
                 queuedReservationCount += count;
 
                 var tcs = new TaskCompletionSource<EntityId[]>();
