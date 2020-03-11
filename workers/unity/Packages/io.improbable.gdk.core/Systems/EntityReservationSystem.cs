@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
     public class EntityReservationSystem : ComponentSystem
     {
-        public uint TargetEntityIdCount = 0;
+        public uint TargetEntityIdCount = 100;
         public uint MinimumReservationCount = 10;
 
         // Actual entities left on stack
@@ -50,10 +49,10 @@ namespace Improbable.Gdk.Core
             {
                 requestCount = Math.Max(requestCount, MinimumReservationCount);
                 inFlightCount += requestCount;
+
                 var reserveEntityIdsRequest = new WorldCommands.ReserveEntityIds.Request((uint) requestCount);
                 var requestId = commandSystem.SendCommand(reserveEntityIdsRequest);
                 requestIds.Add(requestId);
-                Debug.Log($"Requesting {requestCount} Entity IDs");
             }
         }
 
@@ -73,7 +72,6 @@ namespace Improbable.Gdk.Core
                     //Add range to queue
                     var range = new EntityRangeCollection.EntityIdRange(request.FirstEntityId.Value, (uint) request.NumberOfEntityIds);
                     entityIdQueue.Add(range);
-                    Debug.Log($"Now have {entityIdQueue.Count} Entity IDs");
                 }
 
                 inFlightCount -= request.RequestPayload.NumberOfEntityIds;
@@ -122,12 +120,10 @@ namespace Improbable.Gdk.Core
         {
             if (entityIdQueue.Count >= count)
             {
-                Debug.Log($"Taking {count} Entity ID");
                 return Task.FromResult(entityIdQueue.Take(count));
             }
             else
             {
-                Debug.Log($"Queueing {count} Entity IDs");
                 queuedReservationCount += count;
 
                 var tcs = new TaskCompletionSource<EntityId[]>();
