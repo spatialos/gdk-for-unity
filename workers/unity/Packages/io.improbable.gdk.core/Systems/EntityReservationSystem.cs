@@ -106,7 +106,7 @@ namespace Improbable.Gdk.Core
                         queuedReservation.SingleTcs.TrySetResult(entityIdQueue.Dequeue());
                         break;
                     case QueuedReservationType.Multi:
-                        queuedReservation.MultiTcs.SetResult(entityIdQueue.Take(queuedReservation.Count));
+                        queuedReservation.MultiTcs.TrySetResult(entityIdQueue.Take(queuedReservation.Count));
                         break;
                 }
             }
