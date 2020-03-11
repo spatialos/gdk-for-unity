@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Improbable.Gdk.Core
 {
@@ -31,6 +33,13 @@ namespace Improbable.Gdk.Core
             {
                 arguments = ParseCommandLineArgs(args)
             };
+        }
+
+        public string Dump()
+        {
+            return arguments
+                .Aggregate(new StringBuilder(), (builder, pair) => builder.AppendLine($"{pair.Key}={pair.Value}"))
+                .ToString();
         }
 
         public bool Contains(string key)
