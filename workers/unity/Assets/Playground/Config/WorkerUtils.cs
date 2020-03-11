@@ -36,6 +36,7 @@ namespace Playground
             PlayerLifecycleHelper.AddServerSystems(world);
             GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
 
+            world.GetOrCreateSystem<EntityReservationSystem>();
             world.GetOrCreateSystem<TriggerColorChangeSystem>();
             world.GetOrCreateSystem<ProcessLaunchCommandSystem>();
             world.GetOrCreateSystem<ProcessRechargeSystem>();

@@ -19,6 +19,9 @@
     - This version (or your override) will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
     - The currently selected version will be displayed in the Deployment Launcher. [#1302](https://github.com/spatialos/gdk-for-unity/pull/1302)
 - Added a `Dump()` method to `CommandLineArgs` to format all the parsed command line arguments into a string. This can aid you in debugging issues relating to command line args. [#1312](https://github.com/spatialos/gdk-for-unity/pull/1312)
+- Added the `EntityReservationSystem` which automatically keeps a pool of reserved entity IDs. [#1314](https://github.com/spatialos/gdk-for-unity/pull/1314)
+    - The system's `TakeAsync(count)` and `GetAsync()` API can be used to obtain entity IDs for spawning, without needing callbacks.
+    - There is also a non-async `TryTake(count, out EntityId[])` and `TryGet(out EntityId)` version which allows for reservations to fail.
 
 ### Changed
 
