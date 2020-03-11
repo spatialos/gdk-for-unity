@@ -8,12 +8,12 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
     public class EntityRangeCollectionTests
     {
         private const int ValidRangeCount = 10;
-        private EntityRangeCollection.EntityIdRange validRange = new EntityRangeCollection.EntityIdRange(new EntityId(1), ValidRangeCount);
-        private EntityRangeCollection.EntityIdRange invalidRange = new EntityRangeCollection.EntityIdRange(new EntityId(0), 1);
-        private EntityRangeCollection.EntityIdRange emptyRange = new EntityRangeCollection.EntityIdRange(new EntityId(1), 0);
+        private readonly EntityRangeCollection.EntityIdRange validRange = new EntityRangeCollection.EntityIdRange(new EntityId(1), ValidRangeCount);
+        private readonly EntityRangeCollection.EntityIdRange invalidRange = new EntityRangeCollection.EntityIdRange(new EntityId(0), 1);
+        private readonly EntityRangeCollection.EntityIdRange emptyRange = new EntityRangeCollection.EntityIdRange(new EntityId(1), 0);
 
         [Test]
-        public void EntityRangeCollection_add_single_valid_range()
+        public void Add_single_valid_range()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -22,7 +22,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_add_multiple_valid_range()
+        public void Add_multiple_valid_range()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -33,21 +33,21 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_add_invalid_range_throws()
+        public void Add_invalid_range_throws()
         {
             var collection = new EntityRangeCollection();
             Assert.Throws<ArgumentException>(() => collection.Add(invalidRange));
         }
 
         [Test]
-        public void EntityRangeCollection_add_empty_range_throws()
+        public void Add_empty_range_throws()
         {
             var collection = new EntityRangeCollection();
             Assert.Throws<ArgumentOutOfRangeException>(() => collection.Add(emptyRange));
         }
 
         [Test]
-        public void EntityRangeCollection_dequeue_valid()
+        public void Dequeue_when_not_empty()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -58,14 +58,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_dequeue_empty_throws()
+        public void Dequeue_when_empty_throws()
         {
             var collection = new EntityRangeCollection();
             Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
         }
 
         [Test]
-        public void EntityRangeCollection_taking_whole_range()
+        public void Take_single_range()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -75,7 +75,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_taking_split_range()
+        public void Take_partial_range()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_taking_multiple()
+        public void Take_multiple_ranges()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -96,7 +96,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_taking_too_much_throws()
+        public void Take_too_much_throws()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -104,16 +104,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_clear_resets_collection()
+        public void Clear_resets_collection()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
             collection.Clear();
             Assert.AreEqual(0, collection.Count);
+            Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
+            Assert.Throws<ArgumentOutOfRangeException>(() => collection.Take(1));
         }
 
         [Test]
-        public void EntityRangeCollection_enumerator_single_range()
+        public void Enumerator_returns_single_range()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
@@ -131,7 +133,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
-        public void EntityRangeCollection_enumerator_multiple_range()
+        public void Enumerator_returns_multiple_ranges()
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
