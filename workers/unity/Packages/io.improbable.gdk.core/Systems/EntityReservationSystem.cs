@@ -196,7 +196,7 @@ namespace Improbable.Gdk.Core
 
             public QueuedReservation(TaskCompletionSource<EntityId> taskCompletionSource)
             {
-                MultiTcs = default;
+                MultiTcs = null;
                 SingleTcs = taskCompletionSource;
                 Count = 1;
                 Type = QueuedReservationType.Single;
