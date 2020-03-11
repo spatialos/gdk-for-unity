@@ -27,7 +27,7 @@ namespace Improbable.Gdk.Core
         {
             if (count > Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(count), count, "Collection does not have enough ids stored");
+                throw new ArgumentOutOfRangeException(nameof(count), count, "Collection does not have enough stored IDs.");
             }
 
             var collection = new EntityId[count];
