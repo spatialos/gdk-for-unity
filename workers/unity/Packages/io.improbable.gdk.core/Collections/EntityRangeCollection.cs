@@ -23,20 +23,21 @@ namespace Improbable.Gdk.Core
             return splitRange.FirstEntityId;
         }
 
-        public EntityId[] Take(uint count)
+        public EntityId[] Take(uint requestedCount)
         {
-            if (count > Count)
+            if (requestedCount > Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(count), count, "Collection does not have enough stored IDs.");
+                throw new ArgumentOutOfRangeException(nameof(requestedCount), requestedCount, "Collection does not have enough stored IDs.");
             }
 
-            var collection = new EntityId[count];
+            var collection = new EntityId[requestedCount];
             uint index = 0;
-            while (count > 0)
+            var remainingCount = requestedCount;
+            while (remainingCount > 0)
             {
-                if (firstElement.Count <= count)
+                if (firstElement.Count <= remainingCount)
                 {
-                    count -= firstElement.Count;
+                    remainingCount -= firstElement.Count;
                     firstElement.CopyTo(collection, index);
                     index += firstElement.Count;
                     firstElement = queue.Count > 0
@@ -45,14 +46,14 @@ namespace Improbable.Gdk.Core
                 }
                 else
                 {
-                    var (splitRange, remainder) = firstElement.Split(count);
+                    var (splitRange, remainder) = firstElement.Split(remainingCount);
                     firstElement = remainder;
                     splitRange.CopyTo(collection, index);
                     break;
                 }
             }
 
-            Count -= count;
+            Count -= requestedCount;
 
             return collection;
         }

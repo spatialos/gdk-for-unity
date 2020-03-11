@@ -36,14 +36,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         public void Add_invalid_range_throws()
         {
             var collection = new EntityRangeCollection();
+
             Assert.Throws<ArgumentException>(() => collection.Add(invalidRange));
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
         public void Add_empty_range_throws()
         {
             var collection = new EntityRangeCollection();
+
             Assert.Throws<ArgumentOutOfRangeException>(() => collection.Add(emptyRange));
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
@@ -61,7 +65,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         public void Dequeue_when_empty_throws()
         {
             var collection = new EntityRangeCollection();
+
             Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
@@ -72,6 +78,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             var result = collection.Take(ValidRangeCount);
 
             Assert.AreEqual(ValidRangeCount, result.Length);
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
@@ -82,6 +89,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             var result = collection.Take(validRange.Count / 2);
 
             Assert.AreEqual(ValidRangeCount / 2, result.Length);
+            Assert.AreEqual(ValidRangeCount / 2, collection.Count);
         }
 
         [Test]
@@ -93,6 +101,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
 
             collection.Take(ValidRangeCount / 2);
             collection.Take(ValidRangeCount + ValidRangeCount / 2);
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
@@ -100,7 +109,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         {
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
+
             Assert.Throws<ArgumentOutOfRangeException>(() => collection.Take(ValidRangeCount * 2));
+            Assert.AreEqual(ValidRangeCount, collection.Count);
         }
 
         [Test]
@@ -109,9 +120,10 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             var collection = new EntityRangeCollection();
             collection.Add(validRange);
             collection.Clear();
-            Assert.AreEqual(0, collection.Count);
+
             Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
             Assert.Throws<ArgumentOutOfRangeException>(() => collection.Take(1));
+            Assert.AreEqual(0, collection.Count);
         }
 
         [Test]
@@ -130,7 +142,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
                 check++;
             }
 
-            Assert.AreEqual(collection.Count, check);
+            Assert.AreEqual(ValidRangeCount * 2, check);
+            Assert.AreEqual(0, collection.Count);
         }
     }
 }
