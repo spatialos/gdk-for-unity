@@ -19,8 +19,7 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<long> requestIds = new HashSet<long>();
 
-        private readonly Queue<(TaskCompletionSource<EntityId[]> taskCompletionSource, uint count)> queuedReservations =
-            new Queue<(TaskCompletionSource<EntityId[]> taskCompletionSource, uint count)>();
+        private readonly Queue<QueuedReservation> queuedReservations = new Queue<QueuedReservation>();
 
         private readonly EntityRangeCollection entityIdQueue = new EntityRangeCollection();
         private CommandSystem commandSystem;
@@ -85,28 +84,37 @@ namespace Improbable.Gdk.Core
         {
             while (queuedReservations.Count > 0)
             {
-                var (taskCompletionSource, count) = queuedReservations.Peek();
-                if (taskCompletionSource.Task.IsCanceled)
+                var queuedReservation = queuedReservations.Peek();
+                if (queuedReservation.IsCanceled())
                 {
                     // Remove canceled tasks
-                    queuedReservationCount -= count;
+                    queuedReservationCount -= queuedReservation.Count;
                     queuedReservations.Dequeue();
                 }
-                else if (entityIdQueue.Count < count)
+                else if (entityIdQueue.Count < queuedReservation.Count)
                 {
                     // Early out if we don't have enough id's yet
                     break;
                 }
 
-                queuedReservationCount -= count;
+                queuedReservationCount -= queuedReservation.Count;
                 queuedReservations.Dequeue();
-                taskCompletionSource.SetResult(entityIdQueue.Take(count));
+
+                switch (queuedReservation.Type)
+                {
+                    case QueuedReservationType.Single:
+                        queuedReservation.SingleTcs.TrySetResult(entityIdQueue.Dequeue());
+                        break;
+                    case QueuedReservationType.Multi:
+                        queuedReservation.MultiTcs.SetResult(entityIdQueue.Take(queuedReservation.Count));
+                        break;
+                }
             }
         }
 
         public bool TryGet(out EntityId entityId)
         {
-            if (entityIdQueue.Count > 0)
+            if (entityIdQueue.Count >= 1)
             {
                 entityId = entityIdQueue.Dequeue();
                 return true;
@@ -116,7 +124,19 @@ namespace Improbable.Gdk.Core
             return false;
         }
 
-        public Task<EntityId[]> Take(uint count, CancellationToken cancellationToken = default)
+        public bool TryTake(uint count, out EntityId[] entityIds)
+        {
+            if (entityIdQueue.Count >= count)
+            {
+                entityIds = entityIdQueue.Take(count);
+                return true;
+            }
+
+            entityIds = default;
+            return false;
+        }
+
+        public Task<EntityId[]> TakeAsync(uint count, CancellationToken cancellationToken = default)
         {
             if (entityIdQueue.Count >= count)
             {
@@ -132,9 +152,73 @@ namespace Improbable.Gdk.Core
                     ((TaskCompletionSource<EntityId[]>) source).TrySetCanceled();
                 }, tcs);
 
-                queuedReservations.Enqueue((tcs, count));
+                queuedReservations.Enqueue(new QueuedReservation(tcs, count));
                 return tcs.Task;
             }
+        }
+
+        public Task<EntityId> GetAsync(CancellationToken cancellationToken = default)
+        {
+            if (entityIdQueue.Count >= 1)
+            {
+                return Task.FromResult(entityIdQueue.Dequeue());
+            }
+            else
+            {
+                queuedReservationCount += 1;
+
+                var tcs = new TaskCompletionSource<EntityId>();
+                cancellationToken.Register((source) =>
+                {
+                    ((TaskCompletionSource<EntityId>) source).TrySetCanceled();
+                }, tcs);
+
+                queuedReservations.Enqueue(new QueuedReservation(tcs));
+                return tcs.Task;
+            }
+        }
+
+        private readonly struct QueuedReservation
+        {
+            public readonly QueuedReservationType Type;
+            public readonly TaskCompletionSource<EntityId> SingleTcs;
+            public readonly TaskCompletionSource<EntityId[]> MultiTcs;
+            public readonly uint Count;
+
+            public QueuedReservation(TaskCompletionSource<EntityId[]> taskCompletionSource, uint count)
+            {
+                MultiTcs = taskCompletionSource;
+                SingleTcs = null;
+                Count = count;
+                Type = QueuedReservationType.Multi;
+            }
+
+            public QueuedReservation(TaskCompletionSource<EntityId> taskCompletionSource)
+            {
+                MultiTcs = default;
+                SingleTcs = taskCompletionSource;
+                Count = 1;
+                Type = QueuedReservationType.Single;
+            }
+
+            public bool IsCanceled()
+            {
+                switch (Type)
+                {
+                    case QueuedReservationType.Single:
+                        return SingleTcs.Task.IsCanceled;
+                    case QueuedReservationType.Multi:
+                        return MultiTcs.Task.IsCanceled;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private enum QueuedReservationType
+        {
+            Single,
+            Multi
         }
     }
 }

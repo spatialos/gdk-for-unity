@@ -37,8 +37,8 @@ namespace Playground.MonoBehaviours
                 new CubeSpawner.SpawnCube.Response(requestReceived.RequestId, new Empty()));
 
             var entityReservationSystem = world.GetExistingSystem<EntityReservationSystem>();
-            var entityIds = await entityReservationSystem.Take(1);
-            SpawnCube(entityIds[0]);
+            var entityId = await entityReservationSystem.GetAsync();
+            SpawnCube(entityId);
         }
 
         private void SpawnCube(EntityId entityId)
