@@ -20,7 +20,7 @@ namespace Improbable.TestSchema
 
         protected override ComponentUsingNestedTypeSameNameReader CreateReader(Entity entity, EntityId entityId)
         {
-            return new ComponentUsingNestedTypeSameNameReader(world, entity, entityId);
+            return new ComponentUsingNestedTypeSameNameReader(World, entity, entityId);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Improbable.TestSchema
 
         protected override ComponentUsingNestedTypeSameNameWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            return new ComponentUsingNestedTypeSameNameWriter(world, entity, entityId);
+            return new ComponentUsingNestedTypeSameNameWriter(World, entity, entityId);
         }
     }
 

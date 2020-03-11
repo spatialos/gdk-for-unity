@@ -20,7 +20,7 @@ namespace Improbable.TestSchema
 
         protected override ExhaustiveRepeatedReader CreateReader(Entity entity, EntityId entityId)
         {
-            return new ExhaustiveRepeatedReader(world, entity, entityId);
+            return new ExhaustiveRepeatedReader(World, entity, entityId);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Improbable.TestSchema
 
         protected override ExhaustiveRepeatedWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            return new ExhaustiveRepeatedWriter(world, entity, entityId);
+            return new ExhaustiveRepeatedWriter(World, entity, entityId);
         }
     }
 

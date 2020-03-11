@@ -35,7 +35,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            Profiler.BeginSample("RemoveRemoveAtEndOfTick");
             foreach (var (componentGroup, componentType) in componentGroupsToRemove)
             {
                 if (componentGroup.IsEmptyIgnoreFilter)
@@ -51,8 +50,6 @@ namespace Improbable.Gdk.Core
                     }
                 }
             }
-
-            Profiler.EndSample();
         }
     }
 }

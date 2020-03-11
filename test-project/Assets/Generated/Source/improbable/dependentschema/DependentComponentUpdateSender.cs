@@ -2,15 +2,11 @@
 // DO NOT EDIT - this file is automatically regenerated.
 // =====================================================
 
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Profiling;
-using Unity.Mathematics;
 using Unity.Entities;
 using Unity.Collections;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.CodegenAdapters;
+using Unity.Profiling;
 
 namespace Improbable.DependentSchema
 {
@@ -18,6 +14,8 @@ namespace Improbable.DependentSchema
     {
         internal class ComponentReplicator : IComponentReplicationHandler
         {
+            private ProfilerMarker componentMarker = new ProfilerMarker("DependentComponent");
+
             public uint ComponentId => 198800;
 
             public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
@@ -36,64 +34,63 @@ namespace Improbable.DependentSchema
                 EntityManager entityManager,
                 ComponentUpdateSystem componentUpdateSystem)
             {
-                Profiler.BeginSample("DependentComponent");
-
-                var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
-                var componentType = system.GetArchetypeChunkComponentType<global::Improbable.DependentSchema.DependentComponent.Component>();
-                var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
-
-                foreach (var chunk in chunkArray)
+                using (componentMarker.Auto())
                 {
-                    var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
-                    var componentArray = chunk.GetNativeArray(componentType);
-                    var authorityIndex = chunk.GetSharedComponentIndex(authorityType);
+                    var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                    var componentType = system.GetArchetypeChunkComponentType<global::Improbable.DependentSchema.DependentComponent.Component>();
+                    var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 
-                    if (!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority)
+                    foreach (var chunk in chunkArray)
                     {
-                        continue;
-                    }
+                        var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
+                        var componentArray = chunk.GetNativeArray(componentType);
+                        var authorityIndex = chunk.GetSharedComponentIndex(authorityType);
 
-                    for (var i = 0; i < componentArray.Length; i++)
-                    {
-                        var data = componentArray[i];
-
-                        if (data.IsDataDirty())
+                        if (!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority)
                         {
-                            Update update = new Update();
+                            continue;
+                        }
 
-                            if (data.IsDataDirty(0))
+                        for (var i = 0; i < componentArray.Length; i++)
+                        {
+                            var data = componentArray[i];
+
+                            if (data.IsDataDirty())
                             {
-                                update.A = data.A;
-                            }
+                                var update = new Update();
 
-                            if (data.IsDataDirty(1))
-                            {
-                                update.B = data.B;
-                            }
+                                if (data.IsDataDirty(0))
+                                {
+                                    update.A = data.A;
+                                }
 
-                            if (data.IsDataDirty(2))
-                            {
-                                update.C = data.C;
-                            }
+                                if (data.IsDataDirty(1))
+                                {
+                                    update.B = data.B;
+                                }
 
-                            if (data.IsDataDirty(3))
-                            {
-                                update.D = data.D;
-                            }
+                                if (data.IsDataDirty(2))
+                                {
+                                    update.C = data.C;
+                                }
 
-                            if (data.IsDataDirty(4))
-                            {
-                                update.E = data.E;
-                            }
+                                if (data.IsDataDirty(3))
+                                {
+                                    update.D = data.D;
+                                }
 
-                            componentUpdateSystem.SendUpdate(in update, entityIdArray[i].EntityId);
-                            data.MarkDataClean();
-                            componentArray[i] = data;
+                                if (data.IsDataDirty(4))
+                                {
+                                    update.E = data.E;
+                                }
+
+                                componentUpdateSystem.SendUpdate(in update, entityIdArray[i].EntityId);
+                                data.MarkDataClean();
+                                componentArray[i] = data;
+                            }
                         }
                     }
                 }
-
-                Profiler.EndSample();
             }
         }
     }

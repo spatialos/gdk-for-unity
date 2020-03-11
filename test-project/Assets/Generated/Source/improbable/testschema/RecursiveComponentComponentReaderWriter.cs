@@ -20,7 +20,7 @@ namespace Improbable.TestSchema
 
         protected override RecursiveComponentReader CreateReader(Entity entity, EntityId entityId)
         {
-            return new RecursiveComponentReader(world, entity, entityId);
+            return new RecursiveComponentReader(World, entity, entityId);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Improbable.TestSchema
 
         protected override RecursiveComponentWriter CreateWriter(Entity entity, EntityId entityId)
         {
-            return new RecursiveComponentWriter(world, entity, entityId);
+            return new RecursiveComponentWriter(World, entity, entityId);
         }
     }
 

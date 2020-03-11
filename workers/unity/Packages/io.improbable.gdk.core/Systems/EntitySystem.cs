@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -11,6 +12,8 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
         private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
+
+        private ProfilerMarker applyDiffMarker = new ProfilerMarker("EntitySystem.ApplyDiff");
 
         private WorkerSystem workerSystem;
 
@@ -31,18 +34,21 @@ namespace Improbable.Gdk.Core
 
         internal void ApplyDiff(ViewDiff diff)
         {
-            entitiesAdded.Clear();
-            entitiesRemoved.Clear();
-
-            // todo decide on a container and remove this
-            foreach (var entityId in diff.GetEntitiesAdded())
+            using (applyDiffMarker.Auto())
             {
-                entitiesAdded.Add(entityId);
-            }
+                entitiesAdded.Clear();
+                entitiesRemoved.Clear();
 
-            foreach (var entityId in diff.GetEntitiesRemoved())
-            {
-                entitiesRemoved.Add(entityId);
+                // todo decide on a container and remove this
+                foreach (var entityId in diff.GetEntitiesAdded())
+                {
+                    entitiesAdded.Add(entityId);
+                }
+
+                foreach (var entityId in diff.GetEntitiesRemoved())
+                {
+                    entitiesRemoved.Add(entityId);
+                }
             }
         }
 

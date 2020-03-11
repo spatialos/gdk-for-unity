@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
-using UnityEngine.Profiling;
+using Unity.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -17,6 +17,10 @@ namespace Improbable.Gdk.Core
 
         private WorkerSystem worker;
 
+        private ProfilerMarker applyDiffMarker = new ProfilerMarker("EcsViewSystem.ApplyDiff");
+        private ProfilerMarker addEntityMarker = new ProfilerMarker("EcsViewSystem.OnAddEntity");
+        private ProfilerMarker removeEntityMarker = new ProfilerMarker("EcsViewSystem.OnRemoveEntity");
+
         internal ComponentType[] GetInitialComponentsToAdd(uint componentId)
         {
             if (!componentIdToManager.TryGetValue(componentId, out var manager))
@@ -29,25 +33,28 @@ namespace Improbable.Gdk.Core
 
         internal void ApplyDiff(ViewDiff diff)
         {
-            if (diff.Disconnected)
+            using (applyDiffMarker.Auto())
             {
-                OnDisconnect(diff.DisconnectMessage);
-                return;
-            }
+                if (diff.Disconnected)
+                {
+                    OnDisconnect(diff.DisconnectMessage);
+                    return;
+                }
 
-            foreach (var entityId in diff.GetEntitiesAdded())
-            {
-                AddEntity(entityId);
-            }
+                foreach (var entityId in diff.GetEntitiesAdded())
+                {
+                    AddEntity(entityId);
+                }
 
-            foreach (var manager in managers)
-            {
-                manager.ApplyDiff(diff);
-            }
+                foreach (var manager in managers)
+                {
+                    manager.ApplyDiff(diff);
+                }
 
-            foreach (var entityId in diff.GetEntitiesRemoved())
-            {
-                RemoveEntity(entityId);
+                foreach (var entityId in diff.GetEntitiesRemoved())
+                {
+                    RemoveEntity(entityId);
+                }
             }
         }
 
@@ -85,39 +92,40 @@ namespace Improbable.Gdk.Core
 
         private void AddEntity(EntityId entityId)
         {
-            if (worker.EntityIdToEntity.ContainsKey(entityId))
+            using (addEntityMarker.Auto())
             {
-                throw new InvalidSpatialEntityStateException(
-                    string.Format(Errors.EntityAlreadyExistsError, entityId.Id));
+                if (worker.EntityIdToEntity.ContainsKey(entityId))
+                {
+                    throw new InvalidSpatialEntityStateException(
+                        string.Format(Errors.EntityAlreadyExistsError, entityId.Id));
+                }
+
+                var entity = EntityManager.CreateEntity();
+
+                EntityManager.AddComponentData(entity, new SpatialEntityId
+                {
+                    EntityId = entityId
+                });
+
+                EntityManager.AddComponent(entity, ComponentType.ReadWrite<NewlyAddedSpatialOSEntity>());
+
+                worker.EntityIdToEntity.Add(entityId, entity);
             }
-
-            Profiler.BeginSample("OnAddEntity");
-
-            var entity = EntityManager.CreateEntity();
-
-            EntityManager.AddComponentData(entity, new SpatialEntityId
-            {
-                EntityId = entityId
-            });
-
-            EntityManager.AddComponent(entity, ComponentType.ReadWrite<NewlyAddedSpatialOSEntity>());
-
-            worker.EntityIdToEntity.Add(entityId, entity);
-            Profiler.EndSample();
         }
 
         private void RemoveEntity(EntityId entityId)
         {
-            if (!worker.TryGetEntity(entityId, out var entity))
+            using (removeEntityMarker.Auto())
             {
-                throw new InvalidSpatialEntityStateException(
-                    string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
-            }
+                if (!worker.TryGetEntity(entityId, out var entity))
+                {
+                    throw new InvalidSpatialEntityStateException(
+                        string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
+                }
 
-            Profiler.BeginSample("OnRemoveEntity");
-            EntityManager.DestroyEntity(entity);
-            worker.EntityIdToEntity.Remove(entityId);
-            Profiler.EndSample();
+                EntityManager.DestroyEntity(entity);
+                worker.EntityIdToEntity.Remove(entityId);
+            }
         }
 
         private void OnDisconnect(string reason)

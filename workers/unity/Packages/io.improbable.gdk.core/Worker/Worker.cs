@@ -87,7 +87,6 @@ namespace Improbable.Gdk.Core
         public void Tick()
         {
             ConnectionHandler.GetMessagesReceived(ref ViewDiff);
-            View.ApplyDiff(ViewDiff);
         }
 
         public void EnsureMessagesFlushed(NetFrameStats frameStats)

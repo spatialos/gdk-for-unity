@@ -17,10 +17,20 @@ namespace Improbable.Tests
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 11112;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
+
+            private uint child;
+
+            public uint Child
+            {
+                get => child;
+                set
+                {
+                    MarkDataDirty(0);
+                    this.child = value;
+                }
+            }
 
             public bool IsDataDirty()
             {
@@ -90,18 +100,6 @@ namespace Improbable.Tests
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
-            }
-
-            private uint child;
-
-            public uint Child
-            {
-                get => child;
-                set
-                {
-                    MarkDataDirty(0);
-                    this.child = value;
-                }
             }
         }
 

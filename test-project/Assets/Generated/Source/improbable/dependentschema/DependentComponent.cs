@@ -17,10 +17,68 @@ namespace Improbable.DependentSchema
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 198800;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
+
+            internal uint aHandle;
+
+            public global::Improbable.TestSchema.ExhaustiveRepeatedData A
+            {
+                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
+                set
+                {
+                    MarkDataDirty(0);
+                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
+                }
+            }
+
+            private global::Improbable.TestSchema.SomeEnum b;
+
+            public global::Improbable.TestSchema.SomeEnum B
+            {
+                get => b;
+                set
+                {
+                    MarkDataDirty(1);
+                    this.b = value;
+                }
+            }
+
+            internal uint cHandle;
+
+            public global::Improbable.TestSchema.SomeEnum? C
+            {
+                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
+                set
+                {
+                    MarkDataDirty(2);
+                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
+                }
+            }
+
+            internal uint dHandle;
+
+            public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D
+            {
+                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Get(dHandle);
+                set
+                {
+                    MarkDataDirty(3);
+                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Set(dHandle, value);
+                }
+            }
+
+            internal uint eHandle;
+
+            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E
+            {
+                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Get(eHandle);
+                set
+                {
+                    MarkDataDirty(4);
+                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Set(eHandle, value);
+                }
+            }
 
             public bool IsDataDirty()
             {
@@ -90,66 +148,6 @@ namespace Improbable.DependentSchema
                 componentDataSchema.SchemaData = null;
 
                 return snapshot;
-            }
-
-            internal uint aHandle;
-
-            public global::Improbable.TestSchema.ExhaustiveRepeatedData A
-            {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
-                set
-                {
-                    MarkDataDirty(0);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
-                }
-            }
-
-            private global::Improbable.TestSchema.SomeEnum b;
-
-            public global::Improbable.TestSchema.SomeEnum B
-            {
-                get => b;
-                set
-                {
-                    MarkDataDirty(1);
-                    this.b = value;
-                }
-            }
-
-            internal uint cHandle;
-
-            public global::Improbable.TestSchema.SomeEnum? C
-            {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
-                set
-                {
-                    MarkDataDirty(2);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
-                }
-            }
-
-            internal uint dHandle;
-
-            public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D
-            {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Get(dHandle);
-                set
-                {
-                    MarkDataDirty(3);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Set(dHandle, value);
-                }
-            }
-
-            internal uint eHandle;
-
-            public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E
-            {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Get(eHandle);
-                set
-                {
-                    MarkDataDirty(4);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Set(eHandle, value);
-                }
             }
         }
 

@@ -17,80 +17,8 @@ namespace Improbable.DependentSchema
 
         public unsafe struct Component : IComponentData, ISpatialComponentData, ISnapshottable<Snapshot>
         {
-            public uint ComponentId => 198801;
-
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
-
-            public bool IsDataDirty()
-            {
-                var isDataDirty = false;
-
-                isDataDirty |= (dirtyBits[0] != 0x0);
-
-                return isDataDirty;
-            }
-
-            /*
-            The propertyIndex argument counts up from 0 in the order defined in your schema component.
-            It is not the schema field number itself. For example:
-            component MyComponent
-            {
-                id = 1337;
-                bool val_a = 1;
-                bool val_b = 3;
-            }
-            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
-            This method throws an InvalidOperationException in case your component doesn't contain properties.
-            */
-
-            public bool IsDataDirty(int propertyIndex)
-            {
-                ValidateFieldIndex(propertyIndex);
-
-                // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex >> 4;
-                return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & 31))) != 0x0;
-            }
-
-            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
-            // This method throws an InvalidOperationException in case your component doesn't contain properties.
-            public void MarkDataDirty(int propertyIndex)
-            {
-                ValidateFieldIndex(propertyIndex);
-
-                // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex >> 4;
-                dirtyBits[dirtyBitsByteIndex] |= (UInt32) (0x1 << (propertyIndex & 31));
-            }
-
-            public void MarkDataClean()
-            {
-                dirtyBits[0] = 0x0;
-            }
-
-            [Conditional("DEBUG")]
-            private void ValidateFieldIndex(int propertyIndex)
-            {
-                if (propertyIndex < 0 || propertyIndex >= 18)
-                {
-                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
-                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
-                        "Please contact SpatialOS support if you encounter this issue.");
-                }
-            }
-
-            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
-            {
-                var componentDataSchema = new ComponentData(198801, SchemaComponentData.Create());
-                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
-                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
-
-                componentDataSchema.SchemaData?.Destroy();
-                componentDataSchema.SchemaData = null;
-
-                return snapshot;
-            }
 
             internal uint field1Handle;
 
@@ -306,6 +234,76 @@ namespace Improbable.DependentSchema
                     MarkDataDirty(17);
                     global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
                 }
+            }
+
+            public bool IsDataDirty()
+            {
+                var isDataDirty = false;
+
+                isDataDirty |= (dirtyBits[0] != 0x0);
+
+                return isDataDirty;
+            }
+
+            /*
+            The propertyIndex argument counts up from 0 in the order defined in your schema component.
+            It is not the schema field number itself. For example:
+            component MyComponent
+            {
+                id = 1337;
+                bool val_a = 1;
+                bool val_b = 3;
+            }
+            In that case, val_a corresponds to propertyIndex 0 and val_b corresponds to propertyIndex 1 in this method.
+            This method throws an InvalidOperationException in case your component doesn't contain properties.
+            */
+
+            public bool IsDataDirty(int propertyIndex)
+            {
+                ValidateFieldIndex(propertyIndex);
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex >> 4;
+                return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & 31))) != 0x0;
+            }
+
+            // Like the IsDataDirty() method above, the propertyIndex arguments starts counting from 0.
+            // This method throws an InvalidOperationException in case your component doesn't contain properties.
+            public void MarkDataDirty(int propertyIndex)
+            {
+                ValidateFieldIndex(propertyIndex);
+
+                // Retrieve the dirtyBits[0-n] field that tracks this property.
+                var dirtyBitsByteIndex = propertyIndex >> 4;
+                dirtyBits[dirtyBitsByteIndex] |= (UInt32) (0x1 << (propertyIndex & 31));
+            }
+
+            public void MarkDataClean()
+            {
+                dirtyBits[0] = 0x0;
+            }
+
+            [Conditional("DEBUG")]
+            private void ValidateFieldIndex(int propertyIndex)
+            {
+                if (propertyIndex < 0 || propertyIndex >= 18)
+                {
+                    throw new ArgumentException("\"propertyIndex\" argument out of range. Valid range is [0, 17]. " +
+                        "Unless you are using custom component replication code, this is most likely caused by a code generation bug. " +
+                        "Please contact SpatialOS support if you encounter this issue.");
+                }
+            }
+
+            public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
+            {
+                var componentDataSchema = new ComponentData(198801, SchemaComponentData.Create());
+                Serialization.SerializeComponent(this, componentDataSchema.SchemaData.Value.GetFields(), world);
+                var snapshot = Serialization.DeserializeSnapshot(componentDataSchema.SchemaData.Value.GetFields());
+
+                componentDataSchema.SchemaData?.Destroy();
+                componentDataSchema.SchemaData = null;
+
+                return snapshot;
             }
         }
 
