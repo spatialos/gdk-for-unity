@@ -17,7 +17,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             base.OnCreate();
             commandSystem = World.GetExistingSystem<CommandSystem>();
-            entityReservationSystem = World.GetOrCreateSystem<EntityReservationSystem>();
+            entityReservationSystem = World.GetExistingSystem<EntityReservationSystem>();
         }
 
         private class PlayerCreationRequestContext
