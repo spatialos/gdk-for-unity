@@ -1,0 +1,5 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <uie:ToolbarMenu name="worldSelector" class="world-selector">
+        <Style path="Packages/io.improbable.gdk.core/Editor/UIElements/WorldSelector.uss" />
+    </uie:ToolbarMenu>
+</UXML>
