@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using Improbable.Gdk.Core.Editor.UIElements;
 using Improbable.Gdk.Core.NetworkStats;
 using Unity.Entities;
 using UnityEditor;
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Debug.NetStats
         private const string WindowUxmlPath =
             "Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uxml";
 
-        private World selectedWorld;
+        private WorldSelector worldSelector;
         private Dictionary<TabType, NetStatsTab> tabs;
         private TabType selectedTabType = TabType.Updates;
 
@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Debug.NetStats
         {
             // Load UI
             SetupUI();
-            SetupWorldSelection();
+            worldSelector.UpdateWorldSelection();
 
             SelectTab(selectedTabType);
         }
@@ -45,7 +45,7 @@ namespace Improbable.Gdk.Debug.NetStats
         // Update UI at 10 FPS
         private void OnInspectorUpdate()
         {
-            SetupWorldSelection();
+            worldSelector.UpdateWorldSelection();
 
             foreach (var pair in tabs)
             {
@@ -62,6 +62,9 @@ namespace Improbable.Gdk.Debug.NetStats
             // Load main window
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WindowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
+
+            worldSelector = rootVisualElement.Q<WorldSelector>();
+            worldSelector.OnWorldChanged += OnWorldChanged;
 
             // Initialize tabs
             var updatesTab = rootVisualElement.Q<NetStatsUpdatesTab>();
@@ -100,46 +103,9 @@ namespace Improbable.Gdk.Debug.NetStats
             selectedTabType = tabTypeType;
         }
 
-        private void SetupWorldSelection()
+        private void OnWorldChanged(World world)
         {
-            // Find spatial worlds
-            var spatialWorlds = World.All
-                .Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
-                .ToList();
-
-            // Fill menu items
-            var worldMenu = rootVisualElement.Q<ToolbarMenu>("worldSelector").menu;
-            for (var i = 0; i < spatialWorlds.Count; i++)
-            {
-                var spatialWorld = spatialWorlds[i];
-                worldMenu.InsertAction(i, spatialWorld.Name,
-                    action => SelectWorld((World) action.userData),
-                    action => selectedWorld == (World) action.userData
-                        ? DropdownMenuAction.Status.Checked
-                        : DropdownMenuAction.Status.Normal,
-                    spatialWorld);
-            }
-
-            // Trim excess items
-            var menuSize = worldMenu.MenuItems().Count;
-            for (var i = spatialWorlds.Count; i < menuSize; i++)
-            {
-                worldMenu.RemoveItemAt(spatialWorlds.Count);
-            }
-
-            // Update selected item if needed
-            if (selectedWorld == null || !selectedWorld.IsCreated)
-            {
-                SelectWorld(spatialWorlds.FirstOrDefault());
-            }
-        }
-
-        private void SelectWorld(World world)
-        {
-            selectedWorld = world;
-            rootVisualElement.Q<ToolbarMenu>("worldSelector").text =
-                selectedWorld?.Name ?? "No SpatialOS worlds active";
-            var netStatSystem = selectedWorld?.GetExistingSystem<NetworkStatisticsSystem>();
+            var netStatSystem = world?.GetExistingSystem<NetworkStatisticsSystem>();
 
             foreach (var pair in tabs)
             {

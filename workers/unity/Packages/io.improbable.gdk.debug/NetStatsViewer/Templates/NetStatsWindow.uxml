@@ -1,8 +1,11 @@
-<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:ns="Improbable.Gdk.Debug.NetStats">
+<UXML
+        xmlns="UnityEngine.UIElements"
+        xmlns:uie="UnityEditor.UIElements"
+        xmlns:ns="Improbable.Gdk.Debug.NetStats"
+        xmlns:gdk="Improbable.Gdk.Core.Editor.UIElements"
+>
     <Template name="HeaderBar" path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/HeaderBar.uxml" />
-    <uie:ToolbarMenu name="worldSelector" class="world-selector">
-        <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
-    </uie:ToolbarMenu>
+    <gdk:WorldSelector/>
     <uie:Toolbar name="tabSelectorContainer" class="tab-selector-container">
         <Style path="Packages/io.improbable.gdk.debug/NetStatsViewer/Templates/NetStatsWindow.uss" />
         <uie:ToolbarButton name="updateSelector" text="Updates" class="tab-toggle" />
