@@ -20,6 +20,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     ///     An <see cref="EntityTemplate"/> to create a SpatialOS player entity from.
     /// </returns>
     public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
+        EntityId entityId,
         string clientWorkerId,
         byte[] serializedArguments);
 

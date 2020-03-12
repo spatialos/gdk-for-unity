@@ -65,6 +65,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// <param name="world">A world that belongs to a server-worker.</param>
         public static void AddServerSystems(World world)
         {
+            world.GetOrCreateSystem<EntityReservationSystem>();
             world.GetOrCreateSystem<HandleCreatePlayerRequestSystem>();
             world.GetOrCreateSystem<PlayerHeartbeatInitializationSystem>();
             world.GetOrCreateSystem<SendPlayerHeartbeatRequestSystem>();

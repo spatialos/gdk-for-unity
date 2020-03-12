@@ -11,11 +11,13 @@ namespace Improbable.Gdk.PlayerLifecycle
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {
         private CommandSystem commandSystem;
+        private EntityReservationSystem entityReservationSystem;
 
         protected override void OnCreate()
         {
             base.OnCreate();
             commandSystem = World.GetExistingSystem<CommandSystem>();
+            entityReservationSystem = World.GetOrCreateSystem<EntityReservationSystem>();
         }
 
         private class PlayerCreationRequestContext
@@ -40,22 +42,32 @@ namespace Improbable.Gdk.PlayerLifecycle
             for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
-                    request.CallerWorkerId,
-                    request.Payload.SerializedArguments
-                );
 
-                var entityRequest = new WorldCommands.CreateEntity.Request
-                (
-                    playerEntityTemplate,
-                    context: new PlayerCreationRequestContext
-                    {
-                        createPlayerRequest = request
-                    }
-                );
-
-                commandSystem.SendCommand(entityRequest);
+                SpawnPlayerEntity(request);
             }
+        }
+
+        private async void SpawnPlayerEntity(PlayerCreator.CreatePlayer.ReceivedRequest receivedRequest)
+        {
+            var entityId = await entityReservationSystem.GetAsync();
+            
+            var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
+                entityId,
+                receivedRequest.CallerWorkerId,
+                receivedRequest.Payload.SerializedArguments
+            );
+
+            var entityRequest = new WorldCommands.CreateEntity.Request
+            (
+                playerEntityTemplate,
+                entityId,
+                context: new PlayerCreationRequestContext
+                {
+                    createPlayerRequest = receivedRequest
+                }
+            );
+
+            commandSystem.SendCommand(entityRequest);
         }
 
         private void HandlePlayerCreateEntityResponses()
