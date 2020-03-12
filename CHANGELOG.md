@@ -8,6 +8,8 @@
 - Schema components in ECS no longer have a `ComponentId` property. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
     - You should use `ComponentDatabase.GetComponentId<T>()` instead.
 - `CustomSpatialOSSendSystem` is no longer available. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
+- The PlayerLifecycle feature module now provides an `EntityId` in it's CreatePlayerEntityTemplate callback. [#1315](https://github.com/spatialos/gdk-for-unity/pull/1315)
+    - You will have to change your callback from `(string clientWorkerId, byte[] serializedArguments)` to `(EntityId entityId, string clientWorkerId, byte[] serializedArguments)`.
 
 ### Added
 
