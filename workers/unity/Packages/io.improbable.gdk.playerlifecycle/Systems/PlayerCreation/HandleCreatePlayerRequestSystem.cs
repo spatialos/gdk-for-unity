@@ -50,7 +50,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         private async void SpawnPlayerEntity(PlayerCreator.CreatePlayer.ReceivedRequest receivedRequest)
         {
             var entityId = await entityReservationSystem.GetAsync();
-            
+
             var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
                 entityId,
                 receivedRequest.CallerWorkerId,
