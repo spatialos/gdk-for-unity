@@ -1,5 +1,34 @@
 # Upgrade Guide
 
+## From `0.3.3` to `0.3.4`
+
+### PlayerLifecycle feature module now provides an EntityId
+
+The callback used for creating a player `EntityTemplate` has changed to provide an `EntityId` up front.
+This player's Entity will have this `EntityId` after it is successfully spawned, and can be useful for defining QBI queries.
+
+For example:
+
+```csharp
+public static EntityTemplate Player(string workerId, byte[] args)
+{
+    var template = new EntityTemplate();
+    // ...
+    return template;
+}
+```
+
+Would change into:
+
+```csharp
+public static EntityTemplate Player(EntityId entityId, string workerId, byte[] args)
+{
+    var template = new EntityTemplate();
+    // ...
+    return template;
+}
+```
+
 ## From `0.3.2` to `0.3.3`
 
 ### Building for Android now requires the NDK

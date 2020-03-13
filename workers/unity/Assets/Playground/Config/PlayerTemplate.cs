@@ -9,7 +9,7 @@ namespace Playground
 {
     public static class PlayerTemplate
     {
-        public static EntityTemplate CreatePlayerEntityTemplate(string clientWorkerId, byte[] playerCreationArguments)
+        public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, string clientWorkerId, byte[] playerCreationArguments)
         {
             var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(clientWorkerId);
 
