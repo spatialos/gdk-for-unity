@@ -169,7 +169,7 @@ namespace Improbable.Gdk.Mobile
 
         private static bool TryGetAdbPath(out string adbPath)
         {
-            var sdkRootPath = EditorPrefs.GetString("AndroidSdkRoot");
+            var sdkRootPath = GetSDKDirectory();
             if (string.IsNullOrEmpty(sdkRootPath))
             {
                 adbPath = null;
@@ -193,6 +193,24 @@ namespace Improbable.Gdk.Mobile
 
             apkPath = string.Empty;
             return false;
+        }
+        
+        private static bool UseEmbeddedSDK()
+        {
+            const string SDKPrefKey = "SdkUseEmbedded";
+            return !EditorPrefs.HasKey(SDKPrefKey) || EditorPrefs.GetBool(SDKPrefKey);
+        }
+        
+        private static string GetSDKDirectory()
+        {
+            if (UseEmbeddedSDK())
+            {
+                return Path.Combine(BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None), "SDK");
+            }
+            else
+            {
+                return EditorPrefs.GetString("AndroidSdkRoot");
+            }
         }
     }
 }
