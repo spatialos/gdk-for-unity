@@ -194,13 +194,13 @@ namespace Improbable.Gdk.Mobile
             apkPath = string.Empty;
             return false;
         }
-        
+
         private static bool UseEmbeddedSDK()
         {
             const string SDKPrefKey = "SdkUseEmbedded";
             return !EditorPrefs.HasKey(SDKPrefKey) || EditorPrefs.GetBool(SDKPrefKey);
         }
-        
+
         private static string GetSDKDirectory()
         {
             if (UseEmbeddedSDK())
