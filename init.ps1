@@ -37,7 +37,7 @@ function UpdateSpot($identifier, $path)
 
 UpdatePackage worker_sdk c-dynamic-x86_64-gcc510-linux "$SdkPath/Plugins/Improbable/Core/Linux/x86_64"
 UpdatePackage worker_sdk c-bundle-x86_64-clang-macos "$SdkPath/Plugins/Improbable/Core/OSX"
-UpdatePackage worker_sdk c-dynamic-x86_64-vc140_mt-win32 "$SdkPath/Plugins/Improbable/Core/Windows/x86_64" "improbable_worker.lib"
+UpdatePackage worker_sdk c-dynamic-x86_64-vc141_mt-win32 "$SdkPath/Plugins/Improbable/Core/Windows/x86_64" "improbable_worker.lib"
 
 UpdatePackage worker_sdk csharp_cinterop "$SdkPath/Plugins/Improbable/Sdk/Common"
 
