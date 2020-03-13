@@ -47,7 +47,7 @@ update_spot() {
 # Update Core SDK
 update_package worker_sdk c-dynamic-x86_64-gcc510-linux "${SDK_PATH}/Plugins/Improbable/Core/Linux/x86_64"
 update_package worker_sdk c-bundle-x86_64-clang-macos "${SDK_PATH}/Plugins/Improbable/Core/OSX"
-update_package worker_sdk c-dynamic-x86_64-vc140_mt-win32 "${SDK_PATH}/Plugins/Improbable/Core/Windows/x86_64" "improbable_worker.lib"
+update_package worker_sdk c-dynamic-x86_64-vc141_mt-win32 "${SDK_PATH}/Plugins/Improbable/Core/Windows/x86_64" "improbable_worker.lib"
 
 update_package worker_sdk csharp_cinterop "${SDK_PATH}/Plugins/Improbable/Sdk/Common"
 
