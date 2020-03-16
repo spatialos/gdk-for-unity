@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.4` - 2020-03-16
+
 ### Breaking Changes
 
 - The `DeploymentLauncher` project has an additional required argument `runtime_version`. If you invoke this manually through `dotnet`, you'll need to provide this argument. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
