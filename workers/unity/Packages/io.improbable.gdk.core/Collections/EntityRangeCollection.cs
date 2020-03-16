@@ -18,7 +18,10 @@ namespace Improbable.Gdk.Core
             }
 
             var (splitRange, remainder) = firstElement.Split(1);
-            firstElement = remainder;
+            firstElement = remainder.Count == 0 && queue.Count > 0
+                ? queue.Dequeue()
+                : remainder;
+
             Count -= 1;
             return splitRange.FirstEntityId;
         }
