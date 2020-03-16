@@ -71,6 +71,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
         }
 
         [Test]
+        public void Dequeue_pops_ranges()
+        {
+            var collection = new EntityRangeCollection();
+            collection.Add(new EntityRangeCollection.EntityIdRange(new EntityId(1), 1));
+            collection.Add(new EntityRangeCollection.EntityIdRange(new EntityId(2), 1));
+
+            collection.Dequeue();
+            collection.Dequeue();
+            Assert.AreEqual(0, collection.Count);
+        }
+
+        [Test]
         public void Take_single_range()
         {
             var collection = new EntityRangeCollection();
