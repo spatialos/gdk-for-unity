@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Collections
             Assert.Throws<InvalidOperationException>(() => collection.Dequeue());
             Assert.AreEqual(0, collection.Count);
         }
-        
+
         [Test]
         public void Dequeue_pops_ranges()
         {
