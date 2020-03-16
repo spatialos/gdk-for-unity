@@ -94,7 +94,7 @@ The data serialized in the previous step is sent across to the server-worker as 
 Ensure that you are deserializing the byte array into the same type of object you serialized it from. For example:
 
 ```csharp
-public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
+public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, string workerId, byte[] playerCreationArguments)
 {
     // Obtain unique client attribute of the client-worker that requested the player entity
     var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);

@@ -48,7 +48,7 @@ The following code snippet shows an example on how to implement such a method:
 ```csharp
 public static class PlayerTemplate
 {
-    public static EntityTemplate CreatePlayerEntityTemplate(string workerId, byte[] playerCreationArguments)
+    public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, string workerId, byte[] playerCreationArguments)
     {
         // Obtain unique client attribute of the client-worker that requested the player entity
         var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(workerId);
