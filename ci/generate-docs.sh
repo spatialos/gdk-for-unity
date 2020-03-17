@@ -42,7 +42,7 @@ docker run --rm \
         --git-tag="${TAG}"
 
 pushd "${OUTPUT_DIR}"
-    buildkite-agent artifact upload "**/*.md"
+    buildkite-agent artifact upload "*/*.md"
 popd
 
 function generate_step() {
