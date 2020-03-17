@@ -42,7 +42,7 @@ docker run --rm \
         --git-tag="${TAG}"
 
 pushd "${OUTPUT_DIR}"
-    buildkite-agent artifact upload "*/*.md"
+    buildkite-agent artifact upload "**/*.md"
 popd
 
 function generate_step() {
@@ -54,7 +54,7 @@ function generate_step() {
     echo "        bk_readme_project_name: gdk-for-unity"
     echo "        bk_readme_category_slug: api-reference"
     echo "        bk_readme_version: ${TAG}"
-    echo "        bk_readme_artifact_path: \"**/*\""
+    echo "        bk_readme_artifact_path: \"*\""
 }
 
 generate_step | buildkite-agent pipeline upload --no-interpolation
