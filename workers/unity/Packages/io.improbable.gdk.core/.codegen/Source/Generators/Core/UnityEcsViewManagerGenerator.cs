@@ -105,7 +105,7 @@ public void Init(World world)
                             {
                                 m.Line(new[]
                                 {
-                                    "workerSystem.TryGetEntity(entityId, out var entity);",
+                                    "var entity = workerSystem.GetEntity(entityId);",
                                     $"var component = new {componentNamespace}.Component();"
                                 });
 
@@ -126,7 +126,7 @@ public void Init(World world)
                             {
                                 m.Line(new[]
                                 {
-                                    "workerSystem.TryGetEntity(entityId, out var entity);",
+                                    "var entity = workerSystem.GetEntity(entityId);",
                                     "entityManager.RemoveComponent<ComponentAuthority>(entity);"
                                 });
 
@@ -145,7 +145,7 @@ public void Init(World world)
                             evm.Method("private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)", m =>
                             {
                                 m.Line(@"
-workerSystem.TryGetEntity(update.EntityId, out var entity);
+var entity = workerSystem.GetEntity(update.EntityId);
 if (!dataFromEntity.Exists(entity))
 {
     return;
@@ -177,13 +177,13 @@ private void SetAuthority(EntityId entityId, Authority authority)
     {
         case Authority.NotAuthoritative:
         {
-            workerSystem.TryGetEntity(entityId, out var entity);
+            var entity = workerSystem.GetEntity(entityId);
             entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
             break;
         }
         case Authority.Authoritative:
         {
-            workerSystem.TryGetEntity(entityId, out var entity);
+            var entity = workerSystem.GetEntity(entityId);
             entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
             break;
         }

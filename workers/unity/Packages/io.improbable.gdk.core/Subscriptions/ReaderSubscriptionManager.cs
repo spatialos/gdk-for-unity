@@ -55,8 +55,6 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                WorkerSystem.TryGetEntity(entityId, out _);
-
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
                     ResetValue(subscription);

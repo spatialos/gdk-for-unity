@@ -37,7 +37,8 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                WorkerSystem.TryGetEntity(entityId, out var entity);
+                var entity = WorkerSystem.GetEntity(entityId);
+
                 foreach (var subscription in subscriptions)
                 {
                     if (!subscription.HasValue)
@@ -152,7 +153,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    var entity = WorkerSystem.GetEntity(authorityChange.EntityId);
 
                     foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
                     {
@@ -168,8 +169,6 @@ namespace Improbable.Gdk.Subscriptions
                     {
                         return;
                     }
-
-                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
 
                     foreach (var subscription in entityIdToReceiveSubscriptions[authorityChange.EntityId])
                     {

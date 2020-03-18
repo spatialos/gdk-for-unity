@@ -60,7 +60,7 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             foreach (var entityId in entitySystem.GetEntitiesAdded())
             {
-                workerSystem.TryGetEntity(entityId, out var entity);
+                var entity = workerSystem.GetEntity(entityId);
                 gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
             }
 
