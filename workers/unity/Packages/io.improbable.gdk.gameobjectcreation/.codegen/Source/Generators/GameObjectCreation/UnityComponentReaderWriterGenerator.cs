@@ -103,6 +103,11 @@ public event Action<{fieldDetails.Type}> On{fieldDetails.PascalCaseName}Update
 {{
     add
     {{
+        if (!IsValid)
+        {{
+            throw new InvalidOperationException(""Cannot add field update callback when Reader is not valid."");
+        }}
+
         if ({fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey == null)
         {{
             {fieldDetails.CamelCaseName}UpdateCallbackToCallbackKey = new Dictionary<Action<{fieldDetails.Type}>, ulong>();
@@ -141,6 +146,11 @@ public event Action<{eventDetails.FqnPayloadType}> On{eventDetails.PascalCaseNam
 {{
     add
     {{
+        if (!IsValid)
+        {{
+            throw new InvalidOperationException(""Cannot add event callback when Reader is not valid."");
+        }}
+
         if ({eventDetails.CamelCaseName}EventCallbackToCallbackKey == null)
         {{
             {eventDetails.CamelCaseName}EventCallbackToCallbackKey = new Dictionary<Action<{eventDetails.FqnPayloadType}>, ulong>();
