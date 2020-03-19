@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Core
         {
             return EntityIdToEntity.TryGetValue(entityId, out entity);
         }
-        
+
         public Entity GetEntity(EntityId entityId)
         {
             if (!EntityIdToEntity.TryGetValue(entityId, out var entity))

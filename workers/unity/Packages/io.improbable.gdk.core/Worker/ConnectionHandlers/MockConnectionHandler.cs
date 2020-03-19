@@ -67,7 +67,7 @@ namespace Improbable.Gdk.Core
         {
             currentDiff.RemoveComponent(entityId, componentId);
         }
-        
+
         public void AddComponent<T>(long entityId, uint componentId, T component)
             where T : ISpatialComponentUpdate
         {
