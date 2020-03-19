@@ -57,6 +57,11 @@ namespace Improbable.DependentSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (aUpdateCallbackToCallbackKey == null)
                 {
                     aUpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.TestSchema.ExhaustiveRepeatedData>, ulong>();
@@ -87,6 +92,11 @@ namespace Improbable.DependentSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (bUpdateCallbackToCallbackKey == null)
                 {
                     bUpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.TestSchema.SomeEnum>, ulong>();
@@ -117,6 +127,11 @@ namespace Improbable.DependentSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (cUpdateCallbackToCallbackKey == null)
                 {
                     cUpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.TestSchema.SomeEnum?>, ulong>();
@@ -147,6 +162,11 @@ namespace Improbable.DependentSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (dUpdateCallbackToCallbackKey == null)
                 {
                     dUpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>, ulong>();
@@ -177,6 +197,11 @@ namespace Improbable.DependentSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (eUpdateCallbackToCallbackKey == null)
                 {
                     eUpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>, ulong>();

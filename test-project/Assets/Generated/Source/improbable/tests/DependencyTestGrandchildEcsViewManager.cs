@@ -81,7 +81,7 @@ namespace Improbable.Tests
 
             private void AddComponent(EntityId entityId)
             {
-                workerSystem.TryGetEntity(entityId, out var entity);
+                var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.Tests.DependencyTestGrandchild.Component();
 
                 component.MarkDataClean();
@@ -91,7 +91,7 @@ namespace Improbable.Tests
 
             private void RemoveComponent(EntityId entityId)
             {
-                workerSystem.TryGetEntity(entityId, out var entity);
+                var entity = workerSystem.GetEntity(entityId);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 entityManager.RemoveComponent<global::Improbable.Tests.DependencyTestGrandchild.Component>(entity);
@@ -99,7 +99,7 @@ namespace Improbable.Tests
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
             {
-                workerSystem.TryGetEntity(update.EntityId, out var entity);
+                var entity = workerSystem.GetEntity(update.EntityId);
                 if (!dataFromEntity.Exists(entity))
                 {
                     return;
@@ -122,13 +122,13 @@ namespace Improbable.Tests
                 {
                     case Authority.NotAuthoritative:
                     {
-                        workerSystem.TryGetEntity(entityId, out var entity);
+                        var entity = workerSystem.GetEntity(entityId);
                         entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                         break;
                     }
                     case Authority.Authoritative:
                     {
-                        workerSystem.TryGetEntity(entityId, out var entity);
+                        var entity = workerSystem.GetEntity(entityId);
                         entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
                         break;
                     }

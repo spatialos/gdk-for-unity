@@ -49,6 +49,11 @@ namespace Improbable.Tests
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (rootUpdateCallbackToCallbackKey == null)
                 {
                     rootUpdateCallbackToCallbackKey = new Dictionary<Action<uint>, ulong>();
