@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using Unity.Entities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,6 +26,12 @@ namespace Improbable.Gdk.GameObjectCreation
             typeof(Transform),
             typeof(Rigidbody),
             typeof(MeshRenderer)
+        };
+
+        public ComponentType[] MinimumComponentTypes => new[]
+        {
+            ComponentType.ReadOnly<Metadata.Component>(),
+            ComponentType.ReadOnly<Position.Component>()
         };
 
         public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)

@@ -1,3 +1,4 @@
+using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -21,12 +22,27 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly GameObject workerGameObject;
 
         private EntitySystem entitySystem;
-        private WorkerSystem workerSystem;
+
+        private EntityQuery newEntitiesQuery;
+        private EntityQuery removedEntitiesQuery;
+
+        private ComponentType[] minimumComponentSet = new[]
+        {
+            ComponentType.ReadOnly<SpatialEntityId>()
+        };
 
         public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
+
+            var minCreatorComponentSet = gameObjectCreator.MinimumComponentTypes;
+            if (minCreatorComponentSet != null)
+            {
+                minimumComponentSet = minimumComponentSet
+                    .Concat(minCreatorComponentSet)
+                    .ToArray();
+            }
         }
 
         protected override void OnCreate()
@@ -34,7 +50,6 @@ namespace Improbable.Gdk.GameObjectCreation
             base.OnCreate();
 
             entitySystem = World.GetExistingSystem<EntitySystem>();
-            workerSystem = World.GetExistingSystem<WorkerSystem>();
 
             Linker = new EntityGameObjectLinker(World);
 
@@ -42,10 +57,24 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 Linker.LinkGameObjectToSpatialOSEntity(new EntityId(0), workerGameObject);
             }
+
+            newEntitiesQuery = GetEntityQuery(new EntityQueryDesc()
+            {
+                All = minimumComponentSet,
+                None = new[] { ComponentType.ReadOnly<GameObjectInitializationComponent>() }
+            });
+
+            removedEntitiesQuery = GetEntityQuery(new EntityQueryDesc()
+            {
+                All = new[] { ComponentType.ReadOnly<GameObjectInitializationComponent>() },
+                None = minimumComponentSet
+            });
         }
 
         protected override void OnDestroy()
         {
+            EntityManager.RemoveComponent<GameObjectInitializationComponent>(GetEntityQuery(typeof(GameObjectInitializationComponent)));
+
             Linker.UnlinkAllGameObjects();
 
             foreach (var entityId in entitySystem.GetEntitiesInView())
@@ -58,24 +87,24 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnUpdate()
         {
-            foreach (var entityId in entitySystem.GetEntitiesAdded())
+            Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
             {
-                var entity = workerSystem.GetEntity(entityId);
                 gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
-            }
+                PostUpdateCommands.AddComponent(entity, new GameObjectInitializationComponent
+                {
+                    EntityId = spatialEntityId.EntityId
+                });
+            });
 
-            var removedEntities = entitySystem.GetEntitiesRemoved();
-            foreach (var entityId in removedEntities)
+            Entities.With(removedEntitiesQuery).ForEach((ref GameObjectInitializationComponent state) =>
             {
-                Linker.UnlinkAllGameObjectsFromEntityId(entityId);
-            }
+                Linker.UnlinkAllGameObjectsFromEntityId(state.EntityId);
+                gameObjectCreator.OnEntityRemoved(state.EntityId);
+            });
 
             Linker.FlushCommandBuffer();
 
-            foreach (var entityId in removedEntities)
-            {
-                gameObjectCreator.OnEntityRemoved(entityId);
-            }
+            EntityManager.RemoveComponent<GameObjectInitializationComponent>(removedEntitiesQuery);
         }
     }
 }
