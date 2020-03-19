@@ -65,7 +65,13 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var field in info.RequiredFields)
             {
-                field.SetValue(target, subscriptions.GetErasedValue(field.FieldType));
+                var obj = subscriptions.GetErasedValue(field.FieldType);
+                if (obj is IRequireable requireable)
+                {
+                    requireable.IsValid = true;
+                }
+
+                field.SetValue(target, obj);
             }
 
             onEnable?.Invoke(target);
