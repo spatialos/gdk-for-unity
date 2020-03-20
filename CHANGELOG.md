@@ -42,6 +42,7 @@
 - Fixed a bug where Reader/Writer/CommandSender/CommandReceiver fields would not have their state set to invalid when the underlying constraints were not met. [#1297](https://github.com/spatialos/gdk-for-unity/pull/1297)
     - This bug would manifest itself in situations like a `Reader` reference attempting to read data that does not exist in your worker's view anymore.
 - Fixed the Mobile Launcher being unable to find the Android SDK when using the embedded installation. [#1319](https://github.com/spatialos/gdk-for-unity/pull/1319)
+- Fixed a bug where losing a `Reader` due to QBI would break the monobehaviour that required it. [#1326](https://github.com/spatialos/gdk-for-unity/pull/1326)
 
 ### Removed
 
