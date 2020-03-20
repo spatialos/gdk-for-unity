@@ -37,7 +37,7 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                WorkerSystem.TryGetEntity(entityId, out var entity);
+                var entity = WorkerSystem.GetEntity(entityId);
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
@@ -54,8 +54,6 @@ namespace Improbable.Gdk.Subscriptions
                 {
                     return;
                 }
-
-                WorkerSystem.TryGetEntity(entityId, out _);
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {

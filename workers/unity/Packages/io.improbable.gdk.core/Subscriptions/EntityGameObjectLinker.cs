@@ -99,8 +99,8 @@ namespace Improbable.Gdk.Subscriptions
                 {
                     // todo this should possibly happen when the command buffer is flushed too
                     injectors.Add(new RequiredSubscriptionsInjector(component, entityId, subscriptionSystem,
-                        () => lifecycleSystem.EnableMonoBehaviour(component),
-                        () => lifecycleSystem.DisableMonoBehaviour(component)));
+                        target => lifecycleSystem.EnableMonoBehaviour((MonoBehaviour) target),
+                        target => lifecycleSystem.DisableMonoBehaviour((MonoBehaviour) target)));
                 }
             }
 
@@ -177,8 +177,6 @@ namespace Improbable.Gdk.Subscriptions
             {
                 return;
             }
-
-            workerSystem.TryGetEntity(entityId, out var entity);
 
             while (gameObjectSet.Count > 0)
             {

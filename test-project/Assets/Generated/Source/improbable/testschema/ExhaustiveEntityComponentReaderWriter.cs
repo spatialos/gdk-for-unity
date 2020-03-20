@@ -57,6 +57,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (field1UpdateCallbackToCallbackKey == null)
                 {
                     field1UpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.Gdk.Core.EntitySnapshot>, ulong>();
@@ -87,6 +92,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (field2UpdateCallbackToCallbackKey == null)
                 {
                     field2UpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.Gdk.Core.EntitySnapshot?>, ulong>();
@@ -117,6 +127,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (field3UpdateCallbackToCallbackKey == null)
                 {
                     field3UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>, ulong>();
@@ -147,6 +162,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (field4UpdateCallbackToCallbackKey == null)
                 {
                     field4UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>, ulong>();
@@ -177,6 +197,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (field5UpdateCallbackToCallbackKey == null)
                 {
                     field5UpdateCallbackToCallbackKey = new Dictionary<Action<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>, ulong>();

@@ -25,7 +25,8 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
-                WorkerSystem.TryGetEntity(entityId, out var entity);
+                var entity = WorkerSystem.GetEntity(entityId);
+
                 foreach (var subscription in subscriptions)
                 {
                     subscription.SetAvailable(new WorldCommandSender(entity, world));

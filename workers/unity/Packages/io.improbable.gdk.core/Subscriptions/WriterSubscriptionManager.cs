@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Subscriptions
                         return;
                     }
 
-                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity);
+                    var entity = WorkerSystem.GetEntity(authorityChange.EntityId);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
@@ -55,8 +55,6 @@ namespace Improbable.Gdk.Subscriptions
                     {
                         return;
                     }
-
-                    WorkerSystem.TryGetEntity(authorityChange.EntityId, out _);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {

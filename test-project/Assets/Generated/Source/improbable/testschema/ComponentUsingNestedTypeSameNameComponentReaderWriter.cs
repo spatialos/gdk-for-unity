@@ -53,6 +53,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (nestedFieldUpdateCallbackToCallbackKey == null)
                 {
                     nestedFieldUpdateCallbackToCallbackKey = new Dictionary<Action<int>, ulong>();
@@ -83,6 +88,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (other0FieldUpdateCallbackToCallbackKey == null)
                 {
                     other0FieldUpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName>, ulong>();
@@ -113,6 +123,11 @@ namespace Improbable.TestSchema
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add field update callback when Reader is not valid.");
+                }
+
                 if (other1FieldUpdateCallbackToCallbackKey == null)
                 {
                     other1FieldUpdateCallbackToCallbackKey = new Dictionary<Action<global::Improbable.TestSchema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName>, ulong>();

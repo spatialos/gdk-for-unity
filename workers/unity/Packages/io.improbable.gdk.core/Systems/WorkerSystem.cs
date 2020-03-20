@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
@@ -65,6 +66,16 @@ namespace Improbable.Gdk.Core
         public bool TryGetEntity(EntityId entityId, out Entity entity)
         {
             return EntityIdToEntity.TryGetValue(entityId, out entity);
+        }
+
+        public Entity GetEntity(EntityId entityId)
+        {
+            if (!EntityIdToEntity.TryGetValue(entityId, out var entity))
+            {
+                throw new ArgumentException($"Unknown EntityId {entityId}", nameof(entityId));
+            }
+
+            return entity;
         }
 
         /// <summary>

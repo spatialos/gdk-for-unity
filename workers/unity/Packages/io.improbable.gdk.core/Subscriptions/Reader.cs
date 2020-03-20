@@ -76,6 +76,11 @@ namespace Improbable.Gdk.Subscriptions
         {
             add
             {
+                if (!IsValid)
+                {
+                    throw new InvalidOperationException("Cannot add OnUpdate callback when Reader is not valid.");
+                }
+
                 if (updateCallbackToCallbackKey == null)
                 {
                     updateCallbackToCallbackKey = new Dictionary<Action<TUpdate>, ulong>();

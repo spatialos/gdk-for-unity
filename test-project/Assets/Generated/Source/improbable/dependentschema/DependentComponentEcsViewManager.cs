@@ -88,7 +88,7 @@ namespace Improbable.DependentSchema
 
             private void AddComponent(EntityId entityId)
             {
-                workerSystem.TryGetEntity(entityId, out var entity);
+                var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.DependentSchema.DependentComponent.Component();
 
                 component.aHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Allocate(world);
@@ -106,7 +106,7 @@ namespace Improbable.DependentSchema
 
             private void RemoveComponent(EntityId entityId)
             {
-                workerSystem.TryGetEntity(entityId, out var entity);
+                var entity = workerSystem.GetEntity(entityId);
                 entityManager.RemoveComponent<ComponentAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.DependentSchema.DependentComponent.Component>(entity);
@@ -124,7 +124,7 @@ namespace Improbable.DependentSchema
 
             private void ApplyUpdate(in ComponentUpdateReceived<Update> update, ComponentDataFromEntity<Component> dataFromEntity)
             {
-                workerSystem.TryGetEntity(update.EntityId, out var entity);
+                var entity = workerSystem.GetEntity(update.EntityId);
                 if (!dataFromEntity.Exists(entity))
                 {
                     return;
@@ -167,13 +167,13 @@ namespace Improbable.DependentSchema
                 {
                     case Authority.NotAuthoritative:
                     {
-                        workerSystem.TryGetEntity(entityId, out var entity);
+                        var entity = workerSystem.GetEntity(entityId);
                         entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                         break;
                     }
                     case Authority.Authoritative:
                     {
-                        workerSystem.TryGetEntity(entityId, out var entity);
+                        var entity = workerSystem.GetEntity(entityId);
                         entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
                         break;
                     }

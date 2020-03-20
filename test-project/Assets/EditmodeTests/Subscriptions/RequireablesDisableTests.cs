@@ -2,6 +2,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.Test;
 using Improbable.Gdk.TestUtils;
+using Improbable.Tests;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
@@ -35,6 +36,66 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
 
                     Assert.IsNull(readerBehaviour.Reader);
                     Assert.IsFalse(reader.IsValid);
+                });
+        }
+
+        [Test]
+        public void Reader_is_reenabled_if_component_regained()
+        {
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<PositionReaderBehaviour>(EntityId);
+                    return readerBehaviour;
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
+                })
+                .Step(world =>
+                {
+                    world.Connection.AddComponent(EntityId, Position.ComponentId, new Position.Update());
+                })
+                .Step((world, context) =>
+                {
+                    var readerBehaviour = context;
+
+                    Assert.IsNotNull(readerBehaviour.Reader);
+                    Assert.IsTrue(readerBehaviour.Reader.IsValid);
+                });
+        }
+
+        [Test]
+        public void Reader_is_reenabled_if_component_regained_with_aggregate()
+        {
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    var (_, readerBehaviour) = world.CreateGameObject<MultipleComponentBehaviour>(EntityId);
+                    return readerBehaviour;
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
+                })
+                .Step(world =>
+                {
+                    world.Connection.AddComponent(EntityId, Position.ComponentId, new Position.Update());
+                })
+                .Step((world, context) =>
+                {
+                    var readerBehaviour = context;
+
+                    Assert.IsNotNull(readerBehaviour.DependencyTestReader);
+                    Assert.IsTrue(readerBehaviour.DependencyTestReader.IsValid);
                 });
         }
 
@@ -148,6 +209,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(), "worker");
+            template.AddComponent(new DependencyTest.Snapshot(), "worker");
             template.AddComponent(new TestCommands.Snapshot(), "worker");
             return template;
         }
@@ -178,6 +240,12 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         {
             [Require] public PositionReader PositionReader;
             [Require] public TestCommandsReader TestCommandsReader;
+        }
+        
+        private class MultipleComponentBehaviour : MonoBehaviour
+        {
+            [Require] public PositionReader PositionReader;
+            [Require] public DependencyTestReader DependencyTestReader;
         }
 
 #pragma warning restore 649

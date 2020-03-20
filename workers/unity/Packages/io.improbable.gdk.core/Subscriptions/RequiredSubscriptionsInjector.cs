@@ -12,13 +12,13 @@ namespace Improbable.Gdk.Subscriptions
         private readonly RequiredSubscriptionsInfo info;
         private readonly object target;
 
-        private readonly Action onEnable;
-        private readonly Action onDisable;
+        private readonly Action<object> onEnable;
+        private readonly Action<object> onDisable;
 
         // todo should either special case monobehaviours or not use callbacks
         // for non monobehaviours we could use functors
         public RequiredSubscriptionsInjector(object target, EntityId entityId, SubscriptionSystem subscriptionSystem,
-            Action onEnable = null, Action onDisable = null)
+            Action<object> onEnable = null, Action<object> onDisable = null)
         {
             this.target = target;
             this.onEnable = onEnable;
@@ -28,7 +28,7 @@ namespace Improbable.Gdk.Subscriptions
 
             if (info == null || info.RequiredTypes.Length == 0)
             {
-                onEnable?.Invoke();
+                onEnable?.Invoke(target);
                 return;
             }
 
@@ -41,14 +41,14 @@ namespace Improbable.Gdk.Subscriptions
         {
             if (subscriptions == null)
             {
-                onDisable?.Invoke();
+                onDisable?.Invoke(target);
                 return;
             }
 
             Handler.Pool.Return((Handler) subscriptions.GetAvailabilityHandler());
             subscriptions.Cancel();
 
-            onDisable?.Invoke();
+            onDisable?.Invoke(target);
 
             if (target == null)
             {
@@ -65,15 +65,21 @@ namespace Improbable.Gdk.Subscriptions
         {
             foreach (var field in info.RequiredFields)
             {
-                field.SetValue(target, subscriptions.GetErasedValue(field.FieldType));
+                var obj = subscriptions.GetErasedValue(field.FieldType);
+                if (obj is IRequireable requireable)
+                {
+                    requireable.IsValid = true;
+                }
+
+                field.SetValue(target, obj);
             }
 
-            onEnable?.Invoke();
+            onEnable?.Invoke(target);
         }
 
         private void HandleSubscriptionsNoLongerSatisfied()
         {
-            onDisable?.Invoke();
+            onDisable?.Invoke(target);
 
             foreach (var field in info.RequiredFields)
             {
