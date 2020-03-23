@@ -2,6 +2,26 @@
 
 set -e -u -x -o pipefail
 
+function cleanUp() {
+    # Ensure we are not in the temp dir before cleaning it
+    cd "${CURRENT_DIR}"
+    if [[ -n "${TMP_DIR-}" ]]; then
+        rm -rf "${TMP_DIR}"
+    fi
+}
+
+function generate_step() {
+    echo "steps:"
+    echo "  - trigger: platform-release-docs-readme"
+    echo "    label: Upload documentation"
+    echo "    build:"
+    echo "      env:"
+    echo "        bk_readme_project_name: gdk-for-unity"
+    echo "        bk_readme_category_slug: api-reference"
+    echo "        bk_readme_version: ${TAG}"
+    echo "        bk_readme_artifact_path: \"*\""
+}
+
 cd "$(dirname "$0")/../"
 
 DOCGEN_PIN="${DOCGEN_OVERRIDE:-v1.0}"
@@ -10,14 +30,6 @@ TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
 OUTPUT_DIR="${CURRENT_DIR}/docs-output"
 rm -rf "${OUTPUT_DIR}"
 mkdir "${OUTPUT_DIR}"
-
-function cleanUp() {
-    # Ensure we are not in the temp dir before cleaning it
-    cd "${CURRENT_DIR}"
-    if [[ -n "${TMP_DIR-}" ]]; then
-        rm -rf "${TMP_DIR}"
-    fi
-}
 
 trap cleanUp EXIT
 
@@ -44,17 +56,5 @@ docker run --rm \
 pushd "${OUTPUT_DIR}"
     buildkite-agent artifact upload "**/*.md"
 popd
-
-function generate_step() {
-    echo "steps:"
-    echo "  - trigger: platform-release-docs-readme"
-    echo "    label: Upload documentation"
-    echo "    build:"
-    echo "      env:"
-    echo "        bk_readme_project_name: gdk-for-unity"
-    echo "        bk_readme_category_slug: api-reference"
-    echo "        bk_readme_version: ${TAG}"
-    echo "        bk_readme_artifact_path: \"*\""
-}
 
 generate_step | buildkite-agent pipeline upload --no-interpolation
