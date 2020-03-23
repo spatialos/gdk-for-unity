@@ -7,7 +7,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 {
     public class MockGameObjectCreator : IEntityGameObjectCreator
     {
-        public ComponentType[] MinimumComponentTypes => new ComponentType[] { };
+        public ComponentType[] MinimumComponentTypes { get; } = { };
 
         public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
         {

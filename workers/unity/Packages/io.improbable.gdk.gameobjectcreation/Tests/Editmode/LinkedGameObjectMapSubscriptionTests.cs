@@ -20,10 +20,8 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
                     return goMapSubscription;
                 })
-                .Step((world, context) =>
+                .Step((world, goMapSubscription) =>
                 {
-                    var goMapSubscription = context;
-
                     Assert.IsFalse(goMapSubscription.HasValue);
                 });
         }
@@ -40,10 +38,8 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
                     return goMapSubscription;
                 })
-                .Step((world, context) =>
+                .Step((world, goMapSubscription) =>
                 {
-                    var goMapSubscription = context;
-
                     Assert.IsTrue(goMapSubscription.HasValue);
                     Assert.IsNotNull(goMapSubscription.Value);
                 });

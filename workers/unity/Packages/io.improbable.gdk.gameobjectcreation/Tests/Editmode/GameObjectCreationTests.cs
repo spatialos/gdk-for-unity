@@ -116,7 +116,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
             private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
 
-            public ComponentType[] MinimumComponentTypes => new[]
+            public ComponentType[] MinimumComponentTypes { get; } =
             {
                 ComponentType.ReadOnly<Position.Component>(),
                 ComponentType.ReadOnly<Metadata.Component>()

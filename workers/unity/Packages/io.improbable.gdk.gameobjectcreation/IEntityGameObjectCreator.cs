@@ -1,8 +1,6 @@
 using Improbable.Gdk.Core;
-using Improbable.Worker.CInterop;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -15,10 +13,7 @@ namespace Improbable.Gdk.GameObjectCreation
         /// <summary>
         ///     The minimum set of components required on an entity to create a GameObject.
         /// </summary>
-        ComponentType[] MinimumComponentTypes
-        {
-            get;
-        }
+        ComponentType[] MinimumComponentTypes { get; }
 
         /// <summary>
         ///     Called when a new SpatialOS Entity is checked out by the worker.

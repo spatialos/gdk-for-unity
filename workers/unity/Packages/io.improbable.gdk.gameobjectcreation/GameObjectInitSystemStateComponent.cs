@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
-    public struct GameObjectInitializationComponent : ISystemStateComponentData
+    public struct GameObjectInitSystemStateComponent : ISystemStateComponentData
     {
         public EntityId EntityId;
     }

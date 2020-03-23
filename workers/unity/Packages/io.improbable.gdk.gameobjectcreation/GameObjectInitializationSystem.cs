@@ -61,19 +61,19 @@ namespace Improbable.Gdk.GameObjectCreation
             newEntitiesQuery = GetEntityQuery(new EntityQueryDesc()
             {
                 All = minimumComponentSet,
-                None = new[] { ComponentType.ReadOnly<GameObjectInitializationComponent>() }
+                None = new[] { ComponentType.ReadOnly<GameObjectInitSystemStateComponent>() }
             });
 
             removedEntitiesQuery = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new[] { ComponentType.ReadOnly<GameObjectInitializationComponent>() },
+                All = new[] { ComponentType.ReadOnly<GameObjectInitSystemStateComponent>() },
                 None = minimumComponentSet
             });
         }
 
         protected override void OnDestroy()
         {
-            EntityManager.RemoveComponent<GameObjectInitializationComponent>(GetEntityQuery(typeof(GameObjectInitializationComponent)));
+            EntityManager.RemoveComponent<GameObjectInitSystemStateComponent>(GetEntityQuery(typeof(GameObjectInitSystemStateComponent)));
 
             Linker.UnlinkAllGameObjects();
 
@@ -90,13 +90,13 @@ namespace Improbable.Gdk.GameObjectCreation
             Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
             {
                 gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
-                PostUpdateCommands.AddComponent(entity, new GameObjectInitializationComponent
+                PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
                 {
                     EntityId = spatialEntityId.EntityId
                 });
             });
 
-            Entities.With(removedEntitiesQuery).ForEach((ref GameObjectInitializationComponent state) =>
+            Entities.With(removedEntitiesQuery).ForEach((ref GameObjectInitSystemStateComponent state) =>
             {
                 Linker.UnlinkAllGameObjectsFromEntityId(state.EntityId);
                 gameObjectCreator.OnEntityRemoved(state.EntityId);
@@ -104,7 +104,7 @@ namespace Improbable.Gdk.GameObjectCreation
 
             Linker.FlushCommandBuffer();
 
-            EntityManager.RemoveComponent<GameObjectInitializationComponent>(removedEntitiesQuery);
+            EntityManager.RemoveComponent<GameObjectInitSystemStateComponent>(removedEntitiesQuery);
         }
     }
 }

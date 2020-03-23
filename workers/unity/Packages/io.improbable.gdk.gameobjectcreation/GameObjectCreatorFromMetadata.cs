@@ -28,7 +28,7 @@ namespace Improbable.Gdk.GameObjectCreation
             typeof(MeshRenderer)
         };
 
-        public ComponentType[] MinimumComponentTypes => new[]
+        public ComponentType[] MinimumComponentTypes { get; } =
         {
             ComponentType.ReadOnly<Metadata.Component>(),
             ComponentType.ReadOnly<Position.Component>()

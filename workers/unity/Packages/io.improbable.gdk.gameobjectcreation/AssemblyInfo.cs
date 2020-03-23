@@ -7,4 +7,4 @@ using Unity.Entities;
 [assembly: InternalsVisibleTo("Improbable.Gdk.EditmodeTests")]
 [assembly: InternalsVisibleTo("Improbable.Gdk.PlaymodeTests")]
 
-[assembly: RegisterGenericComponentType(typeof(GameObjectInitializationComponent))]
+[assembly: RegisterGenericComponentType(typeof(GameObjectInitSystemStateComponent))]
