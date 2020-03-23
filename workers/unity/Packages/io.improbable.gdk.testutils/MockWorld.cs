@@ -15,7 +15,7 @@ namespace Improbable.Gdk.TestUtils
         public struct Options
         {
             public string WorkerType;
-            public Action<World> AdditionalSystem;
+            public Action<World> AdditionalSystems;
             public ILogDispatcher Logger;
         }
 
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.TestUtils
                     Vector3.zero)
                 .Result;
 
-            options.AdditionalSystem?.Invoke(mockWorld.Worker.World);
+            options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 

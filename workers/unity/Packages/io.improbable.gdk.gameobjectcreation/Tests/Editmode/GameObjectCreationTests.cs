@@ -21,7 +21,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         {
             return new MockWorld.Options
             {
-                AdditionalSystem = world =>
+                AdditionalSystems = world =>
                 {
                     var testGameObjectCreator = new TestGameObjectCreator(WorkerType);
                     GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator);
