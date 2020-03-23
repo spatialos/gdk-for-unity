@@ -64,8 +64,8 @@ If you follow the Blank Project, you can find this option on the `Assets\Generat
 
 Reactive components are no longer available. For documentation on the equivalent APIs please refer to:
 
-* [`ComponentUpdateSystem`](https://docs.improbable.io/unity/alpha/api/core/component-update-system)
-* [`CommandSystem`](https://docs.improbable.io/unity/alpha/api/core/command-system)
+* [`ComponentUpdateSystem`](https://documentation.improbable.io/gdk-for-unity/docs/api-core-componentupdatesystem)
+* [`CommandSystem`](https://documentation.improbable.io/gdk-for-unity/docs/api-core-commandsystem)
 
 ## From `0.2.9` to `0.2.10`
 
@@ -234,7 +234,7 @@ private class MyDynamicHandler : Dynamic.IHandler
 
 Reactive components are now **opt in** instead of **opt out**. To enable them, add the scripting define `USE_LEGACY_REACTIVE_COMPONENTS` to your project.
 
-Reactive components will be removed in a future release, **we strongly recommend to migrate off reactive components**. You can find the APIs to replace reactive components in the [ECS workflows documentation](https://docs.improbable.io/unity/alpha/reference/workflows/overview).
+Reactive components will be removed in a future release, **we strongly recommend to migrate off reactive components**. You can find the APIs to replace reactive components in the [ECS workflows documentation](https://documentation.improbable.io/gdk-for-unity/docs/ecs-introduction).
 
 ### Improved GDK type utility methods
 
