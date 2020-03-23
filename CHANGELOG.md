@@ -12,6 +12,8 @@
 - `CustomSpatialOSSendSystem` is no longer available. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
 - The Player Lifecycle feature module now provides an `EntityId` in its `CreatePlayerEntityTemplate` callback. [#1315](https://github.com/spatialos/gdk-for-unity/pull/1315)
     - You will have to change your callback from `(string clientWorkerId, byte[] serializedArguments)` to `(EntityId entityId, string clientWorkerId, byte[] serializedArguments)`.
+- Added the `ComponentType[] MiniumComponentTypes { get; }` property to `IEntityGameObjectCreator`. [#1330](https://github.com/spatialos/gdk-for-unity/pull/1330)
+    - You will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method on your custom GameObject creator.
 
 ### Added
 
@@ -32,6 +34,8 @@
 - Downgraded the level of several code generator logs from `Info` to `Trace`. [#1277](https://github.com/spatialos/gdk-for-unity/pull/1277)
 - Upgraded the Worker SDK to `14.5.0`. [#1317](https://github.com/spatialos/gdk-for-unity/pull/1317)
 - Upgraded the Platform SDK used by the Deployment Launcher to `14.5.0` [#1317](https://github.com/spatialos/gdk-for-unity/pull/1317)
+- Changed the GameObject Creation module to run for entities that match the minimum component set required by the creator, instead of any entity that is newly added.
+    - This means that the module no longer cares if an entity is checked out in one frame or across multiple.
 
 ### Fixed
 
@@ -59,6 +63,7 @@
 - The Playground project now uses QBI instead of CBI. [#1370](https://github.com/spatialos/gdk-for-unity/pull/1307)
 - Added `MockWorld` and `MockBase` classes to the `Improbable.Gdk.TestUtils` package. These are designed as a framework for testing Core code. [#1305](https://github.com/spatialos/gdk-for-unity/pull/1305)
 - Switched internal profiling to use new `ProfilerMarker` API. [#1311](https://github.com/spatialos/gdk-for-unity/pull/1311)
+- Changed `MockWorld.Options.AdditionalSystems` from `Type[]` to `Action<World>`. [#1330](https://github.com/spatialos/gdk-for-unity/pull/1330)
 
 ## `0.3.3` - 2020-02-14
 
