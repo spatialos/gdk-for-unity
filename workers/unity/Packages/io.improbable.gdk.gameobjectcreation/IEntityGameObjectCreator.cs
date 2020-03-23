@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -14,6 +15,12 @@ namespace Improbable.Gdk.GameObjectCreation
         ///     The minimum set of components required on an entity to create a GameObject.
         /// </summary>
         ComponentType[] MinimumComponentTypes { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="entityTypeRegistrations"></param>
+        void Register(Dictionary<string, EntityTypeRegistration> entityTypeRegistrations);
 
         /// <summary>
         ///     Called when a new SpatialOS Entity is checked out by the worker.

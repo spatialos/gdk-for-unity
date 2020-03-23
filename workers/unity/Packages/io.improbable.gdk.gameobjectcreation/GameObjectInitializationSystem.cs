@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
@@ -26,23 +27,28 @@ namespace Improbable.Gdk.GameObjectCreation
         private EntityQuery newEntitiesQuery;
         private EntityQuery removedEntitiesQuery;
 
-        private ComponentType[] minimumComponentSet = new[]
+        private readonly ComponentType[] minimumComponentSet =
         {
-            ComponentType.ReadOnly<SpatialEntityId>()
+            ComponentType.ReadOnly<SpatialEntityId>(), ComponentType.ReadOnly<Metadata.Component>()
         };
+
+        private readonly Dictionary<string, EntityTypeRegistration> entityTypeRegistrations
+            = new Dictionary<string, EntityTypeRegistration>();
 
         public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
 
-            var minCreatorComponentSet = gameObjectCreator.MinimumComponentTypes;
-            if (minCreatorComponentSet != null)
+            var creatorComponentTypes = gameObjectCreator.MinimumComponentTypes;
+            if (creatorComponentTypes != null)
             {
                 minimumComponentSet = minimumComponentSet
-                    .Concat(minCreatorComponentSet)
+                    .Union(creatorComponentTypes)
                     .ToArray();
             }
+
+            gameObjectCreator.Register(entityTypeRegistrations);
         }
 
         protected override void OnCreate()
@@ -87,9 +93,29 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnUpdate()
         {
-            Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
+            Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Metadata.Component metadata) =>
             {
-                gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
+                var spatialOsEntity = new SpatialOSEntity(entity, EntityManager);
+
+                if (!entityTypeRegistrations.TryGetValue(metadata.EntityType, out var entityTypeRegistration))
+                {
+                    gameObjectCreator.OnEntityCreated(spatialOsEntity, Linker);
+                    PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
+                    {
+                        EntityId = spatialEntityId.EntityId
+                    });
+                    return;
+                }
+
+                foreach (var componentType in entityTypeRegistration.ComponentTypes)
+                {
+                    if (!EntityManager.HasComponent(entity, componentType))
+                    {
+                        return;
+                    }
+                }
+
+                entityTypeRegistration.CreateGameObject(spatialOsEntity, Linker);
                 PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
                 {
                     EntityId = spatialEntityId.EntityId
