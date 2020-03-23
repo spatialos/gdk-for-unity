@@ -4,7 +4,7 @@
 
 The SpatialOS Game Development Kit (GDK) for Unity allows you to quickly and easily build and host Unity multiplayer games. These games can use multiple server-side game engines across one seamless world to create new kinds of gameplay.
 
-If you're a Unity game developer and ready to try out the GDK, follow the [Get started guide](https://docs.improbable.io/unity/alpha/projects/fps/get-started/get-started).
+If you're a Unity game developer and ready to try out the GDK, follow the [Get started guide](https://documentation.improbable.io/gdk-for-unity/docs/fps-get-started-tutorial).
 
 > The SpatialOS GDK for Unity is in alpha. We are committed to rapid development of the GDK to improve stability, usability, and performance - for information on this, see our [development roadmap](https://github.com/spatialos/gdk-for-unity/projects/1) and contact us via our [forums](https://forums.improbable.io/latest?tags=unity-gdk), or on [Discord](https://discord.gg/SCZTCYm). Sign up to our [mailing list](http://go.pardot.com/l/169082/2018-06-25/27mhsb) to get updates about the GDK for Unity.
 
@@ -16,7 +16,7 @@ If you'd like to develop on this repository, there is a little bit of additional
 
 ### Developer dependencies
 
-In addition to the dependencies listed [here](https://docs.improbable.io/unity/alpha/machine-setup#4-install-the-gdk-dependencies), you will need the following programs present on your `PATH`:
+In addition to the dependencies listed [here](https://documentation.improbable.io/gdk-for-unity/docs/setup-and-dependencies#section-4-install-the-gdk-dependencies), you will need the following programs present on your `PATH`:
 
 * [`jq`](https://stedolan.github.io/jq/)
 
@@ -34,8 +34,8 @@ In addition to the dependencies listed [here](https://docs.improbable.io/unity/a
 
 ## Having problems?
 
-* [Documentation](https://docs.improbable.io/unity/alpha/)
-* [Troubleshooting](https://docs.improbable.io/unity/alpha/reference/troubleshooting)
+* [Documentation](https://documentation.improbable.io/gdk-for-unity/docs)
+* [Troubleshooting](https://documentation.improbable.io/gdk-for-unity/docs/troubleshooting)
 * [Known issues](https://github.com/spatialos/gdk-for-unity/projects/2)
 
 If you are unable to resolve your issue, please raise an issue [in this repository](https://github.com/spatialos/gdk-for-unity/issues) or find us on the [forums](https://forums.improbable.io/latest?tags=unity-gdk) or [Discord](https://discord.gg/SCZTCYm).
@@ -62,11 +62,11 @@ We have released the GDK this early in development because we want your feedback
 
 ## Contributions
 
-We are not currently accepting public contributions - see our [contributions](https://docs.improbable.io/unity/alpha/contributing) policy. However, we are accepting issues and will gratefully appreciate your feedback.
+We are not currently accepting public contributions - see our [contributions](https://documentation.improbable.io/gdk-for-unity/docs/contribution-policy-on-github) policy. However, we are accepting issues and will gratefully appreciate your feedback.
 
 ---
 
-* Version: [alpha](https://docs.improbable.io/reference/latest/shared/release-policy)
+* Version: [alpha](https://documentation.improbable.io/spatialos-overview/docs/release-policies#section-maturity-stages)
 * Your access to and use of the Unity Engine is governed by the Unity Engine End User License Agreement. Please ensure that you have agreed to those terms before you access or use the Unity Engine.
 
 &copy; 2020 Improbable
