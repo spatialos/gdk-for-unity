@@ -17,7 +17,7 @@ namespace Improbable.Gdk.GameObjectCreation
         ComponentType[] MinimumComponentTypes { get; }
 
         /// <summary>
-        ///
+        ///     Register mappings of entity types to actions that creates their respective GameObjects.
         /// </summary>
         /// <param name="entityTypeRegistrations"></param>
         void Register(Dictionary<string, EntityTypeRegistration> entityTypeRegistrations);
