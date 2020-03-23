@@ -2,14 +2,6 @@
 
 set -e -u -x -o pipefail
 
-cd "$(dirname "$0")/../"
-
-CURRENT_DIR=$(pwd)
-TMP_DIR=$(mktemp -d)
-OUTPUT_DIR="${CURRENT_DIR}/docs-output"
-rm -rf "${OUTPUT_DIR}"
-mkdir "${OUTPUT_DIR}"
-
 function cleanUp() {
     # Ensure we are not in the temp dir before cleaning it
     cd "${CURRENT_DIR}"
@@ -17,6 +9,27 @@ function cleanUp() {
         rm -rf "${TMP_DIR}"
     fi
 }
+
+function generate_step() {
+    echo "steps:"
+    echo "  - trigger: platform-release-docs-readme"
+    echo "    label: Upload documentation"
+    echo "    build:"
+    echo "      env:"
+    echo "        bk_readme_project_name: gdk-for-unity"
+    echo "        bk_readme_category_slug: api-reference"
+    echo "        bk_readme_version: ${TAG}"
+    echo "        bk_readme_artifact_path: \"*\""
+}
+
+cd "$(dirname "$0")/../"
+
+DOCGEN_PIN="${DOCGEN_OVERRIDE:-v1.0}"
+CURRENT_DIR=$(pwd)
+TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
+OUTPUT_DIR="${CURRENT_DIR}/docs-output"
+rm -rf "${OUTPUT_DIR}"
+mkdir "${OUTPUT_DIR}"
 
 trap cleanUp EXIT
 
@@ -30,23 +43,18 @@ CLONE_URL="git@github.com:spatialos/gdk-for-unity.git"
 CODE_DIR="${TMP_DIR}/code"
 git clone "${CLONE_URL}" "${CODE_DIR}" --branch "${TAG}" --depth 1
 
-# Clone docgen repo.
-DOCGEN_CLONE_URL="git@github.com:improbable/gdk-for-unity-docgen.git"
-DOCGEN_DIR="${TMP_DIR}/docgen"
-git clone "${DOCGEN_CLONE_URL}" "${DOCGEN_DIR}"
-
-pushd "${DOCGEN_DIR}"
-    docker build . --tag docgen
-popd
-
 docker run --rm \
     -v "${CODE_DIR}/workers/unity/Packages:/input" \
     -v "${OUTPUT_DIR}:/output" \
-    docgen \
+    "eu.gcr.io/io-crafty-shelter/gdk-for-unity-docgen:${DOCGEN_PIN}" \
         --target-namespace="Improbable.Gdk" \
         --namespace-filter=".*EditmodeTests" \
         --namespace-filter=".*DeploymentLauncher" \
         --namespace-filter=".*PlaymodeTests" \
         --git-tag="${TAG}"
 
-# TODO: Trigger Filip's pipeline when that's live
+pushd "${OUTPUT_DIR}"
+    buildkite-agent artifact upload "**/*.md"
+popd
+
+generate_step | buildkite-agent pipeline upload --no-interpolation

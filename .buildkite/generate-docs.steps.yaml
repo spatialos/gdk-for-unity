@@ -32,5 +32,3 @@ steps:
   - label: Generate docs
     command: "ci/generate-docs.sh"
     <<: *linux
-    artifact_paths:
-      - docs-output/**/*
