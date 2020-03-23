@@ -29,7 +29,9 @@ public static EntityTemplate Player(EntityId entityId, string workerId, byte[] a
 }
 ```
 
-### The `IEntityGameObjectCreator` now requires the `ComponentType[] MiniumComponentTypes { get; }` property
+### Changes to `IEntityGameObjectCreator`
+
+#### `ComponentType[] MiniumComponentTypes { get; }` property
 
 If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method.
 
@@ -44,6 +46,23 @@ public ComponentType[] MinimumComponentTypes { get; } =
 ```
 
 > You will need to add `using Unity.Entities;` to the top of the file and reference it in the assembly that your custom GameObject creator is in.
+
+#### `void Register()` method
+
+Use this method to register the method required to create GameObjects of specific entity types.
+
+For example, the FPS project does the following:
+
+```csharp
+public void Register(Dictionary<string, EntityTypeRegistration> entityTypeRegistrations)
+{
+    entityTypeRegistrations.Add(PlayerEntityType, new EntityTypeRegistration(CreatePlayerGameObject,
+        typeof(OwningWorker.Component),
+        typeof(ServerMovement.Component)));
+}
+```
+
+You can optionally leave the implementation of this method blank, as the `GameObjectInitializationSystem` will use the creator's `OnEntityCreated` method by default.
 
 ## From `0.3.2` to `0.3.3`
 

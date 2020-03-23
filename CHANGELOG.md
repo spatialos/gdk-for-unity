@@ -2,8 +2,6 @@
 
 ## Unreleased
 
-## `0.3.4` - 2020-03-16
-
 ### Breaking Changes
 
 - The `DeploymentLauncher` project has an additional required argument `runtime_version`. If you invoke this manually through `dotnet`, you'll need to provide this argument. [#1299](https://github.com/spatialos/gdk-for-unity/pull/1299)
@@ -14,6 +12,7 @@
     - You will have to change your callback from `(string clientWorkerId, byte[] serializedArguments)` to `(EntityId entityId, string clientWorkerId, byte[] serializedArguments)`.
 - Added the `ComponentType[] MiniumComponentTypes { get; }` property to `IEntityGameObjectCreator`. [#1330](https://github.com/spatialos/gdk-for-unity/pull/1330)
     - You will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method on your custom GameObject creator.
+- Added the `void Register()` method to `IEntityGameObjectCreator`. [#1332](https://github.com/spatialos/gdk-for-unity/pull/1332)
 
 ### Added
 
