@@ -38,15 +38,11 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
             linker = goInitSystem.Linker;
         }
 
-        [TearDown]
-        public new void TearDown()
-        {
-            World.Dispose();
-        }
-
         [Test]
         public void Create_GameObject_after_required_components_arrive_in_same_frame()
         {
+            var entityId = this.entityId++;
+
             World
                 .Step(world =>
                 {
@@ -75,6 +71,8 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         [Test]
         public void Create_GameObject_after_required_components_arrive_in_multiple_frames()
         {
+            var entityId = this.entityId++;
+
             World
                 .Step(world =>
                 {
@@ -117,13 +115,16 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
             public ComponentType[] MinimumComponentTypes { get; } =
             {
-                ComponentType.ReadOnly<Position.Component>(),
-                ComponentType.ReadOnly<Metadata.Component>()
+                ComponentType.ReadOnly<Position.Component>(), ComponentType.ReadOnly<Metadata.Component>()
             };
 
             public TestGameObjectCreator(string workerType)
             {
                 this.workerType = workerType;
+            }
+
+            public void Register(Dictionary<string, EntityTypeRegistration> entityTypeRegistrations)
+            {
             }
 
             public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
