@@ -49,7 +49,7 @@ public ComponentType[] MinimumComponentTypes { get; } =
 
 #### `void Register()` method
 
-Use this method to register the method required to create GameObjects of specific entity types.
+Use this method to register entity types and the method required to create GameObjects of that type.
 
 For example, the FPS project does the following:
 
