@@ -43,7 +43,7 @@ public ComponentType[] MinimumComponentTypes { get; } =
 };
 ```
 
-> You wil need to add `using Unity.Entities;` to the top of the file.
+> You will need to add `using Unity.Entities;` to the top of the file and reference it in the assembly that your custom GameObject creator is in.
 
 ## From `0.3.2` to `0.3.3`
 
