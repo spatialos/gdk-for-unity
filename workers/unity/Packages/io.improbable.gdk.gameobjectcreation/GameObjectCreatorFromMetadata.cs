@@ -17,28 +17,27 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly string workerType;
         private readonly Vector3 workerOrigin;
 
-        private readonly ILogDispatcher logger;
 
         private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
 
         private readonly Type[] componentsToAdd =
         {
-            typeof(Transform),
-            typeof(Rigidbody),
-            typeof(MeshRenderer)
+            typeof(Transform), typeof(Rigidbody), typeof(MeshRenderer)
         };
 
         public ComponentType[] MinimumComponentTypes { get; } =
         {
-            ComponentType.ReadOnly<Metadata.Component>(),
-            ComponentType.ReadOnly<Position.Component>()
+            ComponentType.ReadOnly<Metadata.Component>(), ComponentType.ReadOnly<Position.Component>()
         };
 
         public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
         {
             this.workerType = workerType;
             this.workerOrigin = workerOrigin;
-            this.logger = logger;
+        }
+
+        public void Register(Dictionary<string, EntityTypeRegistration> entityTypeRegistrations)
+        {
         }
 
         public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
