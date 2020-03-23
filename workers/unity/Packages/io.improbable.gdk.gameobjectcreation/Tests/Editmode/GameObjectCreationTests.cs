@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
@@ -22,10 +21,10 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         {
             return new MockWorld.Options
             {
-                AdditionalSystems = new (Type systemType, object[] constructorArgs)[]
+                AdditionalSystem = world =>
                 {
-                    (typeof(GameObjectInitializationSystem),
-                        new object[] { new TestGameObjectCreator(WorkerType), null })
+                    var testGameObjectCreator = new TestGameObjectCreator(WorkerType);
+                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator);
                 }
             };
         }
@@ -46,7 +45,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         }
 
         [Test]
-        public void Create_gameobject_after_required_components_arrive_in_same_frame()
+        public void Create_GameObject_after_required_components_arrive_in_same_frame()
         {
             World
                 .Step(world =>
@@ -74,7 +73,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         }
 
         [Test]
-        public void Create_gameobject_after_required_components_arrive_in_multiple_frames()
+        public void Create_GameObject_after_required_components_arrive_in_multiple_frames()
         {
             World
                 .Step(world =>

@@ -15,7 +15,7 @@ namespace Improbable.Gdk.TestUtils
         public struct Options
         {
             public string WorkerType;
-            public (Type systemType, object[] constructorArgs)[] AdditionalSystems;
+            public Action<World> AdditionalSystem;
             public ILogDispatcher Logger;
         }
 
@@ -40,13 +40,7 @@ namespace Improbable.Gdk.TestUtils
                     Vector3.zero)
                 .Result;
 
-            if (options.AdditionalSystems != null)
-            {
-                foreach (var (systemType, constructorArgs) in options.AdditionalSystems)
-                {
-                    mockWorld.Worker.World.CreateSystem(systemType, constructorArgs);
-                }
-            }
+            options.AdditionalSystem?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 
