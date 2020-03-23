@@ -29,6 +29,20 @@ public static EntityTemplate Player(EntityId entityId, string workerId, byte[] a
 }
 ```
 
+### The `IEntityGameObjectCreator` now requires the `ComponentType[] MiniumComponentTypes { get; }` property
+
+If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method.
+
+For example, the following has been added to the `GameObjectCreatorFromMetadata` class:
+
+```csharp
+public ComponentType[] MinimumComponentTypes { get; } =
+{
+    ComponentType.ReadOnly<Metadata.Component>(),
+    ComponentType.ReadOnly<Position.Component>()
+};
+```
+
 ## From `0.3.2` to `0.3.3`
 
 ### Building for Android now requires the NDK
@@ -97,7 +111,7 @@ type Vector3d {
 You should then replace the import of `improbable/vector.schema` and usage of `improbable.Vector3f`/`improbable.Vector3d` with the schema file you defined.
 
 > Note that methods such as `Vector3f.ToUnityVector();` are no longer available and you'll need to reimplement them yourself as extension/static methods. You can find the old implementations here: [`Vector3f`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3f) and [`Vector3d`](https://github.com/spatialos/gdk-for-unity/blob/0.2.6/workers/unity/Packages/io.improbable.gdk.tools/.CodeGenerator/GdkCodeGenerator/Partials/Improbable.Vector3d).
-> 
+>
 > You will be unable to reimplement the operators since C# lacks the ability to define operations via extension methods.
 >
 > Note that the `Coordinates` type can be used as a replacement for `Vector3d` as they are structurally the same.
