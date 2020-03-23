@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using NUnit.Framework;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +15,7 @@ namespace Improbable.Gdk.TestUtils
         public struct Options
         {
             public string WorkerType;
-            public Type[] AdditionalSystems;
+            public Action<World> AdditionalSystems;
             public ILogDispatcher Logger;
         }
 
@@ -38,10 +40,7 @@ namespace Improbable.Gdk.TestUtils
                     Vector3.zero)
                 .Result;
 
-            foreach (var type in options.AdditionalSystems ?? new Type[] { })
-            {
-                mockWorld.Worker.World.CreateSystem(type);
-            }
+            options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 
