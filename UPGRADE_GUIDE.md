@@ -37,8 +37,8 @@ If you have written custom GameObject creators implementing `IEntityGameObjectCr
 
 The `EntityTypeExpectations` class provides two public methods for defining a set of components expected on an entity to be able create GameObjects for a given entity type:
 
-- `void RegisterDefault(Type[] defaultComponentTypes = null)`
-- `void RegisterEntityType(string entityType, Type[] expectedComponentTypes = null)`
+- `void RegisterDefault(IEnumerable<Type> defaultComponentTypes = null)`
+- `void RegisterEntityType(string entityType, IEnumerable<Type> expectedComponentTypes = null)`
 
 For example, the `GameObjectCreatorFromMetadata` class implements the method like so:
 

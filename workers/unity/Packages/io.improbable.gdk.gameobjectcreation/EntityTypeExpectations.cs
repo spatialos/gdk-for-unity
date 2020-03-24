@@ -10,23 +10,40 @@ namespace Improbable.Gdk.GameObjectCreation
     /// </summary>
     public class EntityTypeExpectations
     {
-        private ComponentType[] defaultExpectation;
+        private ComponentType[] defaultExpectation = new ComponentType[] { };
 
         private readonly Dictionary<string, ComponentType[]> entityExpectations
             = new Dictionary<string, ComponentType[]>();
 
-        public void RegisterDefault(Type[] defaultComponentTypes = null)
+        public void RegisterDefault(IEnumerable<Type> defaultComponentTypes = null)
         {
-            defaultExpectation = defaultComponentTypes?
-                .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
-                .ToArray();
+            if (defaultComponentTypes == null)
+            {
+                defaultExpectation = new ComponentType[] { };
+            }
+            else
+            {
+                defaultExpectation = defaultComponentTypes
+                    .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
+                    .ToArray();
+            }
         }
 
-        public void RegisterEntityType(string entityType, Type[] expectedComponentTypes = null)
+        public void RegisterEntityType(string entityType, IEnumerable<Type> expectedComponentTypes = null)
         {
-            var expectedTypes = expectedComponentTypes?
-                .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
-                .ToArray();
+            ComponentType[] expectedTypes;
+
+            if (expectedComponentTypes == null)
+            {
+                expectedTypes = new ComponentType[] { };
+            }
+            else
+            {
+                expectedTypes = expectedComponentTypes
+                    .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
+                    .ToArray();
+            }
+
             entityExpectations.Add(entityType, expectedTypes);
         }
 
@@ -37,7 +54,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return defaultExpectation;
             }
 
-            return types ?? new ComponentType[] { };
+            return types;
         }
     }
 }
