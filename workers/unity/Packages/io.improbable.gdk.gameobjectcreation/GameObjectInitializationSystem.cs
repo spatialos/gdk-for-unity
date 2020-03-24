@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectCreation
 {
     /// <summary>
-    ///     For each newly added SpatialOS entity, calls IEntityGagit meObjectCreator to get an associated GameObject
+    ///     For each newly added SpatialOS entity, calls IEntityGameObjectCreator to get an associated GameObject
     ///     and links it to the entity via the EntityGameObjectLinker. Also checks for entity removal and calls the
     ///     IEntityGameObjectCreator for cleanup.
     /// </summary>
