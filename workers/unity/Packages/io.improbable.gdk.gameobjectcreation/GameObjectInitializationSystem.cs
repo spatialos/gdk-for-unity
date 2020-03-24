@@ -95,7 +95,7 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Metadata.Component metadata) =>
             {
-                var spatialOsEntity = new SpatialOSEntity(entity, EntityManager);
+                var spatialOSEntity = new SpatialOSEntity(entity, EntityManager);
 
                 if (!entityTypeRegistrations.TryGetValue(metadata.EntityType, out var entityTypeRegistration))
                 {
