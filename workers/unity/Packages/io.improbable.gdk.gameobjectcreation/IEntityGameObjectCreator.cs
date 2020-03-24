@@ -11,9 +11,9 @@ namespace Improbable.Gdk.GameObjectCreation
     public interface IEntityGameObjectCreator
     {
         /// <summary>
-        ///     The minimum set of components required on an entity to create a GameObject.
+        ///     Called to register the components expected on an entity to create a GameObject for a given entity type.
         /// </summary>
-        ComponentType[] MinimumComponentTypes { get; }
+        void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations);
 
         /// <summary>
         ///     Called when a new SpatialOS Entity is checked out by the worker.
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.GameObjectCreation
         /// <returns>
         ///     A GameObject to be linked to the entity, or null if no GameObject should be linked.
         /// </returns>
-        void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker);
+        void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker);
 
         /// <summary>
         ///     Called when a SpatialOS Entity is removed from the worker's view.

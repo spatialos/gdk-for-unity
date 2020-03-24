@@ -115,18 +115,20 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 
             private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
 
-            public ComponentType[] MinimumComponentTypes { get; } =
-            {
-                ComponentType.ReadOnly<Position.Component>(),
-                ComponentType.ReadOnly<Metadata.Component>()
-            };
-
             public TestGameObjectCreator(string workerType)
             {
                 this.workerType = workerType;
             }
 
-            public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
+            public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
+            {
+                entityTypeExpectations.RegisterDefault(new[]
+                {
+                    typeof(Metadata.Component), typeof(Position.Component)
+                });
+            }
+
+            public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
             {
                 var gameObject = new GameObject();
                 gameObject.transform.position = Vector3.one;

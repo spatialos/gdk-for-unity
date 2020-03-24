@@ -29,21 +29,65 @@ public static EntityTemplate Player(EntityId entityId, string workerId, byte[] a
 }
 ```
 
-### The `IEntityGameObjectCreator` now requires the `ComponentType[] MiniumComponentTypes { get; }` property
+### `IEntityGameObjectCreator` changes
 
-If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method.
+#### Implement `PopulateEntityTypeExpectations` method
 
-For example, the following has been added to the `GameObjectCreatorFromMetadata` class:
+If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will now have to implement a `void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)` method.
+
+The `EntityTypeExpectations` class provides two public methods for defining a set of components expected on an entity to be able create GameObjects for a given entity type:
+
+- `void RegisterDefault(IEnumerable<Type> defaultComponentTypes = null)`
+- `void RegisterEntityType(string entityType, IEnumerable<Type> expectedComponentTypes = null)`
+
+For example, the `GameObjectCreatorFromMetadata` class implements the method like so:
 
 ```csharp
-public ComponentType[] MinimumComponentTypes { get; } =
+public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
 {
-    ComponentType.ReadOnly<Metadata.Component>(),
-    ComponentType.ReadOnly<Position.Component>()
-};
+    entityTypeExpectations.RegisterDefault(new[]
+    {
+        typeof(Position.Component)
+    });
+}
 ```
 
-> You will need to add `using Unity.Entities;` to the top of the file and reference it in the assembly that your custom GameObject creator is in.
+The `AdvancedEntityPipeline` in the FPS Starter Project makes use of both public methods on the `EntityTypeExpectations` class. This is done in order to wait for specific components when creating "Player" GameObjects, and a different set of components for any other entity type:
+
+```csharp
+public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
+{
+    entityTypeExpectations.RegisterEntityType(PlayerEntityType, new[]
+    {
+        typeof(OwningWorker.Component), typeof(ServerMovement.Component)
+    });
+
+    fallback.PopulateEntityTypeExpectations(entityTypeExpectations);
+}
+``
+
+#### Add `string entityType` as argument to `OnEntityCreated`
+
+The `EntityType` available the `Metadata` component is now provided as an argument when calling `OnEntityCreated` on your GameObject creator.
+
+> This means that your entities must have the `Metadata` component to use the GameObject Creation Feature Module.
+
+The `AdvancedEntityPipeline` in the FPS Starter Project makes use of it like so:
+
+```csharp
+public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
+{
+    switch (entityType)
+    {
+        case PlayerEntityType:
+            CreatePlayerGameObject(entity, linker);
+            break;
+        default:
+            fallback.OnEntityCreated(entityType, entity, linker);
+            break;
+    }
+}
+```
 
 ## From `0.3.2` to `0.3.3`
 

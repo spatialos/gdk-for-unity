@@ -12,8 +12,10 @@
 - `CustomSpatialOSSendSystem` is no longer available. [#1308](https://github.com/spatialos/gdk-for-unity/pull/1308)
 - The Player Lifecycle feature module now provides an `EntityId` in its `CreatePlayerEntityTemplate` callback. [#1315](https://github.com/spatialos/gdk-for-unity/pull/1315)
     - You will have to change your callback from `(string clientWorkerId, byte[] serializedArguments)` to `(EntityId entityId, string clientWorkerId, byte[] serializedArguments)`.
-- Added the `ComponentType[] MiniumComponentTypes { get; }` property to `IEntityGameObjectCreator`. [#1330](https://github.com/spatialos/gdk-for-unity/pull/1330)
-    - You will have to define the minimum set of components required on an entity to trigger the `OnEntityCreated` method on your custom GameObject creator.
+- Added the `PopulateEntityTypeExpectations` method to `IEntityGameObjectCreator`. [#1333](https://github.com/spatialos/gdk-for-unity/pull/1333)
+    - Use this method to define the set of components expected on an entity to be able create GameObjects for a given entity type.
+- Added `string entityType` as an argument to  `IEntityGameObjectCreator.OnEntityCreated`. [#1333](https://github.com/spatialos/gdk-for-unity/pull/1333)
+    - This means that your entities must have the `Metadata` component to use the GameObject Creation Feature Module.
 
 ### Added
 
