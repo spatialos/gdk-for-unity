@@ -13,14 +13,14 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly Dictionary<string, Type[]> entityExpectations
             = new Dictionary<string, Type[]>();
 
-        public void RegisterDefault(Type[] defaultComponentTypes)
+        public void RegisterDefault(Type[] defaultComponentTypes = null)
         {
             defaultExpectation = defaultComponentTypes;
         }
 
-        public void RegisterEntityType(string entityType, Type[] expectedComponentTypes)
+        public void RegisterEntityType(string entityType, Type[] expectedComponentTypes = null)
         {
-            entityExpectations.Add(entityType, expectedComponentTypes ?? new Type[] { });
+            entityExpectations.Add(entityType, expectedComponentTypes);
         }
 
         internal Type[] GetExpectedTypes(string entityType)
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return defaultExpectation;
             }
 
-            return types;
+            return types ?? new Type[] { };
         }
     }
 }
