@@ -16,8 +16,6 @@ namespace Improbable.Gdk.GameObjectCreation
         private readonly string workerType;
         private readonly Vector3 workerOrigin;
 
-        private readonly ILogDispatcher logger;
-
         private readonly Dictionary<EntityId, GameObject> entityIdToGameObject = new Dictionary<EntityId, GameObject>();
 
         private readonly Type[] componentsToAdd =
@@ -29,26 +27,21 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             this.workerType = workerType;
             this.workerOrigin = workerOrigin;
-            this.logger = logger;
         }
 
         public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
         {
             entityTypeExpectations.RegisterDefault(new[]
             {
-                typeof(Metadata.Component), typeof(Position.Component)
+                typeof(Position.Component)
             });
         }
 
         public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
         {
-            if (!entity.TryGetComponent<Metadata.Component>(out var metadata) ||
-                !entity.TryGetComponent<Position.Component>(out var spatialOSPosition))
-            {
-                return;
-            }
+            var spatialOSPosition = entity.GetComponent<Position.Component>();
 
-            var prefabName = metadata.EntityType;
+            var prefabName = entityType;
             var position = spatialOSPosition.Coords.ToUnityVector() + workerOrigin;
 
             if (!cachedPrefabs.TryGetValue(prefabName, out var prefab))
