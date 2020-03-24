@@ -52,7 +52,7 @@ public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpe
 }
 ```
 
-The `AdvancedEntityPipeline` in the FPS Starter Project makes use of both public methods on the `EntityTypeExpectations` class. This is done in order to use a specifc method for creating "Player" GameObjects, and a fallback for any other entity type:
+The `AdvancedEntityPipeline` in the FPS Starter Project makes use of both public methods on the `EntityTypeExpectations` class. This is done in order to wait for specific components when creating "Player" GameObjects, and a different set of components for any other entity type:
 
 ```csharp
 public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
