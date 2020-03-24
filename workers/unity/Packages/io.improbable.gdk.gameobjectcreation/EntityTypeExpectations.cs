@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Entities;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -8,29 +10,34 @@ namespace Improbable.Gdk.GameObjectCreation
     /// </summary>
     public class EntityTypeExpectations
     {
-        private Type[] defaultExpectation;
+        private ComponentType[] defaultExpectation;
 
-        private readonly Dictionary<string, Type[]> entityExpectations
-            = new Dictionary<string, Type[]>();
+        private readonly Dictionary<string, ComponentType[]> entityExpectations
+            = new Dictionary<string, ComponentType[]>();
 
         public void RegisterDefault(Type[] defaultComponentTypes = null)
         {
-            defaultExpectation = defaultComponentTypes;
+            defaultExpectation = defaultComponentTypes?
+                .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
+                .ToArray();
         }
 
         public void RegisterEntityType(string entityType, Type[] expectedComponentTypes = null)
         {
-            entityExpectations.Add(entityType, expectedComponentTypes);
+            var expectedTypes = expectedComponentTypes?
+                .Select(type => new ComponentType(type, ComponentType.AccessMode.ReadOnly))
+                .ToArray();
+            entityExpectations.Add(entityType, expectedTypes);
         }
 
-        internal Type[] GetExpectedTypes(string entityType)
+        internal ComponentType[] GetExpectedTypes(string entityType)
         {
             if (!entityExpectations.TryGetValue(entityType, out var types))
             {
                 return defaultExpectation;
             }
 
-            return types ?? new Type[] { };
+            return types ?? new ComponentType[] { };
         }
     }
 }

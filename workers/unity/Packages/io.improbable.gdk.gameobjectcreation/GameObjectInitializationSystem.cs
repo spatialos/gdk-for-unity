@@ -32,8 +32,6 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
-
-            gameObjectCreator.PopulateEntityTypeExpectations(entityTypeExpectations);
         }
 
         protected override void OnCreate()
@@ -65,6 +63,8 @@ namespace Improbable.Gdk.GameObjectCreation
                 All = new[] { ComponentType.ReadOnly<GameObjectInitSystemStateComponent>() },
                 None = minimumComponentSet
             });
+
+            gameObjectCreator.PopulateEntityTypeExpectations(entityTypeExpectations);
         }
 
         protected override void OnDestroy()
