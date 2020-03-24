@@ -7,16 +7,18 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 {
     public class MockGameObjectCreator : IEntityGameObjectCreator
     {
-        public ComponentType[] MinimumComponentTypes { get; } = { };
-
-        public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
+        public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
         {
-            throw new System.NotImplementedException();
+        }
+
+        public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
+        {
+            throw new NotImplementedException();
         }
 
         public void OnEntityRemoved(EntityId entityId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

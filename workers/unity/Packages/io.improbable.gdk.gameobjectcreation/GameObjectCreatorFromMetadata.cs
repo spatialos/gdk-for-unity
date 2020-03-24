@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Unity.Entities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -23,15 +22,7 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly Type[] componentsToAdd =
         {
-            typeof(Transform),
-            typeof(Rigidbody),
-            typeof(MeshRenderer)
-        };
-
-        public ComponentType[] MinimumComponentTypes { get; } =
-        {
-            ComponentType.ReadOnly<Metadata.Component>(),
-            ComponentType.ReadOnly<Position.Component>()
+            typeof(Transform), typeof(Rigidbody), typeof(MeshRenderer)
         };
 
         public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
@@ -41,7 +32,15 @@ namespace Improbable.Gdk.GameObjectCreation
             this.logger = logger;
         }
 
-        public void OnEntityCreated(SpatialOSEntity entity, EntityGameObjectLinker linker)
+        public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
+        {
+            entityTypeExpectations.RegisterDefault(new[]
+            {
+                typeof(Metadata.Component), typeof(Position.Component)
+            });
+        }
+
+        public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
         {
             if (!entity.TryGetComponent<Metadata.Component>(out var metadata) ||
                 !entity.TryGetComponent<Position.Component>(out var spatialOSPosition))
