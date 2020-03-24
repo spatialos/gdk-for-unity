@@ -151,7 +151,7 @@
 ### Breaking Changes
 
 - Reactive components have been removed completely. [#1195](https://github.com/spatialos/gdk-for-unity/pull/1195)
-  - If you are using reactive components, please see our documentation on the [ECS workflow](https://docs.improbable.io/unity/alpha/workflows/overview#ecs-centric-workflow).
+  - If you are using reactive components, please see our documentation on the [ECS workflow](https://documentation.improbable.io/gdk-for-unity/docs/ecs-introduction).
 - Codegen for the GameObjectCreation package has been moved into the package. If the package is not used, readers and writers will no longer be generated. [#1196](https://github.com/spatialos/gdk-for-unity/pull/1196)
 - Empty component updates will no longer trigger callbacks when received. [#1211](https://github.com/spatialos/gdk-for-unity/pull/1211)
 
@@ -316,7 +316,7 @@
 ### Changed
 
 - Upgraded to Worker SDK 13.8.2. [#1052](https://github.com/spatialos/gdk-for-unity/pull/1052)
-    - The new [`Entity` schema type](https://docs.improbable.io/reference/13.8/shared/schema/reference#primitive-types) is deserialized as an `Improbable.Gdk.Core.EntitySnapshot`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
+    - The new [`Entity` schema type](https://documentation.improbable.io/sdks-and-data/docs/schemalang-reference#section-primitive-types) is deserialized as an `Improbable.Gdk.Core.EntitySnapshot`. [#1053](https://github.com/spatialos/gdk-for-unity/pull/1053)
 - The conversion methods for `FixedPointVector3` and `CompressedQuaternion` have been moved from `TransformUtils` to their generated structs and are now public. [#1063](https://github.com/spatialos/gdk-for-unity/pull/1063)
 
 ### Fixed
@@ -590,7 +590,7 @@
 - Added the ability to send arbitrary serialized data in a player creation request.
     - Replaced `Vector3f` position in `CreatePlayerRequestType` with a `bytes` field for sending arbitrary serialized data.
 - Added `RequestPlayerCreation` to manually request for player creation in `SendCreatePlayerRequestSystem`.
-- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://docs.improbable.io/reference/latest/shared/auth/development-authentication).
+- Added a menu item, navigate to **SpatialOS** > **Generate Dev Authentication Token**, to generate a TextAsset containing the [Development Authentication Token](https://documentation.improbable.io/sdks-and-data/docs/authentication-during-game-development).
 - Added the ability to mark a build target as `Required` which will cause builds to fail in the Editor if the prerequisite build support is not installed.
 
 ### Changed
