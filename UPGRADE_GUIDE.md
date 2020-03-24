@@ -33,11 +33,14 @@ public static EntityTemplate Player(EntityId entityId, string workerId, byte[] a
 
 #### Implement `PopulateEntityTypeExpectations` method
 
-If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will now have to implement a `PopulateEntityTypeExpectations` method.
+If you have written custom GameObject creators implementing `IEntityGameObjectCreator`, you will now have to implement a `void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)` method.
 
-This method is used to define a set of components expected on an entity to be able create GameObjects for a given entity type.
+The `EntityTypeExpectations` class provides two public methods for defining a set of components expected on an entity to be able create GameObjects for a given entity type:
 
-For example, the `GameObjectCreatorFromMetadata` class implements it like so:
+- `void RegisterDefault(Type[] defaultComponentTypes = null)`
+- `void RegisterEntityType(string entityType, Type[] expectedComponentTypes = null)`
+
+For example, the `GameObjectCreatorFromMetadata` class implements the method like so:
 
 ```csharp
 public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
@@ -48,6 +51,20 @@ public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpe
     });
 }
 ```
+
+The `AdvancedEntityPipeline` in the FPS Starter Project makes use of both public methods on the `EntityTypeExpectations` class. This is done in order to use a specifc method for creating "Player" GameObjects, and a fallback for any other entity type:
+
+```csharp
+public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpectations)
+{
+    entityTypeExpectations.RegisterEntityType(PlayerEntityType, new[]
+    {
+        typeof(OwningWorker.Component), typeof(ServerMovement.Component)
+    });
+
+    fallback.PopulateEntityTypeExpectations(entityTypeExpectations);
+}
+``
 
 #### Add `string entityType` as argument to `OnEntityCreated`
 
