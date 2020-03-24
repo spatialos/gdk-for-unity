@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -91,6 +92,8 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 ProcessRemovedEntities();
             }
+
+            Linker.FlushCommandBuffer();
         }
 
         private void ProcessRemovedEntities()
@@ -98,10 +101,16 @@ namespace Improbable.Gdk.GameObjectCreation
             Entities.With(removedEntitiesQuery).ForEach((ref GameObjectInitSystemStateComponent state) =>
             {
                 Linker.UnlinkAllGameObjectsFromEntityId(state.EntityId);
-                gameObjectCreator.OnEntityRemoved(state.EntityId);
-            });
 
-            Linker.FlushCommandBuffer();
+                try
+                {
+                    gameObjectCreator.OnEntityRemoved(state.EntityId);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+            });
 
             EntityManager.RemoveComponent<GameObjectInitSystemStateComponent>(removedEntitiesQuery);
         }
@@ -114,18 +123,23 @@ namespace Improbable.Gdk.GameObjectCreation
                     var entityType = metadata.EntityType;
                     var expectedTypes = entityTypeExpectations.GetExpectedTypes(entityType);
 
-                    if (expectedTypes != null)
+                    foreach (var expectedType in expectedTypes)
                     {
-                        foreach (var expectedType in expectedTypes)
+                        if (!EntityManager.HasComponent(entity, expectedType))
                         {
-                            if (!EntityManager.HasComponent(entity, expectedType))
-                            {
-                                return;
-                            }
+                            return;
                         }
                     }
 
-                    gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);
+                    try
+                    {
+                        gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+
                     PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
                     {
                         EntityId = spatialEntityId.EntityId
