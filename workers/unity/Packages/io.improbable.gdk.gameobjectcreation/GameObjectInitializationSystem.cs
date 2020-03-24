@@ -1,4 +1,3 @@
-using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -7,7 +6,7 @@ using UnityEngine;
 namespace Improbable.Gdk.GameObjectCreation
 {
     /// <summary>
-    ///     For each newly added SpatialOS entity, calls IEntityGameObjectCreator to get an associated GameObject
+    ///     For each newly added SpatialOS entity, calls IEntityGagit meObjectCreator to get an associated GameObject
     ///     and links it to the entity via the EntityGameObjectLinker. Also checks for entity removal and calls the
     ///     IEntityGameObjectCreator for cleanup.
     /// </summary>
@@ -26,23 +25,14 @@ namespace Improbable.Gdk.GameObjectCreation
         private EntityQuery newEntitiesQuery;
         private EntityQuery removedEntitiesQuery;
 
-        private ComponentType[] minimumComponentSet = new[]
-        {
-            ComponentType.ReadOnly<SpatialEntityId>()
-        };
+        private readonly EntityTypeExpectations entityTypeExpectations = new EntityTypeExpectations();
 
         public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
         {
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
 
-            var minCreatorComponentSet = gameObjectCreator.MinimumComponentTypes;
-            if (minCreatorComponentSet != null)
-            {
-                minimumComponentSet = minimumComponentSet
-                    .Concat(minCreatorComponentSet)
-                    .ToArray();
-            }
+            gameObjectCreator.PopulateEntityTypeExpectations(entityTypeExpectations);
         }
 
         protected override void OnCreate()
@@ -57,6 +47,11 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 Linker.LinkGameObjectToSpatialOSEntity(new EntityId(0), workerGameObject);
             }
+
+            var minimumComponentSet = new[]
+            {
+                ComponentType.ReadOnly<SpatialEntityId>(), ComponentType.ReadOnly<Metadata.Component>()
+            };
 
             newEntitiesQuery = GetEntityQuery(new EntityQueryDesc()
             {
@@ -87,15 +82,19 @@ namespace Improbable.Gdk.GameObjectCreation
 
         protected override void OnUpdate()
         {
-            Entities.With(newEntitiesQuery).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
+            if (!newEntitiesQuery.IsEmptyIgnoreFilter)
             {
-                gameObjectCreator.OnEntityCreated(new SpatialOSEntity(entity, EntityManager), Linker);
-                PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
-                {
-                    EntityId = spatialEntityId.EntityId
-                });
-            });
+                ProcessNewEntities();
+            }
 
+            if (!removedEntitiesQuery.IsEmptyIgnoreFilter)
+            {
+                ProcessRemovedEntities();
+            }
+        }
+
+        private void ProcessRemovedEntities()
+        {
             Entities.With(removedEntitiesQuery).ForEach((ref GameObjectInitSystemStateComponent state) =>
             {
                 Linker.UnlinkAllGameObjectsFromEntityId(state.EntityId);
@@ -105,6 +104,33 @@ namespace Improbable.Gdk.GameObjectCreation
             Linker.FlushCommandBuffer();
 
             EntityManager.RemoveComponent<GameObjectInitSystemStateComponent>(removedEntitiesQuery);
+        }
+
+        private void ProcessNewEntities()
+        {
+            Entities.With(newEntitiesQuery).ForEach(
+                (Entity entity, ref SpatialEntityId spatialEntityId, ref Metadata.Component metadata) =>
+                {
+                    var entityType = metadata.EntityType;
+                    var expectedTypes = entityTypeExpectations.GetExpectedTypes(entityType);
+
+                    if (expectedTypes != null)
+                    {
+                        foreach (var expectedType in expectedTypes)
+                        {
+                            if (!EntityManager.HasComponent(entity, expectedType))
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);
+                    PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
+                    {
+                        EntityId = spatialEntityId.EntityId
+                    });
+                });
         }
     }
 }
