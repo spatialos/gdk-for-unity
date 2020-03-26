@@ -64,7 +64,7 @@ public void PopulateEntityTypeExpectations(EntityTypeExpectations entityTypeExpe
 
     fallback.PopulateEntityTypeExpectations(entityTypeExpectations);
 }
-``
+```
 
 #### Add `string entityType` as argument to `OnEntityCreated`
 
