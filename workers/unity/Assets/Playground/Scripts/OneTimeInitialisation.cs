@@ -18,7 +18,7 @@ namespace Playground
             initialized = true;
 
             // Setup template to use for player on connecting client
-            PlayerLifecycleConfig.CreatePlayerEntityTemplate = PlayerTemplate.CreatePlayerEntityTemplate;
+            PlayerLifecycleConfig.CreatePlayerEntityTemplate = EntityTemplates.CreatePlayerEntityTemplate;
         }
     }
 }

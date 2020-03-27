@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
@@ -46,10 +44,7 @@ namespace Playground.MonoBehaviours
             var location = gameObject.transform.position - offset;
             location.y += 2;
 
-            var cubeEntityTemplate = CubeTemplate.CreateCubeEntityTemplate();
-
-            cubeEntityTemplate.SetComponent(new Position.Snapshot(location.ToCoordinates()));
-            cubeEntityTemplate.SetComponent(TransformUtils.CreateTransformSnapshot(location, Quaternion.identity));
+            var cubeEntityTemplate = EntityTemplates.CreateCubeEntityTemplate(location);
 
             worldCommandRequestSender.SendCreateEntityCommand(
                 new WorldCommands.CreateEntity.Request(cubeEntityTemplate, entityId), OnEntityCreated);

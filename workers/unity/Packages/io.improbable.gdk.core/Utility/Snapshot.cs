@@ -13,6 +13,17 @@ namespace Improbable.Gdk.Core
 
         public int Count => entities.Count;
 
+        private long nextEntityId = 1;
+
+        /// <summary>
+        ///     Returns the next available entity ID.
+        /// </summary>
+        /// <returns>The next available entity ID.</returns>
+        public EntityId GetNextEntityId()
+        {
+            return new EntityId(nextEntityId++);
+        }
+
         /// <summary>
         ///     Adds an entity to the snapshot
         /// </summary>
@@ -23,9 +34,19 @@ namespace Improbable.Gdk.Core
         /// <returns>The entity ID assigned to the entity in the snapshot.</returns>
         public EntityId AddEntity(EntityTemplate entityTemplate)
         {
-            var entityId = new EntityId(entities.Count + 1);
-            entities[entityId] = entityTemplate.GetEntity();
+            var entityId = GetNextEntityId();
+            AddEntity(entityId, entityTemplate);
             return entityId;
+        }
+
+        /// <summary>
+        ///     Adds an entity to the snapshot
+        /// </summary>
+        /// <param name="entityId">The entity ID of the entity to be added to the snapshot</param>
+        /// <param name="entityTemplate">The entity to be added to the snapshot.</param>
+        public void AddEntity(EntityId entityId, EntityTemplate entityTemplate)
+        {
+            entities[entityId] = entityTemplate.GetEntity();
         }
 
         /// <summary>

@@ -35,6 +35,7 @@ namespace Playground.Editor.SnapshotGenerator
             AddPlayerSpawner(snapshot, new Coordinates(-200, 0, 200));
 
             AddCubeGrid(snapshot, cubeCount);
+
             CreateSpinner(snapshot, new Coordinates { X = 5.5, Y = 0.5f, Z = 0.0 });
             CreateSpinner(snapshot, new Coordinates { X = -5.5, Y = 0.5f, Z = 0.0 });
 
@@ -43,22 +44,18 @@ namespace Playground.Editor.SnapshotGenerator
 
         private static void AddPlayerSpawner(Snapshot snapshot, Coordinates playerSpawnerLocation)
         {
-            var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(playerSpawnerLocation), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Metadata.Snapshot { EntityType = "PlayerCreator" }, WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new PlayerCreator.Snapshot(), WorkerUtils.UnityGameLogic);
+            var template = EntityTemplates.CreatePlayerSpawnerEntityTemplate(playerSpawnerLocation);
+            snapshot.AddEntity(template);
+        }
 
-            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
-
+        private static void CreateSpinner(Snapshot snapshot, Coordinates coords)
+        {
+            var template = EntityTemplates.CreateSpinnerEntityTemplate(coords);
             snapshot.AddEntity(template);
         }
 
         private static void AddCubeGrid(Snapshot snapshot, int cubeCount)
         {
-            var cubeTemplate = CubeTemplate.CreateCubeEntityTemplate();
-
             // Calculate grid size
             var gridLength = (int) Math.Ceiling(Math.Sqrt(cubeCount));
             if (gridLength % 2 == 1) // To make sure nothing is in (0, 0)
@@ -85,40 +82,10 @@ namespace Playground.Editor.SnapshotGenerator
                     }
 
                     var location = new Vector3(x, 1, z);
-                    var positionSnapshot = new Position.Snapshot(location.ToCoordinates());
-                    var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, Quaternion.identity);
-
-                    cubeTemplate.SetComponent(positionSnapshot);
-                    cubeTemplate.SetComponent(transformSnapshot);
+                    var cubeTemplate = EntityTemplates.CreateCubeEntityTemplate(location);
                     snapshot.AddEntity(cubeTemplate);
                 }
             }
-        }
-
-        private static void CreateSpinner(Snapshot snapshot, Coordinates coords)
-        {
-            const string entityType = "Spinner";
-
-            var transform = TransformUtils.CreateTransformSnapshot(coords.ToUnityVector(), Quaternion.identity);
-
-            var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Metadata.Snapshot(entityType), WorkerUtils.UnityGameLogic);
-            template.AddComponent(transform, WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
-
-            var query = InterestQuery.Query(Constraint.RelativeSphere(radius: 25));
-            var interest = InterestTemplate.Create()
-                .AddQueries<Position.Component>(query);
-            template.AddComponent(interest.ToSnapshot(), WorkerUtils.UnityGameLogic);
-
-            template.SetReadAccess(WorkerUtils.UnityGameLogic, WorkerUtils.UnityClient, WorkerUtils.MobileClient);
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
-
-            snapshot.AddEntity(template);
         }
     }
 }
