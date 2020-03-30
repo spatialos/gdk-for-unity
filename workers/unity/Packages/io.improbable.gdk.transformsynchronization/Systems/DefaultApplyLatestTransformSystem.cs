@@ -46,8 +46,7 @@ namespace Improbable.Gdk.TransformSynchronization
             transformQueryDesc.None = transformQueryDesc.None
                 .Union(
                     applyLatestTransformActions.Keys
-                        .Select(ComponentType.ReadOnly)
-                        .ToArray())
+                        .Select(ComponentType.ReadOnly))
                 .ToArray();
 
             transformQuery = GetEntityQuery(transformQueryDesc);
