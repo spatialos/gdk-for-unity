@@ -44,6 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxConnectionAttempts: 3
-  DevelopmentAuthToken: 
   UseExternalIp: 0
   level: {fileID: 1652884293046250, guid: 849b7fe21c599e842ae89f79f70c0f6d, type: 3}

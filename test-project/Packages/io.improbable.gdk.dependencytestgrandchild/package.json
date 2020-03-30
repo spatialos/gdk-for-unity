@@ -2,7 +2,7 @@
   "name": "io.improbable.gdk.dependencytestgrandchild",
   "displayName": "SpatialOS GDK Dependency Test Grandchild",
   "version": "0.3.4",
-  "unity": "2019.2",
+  "unity": "2019.3",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Dependency Test Grandchild.",
   "type": "tests"
