@@ -20,7 +20,7 @@ namespace Playground
 
             cubeGroup = GetEntityQuery(
                 ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
-                ComponentType.ReadOnly<CubeTargetVelocity.Authoritative>(),
+                ComponentType.ReadOnly<CubeTargetVelocity.HasAuthority>(),
                 ComponentType.ReadWrite<Rigidbody>()
             );
         }

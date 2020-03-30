@@ -79,7 +79,7 @@ namespace Improbable.Gdk.TransformSynchronization
             if (requireAuthority)
             {
                 includedComponentTypes = includedComponentTypes
-                    .Append(ComponentType.ReadOnly<TransformInternal.Authoritative>());
+                    .Append(ComponentType.ReadOnly<TransformInternal.HasAuthority>());
             }
 
             var componentQueryDesc = new EntityQueryDesc
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 componentQueryDesc.None = new[]
                 {
-                    ComponentType.ReadOnly<TransformInternal.Authoritative>()
+                    ComponentType.ReadOnly<TransformInternal.HasAuthority>()
                 };
             }
 

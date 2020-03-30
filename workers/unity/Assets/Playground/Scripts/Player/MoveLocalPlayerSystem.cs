@@ -34,7 +34,7 @@ namespace Playground
 
             newPlayerGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.Component>(),
-                ComponentType.ReadOnly<PlayerInput.Authoritative>(),
+                ComponentType.ReadOnly<PlayerInput.HasAuthority>(),
                 ComponentType.Exclude<Speed>()
             );
 
@@ -42,7 +42,7 @@ namespace Playground
                 ComponentType.ReadWrite<Rigidbody>(),
                 ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadOnly<PlayerInput.Component>(),
-                ComponentType.ReadOnly<TransformInternal.Authoritative>()
+                ComponentType.ReadOnly<TransformInternal.HasAuthority>()
             );
         }
 

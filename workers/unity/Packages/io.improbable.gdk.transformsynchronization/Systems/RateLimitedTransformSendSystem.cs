@@ -26,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformToSend>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<TransformInternal.Authoritative>());
+                ComponentType.ReadOnly<TransformInternal.HasAuthority>());
         }
 
         protected override void OnUpdate()

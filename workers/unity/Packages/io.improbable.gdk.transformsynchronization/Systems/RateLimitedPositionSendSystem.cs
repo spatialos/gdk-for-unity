@@ -21,7 +21,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<Position.Authoritative>()
+                ComponentType.ReadOnly<Position.HasAuthority>()
             );
         }
 

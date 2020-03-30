@@ -217,7 +217,7 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
             Logger.Trace(
                 $"Generating {componentDetails.Namespace}.{componentDetails.Name}.ComponentAuthority struct.");
 
-            return Scope.Type("public struct Authoritative : IComponentData", t => { });
+            return Scope.Type("public struct HasAuthority : IComponentData", t => { });
         }
 
         private static TypeBlock GenerateSnapshotStruct(UnityComponentDetails componentDetails)

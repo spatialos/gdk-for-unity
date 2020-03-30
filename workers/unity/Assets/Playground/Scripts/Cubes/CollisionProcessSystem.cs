@@ -26,7 +26,7 @@ namespace Playground
 
             collisionGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launchable.Component>(),
-                ComponentType.ReadOnly<Launchable.Authoritative>(),
+                ComponentType.ReadOnly<Launchable.HasAuthority>(),
                 ComponentType.ReadOnly<CollisionComponent>()
             );
         }

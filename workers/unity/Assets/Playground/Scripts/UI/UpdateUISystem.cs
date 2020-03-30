@@ -20,13 +20,13 @@ namespace Playground
             launcherGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<Launcher.Authoritative>()
+                ComponentType.ReadOnly<Launcher.HasAuthority>()
             );
 
             scoreGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<Score.Authoritative>()
+                ComponentType.ReadOnly<Score.HasAuthority>()
             );
         }
 

@@ -19,7 +19,7 @@ namespace Playground
             inputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<PlayerInput.Component>(),
                 ComponentType.ReadWrite<CameraTransform>(),
-                ComponentType.ReadOnly<PlayerInput.Authoritative>()
+                ComponentType.ReadOnly<PlayerInput.HasAuthority>()
             );
         }
 

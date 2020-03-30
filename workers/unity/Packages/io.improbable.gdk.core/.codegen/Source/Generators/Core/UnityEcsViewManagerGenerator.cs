@@ -38,7 +38,7 @@ private World world;
 private readonly ComponentType[] initialComponents = new ComponentType[]
 {{
     ComponentType.ReadWrite<{componentNamespace}.Component>(),
-    ComponentType.ReadOnly<{componentNamespace}.Authoritative>(),
+    ComponentType.ReadOnly<{componentNamespace}.HasAuthority>(),
 }};
 ");
 
@@ -128,7 +128,7 @@ public void Init(World world)
                                 m.Line(new[]
                                 {
                                     "var entity = workerSystem.GetEntity(entityId);",
-                                    $"entityManager.RemoveComponent<{componentNamespace}.Authoritative>(entity);",
+                                    $"entityManager.RemoveComponent<{componentNamespace}.HasAuthority>(entity);",
                                 });
 
                                 if (!componentDetails.IsBlittable)
@@ -179,13 +179,13 @@ private void SetAuthority(EntityId entityId, Authority authority)
         case Authority.NotAuthoritative:
         {{
             var entity = workerSystem.GetEntity(entityId);
-            entityManager.RemoveComponent<{componentNamespace}.Authoritative>(entity);
+            entityManager.RemoveComponent<{componentNamespace}.HasAuthority>(entity);
             break;
         }}
         case Authority.Authoritative:
         {{
             var entity = workerSystem.GetEntity(entityId);
-            entityManager.AddComponent<{componentNamespace}.Authoritative>(entity);
+            entityManager.AddComponent<{componentNamespace}.HasAuthority>(entity);
             break;
         }}
         case Authority.AuthorityLossImminent:

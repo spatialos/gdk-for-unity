@@ -19,7 +19,7 @@ namespace Playground
             uiInitGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<Score.Component>(),
-                ComponentType.ReadOnly<PlayerInput.Authoritative>(),
+                ComponentType.ReadOnly<PlayerInput.HasAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
         }

@@ -20,7 +20,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             timeOfNextHeartbeat = Time.ElapsedTime + PlayerLifecycleConfig.PlayerHeartbeatIntervalSeconds;
 
             group = GetEntityQuery(
-                ComponentType.ReadOnly<PlayerHeartbeatServer.Authoritative>(),
+                ComponentType.ReadOnly<PlayerHeartbeatServer.HasAuthority>(),
                 ComponentType.ReadWrite<HeartbeatData>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );

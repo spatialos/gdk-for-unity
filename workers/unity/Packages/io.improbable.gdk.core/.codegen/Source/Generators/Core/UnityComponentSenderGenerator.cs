@@ -40,7 +40,7 @@ public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
     All = new[]
     {{
         ComponentType.ReadWrite<{componentNamespace}.Component>(),
-        ComponentType.ReadOnly<{componentNamespace}.Authoritative>(),
+        ComponentType.ReadOnly<{componentNamespace}.HasAuthority>(),
         ComponentType.ReadOnly<SpatialEntityId>()
     }},
 }};

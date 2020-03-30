@@ -26,7 +26,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 },
                 None = new[]
                 {
-                    ComponentType.ReadOnly<TransformInternal.Authoritative>(),
+                    ComponentType.ReadOnly<TransformInternal.HasAuthority>(),
                 }
             });
         }

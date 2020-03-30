@@ -22,7 +22,7 @@ namespace Playground
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             group = GetEntityQuery(
-                ComponentType.ReadOnly<CubeColor.Authoritative>(),
+                ComponentType.ReadOnly<CubeColor.HasAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
 

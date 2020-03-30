@@ -32,7 +32,7 @@ namespace Playground
             commandSystem = World.GetExistingSystem<CommandSystem>();
             launchGroup = GetEntityQuery(
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<PlayerInput.Authoritative>()
+                ComponentType.ReadOnly<PlayerInput.HasAuthority>()
             );
         }
 
