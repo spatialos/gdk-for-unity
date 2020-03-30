@@ -13,7 +13,7 @@ namespace Playground
 
         private Array colorValues;
         private int colorIndex;
-        private float nextColorChange;
+        private double nextColorChange;
 
         protected override void OnCreate()
         {
@@ -31,12 +31,12 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            if (Time.time < nextColorChange)
+            if (Time.ElapsedTime < nextColorChange)
             {
                 return;
             }
 
-            nextColorChange = Time.time + 2;
+            nextColorChange = Time.ElapsedTime + 2.0;
 
             var colorEventData = new ColorData
             {
