@@ -9,6 +9,6 @@
     "io.improbable.worker.sdk": "0.3.4",
     "io.improbable.gdk.tools": "0.3.4",
     "io.improbable.gdk.testutils": "0.3.4",
-    "com.unity.entities": "0.2.0-preview.18"
+    "com.unity.entities": "0.3.0-preview.4"
   }
 }
