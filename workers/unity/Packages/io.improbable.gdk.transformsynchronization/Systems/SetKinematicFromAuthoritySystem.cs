@@ -56,7 +56,7 @@ namespace Improbable.Gdk.TransformSynchronization
             where T : class
         {
             var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(initBaseComponentTypes));
-            entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            entityQuery.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             initKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(initFunc));
         }

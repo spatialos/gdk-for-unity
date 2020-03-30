@@ -37,7 +37,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.Exclude<Speed>()
             );
-            newPlayerGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+            newPlayerGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
 
             playerInputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<Rigidbody>(),
@@ -45,7 +45,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.Component>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
-            playerInputGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
+            playerInputGroup.SetSharedComponentFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
@@ -84,7 +84,7 @@ namespace Playground
                     var speedSmoothVelocity = speed.SpeedSmoothVelocity;
 
                     currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, SpeedSmoothTime,
-                        MaxSpeed, Time.deltaTime);
+                        MaxSpeed, Time.DeltaTime);
                     speed = new Speed
                     {
                         CurrentSpeed = currentSpeed,

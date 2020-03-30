@@ -25,7 +25,7 @@ namespace Playground
 
         protected override void OnUpdate()
         {
-            var dt = Time.deltaTime;
+            var dt = Time.DeltaTime;
 
             Entities.With(group).ForEach((Entity entity, ref Launcher.Component launcher) =>
             {

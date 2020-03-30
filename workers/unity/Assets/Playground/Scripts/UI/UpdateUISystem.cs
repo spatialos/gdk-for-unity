@@ -22,14 +22,14 @@ namespace Playground
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Launcher.ComponentAuthority>()
             );
-            launcherGroup.SetFilter(Launcher.ComponentAuthority.Authoritative);
+            launcherGroup.SetSharedComponentFilter(Launcher.ComponentAuthority.Authoritative);
 
             scoreGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadOnly<Score.ComponentAuthority>()
             );
-            scoreGroup.SetFilter(Score.ComponentAuthority.Authoritative);
+            scoreGroup.SetSharedComponentFilter(Score.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

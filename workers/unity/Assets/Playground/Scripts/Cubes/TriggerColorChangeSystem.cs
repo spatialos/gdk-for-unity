@@ -25,7 +25,7 @@ namespace Playground
                 ComponentType.ReadOnly<CubeColor.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            group.SetFilter(CubeColor.ComponentAuthority.Authoritative);
+            group.SetSharedComponentFilter(CubeColor.ComponentAuthority.Authoritative);
 
             colorValues = Enum.GetValues(typeof(Color));
         }

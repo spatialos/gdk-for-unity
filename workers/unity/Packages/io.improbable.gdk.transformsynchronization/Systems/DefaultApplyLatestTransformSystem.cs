@@ -34,7 +34,7 @@ namespace Improbable.Gdk.TransformSynchronization
             where T : class
         {
             var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(baseComponentTypes));
-            entityQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            entityQuery.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
 
             applyLatestTransformActions.Add(typeof(T),
                 () => Entities.With(entityQuery)
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 .ToArray();
 
             transformQuery = GetEntityQuery(transformQueryDesc);
-            transformQuery.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            transformQuery.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()

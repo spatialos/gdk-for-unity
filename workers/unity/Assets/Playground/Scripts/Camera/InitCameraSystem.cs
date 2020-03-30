@@ -20,7 +20,7 @@ namespace Playground
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+            inputGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

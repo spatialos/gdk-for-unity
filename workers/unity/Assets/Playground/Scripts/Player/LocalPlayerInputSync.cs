@@ -21,7 +21,7 @@ namespace Playground
                 ComponentType.ReadWrite<CameraTransform>(),
                 ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
             );
-            inputGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
+            inputGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

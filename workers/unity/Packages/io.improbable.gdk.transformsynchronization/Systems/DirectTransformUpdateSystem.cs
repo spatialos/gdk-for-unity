@@ -27,7 +27,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadOnly<DirectReceiveTag>(),
                 ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             );
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            transformGroup.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
         }
 
         protected override void OnUpdate()

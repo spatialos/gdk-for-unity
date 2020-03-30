@@ -29,7 +29,7 @@ namespace Playground
                 ComponentType.ReadOnly<Launchable.ComponentAuthority>(),
                 ComponentType.ReadOnly<CollisionComponent>()
             );
-            collisionGroup.SetFilter(Launchable.ComponentAuthority.Authoritative);
+            collisionGroup.SetSharedComponentFilter(Launchable.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
