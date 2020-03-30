@@ -40,7 +40,7 @@ public EntityQueryDesc ComponentUpdateQuery => new EntityQueryDesc
     All = new[]
     {{
         ComponentType.ReadWrite<{componentNamespace}.Component>(),
-        ComponentType.ReadWrite<{componentNamespace}.ComponentAuthority>(),
+        ComponentType.ReadOnly<{componentNamespace}.Authoritative>(),
         ComponentType.ReadOnly<SpatialEntityId>()
     }},
 }};
@@ -59,7 +59,6 @@ public void SendUpdates(
                                     {
                                         "var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);",
                                         $"var componentType = system.GetArchetypeChunkComponentType<{componentNamespace}.Component>();",
-                                        "var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();"
                                     });
 
                                     s.Loop("foreach (var chunk in chunkArray)", outerLoop =>
@@ -68,15 +67,7 @@ public void SendUpdates(
                                         {
                                             "var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);",
                                             "var componentArray = chunk.GetNativeArray(componentType);",
-                                            "var authorityIndex = chunk.GetSharedComponentIndex(authorityType);",
                                         });
-
-                                        outerLoop.If(
-                                            "!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority",
-                                            () => new[]
-                                            {
-                                                "continue;"
-                                            });
 
                                         outerLoop.Loop("for (var i = 0; i < componentArray.Length; i++)", innerLoop =>
                                         {

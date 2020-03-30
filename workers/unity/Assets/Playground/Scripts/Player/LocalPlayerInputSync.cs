@@ -19,9 +19,8 @@ namespace Playground
             inputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<PlayerInput.Component>(),
                 ComponentType.ReadWrite<CameraTransform>(),
-                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
+                ComponentType.ReadOnly<PlayerInput.Authoritative>()
             );
-            inputGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

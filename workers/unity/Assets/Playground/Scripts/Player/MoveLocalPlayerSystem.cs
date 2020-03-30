@@ -34,18 +34,16 @@ namespace Playground
 
             newPlayerGroup = GetEntityQuery(
                 ComponentType.ReadOnly<PlayerInput.Component>(),
-                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
+                ComponentType.ReadOnly<PlayerInput.Authoritative>(),
                 ComponentType.Exclude<Speed>()
             );
-            newPlayerGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
 
             playerInputGroup = GetEntityQuery(
                 ComponentType.ReadWrite<Rigidbody>(),
                 ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadOnly<PlayerInput.Component>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+                ComponentType.ReadOnly<TransformInternal.Authoritative>()
             );
-            playerInputGroup.SetSharedComponentFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

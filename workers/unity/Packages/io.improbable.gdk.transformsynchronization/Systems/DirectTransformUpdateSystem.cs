@@ -20,14 +20,20 @@ namespace Improbable.Gdk.TransformSynchronization
             worker = World.GetExistingSystem<WorkerSystem>();
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
-            transformGroup = GetEntityQuery(
-                ComponentType.ReadWrite<TransformToSet>(),
-                ComponentType.ReadOnly<TransformInternal.Component>(),
-                ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<DirectReceiveTag>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
-            );
-            transformGroup.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            transformGroup = GetEntityQuery(new EntityQueryDesc
+            {
+                All = new[]
+                {
+                    ComponentType.ReadWrite<TransformToSet>(),
+                    ComponentType.ReadOnly<TransformInternal.Component>(),
+                    ComponentType.ReadOnly<SpatialEntityId>(),
+                    ComponentType.ReadOnly<DirectReceiveTag>(),
+                },
+                None = new[]
+                {
+                    ComponentType.ReadOnly<TransformInternal.Authoritative>()
+                }
+            });
         }
 
         protected override void OnUpdate()

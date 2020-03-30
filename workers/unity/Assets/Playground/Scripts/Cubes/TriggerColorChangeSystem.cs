@@ -22,10 +22,9 @@ namespace Playground
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             group = GetEntityQuery(
-                ComponentType.ReadOnly<CubeColor.ComponentAuthority>(),
+                ComponentType.ReadOnly<CubeColor.Authoritative>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            group.SetSharedComponentFilter(CubeColor.ComponentAuthority.Authoritative);
 
             colorValues = Enum.GetValues(typeof(Color));
         }

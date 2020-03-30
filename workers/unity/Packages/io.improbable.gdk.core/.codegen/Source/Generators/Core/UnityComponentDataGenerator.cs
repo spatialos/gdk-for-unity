@@ -217,48 +217,7 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
             Logger.Trace(
                 $"Generating {componentDetails.Namespace}.{componentDetails.Name}.ComponentAuthority struct.");
 
-            return Scope.Type("public struct ComponentAuthority : ISharedComponentData, IEquatable<ComponentAuthority>",
-                t =>
-                {
-                    t.Line(@"
-public bool HasAuthority;
-
-public ComponentAuthority(bool hasAuthority)
-{
-    HasAuthority = hasAuthority;
-}
-
-// todo think about whether any of this is necessary
-// Unity does a bitwise equality check so this is just for users reading the struct
-public static readonly ComponentAuthority NotAuthoritative = new ComponentAuthority(false);
-public static readonly ComponentAuthority Authoritative = new ComponentAuthority(true);
-
-public bool Equals(ComponentAuthority other)
-{
-    return this == other;
-}
-
-public override bool Equals(object obj)
-{
-    return obj is ComponentAuthority auth && this == auth;
-}
-
-public override int GetHashCode()
-{
-    return HasAuthority.GetHashCode();
-}
-
-public static bool operator ==(ComponentAuthority a, ComponentAuthority b)
-{
-    return a.HasAuthority == b.HasAuthority;
-}
-
-public static bool operator !=(ComponentAuthority a, ComponentAuthority b)
-{
-    return !(a == b);
-}
-");
-                });
+            return Scope.Type("public struct Authoritative : IComponentData", t => { });
         }
 
         private static TypeBlock GenerateSnapshotStruct(UnityComponentDetails componentDetails)

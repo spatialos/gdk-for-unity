@@ -30,17 +30,19 @@ namespace Improbable.Gdk.CodeGenerator
 
                         partial.Type("public class EcsViewManager : IEcsViewManager", evm =>
                         {
-                            evm.Line(@"
+                            evm.Line($@"
 private WorkerSystem workerSystem;
 private EntityManager entityManager;
 private World world;
 
 private readonly ComponentType[] initialComponents = new ComponentType[]
-{
-    ComponentType.ReadWrite<Component>(),
-    ComponentType.ReadWrite<ComponentAuthority>(),
-};
+{{
+    ComponentType.ReadWrite<{componentNamespace}.Component>(),
+    ComponentType.ReadOnly<{componentNamespace}.Authoritative>(),
+}};
+");
 
+                            evm.Line(@"
 public uint GetComponentId()
 {
     return ComponentId;
@@ -117,7 +119,6 @@ public void Init(World world)
                                 m.Line(new[]
                                 {
                                     "component.MarkDataClean();",
-                                    "entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);",
                                     "entityManager.AddComponentData(entity, component);"
                                 });
                             });
@@ -127,7 +128,7 @@ public void Init(World world)
                                 m.Line(new[]
                                 {
                                     "var entity = workerSystem.GetEntity(entityId);",
-                                    "entityManager.RemoveComponent<ComponentAuthority>(entity);"
+                                    $"entityManager.RemoveComponent<{componentNamespace}.Authoritative>(entity);",
                                 });
 
                                 if (!componentDetails.IsBlittable)
@@ -170,27 +171,27 @@ if (update.Update.{fieldDetails.PascalCaseName}.HasValue)
                                 });
                             });
 
-                            evm.Line(@"
+                            evm.Line($@"
 private void SetAuthority(EntityId entityId, Authority authority)
-{
+{{
     switch (authority)
-    {
+    {{
         case Authority.NotAuthoritative:
-        {
+        {{
             var entity = workerSystem.GetEntity(entityId);
-            entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+            entityManager.RemoveComponent<{componentNamespace}.Authoritative>(entity);
             break;
-        }
+        }}
         case Authority.Authoritative:
-        {
+        {{
             var entity = workerSystem.GetEntity(entityId);
-            entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
+            entityManager.AddComponent<{componentNamespace}.Authoritative>(entity);
             break;
-        }
+        }}
         case Authority.AuthorityLossImminent:
             break;
-    }
-}
+    }}
+}}
 ");
                         });
                     });

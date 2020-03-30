@@ -17,10 +17,9 @@ namespace Playground
             componentUpdateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
             inputGroup = GetEntityQuery(
-                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
+                ComponentType.ReadOnly<PlayerInput.Authoritative>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            inputGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

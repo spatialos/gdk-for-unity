@@ -21,9 +21,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<Position.ComponentAuthority>()
+                ComponentType.ReadOnly<Position.Authoritative>()
             );
-            positionGroup.SetSharedComponentFilter(Position.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

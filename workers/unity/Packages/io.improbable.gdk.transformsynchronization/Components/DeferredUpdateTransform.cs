@@ -1,4 +1,3 @@
-using Improbable.Gdk.TransformSynchronization;
 using Unity.Entities;
 
 namespace Improbable.Gdk.TransformSynchronization

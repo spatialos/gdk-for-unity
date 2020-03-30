@@ -26,10 +26,9 @@ namespace Playground
 
             collisionGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launchable.Component>(),
-                ComponentType.ReadOnly<Launchable.ComponentAuthority>(),
+                ComponentType.ReadOnly<Launchable.Authoritative>(),
                 ComponentType.ReadOnly<CollisionComponent>()
             );
-            collisionGroup.SetSharedComponentFilter(Launchable.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

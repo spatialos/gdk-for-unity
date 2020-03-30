@@ -19,10 +19,9 @@ namespace Playground
             uiInitGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<Score.Component>(),
-                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>(),
+                ComponentType.ReadOnly<PlayerInput.Authoritative>(),
                 ComponentType.ReadOnly<SpatialEntityId>()
             );
-            uiInitGroup.SetSharedComponentFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

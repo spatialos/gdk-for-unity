@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 
@@ -33,7 +34,6 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 ComponentType.ReadWrite<KinematicStateWhenAuth>(),
                 ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
             };
 
             authBaseComponentTypes = new[]
@@ -55,8 +55,7 @@ namespace Improbable.Gdk.TransformSynchronization
         private void CreateInitAction<T>(EntityQueryBuilder.F_DC<KinematicStateWhenAuth, T> initFunc)
             where T : class
         {
-            var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(initBaseComponentTypes));
-            entityQuery.SetSharedComponentFilter(TransformInternal.ComponentAuthority.NotAuthoritative);
+            var entityQuery = GetEntityQuery(TransformUtils.ConstructEntityQueryDesc<T>(requireAuthority: false, initBaseComponentTypes));
 
             initKinematicActions.Add(typeof(T), () => Entities.With(entityQuery).ForEach(initFunc));
         }
@@ -64,8 +63,10 @@ namespace Improbable.Gdk.TransformSynchronization
         private void CreateAuthChangeAction<T>(AuthChangeFunc<T> authFunc)
             where T : class
         {
-            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(authBaseComponentTypes);
-            componentQueryDesc.None = new[] { ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>() };
+            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(requireAuthority: false, authBaseComponentTypes);
+            componentQueryDesc.None = componentQueryDesc.None
+                .Append(ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>())
+                .ToArray();
 
             var entityQuery = GetEntityQuery(componentQueryDesc);
 
