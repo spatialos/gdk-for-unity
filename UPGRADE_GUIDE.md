@@ -4,7 +4,7 @@
 
 ### Unity 2019.3 upgrade
 
-You must upgrade your project to 2019.3 to be able to use this, and future versions, of the GDK for Unity. Any patch release of 2019.3 should work, but we test against 2019.3.7f1.
+You must upgrade your project to 2019.3 to be able to use this version, and future versions, of the GDK for Unity. Any patch release of 2019.3 should work, but we test against 2019.3.7f1.
 
 ## From `0.3.3` to `0.3.4`
 
