@@ -26,19 +26,17 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformToSend>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>());
+                ComponentType.ReadOnly<TransformInternal.HasAuthority>());
         }
 
         protected override void OnUpdate()
         {
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
-
             Entities.With(transformGroup).ForEach(
                 (RateLimitedSendConfig config, ref TransformInternal.Component transform,
                     ref TransformToSend transformToSend, ref LastTransformSentData lastTransformSent,
                     ref TicksSinceLastTransformUpdate ticksSinceLastTransformUpdate) =>
                 {
-                    lastTransformSent.TimeSinceLastUpdate += Time.deltaTime;
+                    lastTransformSent.TimeSinceLastUpdate += Time.DeltaTime;
 
                     if (lastTransformSent.TimeSinceLastUpdate < 1.0f / config.MaxTransformUpdateRateHz)
                     {

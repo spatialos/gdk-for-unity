@@ -33,7 +33,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     This is used by the <see cref="SendPlayerHeartbeatRequestSystem"/> on the server-worker to determine
         ///     how often to send a `PlayerHeartbeat` request to client-workers.
         /// </remarks>
-        public static float PlayerHeartbeatIntervalSeconds = 5f;
+        public static double PlayerHeartbeatIntervalSeconds = 5.0;
 
         /// <summary>
         ///     The maximum number of failed heartbeats before a player is disconnected.

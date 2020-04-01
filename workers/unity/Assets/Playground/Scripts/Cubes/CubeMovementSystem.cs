@@ -20,10 +20,9 @@ namespace Playground
 
             cubeGroup = GetEntityQuery(
                 ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
-                ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
+                ComponentType.ReadOnly<CubeTargetVelocity.HasAuthority>(),
                 ComponentType.ReadWrite<Rigidbody>()
             );
-            cubeGroup.SetFilter(CubeTargetVelocity.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

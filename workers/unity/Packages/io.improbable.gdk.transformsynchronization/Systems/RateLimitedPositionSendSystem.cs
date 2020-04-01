@@ -21,9 +21,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 ComponentType.ReadWrite<Position.Component>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
                 ComponentType.ReadOnly<RateLimitedSendConfig>(),
-                ComponentType.ReadOnly<Position.ComponentAuthority>()
+                ComponentType.ReadOnly<Position.HasAuthority>()
             );
-            positionGroup.SetFilter(Position.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()
@@ -31,7 +30,7 @@ namespace Improbable.Gdk.TransformSynchronization
             Entities.With(positionGroup).ForEach((RateLimitedSendConfig config, ref Position.Component position,
                 ref TransformInternal.Component transformInternal, ref LastPositionSentData lastPositionSent) =>
             {
-                lastPositionSent.TimeSinceLastUpdate += Time.deltaTime;
+                lastPositionSent.TimeSinceLastUpdate += Time.DeltaTime;
 
                 if (lastPositionSent.TimeSinceLastUpdate < 1.0f / config.MaxPositionUpdateRateHz)
                 {

@@ -19,8 +19,8 @@ namespace Improbable.Tests
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
-                ComponentType.ReadWrite<Component>(),
-                ComponentType.ReadWrite<ComponentAuthority>(),
+                ComponentType.ReadWrite<global::Improbable.Tests.DependencyTest.Component>(),
+                ComponentType.ReadOnly<global::Improbable.Tests.DependencyTest.HasAuthority>(),
             };
 
             public uint GetComponentId()
@@ -85,14 +85,13 @@ namespace Improbable.Tests
                 var component = new global::Improbable.Tests.DependencyTest.Component();
 
                 component.MarkDataClean();
-                entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
             }
 
             private void RemoveComponent(EntityId entityId)
             {
                 var entity = workerSystem.GetEntity(entityId);
-                entityManager.RemoveComponent<ComponentAuthority>(entity);
+                entityManager.RemoveComponent<global::Improbable.Tests.DependencyTest.HasAuthority>(entity);
 
                 entityManager.RemoveComponent<global::Improbable.Tests.DependencyTest.Component>(entity);
             }
@@ -123,13 +122,13 @@ namespace Improbable.Tests
                     case Authority.NotAuthoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                        entityManager.RemoveComponent<global::Improbable.Tests.DependencyTest.HasAuthority>(entity);
                         break;
                     }
                     case Authority.Authoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
+                        entityManager.AddComponent<global::Improbable.Tests.DependencyTest.HasAuthority>(entity);
                         break;
                     }
                     case Authority.AuthorityLossImminent:

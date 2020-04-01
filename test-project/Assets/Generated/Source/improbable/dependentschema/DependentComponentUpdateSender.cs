@@ -23,7 +23,7 @@ namespace Improbable.DependentSchema
                 All = new[]
                 {
                     ComponentType.ReadWrite<global::Improbable.DependentSchema.DependentComponent.Component>(),
-                    ComponentType.ReadWrite<global::Improbable.DependentSchema.DependentComponent.ComponentAuthority>(),
+                    ComponentType.ReadOnly<global::Improbable.DependentSchema.DependentComponent.HasAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
             };
@@ -38,18 +38,11 @@ namespace Improbable.DependentSchema
                 {
                     var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                     var componentType = system.GetArchetypeChunkComponentType<global::Improbable.DependentSchema.DependentComponent.Component>();
-                    var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 
                     foreach (var chunk in chunkArray)
                     {
                         var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
                         var componentArray = chunk.GetNativeArray(componentType);
-                        var authorityIndex = chunk.GetSharedComponentIndex(authorityType);
-
-                        if (!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority)
-                        {
-                            continue;
-                        }
 
                         for (var i = 0; i < componentArray.Length; i++)
                         {

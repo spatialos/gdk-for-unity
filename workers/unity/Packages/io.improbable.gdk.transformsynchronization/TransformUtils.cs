@@ -66,21 +66,34 @@ namespace Improbable.Gdk.TransformSynchronization
         ///     Constructs an <see cref="EntityQueryDesc"/> given an array of base types and
         ///     a generic component type.
         /// </summary>
+        /// <param name="requireAuthority">If Transform Authority is required for this query</param>
         /// <param name="baseTypes">The base set of types.</param>
         /// <typeparam name="T">The type to add.</typeparam>
         /// <returns>An <see cref="EntityQueryDesc"/> that is the union of <see cref="baseTypes"/> and typeof(<see cref="T"/>)</returns>
-        internal static EntityQueryDesc ConstructEntityQueryDesc<T>(params ComponentType[] baseTypes)
+        internal static EntityQueryDesc ConstructEntityQueryDesc<T>(bool requireAuthority, params ComponentType[] baseTypes)
         {
             var componentType = ComponentType.ReadOnly<T>();
-
             var includedComponentTypes = baseTypes
-                .Append(componentType)
-                .ToArray();
+                .Append(componentType);
+
+            if (requireAuthority)
+            {
+                includedComponentTypes = includedComponentTypes
+                    .Append(ComponentType.ReadOnly<TransformInternal.HasAuthority>());
+            }
 
             var componentQueryDesc = new EntityQueryDesc
             {
-                All = includedComponentTypes
+                All = includedComponentTypes.ToArray(),
             };
+
+            if (!requireAuthority)
+            {
+                componentQueryDesc.None = new[]
+                {
+                    ComponentType.ReadOnly<TransformInternal.HasAuthority>()
+                };
+            }
 
             return componentQueryDesc;
         }

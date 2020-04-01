@@ -23,7 +23,7 @@ namespace Improbable.TestSchema
                 All = new[]
                 {
                     ComponentType.ReadWrite<global::Improbable.TestSchema.ExhaustiveEntity.Component>(),
-                    ComponentType.ReadWrite<global::Improbable.TestSchema.ExhaustiveEntity.ComponentAuthority>(),
+                    ComponentType.ReadOnly<global::Improbable.TestSchema.ExhaustiveEntity.HasAuthority>(),
                     ComponentType.ReadOnly<SpatialEntityId>()
                 },
             };
@@ -38,18 +38,11 @@ namespace Improbable.TestSchema
                 {
                     var spatialOSEntityType = system.GetArchetypeChunkComponentType<SpatialEntityId>(true);
                     var componentType = system.GetArchetypeChunkComponentType<global::Improbable.TestSchema.ExhaustiveEntity.Component>();
-                    var authorityType = system.GetArchetypeChunkSharedComponentType<ComponentAuthority>();
 
                     foreach (var chunk in chunkArray)
                     {
                         var entityIdArray = chunk.GetNativeArray(spatialOSEntityType);
                         var componentArray = chunk.GetNativeArray(componentType);
-                        var authorityIndex = chunk.GetSharedComponentIndex(authorityType);
-
-                        if (!entityManager.GetSharedComponentData<ComponentAuthority>(authorityIndex).HasAuthority)
-                        {
-                            continue;
-                        }
 
                         for (var i = 0; i < componentArray.Length; i++)
                         {

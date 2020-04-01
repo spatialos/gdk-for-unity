@@ -20,16 +20,14 @@ namespace Playground
             launcherGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Launcher.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<Launcher.ComponentAuthority>()
+                ComponentType.ReadOnly<Launcher.HasAuthority>()
             );
-            launcherGroup.SetFilter(Launcher.ComponentAuthority.Authoritative);
 
             scoreGroup = GetEntityQuery(
                 ComponentType.ReadOnly<Score.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<Score.ComponentAuthority>()
+                ComponentType.ReadOnly<Score.HasAuthority>()
             );
-            scoreGroup.SetFilter(Score.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

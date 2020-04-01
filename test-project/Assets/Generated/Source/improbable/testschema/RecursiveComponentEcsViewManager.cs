@@ -19,8 +19,8 @@ namespace Improbable.TestSchema
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
-                ComponentType.ReadWrite<Component>(),
-                ComponentType.ReadWrite<ComponentAuthority>(),
+                ComponentType.ReadWrite<global::Improbable.TestSchema.RecursiveComponent.Component>(),
+                ComponentType.ReadOnly<global::Improbable.TestSchema.RecursiveComponent.HasAuthority>(),
             };
 
             public uint GetComponentId()
@@ -96,14 +96,13 @@ namespace Improbable.TestSchema
                 component.cHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Allocate(world);
 
                 component.MarkDataClean();
-                entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
             }
 
             private void RemoveComponent(EntityId entityId)
             {
                 var entity = workerSystem.GetEntity(entityId);
-                entityManager.RemoveComponent<ComponentAuthority>(entity);
+                entityManager.RemoveComponent<global::Improbable.TestSchema.RecursiveComponent.HasAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.RecursiveComponent.Component>(entity);
 
@@ -152,13 +151,13 @@ namespace Improbable.TestSchema
                     case Authority.NotAuthoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                        entityManager.RemoveComponent<global::Improbable.TestSchema.RecursiveComponent.HasAuthority>(entity);
                         break;
                     }
                     case Authority.Authoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
+                        entityManager.AddComponent<global::Improbable.TestSchema.RecursiveComponent.HasAuthority>(entity);
                         break;
                     }
                     case Authority.AuthorityLossImminent:

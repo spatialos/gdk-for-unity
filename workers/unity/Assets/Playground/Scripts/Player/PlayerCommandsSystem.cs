@@ -32,9 +32,8 @@ namespace Playground
             commandSystem = World.GetExistingSystem<CommandSystem>();
             launchGroup = GetEntityQuery(
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.ReadOnly<PlayerInput.ComponentAuthority>()
+                ComponentType.ReadOnly<PlayerInput.HasAuthority>()
             );
-            launchGroup.SetFilter(PlayerInput.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

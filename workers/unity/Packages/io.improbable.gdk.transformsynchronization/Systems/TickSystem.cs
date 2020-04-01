@@ -16,9 +16,8 @@ namespace Improbable.Gdk.TransformSynchronization
             transformGroup = GetEntityQuery(
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadOnly<TransformInternal.Component>(),
-                ComponentType.ReadOnly<TransformInternal.ComponentAuthority>()
+                ComponentType.ReadOnly<TransformInternal.HasAuthority>()
             );
-            transformGroup.SetFilter(TransformInternal.ComponentAuthority.Authoritative);
         }
 
         protected override void OnUpdate()

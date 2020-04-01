@@ -19,8 +19,8 @@ namespace Improbable.DependentSchema
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
-                ComponentType.ReadWrite<Component>(),
-                ComponentType.ReadWrite<ComponentAuthority>(),
+                ComponentType.ReadWrite<global::Improbable.DependentSchema.DependentDataComponent.Component>(),
+                ComponentType.ReadOnly<global::Improbable.DependentSchema.DependentDataComponent.HasAuthority>(),
             };
 
             public uint GetComponentId()
@@ -156,14 +156,13 @@ namespace Improbable.DependentSchema
                 component.field18Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Allocate(world);
 
                 component.MarkDataClean();
-                entityManager.AddSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
                 entityManager.AddComponentData(entity, component);
             }
 
             private void RemoveComponent(EntityId entityId)
             {
                 var entity = workerSystem.GetEntity(entityId);
-                entityManager.RemoveComponent<ComponentAuthority>(entity);
+                entityManager.RemoveComponent<global::Improbable.DependentSchema.DependentDataComponent.HasAuthority>(entity);
 
                 var data = entityManager.GetComponentData<global::Improbable.DependentSchema.DependentDataComponent.Component>(entity);
 
@@ -317,13 +316,13 @@ namespace Improbable.DependentSchema
                     case Authority.NotAuthoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.NotAuthoritative);
+                        entityManager.RemoveComponent<global::Improbable.DependentSchema.DependentDataComponent.HasAuthority>(entity);
                         break;
                     }
                     case Authority.Authoritative:
                     {
                         var entity = workerSystem.GetEntity(entityId);
-                        entityManager.SetSharedComponentData(entity, ComponentAuthority.Authoritative);
+                        entityManager.AddComponent<global::Improbable.DependentSchema.DependentDataComponent.HasAuthority>(entity);
                         break;
                     }
                     case Authority.AuthorityLossImminent:
