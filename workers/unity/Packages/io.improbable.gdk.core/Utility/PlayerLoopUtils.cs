@@ -5,43 +5,20 @@ using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.LowLevel;
-using UnityEngine.PlayerLoop;
 
 namespace Improbable.Gdk.Core
 {
     internal static class PlayerLoopUtils
     {
-        [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-        public class UpdateInSubSystemAttribute : Attribute
-        {
-            public Type SubSystemType { get; }
-
-            public UpdateInSubSystemAttribute(Type subSystemType)
-            {
-                SubSystemType = subSystemType;
-            }
-        }
-
-        // UTY-2059: We need to call this specific private method to ensure the EntityDebugger shows our groups in the PlayerLoop
-        // No need to cache these methods, as each type will almost always be called once.
-        private static void InsertManagerIntoSubsystemList(PlayerLoopSystem[] subsystemList, int insertIndex,
-            ComponentSystemBase mgr, Type type)
-        {
-            var method = typeof(ScriptBehaviourUpdateOrder).GetMethod("InsertManagerIntoSubsystemList",
-                BindingFlags.Static | BindingFlags.NonPublic);
-            var genericMethod = method.MakeGenericMethod(type);
-            genericMethod.Invoke(null, new object[] { subsystemList, insertIndex, mgr });
-        }
-
         public static void ResolveSystemGroups(World world)
         {
             // Create simulation system for the default group
             var simulationSystemGroup = world.GetOrCreateSystem<SimulationSystemGroup>();
 
             var systems = new List<ComponentSystemBase>();
-            foreach (var systemBase in world.Systems)
+            foreach (var system in world.Systems)
             {
-                systems.Add(systemBase);
+                systems.Add(system);
             }
 
             var uniqueSystemTypes = new HashSet<Type>(systems.Select(s => s.GetType()));
@@ -55,8 +32,7 @@ namespace Improbable.Gdk.Core
                 // Skip the root-level systems
                 if (type == typeof(InitializationSystemGroup) ||
                     type == typeof(SimulationSystemGroup) ||
-                    type == typeof(PresentationSystemGroup) ||
-                    type.GetCustomAttribute<UpdateInSubSystemAttribute>() != null)
+                    type == typeof(PresentationSystemGroup))
                 {
                     continue;
                 }
@@ -77,7 +53,7 @@ namespace Improbable.Gdk.Core
                         continue;
                     }
 
-                    var systemGroup = world.GetOrCreateSystem(groupAttr.GroupType) as ComponentSystemGroup;
+                    var systemGroup = (ComponentSystemGroup) world.GetOrCreateSystem(groupAttr.GroupType);
                     systemGroup.AddSystemToUpdateList(world.GetOrCreateSystem(type));
                     if (!uniqueSystemTypes.Contains(groupAttr.GroupType))
                     {
@@ -93,8 +69,7 @@ namespace Improbable.Gdk.Core
                 var type = system.GetType();
                 if (type == typeof(InitializationSystemGroup) ||
                     type == typeof(SimulationSystemGroup) ||
-                    type == typeof(PresentationSystemGroup) ||
-                    type.GetCustomAttribute<UpdateInSubSystemAttribute>() != null)
+                    type == typeof(PresentationSystemGroup))
                 {
                     var groupSystem = system as ComponentSystemGroup;
                     groupSystem.SortSystemUpdateList();
@@ -102,117 +77,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public static void AddToPlayerLoop(World world)
-        {
-            var systemGroups = new List<ComponentSystemGroup>();
-            foreach (var systemGroup in world.Systems)
-            {
-                if (systemGroup is ComponentSystemGroup group)
-                {
-                    systemGroups.Add(group);
-                }
-            }
-
-            var subSystemToGroup = new Dictionary<Type, List<ComponentSystemGroup>>();
-
-            // Build lookup for PlayerLoop
-            foreach (var systemGroup in systemGroups)
-            {
-                var type = systemGroup.GetType();
-                Type subSystemType;
-
-                // Hardcode the subSystem types for Unity root-systems
-                if (type == typeof(InitializationSystemGroup))
-                {
-                    subSystemType = typeof(Initialization);
-                }
-                else if (type == typeof(SimulationSystemGroup))
-                {
-                    subSystemType = typeof(Update);
-                }
-                else if (type == typeof(PresentationSystemGroup))
-                {
-                    subSystemType = typeof(PreLateUpdate);
-                }
-                else
-                {
-                    var attributes = type.GetCustomAttributes(typeof(UpdateInSubSystemAttribute), true);
-                    if (attributes.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    subSystemType = ((UpdateInSubSystemAttribute) attributes[0]).SubSystemType;
-                }
-
-                // Add to lookup table
-                if (!subSystemToGroup.TryGetValue(subSystemType, out var groupList))
-                {
-                    groupList = new List<ComponentSystemGroup>();
-                    subSystemToGroup.Add(subSystemType, groupList);
-                }
-
-                groupList.Add(systemGroup);
-            }
-
-            // Insert groups into PlayerLoop
-            var playerLoop = ScriptBehaviourUpdateOrder.CurrentPlayerLoop;
-            if (playerLoop.subSystemList == null)
-            {
-                playerLoop = PlayerLoop.GetDefaultPlayerLoop();
-            }
-
-            for (var i = 0; i < playerLoop.subSystemList.Length; ++i)
-            {
-                ref var subSystem = ref playerLoop.subSystemList[i];
-                if (!subSystemToGroup.TryGetValue(subSystem.type, out var groupList))
-                {
-                    // No groups to add for this subsystem
-                    continue;
-                }
-
-                var originalSize = subSystem.subSystemList.Length;
-                var newSize = originalSize + groupList.Count;
-                Array.Resize(ref subSystem.subSystemList, newSize);
-                for (var groupIndex = 0; groupIndex < groupList.Count; groupIndex++)
-                {
-                    var systemGroup = groupList[groupIndex];
-                    InsertManagerIntoSubsystemList(subSystem.subSystemList, originalSize + groupIndex,
-                        systemGroup, systemGroup.GetType());
-                }
-            }
-
-            // Set as new PlayerLoop
-            ScriptBehaviourUpdateOrder.SetPlayerLoop(playerLoop);
-        }
-
-        public static void PrintPlayerLoop()
-        {
-            var playerLoop = ScriptBehaviourUpdateOrder.CurrentPlayerLoop;
-            if (playerLoop.subSystemList == null)
-            {
-                playerLoop = PlayerLoop.GetDefaultPlayerLoop();
-            }
-
-            foreach (var subSystem in playerLoop.subSystemList)
-            {
-                Debug.Log($"{subSystem.type}");
-
-                for (var i = 0; i < subSystem.subSystemList.Length; ++i)
-                {
-                    Debug.Log($"-- {subSystem.subSystemList[i].type}");
-                }
-            }
-        }
-
         public static void RemoveFromPlayerLoop(World world)
         {
-            var playerLoop = ScriptBehaviourUpdateOrder.CurrentPlayerLoop;
-            if (playerLoop.subSystemList == null)
-            {
-                Debug.LogWarning("Cannot remove a world from default PlayerLoop.");
-                return;
-            }
+            var playerLoop = PlayerLoop.GetCurrentPlayerLoop();
 
             //Reflection to get world from PlayerLoopSystem
             var wrapperType =
