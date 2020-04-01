@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     internal class DisconnectSystem : ComponentSystem
     {
         private EntityQuery group;

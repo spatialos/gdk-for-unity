@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class TriggerColorChangeSystem : ComponentSystem
     {
         private EntityQuery group;

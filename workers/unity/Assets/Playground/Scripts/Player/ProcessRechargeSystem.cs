@@ -9,6 +9,7 @@ namespace Playground
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class ProcessRechargeSystem : ComponentSystem
     {
         private EntityQuery group;

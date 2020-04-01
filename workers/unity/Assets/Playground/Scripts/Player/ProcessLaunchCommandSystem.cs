@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class ProcessLaunchCommandSystem : ComponentSystem
     {
         private const float RechargeTime = 2.0f;

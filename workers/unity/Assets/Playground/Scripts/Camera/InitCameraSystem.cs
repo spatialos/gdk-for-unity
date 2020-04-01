@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class InitCameraSystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;
