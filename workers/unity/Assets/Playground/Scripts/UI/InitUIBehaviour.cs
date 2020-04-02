@@ -12,21 +12,25 @@ namespace Assets.Playground.Scripts.UI
         [Require] private ScoreReader score;
         [Require] private LauncherReader launcher;
 
+        [SerializeField] private Object uiPrefab;
+        private UIComponent uiComponent;
+
         private void OnEnable()
         {
-            var ui = Resources.Load("Prefabs/UIGameObject");
-            var inst = (GameObject) Instantiate(ui, Vector3.zero, Quaternion.identity);
-            var uiComponent = inst.GetComponent<UIComponent>();
-            UIComponent.Main = uiComponent;
+            var inst = (GameObject) Instantiate(uiPrefab, Vector3.zero, Quaternion.identity);
+
+            uiComponent = inst.GetComponent<UIComponent>();
             uiComponent.TestText.text = $"Energy: {launcher.Data.EnergyLeft}";
             uiComponent.ScoreText.text = $"Score: {score.Data.Score}";
+
+            UIComponent.Main = uiComponent;
         }
 
         private void OnDisable()
         {
-            if (UIComponent.Main != null)
+            if (uiComponent != null)
             {
-                UnityObjectDestroyer.Destroy(UIComponent.Main.gameObject);
+                UnityObjectDestroyer.Destroy(uiComponent.gameObject);
             }
         }
     }

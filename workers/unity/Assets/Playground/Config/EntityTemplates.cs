@@ -10,6 +10,8 @@ namespace Playground
 {
     public static class EntityTemplates
     {
+        private const int CheckoutRadius = 25;
+
         public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, string clientWorkerId, byte[] playerCreationArguments)
         {
             var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(clientWorkerId);
@@ -23,13 +25,16 @@ namespace Playground
             template.AddComponent(new Score.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new CubeSpawner.Snapshot(new List<EntityId>()), WorkerUtils.UnityGameLogic);
 
+            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
+            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerId, WorkerUtils.UnityGameLogic);
+
             var clientSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
             {
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, CubeSpawner.ComponentId,
                 Score.ComponentId, Launcher.ComponentId
             });
 
-            var clientRangeInterest = InterestQuery.Query(Constraint.RelativeCylinder(radius: 25))
+            var clientRangeInterest = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius))
                 .FilterResults(new[]
                 {
                     Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Collisions.ComponentId,
@@ -42,7 +47,7 @@ namespace Playground
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Score.ComponentId
             });
 
-            var serverRangeInterest = InterestQuery.Query(Constraint.RelativeCylinder(radius: 25))
+            var serverRangeInterest = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius))
                 .FilterResults(new[]
                 {
                     Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Collisions.ComponentId,
@@ -52,14 +57,9 @@ namespace Playground
             var interest = InterestTemplate.Create()
                 .AddQueries<Position.Component>(clientSelfInterest, clientRangeInterest)
                 .AddQueries<Metadata.Component>(serverSelfInterest, serverRangeInterest);
-
-            template.AddComponent(interest.ToSnapshot(), WorkerUtils.UnityGameLogic);
-
-            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
-            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerId, WorkerUtils.UnityGameLogic);
+            template.AddComponent(interest.ToSnapshot());
 
             template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
         }
@@ -77,8 +77,12 @@ namespace Playground
 
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic, Quaternion.identity, location);
 
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius));
+            var interest = InterestTemplate.Create()
+                .AddQueries<Position.Component>(query);
+            template.AddComponent(interest.ToSnapshot());
+
             template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
         }
@@ -96,8 +100,12 @@ namespace Playground
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius));
+            var interest = InterestTemplate.Create()
+                .AddQueries<Position.Component>(query);
+            template.AddComponent(interest.ToSnapshot());
+
             template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
         }
@@ -109,8 +117,6 @@ namespace Playground
             template.AddComponent(new Metadata.Snapshot("PlayerCreator"), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new PlayerCreator.Snapshot(), WorkerUtils.UnityGameLogic);
-
-            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
         }

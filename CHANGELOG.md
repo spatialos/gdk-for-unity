@@ -11,6 +11,19 @@
     - No need to filter your ECS query anymore, instead match for `HasAuthority`.
     - Built-in Unity AssetBundle module is now required.
 
+## Added
+
+- Added component result type filters to QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
+- Added new methods to `Snapshot` utility class. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
+    - `GetNextEntityId()` returns the next available entity ID.
+    - `AddEntity(EntityId entityId, EntityTemplate entityTemplate)` adds an entity to the snapshot with a given entity ID.
+- Added an additional `AddComponent` method to the `EntityTemplate` class which does not require write-access to be given. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
+    - This allows users to add undelegated components on entities.
+
+## Internal
+
+- Replaced `InitUISystem` with the `InitUIBehaviour` script on the `Character` prefab. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
+
 ## `0.3.4` - 2020-03-16
 
 ### Breaking Changes
