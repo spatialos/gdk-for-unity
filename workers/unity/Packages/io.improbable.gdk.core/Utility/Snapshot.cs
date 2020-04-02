@@ -44,6 +44,10 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="entityId">The entity ID of the entity to be added to the snapshot</param>
         /// <param name="entityTemplate">The entity to be added to the snapshot.</param>
+        /// <remarks>
+        ///    You should obtain `entityId` using the `GetNextEntityId()` method, otherwise you could be given
+        ///    invalid entity IDs.
+        /// </remarks>
         public void AddEntity(EntityId entityId, EntityTemplate entityTemplate)
         {
             entities[entityId] = entityTemplate.GetEntity();

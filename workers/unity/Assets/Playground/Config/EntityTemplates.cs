@@ -77,7 +77,11 @@ namespace Playground
 
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic, Quaternion.identity, location);
 
-            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius));
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
+            {
+                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
+            });
+
             var interest = InterestTemplate.Create()
                 .AddQueries<Position.Component>(query);
             template.AddComponent(interest.ToSnapshot());
@@ -100,7 +104,11 @@ namespace Playground
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
-            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius));
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
+            {
+                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
+            });
+
             var interest = InterestTemplate.Create()
                 .AddQueries<Position.Component>(query);
             template.AddComponent(interest.ToSnapshot());

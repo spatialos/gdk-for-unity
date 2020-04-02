@@ -13,7 +13,6 @@
 
 ## Added
 
-- Added component result type filters to QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Added new methods to `Snapshot` utility class. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
     - `GetNextEntityId()` returns the next available entity ID.
     - `AddEntity(EntityId entityId, EntityTemplate entityTemplate)` adds an entity to the snapshot with a given entity ID.
@@ -22,6 +21,7 @@
 
 ## Internal
 
+- Added component result type filters to playground QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Replaced `InitUISystem` with the `InitUIBehaviour` script on the `Character` prefab. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 
 ## `0.3.4` - 2020-03-16

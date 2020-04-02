@@ -1,10 +1,7 @@
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Playground;
-using Playground.Scripts.UI;
 using UnityEngine;
 
-namespace Assets.Playground.Scripts.UI
+namespace Playground.Scripts.UI
 {
     public class InitUIBehaviour : MonoBehaviour
     {
@@ -12,12 +9,12 @@ namespace Assets.Playground.Scripts.UI
         [Require] private ScoreReader score;
         [Require] private LauncherReader launcher;
 
-        [SerializeField] private Object uiPrefab;
+        [SerializeField] private GameObject uiPrefab;
         private UIComponent uiComponent;
 
         private void OnEnable()
         {
-            var inst = (GameObject) Instantiate(uiPrefab, Vector3.zero, Quaternion.identity);
+            var inst = Instantiate(uiPrefab, Vector3.zero, Quaternion.identity);
 
             uiComponent = inst.GetComponent<UIComponent>();
             uiComponent.TestText.text = $"Energy: {launcher.Data.EnergyLeft}";
@@ -30,7 +27,7 @@ namespace Assets.Playground.Scripts.UI
         {
             if (uiComponent != null)
             {
-                UnityObjectDestroyer.Destroy(uiComponent.gameObject);
+                Destroy(uiComponent.gameObject);
             }
         }
     }
