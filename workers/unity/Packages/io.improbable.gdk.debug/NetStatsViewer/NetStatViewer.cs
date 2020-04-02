@@ -103,7 +103,7 @@ namespace Improbable.Gdk.Debug.NetStats
         private void SetupWorldSelection()
         {
             // Find spatial worlds
-            var spatialWorlds = World.AllWorlds
+            var spatialWorlds = World.All
                 .Where(w => w.GetExistingSystem<NetworkStatisticsSystem>() != null)
                 .ToList();
 
