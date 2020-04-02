@@ -58,6 +58,7 @@ namespace Playground
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
             PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerId, WorkerUtils.UnityGameLogic);
 
+            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
@@ -76,6 +77,7 @@ namespace Playground
 
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, WorkerUtils.UnityGameLogic, Quaternion.identity, location);
 
+            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
@@ -94,6 +96,7 @@ namespace Playground
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
 
+            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
             template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
