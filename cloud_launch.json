@@ -13,10 +13,6 @@
       {
         "name": "interest_queries_components_are_filtered_by_component_delivery",
         "value": "false"
-      },
-      {
-        "name": "enforce_read_acl_in_qbi",
-        "value": "false"
       }
     ]
   },
