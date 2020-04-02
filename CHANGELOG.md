@@ -10,6 +10,7 @@
     - `ComponentAuthority` has been renamed to `HasAuthority`.
     - No need to filter your ECS query anymore, instead match for `HasAuthority`.
     - Built-in Unity AssetBundle module is now required.
+- Upgraded the `com.unity.entities` packages to `0.7.0-preview.19`. [#1340](https://github.com/spatialos/gdk-for-unity/pull/1340)
 
 ## `0.3.4` - 2020-03-16
 
