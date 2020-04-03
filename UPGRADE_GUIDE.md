@@ -8,11 +8,11 @@ You must upgrade your project to 2019.3 to be able to use this version, and futu
 
 ### Unity Entities 0.7.0 upgrade
 
-We've upgraded our dependency on Unity's entities package from 0.1.0 to 0.7.0, this comes with a few breaking changes.
+We've upgraded our dependency on Unity's entities package from 0.1.0 to 0.7.0. As a result, we have introduced a few breaking changes.
 
-You'll have to add the build-in module `com.unity.modules.assetbundle` to your project dependencies. This can be done through the package manager window.
+You'll have to add the built-in module `com.unity.modules.assetbundle` to your project dependencies. This can be done through the package manager window.
 
-If you are using the ECS, you will have to update your queries to change the `Authority` component to `HasAuthority`, and remove the previous filtering.
+If you are using the ECS, you will have to update your queries to change the `ComponentAuthority` component to `HasAuthority`, and remove the previous filtering.
 
 For example:
 
