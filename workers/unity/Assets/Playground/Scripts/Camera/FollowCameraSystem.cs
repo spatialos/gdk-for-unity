@@ -13,6 +13,7 @@ namespace Playground
     ///     ScrollWheel: controls the orbit radius, moving the camera closer to or
     ///     farther from the player.
     /// </remarks>
+    [DisableAutoCreation]
     public class FollowCameraSystem : ComponentSystem
     {
         // The min/max distance from camera to the player.

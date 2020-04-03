@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     internal class LocalPlayerInputSync : ComponentSystem
     {
         private const float MinInputChange = 0.01f;

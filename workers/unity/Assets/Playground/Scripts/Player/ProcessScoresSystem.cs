@@ -4,6 +4,7 @@ using Unity.Entities;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     internal class ProcessScoresSystem : ComponentSystem
     {
         private CommandSystem commandSystem;

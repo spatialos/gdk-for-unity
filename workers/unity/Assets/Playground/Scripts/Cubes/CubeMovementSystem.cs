@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
+    [DisableAutoCreation]
     internal class CubeMovementSystem : ComponentSystem
     {
         private EntityQuery cubeGroup;

@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class PlayerCommandsSystem : ComponentSystem
     {
         private enum PlayerCommand

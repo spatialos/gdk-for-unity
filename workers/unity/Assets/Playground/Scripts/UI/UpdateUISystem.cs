@@ -5,6 +5,7 @@ using Unity.Entities;
 namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     public class UpdateUISystem : ComponentSystem
     {
         private ComponentUpdateSystem componentUpdateSystem;

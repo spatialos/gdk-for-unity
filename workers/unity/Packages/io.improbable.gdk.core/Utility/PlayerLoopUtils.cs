@@ -38,7 +38,12 @@ namespace Improbable.Gdk.Core
             // Create simulation system for the default group
             var simulationSystemGroup = world.GetOrCreateSystem<SimulationSystemGroup>();
 
-            var systems = world.Systems.ToList();
+            var systems = new List<ComponentSystemBase>();
+            foreach (var systemBase in world.Systems)
+            {
+                systems.Add(systemBase);
+            }
+
             var uniqueSystemTypes = new HashSet<Type>(systems.Select(s => s.GetType()));
 
             // Add systems to their groups, based on the [UpdateInGroup] attribute.
@@ -99,7 +104,15 @@ namespace Improbable.Gdk.Core
 
         public static void AddToPlayerLoop(World world)
         {
-            var systemGroups = world.Systems.OfType<ComponentSystemGroup>();
+            var systemGroups = new List<ComponentSystemGroup>();
+            foreach (var systemGroup in world.Systems)
+            {
+                if (systemGroup is ComponentSystemGroup group)
+                {
+                    systemGroups.Add(group);
+                }
+            }
+
             var subSystemToGroup = new Dictionary<Type, List<ComponentSystemGroup>>();
 
             // Build lookup for PlayerLoop

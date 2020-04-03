@@ -6,6 +6,35 @@
 
 You must upgrade your project to 2019.3 to be able to use this version, and future versions, of the GDK for Unity. Any patch release of 2019.3 should work, but we test against 2019.3.7f1.
 
+### Unity Entities 0.7.0 upgrade
+
+We've upgraded our dependency on Unity's entities package from 0.1.0 to 0.7.0. As a result, we have introduced a few breaking changes.
+
+You'll have to add the built-in module `com.unity.modules.assetbundle` to your project dependencies. This can be done through the package manager window.
+
+If you are using the ECS, you will have to update your queries to change the `ComponentAuthority` component to `HasAuthority`, and remove the previous filtering.
+
+For example:
+
+```csharp
+cubeGroup = GetEntityQuery(
+    ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
+    ComponentType.ReadOnly<CubeTargetVelocity.ComponentAuthority>(),
+    ComponentType.ReadWrite<Rigidbody>()
+);
+cubeGroup.SetFilter(CubeTargetVelocity.ComponentAuthority.Authoritative);
+```
+
+Would change into:
+
+```csharp
+cubeGroup = GetEntityQuery(
+    ComponentType.ReadWrite<CubeTargetVelocity.Component>(),
+    ComponentType.ReadOnly<CubeTargetVelocity.HasAuthority>(),
+    ComponentType.ReadWrite<Rigidbody>()
+);
+```
+
 ## From `0.3.3` to `0.3.4`
 
 ### PlayerLifecycle feature module now provides an EntityId

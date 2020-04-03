@@ -100,7 +100,6 @@ namespace Improbable.Gdk.Core
                 }
 
                 HandleWorkerConnectionEstablished();
-                World.Active = World.Active ?? Worker.World;
 
                 // Update PlayerLoop
                 PlayerLoopUtils.ResolveSystemGroups(Worker.World);

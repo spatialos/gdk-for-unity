@@ -8,6 +8,7 @@ namespace Playground
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     [UpdateAfter(typeof(LocalPlayerInputSync))]
+    [DisableAutoCreation]
     internal class MoveLocalPlayerSystem : ComponentSystem
     {
         public struct Speed : IComponentData

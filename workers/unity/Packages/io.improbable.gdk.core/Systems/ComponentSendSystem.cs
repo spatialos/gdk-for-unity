@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Core
                 {
                     var replicator = componentReplicators[i];
                     chunkArrayCache[i] =
-                        replicator.Group.CreateArchetypeChunkArray(Allocator.TempJob, out var jobHandle);
+                        replicator.Group.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var jobHandle);
                     gatheringJobs[i] = jobHandle;
                 }
             }

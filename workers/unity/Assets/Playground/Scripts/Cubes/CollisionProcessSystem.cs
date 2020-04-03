@@ -11,6 +11,7 @@ namespace Playground
     }
 
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [DisableAutoCreation]
     internal class CollisionProcessSystem : ComponentSystem
     {
         private static readonly EntityId InvalidEntityId = new EntityId(0);
