@@ -32,9 +32,6 @@ namespace Improbable.Gdk.Core
         ///     Adds a SpatialOS component to the EntityTemplate.
         /// </summary>
         /// <param name="snapshot">The component snapshot to add.</param>
-        /// <param name="writeAccess">
-        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot" /> component.
-        /// </param>
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
         /// <exception cref="InvalidOperationException">
         ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot" />.
@@ -42,7 +39,7 @@ namespace Improbable.Gdk.Core
         /// <remarks>
         ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
         /// </remarks>
-        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
+        public void AddComponent<TSnapshot>(TSnapshot snapshot)
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
             if (snapshot.ComponentId == EntityAclComponentId)
@@ -59,6 +56,26 @@ namespace Improbable.Gdk.Core
             }
 
             entityData.Add(snapshot.ComponentId, snapshot);
+        }
+
+        /// <summary>
+        ///     Adds a SpatialOS component to the EntityTemplate with write permissions specified.
+        /// </summary>
+        /// <param name="snapshot">The component snapshot to add.</param>
+        /// <param name="writeAccess">
+        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot" /> component.
+        /// </param>
+        /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot" />.
+        /// </exception>
+        /// <remarks>
+        ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
+        /// </remarks>
+        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
+            where TSnapshot : struct, ISpatialComponentSnapshot
+        {
+            AddComponent(snapshot);
             acl.SetComponentWriteAccess(snapshot.ComponentId, writeAccess);
         }
 
