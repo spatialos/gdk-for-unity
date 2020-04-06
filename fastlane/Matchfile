@@ -1,9 +1,9 @@
+app_identifier("io.improbable.*")
 git_url("git@github.com:improbable/apple-codesigning.git")
+keychain_name("login.keychain")
+readonly(true)
 storage_mode("git")
 type("development")
-app_identifier("io.improbable.*")
-keychain_name("login.keychain")
-username("imp-apple-dev@improbable.io")
 
 # For all available options run `fastlane match --help`
 # The docs are available on https://docs.fastlane.tools/actions/match
