@@ -12,6 +12,12 @@ We've upgraded our dependency on Unity's entities package from 0.1.0 to 0.7.0. A
 
 You'll have to add the built-in module `com.unity.modules.assetbundle` to your project dependencies. This can be done through the package manager window.
 
+If you are using the Blank Project, you will have to remove the following line from `OneTimeInitialisation.cs`.
+
+```csharp
+PlayerLoopManager.RegisterDomainUnload(WorldsInitializationHelper.DomainUnloadShutdown, 1000);
+```
+
 If you are using the ECS, you will have to update your queries to change the `ComponentAuthority` component to `HasAuthority`, and remove the previous filtering.
 
 For example:
