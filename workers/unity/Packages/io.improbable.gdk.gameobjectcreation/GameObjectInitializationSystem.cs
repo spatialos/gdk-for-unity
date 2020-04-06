@@ -1,6 +1,7 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -130,6 +131,10 @@ namespace Improbable.Gdk.GameObjectCreation
                             return;
                         }
                     }
+
+#if UNITY_EDITOR
+                    EntityManager.SetName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
+#endif
 
                     try
                     {
