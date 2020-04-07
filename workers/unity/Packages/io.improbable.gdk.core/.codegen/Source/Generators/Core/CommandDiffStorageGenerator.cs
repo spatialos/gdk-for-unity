@@ -40,7 +40,7 @@ namespace Improbable.Gdk.CodeGenerator
 
             return Text.New($@"
 private class Diff{command.PascalCaseName}CommandStorage
-    : DiffSpawnCubeCommandStorage<{receivedRequestType}, {receivedResponseType}>
+    : CommandDiffStorageBase<{receivedRequestType}, {receivedResponseType}>
 {{
     public override uint ComponentId => {qualifiedNamespace}.{componentName}.ComponentId;
     public override uint CommandId => {command.CommandIndex};
