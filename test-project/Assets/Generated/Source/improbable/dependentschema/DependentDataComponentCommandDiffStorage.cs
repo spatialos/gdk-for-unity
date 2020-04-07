@@ -10,7 +10,7 @@ namespace Improbable.DependentSchema
     public partial class DependentDataComponent
     {
         private class DiffBarCommandCommandStorage
-            : DiffSpawnCubeCommandStorage<BarCommand.ReceivedRequest, BarCommand.ReceivedResponse>
+            : CommandDiffStorageBase<BarCommand.ReceivedRequest, BarCommand.ReceivedResponse>
         {
             public override uint ComponentId => Improbable.DependentSchema.DependentDataComponent.ComponentId;
             public override uint CommandId => 1;
