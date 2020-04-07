@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core.Commands
 {
-    public abstract class DiffSpawnCubeCommandStorage<TRequest, TResponse> : IComponentCommandDiffStorage
+    public abstract class CommandDiffStorageBase<TRequest, TResponse> : IComponentCommandDiffStorage
         , IDiffCommandRequestStorage<TRequest>
         , IDiffCommandResponseStorage<TResponse>
         where TRequest : struct, IReceivedCommandRequest
