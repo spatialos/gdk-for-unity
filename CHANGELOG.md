@@ -25,6 +25,7 @@
 - Added component result type filters to playground QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Replaced `InitUISystem` with the `InitUIBehaviour` script on the `Character` prefab. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Removed `ViewCommandBuffer` as it is no longer required. [#1344](https://github.com/spatialos/gdk-for-unity/pull/1344)
+- Renamed faulty named `DiffSpawnCubeCommandStorage` to `CommandDiffStorageBase`. [#1345](https://github.com/spatialos/gdk-for-unity/pull/1345)
 
 ## `0.3.4` - 2020-03-16
 
