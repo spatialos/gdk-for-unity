@@ -131,6 +131,10 @@ namespace Improbable.Gdk.GameObjectCreation
                         }
                     }
 
+#if UNITY_EDITOR
+                    EntityManager.SetName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
+#endif
+
                     try
                     {
                         gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);

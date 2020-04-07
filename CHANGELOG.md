@@ -18,6 +18,7 @@
     - `AddEntity(EntityId entityId, EntityTemplate entityTemplate)` adds an entity to the snapshot with a given entity ID.
 - Added an additional `AddComponent` method to the `EntityTemplate` class which does not require write-access to be given. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
     - This allows users to add undelegated components on entities.
+- Added debug names to entities shown in EntityDebugger. [#1342](https://github.com/spatialos/gdk-for-unity/pull/1342)
 
 ## Internal
 
