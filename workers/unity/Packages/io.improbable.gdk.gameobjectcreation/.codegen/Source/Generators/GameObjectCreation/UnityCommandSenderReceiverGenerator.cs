@@ -169,7 +169,7 @@ public bool IsValid { get; set; }
                 {
                     var receivedRequestType =
                         $"{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest";
-                
+
                     c.Line($@"
 private Dictionary<Action<{receivedRequestType}>, ulong> {commandDetails.CamelCaseName}CallbackToCallbackKey;
 
@@ -237,7 +237,7 @@ public void Send{commandDetails.PascalCaseName}Failure(long requestId, string fa
                     {
                         var receivedRequestType =
                             $"{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedRequest";
-                        
+
                         m.Line($@"
 if ({commandDetails.CamelCaseName}CallbackToCallbackKey != null)
 {{

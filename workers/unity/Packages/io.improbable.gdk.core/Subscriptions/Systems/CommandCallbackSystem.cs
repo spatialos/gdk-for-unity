@@ -15,12 +15,12 @@ namespace Improbable.Gdk.Subscriptions
     {
         private readonly GuardedCallbackManagerSet<Type, ICallbackManager> requestCallbackManagers =
             new GuardedCallbackManagerSet<Type, ICallbackManager>();
-        
+
         private readonly GuardedCallbackManagerSet<Type, ICallbackManager> responseCallbackManagers =
             new GuardedCallbackManagerSet<Type, ICallbackManager>();
 
         private CommandSystem commandSystem;
-        
+
         public ulong RegisterCommandRequestCallback<T>(EntityId entityId, Action<T> callback)
             where T : struct, IReceivedCommandRequest
         {
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Subscriptions
             {
                 return false;
             }
-            
+
             return manager.UnregisterCallback(callbackKey);
         }
 
