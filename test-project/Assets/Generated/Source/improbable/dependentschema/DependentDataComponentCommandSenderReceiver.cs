@@ -116,7 +116,7 @@ namespace Improbable.DependentSchema
                     return;
                 }
 
-                callbackSystem.UnregisterCommandRequestCallback(key);
+                callbackSystem.UnregisterCommandRequestCallback<global::Improbable.DependentSchema.DependentDataComponent.BarCommand.ReceivedRequest>(key);
                 barCommandCallbackToCallbackKey.Remove(value);
             }
         }
@@ -152,7 +152,7 @@ namespace Improbable.DependentSchema
             {
                 foreach (var callbackToKey in barCommandCallbackToCallbackKey)
                 {
-                    callbackSystem.UnregisterCommandRequestCallback(callbackToKey.Value);
+                    callbackSystem.UnregisterCommandRequestCallback<global::Improbable.DependentSchema.DependentDataComponent.BarCommand.ReceivedRequest>(callbackToKey.Value);
                 }
 
                 barCommandCallbackToCallbackKey.Clear();
