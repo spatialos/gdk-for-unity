@@ -749,26 +749,23 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private BuildOptions ConfigureLinux(BuildTargetConfig buildTarget)
         {
-            // NB: On Linux, headless and Development mode are mutually exclusive.
             var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
-            {
-                options |= BuildOptions.EnableHeadlessMode;
-                options &= ~BuildOptions.Development;
-            }
-            else
-            {
-                options &= ~BuildOptions.EnableHeadlessMode;
-            }
-
             if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
                 options |= BuildOptions.Development;
-                options &= ~BuildOptions.EnableHeadlessMode;
             }
             else
             {
                 options &= ~BuildOptions.Development;
+            }
+
+            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            {
+                options |= BuildOptions.EnableHeadlessMode;
+            }
+            else
+            {
+                options &= ~BuildOptions.EnableHeadlessMode;
             }
 
             return options;
