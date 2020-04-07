@@ -20,6 +20,10 @@
     - This allows users to add undelegated components on entities.
 - Added debug names to entities shown in EntityDebugger. [#1342](https://github.com/spatialos/gdk-for-unity/pull/1342)
 
+## Changed
+
+- Allow headless development builds for Linux. [#1347](https://github.com/spatialos/gdk-for-unity/pull/1347)
+
 ## Internal
 
 - Added component result type filters to playground QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
