@@ -24,8 +24,6 @@ namespace Improbable.Gdk.Subscriptions
         private readonly Dictionary<GameObject, List<ComponentType>> gameObjectToComponentsAdded =
             new Dictionary<GameObject, List<ComponentType>>();
 
-        private readonly ViewCommandBuffer viewCommandBuffer;
-
         public EntityGameObjectLinker(World world)
         {
             this.world = world;
@@ -33,8 +31,6 @@ namespace Improbable.Gdk.Subscriptions
 
             workerSystem = world.GetExistingSystem<WorkerSystem>();
             lifecycleSystem = world.GetExistingSystem<RequireLifecycleSystem>();
-
-            viewCommandBuffer = new ViewCommandBuffer(entityManager, workerSystem.LogDispatcher);
 
             workerSystem = world.GetExistingSystem<WorkerSystem>();
             if (workerSystem == null)
@@ -184,11 +180,6 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void FlushCommandBuffer()
-        {
-            viewCommandBuffer.FlushBuffer();
-        }
-
         private void AddComponentsToEntity(EntityId entityId, GameObject gameObject,
             params Type[] componentTypesToAdd)
         {
@@ -214,7 +205,7 @@ namespace Improbable.Gdk.Subscriptions
                 {
                     var componentType = new ComponentType(type);
                     componentTypes.Add(componentType);
-                    viewCommandBuffer.AddComponent(entity, componentType, c);
+                    entityManager.AddComponentObject(entity, c);
                 }
             }
         }

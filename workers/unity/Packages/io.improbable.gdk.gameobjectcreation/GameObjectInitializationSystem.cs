@@ -92,8 +92,6 @@ namespace Improbable.Gdk.GameObjectCreation
             {
                 ProcessRemovedEntities();
             }
-
-            Linker.FlushCommandBuffer();
         }
 
         private void ProcessRemovedEntities()
