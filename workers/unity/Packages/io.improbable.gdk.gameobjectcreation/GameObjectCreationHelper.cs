@@ -39,7 +39,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 return;
             }
 
-            world.CreateSystem<GameObjectInitializationSystem>(creator, workerGameObject);
+            world.AddSystem(new GameObjectInitializationSystem(creator, workerGameObject));
         }
     }
 }

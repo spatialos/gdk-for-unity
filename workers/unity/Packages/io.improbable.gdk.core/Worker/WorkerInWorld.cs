@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core
 
         private void AddCoreSystems()
         {
-            World.CreateSystem<WorkerSystem>(this);
+            World.AddSystem(new WorkerSystem(this));
             World.GetOrCreateSystem<UpdateWorldTimeSystem>();
             World.GetOrCreateSystem<CommandSystem>();
             World.GetOrCreateSystem<ComponentUpdateSystem>();
