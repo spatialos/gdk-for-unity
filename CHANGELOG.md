@@ -5,11 +5,14 @@
 ### Breaking Changes
 
 - The minimum version of Unity that the GDK supports is now 2019.3. You need to upgrade your Unity project. [#1336](https://github.com/spatialos/gdk-for-unity/pull/1336)
-- Upgraded the `com.unity.entities` packages to `0.7.0-preview.19`. [#1340](https://github.com/spatialos/gdk-for-unity/pull/1340)
+- Upgraded the `com.unity.entities` packages to `0.9.1-preview.15`. [#1339](https://github.com/spatialos/gdk-for-unity/pull/1339)
     - Authority in ECS is no longer a `SharedComponentData`, but instead a tag component.
     - `ComponentAuthority` has been renamed to `HasAuthority`.
     - No need to filter your ECS query anymore, instead match for `HasAuthority`.
-    - Built-in Unity AssetBundle module is now required.
+    - The `UpdateInSubSystem` attribute has been removed.
+    - Built-in Unity AssetBundle and UI Elements modules are now required.
+    - Burst is now enabled for all PC platforms.
+    - Component replication will no longer attempt to replicate components the worker does not have authority over.
 
 ## Added
 
