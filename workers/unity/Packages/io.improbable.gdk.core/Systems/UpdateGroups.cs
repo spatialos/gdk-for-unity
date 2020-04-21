@@ -1,5 +1,5 @@
 using Unity.Entities;
-using UnityEngine.PlayerLoop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -45,9 +45,16 @@ namespace Improbable.Gdk.Core
     {
     }
 
-    [PlayerLoopUtils.UpdateInSubSystemAttribute(typeof(FixedUpdate))]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateBefore(typeof(SpatialOSUpdateGroup))]
     [DisableAutoCreation]
     public class FixedUpdateSystemGroup : ComponentSystemGroup
     {
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+
+            FixedRateUtils.EnableFixedRateWithCatchUp(this, UnityEngine.Time.fixedDeltaTime);
+        }
     }
 }

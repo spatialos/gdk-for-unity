@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 namespace Improbable.Gdk.Core
 {
@@ -103,7 +105,7 @@ namespace Improbable.Gdk.Core
 
                 // Update PlayerLoop
                 PlayerLoopUtils.ResolveSystemGroups(Worker.World);
-                PlayerLoopUtils.AddToPlayerLoop(Worker.World);
+                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(Worker.World, PlayerLoop.GetCurrentPlayerLoop());
             }
             catch (Exception e)
             {

@@ -52,6 +52,11 @@ namespace Improbable.Gdk.Core
                 for (var i = 0; i < componentReplicators.Count; i++)
                 {
                     var replicator = componentReplicators[i];
+                    if (replicator.Group.IsEmptyIgnoreFilter)
+                    {
+                        continue;
+                    }
+
                     chunkArrayCache[i] =
                         replicator.Group.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var jobHandle);
                     gatheringJobs[i] = jobHandle;
@@ -62,12 +67,23 @@ namespace Improbable.Gdk.Core
             {
                 using (executeReplication.Auto())
                 {
-                    gatheringJobs[i].Complete();
                     var replicator = componentReplicators[i];
                     var chunkArray = chunkArrayCache[i];
 
+                    if (!chunkArray.IsCreated)
+                    {
+                        continue;
+                    }
+
+                    // Wait for gathering to complete
+                    gatheringJobs[i].Complete();
+
+                    // Process
                     replicator.Handler.SendUpdates(chunkArray, this, EntityManager, componentUpdateSystem);
+
+                    // Cleanup
                     chunkArray.Dispose();
+                    chunkArrayCache[i] = default;
                 }
             }
         }
