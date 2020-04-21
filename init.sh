@@ -66,7 +66,7 @@ chmod -R +x "${SDK_PATH}/.spot"
 update_package worker_sdk c-static-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm"
 update_package worker_sdk c-static-x86_64-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/x86_64"
 
-update_package worker_sdk c-dynamic-arm64v8a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/arm64"
-update_package worker_sdk c-dynamic-armv7a-clang_ndk16b-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/armv7"
+update_package worker_sdk c-dynamic-arm64v8a-clang_ndk21-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/arm64"
+update_package worker_sdk c-dynamic-armv7a-clang_ndk21-android "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/Android/armv7"
 
 update_package worker_sdk csharp_cinterop_static "${SDK_MOBILE_PATH}/Plugins/Improbable/Sdk/iOS"
