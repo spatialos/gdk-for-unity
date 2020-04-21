@@ -30,10 +30,13 @@ namespace Playground
 
         public static void AddGameLogicSystems(World world)
         {
+            DefaultWorldInitialization.AddSystemsToRootLevelSystemGroups(world, DefaultWorldInitialization.GetAllSystems(WorldSystemFilterFlags.Default));
+
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddServerSystems(world);
             PlayerLifecycleHelper.AddServerSystems(world);
-            GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
+            //GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
+            world.GetOrCreateSystem<ConversionSystemFromMetadata>();
 
             world.GetOrCreateSystem<TriggerColorChangeSystem>();
             world.GetOrCreateSystem<ProcessLaunchCommandSystem>();
