@@ -26,6 +26,7 @@
 ## Changed
 
 - Allow headless development builds for Linux. [#1347](https://github.com/spatialos/gdk-for-unity/pull/1347)
+- Upgrade to Worker SDK v14.6.0. [#1349](https://github.com/spatialos/gdk-for-unity/pull/1349)
 
 ## Internal
 
