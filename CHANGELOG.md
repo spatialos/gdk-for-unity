@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.5` - 2020-04-23
+
 ### Breaking Changes
 
 - The minimum version of Unity that the GDK supports is now 2019.3. You need to upgrade your Unity project. [#1336](https://github.com/spatialos/gdk-for-unity/pull/1336)
