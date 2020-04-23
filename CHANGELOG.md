@@ -14,7 +14,7 @@
     - Burst is now enabled for all PC platforms.
     - Component replication will no longer attempt to replicate components the worker does not have authority over.
 
-## Added
+### Added
 
 - Added new methods to `Snapshot` utility class. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
     - `GetNextEntityId()` returns the next available entity ID.
@@ -23,12 +23,16 @@
     - This allows users to add undelegated components on entities.
 - Added debug names to entities shown in EntityDebugger. [#1342](https://github.com/spatialos/gdk-for-unity/pull/1342)
 
-## Changed
+### Changed
 
 - Allow headless development builds for Linux. [#1347](https://github.com/spatialos/gdk-for-unity/pull/1347)
 - Upgrade to Worker SDK v14.6.1. [#1350](https://github.com/spatialos/gdk-for-unity/pull/1350)
 
-## Internal
+### Fixed
+
+- Fix `PlayerHeartbeatInitializationSystem` to use the right components for filtering. [#1352](https://github.com/spatialos/gdk-for-unity/pull/1352)
+
+### Internal
 
 - Added component result type filters to playground QBI queries. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Replaced `InitUISystem` with the `InitUIBehaviour` script on the `Character` prefab. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
