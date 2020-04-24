@@ -212,5 +212,11 @@ namespace Improbable.Gdk.Mobile
                 return EditorPrefs.GetString("AndroidSdkRoot");
             }
         }
+
+        public static bool IsAndroidPlaybackEngineInstalled()
+        {
+            var targetGroup = BuildPipeline.GetBuildTargetGroup(BuildTarget.Android);
+            return BuildPipeline.IsBuildTargetSupported(targetGroup, BuildTarget.Android);
+        }
     }
 }

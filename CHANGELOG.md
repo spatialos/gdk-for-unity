@@ -5,6 +5,7 @@
 ### Fixed
 
 - Invalid JSON is now logged if there is an error parsing the codegen output. [#1353](https://github.com/spatialos/gdk-for-unity/pull/1353)
+- The Mobile Launcher will no longer break if Android build support is not installed. [#1354](https://github.com/spatialos/gdk-for-unity/pull/1354)
 
 ## `0.3.5` - 2020-04-23
 
