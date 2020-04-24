@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Mobile
 
         private readonly string[] emptyDeviceNameList = { "No devices found" };
 
+        private bool androidPlaybackEngineInstalled;
+
         [MenuItem("SpatialOS/Mobile Launcher", false, 52)]
         public static void ShowWindow()
         {
@@ -41,7 +43,12 @@ namespace Improbable.Gdk.Mobile
 
         private void OnEnable()
         {
-            RefreshAndroidEmulatorsAndDevices();
+            androidPlaybackEngineInstalled = AndroidUtils.IsAndroidPlaybackEngineInstalled();
+
+            if (androidPlaybackEngineInstalled)
+            {
+                RefreshAndroidEmulatorsAndDevices();
+            }
 
 #if UNITY_EDITOR_OSX
             RefreshiOSEmulatorsAndDevices();
@@ -57,7 +64,10 @@ namespace Improbable.Gdk.Mobile
                 mobileLaunchConfig.ShouldConnectLocally = EditorGUILayout.Toggle(ConnectLocallyLabel, mobileLaunchConfig.ShouldConnectLocally);
             }
 
-            DisplayAndroidMenu();
+            if (androidPlaybackEngineInstalled)
+            {
+                DisplayAndroidMenu();
+            }
 
 #if UNITY_EDITOR_OSX
             DisplayiOSMenu();
