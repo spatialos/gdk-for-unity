@@ -318,7 +318,7 @@ namespace Improbable.Gdk.Tools
             }
             catch (Exception e)
             {
-                Debug.LogWarning(e);
+                Debug.LogWarning($"Failed to parse output: \"{output}\"{Environment.NewLine}{e}");
             }
         }
 
