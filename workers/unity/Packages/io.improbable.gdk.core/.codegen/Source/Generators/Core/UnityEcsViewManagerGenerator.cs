@@ -99,7 +99,7 @@ public void Init(World world)
                             {
                                 foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                 {
-                                    m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.CleanDataInWorld(world);");
+                                    m.Line($"global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.CleanDataInWorld(world);");
                                 }
                             });
 
@@ -113,7 +113,7 @@ public void Init(World world)
 
                                 foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                 {
-                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = {componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create(world);");
                                 }
 
                                 m.Line(new[]
@@ -136,7 +136,7 @@ public void Init(World world)
                                     m.Line($"var data = entityManager.GetComponentData<{componentNamespace}.Component>(entity);");
                                     foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                     {
-                                        m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Free(data.{fieldDetails.CamelCaseName}Handle);");
+                                        m.Line($"data.{fieldDetails.CamelCaseName}Handle.Dispose();");
                                     }
                                 }
 
