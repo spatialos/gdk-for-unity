@@ -80,7 +80,7 @@ namespace Improbable.Gdk.Core
         {
             foreach (var manager in managers)
             {
-                manager.Clean(World);
+                manager.Clean();
             }
 
             base.OnDestroy();

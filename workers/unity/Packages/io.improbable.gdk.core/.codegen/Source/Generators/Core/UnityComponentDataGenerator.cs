@@ -337,7 +337,7 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
                             if (!fieldDetails.IsBlittable)
                             {
                                 m.Line(
-                                    $"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create(world);");
+                                    $"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create();");
                             }
 
                             m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj",
