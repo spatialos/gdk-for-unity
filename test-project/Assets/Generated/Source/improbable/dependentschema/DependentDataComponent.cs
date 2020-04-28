@@ -20,219 +20,219 @@ namespace Improbable.DependentSchema
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
 
-            internal uint field1Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<bool?>.ReferenceHandle field1Handle;
 
             public bool? Field1
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
+                get => field1Handle.Get();
                 set
                 {
                     MarkDataDirty(0);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
+                    field1Handle.Set(value);
                 }
             }
 
-            internal uint field2Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<float?>.ReferenceHandle field2Handle;
 
             public float? Field2
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
+                get => field2Handle.Get();
                 set
                 {
                     MarkDataDirty(1);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
+                    field2Handle.Set(value);
                 }
             }
 
-            internal uint field3Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<byte[]>>.ReferenceHandle field3Handle;
 
             public global::Improbable.Gdk.Core.Option<byte[]> Field3
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
+                get => field3Handle.Get();
                 set
                 {
                     MarkDataDirty(2);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
+                    field3Handle.Set(value);
                 }
             }
 
-            internal uint field4Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<int?>.ReferenceHandle field4Handle;
 
             public int? Field4
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
+                get => field4Handle.Get();
                 set
                 {
                     MarkDataDirty(3);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
+                    field4Handle.Set(value);
                 }
             }
 
-            internal uint field5Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<long?>.ReferenceHandle field5Handle;
 
             public long? Field5
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
+                get => field5Handle.Get();
                 set
                 {
                     MarkDataDirty(4);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
+                    field5Handle.Set(value);
                 }
             }
 
-            internal uint field6Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<double?>.ReferenceHandle field6Handle;
 
             public double? Field6
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.Get(field6Handle);
+                get => field6Handle.Get();
                 set
                 {
                     MarkDataDirty(5);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.Set(field6Handle, value);
+                    field6Handle.Set(value);
                 }
             }
 
-            internal uint field7Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<string>>.ReferenceHandle field7Handle;
 
             public global::Improbable.Gdk.Core.Option<string> Field7
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.Get(field7Handle);
+                get => field7Handle.Get();
                 set
                 {
                     MarkDataDirty(6);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.Set(field7Handle, value);
+                    field7Handle.Set(value);
                 }
             }
 
-            internal uint field8Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<uint?>.ReferenceHandle field8Handle;
 
             public uint? Field8
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.Get(field8Handle);
+                get => field8Handle.Get();
                 set
                 {
                     MarkDataDirty(7);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.Set(field8Handle, value);
+                    field8Handle.Set(value);
                 }
             }
 
-            internal uint field9Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.ReferenceHandle field9Handle;
 
             public ulong? Field9
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.Get(field9Handle);
+                get => field9Handle.Get();
                 set
                 {
                     MarkDataDirty(8);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.Set(field9Handle, value);
+                    field9Handle.Set(value);
                 }
             }
 
-            internal uint field10Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<int?>.ReferenceHandle field10Handle;
 
             public int? Field10
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.Get(field10Handle);
+                get => field10Handle.Get();
                 set
                 {
                     MarkDataDirty(9);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.Set(field10Handle, value);
+                    field10Handle.Set(value);
                 }
             }
 
-            internal uint field11Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<long?>.ReferenceHandle field11Handle;
 
             public long? Field11
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.Get(field11Handle);
+                get => field11Handle.Get();
                 set
                 {
                     MarkDataDirty(10);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.Set(field11Handle, value);
+                    field11Handle.Set(value);
                 }
             }
 
-            internal uint field12Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<uint?>.ReferenceHandle field12Handle;
 
             public uint? Field12
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.Get(field12Handle);
+                get => field12Handle.Get();
                 set
                 {
                     MarkDataDirty(11);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.Set(field12Handle, value);
+                    field12Handle.Set(value);
                 }
             }
 
-            internal uint field13Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.ReferenceHandle field13Handle;
 
             public ulong? Field13
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.Get(field13Handle);
+                get => field13Handle.Get();
                 set
                 {
                     MarkDataDirty(12);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.Set(field13Handle, value);
+                    field13Handle.Set(value);
                 }
             }
 
-            internal uint field14Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<int?>.ReferenceHandle field14Handle;
 
             public int? Field14
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.Get(field14Handle);
+                get => field14Handle.Get();
                 set
                 {
                     MarkDataDirty(13);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.Set(field14Handle, value);
+                    field14Handle.Set(value);
                 }
             }
 
-            internal uint field15Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<long?>.ReferenceHandle field15Handle;
 
             public long? Field15
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.Get(field15Handle);
+                get => field15Handle.Get();
                 set
                 {
                     MarkDataDirty(14);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.Set(field15Handle, value);
+                    field15Handle.Set(value);
                 }
             }
 
-            internal uint field16Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntityId?>.ReferenceHandle field16Handle;
 
             public global::Improbable.Gdk.Core.EntityId? Field16
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.Get(field16Handle);
+                get => field16Handle.Get();
                 set
                 {
                     MarkDataDirty(15);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.Set(field16Handle, value);
+                    field16Handle.Set(value);
                 }
             }
 
-            internal uint field17Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeType?>.ReferenceHandle field17Handle;
 
             public global::Improbable.TestSchema.SomeType? Field17
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.Get(field17Handle);
+                get => field17Handle.Get();
                 set
                 {
                     MarkDataDirty(16);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.Set(field17Handle, value);
+                    field17Handle.Set(value);
                 }
             }
 
-            internal uint field18Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.ReferenceHandle field18Handle;
 
             public global::Improbable.TestSchema.SomeEnum? Field18
             {
-                get => global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Get(field18Handle);
+                get => field18Handle.Get();
                 set
                 {
                     MarkDataDirty(17);
-                    global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Set(field18Handle, value);
+                    field18Handle.Set(value);
                 }
             }
 
@@ -1100,126 +1100,126 @@ namespace Improbable.DependentSchema
             {
                 var component = new global::Improbable.DependentSchema.DependentDataComponent.Component();
 
-                component.field1Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Core.ReferenceProvider<bool?>.Create();
 
                 if (obj.GetBoolCount(1) == 1)
                 {
                     component.Field1 = new bool?(obj.GetBool(1));
                 }
 
-                component.field2Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Core.ReferenceProvider<float?>.Create();
 
                 if (obj.GetFloatCount(2) == 1)
                 {
                     component.Field2 = new float?(obj.GetFloat(2));
                 }
 
-                component.field3Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<byte[]>>.Create();
 
                 if (obj.GetBytesCount(3) == 1)
                 {
                     component.Field3 = new global::Improbable.Gdk.Core.Option<byte[]>(obj.GetBytes(3));
                 }
 
-                component.field4Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
                 if (obj.GetInt32Count(4) == 1)
                 {
                     component.Field4 = new int?(obj.GetInt32(4));
                 }
 
-                component.field5Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
                 if (obj.GetInt64Count(5) == 1)
                 {
                     component.Field5 = new long?(obj.GetInt64(5));
                 }
 
-                component.field6Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.Allocate(world);
+                component.field6Handle = global::Improbable.Gdk.Core.ReferenceProvider<double?>.Create();
 
                 if (obj.GetDoubleCount(6) == 1)
                 {
                     component.Field6 = new double?(obj.GetDouble(6));
                 }
 
-                component.field7Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<string>>.Create();
 
                 if (obj.GetStringCount(7) == 1)
                 {
                     component.Field7 = new global::Improbable.Gdk.Core.Option<string>(obj.GetString(7));
                 }
 
-                component.field8Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.Allocate(world);
+                component.field8Handle = global::Improbable.Gdk.Core.ReferenceProvider<uint?>.Create();
 
                 if (obj.GetUint32Count(8) == 1)
                 {
                     component.Field8 = new uint?(obj.GetUint32(8));
                 }
 
-                component.field9Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.Allocate(world);
+                component.field9Handle = global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.Create();
 
                 if (obj.GetUint64Count(9) == 1)
                 {
                     component.Field9 = new ulong?(obj.GetUint64(9));
                 }
 
-                component.field10Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.Allocate(world);
+                component.field10Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
                 if (obj.GetSint32Count(10) == 1)
                 {
                     component.Field10 = new int?(obj.GetSint32(10));
                 }
 
-                component.field11Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.Allocate(world);
+                component.field11Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
                 if (obj.GetSint64Count(11) == 1)
                 {
                     component.Field11 = new long?(obj.GetSint64(11));
                 }
 
-                component.field12Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.Allocate(world);
+                component.field12Handle = global::Improbable.Gdk.Core.ReferenceProvider<uint?>.Create();
 
                 if (obj.GetFixed32Count(12) == 1)
                 {
                     component.Field12 = new uint?(obj.GetFixed32(12));
                 }
 
-                component.field13Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.Allocate(world);
+                component.field13Handle = global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.Create();
 
                 if (obj.GetFixed64Count(13) == 1)
                 {
                     component.Field13 = new ulong?(obj.GetFixed64(13));
                 }
 
-                component.field14Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.Allocate(world);
+                component.field14Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
                 if (obj.GetSfixed32Count(14) == 1)
                 {
                     component.Field14 = new int?(obj.GetSfixed32(14));
                 }
 
-                component.field15Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.Allocate(world);
+                component.field15Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
                 if (obj.GetSfixed64Count(15) == 1)
                 {
                     component.Field15 = new long?(obj.GetSfixed64(15));
                 }
 
-                component.field16Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.Allocate(world);
+                component.field16Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntityId?>.Create();
 
                 if (obj.GetEntityIdCount(16) == 1)
                 {
                     component.Field16 = new global::Improbable.Gdk.Core.EntityId?(obj.GetEntityIdStruct(16));
                 }
 
-                component.field17Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.Allocate(world);
+                component.field17Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeType?>.Create();
 
                 if (obj.GetObjectCount(17) == 1)
                 {
                     component.Field17 = new global::Improbable.TestSchema.SomeType?(global::Improbable.TestSchema.SomeType.Serialization.Deserialize(obj.GetObject(17)));
                 }
 
-                component.field18Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                component.field18Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.Create();
 
                 if (obj.GetEnumCount(18) == 1)
                 {

@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.TestSchema
 {
@@ -15,7 +16,6 @@ namespace Improbable.TestSchema
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.TestSchema
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,13 +74,21 @@ namespace Improbable.TestSchema
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.CleanDataInWorld(world);
+                var query = entityManager.CreateEntityQuery(typeof(global::Improbable.TestSchema.RecursiveComponent.Component));
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.RecursiveComponent.Component>(Allocator.Temp);
 
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.CleanDataInWorld(world);
+                foreach (var component in componentDataArray)
+                {
+                    component.aHandle.Dispose();
 
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.CleanDataInWorld(world);
+                    component.bHandle.Dispose();
+
+                    component.cHandle.Dispose();
+                }
+
+                componentDataArray.Dispose();
             }
 
             private void AddComponent(EntityId entityId)
@@ -89,11 +96,11 @@ namespace Improbable.TestSchema
                 var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.TestSchema.RecursiveComponent.Component();
 
-                component.aHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Allocate(world);
+                component.aHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeA>.Create();
 
-                component.bHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Allocate(world);
+                component.bHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeB>.Create();
 
-                component.cHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+                component.cHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeC>.Create();
 
                 component.MarkDataClean();
                 entityManager.AddComponentData(entity, component);
@@ -106,11 +113,11 @@ namespace Improbable.TestSchema
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.RecursiveComponent.Component>(entity);
 
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Free(data.aHandle);
+                data.aHandle.Dispose();
 
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Free(data.bHandle);
+                data.bHandle.Dispose();
 
-                global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Free(data.cHandle);
+                data.cHandle.Dispose();
 
                 entityManager.RemoveComponent<global::Improbable.TestSchema.RecursiveComponent.Component>(entity);
             }

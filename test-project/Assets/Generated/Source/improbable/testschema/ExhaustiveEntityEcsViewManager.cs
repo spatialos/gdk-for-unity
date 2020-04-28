@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.TestSchema
 {
@@ -15,7 +16,6 @@ namespace Improbable.TestSchema
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.TestSchema
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,17 +74,25 @@ namespace Improbable.TestSchema
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
+                var query = entityManager.CreateEntityQuery(typeof(global::Improbable.TestSchema.ExhaustiveEntity.Component));
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.ExhaustiveEntity.Component>(Allocator.Temp);
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
+                foreach (var component in componentDataArray)
+                {
+                    component.field1Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+                    component.field2Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
+                    component.field3Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
+                    component.field4Handle.Dispose();
+
+                    component.field5Handle.Dispose();
+                }
+
+                componentDataArray.Dispose();
             }
 
             private void AddComponent(EntityId entityId)
@@ -93,15 +100,15 @@ namespace Improbable.TestSchema
                 var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.TestSchema.ExhaustiveEntity.Component();
 
-                component.field1Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot>.Create();
 
-                component.field2Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot?>.Create();
 
-                component.field3Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>.Create();
 
-                component.field4Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>.Create();
 
-                component.field5Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>.Create();
 
                 component.MarkDataClean();
                 entityManager.AddComponentData(entity, component);
@@ -114,15 +121,15 @@ namespace Improbable.TestSchema
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.ExhaustiveEntity.Component>(entity);
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+                data.field1Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+                data.field2Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                data.field3Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+                data.field4Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
+                data.field5Handle.Dispose();
 
                 entityManager.RemoveComponent<global::Improbable.TestSchema.ExhaustiveEntity.Component>(entity);
             }
