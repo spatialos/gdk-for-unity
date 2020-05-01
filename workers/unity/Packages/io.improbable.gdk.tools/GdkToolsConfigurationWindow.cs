@@ -219,7 +219,7 @@ namespace Improbable.Gdk.Tools
                 using (new EditorGUI.DisabledScope(!toolsConfig.SaveDevAuthTokenToFile))
                 {
                     toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
-                    GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
+                    GUILayout.Label($"Token filepath: {Path.GetFullPath(toolsConfig.DevAuthTokenFilepath)}", EditorStyles.helpBox);
                 }
             }
 
