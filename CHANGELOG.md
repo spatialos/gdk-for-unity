@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- GDK Tools Configuration window now autosaves. [#1356](https://github.com/spatialos/gdk-for-unity/pull/1356)
+
 ### Fixed
 
 - Invalid JSON is now logged if there is an error parsing the codegen output. [#1353](https://github.com/spatialos/gdk-for-unity/pull/1353)
