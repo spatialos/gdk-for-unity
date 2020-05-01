@@ -166,7 +166,7 @@ namespace Improbable.Gdk.Tools
 
             // NOTE: Cannot use regular static initialization as we cannot read package metadata when it is
             // initialized. We also don't want to hit the filesystem every single time we access this. So we use
-            // Lazy<T>! 
+            // Lazy<T>!
             public static readonly Lazy<string> RuntimeVersion = new Lazy<string>(() => File.ReadAllText(PinnedRuntimeFilePath).Trim());
             private static string PinnedRuntimeFilePath => Path.Combine(Common.GetThisPackagePath(), "runtime.pinned");
         }
