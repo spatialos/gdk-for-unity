@@ -24,5 +24,7 @@ MonoBehaviour:
       SnapshotPath: snapshots/default.snapshot
       LaunchJson: cloud_launch.json
       Region: 1
+      Cluster: 
+      DeploymentLocationType: 0
       Tags: []
     SimulatedPlayerDeploymentConfigs: []
