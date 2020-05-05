@@ -579,7 +579,37 @@ namespace Improbable.Gdk.DeploymentLauncher
 
             dest.SnapshotPath = EditorGUILayout.TextField("Snapshot Path", source.SnapshotPath);
             dest.LaunchJson = EditorGUILayout.TextField("Launch Config", source.LaunchJson);
-            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup("Region", source.Region);
+
+            var foldoutState = stateManager.GetStateObjectOrDefault<bool>((source.Name + "region").GetHashCode());
+
+            foldoutState = EditorGUILayout.Foldout(foldoutState, new GUIContent("Deployment location"));
+            stateManager.SetStateObject((source.Name + "region").GetHashCode(), foldoutState);
+
+            if (foldoutState)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.Space(EditorGUI.indentLevel * 15.0f);
+                        dest.DeploymentLocationType =
+                            (DeploymentLocationType) GUILayout.SelectionGrid((int) source.DeploymentLocationType,
+                                new[] { "Region", "Cluster" }, 1, EditorStyles.radioButton);
+                    }
+
+                    switch (dest.DeploymentLocationType)
+                    {
+                        case DeploymentLocationType.Region:
+                            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup("Region", source.Region);
+                            break;
+                        case DeploymentLocationType.Cluster:
+                            dest.Cluster = EditorGUILayout.TextField("Cluster", source.Cluster);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
 
             EditorGUILayout.LabelField("Tags");
 
