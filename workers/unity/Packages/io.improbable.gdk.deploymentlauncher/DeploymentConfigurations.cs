@@ -162,6 +162,8 @@ namespace Improbable.Gdk.DeploymentLauncher
                 SnapshotPath = SnapshotPath,
                 LaunchJson = LaunchJson,
                 Region = Region,
+                Cluster = Cluster,
+                DeploymentLocationType = DeploymentLocationType,
                 Tags = Tags.ToList(),
 
                 TargetDeploymentName = TargetDeploymentName,
@@ -268,6 +270,17 @@ namespace Improbable.Gdk.DeploymentLauncher
         public DeploymentRegionCode Region;
 
         /// <summary>
+        ///     The cluster to launch the deployment in.
+        /// </summary>
+        public string Cluster;
+
+        /// <summary>
+        ///     Whether to use <see cref="Region"/> or <see cref="Cluster"/> as the deployment location.
+        /// </summary>
+        /// <returns></returns>
+        public DeploymentLocationType DeploymentLocationType;
+
+        /// <summary>
         ///     Tags to add to the deployment.
         /// </summary>
         public List<string> Tags;
@@ -278,6 +291,8 @@ namespace Improbable.Gdk.DeploymentLauncher
             SnapshotPath = string.Empty;
             LaunchJson = string.Empty;
             Region = DeploymentRegionCode.EU;
+            Cluster = string.Empty;
+            DeploymentLocationType = DeploymentLocationType.Region;
             Tags = new List<string>();
         }
 
@@ -289,14 +304,25 @@ namespace Improbable.Gdk.DeploymentLauncher
             {
                 "create",
                 $"--deployment_name={Name}",
-                $"--launch_json_path=\"{Path.Combine(Tools.Common.SpatialProjectRootDir, LaunchJson)}\"",
-                $"--region={Region.ToString()}",
+                $"--launch_json_path=\"{Path.Combine(Common.SpatialProjectRootDir, LaunchJson)}\"",
                 $"--runtime_version={toolsConfig.RuntimeVersion}"
             };
 
+            switch (DeploymentLocationType)
+            {
+                case DeploymentLocationType.Region:
+                    args.Add($"--region={Region.ToString()}");
+                    break;
+                case DeploymentLocationType.Cluster:
+                    args.Add($"--cluster={Cluster}");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             if (!string.IsNullOrEmpty(SnapshotPath))
             {
-                args.Add($"--snapshot_path=\"{Path.Combine(Tools.Common.SpatialProjectRootDir, SnapshotPath)}\"");
+                args.Add($"--snapshot_path=\"{Path.Combine(Common.SpatialProjectRootDir, SnapshotPath)}\"");
             }
 
             if (Tags.Count > 0)
@@ -315,6 +341,8 @@ namespace Improbable.Gdk.DeploymentLauncher
                 SnapshotPath = SnapshotPath,
                 LaunchJson = LaunchJson,
                 Region = Region,
+                Cluster = Cluster,
+                DeploymentLocationType = DeploymentLocationType,
                 Tags = Tags.ToList()
             };
         }
@@ -350,6 +378,11 @@ namespace Improbable.Gdk.DeploymentLauncher
                         yield return message;
                     }
                 }
+            }
+
+            if (DeploymentLocationType == DeploymentLocationType.Cluster && string.IsNullOrEmpty(Cluster))
+            {
+                yield return "Cluster cannot be empty.";
             }
         }
 
@@ -429,6 +462,12 @@ namespace Improbable.Gdk.DeploymentLauncher
         US,
         EU,
         CN
+    }
+
+    internal enum DeploymentLocationType
+    {
+        Region,
+        Cluster
     }
 
     internal class DeploymentInfo
