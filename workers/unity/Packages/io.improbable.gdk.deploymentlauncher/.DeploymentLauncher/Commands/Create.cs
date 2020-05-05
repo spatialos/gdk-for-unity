@@ -40,9 +40,21 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                     },
                     Name = options.DeploymentName,
                     ProjectName = options.ProjectName,
-                    RegionCode = options.Region.ToString(),
                     RuntimeVersion = options.RuntimeVersion
                 };
+
+                if (options.Cluster != null)
+                {
+                    deployment.ClusterCode = options.Cluster;
+                }
+                else if (options.Region != Options.DeploymentRegionCode.None)
+                {
+                    deployment.RegionCode = options.Region.ToString();
+                }
+                else
+                {
+                    throw new ArgumentException("Expected either --region or --cluster to be provided, but found neither.");
+                }
 
                 if (options.SnapshotPath != null)
                 {
