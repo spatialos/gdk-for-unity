@@ -23,6 +23,10 @@
 - Produce code coverage reports in tests [#1359](https://github.com/spatialos/gdk-for-unity/pull/1359)
 - Replaced code generated ReferenceProviders with generic version. [#1358](https://github.com/spatialos/gdk-for-unity/pull/1358)
 
+### Internal
+
+- Refactor callbacks API. [#1348](https://github.com/spatialos/gdk-for-unity/pull/1348)
+
 ## `0.3.5` - 2020-04-23
 
 ### Breaking Changes
@@ -61,7 +65,6 @@
 - Replaced `InitUISystem` with the `InitUIBehaviour` script on the `Character` prefab. [#1338](https://github.com/spatialos/gdk-for-unity/pull/1338)
 - Removed `ViewCommandBuffer` as it is no longer required. [#1344](https://github.com/spatialos/gdk-for-unity/pull/1344)
 - Renamed faulty named `DiffSpawnCubeCommandStorage` to `CommandDiffStorageBase`. [#1345](https://github.com/spatialos/gdk-for-unity/pull/1345)
-- Refactor callbacks API. [#1348](https://github.com/spatialos/gdk-for-unity/pull/1348)
 
 ## `0.3.4` - 2020-03-16
 
