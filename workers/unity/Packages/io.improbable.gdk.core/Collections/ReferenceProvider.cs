@@ -94,5 +94,7 @@ namespace Improbable.Gdk.Core
 
             return new ReferenceHandle(nextHandleId);
         }
+
+        internal static int Count => Storage.Count;
     }
 }
