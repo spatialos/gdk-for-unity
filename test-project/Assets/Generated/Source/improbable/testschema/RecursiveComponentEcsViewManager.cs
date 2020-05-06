@@ -77,7 +77,7 @@ namespace Improbable.TestSchema
             public void Clean()
             {
                 var query = entityManager.CreateEntityQuery(typeof(global::Improbable.TestSchema.RecursiveComponent.Component));
-                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.RecursiveComponent.Component>(Allocator.Temp);
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.RecursiveComponent.Component>(Allocator.TempJob);
 
                 foreach (var component in componentDataArray)
                 {

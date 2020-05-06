@@ -77,7 +77,7 @@ namespace Improbable.TestSchema
             public void Clean()
             {
                 var query = entityManager.CreateEntityQuery(typeof(global::Improbable.TestSchema.ExhaustiveMapKey.Component));
-                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.ExhaustiveMapKey.Component>(Allocator.Temp);
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.ExhaustiveMapKey.Component>(Allocator.TempJob);
 
                 foreach (var component in componentDataArray)
                 {

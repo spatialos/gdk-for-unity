@@ -77,7 +77,7 @@ namespace Improbable.DependentSchema
             public void Clean()
             {
                 var query = entityManager.CreateEntityQuery(typeof(global::Improbable.DependentSchema.DependentComponent.Component));
-                var componentDataArray = query.ToComponentDataArray<global::Improbable.DependentSchema.DependentComponent.Component>(Allocator.Temp);
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.DependentSchema.DependentComponent.Component>(Allocator.TempJob);
 
                 foreach (var component in componentDataArray)
                 {
