@@ -107,7 +107,7 @@ public void Init(World world)
                                 m.Line(new[]
                                 {
                                     $"var query = entityManager.CreateEntityQuery(typeof({componentNamespace}.Component));",
-                                    $"var componentDataArray = query.ToComponentDataArray<{componentNamespace}.Component>(Allocator.Temp);"
+                                    $"var componentDataArray = query.ToComponentDataArray<{componentNamespace}.Component>(Allocator.TempJob);"
                                 });
 
                                 m.Loop("foreach (var component in componentDataArray)", loop =>
