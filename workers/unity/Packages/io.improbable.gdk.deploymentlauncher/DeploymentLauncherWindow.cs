@@ -580,10 +580,10 @@ namespace Improbable.Gdk.DeploymentLauncher
             dest.SnapshotPath = EditorGUILayout.TextField("Snapshot Path", source.SnapshotPath);
             dest.LaunchJson = EditorGUILayout.TextField("Launch Config", source.LaunchJson);
 
-            var foldoutState = stateManager.GetStateObjectOrDefault<bool>((source.Name + "region").GetHashCode());
+            var foldoutState = stateManager.GetStateObjectOrDefault<bool>($"{source.Name}region".GetHashCode());
 
             foldoutState = EditorGUILayout.Foldout(foldoutState, new GUIContent("Deployment location"));
-            stateManager.SetStateObject((source.Name + "region").GetHashCode(), foldoutState);
+            stateManager.SetStateObject($"{source.Name}region".GetHashCode(), foldoutState);
 
             if (foldoutState)
             {
@@ -591,22 +591,30 @@ namespace Improbable.Gdk.DeploymentLauncher
                 {
                     using (new GUILayout.HorizontalScope())
                     {
-                        GUILayout.Space(EditorGUI.indentLevel * 15.0f);
-                        dest.DeploymentLocationType =
-                            (DeploymentLocationType) GUILayout.SelectionGrid((int) source.DeploymentLocationType,
-                                new[] { "Region", "Cluster" }, 1, EditorStyles.radioButton);
+                        if (EditorGUILayout.Toggle("Region",
+                            source.DeploymentLocationType == DeploymentLocationType.Region, EditorStyles.radioButton))
+                        {
+                            dest.DeploymentLocationType = DeploymentLocationType.Region;
+                        }
+
+                        using (new EditorGUI.DisabledScope(dest.DeploymentLocationType == DeploymentLocationType.Cluster))
+                        {
+                            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup(source.Region);
+                        }
                     }
 
-                    switch (dest.DeploymentLocationType)
+                    using (new GUILayout.HorizontalScope())
                     {
-                        case DeploymentLocationType.Region:
-                            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup("Region", source.Region);
-                            break;
-                        case DeploymentLocationType.Cluster:
-                            dest.Cluster = EditorGUILayout.TextField("Cluster", source.Cluster);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        if (EditorGUILayout.Toggle("Cluster",
+                            dest.DeploymentLocationType == DeploymentLocationType.Cluster, EditorStyles.radioButton))
+                        {
+                            dest.DeploymentLocationType = DeploymentLocationType.Cluster;
+                        }
+
+                        using (new EditorGUI.DisabledScope(dest.DeploymentLocationType == DeploymentLocationType.Region))
+                        {
+                            dest.Cluster = EditorGUILayout.TextField(source.Cluster);
+                        }
                     }
                 }
             }
