@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,8 +25,7 @@ namespace Improbable.Gdk.Tools
         private const string CodeGeneratorLabel = "Code generator";
         private const string CustomSnapshotPathLabel = "Selected snapshot path";
         private const string GeneralSectionLabel = "General";
-        private const string ResetConfigurationButtonText = "Reset to default";
-        private const string SaveConfigurationButtonText = "Save";
+        private const string ResetConfigurationButtonText = "Reset all to default";
 
         private static GUIContent AddSchemaDirButton;
         private static GUIContent RemoveSchemaDirButton;
@@ -31,6 +33,11 @@ namespace Improbable.Gdk.Tools
         private GdkToolsConfiguration toolsConfig;
         private List<string> configErrors = new List<string>();
         private Vector2 scrollPosition;
+
+        // Minimum time required from last config change before saving to file
+        private readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
+        private DateTime lastSaveTime = DateTime.Now;
+        private bool hasUnsavedData;
 
         [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
         public static void ShowWindow()
@@ -49,6 +56,26 @@ namespace Improbable.Gdk.Tools
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
+
+            EditorApplication.quitting += OnExit;
+        }
+
+        private void OnDestroy()
+        {
+            OnExit();
+
+            EditorApplication.quitting -= OnExit;
+        }
+
+        private void OnExit()
+        {
+            if (!hasUnsavedData || configErrors.Any())
+            {
+                return;
+            }
+
+            toolsConfig.Save();
+            AssetDatabase.SaveAssets();
         }
 
         public void OnGUI()
@@ -70,27 +97,6 @@ namespace Improbable.Gdk.Tools
             using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition))
             using (var check = new EditorGUI.ChangeCheckScope())
             {
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
-                {
-                    var canSave = configErrors.Count > 0;
-                    using (new EditorGUI.DisabledScope(canSave))
-                    {
-                        if (GUILayout.Button(SaveConfigurationButtonText, EditorStyles.toolbarButton))
-                        {
-                            toolsConfig.Save();
-                        }
-                    }
-
-                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.toolbarButton))
-                    {
-                        if (EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?",
-                            "Yes", "No"))
-                        {
-                            toolsConfig.ResetToDefault();
-                        }
-                    }
-                }
-
                 DrawGeneralSection();
 
                 DrawCodeGenerationOptions();
@@ -100,6 +106,28 @@ namespace Improbable.Gdk.Tools
                 if (check.changed)
                 {
                     configErrors = toolsConfig.Validate();
+
+                    if (configErrors.Count == 0)
+                    {
+                        hasUnsavedData = true;
+                    }
+                }
+
+                GUILayout.Space(10f);
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.miniButtonMid, GUILayout.Width(150)))
+                    {
+                        if (EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?",
+                            "Yes", "No"))
+                        {
+                            GUI.FocusControl(null);
+                            toolsConfig.ResetToDefault();
+                        }
+                    }
+
+                    GUILayout.FlexibleSpace();
                 }
 
                 scrollPosition = scroll.scrollPosition;
@@ -195,7 +223,7 @@ namespace Improbable.Gdk.Tools
                 using (new EditorGUI.DisabledScope(!toolsConfig.SaveDevAuthTokenToFile))
                 {
                     toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
-                    GUILayout.Label($"Token filepath: {toolsConfig.DevAuthTokenFilepath}", EditorStyles.helpBox);
+                    GUILayout.Label($"Token filepath: {Path.GetFullPath(toolsConfig.DevAuthTokenFilepath)}", EditorStyles.helpBox);
                 }
             }
 
@@ -223,6 +251,24 @@ namespace Improbable.Gdk.Tools
                     }
                 }
             }
+        }
+
+        private void Update()
+        {
+            TrySaveChanges();
+        }
+
+        private void TrySaveChanges()
+        {
+            var timeSinceLastSave = DateTime.Now - lastSaveTime;
+            if (!hasUnsavedData || timeSinceLastSave < FileSavingInterval || configErrors.Any())
+            {
+                return;
+            }
+
+            toolsConfig.Save();
+            lastSaveTime = DateTime.Now;
+            hasUnsavedData = false;
         }
     }
 }
