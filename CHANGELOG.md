@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+### Added
+
+- Added the ability to select a specific cluster for deployments in the [Deployment Launcher](https://documentation.improbable.io/gdk-for-unity/docs/deployment-launcher). [#1357](https://github.com/spatialos/gdk-for-unity/pull/1357)
+    - You can select _either_ a region or a cluster, but not both!
+
 ### Changed
 
 - GDK Tools Configuration window now autosaves. [#1356](https://github.com/spatialos/gdk-for-unity/pull/1356)
+
 
 ### Fixed
 

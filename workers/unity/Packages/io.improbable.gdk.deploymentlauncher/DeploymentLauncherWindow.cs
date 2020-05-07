@@ -579,7 +579,45 @@ namespace Improbable.Gdk.DeploymentLauncher
 
             dest.SnapshotPath = EditorGUILayout.TextField("Snapshot Path", source.SnapshotPath);
             dest.LaunchJson = EditorGUILayout.TextField("Launch Config", source.LaunchJson);
-            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup("Region", source.Region);
+
+            var foldoutState = stateManager.GetStateObjectOrDefault<bool>($"{source.Name}region".GetHashCode());
+
+            foldoutState = EditorGUILayout.Foldout(foldoutState, new GUIContent("Deployment location"));
+            stateManager.SetStateObject($"{source.Name}region".GetHashCode(), foldoutState);
+
+            if (foldoutState)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (EditorGUILayout.Toggle("Region",
+                            source.DeploymentLocationType == DeploymentLocationType.Region, EditorStyles.radioButton))
+                        {
+                            dest.DeploymentLocationType = DeploymentLocationType.Region;
+                        }
+
+                        using (new EditorGUI.DisabledScope(dest.DeploymentLocationType == DeploymentLocationType.Cluster))
+                        {
+                            dest.Region = (DeploymentRegionCode) EditorGUILayout.EnumPopup(source.Region);
+                        }
+                    }
+
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (EditorGUILayout.Toggle("Cluster",
+                            dest.DeploymentLocationType == DeploymentLocationType.Cluster, EditorStyles.radioButton))
+                        {
+                            dest.DeploymentLocationType = DeploymentLocationType.Cluster;
+                        }
+
+                        using (new EditorGUI.DisabledScope(dest.DeploymentLocationType == DeploymentLocationType.Region))
+                        {
+                            dest.Cluster = EditorGUILayout.TextField(source.Cluster);
+                        }
+                    }
+                }
+            }
 
             EditorGUILayout.LabelField("Tags");
 

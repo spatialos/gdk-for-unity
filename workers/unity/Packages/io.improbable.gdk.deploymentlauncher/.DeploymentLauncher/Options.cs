@@ -29,8 +29,11 @@ namespace Improbable.Gdk.DeploymentLauncher
             [Option("snapshot_path", Required = false, HelpText = "The path to the snapshot.")]
             public string SnapshotPath { get; set; }
 
-            [Option("region", Required = true, HelpText = "The region to launch the deployment in.")]
+            [Option("region", Required = false, HelpText = "The region to launch the deployment in.")]
             public DeploymentRegionCode Region { get; set; }
+
+            [Option("cluster", Required = false, HelpText = "The specific cluster to launch a deployment in.")]
+            public string Cluster { get; set; }
 
             [Option("tags", Required = false, HelpText = "Tags to add to this deployment. Comma separated",
                 Separator = ',')]
@@ -73,6 +76,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
         public enum DeploymentRegionCode
         {
+            None,
             US,
             EU,
             CN
