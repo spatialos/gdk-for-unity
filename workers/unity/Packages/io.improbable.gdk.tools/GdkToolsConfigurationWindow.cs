@@ -57,22 +57,25 @@ namespace Improbable.Gdk.Tools
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
 
-            Application.quitting += OnExit;
+            EditorApplication.quitting += OnExit;
         }
 
         private void OnDestroy()
         {
             OnExit();
 
-            Application.quitting -= OnExit;
+            EditorApplication.quitting -= OnExit;
         }
 
         private void OnExit()
         {
-            if (hasUnsavedData)
+            if (!hasUnsavedData || configErrors.Any())
             {
-                toolsConfig.Save();
+                return;
             }
+
+            toolsConfig.Save();
+            AssetDatabase.SaveAssets();
         }
 
         public void OnGUI()
