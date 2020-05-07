@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -257,13 +258,14 @@ namespace Improbable.Gdk.Tools
         private void TrySaveChanges()
         {
             var timeSinceLastSave = DateTime.Now - lastSaveTime;
-            if (!hasUnsavedData || timeSinceLastSave < FileSavingInterval)
+            if (!hasUnsavedData || timeSinceLastSave < FileSavingInterval || configErrors.Any())
             {
                 return;
             }
 
             toolsConfig.Save();
             lastSaveTime = DateTime.Now;
+            hasUnsavedData = false;
         }
     }
 }
