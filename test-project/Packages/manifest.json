@@ -1,8 +1,7 @@
 {
   "dependencies": {
-    "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.test-framework": "1.1.11",
+    "com.unity.testtools.codecoverage": "0.2.3-preview",
     "com.unity.ugui": "1.0.0",
     "io.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/io.improbable.gdk.buildsystem",
     "io.improbable.gdk.core": "file:../../workers/unity/Packages/io.improbable.gdk.core",
@@ -13,11 +12,7 @@
     "io.improbable.gdk.testutils": "file:../../workers/unity/Packages/io.improbable.gdk.testutils",
     "io.improbable.gdk.tools": "file:../../workers/unity/Packages/io.improbable.gdk.tools",
     "io.improbable.gdk.transformsynchronization": "file:../../workers/unity/Packages/io.improbable.gdk.transformsynchronization",
-    "io.improbable.worker.sdk": "file:../../workers/unity/Packages/io.improbable.worker.sdk",
-    "com.unity.modules.animation": "1.0.0",
-    "com.unity.modules.physics": "1.0.0",
-    "com.unity.modules.physics2d": "1.0.0",
-    "com.unity.modules.ui": "1.0.0"
+    "io.improbable.worker.sdk": "file:../../workers/unity/Packages/io.improbable.worker.sdk"
   },
   "registry": "https://packages.unity.com"
 }
