@@ -14,6 +14,9 @@ PROJECT_DIR="$(pwd)"
 TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 mkdir -p "${TEST_RESULTS_DIR}"
 
+COVERAGE_OPTIONS="generateHtmlReport\;assemblyFilters:+Improbable.Gdk.*,-Improbable.Gdk.Generated,-Improbable.Gdk.Generated.BuildSystem"
+COVERAGE_RESULTS_PATH="${PROJECT_DIR}/logs/coverage-results"
+
 echo "--- Testing Code Generator :gear:"
 
 dotnet test \
@@ -27,6 +30,9 @@ echo "--- Testing Unity: Editmode :writing_hand:"
 pushd "workers/unity"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
+        -enableCodeCoverage \
+        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/playground" \
+        -coverageOptions "${COVERAGE_OPTIONS}" \
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
@@ -35,23 +41,14 @@ popd
 
 cleanUnity "$(pwd)/workers/unity"
 
-echo "--- Testing Unity: Playmode :joystick:"
-
-pushd "workers/unity"
-    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-        -batchmode \
-        -projectPath "${PROJECT_DIR}/workers/unity" \
-        -runTests \
-        -testPlatform playmode \
-        -logfile "${PROJECT_DIR}/logs/unity-playmode-test-run.log" \
-        -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml"
-popd
-
 echo "--- Testing Unity: Test Project Editmode :microscope:"
 
 pushd "test-project"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
+        -enableCodeCoverage \
+        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/test-project" \
+        -coverageOptions "${COVERAGE_OPTIONS}" \
         -projectPath "${PROJECT_DIR}/test-project" \
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
@@ -63,6 +60,9 @@ echo "--- Testing Unity: Test Project Playmode :joystick:"
 pushd "test-project"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
+        -enableCodeCoverage \
+        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/test-project" \
+        -coverageOptions "${COVERAGE_OPTIONS}" \
         -projectPath "${PROJECT_DIR}/test-project" \
         -runTests \
         -testPlatform playmode \
