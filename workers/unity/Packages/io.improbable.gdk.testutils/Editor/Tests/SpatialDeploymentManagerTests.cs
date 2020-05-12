@@ -1,3 +1,4 @@
+#if !UNITY_EDITOR_OSX
 using System;
 using System.Linq;
 using System.Net;
@@ -56,3 +57,4 @@ namespace Improbable.Gdk.TestUtils.Editor.Tests
         }
     }
 }
+#endif
