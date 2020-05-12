@@ -47,6 +47,11 @@ namespace Improbable.Gdk.Core
             {
                 return (int) handleId;
             }
+
+            public override string ToString()
+            {
+                return $"({typeof(T)}:{handleId})";
+            }
         }
 
         public static ReferenceHandle Create()
@@ -62,7 +67,7 @@ namespace Improbable.Gdk.Core
         {
             if (!Storage.TryGetValue(handle, out var value))
             {
-                throw new ArgumentException($"EntityTypeProvider does not contain handle {handle}");
+                throw new ArgumentException($"{typeof(ReferenceProvider<T>)} does not contain handle {handle}");
             }
 
             return value;
@@ -72,7 +77,7 @@ namespace Improbable.Gdk.Core
         {
             if (!Storage.ContainsKey(handle))
             {
-                throw new ArgumentException($"EntityTypeProvider does not contain handle {handle}");
+                throw new ArgumentException($"{typeof(ReferenceProvider<T>)} does not contain handle {handle}");
             }
 
             Storage[handle] = value;
