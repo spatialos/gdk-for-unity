@@ -121,7 +121,7 @@ namespace Improbable.Gdk.Core
                 component = (TSnapshot) boxedComponent;
                 return true;
             }
-            
+
             component = default;
             return false;
         }
