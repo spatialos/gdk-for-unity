@@ -20,31 +20,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void AddComponent_type_erased_should_throw_if_duplicate_component_is_added()
-        {
-            var template = GetBasicTemplate();
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var component = (ISpatialComponentSnapshot) new Position.Snapshot();
-                template.AddComponent(component, "write-acesss");
-            });
-        }
-
-        [Test]
         public void AddComponent_should_ignore_EntityAcl()
         {
             var template = GetBasicTemplate();
             template.AddComponent(new EntityAcl.Snapshot(), "test");
-
-            Assert.IsFalse(template.HasComponent<EntityAcl.Snapshot>());
-        }
-
-        [Test]
-        public void AddComponent_type_erased_should_ignore_EntityAcl()
-        {
-            var template = GetBasicTemplate();
-            var component = (ISpatialComponentSnapshot) new EntityAcl.Snapshot();
-            template.AddComponent(component, "test");
 
             Assert.IsFalse(template.HasComponent<EntityAcl.Snapshot>());
         }
@@ -96,6 +75,35 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var template = GetBasicTemplate();
             var returned = template.GetComponent(ExhaustiveSingular.ComponentId);
             Assert.IsNull(returned);
+        }
+
+        [Test]
+        public void TryGetComponent_should_return_true_if_component_exists()
+        {
+            var template = GetBasicTemplate();
+
+            var component = new Metadata.Snapshot { EntityType = "something" };
+            template.AddComponent(component);
+
+            Assert.IsTrue(template.TryGetComponent<Metadata.Snapshot>(out var metadata));
+            Assert.AreEqual("something", metadata.EntityType);
+
+            Assert.IsTrue(template.TryGetComponent(Metadata.ComponentId, out var boxedMetadata));
+            Assert.IsInstanceOf<Metadata.Snapshot>(boxedMetadata);
+
+            Assert.AreEqual("something", ((Metadata.Snapshot) boxedMetadata).EntityType);
+        }
+
+        [Test]
+        public void TryGetComponent_should_return_false_if_component_doesnt_exist()
+        {
+            var template = GetBasicTemplate();
+
+            Assert.IsFalse(template.TryGetComponent<Metadata.Snapshot>(out var metadata));
+            Assert.IsNull(metadata.EntityType);
+
+            Assert.IsFalse(template.TryGetComponent(Metadata.ComponentId, out var boxedMetadata));
+            Assert.IsNull(boxedMetadata);
         }
 
         [Test]
