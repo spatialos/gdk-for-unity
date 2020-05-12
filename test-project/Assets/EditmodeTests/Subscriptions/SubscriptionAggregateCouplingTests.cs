@@ -5,53 +5,36 @@ using System.Reflection;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace Improbable.Gdk.PlaymodeTests.Subscriptions
+namespace Improbable.Gdk.EditmodeTests.Subscriptions
 {
-    public class SubscriptionAggregateCouplingTests
+    public class SubscriptionAggregateCouplingTests : MockBase
     {
-        private MockConnectionHandler connectionHandler;
-        private WorkerInWorld workerInWorld;
-        private EntityGameObjectLinker linker;
-
-        private SpatialOSReceiveSystem receiveSystem;
-        private RequireLifecycleSystem requireLifecycleSystem;
-
-        private const string WorkerType = "TestWorkerType";
-
-        [SetUp]
-        public void Setup()
+        protected override MockWorld.Options GetOptions()
         {
-            var logDispatcher = new LoggingDispatcher();
+            var opts = base.GetOptions();
 
-            var connectionBuilder = new MockConnectionHandlerBuilder();
-            connectionHandler = connectionBuilder.ConnectionHandler;
-            workerInWorld = WorkerInWorld
-                .CreateWorkerInWorldAsync(connectionBuilder, WorkerType, logDispatcher, Vector3.zero)
-                .Result;
-            receiveSystem = workerInWorld.World.GetExistingSystem<SpatialOSReceiveSystem>();
-            requireLifecycleSystem = workerInWorld.World.GetExistingSystem<RequireLifecycleSystem>();
+            // Required for the LinkedGameObjectMap subscription to be fulfilled.
+            opts.AdditionalSystems = (world) =>
+            {
+                world.AddSystem(
+                    new GameObjectInitializationSystem(
+                        new GameObjectCreatorFromMetadata(opts.WorkerType, Vector3.zero, null), null));
+            };
 
-            var goInitSystem = workerInWorld.World
-                .CreateSystem<GameObjectInitializationSystem>(
-                    new GameObjectCreatorFromMetadata(WorkerType, Vector3.zero, logDispatcher), null);
-            linker = goInitSystem.Linker;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            workerInWorld.Dispose();
+            return opts;
         }
 
         [Test]
         public void All_non_generated_subscription_managers_have_a_test()
         {
             // Find all non-generated subscription manager implementations.
-            var subscriptionManagersTypes = ReflectionUtility.GetNonAbstractTypesWithBlacklist(typeof(SubscriptionManagerBase), new[] { "Improbable.Gdk.Generated" });
+            var subscriptionManagersTypes =
+                ReflectionUtility.GetNonAbstractTypesWithBlacklist(typeof(SubscriptionManagerBase),
+                    new[] { "Improbable.Gdk.Generated" });
 
             // Get the subscription payload type.
             var subscriptionManagerContainedTypes = subscriptionManagersTypes
@@ -157,45 +140,49 @@ namespace Improbable.Gdk.PlaymodeTests.Subscriptions
         // were cached incorrectly would cause the subscriptions to become coupled.
         private void DifferentAggregateSubscriptions_should_not_couple_together_impl<T>() where T : MonoBehaviour
         {
-            var gameObject1 = CreateAndLinkGameObject<T>(1);
-            var gameObject2 = CreateAndLinkGameObject<T>(2);
-
-            RemoveAndUnlinkGameObject(1, gameObject1);
-            RemoveAndUnlinkGameObject(2, gameObject2);
-
-            var gameObject3 = CreateAndLinkGameObject<T>(3);
-            var gameObject4 = CreateAndLinkGameObject<T>(4);
-
-            RemoveAndUnlinkGameObject(3, gameObject3);
-
-            Assert.IsTrue(gameObject4.GetComponent<T>().enabled, "gameObject4.GetComponent<T>().enabled");
+            World
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(1, GetEntityTemplate());
+                    world.Connection.CreateEntity(2, GetEntityTemplate());
+                })
+                .Step(world =>
+                {
+                    world.CreateGameObject<T>(1);
+                    world.CreateGameObject<T>(2);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(1, Position.ComponentId);
+                    world.Connection.RemoveEntity(1);
+                    world.Connection.RemoveComponent(2, Position.ComponentId);
+                    world.Connection.RemoveEntity(2);
+                })
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(3, GetEntityTemplate());
+                    world.Connection.CreateEntity(4, GetEntityTemplate());
+                })
+                .Step(world =>
+                {
+                    world.CreateGameObject<T>(3);
+                    var (_, behaviour) = world.CreateGameObject<T>(4);
+                    return behaviour;
+                }).Step(world =>
+                {
+                    world.Connection.RemoveComponent(3, Position.ComponentId);
+                    world.Connection.RemoveEntity(3);
+                }).Step((world, behaviour) =>
+                {
+                    Assert.IsTrue(behaviour.enabled);
+                });
         }
 
-        private GameObject CreateAndLinkGameObject<T>(long entityId) where T : MonoBehaviour
+        private EntityTemplate GetEntityTemplate()
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(), "worker");
-            connectionHandler.CreateEntity(entityId, template);
-            receiveSystem.Update();
-
-            var gameObject = new GameObject("TestGameObject");
-            gameObject.AddComponent<T>();
-            gameObject.GetComponent<T>().enabled = false;
-
-            linker.LinkGameObjectToSpatialOSEntity(new EntityId(entityId), gameObject);
-            requireLifecycleSystem.Update();
-
-            return gameObject;
-        }
-
-        private void RemoveAndUnlinkGameObject(long entityId, GameObject gameObject)
-        {
-            connectionHandler.RemoveComponent(entityId, Position.ComponentId);
-            connectionHandler.RemoveEntity(entityId);
-            receiveSystem.Update();
-            requireLifecycleSystem.Update();
-
-            Object.DestroyImmediate(gameObject);
+            return template;
         }
     }
 }
