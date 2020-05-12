@@ -42,6 +42,41 @@ namespace Improbable.Gdk.Core
         public void AddComponent<TSnapshot>(TSnapshot snapshot)
             where TSnapshot : struct, ISpatialComponentSnapshot
         {
+            AddComponent((ISpatialComponentSnapshot) snapshot);
+        }
+
+        /// <summary>
+        ///     Adds a SpatialOS component to the EntityTemplate with write permissions specified.
+        /// </summary>
+        /// <param name="snapshot">The component snapshot to add.</param>
+        /// <param name="writeAccess">
+        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot" /> component.
+        /// </param>
+        /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot" />.
+        /// </exception>
+        /// <remarks>
+        ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
+        /// </remarks>
+        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
+            where TSnapshot : struct, ISpatialComponentSnapshot
+        {
+            AddComponent((ISpatialComponentSnapshot) snapshot, writeAccess);
+        }
+
+        /// <summary>
+        ///     Adds a SpatialOS component to the Entity Template.
+        /// </summary>
+        /// <param name="snapshot">The component snapshot to add.</param>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the EntityTemplate already contains a component snapshot with the same component ID.
+        /// </exception>
+        /// <remarks>
+        ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
+        /// </remarks>
+        public void AddComponent(ISpatialComponentSnapshot snapshot)
+        {
             if (snapshot.ComponentId == EntityAclComponentId)
             {
                 // ACL handled automatically.
@@ -63,20 +98,22 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <param name="snapshot">The component snapshot to add.</param>
         /// <param name="writeAccess">
-        ///     The worker attribute that should be granted write access over the <see cref="TSnapshot" /> component.
+        ///     The worker attribute that should be granted write access over the given component.
         /// </param>
-        /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
         /// <exception cref="InvalidOperationException">
-        ///     Thrown if the EntityTemplate already contains a component snapshot of type <see cref="TSnapshot" />.
+        ///     Thrown if the EntityTemplate already contains a component snapshot with the same component ID.
         /// </exception>
         /// <remarks>
         ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
         /// </remarks>
-        public void AddComponent<TSnapshot>(TSnapshot snapshot, string writeAccess)
-            where TSnapshot : struct, ISpatialComponentSnapshot
+        public void AddComponent(ISpatialComponentSnapshot snapshot, string writeAccess)
         {
             AddComponent(snapshot);
-            acl.SetComponentWriteAccess(snapshot.ComponentId, writeAccess);
+
+            if (snapshot.ComponentId != EntityAclComponentId)
+            {
+                acl.SetComponentWriteAccess(snapshot.ComponentId, writeAccess);
+            }
         }
 
         /// <summary>
@@ -92,6 +129,17 @@ namespace Improbable.Gdk.Core
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     Attempts to get a component snapshot stored in the EntityTemplate.
+        /// </summary>
+        /// <param name="componentId">The ID of the component to fetch.</param>
+        /// <returns>The component snapshot, if the component snapshot exists, null otherwise.</returns>
+        public ISpatialComponentSnapshot GetComponent(uint componentId)
+        {
+            entityData.TryGetValue(componentId, out var snapshot);
+            return snapshot;
         }
 
         /// <summary>
@@ -128,6 +176,18 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
+        ///     Sets a component snapshot in the EntityTemplate.
+        /// </summary>
+        /// <param name="snapshot">The component snapshot that will be inserted into the EntityTemplate.</param>
+        /// <remarks>
+        ///     This will override the component snapshot in the EntityTemplate if one already exists.
+        /// </remarks>
+        public void SetComponent(ISpatialComponentSnapshot snapshot)
+        {
+            entityData[snapshot.ComponentId] = snapshot;
+        }
+
+        /// <summary>
         ///     Removes a component snapshot from the EntityTemplate, if it exists.
         /// </summary>
         /// <typeparam name="TSnapshot">The type of the component snapshot.</typeparam>
@@ -136,6 +196,16 @@ namespace Improbable.Gdk.Core
             var id = ComponentDatabase.GetSnapshotComponentId<TSnapshot>();
             entityData.Remove(id);
             acl.RemoveComponentWriteAccess(id);
+        }
+
+        /// <summary>
+        ///     Removes a component snapshot from the EntityTemplate, if it exists.
+        /// </summary>
+        /// <param name="componentId">The component that will be removed from the EntityTemplate.</param>
+        public void RemoveComponent(uint componentId)
+        {
+            entityData.Remove(componentId);
+            acl.RemoveComponentWriteAccess(componentId);
         }
 
         /// <summary>
