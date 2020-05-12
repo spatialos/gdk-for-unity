@@ -13,22 +13,22 @@ namespace Improbable.Gdk.EditmodeTests.Collections
         [Test]
         public void Disposed_world_cleans_provider()
         {
-            var mockWorld = MockWorld.Create(new MockWorld.Options());
-
-            mockWorld.Step(world =>
+            using (var mockWorld = MockWorld.Create(new MockWorld.Options()))
             {
-                world.Connection.CreateEntity(entityId, new EntityTemplate());
+                mockWorld.Step(world =>
+                {
+                    world.Connection.CreateEntity(entityId, new EntityTemplate());
 
-                world.Connection.AddComponent(entityId, Position.ComponentId,
-                    new Position.Update {Coords = Coordinates.Zero});
+                    world.Connection.AddComponent(entityId, Position.ComponentId,
+                        new Position.Update {Coords = Coordinates.Zero});
 
-                world.Connection.AddComponent(entityId, Metadata.ComponentId,
-                    new Metadata.Update {EntityType = "EntityWithReferenceComponent"});
-            });
+                    world.Connection.AddComponent(entityId, Metadata.ComponentId,
+                        new Metadata.Update {EntityType = "EntityWithReferenceComponent"});
+                });
 
-            Assert.AreEqual(1, ReferenceProvider<string>.Count);
+                Assert.AreEqual(1, ReferenceProvider<string>.Count);
+            }
 
-            mockWorld.Dispose();
             Assert.AreEqual(0, ReferenceProvider<string>.Count);
         }
 
