@@ -52,7 +52,7 @@ fi
 
 # Need to generate csproj & sln files in order to run MSBuild on them.
 pushd "workers/unity"
-    dotnet run -p ".shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -quit \
