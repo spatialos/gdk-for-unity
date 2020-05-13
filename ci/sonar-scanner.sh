@@ -59,6 +59,7 @@ pushd "workers/unity"
         -executeMethod UnityEditor.SyncVS.SyncSolution
     
     # TODO: Fix this in the BK agent
+    export PATH="${PATH}:~/.dotnet/tools"
     dotnet-sonarscanner begin "${args[@]}"
     dotnet msbuild ./unity.sln
     dotnet-sonarscanner end
