@@ -22,9 +22,6 @@
 
 - Produce code coverage reports in tests [#1359](https://github.com/spatialos/gdk-for-unity/pull/1359)
 - Replaced code generated ReferenceProviders with generic version. [#1358](https://github.com/spatialos/gdk-for-unity/pull/1358)
-
-### Internal
-
 - Refactor callbacks API. [#1348](https://github.com/spatialos/gdk-for-unity/pull/1348)
 
 ## `0.3.5` - 2020-04-23
