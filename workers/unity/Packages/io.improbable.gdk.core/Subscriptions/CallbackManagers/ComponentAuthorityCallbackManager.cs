@@ -7,11 +7,9 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal class ComponentAuthorityCallbackManager : IAuthorityCallbackManager
     {
-        private readonly IndexedCallbacks<Authority> callbacks = new IndexedCallbacks<Authority>();
+        private readonly EntityCallbacks<Authority> callbacks = new EntityCallbacks<Authority>();
         private readonly uint componentId;
         private readonly ComponentUpdateSystem componentUpdateSystem;
-
-        private ulong nextCallbackId = 1;
 
         public ComponentAuthorityCallbackManager(uint componentId, World world)
         {
@@ -27,10 +25,10 @@ namespace Improbable.Gdk.Subscriptions
                 switch (changes[i].Authority)
                 {
                     case Authority.Authoritative:
-                        callbacks.InvokeAll(changes[i].EntityId.Id, changes[i].Authority);
+                        callbacks.InvokeAll(changes[i].EntityId, changes[i].Authority);
                         break;
                     case Authority.NotAuthoritative:
-                        callbacks.InvokeAllReverse(changes[i].EntityId.Id, changes[i].Authority);
+                        callbacks.InvokeAllReverse(changes[i].EntityId, changes[i].Authority);
                         break;
                 }
             }
@@ -43,15 +41,14 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (changes[i].Authority == Authority.AuthorityLossImminent)
                 {
-                    callbacks.InvokeAllReverse(changes[i].EntityId.Id, changes[i].Authority);
+                    callbacks.InvokeAllReverse(changes[i].EntityId, changes[i].Authority);
                 }
             }
         }
 
         public ulong RegisterCallback(EntityId entityId, Action<Authority> callback)
         {
-            callbacks.Add(entityId.Id, nextCallbackId, callback);
-            return nextCallbackId++;
+            return callbacks.Add(entityId, callback);
         }
 
         public bool UnregisterCallback(ulong callbackKey)

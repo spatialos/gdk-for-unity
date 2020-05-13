@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal class EntityAddedCallbackManager : ICallbackManager
     {
-        private readonly Callbacks<EntityId> callbacks = new Callbacks<EntityId>();
+        private readonly CallbackCollection<EntityId> callbackCollection = new CallbackCollection<EntityId>();
         private readonly EntitySystem entitySystem;
 
         private ulong nextCallbackId = 1;
@@ -21,19 +21,19 @@ namespace Improbable.Gdk.Subscriptions
             var entities = entitySystem.GetEntitiesAdded();
             foreach (var entityId in entities)
             {
-                callbacks.InvokeAll(entityId);
+                callbackCollection.InvokeAll(entityId);
             }
         }
 
         public ulong RegisterCallback(Action<EntityId> callback)
         {
-            callbacks.Add(nextCallbackId, callback);
+            callbackCollection.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 
         public bool UnregisterCallback(ulong callbackKey)
         {
-            return callbacks.Remove(callbackKey);
+            return callbackCollection.Remove(callbackKey);
         }
     }
 }
