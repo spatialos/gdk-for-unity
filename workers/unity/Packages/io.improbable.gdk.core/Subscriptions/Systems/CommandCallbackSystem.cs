@@ -58,8 +58,8 @@ namespace Improbable.Gdk.Subscriptions
 
         internal void InvokeCallbacks()
         {
-            responseCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
             requestCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
+            responseCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
         }
 
         protected override void OnCreate()

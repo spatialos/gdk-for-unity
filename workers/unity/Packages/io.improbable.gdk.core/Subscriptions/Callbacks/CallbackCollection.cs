@@ -16,6 +16,8 @@ namespace Improbable.Gdk.Subscriptions
 
         private bool isInInvoke = false;
 
+        public int Count => callbacks.Count;
+
         public void Add(ulong key, Action<T> callback)
         {
             if (isInInvoke)
