@@ -45,6 +45,23 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
+        public void GetComponent_type_erased_should_return_the_component_if_present()
+        {
+            var template = GetBasicTemplate();
+
+            var component = (ISpatialComponentSnapshot) new ExhaustiveSingular.Snapshot
+            {
+                Field2 = 100 // Field to test equality for.
+            };
+
+            template.AddComponent(component);
+            var returned = template.GetComponent(ExhaustiveSingular.ComponentId);
+            Assert.IsNotNull(returned);
+            var exhaustiveSingular = (ExhaustiveSingular.Snapshot) returned;
+            Assert.AreEqual(100, exhaustiveSingular.Field2);
+        }
+
+        [Test]
         public void GetComponent_should_return_null_if_component_not_present()
         {
             var template = GetBasicTemplate();
@@ -53,10 +70,54 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
+        public void GetComponent_type_erased_should_return_null_if_component_not_present()
+        {
+            var template = GetBasicTemplate();
+            var returned = template.GetComponent(ExhaustiveSingular.ComponentId);
+            Assert.IsNull(returned);
+        }
+
+        [Test]
+        public void TryGetComponent_should_return_true_if_component_exists()
+        {
+            var template = GetBasicTemplate();
+
+            var component = new Metadata.Snapshot { EntityType = "something" };
+            template.AddComponent(component);
+
+            Assert.IsTrue(template.TryGetComponent<Metadata.Snapshot>(out var metadata));
+            Assert.AreEqual("something", metadata.EntityType);
+
+            Assert.IsTrue(template.TryGetComponent(Metadata.ComponentId, out var boxedMetadata));
+            Assert.IsInstanceOf<Metadata.Snapshot>(boxedMetadata);
+
+            Assert.AreEqual("something", ((Metadata.Snapshot) boxedMetadata).EntityType);
+        }
+
+        [Test]
+        public void TryGetComponent_should_return_false_if_component_doesnt_exist()
+        {
+            var template = GetBasicTemplate();
+
+            Assert.IsFalse(template.TryGetComponent<Metadata.Snapshot>(out var metadata));
+            Assert.IsNull(metadata.EntityType);
+
+            Assert.IsFalse(template.TryGetComponent(Metadata.ComponentId, out var boxedMetadata));
+            Assert.IsNull(boxedMetadata);
+        }
+
+        [Test]
         public void HasComponent_should_return_false_if_component_not_present()
         {
             var template = GetBasicTemplate();
             Assert.IsFalse(template.HasComponent<ExhaustiveSingular.Snapshot>());
+        }
+
+        [Test]
+        public void HasComponent_type_erased_should_return_false_if_component_not_present()
+        {
+            var template = GetBasicTemplate();
+            Assert.IsFalse(template.HasComponent(ExhaustiveSingular.ComponentId));
         }
 
         [Test]
@@ -75,7 +136,22 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void ReplaceComponent_should_replace_the_underlying_component()
+        public void HasComponent_type_erased_should_return_true_if_component_present()
+        {
+            var exhaustiveSingular = new ExhaustiveSingular.Snapshot
+            {
+                Field7 = "",
+                Field3 = new byte[] { }
+            };
+
+            var template = GetBasicTemplate();
+            template.AddComponent(exhaustiveSingular, "write-access");
+
+            Assert.IsTrue(template.HasComponent(ExhaustiveSingular.ComponentId));
+        }
+
+        [Test]
+        public void SetComponent_should_replace_the_underlying_component()
         {
             var originalSnapshot = new ExhaustiveSingular.Snapshot
             {
@@ -98,6 +174,29 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
+        public void SetComponent_type_erased_should_replace_the_underlying_component()
+        {
+            var originalSnapshot = new ExhaustiveSingular.Snapshot
+            {
+                Field7 = "",
+                Field3 = new byte[] { }
+            };
+
+            var template = GetBasicTemplate();
+            template.AddComponent(originalSnapshot, "");
+
+            var snapshotToReplace = (ISpatialComponentSnapshot) new ExhaustiveSingular.Snapshot
+            {
+                Field2 = 100 // Field to test equality for.
+            };
+
+            template.SetComponent(snapshotToReplace);
+
+            var component = template.GetComponent<ExhaustiveSingular.Snapshot>().Value;
+            Assert.AreEqual(100, component.Field2);
+        }
+
+        [Test]
         public void RemoveComponent_should_remove_component_if_present()
         {
             var exhaustiveSingular = new ExhaustiveSingular.Snapshot
@@ -109,6 +208,22 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var template = GetBasicTemplate();
             template.AddComponent(exhaustiveSingular, "");
             template.RemoveComponent<ExhaustiveSingular.Snapshot>();
+
+            Assert.IsFalse(template.GetComponent<ExhaustiveSingular.Snapshot>().HasValue);
+        }
+
+        [Test]
+        public void RemoveComponent_type_erased_should_remove_component_if_present()
+        {
+            var exhaustiveSingular = new ExhaustiveSingular.Snapshot
+            {
+                Field7 = "",
+                Field3 = new byte[] { }
+            };
+
+            var template = GetBasicTemplate();
+            template.AddComponent(exhaustiveSingular, "");
+            template.RemoveComponent(ExhaustiveSingular.ComponentId);
 
             Assert.IsFalse(template.GetComponent<ExhaustiveSingular.Snapshot>().HasValue);
         }
