@@ -8,6 +8,8 @@ fi
 
 cd "$(dirname "$0")/../"
 
+PROJECT_DIR="$(pwd)"
+
 source .shared-ci/scripts/pinned-tools.sh
 
 mkdir -p logs/coverage-results
@@ -52,7 +54,7 @@ fi
 pushd "workers/unity"
     dotnet run -p ".shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
-        -projectPath . \
+        -projectPath "${PROJECT_DIR}/workers/unity" \
         -quit \
         -executeMethod UnityEditor.SyncVS.SyncSolution
 
