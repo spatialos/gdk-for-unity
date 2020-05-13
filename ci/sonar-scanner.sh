@@ -23,6 +23,7 @@ TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbab
 
 args=()
 args+=("-k:spatialos_gdk-for-unity")
+args+=("-o:spatialos")
 args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
