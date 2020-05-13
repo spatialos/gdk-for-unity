@@ -51,13 +51,9 @@ fi
 # Need to generate csproj & sln files in order to run MSBuild on them.
 dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
     -batchmode \
-    -enableCodeCoverage \
-    -coverageResultsPath "${COVERAGE_RESULTS_PATH}/playground" \
-    -coverageOptions "${COVERAGE_OPTIONS}" \
     -projectPath "${PROJECT_DIR}/workers/unity" \
-    -runEditorTests \
-    -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
-    -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml"
+    -quit \
+    -executeMethod UnityEditor.SyncVS.SyncSolution
 
 dotnet-sonarscanner begin "${args[@]}"
 dotnet msbuild ./workers/unity/unity.sln
