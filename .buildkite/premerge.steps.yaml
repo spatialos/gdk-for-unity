@@ -13,7 +13,7 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-05-13-110611-bk11294-da737c70-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-05-13-153624-bk11325-aabe3017-d}"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
