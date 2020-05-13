@@ -20,39 +20,39 @@ namespace Improbable.TestSchema
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
 
-            internal uint aHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeA>.ReferenceHandle aHandle;
 
             public global::Improbable.TestSchema.TypeA A
             {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
+                get => aHandle.Get();
                 set
                 {
                     MarkDataDirty(0);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
+                    aHandle.Set(value);
                 }
             }
 
-            internal uint bHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeB>.ReferenceHandle bHandle;
 
             public global::Improbable.TestSchema.TypeB B
             {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Get(bHandle);
+                get => bHandle.Get();
                 set
                 {
                     MarkDataDirty(1);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Set(bHandle, value);
+                    bHandle.Set(value);
                 }
             }
 
-            internal uint cHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeC>.ReferenceHandle cHandle;
 
             public global::Improbable.TestSchema.TypeC C
             {
-                get => global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
+                get => cHandle.Get();
                 set
                 {
                     MarkDataDirty(2);
-                    global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
+                    cHandle.Set(value);
                 }
             }
 
@@ -224,15 +224,15 @@ namespace Improbable.TestSchema
             {
                 var component = new global::Improbable.TestSchema.RecursiveComponent.Component();
 
-                component.aHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.AProvider.Allocate(world);
+                component.aHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeA>.Create();
 
                 component.A = global::Improbable.TestSchema.TypeA.Serialization.Deserialize(obj.GetObject(1));
 
-                component.bHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.BProvider.Allocate(world);
+                component.bHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeB>.Create();
 
                 component.B = global::Improbable.TestSchema.TypeB.Serialization.Deserialize(obj.GetObject(2));
 
-                component.cHandle = global::Improbable.TestSchema.RecursiveComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+                component.cHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.TypeC>.Create();
 
                 component.C = global::Improbable.TestSchema.TypeC.Serialization.Deserialize(obj.GetObject(3));
 

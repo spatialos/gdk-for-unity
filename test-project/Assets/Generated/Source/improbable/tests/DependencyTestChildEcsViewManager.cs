@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.Tests
 {
@@ -15,7 +16,6 @@ namespace Improbable.Tests
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.Tests
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,7 +74,7 @@ namespace Improbable.Tests
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
             }
 

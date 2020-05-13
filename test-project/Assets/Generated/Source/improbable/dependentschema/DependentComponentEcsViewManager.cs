@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.DependentSchema
 {
@@ -15,7 +16,6 @@ namespace Improbable.DependentSchema
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.DependentSchema
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,15 +74,23 @@ namespace Improbable.DependentSchema
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.CleanDataInWorld(world);
+                var query = entityManager.CreateEntityQuery(typeof(global::Improbable.DependentSchema.DependentComponent.Component));
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.DependentSchema.DependentComponent.Component>(Allocator.TempJob);
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.CleanDataInWorld(world);
+                foreach (var component in componentDataArray)
+                {
+                    component.aHandle.Dispose();
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.CleanDataInWorld(world);
+                    component.cHandle.Dispose();
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.CleanDataInWorld(world);
+                    component.dHandle.Dispose();
+
+                    component.eHandle.Dispose();
+                }
+
+                componentDataArray.Dispose();
             }
 
             private void AddComponent(EntityId entityId)
@@ -91,13 +98,13 @@ namespace Improbable.DependentSchema
                 var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.DependentSchema.DependentComponent.Component();
 
-                component.aHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Allocate(world);
+                component.aHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.ExhaustiveRepeatedData>.Create();
 
-                component.cHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+                component.cHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.Create();
 
-                component.dHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Allocate(world);
+                component.dHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>.Create();
 
-                component.eHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Allocate(world);
+                component.eHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>.Create();
 
                 component.MarkDataClean();
                 entityManager.AddComponentData(entity, component);
@@ -110,13 +117,13 @@ namespace Improbable.DependentSchema
 
                 var data = entityManager.GetComponentData<global::Improbable.DependentSchema.DependentComponent.Component>(entity);
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Free(data.aHandle);
+                data.aHandle.Dispose();
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Free(data.cHandle);
+                data.cHandle.Dispose();
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Free(data.dHandle);
+                data.dHandle.Dispose();
 
-                global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Free(data.eHandle);
+                data.eHandle.Dispose();
 
                 entityManager.RemoveComponent<global::Improbable.DependentSchema.DependentComponent.Component>(entity);
             }

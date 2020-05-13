@@ -20,15 +20,15 @@ namespace Improbable.DependentSchema
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
 
-            internal uint aHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.ExhaustiveRepeatedData>.ReferenceHandle aHandle;
 
             public global::Improbable.TestSchema.ExhaustiveRepeatedData A
             {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Get(aHandle);
+                get => aHandle.Get();
                 set
                 {
                     MarkDataDirty(0);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Set(aHandle, value);
+                    aHandle.Set(value);
                 }
             }
 
@@ -44,39 +44,39 @@ namespace Improbable.DependentSchema
                 }
             }
 
-            internal uint cHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.ReferenceHandle cHandle;
 
             public global::Improbable.TestSchema.SomeEnum? C
             {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Get(cHandle);
+                get => cHandle.Get();
                 set
                 {
                     MarkDataDirty(2);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Set(cHandle, value);
+                    cHandle.Set(value);
                 }
             }
 
-            internal uint dHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>.ReferenceHandle dHandle;
 
             public global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType> D
             {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Get(dHandle);
+                get => dHandle.Get();
                 set
                 {
                     MarkDataDirty(3);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Set(dHandle, value);
+                    dHandle.Set(value);
                 }
             }
 
-            internal uint eHandle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>.ReferenceHandle eHandle;
 
             public global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType> E
             {
-                get => global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Get(eHandle);
+                get => eHandle.Get();
                 set
                 {
                     MarkDataDirty(4);
-                    global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Set(eHandle, value);
+                    eHandle.Set(value);
                 }
             }
 
@@ -370,20 +370,20 @@ namespace Improbable.DependentSchema
             {
                 var component = new global::Improbable.DependentSchema.DependentComponent.Component();
 
-                component.aHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.AProvider.Allocate(world);
+                component.aHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.ExhaustiveRepeatedData>.Create();
 
                 component.A = global::Improbable.TestSchema.ExhaustiveRepeatedData.Serialization.Deserialize(obj.GetObject(1));
 
                 component.B = (global::Improbable.TestSchema.SomeEnum) obj.GetEnum(2);
 
-                component.cHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.CProvider.Allocate(world);
+                component.cHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.Create();
 
                 if (obj.GetEnumCount(3) == 1)
                 {
                     component.C = new global::Improbable.TestSchema.SomeEnum?((global::Improbable.TestSchema.SomeEnum) obj.GetEnum(3));
                 }
 
-                component.dHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.DProvider.Allocate(world);
+                component.dHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>>.Create();
 
                 {
                     component.D = new global::System.Collections.Generic.List<global::Improbable.TestSchema.SomeType>();
@@ -396,7 +396,7 @@ namespace Improbable.DependentSchema
                     }
                 }
 
-                component.eHandle = global::Improbable.DependentSchema.DependentComponent.ReferenceTypeProviders.EProvider.Allocate(world);
+                component.eHandle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>>.Create();
 
                 {
                     var map = new global::System.Collections.Generic.Dictionary<global::Improbable.TestSchema.SomeEnum, global::Improbable.TestSchema.SomeType>();

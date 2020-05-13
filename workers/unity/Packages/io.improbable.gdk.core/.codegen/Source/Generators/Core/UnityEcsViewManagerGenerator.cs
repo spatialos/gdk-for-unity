@@ -19,7 +19,8 @@ namespace Improbable.Gdk.CodeGenerator
                     "System",
                     "Unity.Entities",
                     "Improbable.Worker.CInterop",
-                    "Improbable.Gdk.Core"
+                    "Improbable.Gdk.Core",
+                    "Unity.Collections"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
@@ -33,7 +34,6 @@ namespace Improbable.Gdk.CodeGenerator
                             evm.Line($@"
 private WorkerSystem workerSystem;
 private EntityManager entityManager;
-private World world;
 
 private readonly ComponentType[] initialComponents = new ComponentType[]
 {{
@@ -84,7 +84,6 @@ public void ApplyDiff(ViewDiff diff)
 
 public void Init(World world)
 {
-    this.world = world;
     entityManager = world.EntityManager;
 
     workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -95,12 +94,31 @@ public void Init(World world)
     }
 }
 ");
-                            evm.Method("public void Clean(World world)", m =>
+                            evm.Method("public void Clean()", m =>
                             {
-                                foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
+                                var nonBittableFields =
+                                    componentDetails.FieldDetails.Where(fd => !fd.IsBlittable).ToList();
+
+                                if (nonBittableFields.Count == 0)
                                 {
-                                    m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.CleanDataInWorld(world);");
+                                    return;
                                 }
+
+                                m.Line(new[]
+                                {
+                                    $"var query = entityManager.CreateEntityQuery(typeof({componentNamespace}.Component));",
+                                    $"var componentDataArray = query.ToComponentDataArray<{componentNamespace}.Component>(Allocator.TempJob);"
+                                });
+
+                                m.Loop("foreach (var component in componentDataArray)", loop =>
+                                {
+                                    foreach (var fieldDetails in nonBittableFields)
+                                    {
+                                        loop.Line($"component.{fieldDetails.CamelCaseName}Handle.Dispose();");
+                                    }
+                                });
+
+                                m.Line("componentDataArray.Dispose();");
                             });
 
                             evm.Method("private void AddComponent(EntityId entityId)", m =>
@@ -113,7 +131,7 @@ public void Init(World world)
 
                                 foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                 {
-                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = {componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                    m.Line($"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create();");
                                 }
 
                                 m.Line(new[]
@@ -136,7 +154,7 @@ public void Init(World world)
                                     m.Line($"var data = entityManager.GetComponentData<{componentNamespace}.Component>(entity);");
                                     foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
                                     {
-                                        m.Line($"{componentNamespace}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Free(data.{fieldDetails.CamelCaseName}Handle);");
+                                        m.Line($"data.{fieldDetails.CamelCaseName}Handle.Dispose();");
                                     }
                                 }
 

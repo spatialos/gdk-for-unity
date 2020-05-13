@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.DependentSchema
 {
@@ -15,7 +16,6 @@ namespace Improbable.DependentSchema
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.DependentSchema
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,43 +74,51 @@ namespace Improbable.DependentSchema
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.CleanDataInWorld(world);
+                var query = entityManager.CreateEntityQuery(typeof(global::Improbable.DependentSchema.DependentDataComponent.Component));
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.DependentSchema.DependentDataComponent.Component>(Allocator.TempJob);
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.CleanDataInWorld(world);
+                foreach (var component in componentDataArray)
+                {
+                    component.field1Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+                    component.field2Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.CleanDataInWorld(world);
+                    component.field3Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.CleanDataInWorld(world);
+                    component.field4Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.CleanDataInWorld(world);
+                    component.field5Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
+                    component.field6Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.CleanDataInWorld(world);
+                    component.field7Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.CleanDataInWorld(world);
+                    component.field8Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.CleanDataInWorld(world);
+                    component.field9Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.CleanDataInWorld(world);
+                    component.field10Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.CleanDataInWorld(world);
+                    component.field11Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.CleanDataInWorld(world);
+                    component.field12Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.CleanDataInWorld(world);
+                    component.field13Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.CleanDataInWorld(world);
+                    component.field14Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.CleanDataInWorld(world);
+                    component.field15Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.CleanDataInWorld(world);
+                    component.field16Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.CleanDataInWorld(world);
+                    component.field17Handle.Dispose();
+
+                    component.field18Handle.Dispose();
+                }
+
+                componentDataArray.Dispose();
             }
 
             private void AddComponent(EntityId entityId)
@@ -119,41 +126,41 @@ namespace Improbable.DependentSchema
                 var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.DependentSchema.DependentDataComponent.Component();
 
-                component.field1Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Core.ReferenceProvider<bool?>.Create();
 
-                component.field2Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Core.ReferenceProvider<float?>.Create();
 
-                component.field3Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<byte[]>>.Create();
 
-                component.field4Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
-                component.field5Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
-                component.field6Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.Allocate(world);
+                component.field6Handle = global::Improbable.Gdk.Core.ReferenceProvider<double?>.Create();
 
-                component.field7Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.Option<string>>.Create();
 
-                component.field8Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.Allocate(world);
+                component.field8Handle = global::Improbable.Gdk.Core.ReferenceProvider<uint?>.Create();
 
-                component.field9Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.Allocate(world);
+                component.field9Handle = global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.Create();
 
-                component.field10Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.Allocate(world);
+                component.field10Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
-                component.field11Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.Allocate(world);
+                component.field11Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
-                component.field12Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.Allocate(world);
+                component.field12Handle = global::Improbable.Gdk.Core.ReferenceProvider<uint?>.Create();
 
-                component.field13Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.Allocate(world);
+                component.field13Handle = global::Improbable.Gdk.Core.ReferenceProvider<ulong?>.Create();
 
-                component.field14Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.Allocate(world);
+                component.field14Handle = global::Improbable.Gdk.Core.ReferenceProvider<int?>.Create();
 
-                component.field15Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.Allocate(world);
+                component.field15Handle = global::Improbable.Gdk.Core.ReferenceProvider<long?>.Create();
 
-                component.field16Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.Allocate(world);
+                component.field16Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntityId?>.Create();
 
-                component.field17Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.Allocate(world);
+                component.field17Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeType?>.Create();
 
-                component.field18Handle = global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Allocate(world);
+                component.field18Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.TestSchema.SomeEnum?>.Create();
 
                 component.MarkDataClean();
                 entityManager.AddComponentData(entity, component);
@@ -166,41 +173,41 @@ namespace Improbable.DependentSchema
 
                 var data = entityManager.GetComponentData<global::Improbable.DependentSchema.DependentDataComponent.Component>(entity);
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field1Provider.Free(data.field1Handle);
+                data.field1Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field2Provider.Free(data.field2Handle);
+                data.field2Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                data.field3Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field4Provider.Free(data.field4Handle);
+                data.field4Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field5Provider.Free(data.field5Handle);
+                data.field5Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field6Provider.Free(data.field6Handle);
+                data.field6Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+                data.field7Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field8Provider.Free(data.field8Handle);
+                data.field8Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field9Provider.Free(data.field9Handle);
+                data.field9Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field10Provider.Free(data.field10Handle);
+                data.field10Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field11Provider.Free(data.field11Handle);
+                data.field11Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field12Provider.Free(data.field12Handle);
+                data.field12Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field13Provider.Free(data.field13Handle);
+                data.field13Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field14Provider.Free(data.field14Handle);
+                data.field14Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field15Provider.Free(data.field15Handle);
+                data.field15Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field16Provider.Free(data.field16Handle);
+                data.field16Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field17Provider.Free(data.field17Handle);
+                data.field17Handle.Dispose();
 
-                global::Improbable.DependentSchema.DependentDataComponent.ReferenceTypeProviders.Field18Provider.Free(data.field18Handle);
+                data.field18Handle.Dispose();
 
                 entityManager.RemoveComponent<global::Improbable.DependentSchema.DependentDataComponent.Component>(entity);
             }

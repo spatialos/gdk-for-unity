@@ -85,15 +85,15 @@ public {fieldDetails.Type} {fieldDetails.PascalCaseName}
                         else
                         {
                             component.Line($@"
-internal uint {fieldDetails.CamelCaseName}Handle;
+internal global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.ReferenceHandle {fieldDetails.CamelCaseName}Handle;
 
 public {fieldDetails.Type} {fieldDetails.PascalCaseName}
 {{
-    get => global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Get({fieldDetails.CamelCaseName}Handle);
+    get => {fieldDetails.CamelCaseName}Handle.Get();
     set
     {{
         MarkDataDirty({i});
-        global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Set({fieldDetails.CamelCaseName}Handle, value);
+        {fieldDetails.CamelCaseName}Handle.Set(value);
     }}
 }}
 ");
@@ -337,7 +337,7 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
                             if (!fieldDetails.IsBlittable)
                             {
                                 m.Line(
-                                    $"component.{fieldDetails.CamelCaseName}Handle = global::{componentDetails.Namespace}.{componentDetails.Name}.ReferenceTypeProviders.{fieldDetails.PascalCaseName}Provider.Allocate(world);");
+                                    $"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create();");
                             }
 
                             m.Line(fieldDetails.GetDeserializeString($"component.{fieldDetails.PascalCaseName}", "obj",

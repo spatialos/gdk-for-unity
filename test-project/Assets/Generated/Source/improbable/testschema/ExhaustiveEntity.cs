@@ -20,63 +20,63 @@ namespace Improbable.TestSchema
             // Bit masks for tracking which component properties were changed locally and need to be synced.
             private fixed UInt32 dirtyBits[1];
 
-            internal uint field1Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot>.ReferenceHandle field1Handle;
 
             public global::Improbable.Gdk.Core.EntitySnapshot Field1
             {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Get(field1Handle);
+                get => field1Handle.Get();
                 set
                 {
                     MarkDataDirty(0);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Set(field1Handle, value);
+                    field1Handle.Set(value);
                 }
             }
 
-            internal uint field2Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot?>.ReferenceHandle field2Handle;
 
             public global::Improbable.Gdk.Core.EntitySnapshot? Field2
             {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Get(field2Handle);
+                get => field2Handle.Get();
                 set
                 {
                     MarkDataDirty(1);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Set(field2Handle, value);
+                    field2Handle.Set(value);
                 }
             }
 
-            internal uint field3Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>.ReferenceHandle field3Handle;
 
             public global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot> Field3
             {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Get(field3Handle);
+                get => field3Handle.Get();
                 set
                 {
                     MarkDataDirty(2);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Set(field3Handle, value);
+                    field3Handle.Set(value);
                 }
             }
 
-            internal uint field4Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>.ReferenceHandle field4Handle;
 
             public global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string> Field4
             {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Get(field4Handle);
+                get => field4Handle.Get();
                 set
                 {
                     MarkDataDirty(3);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Set(field4Handle, value);
+                    field4Handle.Set(value);
                 }
             }
 
-            internal uint field5Handle;
+            internal global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>.ReferenceHandle field5Handle;
 
             public global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot> Field5
             {
-                get => global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Get(field5Handle);
+                get => field5Handle.Get();
                 set
                 {
                     MarkDataDirty(4);
-                    global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Set(field5Handle, value);
+                    field5Handle.Set(value);
                 }
             }
 
@@ -396,18 +396,18 @@ namespace Improbable.TestSchema
             {
                 var component = new global::Improbable.TestSchema.ExhaustiveEntity.Component();
 
-                component.field1Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field1Provider.Allocate(world);
+                component.field1Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot>.Create();
 
                 component.Field1 = obj.GetEntity(1);
 
-                component.field2Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field2Provider.Allocate(world);
+                component.field2Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::Improbable.Gdk.Core.EntitySnapshot?>.Create();
 
                 if (obj.GetEntityCount(2) == 1)
                 {
                     component.Field2 = new global::Improbable.Gdk.Core.EntitySnapshot?(obj.GetEntity(2));
                 }
 
-                component.field3Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>>.Create();
 
                 {
                     component.Field3 = new global::System.Collections.Generic.List<global::Improbable.Gdk.Core.EntitySnapshot>();
@@ -420,7 +420,7 @@ namespace Improbable.TestSchema
                     }
                 }
 
-                component.field4Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field4Provider.Allocate(world);
+                component.field4Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>>.Create();
 
                 {
                     var map = new global::System.Collections.Generic.Dictionary<global::Improbable.Gdk.Core.EntitySnapshot, string>();
@@ -436,7 +436,7 @@ namespace Improbable.TestSchema
                     }
                 }
 
-                component.field5Handle = global::Improbable.TestSchema.ExhaustiveEntity.ReferenceTypeProviders.Field5Provider.Allocate(world);
+                component.field5Handle = global::Improbable.Gdk.Core.ReferenceProvider<global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>>.Create();
 
                 {
                     var map = new global::System.Collections.Generic.Dictionary<string, global::Improbable.Gdk.Core.EntitySnapshot>();

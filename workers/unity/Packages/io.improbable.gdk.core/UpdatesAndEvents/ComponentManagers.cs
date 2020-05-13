@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     public interface IEcsViewManager
     {
         void Init(World world);
-        void Clean(World world);
+        void Clean();
 
         uint GetComponentId();
 
