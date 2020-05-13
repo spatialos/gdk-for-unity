@@ -49,12 +49,15 @@ if [[ -n "${BUILDKITE_PULL_REQUEST:-}" && "${BUILDKITE_PULL_REQUEST}" != "false"
 fi
 
 # Need to generate csproj & sln files in order to run MSBuild on them.
-dotnet run -p ".shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-    -batchmode \
-    -projectPath "workers/unity" \
-    -quit \
-    -executeMethod UnityEditor.SyncVS.SyncSolution
+pushd "workers/unity"
+    dotnet run -p ".shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+        -batchmode \
+        -projectPath . \
+        -quit \
+        -executeMethod UnityEditor.SyncVS.SyncSolution
 
-dotnet-sonarscanner begin "${args[@]}"
-dotnet msbuild ./workers/unity/unity.sln
-dotnet-sonarscanner end
+    dotnet-sonarscanner begin "${args[@]}"
+    dotnet msbuild ./unity.sln
+    dotnet-sonarscanner end
+popd
+
