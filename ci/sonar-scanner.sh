@@ -28,11 +28,14 @@ args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
 args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
-args+=("-d:sonar.cs.opencover.reportPaths=logs/coverage-results/*.xml")
+args+=("-d:sonar.cs.opencover.reportPaths=../logs/coverage-results/*.xml")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
 args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*.cs")
-args+=("-d:sonar.verbose=true")
+
+if [[ -n "${DEBUG-}" ]]; then
+  args+=("-d:sonar.verbose=true")
+fi
 
 if [[ -n "${SONAR_PROJECT_DATE:-}" ]]; then
   # For historical analysis. Note - can only supply a date later than the most recent one in the database.
