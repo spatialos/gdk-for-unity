@@ -21,8 +21,6 @@ buildkite-agent artifact download \
     logs/coverage-results \
     --step ":windows: ~ test"
 
-ls -lah ./logs/coverage-results
-
 TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbable" --secret-type="generic-token" --secret-name="gdk-for-unity-bot-sonarcloud-token" --field="token")
 
 args=()
@@ -31,7 +29,7 @@ args+=("-o:spatialos")
 args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
-args+=("-d:sonar.cs.opencover.reportsPaths=..\\logs\\coverage-results\\**\\*.xml")
+args+=("-d:sonar.cs.opencover.reportsPaths=../../logs/coverage-results/**/*.xml")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
 args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*.cs")
