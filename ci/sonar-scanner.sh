@@ -18,7 +18,7 @@ mkdir -p logs/coverage-results
 
 buildkite-agent artifact download \
     logs\\coverage-results\\*.xml \
-    logs/coverage-results \
+    workers/unity \
     --step ":windows: ~ test"
 
 cmd //c tree //A //F
@@ -62,6 +62,13 @@ fi
 
 # Need to generate csproj & sln files in order to run MSBuild on them.
 pushd "workers/unity"
+
+    REPORTS=( $(find ./logs -name "*.xml" ) )
+
+    for report in "${REPORTS[@]}"
+    do
+      args+=("-d:sonar.cs.opencover.reportsPaths=${report}")
+    done
 
     echo "--- Generate csproj & sln files :csharp:"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
