@@ -31,7 +31,6 @@ args+=("-o:spatialos")
 args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
-args+=("-d:sonar.cs.opencover.reportsPaths=../../logs/coverage-results/**/*.xml")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
 args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*.cs")
@@ -63,12 +62,7 @@ fi
 # Need to generate csproj & sln files in order to run MSBuild on them.
 pushd "workers/unity"
 
-    REPORTS=( $(find ./logs -name "*.xml" ) )
-
-    for report in "${REPORTS[@]}"
-    do
-      args+=("-d:sonar.cs.opencover.reportsPaths=${report}")
-    done
+    args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
 
     echo "--- Generate csproj & sln files :csharp:"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
