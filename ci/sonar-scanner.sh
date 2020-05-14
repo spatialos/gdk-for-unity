@@ -21,6 +21,8 @@ buildkite-agent artifact download \
     logs/coverage-results \
     --step ":windows: ~ test"
 
+cmd //c tree //A //F
+
 TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbable" --secret-type="generic-token" --secret-name="gdk-for-unity-bot-sonarcloud-token" --field="token")
 
 args=()
