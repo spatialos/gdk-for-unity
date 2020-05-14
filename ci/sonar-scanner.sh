@@ -27,7 +27,6 @@ args+=("-o:spatialos")
 args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
-args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
 args+=("-d:sonar.cs.opencover.reportPaths=../logs/coverage-results/*.xml")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
@@ -53,6 +52,8 @@ if [[ -n "${BUILDKITE_PULL_REQUEST:-}" && "${BUILDKITE_PULL_REQUEST}" != "false"
   args+=("-d:sonar.pullrequest.key=${BUILDKITE_PULL_REQUEST}")
   args+=("-d:sonar.pullrequest.branch=${BUILDKITE_PULL_REQUEST_BASE_BRANCH}")
   args+=("-d:sonar.pullrequest.base=develop")
+else 
+  args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
 fi
 
 # Need to generate csproj & sln files in order to run MSBuild on them.
@@ -64,7 +65,7 @@ pushd "workers/unity"
         -executeMethod UnityEditor.SyncVS.SyncSolution
     
     dotnet-sonarscanner begin "${args[@]}"
-    dotnet msbuild ./unity.sln -t:Rebuild
+    dotnet msbuild ./unity.sln -t:Rebuild -nr:false
     dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
 popd
 
