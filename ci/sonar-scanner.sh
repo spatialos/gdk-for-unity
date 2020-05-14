@@ -12,6 +12,8 @@ PROJECT_DIR="$(pwd)"
 
 source .shared-ci/scripts/pinned-tools.sh
 
+echo "--- Downloading Buildkite artifacts :buildkite:"
+
 mkdir -p logs/coverage-results
 
 buildkite-agent artifact download \
@@ -50,20 +52,23 @@ if [[ -n "${BUILDKITE_PULL_REQUEST:-}" && "${BUILDKITE_PULL_REQUEST}" != "false"
   # PR analysis, relies on BK building PRs
   # https://docs.sonarqube.org/latest/analysis/pull-request/
   args+=("-d:sonar.pullrequest.key=${BUILDKITE_PULL_REQUEST}")
-  args+=("-d:sonar.pullrequest.branch=${BUILDKITE_PULL_REQUEST_BASE_BRANCH}")
-  args+=("-d:sonar.pullrequest.base=develop")
+  args+=("-d:sonar.pullrequest.branch=${BUILDKITE_BRANCH}")
+  args+=("-d:sonar.pullrequest.base=${BUILDKITE_PULL_REQUEST_BASE_BRANCH}")
 else 
   args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
 fi
 
 # Need to generate csproj & sln files in order to run MSBuild on them.
 pushd "workers/unity"
+
+    echo "--- Generate csproj & sln files :csharp:"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -quit \
         -executeMethod UnityEditor.SyncVS.SyncSolution
     
+    echo "--- Execute sonar-scanner :sonarqube:"
     dotnet-sonarscanner begin "${args[@]}"
     dotnet msbuild ./unity.sln -t:Rebuild -nr:false
     dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
