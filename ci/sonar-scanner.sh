@@ -31,7 +31,7 @@ args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
 args+=("-d:sonar.cs.opencover.reportPaths=logs/coverage-results/*.xml")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
-args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*")
+args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*.cs")
 
 if [[ -n "${SONAR_PROJECT_DATE:-}" ]]; then
   # For historical analysis. Note - can only supply a date later than the most recent one in the database.
@@ -60,7 +60,7 @@ pushd "workers/unity"
         -executeMethod UnityEditor.SyncVS.SyncSolution
     
     dotnet-sonarscanner begin "${args[@]}"
-    dotnet msbuild ./unity.sln
+    dotnet msbuild ./unity.sln -t:Rebuild
     dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
 popd
 
