@@ -124,7 +124,6 @@ namespace Improbable.Gdk.Subscriptions
     public abstract class CommandReceiverSubscriptionManagerBase<T> : SubscriptionManager<T>
         where T : ICommandReceiver
     {
-        private readonly ComponentUpdateSystem componentUpdateSystem;
         private readonly EntityManager entityManager;
 
         private Dictionary<EntityId, HashSet<Subscription<T>>> entityIdToReceiveSubscriptions;
@@ -132,18 +131,15 @@ namespace Improbable.Gdk.Subscriptions
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        private readonly uint componentId;
         private readonly ComponentType componentType;
         private readonly ComponentType componentAuthType;
 
         protected CommandReceiverSubscriptionManagerBase(World world, uint componentId) : base(world)
         {
-            this.componentId = componentId;
             componentType = ComponentDatabase.Metaclasses[componentId].Data;
             componentAuthType = ComponentDatabase.Metaclasses[componentId].Authority;
 
             entityManager = world.EntityManager;
-            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
 

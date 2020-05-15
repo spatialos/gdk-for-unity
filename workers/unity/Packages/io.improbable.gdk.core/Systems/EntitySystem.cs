@@ -17,8 +17,6 @@ namespace Improbable.Gdk.Core
 
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("EntitySystem.ApplyDiff");
 
-        private WorkerSystem workerSystem;
-
         public List<EntityId> GetEntitiesAdded()
         {
             return entitiesAdded;
@@ -52,13 +50,6 @@ namespace Improbable.Gdk.Core
                     ViewVersion += 1;
                 }
             }
-        }
-
-        protected override void OnCreate()
-        {
-            base.OnCreate();
-
-            workerSystem = World.GetExistingSystem<WorkerSystem>();
         }
 
         protected override void OnUpdate()

@@ -9,7 +9,6 @@ namespace Improbable.Gdk.Subscriptions
     public abstract class WriterSubscriptionManager<TComponent, TWriter> : SubscriptionManager<TWriter>
         where TWriter : IRequireable where TComponent : ISpatialComponentData
     {
-        private readonly ComponentUpdateSystem componentUpdateSystem;
         private readonly EntityManager entityManager;
         private Dictionary<EntityId, HashSet<Subscription<TWriter>>> entityIdToWriterSubscriptions;
 
@@ -23,7 +22,6 @@ namespace Improbable.Gdk.Subscriptions
         protected WriterSubscriptionManager(World world) : base(world)
         {
             entityManager = World.EntityManager;
-            componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             RegisterComponentCallbacks();
         }
