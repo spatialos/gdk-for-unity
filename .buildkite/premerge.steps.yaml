@@ -13,7 +13,7 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-03-27-114536-bk10005-d340403f-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-05-14-120002-bk11367-f5a4805a-d}"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
@@ -76,6 +76,13 @@ steps:
     <<: *windows
     artifact_paths:
       - logs/**/*
+
+  - label: ":windows: ~ sonar scanner :sonarqube:"
+    depends_on:
+      - step: "test-windows"
+    command: bash -c ci/sonar-scanner.sh
+    soft_fail: true # TODO: Remove once we've ran with this a bit more.
+    <<: *windows
 
   - label: ":darwin: ~ test"
     id: "test-darwin"
