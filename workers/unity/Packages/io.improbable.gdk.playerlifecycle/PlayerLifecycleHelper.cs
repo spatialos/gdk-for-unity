@@ -25,6 +25,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static bool IsOwningWorker(EntityId entityId, World workerWorld)
         {
             var worker = workerWorld.GetExistingSystem<WorkerSystem>();
+            var entityManager = workerWorld.EntityManager;
             var updateSystem = workerWorld.GetExistingSystem<ComponentUpdateSystem>();
             var entitySystem = workerWorld.GetExistingSystem<EntitySystem>();
 
@@ -33,17 +34,23 @@ namespace Improbable.Gdk.PlayerLifecycle
                 throw new InvalidOperationException("Provided World does not have an associated worker");
             }
 
+            // TODO: Can probably be removed due to the entity id check below
             if (!entitySystem.GetEntitiesInView().Contains(entityId))
             {
                 return false;
             }
 
-            if (!updateSystem.HasComponent(OwningWorker.ComponentId, entityId))
+            if (!worker.TryGetEntity(entityId, out var entity))
             {
                 return false;
             }
 
-            var ownerId = updateSystem.GetComponent<OwningWorker.Snapshot>(entityId).WorkerId;
+            if (!entityManager.HasComponent<OwningWorker.Component>(entity))
+            {
+                return false;
+            }
+
+            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerId;
             return worker.WorkerId == ownerId;
         }
 

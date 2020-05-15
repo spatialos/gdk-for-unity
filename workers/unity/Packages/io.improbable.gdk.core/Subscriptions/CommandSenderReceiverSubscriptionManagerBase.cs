@@ -125,6 +125,7 @@ namespace Improbable.Gdk.Subscriptions
         where T : ICommandReceiver
     {
         private readonly ComponentUpdateSystem componentUpdateSystem;
+        private readonly EntityManager entityManager;
 
         private Dictionary<EntityId, HashSet<Subscription<T>>> entityIdToReceiveSubscriptions;
 
@@ -132,10 +133,16 @@ namespace Improbable.Gdk.Subscriptions
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
         private readonly uint componentId;
+        private readonly ComponentType componentType;
+        private readonly ComponentType componentAuthType;
 
         protected CommandReceiverSubscriptionManagerBase(World world, uint componentId) : base(world)
         {
             this.componentId = componentId;
+            componentType = ComponentDatabase.Metaclasses[componentId].Data;
+            componentAuthType = ComponentDatabase.Metaclasses[componentId].Authority;
+
+            entityManager = world.EntityManager;
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             var constraintSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
@@ -196,8 +203,8 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             if (WorkerSystem.TryGetEntity(entityId, out var entity)
-                && componentUpdateSystem.HasComponent(componentId, entityId)
-                && componentUpdateSystem.GetAuthority(entityId, componentId) != Authority.NotAuthoritative)
+                && entityManager.HasComponent(entity, componentType)
+                && entityManager.HasComponent(entity, componentAuthType))
             {
                 entitiesMatchingRequirements.Add(entityId);
                 subscription.SetAvailable(CreateReceiver(World, entity, entityId));

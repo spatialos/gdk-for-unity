@@ -10,15 +10,19 @@ namespace Improbable.Gdk.Subscriptions
         where TWriter : IRequireable where TComponent : ISpatialComponentData
     {
         private readonly ComponentUpdateSystem componentUpdateSystem;
+        private readonly EntityManager entityManager;
         private Dictionary<EntityId, HashSet<Subscription<TWriter>>> entityIdToWriterSubscriptions;
 
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
         private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
+        private static readonly ComponentType ComponentType = ComponentDatabase.Metaclasses[ComponentId].Data;
+        private static readonly ComponentType ComponentAuthType = ComponentDatabase.Metaclasses[ComponentId].Authority;
 
         protected WriterSubscriptionManager(World world) : base(world)
         {
+            entityManager = World.EntityManager;
             componentUpdateSystem = world.GetExistingSystem<ComponentUpdateSystem>();
 
             RegisterComponentCallbacks();
@@ -84,8 +88,8 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             if (WorkerSystem.TryGetEntity(entityId, out var entity)
-                && componentUpdateSystem.HasComponent(ComponentId, entityId)
-                && componentUpdateSystem.GetAuthority(entityId, ComponentId) != Authority.NotAuthoritative)
+                && entityManager.HasComponent(entity, ComponentType)
+                && entityManager.HasComponent(entity, ComponentAuthType))
             {
                 entitiesMatchingRequirements.Add(entityId);
                 subscription.SetAvailable(CreateWriter(entity, entityId));
