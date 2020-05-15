@@ -107,10 +107,10 @@ namespace Improbable.Gdk.GameObjectCreation
 
             Linker.UnlinkAllGameObjects();
 
-            foreach (var entityId in entitySystem.GetEntitiesInView())
+            Entities.ForEach((ref SpatialEntityId entityId) =>
             {
-                gameObjectCreator.OnEntityRemoved(entityId);
-            }
+                gameObjectCreator.OnEntityRemoved(entityId.EntityId);
+            });
 
             base.OnDestroy();
         }

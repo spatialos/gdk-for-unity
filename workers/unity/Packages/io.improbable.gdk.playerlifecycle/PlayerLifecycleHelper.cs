@@ -26,18 +26,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             var worker = workerWorld.GetExistingSystem<WorkerSystem>();
             var entityManager = workerWorld.EntityManager;
-            var updateSystem = workerWorld.GetExistingSystem<ComponentUpdateSystem>();
-            var entitySystem = workerWorld.GetExistingSystem<EntitySystem>();
 
             if (worker == null)
             {
                 throw new InvalidOperationException("Provided World does not have an associated worker");
-            }
-
-            // TODO: Can probably be removed due to the entity id check below
-            if (!entitySystem.GetEntitiesInView().Contains(entityId))
-            {
-                return false;
             }
 
             if (!worker.TryGetEntity(entityId, out var entity))

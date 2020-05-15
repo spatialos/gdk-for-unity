@@ -29,11 +29,6 @@ namespace Improbable.Gdk.Core
             return entitiesRemoved;
         }
 
-        public HashSet<EntityId> GetEntitiesInView()
-        {
-            return workerSystem.View.GetEntityIds();
-        }
-
         internal void ApplyDiff(ViewDiff diff)
         {
             using (applyDiffMarker.Auto())
