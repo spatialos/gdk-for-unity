@@ -1,5 +1,53 @@
 # Upgrade Guide
 
+## From `0.3.5` to `0.3.6`
+
+### WorkerConnector changes
+
+There are two related changes that you will need to adjust for. Previously, the `WorkerConnector.Connect` class would trigger the `HandleWorkerConnectionFailure` callback if the connection failed. 
+
+We've removed this callback, and `WorkerConnector.Connect` will now throw an exception for a failed connection. For example:
+
+```csharp
+public class MyWorkerConnector : WorkerConnector
+{
+    public async void Start()
+    {
+        // Setup connection flow.
+        var builder = ...;
+
+        await Connect(builder, new ForwardingDispatcher());
+    }
+
+    protected override void HandleWorkerConnectionFailure(string errorMessage)
+    {
+        Debug.LogError(errorMessage);
+    }
+}
+```
+
+Would change to:
+
+```csharp
+public class MyWorkerConnector : WorkerConnector
+{
+    public async void Start()
+    {
+        // Setup connection flow.
+        var builder = ...;
+
+        try
+        {
+            await Connect(builder, new ForwardingDispatcher());
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+    }
+}
+```
+
 ## From `0.3.4` to `0.3.5`
 
 ### Unity 2019.3 upgrade
