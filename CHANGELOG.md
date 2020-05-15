@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- `WorkerConnector.HandleWorkerConnectionFailure` has been removed and `WorkerConnector.Connect` now throws exceptions for connection errors instead. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
+
 ### Added
 
 - Added the ability to select a specific cluster for deployments in the [Deployment Launcher](https://documentation.improbable.io/gdk-for-unity/docs/deployment-launcher). [#1357](https://github.com/spatialos/gdk-for-unity/pull/1357)
@@ -11,6 +15,7 @@
 ### Changed
 
 - GDK Tools Configuration window now autosaves. [#1356](https://github.com/spatialos/gdk-for-unity/pull/1356)
+- `WorkerConnector` no longer destroys itself in `Dispose`. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
 
 ### Fixed
 
