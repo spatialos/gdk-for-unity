@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Core
         public bool IsValid;
 
         private readonly WorkerFlagCallbackSystem callbackSystem;
-        private readonly View view;
+        private readonly WorkerSystem workerSystem;
 
         private Dictionary<Action<string, string>, ulong> callbackToKey;
 
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core
         {
             IsValid = true;
             callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
-            view = world.GetExistingSystem<WorkerSystem>().View;
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
         }
 
         public event Action<string, string> OnWorkerFlagChange
@@ -92,7 +92,7 @@ namespace Improbable.Gdk.Core
 
         public string GetFlag(string name)
         {
-            return view.GetWorkerFlag(name);
+            return workerSystem.GetWorkerFlag(name);
         }
 
         internal void RemoveAllCallbacks()

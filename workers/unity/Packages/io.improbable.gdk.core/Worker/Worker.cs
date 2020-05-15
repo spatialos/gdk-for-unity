@@ -43,7 +43,6 @@ namespace Improbable.Gdk.Core
         protected IConnectionHandler ConnectionHandler;
 
         // todo replace internal with real apis
-        internal readonly View View;
         internal ViewDiff ViewDiff;
 
         internal MessagesToSend MessagesToSend;
@@ -60,7 +59,6 @@ namespace Improbable.Gdk.Core
             logDispatcher.WorkerType = workerType;
 
             MessagesToSend = connectionHandler.GetMessagesToSendContainer();
-            View = new View();
         }
 
         /// <summary>
@@ -109,16 +107,6 @@ namespace Improbable.Gdk.Core
         public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
         {
             MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
-        }
-
-        /// <summary>
-        ///     Gets the value for a given worker flag.
-        /// </summary>
-        /// <param name="key">The key of the worker flag.</param>
-        /// <returns>The value of the flag, if it exists, null otherwise.</returns>
-        public string GetWorkerFlag(string key)
-        {
-            return View.GetWorkerFlag(key);
         }
 
         public virtual void Dispose()

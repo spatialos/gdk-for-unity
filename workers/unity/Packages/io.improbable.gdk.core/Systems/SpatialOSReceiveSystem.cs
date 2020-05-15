@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class SpatialOSReceiveSystem : ComponentSystem
     {
-        private WorkerSystem worker;
+        private WorkerSystem workerSystem;
         private EcsViewSystem ecsViewSystem;
         private EntitySystem entitySystem;
         private NetworkStatisticsSystem networkStatisticsSystem;
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreate();
 
-            worker = World.GetExistingSystem<WorkerSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();
             entitySystem = World.GetOrCreateSystem<EntitySystem>();
             networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
@@ -31,17 +31,17 @@ namespace Improbable.Gdk.Core
         {
             try
             {
-                worker.Tick();
+                workerSystem.Tick();
 
-                var diff = worker.Diff;
-                worker.View.ApplyDiff(diff);
+                var diff = workerSystem.Diff;
+                workerSystem.ApplyDiff(diff);
                 ecsViewSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
                 networkStatisticsSystem.ApplyDiff(diff);
             }
             catch (Exception e)
             {
-                worker.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
+                workerSystem.LogDispatcher.HandleLog(LogType.Exception, new LogEvent("Exception:")
                     .WithException(e));
             }
         }
