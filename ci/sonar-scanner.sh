@@ -12,15 +12,7 @@ PROJECT_DIR="$(pwd)"
 
 source .shared-ci/scripts/pinned-tools.sh
 
-echo "--- Downloading Buildkite artifacts :buildkite:"
-
-mkdir -p logs/coverage-results
-
-buildkite-agent artifact download \
-    logs\\coverage-results\\*.xml \
-    workers/unity \
-    --step ":windows: ~ test"
-
+# TODO: Add a more specific secret-type to vault and swap these around
 TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbable" --secret-type="generic-token" --secret-name="gdk-for-unity-bot-sonarcloud-token" --field="token")
 
 args=()
@@ -31,6 +23,8 @@ args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
 args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
+
+# Exclude all generated code from analysis.
 args+=("-d:sonar.exclusions=Assets/Generated/Source/**/*.cs")
 
 if [[ -n "${DEBUG-}" ]]; then
@@ -53,25 +47,44 @@ if [[ -n "${BUILDKITE_PULL_REQUEST:-}" && "${BUILDKITE_PULL_REQUEST}" != "false"
   args+=("-d:sonar.pullrequest.key=${BUILDKITE_PULL_REQUEST}")
   args+=("-d:sonar.pullrequest.branch=${BUILDKITE_BRANCH}")
   args+=("-d:sonar.pullrequest.base=${BUILDKITE_PULL_REQUEST_BASE_BRANCH}")
-else 
+else
+  # Branch analysis, allows for diff-level reporting on short-lived branches
+  # https://docs.sonarqube.org/latest/branches/overview/
   args+=("-d:sonar.branch.name=${BUILDKITE_BRANCH}")
 fi
 
-# Need to generate csproj & sln files in order to run MSBuild on them.
+# The way Sonar Scanner for MSBuild/dotnet works is:
+#   1. You need to run `dotnet-sonarscanner begin` which installs hooks into MSBuild and applies your quality profiles (from sonarcloud.io)
+#   2. Build the project using `msbuild`
+#   3. Run `dotnet-sonarscanner end` which runs post-processing. (This looks like it runs an embedded version of the generic sonar-scanner CLI which requires the JRE).
+#
+# To enable this to work with Unity, we first need to generate the `.sln` and `.csproj` files in order to build them with `msbuild`
+# For ease of use, we execute msbuild through `dotnet`! 
 pushd "workers/unity"
 
-    args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
+  echo "--- Downloading Buildkite artifacts :buildkite:"
 
-    echo "--- Generate csproj & sln files :csharp:"
-    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-        -batchmode \
-        -projectPath "${PROJECT_DIR}/workers/unity" \
-        -quit \
-        -executeMethod UnityEditor.SyncVS.SyncSolution
-    
-    echo "--- Execute sonar-scanner :sonarqube:"
-    dotnet-sonarscanner begin "${args[@]}"
-    dotnet msbuild ./unity.sln -t:Rebuild -nr:false
-    dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
+  # Download test coverage reports from previous build step.
+  buildkite-agent artifact download \
+      logs\\coverage-results\\*.xml \
+      . \
+      --step ":windows: ~ test"
+
+  # This finds all .xml files in the logs/ directory and concatentates their relative path together, separated by comma:
+  # E.g. - -d:sonar.cs.opencover.reportsPath=./logs/coverage-results/my-first-report.xml,./logs/coverage-results/my-second-report.xml
+  # Wildcards don't appear to play nice with this.
+  args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
+
+  echo "--- Generate csproj & sln files :csharp:"
+  dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+      -batchmode \
+      -projectPath "${PROJECT_DIR}/workers/unity" \
+      -quit \
+      -executeMethod UnityEditor.SyncVS.SyncSolution
+  
+  echo "--- Execute sonar-scanner :sonarqube:"
+  dotnet-sonarscanner begin "${args[@]}"
+  dotnet msbuild ./unity.sln -t:Rebuild -nr:false
+  dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
 popd
 
