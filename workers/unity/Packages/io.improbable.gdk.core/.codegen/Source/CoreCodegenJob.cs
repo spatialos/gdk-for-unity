@@ -70,10 +70,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
             AddGenerators(componentsToGenerate.Where(c => c.EventDetails.Count > 0),
                 c => ($"{c.Name}Events.cs", UnityEventGenerator.Generate));
 
-            Logger.Trace("Adding job targets for non-blittable fields.");
-            AddGenerators(componentsToGenerate.Where(c => c.FieldDetails.Any(field => !field.IsBlittable)),
-                c => ($"{c.Name}Providers.cs", UnityReferenceTypeProviderGenerator.Generate));
-
             Logger.Trace($"Added job targets for {componentsToGenerate.Count} components.");
 
             Logger.Trace($"Finished initialising {jobName}.");

@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     public class WorkerFlagCallbackManager : ICallbackManager
     {
-        private readonly Callbacks<(string, string)> callbacks = new Callbacks<(string, string)>();
+        private readonly CallbackCollection<(string, string)> callbackCollection = new CallbackCollection<(string, string)>();
         private readonly WorkerSystem workerSystem;
 
         private ulong nextCallbackId = 1;
@@ -18,13 +18,13 @@ namespace Improbable.Gdk.Subscriptions
 
         public ulong RegisterCallback(Action<(string, string)> callback)
         {
-            callbacks.Add(nextCallbackId, callback);
+            callbackCollection.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 
         public bool UnregisterCallback(ulong callbackKey)
         {
-            return callbacks.Remove(callbackKey);
+            return callbackCollection.Remove(callbackKey);
         }
 
         public void InvokeCallbacks()
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Subscriptions
             for (var i = 0; i < workerFlagChanges.Count; ++i)
             {
                 var pair = workerFlagChanges[i];
-                callbacks.InvokeAll(pair);
+                callbackCollection.InvokeAll(pair);
             }
         }
     }

@@ -6,6 +6,7 @@ using System;
 using Unity.Entities;
 using Improbable.Worker.CInterop;
 using Improbable.Gdk.Core;
+using Unity.Collections;
 
 namespace Improbable.TestSchema
 {
@@ -15,7 +16,6 @@ namespace Improbable.TestSchema
         {
             private WorkerSystem workerSystem;
             private EntityManager entityManager;
-            private World world;
 
             private readonly ComponentType[] initialComponents = new ComponentType[]
             {
@@ -64,7 +64,6 @@ namespace Improbable.TestSchema
 
             public void Init(World world)
             {
-                this.world = world;
                 entityManager = world.EntityManager;
 
                 workerSystem = world.GetExistingSystem<WorkerSystem>();
@@ -75,11 +74,19 @@ namespace Improbable.TestSchema
                 }
             }
 
-            public void Clean(World world)
+            public void Clean()
             {
-                global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.CleanDataInWorld(world);
+                var query = entityManager.CreateEntityQuery(typeof(global::Improbable.TestSchema.ExhaustiveSingular.Component));
+                var componentDataArray = query.ToComponentDataArray<global::Improbable.TestSchema.ExhaustiveSingular.Component>(Allocator.TempJob);
 
-                global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.CleanDataInWorld(world);
+                foreach (var component in componentDataArray)
+                {
+                    component.field3Handle.Dispose();
+
+                    component.field7Handle.Dispose();
+                }
+
+                componentDataArray.Dispose();
             }
 
             private void AddComponent(EntityId entityId)
@@ -87,9 +94,9 @@ namespace Improbable.TestSchema
                 var entity = workerSystem.GetEntity(entityId);
                 var component = new global::Improbable.TestSchema.ExhaustiveSingular.Component();
 
-                component.field3Handle = global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Allocate(world);
+                component.field3Handle = global::Improbable.Gdk.Core.ReferenceProvider<byte[]>.Create();
 
-                component.field7Handle = global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Allocate(world);
+                component.field7Handle = global::Improbable.Gdk.Core.ReferenceProvider<string>.Create();
 
                 component.MarkDataClean();
                 entityManager.AddComponentData(entity, component);
@@ -102,9 +109,9 @@ namespace Improbable.TestSchema
 
                 var data = entityManager.GetComponentData<global::Improbable.TestSchema.ExhaustiveSingular.Component>(entity);
 
-                global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field3Provider.Free(data.field3Handle);
+                data.field3Handle.Dispose();
 
-                global::Improbable.TestSchema.ExhaustiveSingular.ReferenceTypeProviders.Field7Provider.Free(data.field7Handle);
+                data.field7Handle.Dispose();
 
                 entityManager.RemoveComponent<global::Improbable.TestSchema.ExhaustiveSingular.Component>(entity);
             }

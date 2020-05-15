@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     internal class AuthorityConstraintCallbackManager : IAuthorityCallbackManager
     {
-        private readonly Callbacks<AuthorityChangeReceived> callbacks = new Callbacks<AuthorityChangeReceived>();
+        private readonly CallbackCollection<AuthorityChangeReceived> callbackCollection = new CallbackCollection<AuthorityChangeReceived>();
         private readonly uint componentId;
         private readonly ComponentUpdateSystem componentUpdateSystem;
 
@@ -26,11 +26,11 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (changes[i].Authority == Authority.Authoritative)
                 {
-                    callbacks.InvokeAll(changes[i]);
+                    callbackCollection.InvokeAll(changes[i]);
                 }
                 else if (changes[i].Authority == Authority.NotAuthoritative)
                 {
-                    callbacks.InvokeAllReverse(changes[i]);
+                    callbackCollection.InvokeAllReverse(changes[i]);
                 }
             }
         }
@@ -42,20 +42,20 @@ namespace Improbable.Gdk.Subscriptions
             {
                 if (changes[i].Authority == Authority.AuthorityLossImminent)
                 {
-                    callbacks.InvokeAllReverse(changes[i]);
+                    callbackCollection.InvokeAllReverse(changes[i]);
                 }
             }
         }
 
         public ulong RegisterCallback(Action<AuthorityChangeReceived> callback)
         {
-            callbacks.Add(nextCallbackId, callback);
+            callbackCollection.Add(nextCallbackId, callback);
             return nextCallbackId++;
         }
 
         public bool UnregisterCallback(ulong callbackKey)
         {
-            return callbacks.Remove(callbackKey);
+            return callbackCollection.Remove(callbackKey);
         }
     }
 }
