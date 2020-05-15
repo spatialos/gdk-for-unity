@@ -39,12 +39,7 @@ namespace Playground
                     throw new ArgumentException("Received unsupported connection service.");
             }
 
-            await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
-        }
-
-        protected override void HandleWorkerConnectionEstablished()
-        {
-            WorkerUtils.AddClientSystems(Worker.World);
+            await Connect(builder, new ForwardingDispatcher());
 
             if (level == null)
             {
@@ -52,6 +47,11 @@ namespace Playground
             }
 
             levelInstance = Instantiate(level, transform.position, transform.rotation);
+        }
+
+        protected override void HandleWorkerConnectionEstablished()
+        {
+            WorkerUtils.AddClientSystems(Worker.World);
         }
 
         public override void Dispose()
