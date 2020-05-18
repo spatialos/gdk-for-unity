@@ -115,6 +115,14 @@ namespace Improbable.Gdk.TestUtils
                 return new MockWorldWithContext<U>(world, newContext);
             }
 
+            public MockWorldWithContext<U> Step<U>(Func<MockWorld, U> frame)
+            {
+                var newContext = frame(world);
+                world.Update();
+
+                return new MockWorldWithContext<U>(world, newContext);
+            }
+
             public MockWorldWithContext<T> Step(Action<MockWorld> frame)
             {
                 frame(world);

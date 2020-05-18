@@ -11,7 +11,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Improbable.Gdk.TestBases",
-        "Improbable.Gdk.TestUtils"
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.GameObjectCreation"
     ],
     "includePlatforms": [
         "Editor"
@@ -27,5 +28,6 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
