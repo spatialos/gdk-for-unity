@@ -37,12 +37,7 @@ namespace Playground
                 .SetConnectionFlow(flow)
                 .SetConnectionParameters(connectionParameters);
 
-            await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
-        }
-
-        protected override void HandleWorkerConnectionEstablished()
-        {
-            WorkerUtils.AddGameLogicSystems(Worker.World);
+            await Connect(builder, new ForwardingDispatcher());
 
             if (level == null)
             {
@@ -50,6 +45,11 @@ namespace Playground
             }
 
             levelInstance = Instantiate(level, transform.position, transform.rotation);
+        }
+
+        protected override void HandleWorkerConnectionEstablished()
+        {
+            WorkerUtils.AddGameLogicSystems(Worker.World);
         }
 
         public override void Dispose()

@@ -43,18 +43,19 @@ namespace Playground
                 builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)));
             }
 
-            await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
-        }
+            await Connect(builder, new ForwardingDispatcher());
 
-        protected override void HandleWorkerConnectionEstablished()
-        {
-            WorkerUtils.AddClientSystems(Worker.World);
             if (level == null)
             {
                 return;
             }
 
             levelInstance = Instantiate(level, transform.position, transform.rotation);
+        }
+
+        protected override void HandleWorkerConnectionEstablished()
+        {
+            WorkerUtils.AddClientSystems(Worker.World);
         }
 
         public override void Dispose()

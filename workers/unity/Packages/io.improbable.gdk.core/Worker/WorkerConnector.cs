@@ -107,13 +107,8 @@ namespace Improbable.Gdk.Core
                 PlayerLoopUtils.ResolveSystemGroups(Worker.World);
                 ScriptBehaviourUpdateOrder.UpdatePlayerLoop(Worker.World, PlayerLoop.GetCurrentPlayerLoop());
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                logger.HandleLog(LogType.Error, new LogEvent("Failed to create worker")
-                    .WithException(e)
-                    .WithField("WorkerType", builder.WorkerType)
-                    .WithField("Message", e.Message)
-                    .WithField("Stacktrace", e.StackTrace));
 #if UNITY_EDITOR
                 // Temporary warning to be replaced when we can reliably detect if a local runtime is running, or not.
                 logger.HandleLog(LogType.Warning,
@@ -124,9 +119,10 @@ namespace Improbable.Gdk.Core
                 // A check is needed for the case that play mode is exited before the connection can complete.
                 if (Application.isPlaying)
                 {
-                    HandleWorkerConnectionFailure(e.Message);
                     Dispose();
                 }
+
+                throw;
             }
             finally
             {
@@ -152,10 +148,6 @@ namespace Improbable.Gdk.Core
         }
 
         protected virtual void HandleWorkerConnectionEstablished()
-        {
-        }
-
-        protected virtual void HandleWorkerConnectionFailure(string errorMessage)
         {
         }
 
@@ -251,7 +243,6 @@ namespace Improbable.Gdk.Core
             RemoveFromPlayerLoop();
             Worker?.Dispose();
             Worker = null;
-            UnityObjectDestroyer.Destroy(this);
         }
 
         private void RemoveFromPlayerLoop()
