@@ -75,18 +75,19 @@ pushd "workers/unity"
   # Wildcards don't appear to play nice with this.
   args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
 
-  echo "--- Generate csproj & sln files :csharp:"
+  echo "## imp-ci group-start generate"
   dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
       -batchmode \
       -projectPath "${PROJECT_DIR}/workers/unity" \
       -logfile "${PROJECT_DIR}/logs/generate-projects.log" \
       -quit \
       -executeMethod UnityEditor.SyncVS.SyncSolution
-  echo "done"
-  
-  echo "--- Execute sonar-scanner :sonarqube:"
+  echo "## imp-ci group-end generate"
+
+  echo "## imp-ci group-start sonar"
   dotnet-sonarscanner begin "${args[@]}"
   dotnet msbuild ./unity.sln -t:Rebuild -nr:false
   dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
+  echo "## imp-ci group-end sonar"
 popd
 
