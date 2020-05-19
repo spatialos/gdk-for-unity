@@ -4,9 +4,11 @@
 
 ### WorkerConnector changes
 
-There are two related changes that you will need to adjust for. Previously, the `WorkerConnector.Connect` class would trigger the `HandleWorkerConnectionFailure` callback if the connection failed. 
+There are two related changes that you will need to adjust for.
 
-We've removed this callback, and `WorkerConnector.Connect` will now throw an exception for a failed connection. For example:
+The `WorkerConnector.Connect` class would previously trigger the `HandleWorkerConnectionFailure` callback if the connection failed. We've now removed this callback, and `WorkerConnector.Connect` will now throw an exception for a failed connection.
+
+For example:
 
 ```csharp
 public class MyWorkerConnector : WorkerConnector
