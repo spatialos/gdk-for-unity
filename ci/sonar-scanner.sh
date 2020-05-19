@@ -82,6 +82,7 @@ pushd "workers/unity"
       -logfile "${PROJECT_DIR}/logs/generate-projects.log" \
       -quit \
       -executeMethod UnityEditor.SyncVS.SyncSolution
+  echo "done"
   
   echo "--- Execute sonar-scanner :sonarqube:"
   dotnet-sonarscanner begin "${args[@]}"
