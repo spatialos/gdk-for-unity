@@ -79,6 +79,7 @@ pushd "workers/unity"
   dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
       -batchmode \
       -projectPath "${PROJECT_DIR}/workers/unity" \
+      -logfile "${PROJECT_DIR}/logs/generate-projects.log" \
       -quit \
       -executeMethod UnityEditor.SyncVS.SyncSolution
   
