@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             if (!CommandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.Response.CommandIndex),
                 out var deserializer))
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void ApplyCreateEntityResponse(CreateEntityResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.CreateEntity.Request>(0, 0, op.RequestId);
             var response =
@@ -94,7 +94,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void ApplyDeleteEntityResponse(DeleteEntityResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.DeleteEntity.Request>(0, 0, op.RequestId);
             var response =
@@ -107,7 +107,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void ApplyReserveEntityIdsResponse(ReserveEntityIdsResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.ReserveEntityIds.Request>(0, 0, op.RequestId);
             var response =
@@ -120,7 +120,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void ApplyEntityQueryResponse(EntityQueryResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.EntityQuery.Request>(0, 0, op.RequestId);
             var response =

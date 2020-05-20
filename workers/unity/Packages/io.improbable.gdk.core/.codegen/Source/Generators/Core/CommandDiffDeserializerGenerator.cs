@@ -52,7 +52,7 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
         diff.AddCommandRequest(request, ComponentId, {command.CommandIndex});
     }}
 
-    public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
+    public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
     {{
         {command.FqnResponseType}? rawResponse = null;
         if (op.StatusCode == StatusCode.Success)

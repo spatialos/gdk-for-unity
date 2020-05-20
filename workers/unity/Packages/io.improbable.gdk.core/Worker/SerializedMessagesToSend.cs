@@ -47,8 +47,6 @@ namespace Improbable.Gdk.Core
         private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
-        private CommandMetaData metaData;
-
         private NetFrameStats netFrameStats = new NetFrameStats();
 
         public SerializedMessagesToSend()
@@ -84,7 +82,7 @@ namespace Improbable.Gdk.Core
 
             // Move the position serializer to the end of the queue so that the updates get sent last
             // This is to prevent an authority change before other updates have been applied from the same frame
-            for (int i = 0; i < componentSerializers.Count; ++i)
+            for (var i = 0; i < componentSerializers.Count; ++i)
             {
                 if (componentSerializers[i].GetComponentId() == PositionComponentId)
                 {
@@ -98,11 +96,9 @@ namespace Improbable.Gdk.Core
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
-            metaData = commandMetaData;
-
             foreach (var serializer in commandSerializers)
             {
-                serializer.Serialize(messages, this, metaData);
+                serializer.Serialize(messages, this, commandMetaData);
             }
 
             foreach (var metrics in messages.GetMetrics())
@@ -136,83 +132,83 @@ namespace Improbable.Gdk.Core
             netFrameStats.Clear();
         }
 
-        public CommandMetaData SendAndClear(Connection connection, NetFrameStats frameStats)
+        public void SendAndClear(Connection connection, CommandMetaData commandMetaData, NetFrameStats frameStats)
         {
-            for (int i = 0; i < updates.Count; ++i)
+            for (var i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
                 connection.SendComponentUpdate(update.EntityId, update.Update, UpdateParams);
             }
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var id = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout);
-                metaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId, id);
+                commandMetaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId,
+                    id);
             }
 
-            for (int i = 0; i < responses.Count; ++i)
+            for (var i = 0; i < responses.Count; ++i)
             {
                 ref readonly var response = ref responses[i];
                 connection.SendCommandResponse(response.RequestId, response.Response);
             }
 
-            for (int i = 0; i < failures.Count; ++i)
+            for (var i = 0; i < failures.Count; ++i)
             {
                 ref readonly var failure = ref failures[i];
                 connection.SendCommandFailure(failure.RequestId, failure.Reason);
             }
 
-            for (int i = 0; i < createEntityRequests.Count; ++i)
+            for (var i = 0; i < createEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref createEntityRequests[i];
                 var id = connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
-                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
-            for (int i = 0; i < deleteEntityRequests.Count; ++i)
+            for (var i = 0; i < deleteEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref deleteEntityRequests[i];
                 var id = connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
-                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
-            for (int i = 0; i < reserveEntityIdsRequests.Count; ++i)
+            for (var i = 0; i < reserveEntityIdsRequests.Count; ++i)
             {
                 ref readonly var request = ref reserveEntityIdsRequests[i];
                 var id = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
-                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
-            for (int i = 0; i < entityQueryRequests.Count; ++i)
+            for (var i = 0; i < entityQueryRequests.Count; ++i)
             {
                 ref readonly var request = ref entityQueryRequests[i];
                 var id = connection.SendEntityQueryRequest(request.Query, request.Timeout);
-                metaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
             }
 
-            for (int i = 0; i < metricsToSend.Count; ++i)
+            for (var i = 0; i < metricsToSend.Count; ++i)
             {
                 connection.SendMetrics(metricsToSend[i]);
             }
 
-            for (int i = 0; i < logMessages.Count; ++i)
+            for (var i = 0; i < logMessages.Count; ++i)
             {
                 ref readonly var logMessage = ref logMessages[i];
                 connection.SendLogMessage(logMessage.LogLevel, logMessage.LoggerName, logMessage.Message,
                     logMessage.EntityId);
             }
 
-            for (int i = 0; i < authorityLossAcks.Count; ++i)
+            for (var i = 0; i < authorityLossAcks.Count; ++i)
             {
                 ref readonly var entityComponent = ref authorityLossAcks[i];
-                connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId, entityComponent.ComponentId);
+                connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId,
+                    entityComponent.ComponentId);
             }
 
             frameStats.Merge(netFrameStats);
             Clear();
-
-            return metaData;
         }
 
         public void AddComponentUpdate(ComponentUpdate update, long entityId)
@@ -230,7 +226,7 @@ namespace Improbable.Gdk.Core
         public void AddResponse(CommandResponse response, uint requestId)
         {
             responses.Add(new ResponseToSend(response, requestId));
-            netFrameStats.AddCommandResponse(response, message: null);
+            netFrameStats.AddCommandResponse(response, null);
         }
 
         public void AddFailure(uint componentId, uint commandIndex, string reason, uint requestId)
@@ -265,19 +261,19 @@ namespace Improbable.Gdk.Core
 
         internal void DestroyUnsentMessages()
         {
-            for (int i = 0; i < updates.Count; ++i)
+            for (var i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
                 update.Update.SchemaData.Value.Destroy();
             }
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 request.Request.SchemaData.Value.Destroy();
             }
 
-            for (int i = 0; i < responses.Count; ++i)
+            for (var i = 0; i < responses.Count; ++i)
             {
                 ref readonly var response = ref responses[i];
                 response.Response.SchemaData.Value.Destroy();

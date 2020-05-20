@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
     public interface ICommandDiffDeserializer
     {
         void AddRequestToDiff(CommandRequestOp op, ViewDiff diff);
-        void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData);
+        void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData);
     }
 
     public interface IComponentSerializer

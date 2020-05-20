@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
         private readonly MessagesToSend messagesToSend = new MessagesToSend();
         private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
 
-        private readonly CommandMetaDataManager commandMetaDataManager = new CommandMetaDataManager();
+        private readonly CommandMetaData commandMetaData = new CommandMetaData();
 
         private readonly Connection connection;
 
@@ -36,12 +36,14 @@ namespace Improbable.Gdk.Core
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
+            commandMetaData.FlushRemovedIds();
+
             bool inCriticalSection = false;
             do
             {
                 using (var opList = connection.GetOpList(0))
                 {
-                    inCriticalSection = converter.ParseOpListIntoDiff(opList, commandMetaDataManager.GetAllCommandMetaData());
+                    inCriticalSection = converter.ParseOpListIntoDiff(opList, commandMetaData);
                 }
             }
             while (inCriticalSection);
@@ -56,9 +58,9 @@ namespace Improbable.Gdk.Core
 
         public void PushMessagesToSend(MessagesToSend messages, NetFrameStats frameStats)
         {
-            serializedMessagesToSend.SerializeFrom(messages, commandMetaDataManager.GetEmptyMetaDataStorage());
-            var metaData = serializedMessagesToSend.SendAndClear(connection, frameStats);
-            commandMetaDataManager.AddMetaData(metaData);
+            serializedMessagesToSend.SerializeFrom(messages, commandMetaData);
+            serializedMessagesToSend.SendAndClear(connection, commandMetaData, frameStats);
+
             serializedMessagesToSend.Clear();
             messages.Clear();
         }
