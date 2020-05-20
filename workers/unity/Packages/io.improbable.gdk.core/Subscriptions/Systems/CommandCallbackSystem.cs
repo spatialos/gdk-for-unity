@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
@@ -33,7 +32,7 @@ namespace Improbable.Gdk.Subscriptions
             return ((CommandRequestCallbackManager<T>) manager).RegisterCallback(entityId, callback);
         }
 
-        public void RegisterCommandResponseCallback<T>(long requestId, Action<T> callback)
+        public void RegisterCommandResponseCallback<T>(CommandRequestId requestId, Action<T> callback)
             where T : struct, IReceivedCommandResponse
         {
             if (!responseCallbackManagers.TryGetManager(typeof(T), out var manager))

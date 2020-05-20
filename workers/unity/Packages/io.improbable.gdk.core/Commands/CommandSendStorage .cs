@@ -1,8 +1,7 @@
 using System;
-using Improbable.Gdk.Core.Commands;
 using Unity.Entities;
 
-namespace Improbable.Gdk.Core
+namespace Improbable.Gdk.Core.Commands
 {
     public interface ICommandSendStorage
     {
@@ -21,7 +20,7 @@ namespace Improbable.Gdk.Core
     public interface ICommandRequestSendStorage<T> : ICommandSendStorage
         where T : ICommandRequest
     {
-        void AddRequest(T request, Entity sendingEntity, long requestId);
+        void AddRequest(T request, Entity sendingEntity, CommandRequestId requestId);
     }
 
     public interface ICommandResponseSendStorage<T> : ICommandSendStorage
@@ -34,9 +33,9 @@ namespace Improbable.Gdk.Core
     {
         public readonly T Request;
         public readonly Entity SendingEntity;
-        public readonly long RequestId;
+        public readonly CommandRequestId RequestId;
 
-        public CommandRequestWithMetaData(T request, Entity sendingEntity, long requestId)
+        public CommandRequestWithMetaData(T request, Entity sendingEntity, CommandRequestId requestId)
         {
             Request = request;
             SendingEntity = sendingEntity;

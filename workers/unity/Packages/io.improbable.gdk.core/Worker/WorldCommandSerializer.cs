@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
         {
             var requests = storage.GetCreateEntityResponses();
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.CreateEntity.Request>(request.SendingEntity,
@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Core
         {
             var requests = storage.GetDeleteEntityResponses();
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.DeleteEntity.Request>(request.SendingEntity,
@@ -50,7 +50,7 @@ namespace Improbable.Gdk.Core
         {
             var requests = storage.GetReserveEntityIdResponses();
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.ReserveEntityIds.Request>(request.SendingEntity,
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.Core
         {
             var requests = storage.GetEntityQueryResponses();
 
-            for (int i = 0; i < requests.Count; ++i)
+            for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
                 var context = new CommandContext<WorldCommands.EntityQuery.Request>(request.SendingEntity,

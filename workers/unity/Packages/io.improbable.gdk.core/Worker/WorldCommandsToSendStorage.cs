@@ -29,28 +29,28 @@ namespace Improbable.Gdk.Core
             entityQueryResponses.Clear();
         }
 
-        public void AddRequest(WorldCommands.CreateEntity.Request request, Entity sendingEntity, long requestId)
+        public void AddRequest(WorldCommands.CreateEntity.Request request, Entity sendingEntity, CommandRequestId requestId)
         {
             createEntityResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.CreateEntity.Request>(request, sendingEntity,
                     requestId));
         }
 
-        public void AddRequest(WorldCommands.DeleteEntity.Request request, Entity sendingEntity, long requestId)
+        public void AddRequest(WorldCommands.DeleteEntity.Request request, Entity sendingEntity, CommandRequestId requestId)
         {
             deleteEntityResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.DeleteEntity.Request>(request, sendingEntity,
                     requestId));
         }
 
-        public void AddRequest(WorldCommands.ReserveEntityIds.Request request, Entity sendingEntity, long requestId)
+        public void AddRequest(WorldCommands.ReserveEntityIds.Request request, Entity sendingEntity, CommandRequestId requestId)
         {
             reserveEntityIdsResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.ReserveEntityIds.Request>(request, sendingEntity,
                     requestId));
         }
 
-        public void AddRequest(WorldCommands.EntityQuery.Request request, Entity sendingEntity, long requestId)
+        public void AddRequest(WorldCommands.EntityQuery.Request request, Entity sendingEntity, CommandRequestId requestId)
         {
             entityQueryResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.EntityQuery.Request>(request, sendingEntity,

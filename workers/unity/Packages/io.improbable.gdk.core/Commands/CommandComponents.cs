@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.Commands
         ///     Gets the request ID from the request. For use in generic methods.
         /// </summary>
         /// <returns> The request ID associated with the request </returns>
-        long RequestId { get; }
+        CommandRequestId RequestId { get; }
     }
 
     public interface IRawReceivedCommandResponse

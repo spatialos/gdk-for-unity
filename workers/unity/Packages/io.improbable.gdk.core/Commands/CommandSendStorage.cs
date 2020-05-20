@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.Commands
             responseStorage.Clear();
         }
 
-        public void AddRequest(TRequest request, Entity entity, long requestId)
+        public void AddRequest(TRequest request, Entity entity, CommandRequestId requestId)
         {
             requestStorage.Add(new CommandRequestWithMetaData<TRequest>(request, entity, requestId));
         }

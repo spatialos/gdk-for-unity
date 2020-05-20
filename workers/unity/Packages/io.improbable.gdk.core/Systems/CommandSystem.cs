@@ -10,16 +10,11 @@ namespace Improbable.Gdk.Core
 
         private long nextRequestId = 1;
 
-        public long SendCommand<T>(T request, Entity sendingEntity) where T : ICommandRequest
+        public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
         {
-            worker.MessagesToSend.AddCommandRequest(request, sendingEntity, nextRequestId);
-            return nextRequestId++;
-        }
-
-        public long SendCommand<T>(T request) where T : ICommandRequest
-        {
-            worker.MessagesToSend.AddCommandRequest(request, Entity.Null, nextRequestId);
-            return nextRequestId++;
+            var requestId = new CommandRequestId(nextRequestId++);
+            worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
+            return requestId;
         }
 
         public void SendResponse<T>(T response) where T : ICommandResponse
@@ -45,7 +40,7 @@ namespace Improbable.Gdk.Core
             return manager.GetResponses();
         }
 
-        public MessagesSpan<T> GetResponse<T>(long requestId) where T : struct, IReceivedCommandResponse
+        public MessagesSpan<T> GetResponse<T>(CommandRequestId requestId) where T : struct, IReceivedCommandResponse
         {
             var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
             return manager.GetResponse(requestId);
