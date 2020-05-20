@@ -28,8 +28,8 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<long> internalRequestIds = new HashSet<long>();
 
-        private readonly Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>>();
+        private readonly Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage> componentCommandToStorage =
+            new Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage>();
 
         public CommandMetaData()
         {
@@ -44,21 +44,10 @@ namespace Improbable.Gdk.Core
             foreach (var (componentId, type) in storageTypes)
             {
                 var instance = (ICommandMetaDataStorage) Activator.CreateInstance(type);
-
-                if (!componentIdToCommandIdToStorage.TryGetValue(componentId,
-                    out var commandIdToStorage))
-                {
-                    commandIdToStorage = new Dictionary<uint, ICommandMetaDataStorage>();
-                    componentIdToCommandIdToStorage.Add(componentId, commandIdToStorage);
-                }
-
-                commandIdToStorage.Add(instance.CommandId, instance);
+                componentCommandToStorage.Add((componentId, instance.CommandId), instance);
             }
 
-            componentIdToCommandIdToStorage.Add(0, new Dictionary<uint, ICommandMetaDataStorage>
-            {
-                { 0, new WorldCommandMetaDataStorage() }
-            });
+            componentCommandToStorage.Add((0, 0), new WorldCommandMetaDataStorage());
         }
 
         public void RemoveRequest(uint componentId, uint commandId, long internalRequestId)
@@ -89,14 +78,9 @@ namespace Improbable.Gdk.Core
 
         private ICommandMetaDataStorage GetCommandDiffStorage(uint componentId, uint commandId)
         {
-            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            if (!componentCommandToStorage.TryGetValue((componentId, commandId), out var storage))
             {
-                throw new ArgumentException($"Can not find command meta data. Unknown component ID {componentId}");
-            }
-
-            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-            {
-                throw new ArgumentException($"Can not find command meta data storage. Unknown command ID {commandId}");
+                throw new ArgumentException($"Can not find command meta data. Unknown component:command ID {componentId}:{commandId}");
             }
 
             return storage;
