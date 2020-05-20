@@ -52,7 +52,7 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
         diff.AddCommandRequest(request, ComponentId, {command.CommandIndex});
     }}
 
-    public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
+    public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
     {{
         {command.FqnResponseType}? rawResponse = null;
         if (op.StatusCode == StatusCode.Success)
@@ -61,7 +61,7 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
         }}
 
         var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, op.RequestId);
-        commandMetaData.MarkIdForRemoval(ComponentId, {command.CommandIndex}, op.RequestId);
+        commandMetaData.RemoveRequest(ComponentId, {command.CommandIndex}, op.RequestId);
 
         var response = new {command.PascalCaseName}.ReceivedResponse(
             commandContext.SendingEntity,

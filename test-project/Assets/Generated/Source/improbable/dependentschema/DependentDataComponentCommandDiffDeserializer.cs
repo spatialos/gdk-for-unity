@@ -25,7 +25,7 @@ namespace Improbable.DependentSchema
                 diff.AddCommandRequest(request, ComponentId, 1);
             }
 
-            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
             {
                 global::Improbable.TestSchema.SomeType? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)
@@ -34,7 +34,7 @@ namespace Improbable.DependentSchema
                 }
 
                 var commandContext = commandMetaData.GetContext<global::Improbable.TestSchema.SomeType>(ComponentId, 1, op.RequestId);
-                commandMetaData.MarkIdForRemoval(ComponentId, 1, op.RequestId);
+                commandMetaData.RemoveRequest(ComponentId, 1, op.RequestId);
 
                 var response = new BarCommand.ReceivedResponse(
                     commandContext.SendingEntity,

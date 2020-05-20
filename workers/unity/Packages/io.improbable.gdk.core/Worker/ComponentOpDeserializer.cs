@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Core
         }
 
         public static void DeserializeAndApplyCommandResponseReceived(CommandResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             if (!CommandIdsToCommandDeserializer.TryGetValue((op.Response.ComponentId, op.Response.CommandIndex),
                 out var deserializer))
@@ -81,53 +81,53 @@ namespace Improbable.Gdk.Core
         }
 
         public static void ApplyCreateEntityResponse(CreateEntityResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.CreateEntity.Request>(0, 0, op.RequestId);
             var response =
                 new WorldCommands.CreateEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddCreateEntityResponse(response);
         }
 
         public static void ApplyDeleteEntityResponse(DeleteEntityResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.DeleteEntity.Request>(0, 0, op.RequestId);
             var response =
                 new WorldCommands.DeleteEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddDeleteEntityResponse(response);
         }
 
         public static void ApplyReserveEntityIdsResponse(ReserveEntityIdsResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.ReserveEntityIds.Request>(0, 0, op.RequestId);
             var response =
                 new WorldCommands.ReserveEntityIds.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddReserveEntityIdsResponse(response);
         }
 
         public static void ApplyEntityQueryResponse(EntityQueryResponseOp op, ViewDiff viewDiff,
-            CommandMetaDataAggregate commandMetaData)
+            CommandMetaData commandMetaData)
         {
             var context = commandMetaData.GetContext<WorldCommands.EntityQuery.Request>(0, 0, op.RequestId);
             var response =
                 new WorldCommands.EntityQuery.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddEntityQueryResponse(response);
         }

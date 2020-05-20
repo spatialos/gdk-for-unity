@@ -28,10 +28,8 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<long> internalRequestIds = new HashSet<long>();
 
-        private readonly Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>> componentIdToCommandIdToStorage =
-            new Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>>();
-
-        private List<CommandIds> requestsToRemove = new List<CommandIds>();
+        private readonly Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage> componentCommandToStorage =
+            new Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage>();
 
         public CommandMetaData()
         {
@@ -46,96 +44,46 @@ namespace Improbable.Gdk.Core
             foreach (var (componentId, type) in storageTypes)
             {
                 var instance = (ICommandMetaDataStorage) Activator.CreateInstance(type);
-
-                if (!componentIdToCommandIdToStorage.TryGetValue(componentId,
-                    out var commandIdToStorage))
-                {
-                    commandIdToStorage = new Dictionary<uint, ICommandMetaDataStorage>();
-                    componentIdToCommandIdToStorage.Add(componentId, commandIdToStorage);
-                }
-
-                commandIdToStorage.Add(instance.CommandId, instance);
+                componentCommandToStorage.Add((componentId, instance.CommandId), instance);
             }
 
-            componentIdToCommandIdToStorage.Add(0, new Dictionary<uint, ICommandMetaDataStorage>
-            {
-                { 0, new WorldCommandMetaDataStorage() }
-            });
+            componentCommandToStorage.Add((0, 0), new WorldCommandMetaDataStorage());
         }
 
-        public void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)
+        public void RemoveRequest(uint componentId, uint commandId, long internalRequestId)
         {
-            requestsToRemove.Add(new CommandIds(componentId, commandId, internalRequestId));
-        }
-
-        public void FlushRemovedIds()
-        {
-            foreach (var commandIds in requestsToRemove)
-            {
-                var s = GetCommandDiffStorage(commandIds.ComponentId, commandIds.CommandId);
-                s.RemoveMetaData(commandIds.InternalRequestId);
-                internalRequestIds.Remove(commandIds.InternalRequestId);
-            }
-
-            requestsToRemove.Clear();
+            var commandMetaDataStorage = GetCommandDiffStorage(componentId, commandId);
+            commandMetaDataStorage.RemoveMetaData(internalRequestId);
+            internalRequestIds.Remove(internalRequestId);
         }
 
         public void AddRequest<T>(uint componentId, uint commandId, in CommandContext<T> context)
         {
-            var s = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
-            s.AddRequest(in context);
+            var commandPayloadStorage = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
+            commandPayloadStorage.AddRequest(in context);
         }
 
         public void AddInternalRequestId(uint componentId, uint commandId, long requestId, long internalRequestId)
         {
             internalRequestIds.Add(internalRequestId);
-            var s = GetCommandDiffStorage(componentId, commandId);
-            s.SetInternalRequestId(internalRequestId, requestId);
+            var commandMetaDataStorage = GetCommandDiffStorage(componentId, commandId);
+            commandMetaDataStorage.SetInternalRequestId(internalRequestId, requestId);
         }
 
         public CommandContext<T> GetContext<T>(uint componentId, uint commandId, long internalRequestId)
         {
-            var s = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
-            return s.GetPayload(internalRequestId);
-        }
-
-        internal bool ContainsCommandMetaData(long internalRequestId)
-        {
-            return internalRequestIds.Contains(internalRequestId);
-        }
-
-        internal bool IsEmpty()
-        {
-            return internalRequestIds.Count == 0;
+            var commandPayloadStorage = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
+            return commandPayloadStorage.GetPayload(internalRequestId);
         }
 
         private ICommandMetaDataStorage GetCommandDiffStorage(uint componentId, uint commandId)
         {
-            if (!componentIdToCommandIdToStorage.TryGetValue(componentId, out var commandIdToStorage))
+            if (!componentCommandToStorage.TryGetValue((componentId, commandId), out var storage))
             {
-                throw new ArgumentException($"Can not find command meta data. Unknown component ID {componentId}");
-            }
-
-            if (!commandIdToStorage.TryGetValue(commandId, out var storage))
-            {
-                throw new ArgumentException($"Can not find command meta data storage. Unknown command ID {commandId}");
+                throw new ArgumentException($"Can not find command metadata. Unknown command ID {commandId} on component {componentId}.");
             }
 
             return storage;
-        }
-
-        private readonly struct CommandIds
-        {
-            public readonly uint ComponentId;
-            public readonly uint CommandId;
-            public readonly long InternalRequestId;
-
-            public CommandIds(uint componentId, uint commandId, long internalRequestId)
-            {
-                ComponentId = componentId;
-                CommandId = commandId;
-                InternalRequestId = internalRequestId;
-            }
         }
     }
 }

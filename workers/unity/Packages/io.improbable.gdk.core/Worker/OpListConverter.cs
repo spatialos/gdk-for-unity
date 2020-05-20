@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core
         ///     Iterate over the op list and populate a ViewDiff from the data contained.
         /// </summary>
         /// <returns>True if the current ViewDiff is inside a critical section.</returns>
-        public bool ParseOpListIntoDiff(OpList opList, CommandMetaDataAggregate commandMetaData)
+        public bool ParseOpListIntoDiff(OpList opList, CommandMetaData commandMetaData)
         {
             if (shouldClear)
             {
