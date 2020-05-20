@@ -226,7 +226,7 @@ namespace Improbable.Gdk.Core
         public void AddResponse(CommandResponse response, uint requestId)
         {
             responses.Add(new ResponseToSend(response, requestId));
-            netFrameStats.AddCommandResponse(response, null);
+            netFrameStats.AddCommandResponse(response, message: null);
         }
 
         public void AddFailure(uint componentId, uint commandIndex, string reason, uint requestId)
