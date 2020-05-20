@@ -2,6 +2,11 @@
 
 ## From `0.3.5` to `0.3.6`
 
+### Multithreaded connection removed
+
+The old `MultiThreadedSpatialOSConnectionHandler` has been removed and the method `SpatialOSConnectionHandlerBuilder.SetThreadingMode` has been removed to reflect this change.
+In a future release, threading will be implemented into the `SpatialOSConnectionHandler`.
+
 ### WorkerConnector changes
 
 There are two related changes that you will need to adjust for.
