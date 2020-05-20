@@ -25,7 +25,7 @@ namespace Improbable.DependentSchema
                 diff.AddCommandRequest(request, ComponentId, 1);
             }
 
-            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaDataAggregate commandMetaData)
+            public void AddResponseToDiff(CommandResponseOp op, ViewDiff diff, CommandMetaData commandMetaData)
             {
                 global::Improbable.TestSchema.SomeType? rawResponse = null;
                 if (op.StatusCode == StatusCode.Success)
