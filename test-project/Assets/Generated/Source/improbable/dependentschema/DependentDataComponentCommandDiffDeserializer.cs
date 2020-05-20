@@ -34,7 +34,7 @@ namespace Improbable.DependentSchema
                 }
 
                 var commandContext = commandMetaData.GetContext<global::Improbable.TestSchema.SomeType>(ComponentId, 1, op.RequestId);
-                commandMetaData.MarkIdForRemoval(ComponentId, 1, op.RequestId);
+                commandMetaData.RemoveRequest(ComponentId, 1, op.RequestId);
 
                 var response = new BarCommand.ReceivedResponse(
                     commandContext.SendingEntity,
