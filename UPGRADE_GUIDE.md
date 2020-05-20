@@ -4,7 +4,7 @@
 
 ### Multithreaded connection removed
 
-The old `MultiThreadedSpatialOSConnectionHandler` has been removed and the method `SpatialOSConnectionHandlerBuilder.SetThreadingMode` has been removed to reflect this change.
+The `MultiThreadedSpatialOSConnectionHandler` has been removed and the method `SpatialOSConnectionHandlerBuilder.SetThreadingMode` has been removed to reflect this change.
 
 ### WorkerConnector changes
 
