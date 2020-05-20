@@ -31,8 +31,6 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>> componentIdToCommandIdToStorage =
             new Dictionary<uint, Dictionary<uint, ICommandMetaDataStorage>>();
 
-        private List<CommandIds> requestsToRemove = new List<CommandIds>();
-
         public CommandMetaData()
         {
             if (storageTypes == null)
@@ -63,50 +61,30 @@ namespace Improbable.Gdk.Core
             });
         }
 
-        public void MarkIdForRemoval(uint componentId, uint commandId, long internalRequestId)
+        public void RemoveRequest(uint componentId, uint commandId, long internalRequestId)
         {
-            requestsToRemove.Add(new CommandIds(componentId, commandId, internalRequestId));
-        }
-
-        public void FlushRemovedIds()
-        {
-            foreach (var commandIds in requestsToRemove)
-            {
-                var s = GetCommandDiffStorage(commandIds.ComponentId, commandIds.CommandId);
-                s.RemoveMetaData(commandIds.InternalRequestId);
-                internalRequestIds.Remove(commandIds.InternalRequestId);
-            }
-
-            requestsToRemove.Clear();
+            var commandMetaDataStorage = GetCommandDiffStorage(componentId, commandId);
+            commandMetaDataStorage.RemoveMetaData(internalRequestId);
+            internalRequestIds.Remove(internalRequestId);
         }
 
         public void AddRequest<T>(uint componentId, uint commandId, in CommandContext<T> context)
         {
-            var s = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
-            s.AddRequest(in context);
+            var commandPayloadStorage = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
+            commandPayloadStorage.AddRequest(in context);
         }
 
         public void AddInternalRequestId(uint componentId, uint commandId, long requestId, long internalRequestId)
         {
             internalRequestIds.Add(internalRequestId);
-            var s = GetCommandDiffStorage(componentId, commandId);
-            s.SetInternalRequestId(internalRequestId, requestId);
+            var commandMetaDataStorage = GetCommandDiffStorage(componentId, commandId);
+            commandMetaDataStorage.SetInternalRequestId(internalRequestId, requestId);
         }
 
         public CommandContext<T> GetContext<T>(uint componentId, uint commandId, long internalRequestId)
         {
-            var s = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
-            return s.GetPayload(internalRequestId);
-        }
-
-        internal bool ContainsCommandMetaData(long internalRequestId)
-        {
-            return internalRequestIds.Contains(internalRequestId);
-        }
-
-        internal bool IsEmpty()
-        {
-            return internalRequestIds.Count == 0;
+            var commandPayloadStorage = (ICommandPayloadStorage<T>) GetCommandDiffStorage(componentId, commandId);
+            return commandPayloadStorage.GetPayload(internalRequestId);
         }
 
         private ICommandMetaDataStorage GetCommandDiffStorage(uint componentId, uint commandId)
@@ -122,20 +100,6 @@ namespace Improbable.Gdk.Core
             }
 
             return storage;
-        }
-
-        private readonly struct CommandIds
-        {
-            public readonly uint ComponentId;
-            public readonly uint CommandId;
-            public readonly long InternalRequestId;
-
-            public CommandIds(uint componentId, uint commandId, long internalRequestId)
-            {
-                ComponentId = componentId;
-                CommandId = commandId;
-                InternalRequestId = internalRequestId;
-            }
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.CreateEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddCreateEntityResponse(response);
         }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.DeleteEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddDeleteEntityResponse(response);
         }
@@ -114,7 +114,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.ReserveEntityIds.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddReserveEntityIdsResponse(response);
         }
@@ -127,7 +127,7 @@ namespace Improbable.Gdk.Core
                 new WorldCommands.EntityQuery.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.MarkIdForRemoval(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, op.RequestId);
 
             viewDiff.AddEntityQueryResponse(response);
         }

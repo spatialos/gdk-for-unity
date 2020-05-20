@@ -36,8 +36,6 @@ namespace Improbable.Gdk.Core
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
-            commandMetaData.FlushRemovedIds();
-
             bool inCriticalSection = false;
             do
             {
