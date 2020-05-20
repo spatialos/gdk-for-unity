@@ -22,6 +22,7 @@
 - Invalid JSON is now logged if there is an error parsing the codegen output. [#1353](https://github.com/spatialos/gdk-for-unity/pull/1353)
 - The Mobile Launcher will no longer break if Android build support is not installed. [#1354](https://github.com/spatialos/gdk-for-unity/pull/1354)
 - Fixed a bug in the `EntityTemplate` class where calling `AddComponent` with an `EntityAcl.Snapshot` would incorrectly apply its write access [#1360](https://github.com/spatialos/gdk-for-unity/pull/1360)
+- The Deployment Launcher will now generate Dev Auth Tokens using the environment specified in the GDK Tools Configuration. [#1366](https://github.com/spatialos/gdk-for-unity/pull/1366)
 
 ### Internal
 
