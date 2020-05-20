@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Improbable.SpatialOS.Deployment.V1Alpha1;
 using Improbable.SpatialOS.Platform.Common;
+using Improbable.SpatialOS.PlayerAuth.V2Alpha1;
 using Improbable.SpatialOS.Snapshot.V1Alpha1;
 
 namespace Improbable.Gdk.DeploymentLauncher
@@ -13,14 +14,24 @@ namespace Improbable.Gdk.DeploymentLauncher
         {
             return string.IsNullOrEmpty(options.Environment)
                 ? DeploymentServiceClient.Create()
-                : DeploymentServiceClient.Create(GetEndpoint(options.Environment), GetTokenCredential(options.Environment));
+                : DeploymentServiceClient.Create(GetEndpoint(options.Environment),
+                    GetTokenCredential(options.Environment));
         }
 
         public static SnapshotServiceClient CreateSnapshotClient(Options.Common options)
         {
             return string.IsNullOrEmpty(options.Environment)
                 ? SnapshotServiceClient.Create()
-                : SnapshotServiceClient.Create(GetEndpoint(options.Environment), GetTokenCredential(options.Environment));
+                : SnapshotServiceClient.Create(GetEndpoint(options.Environment),
+                    GetTokenCredential(options.Environment));
+        }
+
+        public static PlayerAuthServiceClient CreatePlayerAuthClient(Options.Common options)
+        {
+            return string.IsNullOrEmpty(options.Environment)
+                ? PlayerAuthServiceClient.Create()
+                : PlayerAuthServiceClient.Create(GetEndpoint(options.Environment),
+                    GetTokenCredential(options.Environment));
         }
 
         private static PlatformApiEndpoint GetEndpoint(string environment)
@@ -54,8 +65,10 @@ namespace Improbable.Gdk.DeploymentLauncher
             var possibleTokenFiles = new[]
             {
                 Environment.GetEnvironmentVariable("SPATIALOS_REFRESH_TOKEN_FILE"),
-                Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? "", $".improbable/oauth2/oauth2_refresh_token_{environment}"),
-                Path.Combine(Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%"), $".improbable/oauth2/oauth2_refresh_token_{environment}")
+                Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? "",
+                    $".improbable/oauth2/oauth2_refresh_token_{environment}"),
+                Path.Combine(Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%"),
+                    $".improbable/oauth2/oauth2_refresh_token_{environment}")
             };
 
             var tokenFile = possibleTokenFiles.FirstOrDefault(File.Exists);

@@ -103,7 +103,7 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
 
         private static string ModifySimulatedPlayerLaunchJson(Options.CreateSimulated options)
         {
-            var playerAuthServiceClient = PlayerAuthServiceClient.Create();
+            var playerAuthServiceClient = ClientFactory.CreatePlayerAuthClient(options);
 
             // Create development authentication token used by the simulated players.
             var dat = playerAuthServiceClient.CreateDevelopmentAuthenticationToken(
