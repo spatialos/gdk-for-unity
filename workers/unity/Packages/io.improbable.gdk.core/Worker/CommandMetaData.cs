@@ -80,7 +80,7 @@ namespace Improbable.Gdk.Core
         {
             if (!componentCommandToStorage.TryGetValue((componentId, commandId), out var storage))
             {
-                throw new ArgumentException($"Can not find command meta data. Unknown component:command ID {componentId}:{commandId}");
+                throw new ArgumentException($"Can not find command metadata. Unknown command ID {commandId} on component {componentId}.");
             }
 
             return storage;

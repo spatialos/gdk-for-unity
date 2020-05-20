@@ -61,7 +61,7 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
         }}
 
         var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, op.RequestId);
-        commandMetaData.MarkIdForRemoval(ComponentId, {command.CommandIndex}, op.RequestId);
+        commandMetaData.RemoveRequest(ComponentId, {command.CommandIndex}, op.RequestId);
 
         var response = new {command.PascalCaseName}.ReceivedResponse(
             commandContext.SendingEntity,
