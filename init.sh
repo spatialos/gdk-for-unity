@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail
 
+if [[ -n "${DEBUG-}" ]]; then
+  set -x
+fi
+
 cd "$(dirname "$0")"
 
 if [[ -n "${1:-}" ]]; then
@@ -21,7 +25,12 @@ SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
 TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
 
-SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
+if [[ -n "${WORKER_SDK_OVERRIDE:-}" ]]; then
+    SDK_VERSION="${WORKER_SDK_OVERRIDE}"
+else 
+    SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
+fi
+
 SPOT_VERSION="$(cat "${SDK_PATH}"/.spot.version)"
 
 update_package() {
