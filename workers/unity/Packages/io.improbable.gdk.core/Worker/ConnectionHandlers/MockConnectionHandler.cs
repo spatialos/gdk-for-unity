@@ -39,7 +39,7 @@ namespace Improbable.Gdk.Core
 
         public void CreateEntity(long entityId, EntityTemplate template)
         {
-            var handler = new EntityTemplateDynamicHandler(template, entityId, currentDiff);
+            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, currentDiff);
             Dynamic.ForEachComponent(handler);
         }
 
@@ -61,6 +61,14 @@ namespace Improbable.Gdk.Core
         public void RemoveEntity(long entityId)
         {
             currentDiff.RemoveEntity(entityId);
+        }
+
+        public void RemoveEntityAndComponents(long entityId, EntityTemplate template)
+        {
+            var handler = new RemoveEntityTemplateDynamicHandler(template, entityId, currentDiff);
+            Dynamic.ForEachComponent(handler);
+
+            RemoveEntity(entityId);
         }
 
         public void RemoveComponent(long entityId, uint componentId)
@@ -129,13 +137,13 @@ namespace Improbable.Gdk.Core
 
         #endregion
 
-        private class EntityTemplateDynamicHandler : Dynamic.IHandler
+        private class CreateEntityTemplateDynamicHandler : Dynamic.IHandler
         {
-            private EntityTemplate template;
-            private ViewDiff viewDiff;
-            private long entityId;
+            private readonly EntityTemplate template;
+            private readonly long entityId;
+            private readonly ViewDiff viewDiff;
 
-            public EntityTemplateDynamicHandler(EntityTemplate template, long entityId, ViewDiff viewDiff)
+            public CreateEntityTemplateDynamicHandler(EntityTemplate template, long entityId, ViewDiff viewDiff)
             {
                 this.template = template;
                 this.viewDiff = viewDiff;
@@ -157,6 +165,30 @@ namespace Improbable.Gdk.Core
 
                 var snapshot = maybeSnapshot.Value;
                 viewDiff.AddComponent(vtable.ConvertSnapshotToUpdate(snapshot), entityId, componentId);
+            }
+        }
+
+        private class RemoveEntityTemplateDynamicHandler : Dynamic.IHandler
+        {
+            private readonly EntityTemplate template;
+            private readonly long entityId;
+            private readonly ViewDiff viewDiff;
+
+            public RemoveEntityTemplateDynamicHandler(EntityTemplate template, long entityId, ViewDiff viewDiff)
+            {
+                this.template = template;
+                this.entityId = entityId;
+                this.viewDiff = viewDiff;
+            }
+
+            public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
+                where TUpdate : struct, ISpatialComponentUpdate
+                where TSnapshot : struct, ISpatialComponentSnapshot
+            {
+                if (template.HasComponent<TSnapshot>())
+                {
+                    viewDiff.RemoveComponent(entityId, componentId);
+                }
             }
         }
 
