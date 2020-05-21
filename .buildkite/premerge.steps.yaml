@@ -81,7 +81,6 @@ steps:
     depends_on:
       - step: "test-windows"
     command: bash -c ci/sonar-scanner.sh
-    soft_fail: true # TODO: Remove once we've ran with this a bit more.
     <<: *windows
 
   - label: ":darwin: ~ test"
