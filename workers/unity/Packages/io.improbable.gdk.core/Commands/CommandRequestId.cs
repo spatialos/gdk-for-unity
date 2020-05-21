@@ -21,6 +21,26 @@ namespace Improbable.Gdk.Core.Commands
             return !left.Equals(right);
         }
 
+        public static bool operator <(CommandRequestId left, CommandRequestId right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(CommandRequestId left, CommandRequestId right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <=(CommandRequestId left, CommandRequestId right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(CommandRequestId left, CommandRequestId right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
         public bool Equals(CommandRequestId other)
         {
             return Raw == other.Raw;
@@ -59,6 +79,26 @@ namespace Improbable.Gdk.Core.Commands
         public static bool operator !=(InternalCommandRequestId left, InternalCommandRequestId right)
         {
             return !left.Equals(right);
+        }
+
+        public static bool operator <(InternalCommandRequestId left, InternalCommandRequestId right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(InternalCommandRequestId left, InternalCommandRequestId right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <=(InternalCommandRequestId left, InternalCommandRequestId right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(InternalCommandRequestId left, InternalCommandRequestId right)
+        {
+            return left.CompareTo(right) >= 0;
         }
 
         public bool Equals(InternalCommandRequestId other)

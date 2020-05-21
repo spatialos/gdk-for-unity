@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
         public static int? GetResponseIndex<T>(this MessageList<T> list, CommandRequestId requestId)
             where T : struct, IReceivedCommandResponse
         {
-            var targetId = requestId.Raw;
+            var targetId = requestId;
             var lower = 0;
             var upper = list.Count - 1;
 
@@ -18,9 +18,9 @@ namespace Improbable.Gdk.Core
             {
                 var current = (lower + upper) / 2;
 
-                var id = list[current].RequestId.Raw;
+                var id = list[current].RequestId;
 
-                if (id > requestId.Raw)
+                if (id > requestId)
                 {
                     upper = current - 1;
                 }
