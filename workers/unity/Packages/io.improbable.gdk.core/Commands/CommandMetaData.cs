@@ -24,24 +24,24 @@ namespace Improbable.Gdk.Core.Commands
     public class CommandMetaData
     {
         // Cache the types needed to instantiate a new CommandMetaData
-        private static List<(uint componentId, Type command)> storageTypes;
+        private static readonly List<(uint componentId, Type command)> StorageTypes;
 
         private readonly HashSet<InternalCommandRequestId> internalRequestIds = new HashSet<InternalCommandRequestId>();
 
         private readonly Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage> componentCommandToStorage =
             new Dictionary<(uint componentId, uint commandId), ICommandMetaDataStorage>();
 
+        static CommandMetaData()
+        {
+            StorageTypes = ComponentDatabase.Metaclasses
+                .SelectMany(type => type.Value.Commands
+                    .Select(c => (componentId: type.Value.ComponentId, command: c.MetaDataStorage)))
+                .ToList();
+        }
+
         public CommandMetaData()
         {
-            if (storageTypes == null)
-            {
-                storageTypes = ComponentDatabase.Metaclasses
-                    .SelectMany(type => type.Value.Commands
-                        .Select(c => (componentId: type.Value.ComponentId, command: c.MetaDataStorage)))
-                    .ToList();
-            }
-
-            foreach (var (componentId, type) in storageTypes)
+            foreach (var (componentId, type) in StorageTypes)
             {
                 var instance = (ICommandMetaDataStorage) Activator.CreateInstance(type);
                 componentCommandToStorage.Add((componentId, instance.CommandId), instance);

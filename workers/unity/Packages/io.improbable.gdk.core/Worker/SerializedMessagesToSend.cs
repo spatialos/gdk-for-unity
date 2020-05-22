@@ -17,8 +17,8 @@ namespace Improbable.Gdk.Core
             Loopback = ComponentUpdateLoopback.ShortCircuited
         };
 
-        private static List<Type> componentTypes;
-        private static List<Type> commandTypes;
+        private static readonly List<Type> ComponentTypes;
+        private static readonly List<Type> CommandTypes;
 
         private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
         private readonly MessageList<RequestToSend> requests = new MessageList<RequestToSend>();
@@ -52,11 +52,11 @@ namespace Improbable.Gdk.Core
 
         static SerializedMessagesToSend()
         {
-            componentTypes = ComponentDatabase.Metaclasses
+            ComponentTypes = ComponentDatabase.Metaclasses
                 .Select(pair => pair.Value.Serializer)
                 .ToList();
 
-            commandTypes = ComponentDatabase.Metaclasses
+            CommandTypes = ComponentDatabase.Metaclasses
                 .SelectMany(pair => pair.Value.Commands)
                 .Select(metaclass => metaclass.Serializer)
                 .ToList();
@@ -64,13 +64,13 @@ namespace Improbable.Gdk.Core
 
         public SerializedMessagesToSend()
         {
-            foreach (var type in componentTypes)
+            foreach (var type in ComponentTypes)
             {
                 var instance = (IComponentSerializer) Activator.CreateInstance(type);
                 componentSerializers.Add(instance);
             }
 
-            foreach (var type in commandTypes)
+            foreach (var type in CommandTypes)
             {
                 var instance = (ICommandSerializer) Activator.CreateInstance(type);
                 commandSerializers.Add(instance);
