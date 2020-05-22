@@ -88,6 +88,7 @@
     - This means that your entities must have the `Metadata` component to use the GameObject Creation Feature Module.
 
 ### Added
+
 - The SpatialOS Runtime version is now pinned by the GDK. This has been initially set to `14.5.0`.
 - Added ability to construct a `CodeWriter` using just the raw string content. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
     - This will override anything defined through the ergonomic `CodeWriter` API.
