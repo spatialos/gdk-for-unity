@@ -17,6 +17,7 @@
 ### Changed
 
 - GDK Tools Configuration window now autosaves. [#1356](https://github.com/spatialos/gdk-for-unity/pull/1356)
+- The SpatialOS Runtime version has been updated to `14.5.2`. [#1373](https://github.com/spatialos/gdk-for-unity/pull/1373)
 
 ### Fixed
 
@@ -87,11 +88,11 @@
     - This means that your entities must have the `Metadata` component to use the GameObject Creation Feature Module.
 
 ### Added
-
+- The SpatialOS Runtime version is now pinned by the GDK. This has been initially set to `14.5.0`.
 - Added ability to construct a `CodeWriter` using just the raw string content. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
     - This will override anything defined through the ergonomic `CodeWriter` API.
 - Introduced a new `CodegenJob` model. [#1275](https://github.com/spatialos/gdk-for-unity/pull/1275)
-- The SpatialOS Runtime version is now pinned by the GDK. This has been initially set to `14.5.0`.
+
     - You can override this version in the GDK Tools Configuration. [#1289](https://github.com/spatialos/gdk-for-unity/pull/1289)
     - This version (or your override) will be used in both local deployments started through the editor and cloud deployments started through the Deployment Launcher.
     - The currently selected version will be displayed in the Deployment Launcher. [#1302](https://github.com/spatialos/gdk-for-unity/pull/1302)
