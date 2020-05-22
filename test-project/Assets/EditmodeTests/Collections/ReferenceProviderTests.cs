@@ -17,13 +17,7 @@ namespace Improbable.Gdk.EditmodeTests.Collections
             {
                 mockWorld.Step(world =>
                 {
-                    world.Connection.CreateEntity(entityId, new EntityTemplate());
-
-                    world.Connection.AddComponent(entityId, Position.ComponentId,
-                        new Position.Update {Coords = Coordinates.Zero});
-
-                    world.Connection.AddComponent(entityId, Metadata.ComponentId,
-                        new Metadata.Update {EntityType = "EntityWithReferenceComponent"});
+                    world.Connection.CreateEntity(entityId, GetTemplate());
                 });
 
                 Assert.AreEqual(1, ReferenceProvider<string>.Count);
@@ -35,25 +29,30 @@ namespace Improbable.Gdk.EditmodeTests.Collections
         [Test]
         public void Removed_component_disposes_reference()
         {
+            var template = GetTemplate();
             using (var mockWorld = MockWorld.Create(new MockWorld.Options()))
             {
-                mockWorld.Step(world =>
-                {
-                    world.Connection.CreateEntity(entityId, new EntityTemplate());
-
-                    world.Connection.AddComponent(entityId, Position.ComponentId,
-                        new Position.Update {Coords = Coordinates.Zero});
-
-                    world.Connection.AddComponent(entityId, Metadata.ComponentId,
-                        new Metadata.Update {EntityType = "EntityWithReferenceComponent"});
-                }).Step(world =>
-                {
-                    Assert.AreEqual(1, ReferenceProvider<string>.Count);
-                    world.Connection.RemoveComponent(entityId, Metadata.ComponentId);
-                });
+                mockWorld
+                    .Step(world =>
+                    {
+                        world.Connection.CreateEntity(entityId, template);
+                    })
+                    .Step(world =>
+                    {
+                        Assert.AreEqual(1, ReferenceProvider<string>.Count);
+                        world.Connection.RemoveEntityAndComponents(entityId, template);
+                    });
 
                 Assert.AreEqual(0, ReferenceProvider<string>.Count);
             }
+        }
+
+        private EntityTemplate GetTemplate()
+        {
+            var template = new EntityTemplate();
+            template.AddComponent(new Position.Snapshot(), "some-worker");
+            template.AddComponent(new Metadata.Snapshot("AReferenceType"), "some-worker");
+            return template;
         }
     }
 }
