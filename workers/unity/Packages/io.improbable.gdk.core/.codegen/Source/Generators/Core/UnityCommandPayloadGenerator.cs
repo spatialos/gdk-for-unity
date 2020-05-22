@@ -115,7 +115,7 @@ public partial class {commandDetails.PascalCaseName}
         public readonly {commandDetails.FqnResponseType}? ResponsePayload;
         public readonly {commandDetails.FqnRequestType} RequestPayload;
         public readonly global::System.Object Context;
-        public readonly long RequestId;
+        public readonly CommandRequestId RequestId;
 
         public ReceivedResponse(
             Unity.Entities.Entity sendingEntity,
@@ -125,7 +125,7 @@ public partial class {commandDetails.PascalCaseName}
             {commandDetails.FqnResponseType}? response,
             {commandDetails.FqnRequestType} request,
             global::System.Object context,
-            long requestId)
+            CommandRequestId requestId)
         {{
             SendingEntity = sendingEntity;
             EntityId = entityId;
@@ -137,7 +137,7 @@ public partial class {commandDetails.PascalCaseName}
             RequestId = requestId;
         }}
 
-        long IReceivedCommandResponse.RequestId => RequestId;
+        CommandRequestId IReceivedCommandResponse.RequestId => RequestId;
     }}
 
     public readonly struct RawReceivedResponse : IRawReceivedCommandResponse

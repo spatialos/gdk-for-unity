@@ -80,9 +80,9 @@ namespace Improbable.Gdk.Core.Commands
                 /// <summary>
                 ///     The unique request ID of this command. Will match the request ID in the corresponding request.
                 /// </summary>
-                public readonly long RequestId;
+                public readonly CommandRequestId RequestId;
 
-                internal ReceivedResponse(EntityQueryResponseOp op, Entity sendingEntity, Request req, long requestId)
+                internal ReceivedResponse(EntityQueryResponseOp op, Entity sendingEntity, Request req, CommandRequestId requestId)
                 {
                     SendingEntity = sendingEntity;
                     StatusCode = op.StatusCode;
@@ -105,7 +105,7 @@ namespace Improbable.Gdk.Core.Commands
                     }
                 }
 
-                long IReceivedCommandResponse.RequestId => RequestId;
+                CommandRequestId IReceivedCommandResponse.RequestId => RequestId;
             }
         }
     }

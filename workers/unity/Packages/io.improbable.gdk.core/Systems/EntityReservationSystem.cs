@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Core
         private long queuedReservationCount;
         private long inFlightCount;
 
-        private readonly HashSet<long> requestIds = new HashSet<long>();
+        private readonly HashSet<CommandRequestId> requestIds = new HashSet<CommandRequestId>();
 
         private readonly Queue<QueuedReservation> queuedReservations = new Queue<QueuedReservation>();
 

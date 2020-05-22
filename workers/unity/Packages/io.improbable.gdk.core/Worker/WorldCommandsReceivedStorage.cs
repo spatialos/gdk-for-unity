@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core
         }
 
         MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
-            IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(long requestId)
+            IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!createEntitySorted)
             {
@@ -100,7 +100,7 @@ namespace Improbable.Gdk.Core
         }
 
         MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
-            IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(long requestId)
+            IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!deleteEntitySorted)
             {
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.Core
         }
 
         MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
-            IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(long requestId)
+            IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!reserveEntityIdsSorted)
             {
@@ -130,7 +130,7 @@ namespace Improbable.Gdk.Core
         }
 
         MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
-            IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(long requestId)
+            IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!entityQueriesSorted)
             {

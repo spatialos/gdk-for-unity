@@ -13,7 +13,8 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "Improbable.Gdk.Core"
+                    "Improbable.Gdk.Core",
+                    "Improbable.Gdk.Core.Commands"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
