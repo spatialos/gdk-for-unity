@@ -5,9 +5,9 @@
 ### Command Request ID's are now typed
 
 The return value of `CommandSystem.SendCommand` has changed from `long` to `CommandRequestID`.
-A similar change has been made to all API's that take request ID's as a parameter.
+A similar change has been made to all APIs that take request IDs as a parameter.
 
-Anywhere you store request ids, you need to change the type from `long` to `CommandRequestId`.
+Anywhere you store request IDs, you need to change the type from `long` to `CommandRequestId`.
 
 ### Multithreaded connection removed
 
