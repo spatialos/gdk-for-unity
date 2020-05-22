@@ -50,23 +50,20 @@ namespace Improbable.Gdk.Core
 
         private NetFrameStats netFrameStats = new NetFrameStats();
 
+        static SerializedMessagesToSend()
+        {
+            componentTypes = ComponentDatabase.Metaclasses
+                .Select(pair => pair.Value.Serializer)
+                .ToList();
+
+            commandTypes = ComponentDatabase.Metaclasses
+                .SelectMany(pair => pair.Value.Commands)
+                .Select(metaclass => metaclass.Serializer)
+                .ToList();
+        }
+
         public SerializedMessagesToSend()
         {
-            if (componentTypes == null)
-            {
-                componentTypes = ComponentDatabase.Metaclasses
-                    .Select(pair => pair.Value.Serializer)
-                    .ToList();
-            }
-
-            if (commandTypes == null)
-            {
-                commandTypes = ComponentDatabase.Metaclasses
-                    .SelectMany(pair => pair.Value.Commands)
-                    .Select(metaclass => metaclass.Serializer)
-                    .ToList();
-            }
-
             foreach (var type in componentTypes)
             {
                 var instance = (IComponentSerializer) Activator.CreateInstance(type);

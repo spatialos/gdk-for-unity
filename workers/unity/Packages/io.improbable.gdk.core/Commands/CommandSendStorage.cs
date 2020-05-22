@@ -43,4 +43,18 @@ namespace Improbable.Gdk.Core.Commands
             return responseStorage;
         }
     }
+
+    internal readonly struct CommandRequestWithMetaData<T>
+    {
+        public readonly T Request;
+        public readonly Entity SendingEntity;
+        public readonly CommandRequestId RequestId;
+
+        public CommandRequestWithMetaData(T request, Entity sendingEntity, CommandRequestId requestId)
+        {
+            Request = request;
+            SendingEntity = sendingEntity;
+            RequestId = requestId;
+        }
+    }
 }
