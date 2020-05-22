@@ -1,0 +1,5 @@
+.world-selector {
+    height: 15px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}

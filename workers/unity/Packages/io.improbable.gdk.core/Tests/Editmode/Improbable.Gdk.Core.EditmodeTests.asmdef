@@ -8,7 +8,8 @@
         "Improbable.Gdk.TestUtils.Editor",
         "Improbable.Gdk.Tools",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "Improbable.Gdk.Core.Editor"
     ],
     "includePlatforms": [
         "Editor"
@@ -24,5 +25,6 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

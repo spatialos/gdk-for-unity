@@ -14,6 +14,7 @@
 - Added the ability to select a specific cluster for deployments in the [Deployment Launcher](https://documentation.improbable.io/gdk-for-unity/docs/deployment-launcher). [#1357](https://github.com/spatialos/gdk-for-unity/pull/1357)
     - You can select _either_ a region or a cluster, but not both!
 - Added non-generic overloads for the `EntityTemplate` class which allow you to use `ISpatialComponentSnapshot`s directly. [#1360](https://github.com/spatialos/gdk-for-unity/pull/1360)
+- Extracted the world selection UI element from the Network Analyzer window to a `WorldSelector` element. [#1316](https://github.com/spatialos/gdk-for-unity/pull/1316)
 
 ### Changed
 
@@ -26,6 +27,7 @@
 - The Mobile Launcher will no longer break if Android build support is not installed. [#1354](https://github.com/spatialos/gdk-for-unity/pull/1354)
 - Fixed a bug in the `EntityTemplate` class where calling `AddComponent` with an `EntityAcl.Snapshot` would incorrectly apply its write access [#1360](https://github.com/spatialos/gdk-for-unity/pull/1360)
 - The Deployment Launcher will now generate Dev Auth Tokens using the environment specified in the GDK Tools Configuration. [#1366](https://github.com/spatialos/gdk-for-unity/pull/1366)
+- Fixed a bug where the Network Analyzer window would throw exceptions after being opened. [#1316](https://github.com/spatialos/gdk-for-unity/pull/1316)
 
 ### Internal
 

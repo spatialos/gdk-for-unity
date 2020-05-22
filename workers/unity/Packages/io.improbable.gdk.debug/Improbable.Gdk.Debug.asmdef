@@ -3,9 +3,9 @@
     "references": [
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Sirenix.OdinInspector.Editor"
+        "Sirenix.OdinInspector.Editor",
+        "Improbable.Gdk.Core.Editor"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
