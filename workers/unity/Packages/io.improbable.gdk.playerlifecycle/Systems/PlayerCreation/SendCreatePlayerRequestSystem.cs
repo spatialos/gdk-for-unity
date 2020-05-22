@@ -24,12 +24,12 @@ namespace Improbable.Gdk.PlayerLifecycle
         private byte[] serializedArgumentsCache;
 
         private bool playerCreationRequestQueued;
-        private long? playerCreationRequestId;
+        private CommandRequestId? playerCreationRequestId;
         private int playerCreationRetries;
         private Action<PlayerCreator.CreatePlayer.ReceivedResponse> playerCreationCallback;
 
         private int playerCreatorQueryRetries;
-        private long? playerCreatorEntityQueryId;
+        private CommandRequestId? playerCreatorEntityQueryId;
 
         private readonly List<EntityId> playerCreatorEntityIds = new List<EntityId>();
 
@@ -65,11 +65,16 @@ namespace Improbable.Gdk.PlayerLifecycle
 
         private void HandleEntityQueryResponses()
         {
+            if (!playerCreatorEntityQueryId.HasValue)
+            {
+                return;
+            }
+
             var entityQueryResponses = commandSystem.GetResponses<WorldCommands.EntityQuery.ReceivedResponse>();
             for (var i = 0; i < entityQueryResponses.Count; i++)
             {
                 ref readonly var response = ref entityQueryResponses[i];
-                if (response.RequestId != playerCreatorEntityQueryId)
+                if (response.RequestId != playerCreatorEntityQueryId.Value)
                 {
                     continue;
                 }

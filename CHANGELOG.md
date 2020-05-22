@@ -7,6 +7,7 @@
 - `WorkerConnector.HandleWorkerConnectionFailure` has been removed and `WorkerConnector.Connect` now throws exceptions for connection errors instead. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
 - `WorkerConnector` no longer destroys itself in `Dispose`. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
 - `MultiThreadedSpatialOSConnectionHandler` and `SpatialOSConnectionHandlerBuilder.SetThreadingMode` have been removed. [#1367](https://github.com/spatialos/gdk-for-unity/pull/1367)
+- Command request IDs are now typed as `CommandRequestID` instead of `long`. [#1372](https://github.com/spatialos/gdk-for-unity/pull/1372)
 
 ### Added
 

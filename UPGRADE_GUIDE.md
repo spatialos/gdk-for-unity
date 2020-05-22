@@ -2,6 +2,13 @@
 
 ## From `0.3.5` to `0.3.6`
 
+### Command Request ID's are now typed
+
+The return value of `CommandSystem.SendCommand` has changed from `long` to `CommandRequestID`.
+A similar change has been made to all APIs that take request IDs as a parameter.
+
+Anywhere you store request IDs, you need to change the type from `long` to `CommandRequestId`.
+
 ### Multithreaded connection removed
 
 The `MultiThreadedSpatialOSConnectionHandler` has been removed and the method `SpatialOSConnectionHandlerBuilder.SetThreadingMode` has been removed to reflect this change.

@@ -83,12 +83,13 @@ namespace Improbable.Gdk.Core
         public static void ApplyCreateEntityResponse(CreateEntityResponseOp op, ViewDiff viewDiff,
             CommandMetaData commandMetaData)
         {
-            var context = commandMetaData.GetContext<WorldCommands.CreateEntity.Request>(0, 0, op.RequestId);
+            var internalCommandRequestId = new InternalCommandRequestId(op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.CreateEntity.Request>(0, 0, internalCommandRequestId);
             var response =
                 new WorldCommands.CreateEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.RemoveRequest(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, internalCommandRequestId);
 
             viewDiff.AddCreateEntityResponse(response);
         }
@@ -96,12 +97,13 @@ namespace Improbable.Gdk.Core
         public static void ApplyDeleteEntityResponse(DeleteEntityResponseOp op, ViewDiff viewDiff,
             CommandMetaData commandMetaData)
         {
-            var context = commandMetaData.GetContext<WorldCommands.DeleteEntity.Request>(0, 0, op.RequestId);
+            var internalCommandRequestId = new InternalCommandRequestId(op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.DeleteEntity.Request>(0, 0, internalCommandRequestId);
             var response =
                 new WorldCommands.DeleteEntity.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.RemoveRequest(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, internalCommandRequestId);
 
             viewDiff.AddDeleteEntityResponse(response);
         }
@@ -109,12 +111,13 @@ namespace Improbable.Gdk.Core
         public static void ApplyReserveEntityIdsResponse(ReserveEntityIdsResponseOp op, ViewDiff viewDiff,
             CommandMetaData commandMetaData)
         {
-            var context = commandMetaData.GetContext<WorldCommands.ReserveEntityIds.Request>(0, 0, op.RequestId);
+            var internalCommandRequestId = new InternalCommandRequestId(op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.ReserveEntityIds.Request>(0, 0, internalCommandRequestId);
             var response =
                 new WorldCommands.ReserveEntityIds.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.RemoveRequest(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, internalCommandRequestId);
 
             viewDiff.AddReserveEntityIdsResponse(response);
         }
@@ -122,12 +125,13 @@ namespace Improbable.Gdk.Core
         public static void ApplyEntityQueryResponse(EntityQueryResponseOp op, ViewDiff viewDiff,
             CommandMetaData commandMetaData)
         {
-            var context = commandMetaData.GetContext<WorldCommands.EntityQuery.Request>(0, 0, op.RequestId);
+            var internalCommandRequestId = new InternalCommandRequestId(op.RequestId);
+            var context = commandMetaData.GetContext<WorldCommands.EntityQuery.Request>(0, 0, internalCommandRequestId);
             var response =
                 new WorldCommands.EntityQuery.ReceivedResponse(op, context.SendingEntity, context.Request,
                     context.RequestId);
 
-            commandMetaData.RemoveRequest(0, 0, op.RequestId);
+            commandMetaData.RemoveRequest(0, 0, internalCommandRequestId);
 
             viewDiff.AddEntityQueryResponse(response);
         }

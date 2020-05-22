@@ -10,24 +10,28 @@ namespace Improbable.Gdk.Core
         , ICommandPayloadStorage<WorldCommands.ReserveEntityIds.Request>
         , ICommandPayloadStorage<WorldCommands.EntityQuery.Request>
     {
-        private readonly Dictionary<long, CommandContext<WorldCommands.CreateEntity.Request>> idToCreateEntityRequest =
-            new Dictionary<long, CommandContext<WorldCommands.CreateEntity.Request>>();
+        private readonly Dictionary<CommandRequestId, CommandContext<WorldCommands.CreateEntity.Request>>
+            idToCreateEntityRequest =
+                new Dictionary<CommandRequestId, CommandContext<WorldCommands.CreateEntity.Request>>();
 
-        private readonly Dictionary<long, CommandContext<WorldCommands.DeleteEntity.Request>> idToDeleteEntityRequest =
-            new Dictionary<long, CommandContext<WorldCommands.DeleteEntity.Request>>();
+        private readonly Dictionary<CommandRequestId, CommandContext<WorldCommands.DeleteEntity.Request>>
+            idToDeleteEntityRequest =
+                new Dictionary<CommandRequestId, CommandContext<WorldCommands.DeleteEntity.Request>>();
 
-        private readonly Dictionary<long, CommandContext<WorldCommands.ReserveEntityIds.Request>>
+        private readonly Dictionary<CommandRequestId, CommandContext<WorldCommands.ReserveEntityIds.Request>>
             idToReserveEntityIdsRequest =
-                new Dictionary<long, CommandContext<WorldCommands.ReserveEntityIds.Request>>();
+                new Dictionary<CommandRequestId, CommandContext<WorldCommands.ReserveEntityIds.Request>>();
 
-        private readonly Dictionary<long, CommandContext<WorldCommands.EntityQuery.Request>> idToEntityQueryRequest =
-            new Dictionary<long, CommandContext<WorldCommands.EntityQuery.Request>>();
+        private readonly Dictionary<CommandRequestId, CommandContext<WorldCommands.EntityQuery.Request>>
+            idToEntityQueryRequest =
+                new Dictionary<CommandRequestId, CommandContext<WorldCommands.EntityQuery.Request>>();
 
-        private readonly Dictionary<long, long> internalRequestIdToRequestId = new Dictionary<long, long>();
+        private readonly Dictionary<InternalCommandRequestId, CommandRequestId> internalRequestIdToRequestId =
+            new Dictionary<InternalCommandRequestId, CommandRequestId>();
 
         public uint CommandId => 0;
 
-        public void RemoveMetaData(long internalRequestId)
+        public void RemoveMetaData(InternalCommandRequestId internalRequestId)
         {
             var requestId = internalRequestIdToRequestId[internalRequestId];
             internalRequestIdToRequestId.Remove(internalRequestId);
@@ -42,7 +46,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void SetInternalRequestId(long internalRequestId, long requestId)
+        public void SetInternalRequestId(InternalCommandRequestId internalRequestId, CommandRequestId requestId)
         {
             internalRequestIdToRequestId.Add(internalRequestId, requestId);
         }
@@ -68,25 +72,26 @@ namespace Improbable.Gdk.Core
         }
 
         CommandContext<WorldCommands.CreateEntity.Request> ICommandPayloadStorage<WorldCommands.CreateEntity.Request>.
-            GetPayload(long internalRequestId)
+            GetPayload(InternalCommandRequestId internalRequestId)
         {
             return idToCreateEntityRequest[internalRequestIdToRequestId[internalRequestId]];
         }
 
         CommandContext<WorldCommands.DeleteEntity.Request> ICommandPayloadStorage<WorldCommands.DeleteEntity.Request>.
-            GetPayload(long internalRequestId)
+            GetPayload(InternalCommandRequestId internalRequestId)
         {
             return idToDeleteEntityRequest[internalRequestIdToRequestId[internalRequestId]];
         }
 
         CommandContext<WorldCommands.ReserveEntityIds.Request>
-            ICommandPayloadStorage<WorldCommands.ReserveEntityIds.Request>.GetPayload(long internalRequestId)
+            ICommandPayloadStorage<WorldCommands.ReserveEntityIds.Request>.GetPayload(
+                InternalCommandRequestId internalRequestId)
         {
             return idToReserveEntityIdsRequest[internalRequestIdToRequestId[internalRequestId]];
         }
 
         CommandContext<WorldCommands.EntityQuery.Request> ICommandPayloadStorage<WorldCommands.EntityQuery.Request>.
-            GetPayload(long internalRequestId)
+            GetPayload(InternalCommandRequestId internalRequestId)
         {
             return idToEntityQueryRequest[internalRequestIdToRequestId[internalRequestId]];
         }

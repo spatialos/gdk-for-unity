@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Subscriptions
 {
     public class CommandResponseCallbackManager<T> : ICallbackManager where T : struct, IReceivedCommandResponse
     {
-        private readonly Dictionary<long, Action<T>> callbacks = new Dictionary<long, Action<T>>();
+        private readonly Dictionary<CommandRequestId, Action<T>> callbacks = new Dictionary<CommandRequestId, Action<T>>();
         private readonly CommandSystem commandSystem;
 
         public CommandResponseCallbackManager(World world)
@@ -30,14 +30,14 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void RegisterCallback(long requestId, Action<T> callback)
+        public void RegisterCallback(CommandRequestId requestId, Action<T> callback)
         {
             callbacks.Add(requestId, callback);
         }
 
         public bool UnregisterCallback(ulong requestId)
         {
-            return callbacks.Remove((long) requestId);
+            return callbacks.Remove(new CommandRequestId((long) requestId));
         }
     }
 }

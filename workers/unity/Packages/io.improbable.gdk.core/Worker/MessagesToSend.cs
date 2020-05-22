@@ -119,7 +119,7 @@ namespace Improbable.Gdk.Core
                 0));
         }
 
-        public void AddCommandRequest<T>(T request, Unity.Entities.Entity sendingEntity, long requestId) where T : ICommandRequest
+        public void AddCommandRequest<T>(T request, Unity.Entities.Entity sendingEntity, CommandRequestId requestId) where T : ICommandRequest
         {
             var storage = (ICommandRequestSendStorage<T>) GetCommandSendStorage(typeof(T));
             storage.AddRequest(request, sendingEntity, requestId);

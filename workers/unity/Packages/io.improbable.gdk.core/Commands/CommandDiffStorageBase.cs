@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core.Commands
             return responseStorage.Slice();
         }
 
-        public MessagesSpan<TResponse> GetResponse(long requestId)
+        public MessagesSpan<TResponse> GetResponse(CommandRequestId requestId)
         {
             if (!responsesSorted)
             {
@@ -83,7 +83,7 @@ namespace Improbable.Gdk.Core.Commands
                 : MessagesSpan<TResponse>.Empty();
         }
 
-        private class RequestComparer<T> : IComparer<T> where T : struct, IReceivedCommandRequest
+        private sealed class RequestComparer<T> : IComparer<T> where T : struct, IReceivedCommandRequest
         {
             public int Compare(T x, T y)
             {
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.Core.Commands
             }
         }
 
-        private class ResponseComparer<T> : IComparer<T> where T : struct, IReceivedCommandResponse
+        private sealed class ResponseComparer<T> : IComparer<T> where T : struct, IReceivedCommandResponse
         {
             public int Compare(T x, T y)
             {

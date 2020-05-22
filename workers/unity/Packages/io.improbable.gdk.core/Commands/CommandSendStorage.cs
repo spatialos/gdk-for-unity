@@ -23,7 +23,7 @@ namespace Improbable.Gdk.Core.Commands
             responseStorage.Clear();
         }
 
-        public void AddRequest(TRequest request, Entity entity, long requestId)
+        public void AddRequest(TRequest request, Entity entity, CommandRequestId requestId)
         {
             requestStorage.Add(new CommandRequestWithMetaData<TRequest>(request, entity, requestId));
         }
@@ -41,6 +41,20 @@ namespace Improbable.Gdk.Core.Commands
         internal MessageList<TResponse> GetResponses()
         {
             return responseStorage;
+        }
+    }
+
+    internal readonly struct CommandRequestWithMetaData<T>
+    {
+        public readonly T Request;
+        public readonly Entity SendingEntity;
+        public readonly CommandRequestId RequestId;
+
+        public CommandRequestWithMetaData(T request, Entity sendingEntity, CommandRequestId requestId)
+        {
+            Request = request;
+            SendingEntity = sendingEntity;
+            RequestId = requestId;
         }
     }
 }

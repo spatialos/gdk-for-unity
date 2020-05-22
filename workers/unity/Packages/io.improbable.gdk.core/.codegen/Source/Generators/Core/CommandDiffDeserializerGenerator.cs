@@ -14,6 +14,7 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 cgw.UsingDirectives(
                     "Improbable.Gdk.Core",
+                    "Improbable.Gdk.Core.Commands",
                     "Improbable.Worker.CInterop"
                 );
 
@@ -60,8 +61,9 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
             rawResponse = {command.FqnResponseType}.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
         }}
 
-        var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, op.RequestId);
-        commandMetaData.RemoveRequest(ComponentId, {command.CommandIndex}, op.RequestId);
+        var internalRequestId = new InternalCommandRequestId(op.RequestId);
+        var commandContext = commandMetaData.GetContext<{command.FqnRequestType}>(ComponentId, {command.CommandIndex}, internalRequestId);
+        commandMetaData.RemoveRequest(ComponentId, {command.CommandIndex}, internalRequestId);
 
         var response = new {command.PascalCaseName}.ReceivedResponse(
             commandContext.SendingEntity,

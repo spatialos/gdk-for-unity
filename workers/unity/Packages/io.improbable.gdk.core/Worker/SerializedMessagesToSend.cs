@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 using Improbable.Worker.CInterop.Query;
@@ -16,8 +17,8 @@ namespace Improbable.Gdk.Core
             Loopback = ComponentUpdateLoopback.ShortCircuited
         };
 
-        private static List<Type> componentTypes;
-        private static List<Type> commandTypes;
+        private static readonly List<Type> ComponentTypes;
+        private static readonly List<Type> CommandTypes;
 
         private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
         private readonly MessageList<RequestToSend> requests = new MessageList<RequestToSend>();
@@ -49,30 +50,27 @@ namespace Improbable.Gdk.Core
 
         private NetFrameStats netFrameStats = new NetFrameStats();
 
+        static SerializedMessagesToSend()
+        {
+            ComponentTypes = ComponentDatabase.Metaclasses
+                .Select(pair => pair.Value.Serializer)
+                .ToList();
+
+            CommandTypes = ComponentDatabase.Metaclasses
+                .SelectMany(pair => pair.Value.Commands)
+                .Select(metaclass => metaclass.Serializer)
+                .ToList();
+        }
+
         public SerializedMessagesToSend()
         {
-            if (componentTypes == null)
-            {
-                componentTypes = ComponentDatabase.Metaclasses
-                    .Select(pair => pair.Value.Serializer)
-                    .ToList();
-            }
-
-            if (commandTypes == null)
-            {
-                commandTypes = ComponentDatabase.Metaclasses
-                    .SelectMany(pair => pair.Value.Commands)
-                    .Select(metaclass => metaclass.Serializer)
-                    .ToList();
-            }
-
-            foreach (var type in componentTypes)
+            foreach (var type in ComponentTypes)
             {
                 var instance = (IComponentSerializer) Activator.CreateInstance(type);
                 componentSerializers.Add(instance);
             }
 
-            foreach (var type in commandTypes)
+            foreach (var type in CommandTypes)
             {
                 var instance = (ICommandSerializer) Activator.CreateInstance(type);
                 commandSerializers.Add(instance);
@@ -143,9 +141,10 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                var id = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout);
+                var rawRequestId = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout);
+                var requestId = new InternalCommandRequestId(rawRequestId);
                 commandMetaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId,
-                    id);
+                    requestId);
             }
 
             for (var i = 0; i < responses.Count; ++i)
@@ -163,29 +162,33 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < createEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref createEntityRequests[i];
-                var id = connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                var rawRequestId = connection.SendCreateEntityRequest(request.Entity, request.EntityId, request.Timeout);
+                var requestId = new InternalCommandRequestId(rawRequestId);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, requestId);
             }
 
             for (var i = 0; i < deleteEntityRequests.Count; ++i)
             {
                 ref readonly var request = ref deleteEntityRequests[i];
-                var id = connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                var rawRequestId = connection.SendDeleteEntityRequest(request.EntityId, request.Timeout);
+                var requestId = new InternalCommandRequestId(rawRequestId);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, requestId);
             }
 
             for (var i = 0; i < reserveEntityIdsRequests.Count; ++i)
             {
                 ref readonly var request = ref reserveEntityIdsRequests[i];
-                var id = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                var rawRequestId = connection.SendReserveEntityIdsRequest(request.NumberOfEntityIds, request.Timeout);
+                var requestId = new InternalCommandRequestId(rawRequestId);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, requestId);
             }
 
             for (var i = 0; i < entityQueryRequests.Count; ++i)
             {
                 ref readonly var request = ref entityQueryRequests[i];
-                var id = connection.SendEntityQueryRequest(request.Query, request.Timeout);
-                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, id);
+                var rawRequestId = connection.SendEntityQueryRequest(request.Query, request.Timeout);
+                var requestId = new InternalCommandRequestId(rawRequestId);
+                commandMetaData.AddInternalRequestId(0, 0, request.RequestId, requestId);
             }
 
             for (var i = 0; i < metricsToSend.Count; ++i)
@@ -217,7 +220,7 @@ namespace Improbable.Gdk.Core
             netFrameStats.AddUpdate(update);
         }
 
-        public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, long requestId)
+        public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, CommandRequestId requestId)
         {
             requests.Add(new RequestToSend(request, commandId, entityId, timeout, requestId));
             netFrameStats.AddCommandRequest(request);
@@ -235,25 +238,25 @@ namespace Improbable.Gdk.Core
             netFrameStats.AddCommandResponse(reason, componentId, commandIndex);
         }
 
-        public void AddCreateEntityRequest(Entity entity, long? entityId, uint? timeout, long requestId)
+        public void AddCreateEntityRequest(Entity entity, long? entityId, uint? timeout, CommandRequestId requestId)
         {
             createEntityRequests.Add(new CreateEntityRequestToSend(entity, entityId, timeout, requestId));
             netFrameStats.AddWorldCommandRequest(WorldCommand.CreateEntity);
         }
 
-        public void AddDeleteEntityRequest(long entityId, uint? timeout, long requestId)
+        public void AddDeleteEntityRequest(long entityId, uint? timeout, CommandRequestId requestId)
         {
             deleteEntityRequests.Add(new DeleteEntityRequestToSend(entityId, timeout, requestId));
             netFrameStats.AddWorldCommandRequest(WorldCommand.DeleteEntity);
         }
 
-        public void AddReserveEntityIdsRequest(uint numberOfEntityIds, uint? timeout, long requestId)
+        public void AddReserveEntityIdsRequest(uint numberOfEntityIds, uint? timeout, CommandRequestId requestId)
         {
             reserveEntityIdsRequests.Add(new ReserveEntityIdsRequestToSend(numberOfEntityIds, timeout, requestId));
             netFrameStats.AddWorldCommandRequest(WorldCommand.ReserveEntityIds);
         }
 
-        public void AddEntityQueryRequest(EntityQuery query, uint? timeout, long requestId)
+        public void AddEntityQueryRequest(EntityQuery query, uint? timeout, CommandRequestId requestId)
         {
             entityQueryRequests.Add(new EntityQueryRequestToSend(query, timeout, requestId));
             netFrameStats.AddWorldCommandRequest(WorldCommand.EntityQuery);
@@ -300,9 +303,9 @@ namespace Improbable.Gdk.Core
             public readonly uint CommandId;
             public readonly long EntityId;
             public readonly uint? Timeout;
-            public readonly long RequestId;
+            public readonly CommandRequestId RequestId;
 
-            public RequestToSend(CommandRequest request, uint commandId, long entityId, uint? timeout, long requestId)
+            public RequestToSend(CommandRequest request, uint commandId, long entityId, uint? timeout, CommandRequestId requestId)
             {
                 Request = request;
                 CommandId = commandId;
@@ -340,9 +343,9 @@ namespace Improbable.Gdk.Core
         {
             public readonly uint NumberOfEntityIds;
             public readonly uint? Timeout;
-            public readonly long RequestId;
+            public readonly CommandRequestId RequestId;
 
-            public ReserveEntityIdsRequestToSend(uint numberOfEntityIds, uint? timeout, long requestId)
+            public ReserveEntityIdsRequestToSend(uint numberOfEntityIds, uint? timeout, CommandRequestId requestId)
             {
                 NumberOfEntityIds = numberOfEntityIds;
                 Timeout = timeout;
@@ -355,9 +358,9 @@ namespace Improbable.Gdk.Core
             public readonly Entity Entity;
             public readonly long? EntityId;
             public readonly uint? Timeout;
-            public readonly long RequestId;
+            public readonly CommandRequestId RequestId;
 
-            public CreateEntityRequestToSend(Entity entity, long? entityId, uint? timeout, long requestId)
+            public CreateEntityRequestToSend(Entity entity, long? entityId, uint? timeout, CommandRequestId requestId)
             {
                 Entity = entity;
                 EntityId = entityId;
@@ -370,9 +373,9 @@ namespace Improbable.Gdk.Core
         {
             public readonly long EntityId;
             public readonly uint? Timeout;
-            public readonly long RequestId;
+            public readonly CommandRequestId RequestId;
 
-            public DeleteEntityRequestToSend(long entityId, uint? timeout, long requestId)
+            public DeleteEntityRequestToSend(long entityId, uint? timeout, CommandRequestId requestId)
             {
                 EntityId = entityId;
                 Timeout = timeout;
@@ -384,9 +387,9 @@ namespace Improbable.Gdk.Core
         {
             public readonly EntityQuery Query;
             public readonly uint? Timeout;
-            public readonly long RequestId;
+            public readonly CommandRequestId RequestId;
 
-            public EntityQueryRequestToSend(EntityQuery query, uint? timeout, long requestId)
+            public EntityQueryRequestToSend(EntityQuery query, uint? timeout, CommandRequestId requestId)
             {
                 Query = query;
                 Timeout = timeout;
