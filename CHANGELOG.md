@@ -18,6 +18,7 @@
 ### Changed
 
 - GDK Tools Configuration window now autosaves. [#1356](https://github.com/spatialos/gdk-for-unity/pull/1356)
+- The SpatialOS Runtime version has been updated to `14.5.2`. [#1373](https://github.com/spatialos/gdk-for-unity/pull/1373)
 
 ### Fixed
 
