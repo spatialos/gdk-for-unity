@@ -1,11 +1,11 @@
 {
   "name": "io.improbable.gdk.buildsystem",
   "displayName": "SpatialOS GDK Build System",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "unity": "2019.3",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Build System Module.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.5"
+    "io.improbable.gdk.core": "0.3.6"
   }
 }

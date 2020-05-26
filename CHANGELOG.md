@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.6` - 2020-05-26
+
 ### Breaking Changes
 
 - `WorkerConnector.HandleWorkerConnectionFailure` has been removed and `WorkerConnector.Connect` now throws exceptions for connection errors instead. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
