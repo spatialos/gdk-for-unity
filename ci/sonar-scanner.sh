@@ -12,6 +12,8 @@ PROJECT_DIR="$(pwd)"
 
 source .shared-ci/scripts/pinned-tools.sh
 
+ACCELERATOR_ARGS=$(getAcceleratorArgs)
+
 # TODO: Add a more specific secret-type to vault and swap these around
 TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbable" --secret-type="generic-token" --secret-name="gdk-for-unity-bot-sonarcloud-token" --field="token")
 
@@ -59,7 +61,7 @@ fi
 #   3. Run `dotnet-sonarscanner end` which runs post-processing. (This looks like it runs an embedded version of the generic sonar-scanner CLI which requires the JRE).
 #
 # To enable this to work with Unity, we first need to generate the `.sln` and `.csproj` files in order to build them with `msbuild`
-# For ease of use, we execute msbuild through `dotnet`! 
+# For ease of use, we execute msbuild through `dotnet`!
 pushd "workers/unity"
 
   echo "--- Downloading Buildkite artifacts :buildkite:"
@@ -80,8 +82,9 @@ pushd "workers/unity"
       -batchmode \
       -projectPath "${PROJECT_DIR}/workers/unity" \
       -quit \
-      -executeMethod UnityEditor.SyncVS.SyncSolution
-  
+      -executeMethod UnityEditor.SyncVS.SyncSolution \
+      "${ACCELERATOR_ARGS}"
+
   echo "--- Execute sonar-scanner :sonarqube:"
   dotnet-sonarscanner begin "${args[@]}"
   dotnet msbuild ./unity.sln -t:Rebuild -nr:false

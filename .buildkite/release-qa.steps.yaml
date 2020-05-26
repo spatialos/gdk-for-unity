@@ -46,6 +46,7 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       BUILD_TARGET_FILTER: "android"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: "build :ios:"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -58,6 +59,7 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       BUILD_TARGET_FILTER: "ios"
       SCRIPTING_BACKEND: "il2cpp"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: "build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -69,6 +71,7 @@ steps:
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: "build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -80,6 +83,7 @@ steps:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
   - wait
   - label: Launch deployments
     command: bash -c ci/launch.sh

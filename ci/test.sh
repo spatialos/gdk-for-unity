@@ -10,6 +10,8 @@ cd "$(dirname "$0")/../"
 
 source .shared-ci/scripts/pinned-tools.sh
 
+ACCELERATOR_ARGS=$(getAcceleratorArgs)
+
 PROJECT_DIR="$(pwd)"
 TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 mkdir -p "${TEST_RESULTS_DIR}"
@@ -36,7 +38,8 @@ pushd "workers/unity"
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
-        -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml"
+        -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
+        "${ACCELERATOR_ARGS}"
 popd
 
 cleanUnity "$(pwd)/workers/unity"
@@ -52,7 +55,8 @@ pushd "test-project"
         -projectPath "${PROJECT_DIR}/test-project" \
         -runEditorTests \
         -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
-        -editorTestsResultFile "${TEST_RESULTS_DIR}/test-project-editmode-test-results.xml"
+        -editorTestsResultFile "${TEST_RESULTS_DIR}/test-project-editmode-test-results.xml" \
+        "${ACCELERATOR_ARGS}"
 popd
 
 echo "--- Testing Unity: Test Project Playmode :joystick:"
@@ -67,5 +71,6 @@ pushd "test-project"
         -runTests \
         -testPlatform playmode \
         -logfile "${PROJECT_DIR}/logs/test-project-playmode-test-run.log" \
-        -testResults "${TEST_RESULTS_DIR}/test-project-playmode-test-results.xml"
+        -testResults "${TEST_RESULTS_DIR}/test-project-playmode-test-results.xml" \
+        "${ACCELERATOR_ARGS}"
 popd

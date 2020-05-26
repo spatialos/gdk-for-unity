@@ -76,12 +76,16 @@ steps:
     <<: *windows
     artifact_paths:
       - logs/**/*
+    env:
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":windows: ~ sonar scanner :sonarqube:"
     depends_on:
       - step: "test-windows"
     command: bash -c ci/sonar-scanner.sh
     <<: *windows
+    env:
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":darwin: ~ test"
     id: "test-darwin"
@@ -89,6 +93,8 @@ steps:
     <<: *macos
     artifact_paths:
       - logs/**/*
+    env:
+      ACCELERATOR_ENDPOINT: "172.16.100.150"
 
   - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
@@ -137,6 +143,7 @@ steps:
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "android"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":windows: ~ build UnityClient mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -147,6 +154,7 @@ steps:
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":windows: ~ build UnityClient il2cpp"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -157,6 +165,7 @@ steps:
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "local"
       SCRIPTING_BACKEND: "il2cpp"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":windows: ~ build UnityGameLogic mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -167,6 +176,7 @@ steps:
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
+      ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
   - label: ":darwin: ~ build :ios:"
     command: bash -c .shared-ci/scripts/build-worker.sh
@@ -179,3 +189,4 @@ steps:
       BUILD_TARGET_FILTER: "ios"
       SCRIPTING_BACKEND: "il2cpp"
       TARGET_IOS_SDK: "simulator"
+      ACCELERATOR_ENDPOINT: "172.16.100.150"
