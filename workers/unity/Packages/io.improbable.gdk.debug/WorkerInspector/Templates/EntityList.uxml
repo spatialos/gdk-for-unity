@@ -1,0 +1,6 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:ue ="UnityEditor.UIElements">
+    <ue:Toolbar>
+        <ue:ToolbarSearchField class="entity-list-searchbar"/>
+    </ue:Toolbar>
+    <ListView class="entity-list-view" />
+</UXML>
