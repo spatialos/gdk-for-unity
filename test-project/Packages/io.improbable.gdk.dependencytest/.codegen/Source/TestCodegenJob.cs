@@ -20,8 +20,8 @@ namespace Improbable.Gdk.ModularCodegenTests
 }
 ";
 
-        public TestCodegenJob(string baseOutputDir, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
-            : base(baseOutputDir, fileSystem, detailsStore, force)
+        public TestCodegenJob(CodegenJobOptions options, IFileSystem fileSystem, DetailsStore detailsStore)
+            : base(options, fileSystem, detailsStore)
         {
             AddJobTarget(relativeOutputPath, () => TestContent);
             AddJobTarget(relativeTemplateOutputPath, () => ModularCodegenTestGenerator.Generate());
