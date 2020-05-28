@@ -129,6 +129,8 @@ namespace Improbable.Gdk.CodeGenerator
             logger.Info("Initialising DetailsStore.");
             var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
 
+            var codegenOptions = new CodegenJobOptions(options.OutputDirectory, options.EditorOutputDirectory, options.Force);
+
             logger.Trace("Setting up code generation jobs.");
             var jobs = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -150,7 +152,7 @@ namespace Improbable.Gdk.CodeGenerator
                 .Select(type =>
                 {
                     logger.Info($"Creating instance of {type}.");
-                    return (CodegenJob) Activator.CreateInstance(type, options.OutputDirectory, fileSystem, store, options.Force);
+                    return (CodegenJob) Activator.CreateInstance(type, codegenOptions, fileSystem, store);
                 })
                 .ToArray();
 

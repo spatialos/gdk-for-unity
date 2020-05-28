@@ -27,14 +27,14 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
         private readonly IFileSystem fileSystem;
         private readonly DetailsStore detailsStore;
 
-        protected CodegenJob(string baseOutputDirectory, IFileSystem fileSystem, DetailsStore detailsStore, bool force)
+        protected CodegenJob(CodegenJobOptions options, IFileSystem fileSystem, DetailsStore detailsStore)
         {
             Logger = LogManager.GetLogger(GetType().FullName);
 
-            OutputDirectory = baseOutputDirectory;
+            OutputDirectory = options.OutputDir;
             this.fileSystem = fileSystem;
             this.detailsStore = detailsStore;
-            isDirtyOverride = force;
+            isDirtyOverride = options.IsForce;
         }
 
         protected void AddInputFiles(IEnumerable<string> inputFilePaths)
