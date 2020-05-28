@@ -92,9 +92,15 @@ namespace Improbable.Gdk.Tools
             File.Delete(StartupCodegenMarkerFile);
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
                 Directory.Delete(toolsConfig.CodegenOutputDir, recursive: true);
+            }
+
+            if (Directory.Exists(toolsConfig.CodegenEditorOutputDir))
+            {
+                Directory.Delete(toolsConfig.CodegenEditorOutputDir, recursive: true);
             }
 
             SetupProject();
