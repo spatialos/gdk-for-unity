@@ -7,8 +7,8 @@ namespace Improbable.Gdk.CodeGenerator.GameObjectCreation
 {
     public class GameObjectCodegenJob : CodegenJob
     {
-        public GameObjectCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
-            : base(outputDir, fileSystem, store, force)
+        public GameObjectCodegenJob(CodegenJobOptions options, IFileSystem fileSystem, DetailsStore store)
+            : base(options, fileSystem, store)
         {
             const string jobName = nameof(GameObjectCodegenJob);
             Logger.Trace($"Initialising {jobName}.");
