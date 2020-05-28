@@ -485,7 +485,8 @@ namespace Improbable.Gdk.Tools
                 $"--worker-json-dir=\"{WorkerJsonPath}\"",
                 $"--log-file=\"{logfilePath}\"",
                 $"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"",
-                $"--native-output-dir=\"{toolsConfig.FullCodegenOutputPath}\""
+                $"--output-dir=\"{toolsConfig.FullCodegenOutputPath}\"",
+                $"--editor-output-dir=\"{toolsConfig.FullCodegenEditorOutputPath}\""
             };
 
             if (toolsConfig.VerboseLogging)

@@ -150,7 +150,7 @@ namespace Improbable.Gdk.CodeGenerator
                 .Select(type =>
                 {
                     logger.Info($"Creating instance of {type}.");
-                    return (CodegenJob) Activator.CreateInstance(type, options.NativeOutputDirectory, fileSystem, store, options.Force);
+                    return (CodegenJob) Activator.CreateInstance(type, options.OutputDirectory, fileSystem, store, options.Force);
                 })
                 .ToArray();
 
