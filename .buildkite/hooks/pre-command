@@ -4,4 +4,12 @@ set -euo pipefail
 
 if [[ "${BUILDKITE_AGENT_META_DATA_CAPABLE_OF_BUILDING}" == "gdk-for-unity" ]] && [[ "${BUILDKITE_AGENT_META_DATA_OS}" != "linux" ]]; then
   spatial auth login --log_level debug
+
+  if [[ "${BUILDKITE_AGENT_META_DATA_OS}" == "macos" ]]; then
+    export ACCELERATOR_ENDPOINT="172.16.100.150"
+  fi
+
+  if [[ "${BUILDKITE_AGENT_META_DATA_OS}" == "windows" ]]; then
+    export ACCELERATOR_ENDPOINT="unity-accelerator.production-intinf-eu1.i8e.io"
+  fi
 fi
