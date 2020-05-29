@@ -61,7 +61,7 @@ macos: &macos
         # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
       - exit_status: -1
         limit: 3
-  env: &mac-env
+  env: &macos-env
     ACCELERATOR_ENDPOINT: "172.16.100.150"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
@@ -182,7 +182,7 @@ steps:
     artifact_paths:
       - logs/**/*
     env:
-      <<: *mac-env
+      <<: *macos-env
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "ios"
