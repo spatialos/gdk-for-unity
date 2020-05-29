@@ -28,11 +28,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             template.CloneTree(this);
 
             listView = this.Q<ListView>();
-            listView.itemHeight = 24;
             listView.makeItem = () => new Label();
             listView.bindItem = BindItem;
             listView.onSelectionChanged += OnSelectionChanged;
-            listView.itemsSource = entities.Data;
+            listView.itemsSource = entities.FilteredData;
 
             var searchField = this.Q<ToolbarSearchField>();
             searchField.RegisterCallback<ChangeEvent<string>>(OnSearchFieldChanged);
@@ -42,7 +41,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             if (entitySystem == null)
             {
-                listView.itemsSource = entities.Data;
+                listView.Refresh();
                 return;
             }
 
@@ -52,12 +51,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             }
 
             entities.RefreshData();
-            listView.itemsSource = entities.Data;
+            listView.Refresh();
 
             // Attempt to continue focusing the previously selected value.
             if (selectedEntity != null)
             {
-                var index = entities.Data.IndexOf(selectedEntity.Value);
+                var index = entities.FilteredData.IndexOf(selectedEntity.Value);
 
                 if (index != -1)
                 {
@@ -79,13 +78,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
         private void BindItem(VisualElement element, int index)
         {
-            var entity = entities.Data[index];
-
-            if (!(element is Label label))
-            {
-                return;
-            }
-
+            var entity = entities.FilteredData[index];
+            var label = (Label) element;
             label.text = entity.ToString();
         }
 
@@ -112,7 +106,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             var searchValue = changeEvent.newValue.Trim();
             entities.ApplySearch(EntitySearchParameters.FromSearchString(searchValue));
-            listView.itemsSource = entities.Data;
+            listView.Refresh();
         }
 
         public new class UxmlFactory : UxmlFactory<EntityList>

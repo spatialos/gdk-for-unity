@@ -1,6 +1,7 @@
 .entity-list-view {
     flex-grow: 1;
     flex-direction: column;
+    --unity-item-height: 24;
 }
 
 .unity-list-view__item {

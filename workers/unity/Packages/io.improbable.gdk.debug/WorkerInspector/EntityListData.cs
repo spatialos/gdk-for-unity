@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private static ProfilerMarker refreshDataMarker = new ProfilerMarker("EntityList.RefreshData");
         private static ProfilerMarker applySearchMarker = new ProfilerMarker("EntityList.ApplySearch");
 
-        public readonly List<EntityData> Data = new List<EntityData>();
+        public readonly List<EntityData> FilteredData = new List<EntityData>();
 
         private readonly List<EntityData> fullData = new List<EntityData>();
         private World world;
@@ -25,13 +25,13 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
             using (applySearchMarker.Auto())
             {
-                Data.Clear();
+                FilteredData.Clear();
 
                 foreach (var datum in fullData)
                 {
                     if (datum.Matches(searchParameters))
                     {
-                        Data.Add(datum);
+                        FilteredData.Add(datum);
                     }
                 }
             }
@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         public void SetNewWorld(World newWorld)
         {
             fullData.Clear();
-            Data.Clear();
+            FilteredData.Clear();
             query?.Dispose();
 
             if (newWorld == null)

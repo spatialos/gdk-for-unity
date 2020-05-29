@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Debug.EditmodeTests.WorkerInspector
         public void Data_is_empty_intially()
         {
             var data = new EntityListData();
-            Assert.IsEmpty(data.Data);
+            Assert.IsEmpty(data.FilteredData);
         }
 
         [TestCase]
@@ -53,9 +53,9 @@ namespace Improbable.Gdk.Debug.EditmodeTests.WorkerInspector
                 .Step((world, data) =>
                 {
                     data.RefreshData();
-                    Assert.AreEqual(1, data.Data.Count);
+                    Assert.AreEqual(1, data.FilteredData.Count);
 
-                    var entityData = data.Data[0];
+                    var entityData = data.FilteredData[0];
                     Assert.AreEqual(1, entityData.EntityId.Id);
                     Assert.AreEqual("some-entity", entityData.Metadata);
                 });
@@ -78,12 +78,12 @@ namespace Improbable.Gdk.Debug.EditmodeTests.WorkerInspector
                 .Step((world, data) =>
                 {
                     data.RefreshData();
-                    Assert.AreEqual(1, data.Data.Count);
+                    Assert.AreEqual(1, data.FilteredData.Count);
                 })
                 .Step((world, data) =>
                 {
                     data.ApplySearch(EntitySearchParameters.FromSearchString("2")); // Entity ID = 2
-                    Assert.IsEmpty(data.Data);
+                    Assert.IsEmpty(data.FilteredData);
                 });
         }
 
@@ -104,12 +104,12 @@ namespace Improbable.Gdk.Debug.EditmodeTests.WorkerInspector
                 .Step((world, data) =>
                 {
                     data.RefreshData();
-                    Assert.AreEqual(1, data.Data.Count);
+                    Assert.AreEqual(1, data.FilteredData.Count);
                 })
                 .Step((world, data) =>
                 {
                     data.SetNewWorld(null);
-                    Assert.IsEmpty(data.Data);
+                    Assert.IsEmpty(data.FilteredData);
                 });
         }
 
@@ -131,7 +131,7 @@ namespace Improbable.Gdk.Debug.EditmodeTests.WorkerInspector
                 .Step((world, data) =>
                 {
                     data.RefreshData();
-                    Assert.IsEmpty(data.Data);
+                    Assert.IsEmpty(data.FilteredData);
                 });
         }
 
