@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
     ///     Instances of this type should be treated as transient identifiers that will not be
     ///     consistent between different runs of the same simulation.
     /// </remarks>
-    public readonly struct EntityId : IEquatable<EntityId>
+    public readonly struct EntityId : IEquatable<EntityId>, IComparable<EntityId>, IComparable
     {
         /// <summary>
         ///     The value of the EntityId.
@@ -81,6 +81,43 @@ namespace Improbable.Gdk.Core
         public override string ToString()
         {
             return Id.ToString();
+        }
+
+        public int CompareTo(EntityId other)
+        {
+            return Id.CompareTo(other.Id);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return 1;
+            }
+
+            return obj is EntityId other
+                ? CompareTo(other)
+                : throw new ArgumentException($"Object must be of type {nameof(EntityId)}");
+        }
+
+        public static bool operator <(EntityId left, EntityId right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(EntityId left, EntityId right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <=(EntityId left, EntityId right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(EntityId left, EntityId right)
+        {
+            return left.CompareTo(right) >= 0;
         }
     }
 }

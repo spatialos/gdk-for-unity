@@ -4,7 +4,8 @@
         "Improbable.Gdk.Core",
         "Unity.Entities",
         "Sirenix.OdinInspector.Editor",
-        "Improbable.Gdk.Core.Editor"
+        "Improbable.Gdk.Core.Editor",
+        "Improbable.Gdk.Generated"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,5 +16,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

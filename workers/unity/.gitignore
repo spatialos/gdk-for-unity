@@ -13,6 +13,8 @@
 # SpatialOS Generated Files
 /Assets/Generated/Source.meta
 /Assets/Generated/Source/**/*.*
+/Assets/Generated/Editor.meta
+/Assets/Generated/Editor/**/*.*
 
 # OLD Plugins folder
 /Assets/Plugins/Improbable/
