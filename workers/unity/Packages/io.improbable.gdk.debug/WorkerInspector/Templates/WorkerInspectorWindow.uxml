@@ -1,0 +1,8 @@
+<UXML
+    xmlns="UnityEngine.UIElements"
+    xmlns:gdk="Improbable.Gdk.Core.Editor.UIElements"
+    xmlns:wi="Improbable.Gdk.Debug.WorkerInspector"
+>
+    <gdk:WorldSelector />
+    <wi:EntityList class="entity-panel"/>
+</UXML>

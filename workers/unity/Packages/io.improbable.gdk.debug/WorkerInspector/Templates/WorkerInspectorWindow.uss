@@ -1,0 +1,26 @@
+.entity-list-view {
+    flex-grow: 1;
+    flex-direction: column;
+    --unity-item-height: 24;
+}
+
+.unity-list-view__item {
+    padding-left: 8px;
+    -unity-text-align: middle-left;
+}
+
+.entity-panel {
+    flex-grow: 1;
+    flex-direction: column;
+    max-width: 33%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-right-color: rgba(0, 0, 0, 0.2);
+    border-right-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0.2);
+    border-top-width: 1px;
+}
+
+.entity-list-searchbar {
+    flex-grow: 1;
+    width: auto;
+}

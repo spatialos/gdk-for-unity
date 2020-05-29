@@ -10,6 +10,8 @@ namespace Improbable.Gdk.Core
     [UpdateBefore(typeof(SpatialOSReceiveSystem))]
     public class EntitySystem : ComponentSystem
     {
+        public int ViewVersion { get; private set; }
+
         private readonly List<EntityId> entitiesAdded = new List<EntityId>();
         private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
 
@@ -48,6 +50,11 @@ namespace Improbable.Gdk.Core
                 foreach (var entityId in diff.GetEntitiesRemoved())
                 {
                     entitiesRemoved.Add(entityId);
+                }
+
+                if (entitiesAdded.Count != 0 || entitiesRemoved.Count != 0)
+                {
+                    ViewVersion += 1;
                 }
             }
         }
